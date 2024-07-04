@@ -81,16 +81,25 @@ public abstract class View : IView
         OnDrawContent(b);
     }
 
+    public IEnumerable<ViewChild> GetChildren()
+    {
+        var borderThickness = GetBorderThickness();
+        var offset = new Vector2(Margin.Left, Margin.Top)
+            + new Vector2(borderThickness.Left, borderThickness.Top)
+            + new Vector2(Padding.Left, Padding.Top);
+        return GetLocalChildren().Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset));
+    }
+
     public bool IsDirty()
     {
         return layout.IsDirty || margin.IsDirty || padding.IsDirty || IsContentDirty();
     }
 
-    public void Measure(Vector2 availableSize)
+    public bool Measure(Vector2 availableSize)
     {
         if (!IsDirty() && availableSize == LastAvailableSize)
         {
-            return;
+            return false;
         }
         var adjustedSize = availableSize - Margin.Total - Padding.Total - GetBorderThickness().Total;
         OnMeasure(Vector2.Max(adjustedSize, Vector2.Zero));
@@ -99,6 +108,7 @@ public abstract class View : IView
         margin.ResetDirty();
         padding.ResetDirty();
         ResetDirty();
+        return true;
     }
 
     /// <summary>
@@ -119,6 +129,26 @@ public abstract class View : IView
     protected virtual Edges GetBorderThickness()
     {
         return Edges.NONE;
+    }
+
+    /// <summary>
+    /// Gets the view's children with positions relative to the content area.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This has the same signature as <see cref="GetChildren"/> but assumes that coordinates are in the same space as
+    /// those used in <see cref="OnDrawContent(ISpriteBatch)"/>, i.e. not accounting for margin/border/padding. These
+    /// coordinates are automatically adjusted in the <see cref="GetChildren"/> to be relative to the entire view.
+    /// </para>
+    /// <para>
+    /// The default implementation returns an empty sequence. Composite views must override this method in order for
+    /// user interactions to behave correctly.
+    /// </para>
+    /// </remarks>
+    /// <returns></returns>
+    protected virtual IEnumerable<ViewChild> GetLocalChildren()
+    {
+        return [];
     }
 
     /// <summary>

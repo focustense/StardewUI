@@ -46,35 +46,28 @@ public class Lane : View
 
     private readonly DirtyTrackingList<IView> children = [];
     private readonly DirtyTracker<Orientation> orientation = new(Orientation.Horizontal);
+    private readonly List<ViewChild> visibleChildPositions = [];
 
     private Vector2 childrenSize;
     private int visibleChildCount;
 
+    protected override IEnumerable<ViewChild> GetLocalChildren()
+    {
+        return visibleChildPositions;
+    }
+
+    protected override bool IsContentDirty()
+    {
+        return orientation.IsDirty || children.Any(child => child.IsDirty());
+    }
+
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        if (Orientation == Orientation.Horizontal)
+        foreach (var (child, position) in visibleChildPositions)
         {
-            var x = HorizontalContentAlignment.Align(childrenSize.X, ContentSize.X);
-            foreach (var child in VisibleChildren)
-            {
-                var y = VerticalContentAlignment.Align(child.ActualSize.Y, ContentSize.Y);
-                using var _ = b.SaveTransform();
-                b.Translate(x, y);
-                child.Draw(b);
-                x += child.ActualSize.X;
-            }
-        }
-        else
-        {
-            var y = VerticalContentAlignment.Align(childrenSize.Y, ContentSize.Y);
-            foreach (var child in VisibleChildren)
-            {
-                var x = HorizontalContentAlignment.Align(child.ActualSize.X, ContentSize.X);
-                using var _ = b.SaveTransform();
-                b.Translate(x, y);
-                child.Draw(b);
-                y += child.ActualSize.Y;
-            }
+            using var _ = b.SaveTransform();
+            b.Translate(position);
+            child.Draw(b);
         }
     }
 
@@ -116,5 +109,31 @@ public class Lane : View
         }
         childrenSize = new(contentWidth, contentHeight);
         ContentSize = Layout.Resolve(availableSize, () => childrenSize);
+        UpdateVisibleChildPositions();
+    }
+
+    private void UpdateVisibleChildPositions()
+    {
+        visibleChildPositions.Clear();
+        if (Orientation == Orientation.Horizontal)
+        {
+            var x = HorizontalContentAlignment.Align(childrenSize.X, ContentSize.X);
+            foreach (var child in VisibleChildren)
+            {
+                var y = VerticalContentAlignment.Align(child.ActualSize.Y, ContentSize.Y);
+                visibleChildPositions.Add(new(child, new(x, y)));
+                x += child.ActualSize.X;
+            }
+        }
+        else
+        {
+            var y = VerticalContentAlignment.Align(childrenSize.Y, ContentSize.Y);
+            foreach (var child in VisibleChildren)
+            {
+                var x = HorizontalContentAlignment.Align(child.ActualSize.X, ContentSize.X);
+                visibleChildPositions.Add(new(child, new(x, y)));
+                y += child.ActualSize.Y;
+            }
+        }
     }
 }

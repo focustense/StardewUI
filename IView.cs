@@ -29,6 +29,11 @@ public interface IView
     void Draw(ISpriteBatch b);
 
     /// <summary>
+    /// Gets the current children of this view.
+    /// </summary>
+    IEnumerable<ViewChild> GetChildren();
+
+    /// <summary>
     /// Checks whether or not the view is dirty - i.e. requires a new layout with a full <see cref="Measure"/>.
     /// </summary>
     /// <remarks>
@@ -53,5 +58,7 @@ public interface IView
     /// Most views should save the value of <paramref name="availableSize"/> for use in <see cref="IsDirty"/> checks.
     /// </remarks>
     /// <param name="availableSize">The width/height that is still available in the container/parent.</param>
-    void Measure(Vector2 availableSize);
+    /// <returns>Whether or not any layout was performed as a result of this pass. Callers may use this to propagate
+    /// layout back up the tree, or perform expensive follow-up actions.</returns>
+    bool Measure(Vector2 availableSize);
 }

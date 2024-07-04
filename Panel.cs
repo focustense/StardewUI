@@ -66,10 +66,16 @@ public class Panel : View
 
     private NineSlice? backgroundSlice;
     private NineSlice? borderSlice;
+    private Vector2 contentPosition;
 
     protected override Edges GetBorderThickness()
     {
         return BorderThickness;
+    }
+
+    protected override IEnumerable<ViewChild> GetLocalChildren()
+    {
+        return Content is not null ? [new(Content, contentPosition)] : [];
     }
 
     protected override bool IsContentDirty()
@@ -93,18 +99,8 @@ public class Panel : View
         {
             return;
         }
-        // ContentSize, as computed in OnMeasure, is the size we allocate to the content inside the padding; it is only
-        // the same as Content.ActualSize when layout height and width are both set to Content. If they are fixed pixel
-        // sizes or set to match the container size, then the values can be different and alignment will apply.
-        if (Content.ActualSize == ContentSize)
-        {
-            Content.Draw(b);
-            return;
-        }
-        var left = HorizontalContentAlignment.Align(Content.ActualSize.X, ContentSize.X);
-        var top = VerticalContentAlignment.Align(Content.ActualSize.Y, ContentSize.Y);
         using var _ = b.SaveTransform();
-        b.Translate(left, top);
+        b.Translate(contentPosition);
         Content.Draw(b);
     }
 
@@ -113,6 +109,7 @@ public class Panel : View
         Content?.Measure(Layout.GetLimits(availableSize));
 
         ContentSize = Layout.Resolve(availableSize, () => Content?.ActualSize ?? Vector2.Zero);
+        UpdateContentPosition();
 
         if (borderSlice?.Sprite != Border)
         {
@@ -131,5 +128,17 @@ public class Panel : View
     {
         borderThickness.ResetDirty();
         content.ResetDirty();
+    }
+
+    private void UpdateContentPosition()
+    {
+        if (Content is null || Content.ActualSize == ContentSize)
+        {
+            contentPosition = Vector2.Zero;
+            return;
+        }
+        var left = HorizontalContentAlignment.Align(Content.ActualSize.X, ContentSize.X);
+        var top = VerticalContentAlignment.Align(Content.ActualSize.Y, ContentSize.Y);
+        contentPosition = new(left, top);
     }
 }
