@@ -61,4 +61,9 @@ public interface IView
     /// <returns>Whether or not any layout was performed as a result of this pass. Callers may use this to propagate
     /// layout back up the tree, or perform expensive follow-up actions.</returns>
     bool Measure(Vector2 availableSize);
+
+    /// <summary>
+    /// Localized tooltip to display, if any.
+    /// </summary>
+    string Tooltip { get; }
 }

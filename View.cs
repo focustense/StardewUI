@@ -63,6 +63,11 @@ public abstract class View : IView
     }
 
     /// <summary>
+    /// Tooltip to display on hover.
+    /// </summary>
+    public string Tooltip { get; set; } = "";
+
+    /// <summary>
     /// The most recent size used in a <see cref="Measure"/> pass. Used for additional dirty checks.
     /// </summary>
     protected Vector2 LastAvailableSize { get; private set; } = Vector2.Zero;
