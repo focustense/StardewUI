@@ -13,7 +13,7 @@ public class Label : View
     /// <summary>
     /// The text color.
     /// </summary>
-    public Color Color { get; set; } // Not dirty-tracked because it doesn't affect layout.
+    public Color Color { get; set; } = Game1.textColor; // Not dirty-tracked because it doesn't affect layout.
 
     /// <summary>
     /// The font that will be used to render the text.
