@@ -112,6 +112,11 @@ public class Lane : View
         UpdateVisibleChildPositions();
     }
 
+    protected override void ResetDirty()
+    {
+        orientation.ResetDirty();
+    }
+
     private void UpdateVisibleChildPositions()
     {
         visibleChildPositions.Clear();

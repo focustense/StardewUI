@@ -100,6 +100,11 @@ public class Image : View
         }
     }
 
+    protected override void ResetDirty()
+    {
+        sprite.ResetDirty();
+    }
+
     private Vector2 GetImageSize(Vector2 limits)
     {
         if (Sprite is null)
