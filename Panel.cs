@@ -73,6 +73,11 @@ public class Panel : View
         return BorderThickness;
     }
 
+    protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
+    {
+        return Content?.FocusSearch(contentPosition, direction);
+    }
+
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return Content is not null ? [new(Content, contentPosition)] : [];

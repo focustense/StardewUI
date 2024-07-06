@@ -35,6 +35,12 @@ public abstract class View : IView
     /// </summary>
     public Vector2 InnerSize => ContentSize + Padding.Total;
 
+    /// <inheritdoc/>
+    /// <remarks>
+    /// All views are non-focusable by default. Views that wish to receive focus should override.
+    /// </remarks>
+    public virtual bool IsFocusable => false;
+
     /// <summary>
     /// Layout settings for this view; determines how its dimensions will be computed.
     /// </summary>
@@ -86,6 +92,30 @@ public abstract class View : IView
         OnDrawContent(b);
     }
 
+    /// <inheritdoc/>
+    /// This will first call <see cref="FindFocusableDescendant"/> to see if the specific view type wants to implement
+    /// its own focus search. If there is no focusable descendant, then this will return a reference to the current view
+    /// if <see cref="IsFocusable"/> is <c>true</c> and the position is <i>not</i> already within the view's bounds -
+    /// meaning, any focusable view can accept focus from any direction, but will not consider itself a result if it is
+    /// already focused (since we are trying to "move" focus).
+    public ViewChild? FocusSearch(Vector2 position, Direction direction)
+    {
+        var borderThickness = GetBorderThickness();
+        var offset = new Vector2(Margin.Left, Margin.Top)
+            + new Vector2(borderThickness.Left, borderThickness.Top)
+            + new Vector2(Padding.Left, Padding.Top);
+        var found = FindFocusableDescendant(position + offset, direction);
+        if (found is not null)
+        {
+            return new(found.View, found.Position - offset);
+        }
+        if (IsFocusable && position.X >= 0 && position.X < ActualSize.X && position.Y >= 0 && position.Y < ActualSize.Y)
+        {
+            return new(this, Vector2.Zero);
+        }
+        return null;
+    }
+
     public IEnumerable<ViewChild> GetChildren()
     {
         var borderThickness = GetBorderThickness();
@@ -114,6 +144,20 @@ public abstract class View : IView
         padding.ResetDirty();
         ResetDirty();
         return true;
+    }
+
+    /// <summary>
+    /// Searches for a focusable child within this view and returns it if it can be reached in the specified
+    /// <paramref name="direction"/>.
+    /// </summary>
+    /// <remarks>
+    /// This is the same as <see cref="FocusSearch"/> but in pre-transformed content coordinates, and does not require
+    /// checking for "self-focus" as <see cref="FocusSearch"/> already does this. The default implementation simply
+    /// returns <c>null</c> as most views do not have children; subclasses with children must override this.
+    /// </remarks>
+    protected virtual ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
+    {
+        return null;
     }
 
     /// <summary>
