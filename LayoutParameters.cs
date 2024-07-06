@@ -9,6 +9,20 @@ using System.Diagnostics.CodeAnalysis;
 public readonly struct LayoutParameters : IEquatable<LayoutParameters>
 {
     /// <summary>
+    /// Creates a <see cref="LayoutParameters"/> that stretches to the available horizontal width, fits the content
+    /// height, and has no other constraints. Typically used for rows in a vertical layout.
+    /// </summary>
+    /// <returns></returns>
+    public static LayoutParameters AutoRow()
+    {
+        return new()
+        {
+            Width = Length.Stretch(),
+            Height = Length.Content(),
+        };
+    }
+
+    /// <summary>
     /// Creates a <see cref="LayoutParameters"/> that tracks content width and height, and has no other constraints.
     /// </summary>
     public static LayoutParameters FitContent()

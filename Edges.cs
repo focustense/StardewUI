@@ -9,7 +9,7 @@ namespace SupplyChain.UI;
 /// <param name="Top">The top edge.</param>
 /// <param name="Right">The right edge.</param>
 /// <param name="Bottom">The bottom edge.</param>
-public record Edges(int Left, int Top, int Right, int Bottom)
+public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
 {
     /// <summary>
     /// An <see cref="Edges"/> instance with all edges set to zero.
@@ -66,5 +66,44 @@ public record Edges(int Left, int Top, int Right, int Bottom)
         hashCode.Add(Right);
         hashCode.Add(Bottom);
         return hashCode.ToHashCode();
+    }
+
+    /// <summary>
+    /// Gets a copy of this instance with only the horizontal edges set (vertical edges zeroed out).
+    /// </summary>
+    public Edges HorizontalOnly()
+    {
+        return new(Left, 0, Right, 0);
+    }
+
+    /// <summary>
+    /// Gets a copy of this instance with only the vertical edges set (horizontal edges zeroed out).
+    /// </summary>
+    public Edges VerticalOnly()
+    {
+        return new(0, Top, 0, Bottom);
+    }
+
+    public static Edges operator -(Edges value)
+    {
+        return new(-value.Left, -value.Top, -value.Right, -value.Bottom);
+    }
+
+    public static Edges operator +(Edges value1, Edges value2)
+    {
+        return new(
+            value1.Left + value2.Left,
+            value1.Top + value2.Top,
+            value1.Right + value2.Right,
+            value1.Bottom + value2.Bottom);
+    }
+
+    public static Edges operator -(Edges value1, Edges value2)
+    {
+        return new(
+            value1.Left - value2.Left,
+            value1.Top - value2.Top,
+            value1.Right - value2.Right,
+            value1.Bottom - value2.Bottom);
     }
 }
