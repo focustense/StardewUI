@@ -79,7 +79,7 @@ public class Image : View
         {
             UpdateSlice();
         }
-        slice?.Draw(b);
+        slice?.Draw(b, Tint);
     }
 
     protected override void OnMeasure(Vector2 availableSize)

@@ -17,7 +17,8 @@ public class NineSlice(Sprite sprite)
     /// Draws the sprite to an <see cref="ISpriteBatch"/>, applying 9-slice scaling if specified.
     /// </summary>
     /// <param name="b">Output sprite batch.</param>
-    public void Draw(ISpriteBatch b)
+    /// <param name="tint">Optional tint multiplier color.</param>
+    public void Draw(ISpriteBatch b, Color? tint = null)
     {
         if (destinationGrid is null)
         {
@@ -39,7 +40,7 @@ public class NineSlice(Sprite sprite)
                     // can skip some wasted cycles trying to "draw" it.
                     continue;
                 }
-                b.Draw(Sprite.Texture, destinationGrid[y, x], sourceRect);
+                b.Draw(Sprite.Texture, destinationGrid[y, x], sourceRect, tint);
             }
         }
     }
@@ -57,8 +58,8 @@ public class NineSlice(Sprite sprite)
     {
         var left = bounds.X;
         var top = bounds.Y;
-        var centerX = settings is not null ? settings.CenterX : left + fixedEdges.Left;
-        var centerY = settings is not null ? settings.CenterY : top + fixedEdges.Top;
+        var centerX = settings?.CenterX is int cx ? cx : left + fixedEdges.Left;
+        var centerY = settings?.CenterY is int cy ? cy : top + fixedEdges.Top;
         var innerWidth = bounds.Right - fixedEdges.Right - centerX;
         var innerHeight = bounds.Bottom - fixedEdges.Bottom - centerY;
         var startRight = bounds.Right - fixedEdges.Right;

@@ -21,8 +21,10 @@ public record Sprite(
 /// <summary>
 /// Additional nine-slice settings for dealing with certain "unique" structures.
 /// </summary>
-/// <param name="CenterX">The origin (left) point where the horizontal "center" is considered to start.</param>
-/// <param name="CenterY">The origin (top) point where the vertical "center" is considered to start.</param>
+/// <param name="CenterX">The origin (left) point where the horizontal "center" is considered to start, or <c>null</c>
+/// to start where the left fixed edge ends.</param>
+/// <param name="CenterY">The origin (top) point where the vertical "center" is considered to start, or <c>null</c> to
+/// start where the top fixed edge ends..</param>
 /// <param name="EdgesOnly">If <c>true</c>, then only the outer 8 edge segments should be drawn, and the 9th
 /// (horizontal and vertical middle, i.e. "background") segment will be ignored.</param>
-public record SliceSettings(int CenterX, int CenterY, bool EdgesOnly);
+public record SliceSettings(int? CenterX, int? CenterY, bool EdgesOnly = false);
