@@ -111,11 +111,19 @@ public class Image : View
         {
             return Vector2.Zero;
         }
+        var sourceRect = Sprite.SourceRect ?? Sprite.Texture.Bounds;
+        if (Layout.Width.Type == LengthType.Content && sourceRect.Width < limits.X)
+        {
+            limits.X = sourceRect.Width;
+        }
+        if (Layout.Height.Type == LengthType.Content && sourceRect.Height < limits.Y)
+        {
+            limits.Y = sourceRect.Height;
+        }
         if (Fit == ImageFit.Stretch)
         {
             return limits;
         }
-        var sourceRect = Sprite.SourceRect ?? Sprite.Texture.Bounds;
         if (Fit == ImageFit.None || IsSourceSize())
         {
             return sourceRect.Size.ToVector2();
