@@ -39,27 +39,27 @@ public abstract class WrapperView : IView
         root = new(() => CreateView());
     }
 
-    public void Draw(ISpriteBatch b)
+    public virtual void Draw(ISpriteBatch b)
     {
         Root.Draw(b);
     }
 
-    public ViewChild? FocusSearch(Vector2 position, Direction direction)
+    public virtual ViewChild? FocusSearch(Vector2 position, Direction direction)
     {
         return Root.FocusSearch(position, direction);
     }
 
-    public IEnumerable<ViewChild> GetChildren()
+    public virtual IEnumerable<ViewChild> GetChildren()
     {
         return Root.GetChildren();
     }
 
-    public bool IsDirty()
+    public virtual bool IsDirty()
     {
         return Root.IsDirty();
     }
 
-    public bool Measure(Vector2 availableSize)
+    public virtual bool Measure(Vector2 availableSize)
     {
         return Root.Measure(availableSize);
     }
