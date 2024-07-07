@@ -172,7 +172,7 @@ public class Lane : View
     private FocusSearchInfo GetFocusSearchInfo(int index, Vector2 position, Direction direction)
     {
         var child = visibleChildPositions[index];
-        var focusable = child.View.FocusSearch(position, direction);
+        var focusable = child.View.FocusSearch(child.Position + position, direction);
         var distance = focusable is not null
             ? MathF.Abs(Axis(focusable.Position) - Axis(position))
             : float.PositiveInfinity;
@@ -200,7 +200,7 @@ public class Lane : View
         for (int i = startIndex; i != endIndex; i += step)
         {
             var child = visibleChildPositions[focusedIndex];
-            var childResult = child.View.FocusSearch(child.Position, direction);
+            var childResult = child.View.FocusSearch(child.Position + position, direction);
             if (childResult is not null)
             {
                 return childResult;

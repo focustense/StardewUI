@@ -95,7 +95,7 @@ public class Image : View
         {
             var left = HorizontalAlignment.Align(imageSize.X, ContentSize.X);
             var top = VerticalAlignment.Align(imageSize.Y, ContentSize.Y);
-            destinationRect = new Rectangle(new Vector2(left, top).ToPoint(), ContentSize.ToPoint());
+            destinationRect = new Rectangle(new Vector2(left, top).ToPoint(), imageSize.ToPoint());
             UpdateSlice();
         }
     }

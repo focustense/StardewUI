@@ -23,6 +23,19 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     }
 
     /// <summary>
+    /// Creates a <see cref="LayoutParameters"/> that stretches to the full available width and height.
+    /// </summary>
+    /// <returns></returns>
+    public static LayoutParameters Fill()
+    {
+        return new()
+        {
+            Width = Length.Stretch(),
+            Height = Length.Stretch()
+        };
+    }
+
+    /// <summary>
     /// Creates a <see cref="LayoutParameters"/> that tracks content width and height, and has no other constraints.
     /// </summary>
     public static LayoutParameters FitContent()
