@@ -6,15 +6,15 @@ namespace SupplyChain.UI;
 /// A view that holds another view, typically for the purpose of adding a border or background, or in some cases
 /// swapping out the content.
 /// </summary>
-public class Panel : View
+public class Frame : View
 {
     /// <summary>
-    /// The background sprite to draw for this panel.
+    /// The background sprite to draw for this frame.
     /// </summary>
     public Sprite? Background { get; set; }
 
     /// <summary>
-    /// The border sprite to draw for this panel.
+    /// The border sprite to draw for this frame.
     /// </summary>
     /// <remarks>
     /// Setting a border here does not affect layout, even if <see cref="Sprite.FixedEdges"/> are set to non-zero
@@ -48,15 +48,15 @@ public class Panel : View
     }
 
     /// <summary>
-    /// Specifies how to align the <see cref="Content"/> horizontally within the panel's area. Only has an effect if the
-    /// panel's content area is larger than the content size, i.e. when <see cref="LayoutParameters.Width"/> does
+    /// Specifies how to align the <see cref="Content"/> horizontally within the frame's area. Only has an effect if the
+    /// frame's content area is larger than the content size, i.e. when <see cref="LayoutParameters.Width"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
     public Alignment HorizontalContentAlignment { get; set; } = Alignment.Start;
 
     /// <summary>
-    /// Specifies how to align the <see cref="Content"/> vertically within the panel's area. Only has an effect if the
-    /// panel's content area is larger than the content size, i.e. when <see cref="LayoutParameters.Height"/> does
+    /// Specifies how to align the <see cref="Content"/> vertically within the frame's area. Only has an effect if the
+    /// frame's content area is larger than the content size, i.e. when <see cref="LayoutParameters.Height"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
     public Alignment VerticalContentAlignment { get; set; } = Alignment.Start;
