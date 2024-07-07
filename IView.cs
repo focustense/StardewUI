@@ -106,7 +106,12 @@ public interface IView
     bool Measure(Vector2 availableSize);
 
     /// <summary>
-    /// Localized tooltip to display, if any.
+    /// Localized tooltip to display on hover, if any.
     /// </summary>
-    string Tooltip { get; }
+    string Tooltip { get; set; }
+
+    /// <summary>
+    /// Z order for this view within its direct parent. Higher indices draw later (on top).
+    /// </summary>
+    int ZIndex { get; set; }
 }

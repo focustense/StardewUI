@@ -75,7 +75,7 @@ public class Lane : View
 
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        foreach (var (child, position) in visibleChildPositions)
+        foreach (var (child, position) in visibleChildPositions.OrderBy(child => child.View.ZIndex))
         {
             using var _ = b.SaveTransform();
             b.Translate(position);

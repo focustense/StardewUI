@@ -28,7 +28,8 @@ public abstract class WrapperView : IView
     public Vector2 ActualSize => Root.ActualSize;
     public bool IsFocusable => Root.IsFocusable;
     public LayoutParameters Layout { get => Root.Layout; set => Root.Layout = value; }
-    public string Tooltip => Root.Tooltip;
+    public string Tooltip { get => Root.Tooltip; set => Root.Tooltip = value; }
+    public int ZIndex { get => Root.ZIndex; set => Root.ZIndex = value; }
 
     protected bool IsViewCreated => root.IsValueCreated;
     protected IView Root => root.Value;

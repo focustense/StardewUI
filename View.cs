@@ -69,9 +69,14 @@ public abstract class View : IView
     }
 
     /// <summary>
-    /// Tooltip to display on hover.
+    /// Localized tooltip to display on hover, if any.
     /// </summary>
     public string Tooltip { get; set; } = "";
+
+    /// <summary>
+    /// Z order for this view within its direct parent. Higher indices draw later (on top).
+    /// </summary>
+    public int ZIndex { get; set; }
 
     /// <summary>
     /// The most recent size used in a <see cref="Measure"/> pass. Used for additional dirty checks.
