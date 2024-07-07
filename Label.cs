@@ -11,6 +11,34 @@ namespace SupplyChain.UI;
 public class Label : View
 {
     /// <summary>
+    /// Creates a typical, simple run of 1-line text using content sizing.
+    /// </summary>
+    /// <param name="initialText">Initial text to display; can be updated later.</param>
+    /// <param name="font">Font to use, if different from the default label font.</param>
+    /// <param name="color">Color to use, if different from the default font color.</param>
+    /// <param name="margin">Horizontal margin to add.</param>
+    /// <returns></returns>
+    public static Label Simple(string initialText, SpriteFont? font = null, Color? color = null, int margin = 0)
+    {
+        var label = new Label()
+        {
+            Layout = LayoutParameters.FitContent(),
+            Margin = new(margin, 0),
+            MaxLines = 1,
+            Text = initialText,
+        };
+        if (font is not null)
+        {
+            label.Font = font;
+        }
+        if (color is not null)
+        {
+            label.Color = color.Value;
+        }
+        return label;
+    }
+
+    /// <summary>
     /// The text color.
     /// </summary>
     public Color Color { get; set; } = Game1.textColor; // Not dirty-tracked because it doesn't affect layout.

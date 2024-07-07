@@ -30,6 +30,7 @@ public abstract class WrapperView : IView
     public LayoutParameters Layout { get => Root.Layout; set => Root.Layout = value; }
     public string Tooltip => Root.Tooltip;
 
+    protected bool IsViewCreated => root.IsValueCreated;
     protected IView Root => root.Value;
 
     public WrapperView()
