@@ -38,6 +38,17 @@ public class Image : View
     }
 
     /// <summary>
+    /// Alpha value for the shadow. If set to the default of zero, no shadow will be drawn.
+    /// </summary>
+    public float ShadowAlpha { get; set; } = 0.0f;
+
+    /// <summary>
+    /// Offset to draw the sprite shadow, which is a second copy of the <see cref="Sprite"/> drawn entirely black.
+    /// Shadows will not be visible unless <see cref="ShadowAlpha"/> is non-zero.
+    /// </summary>
+    public Vector2 ShadowOffset { get; set; }
+
+    /// <summary>
     /// The sprite to draw.
     /// </summary>
     /// <remarks>
@@ -78,6 +89,12 @@ public class Image : View
         if (scale.IsDirty)
         {
             UpdateSlice();
+        }
+        if (ShadowAlpha > 0 && slice is not null)
+        {
+            using var _ = b.SaveTransform();
+            b.Translate(ShadowOffset);
+            slice.Draw(b, new(Color.Black, ShadowAlpha));
         }
         slice?.Draw(b, Tint);
     }
