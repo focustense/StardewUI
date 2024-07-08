@@ -35,11 +35,14 @@ public abstract class View : IView
     /// </summary>
     public Vector2 InnerSize => ContentSize + Padding.Total;
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Whether or not the view should be able to receive focus. Applies only to this specific view, not its children.
+    /// </summary>
     /// <remarks>
-    /// All views are non-focusable by default. Views that wish to receive focus should override.
+    /// All views are non-focusable by default and must have their focus enabled explicitly. Subclasses may choose to
+    /// override the default value if they should always be focusable.
     /// </remarks>
-    public virtual bool IsFocusable => false;
+    public virtual bool IsFocusable { get; set; }
 
     /// <summary>
     /// Layout settings for this view; determines how its dimensions will be computed.
@@ -109,12 +112,16 @@ public abstract class View : IView
         var offset = new Vector2(Margin.Left, Margin.Top)
             + new Vector2(borderThickness.Left, borderThickness.Top)
             + new Vector2(Padding.Left, Padding.Top);
-        var found = FindFocusableDescendant(position + offset, direction);
+        var found = FindFocusableDescendant(position - offset, direction);
         if (found is not null)
         {
-            return new(found.View, found.Position - offset);
+            return new(found.View, found.Position + offset);
         }
-        if (IsFocusable && position.X >= 0 && position.X < ActualSize.X && position.Y >= 0 && position.Y < ActualSize.Y)
+        if (IsFocusable && (
+            (direction == Direction.East && position.X < 0)
+            || (direction == Direction.West && position.X >= ActualSize.X)
+            || (direction == Direction.South && position.Y < 0)
+            || (direction == Direction.North && position.Y >= ActualSize.Y)))
         {
             return new(this, Vector2.Zero);
         }

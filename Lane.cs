@@ -154,6 +154,10 @@ public class Lane : View
             previousChildIndex = i;
             previousDistance = nextDistance;
         }
+        if (float.IsPositiveInfinity(distance))
+        {
+            distance = previousDistance;
+        }
         return previousChildIndex;
     }
 
@@ -172,11 +176,11 @@ public class Lane : View
     private FocusSearchInfo GetFocusSearchInfo(int index, Vector2 position, Direction direction)
     {
         var child = visibleChildPositions[index];
-        var focusable = child.View.FocusSearch(child.Position + position, direction);
+        var focusable = child.View.FocusSearch(position - child.Position, direction);
         var distance = focusable is not null
             ? MathF.Abs(Axis(focusable.Position) - Axis(position))
             : float.PositiveInfinity;
-        return new(index, focusable, distance);
+        return new(index, focusable?.Offset(child.Position), distance);
     }
 
     private static bool IsForwardDirection(Direction direction)
@@ -199,11 +203,11 @@ public class Lane : View
         var startIndex = focusedIndex >= 0 ? focusedIndex : defaultStartIndex;
         for (int i = startIndex; i != endIndex; i += step)
         {
-            var child = visibleChildPositions[focusedIndex];
-            var childResult = child.View.FocusSearch(child.Position + position, direction);
+            var child = visibleChildPositions[i];
+            var childResult = child.View.FocusSearch(position - child.Position, direction);
             if (childResult is not null)
             {
-                return childResult;
+                return childResult.Offset(child.Position);
             }
         }
         return null;
@@ -211,30 +215,19 @@ public class Lane : View
 
     private ViewChild? PerpendicularFocusSearch(Vector2 position, Direction direction)
     {
-        // Perpendicular search follows these rules:
-        // - If the focus is already within the view, then it's an automatic null; since we are 1D, there is no way to
-        //   navigate in the perpendicular direction.
-        // - Similarly, if the focus is out of bounds but the direction would take it further out of bounds, then this
-        //   is also an automatic null.
-        // - If the focus would be "coming into" this view - i.e. the position is out of bounds, but movement in the
-        //   given direction could place it into bounds - then we try to find the focusable descendant that's closest
-        //   along the other axis.
-
         switch (direction)
         {
-            // These conditions look inverted, but they are guard clauses that are supposed to make sure we are OUT of
-            // bounds and that the focus could come INTO bounds.
             case Direction.North:
-                if (position.Y <= ContentSize.Y) return null;
+                if (position.Y < 0) return null;
                 break;
             case Direction.South:
-                if (position.Y >= 0) return null;
+                if (position.Y >= ContentSize.Y) return null;
                 break;
             case Direction.West:
-                if (position.X <= ContentSize.X) return null;
+                if (position.X < 0) return null;
                 break;
             case Direction.East:
-                if (position.X >= 0) return null;
+                if (position.X >= ContentSize.X) return null;
                 break;
         }
 
@@ -252,7 +245,7 @@ public class Lane : View
         // horizontal sub-lanes don't have any focusable children or any children at all. So we start with the lane that
         // lines up with the cursor, but may have to go up or down some lanes to find focus.
         var startInfo = GetFocusSearchInfo(nearestIndex, position, direction);
-        var endInfo = distance == 0 || nearestIndex < visibleChildCount - 1
+        var endInfo = distance == 0 || nearestIndex >= visibleChildCount - 1
             // Zero distance tells us that the cursor's position along this axis would actually be within the child's
             // bounds. This doesn't guarantee there's a focusable element, but it does mean that if there IS a focusable
             // element, then it is definitely the best one; therefore we can begin our search with both the "start" and
@@ -264,7 +257,7 @@ public class Lane : View
             : GetFocusSearchInfo(nearestIndex + 1, position, direction);
         // Now we have to make sure that both the start and end positions have an actual result, unless there's nothing
         // left to search in that direction.
-        while (startInfo.Focusable is null && startInfo.Index >= 0)
+        while (startInfo.Focusable is null && startInfo.Index > 0)
         {
             startInfo = GetFocusSearchInfo(startInfo.Index - 1, position, direction);
         }

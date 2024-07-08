@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using StardewValley.Characters;
 
 namespace SupplyChain.UI;
 
@@ -91,15 +90,50 @@ public class Grid : View
     /// </summary>
     public Alignment VerticalItemAlignment { get; set; } = Alignment.Start;
 
+    private record CellPosition(int Column, int Row);
+
     private readonly DirtyTrackingList<IView> children = [];
     private readonly List<ViewChild> childPositions = [];
     private readonly DirtyTracker<GridItemLayout> itemLayout = new(GridItemLayout.Count(5));
     private readonly DirtyTracker<Vector2> itemSpacing = new(Vector2.Zero);
     private readonly DirtyTracker<Orientation> primaryOrientation = new(Orientation.Horizontal);
 
+    // These are useful to cache for focus searches. Since the grid is uniform along the primary orientation, we can
+    // determine from the coordinates exactly which cell the cursor is sitting in, including its index in the child list
+    // and the offset of the previous/next.
+    private int countBeforeWrap;
+    private float itemLength;
+    private readonly List<float> secondaryStartPositions = [];
+
     protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
-        return base.FindFocusableDescendant(contentPosition, direction);
+        var cellPosition = FindCellAt(contentPosition);
+        // If we could guarantee that the implementation were perfect, then there would not really be any need to track
+        // the previous index. As it is, this helps prevent an infinite loop in case of an unexpected layout bug.
+        int previousCheckedIndex = -1;
+        while (true)
+        {
+            cellPosition = Advance(cellPosition, direction);
+            var nextIndex = GetChildIndexAt(cellPosition);
+            if (nextIndex < 0 || nextIndex == previousCheckedIndex)
+            {
+                return null;
+            }
+            var nextChild = nextIndex < childPositions.Count
+                ? childPositions[nextIndex]
+                // GetChildIndexAt can return a position past the end of the list, only on the final row (if horizontal) or
+                // final column (if vertical). Whether or not this is considered a valid navigation depends on the
+                // direction. Navigating east on the final row, past the last item, should NOT return a value here as it
+                // would be considered exiting the entire grid, but navigating up/down from a different row (or from out of
+                // bounds) should snap to the last or closest item.
+                : direction.GetOrientation() != PrimaryOrientation ? childPositions.LastOrDefault() : null;
+            var found = nextChild?.View.FocusSearch(contentPosition - nextChild.Position, direction);
+            if (found is not null)
+            {
+                return found.Offset(nextChild!.Position);
+            }
+            previousCheckedIndex = nextIndex;
+        }
     }
 
     protected override IEnumerable<ViewChild> GetLocalChildren()
@@ -133,6 +167,8 @@ public class Grid : View
         var primaryAvailable = PrimaryOrientation.Get(limits);
         var primarySpacing = PrimaryOrientation.Get(ItemSpacing);
         var (itemLength, countBeforeWrap) = ItemLayout.GetItemCountAndLength(primaryAvailable, primarySpacing);
+        this.itemLength = itemLength;
+        this.countBeforeWrap = countBeforeWrap;
         var secondaryOrientation = PrimaryOrientation.Swap();
         var secondaryAvailable = secondaryOrientation.Get(limits);
         var secondarySpacing = secondaryOrientation.Get(ItemSpacing);
@@ -141,6 +177,8 @@ public class Grid : View
         int currentCount = 0;
         var maxSecondary = 0.0f;
         int laneStartIndex = 0;
+        secondaryStartPositions.Clear();
+        secondaryStartPositions.Add(0);
         foreach (var child in Children)
         {
             var childLimits = Vector2.Zero;
@@ -173,6 +211,7 @@ public class Grid : View
                 }
                 secondaryUsed += maxSecondary;
                 secondaryAvailable -= maxSecondary + secondarySpacing;
+                secondaryStartPositions.Add(secondaryUsed);
                 maxSecondary = 0;
                 currentCount = 0;
                 laneStartIndex = childPositions.Count;
@@ -198,6 +237,78 @@ public class Grid : View
         itemSpacing.ResetDirty();
         primaryOrientation.ResetDirty();
         children.ResetDirty();
+    }
+
+    private static CellPosition Advance(CellPosition position, Direction direction)
+    {
+        var (column, row) = position;
+        return direction switch
+        {
+            Direction.North => new(column, row - 1),
+            Direction.South => new(column, row + 1),
+            Direction.West => new(column - 1, row),
+            Direction.East => new(column + 1, row),
+            _ => throw new NotImplementedException($"Invalid direction: {direction}"),
+        };
+    }
+
+    private CellPosition FindCellAt(Vector2 position)
+    {
+        var primaryIndex = FindPrimaryIndex(position);
+        var secondaryIndex = FindSecondaryIndex(position);
+        return PrimaryOrientation == Orientation.Horizontal
+            ? new(primaryIndex, secondaryIndex)
+            : new(secondaryIndex, primaryIndex);
+    }
+
+    private int FindPrimaryIndex(Vector2 position)
+    {
+        var axisPosition = PrimaryOrientation.Get(position);
+        if (axisPosition < 0)
+        {
+            return -1;
+        }
+        else if (axisPosition >= PrimaryOrientation.Get(ContentSize))
+        {
+            return countBeforeWrap;
+        }
+        var cellLength = itemLength + PrimaryOrientation.Get(ItemSpacing);
+        return Math.Clamp((int)(axisPosition / cellLength), 0, countBeforeWrap);
+    }
+
+    private int FindSecondaryIndex(Vector2 position)
+    {
+        var secondaryOrientation = PrimaryOrientation.Swap();
+        var axisPosition = secondaryOrientation.Get(position);
+        if (axisPosition < 0)
+        {
+            return -1;
+        }
+        else if (axisPosition >= secondaryOrientation.Get(ContentSize))
+        {
+            return secondaryStartPositions.Count;
+        }
+        var index = secondaryStartPositions.BinarySearch(axisPosition);
+        return index >= 0 ? index : Math.Clamp(~index - 1, 0, secondaryStartPositions.Count - 1);
+    }
+
+    private int GetChildIndexAt(CellPosition position)
+    {
+        var (column, row) = position;
+        if (column < 0 || row < 0)
+        {
+            return -1;
+        }
+        var (primary, secondary) = PrimaryOrientation == Orientation.Horizontal ? (column, row) : (row, column);
+        // Usually, going out of bounds on either axis isn't valid. The one special case we allow for focus search is
+        // having a column > max on the final row, or vice versa for vertical orientation. Consequently, we allow
+        // exceeding the actual item count in that specific case, and the caller must confirm if the navigation is valid
+        // (i.e. was in the perpendicular direction).
+        if (secondary >= secondaryStartPositions.Count)
+        {
+            return -1;
+        }
+        return secondary * countBeforeWrap + Math.Min(primary, countBeforeWrap - 1);
     }
 }
 
