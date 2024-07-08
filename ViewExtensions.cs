@@ -26,7 +26,7 @@ public static class ViewExtensions
         foreach (var child in view.GetChildren())
         {
             var childPosition = position - child.Position;
-            var childPath = child.View.GetPathToPosition(childPosition) ?? [];
+            var childPath = child.View.GetPathToPosition(childPosition).ToList() ?? [];
             bool hasChildPath = false;
             foreach (var childResult in childPath)
             {

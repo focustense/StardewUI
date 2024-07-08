@@ -68,14 +68,14 @@ public class Frame : View
     private NineSlice? borderSlice;
     private Vector2 contentPosition;
 
-    protected override Edges GetBorderThickness()
-    {
-        return BorderThickness;
-    }
-
     protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         return Content?.FocusSearch(contentPosition, direction);
+    }
+
+    protected override Edges GetBorderThickness()
+    {
+        return BorderThickness;
     }
 
     protected override IEnumerable<ViewChild> GetLocalChildren()
