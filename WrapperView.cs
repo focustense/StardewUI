@@ -23,8 +23,6 @@ namespace SupplyChain.UI;
 /// </remarks>
 public abstract class WrapperView : IView
 {
-    private readonly Lazy<IView> root;
-
     public Vector2 ActualSize => Root.ActualSize;
     public bool IsFocusable => Root.IsFocusable;
     public LayoutParameters Layout { get => Root.Layout; set => Root.Layout = value; }
@@ -33,6 +31,8 @@ public abstract class WrapperView : IView
 
     protected bool IsViewCreated => root.IsValueCreated;
     protected IView Root => root.Value;
+
+    private readonly Lazy<IView> root;
 
     public WrapperView()
     {
@@ -62,6 +62,11 @@ public abstract class WrapperView : IView
     public virtual bool Measure(Vector2 availableSize)
     {
         return Root.Measure(availableSize);
+    }
+
+    public void OnClick(ClickEventArgs e)
+    {
+        Root.OnClick(e);
     }
 
     /// <summary>

@@ -12,6 +12,11 @@ namespace SupplyChain.UI;
 public abstract class View : IView
 {
     /// <summary>
+    /// Event raised when the view receives a click.
+    /// </summary>
+    public event EventHandler<ClickEventArgs>? Click;
+
+    /// <summary>
     /// The size of the entire area occupied by this view including margins, border and padding.
     /// </summary>
     public Vector2 ActualSize => BorderSize + Margin.Total;
@@ -226,6 +231,30 @@ public abstract class View : IView
     protected virtual bool IsContentDirty()
     {
         return false;
+    }
+
+    /// <inheritdoc/>
+    public void OnClick(ClickEventArgs e)
+    {
+        foreach (var child in GetChildren())
+        {
+            if (!child.ContainsPoint(e.Position))
+            {
+                continue;
+            }
+            var childCursorPosition = e.Position - child.Position;
+            var childArgs = new ClickEventArgs(childCursorPosition, e.Button);
+            child.View.OnClick(childArgs);
+            if (childArgs.Handled)
+            {
+                e.Handled = true;
+                break;
+            }
+        }
+        if (!e.Handled)
+        {
+            Click?.Invoke(this, e);
+        }
     }
 
     /// <summary>

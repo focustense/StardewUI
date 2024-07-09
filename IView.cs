@@ -106,6 +106,12 @@ public interface IView
     bool Measure(Vector2 availableSize);
 
     /// <summary>
+    /// Called when a click is received within this view's bounds.
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    void OnClick(ClickEventArgs e);
+
+    /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
     string Tooltip { get; set; }
