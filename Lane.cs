@@ -84,7 +84,6 @@ public class Lane : View
         // element might be on the wrong side, so we have to check.
         if (direction.GetOrientation() == Orientation)
         {
-            // Getting here means that the nearest child
             if (nearestResult is not null && IsCorrectDirection(contentPosition, nearestResult, direction))
             {
                 return nearestResult;
@@ -266,7 +265,8 @@ public class Lane : View
     private static bool IsCorrectDirection(Vector2 position, ViewChild child, Direction direction)
     {
         var distance = GetDistance(position, child, direction.GetOrientation());
-        return !float.IsNegative(distance) ^ IsReverseDirection(direction);
+        // The distance is measured from child to position, so a negative distance corresponds to a positive direction.
+        return float.IsNegative(distance) ^ IsReverseDirection(direction);
     }
 
     // Whether a direction is the reverse of the iteration order of the child list.
