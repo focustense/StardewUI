@@ -53,15 +53,109 @@ public class Lane : View
 
     protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
-        var isDirectionParallelToOrientation = direction switch
+        // No matter what the navigation direction is, if the cursor is already within one of the children, then we
+        // should perform a recursive focus search on that child before doing anything else, so that delegation works
+        // properly.
+        var nearestChildIndex = FindNearestChildIndex(contentPosition);
+        if (nearestChildIndex < 0)
         {
-            Direction.North | Direction.South => Orientation == Orientation.Vertical,
-            _ => Orientation == Orientation.Horizontal
-        };
-        return isDirectionParallelToOrientation
-            ? ParallelFocusSearch(contentPosition, direction)
-            : PerpendicularFocusSearch(contentPosition, direction);
-    }
+            return null;
+        }
+
+        var nearestChild = visibleChildPositions[nearestChildIndex];
+        var nearestResult = nearestChild.FocusSearch(contentPosition, direction);
+        // The search result from the nearest child is always where we want to start, but not always where we want to
+        // finish. If the cursor is actually within the child bounds, then it's always correct, but otherwise we have
+        // to account for the fact that distance to "descendant focusable" may not be the same as distance to to the
+        // child itself; that is, if the children are themselves layout views, then the nearest child may have its only
+        // focusable element be much farther away than the second-nearest child.
+        //
+        // Fortunately it is always going to be either the nearest or second-nearest match, if we assume non-overlapping
+        // layout.
+        if (nearestResult is not null && nearestChild.ContainsPoint(contentPosition))
+        {
+            return nearestResult;
+        }
+
+        // At this point we either didn't find anything focusable in the nearest child, or aren't sure if it's the best
+        // match. We proceed differently depending on whether the direction is along the orientation axis, or orthogonal
+        // to it. The parallel case is easier; we only need to traverse the list in the specified direction until
+        // something finds focus - which could be the result we already have, the only catch being that the "nearest"
+        // element might be on the wrong side, so we have to check.
+        if (direction.GetOrientation() == Orientation)
+        {
+            // Getting here means that the nearest child
+            if (nearestResult is not null && IsCorrectDirection(contentPosition, nearestResult, direction))
+            {
+                return nearestResult;
+            }
+            var searchStep = IsReverseDirection(direction) ? -1 : 1;
+            for (int i = nearestChildIndex + searchStep; i >= 0 && i < visibleChildCount; i += searchStep)
+            {
+                var childResult = visibleChildPositions[i].FocusSearch(contentPosition, direction);
+                if (childResult is not null)
+                {
+                    return childResult;
+                }
+            }
+            return null;
+        }
+
+        // Perpendicular to the orientation is more intuitive visually, but trickier to implement. We have to search in
+        // both directions to be sure we've found the closest point. If we're willing to accept a bit of redundancy then
+        // a relatively simple approach is to just fan out until we find we're getting farther away.
+        //
+        // One useful caveat is that if the cursor is already inside the bounds of one of the children when moving this
+        // way, as opposed to entering the bounds of the entire lane from a different view entirely, then we don't allow
+        // the movement, otherwise nonintuitive things can happen like moving UP several views when the RIGHT button is
+        // pressed.
+        if (nearestChild.ContainsPoint(contentPosition))
+        {
+            return null;
+        }
+        var nearestDistance = nearestResult is not null
+            ? GetDistance(contentPosition, nearestResult, Orientation)
+            : float.PositiveInfinity;
+        var ahead = (index: nearestChildIndex, distance: nearestDistance, result: nearestResult);
+        var behind = ahead;
+        for (int i = nearestChildIndex + 1; i < visibleChildCount; i++)
+        {
+            var nextResult = visibleChildPositions[i].FocusSearch(contentPosition, direction);
+            var nextDistance = nextResult is not null
+                ? MathF.Abs(GetDistance(contentPosition, nextResult, Orientation))
+                : float.PositiveInfinity;
+            if (nextDistance < ahead.distance)
+            {
+                ahead = (i, nextDistance, nextResult);
+            }
+            else if (!float.IsPositiveInfinity(nextDistance))
+            {
+                // We found something to focus, but it's farther away, so stop searching since everything else we
+                // subsequently find will be even farther.
+                break;
+            }
+        }
+        for (int i = nearestChildIndex - 1; i >= 0; i--)
+        {
+            var prevResult = visibleChildPositions[i].FocusSearch(contentPosition, direction);
+            var prevDistance = prevResult is not null
+                ? MathF.Abs(GetDistance(contentPosition, prevResult, Orientation))
+                : float.PositiveInfinity;
+            if (prevDistance < behind.distance)
+            {
+                behind = (i, prevDistance, prevResult);
+            }
+            else if (!float.IsPositiveInfinity(prevDistance))
+            {
+                break;
+            }
+        }
+        if (ahead.result is null && behind.result is null)
+        {
+            return null;
+        }
+        return ahead.distance < behind.distance ? ahead.result : behind.result;
+    }    
 
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
@@ -129,145 +223,56 @@ public class Lane : View
         orientation.ResetDirty();
     }
 
-    private record FocusSearchInfo(int Index, ViewChild? Focusable, float Distance);
-
-    private float Axis(Vector2 position)
+    private int FindNearestChildIndex(Vector2 position)
     {
-        return Orientation == Orientation.Horizontal ? position.X : position.Y;
-    }
-
-    private int FindNearestChildIndex(Vector2 position, out float distance)
-    {
-        var target = Axis(position);
-        int previousChildIndex = -1;
-        distance = float.PositiveInfinity;
-        float previousDistance = float.PositiveInfinity;
+        // Child positions are sorted, so we could technically do a binary search. For the number of elements typically
+        // found in a lane, it's probably not worth the extra complexity.
+        var axisPosition = Orientation.Get(position);
+        int bestIndex = -1;
+        var maxDistance = float.PositiveInfinity;
         for (int i = 0; i < visibleChildCount; i++)
         {
-            var nextChild = visibleChildPositions[i];
-            float nextDistance = GetAxisDistance(nextChild, target);
-            if (nextDistance >= previousDistance)
-            {
-                distance = previousDistance;
-                break;
-            }
-            previousChildIndex = i;
-            previousDistance = nextDistance;
-        }
-        if (float.IsPositiveInfinity(distance))
-        {
-            distance = previousDistance;
-        }
-        return previousChildIndex;
-    }
-
-    private float GetAxisDistance(ViewChild child, float target)
-    {
-        // We're trying to understand the "distance" of what is actually an entire range, from a point. What we want
-        // is actually the minimum distance; that is, if the point lies anywhere inside the child's bounds, then the
-        // distance is zero, and if outside the bounds, it is distance to the nearest edge.
-        float startEdge = Axis(child.Position);
-        float endEdge = startEdge + Axis(child.View.ActualSize);
-        return (target >= startEdge && target <= endEdge)
-            ? 0
-            : MathF.Min(MathF.Abs(target - startEdge), MathF.Abs(target - endEdge));
-    }
-
-    private FocusSearchInfo GetFocusSearchInfo(int index, Vector2 position, Direction direction)
-    {
-        var child = visibleChildPositions[index];
-        var focusable = child.View.FocusSearch(position - child.Position, direction);
-        var distance = focusable is not null
-            ? MathF.Abs(Axis(focusable.Position) - Axis(position))
-            : float.PositiveInfinity;
-        return new(index, focusable?.Offset(child.Position), distance);
-    }
-
-    private static bool IsForwardDirection(Direction direction)
-    {
-        return direction switch
-        {
-            Direction.North | Direction.East => true,
-            _ => false
-        };
-    }
-
-    private ViewChild? ParallelFocusSearch(Vector2 position, Direction direction)
-    {
-        // If a parallel focus search has been requested, then it means we don't care about the orthogonal axis position
-        // at all; just find the descendant adjacent to the current focus (if known), otherwise the outer edge.
-        var (defaultStartIndex, endIndex, step) = IsForwardDirection(direction)
-                ? (0, visibleChildCount, 1)
-                : (visibleChildCount - 1, -1, -1);
-        var focusedIndex = visibleChildPositions.FindIndex(child => child.ContainsPoint(position));
-        var startIndex = focusedIndex >= 0 ? focusedIndex : defaultStartIndex;
-        for (int i = startIndex; i != endIndex; i += step)
-        {
             var child = visibleChildPositions[i];
-            var childResult = child.View.FocusSearch(position - child.Position, direction);
-            if (childResult is not null)
+            var minExtent = Orientation.Get(child.Position);
+            var maxExtent = Orientation.Get(child.Position + child.View.ActualSize);
+            var distance = (axisPosition >= minExtent && axisPosition < maxExtent)
+                ? 0
+                : MathF.Min(MathF.Abs(axisPosition - minExtent), MathF.Abs(axisPosition - maxExtent));
+            if (distance < maxDistance)
             {
-                return childResult.Offset(child.Position);
+                maxDistance = distance;
+                bestIndex = i;
             }
         }
-        return null;
+        return bestIndex;
     }
 
-    private ViewChild? PerpendicularFocusSearch(Vector2 position, Direction direction)
+    private static float GetDistance(Vector2 position, ViewChild target, Orientation orientation)
     {
-        switch (direction)
+        var axisPosition = orientation.Get(position);
+        var minExtent = orientation.Get(target.Position);
+        var maxExtent = orientation.Get(target.Position + target.View.ActualSize);
+        if (axisPosition >= minExtent && axisPosition < maxExtent)
         {
-            case Direction.North:
-                if (position.Y < 0) return null;
-                break;
-            case Direction.South:
-                if (position.Y >= ContentSize.Y) return null;
-                break;
-            case Direction.West:
-                if (position.X < 0) return null;
-                break;
-            case Direction.East:
-                if (position.X >= ContentSize.X) return null;
-                break;
+            return 0;
         }
+        var distanceToMin = axisPosition - minExtent;
+        var distanceToMax = axisPosition - maxExtent;
+        // Note: Doing it this way preserves the sign, so other helpers like IsCorrectDirection can determine which side
+        // the child is on.
+        return MathF.Abs(distanceToMin) < MathF.Abs(distanceToMax) ? distanceToMin : distanceToMax;
+    }
 
-        int nearestIndex = FindNearestChildIndex(position, out var distance);
-        if (nearestIndex == -1)
-        {
-            // No visible children?
-            return null;
-        }
+    private static bool IsCorrectDirection(Vector2 position, ViewChild child, Direction direction)
+    {
+        var distance = GetDistance(position, child, direction.GetOrientation());
+        return !float.IsNegative(distance) ^ IsReverseDirection(direction);
+    }
 
-        // The nearest child index isn't necessarily focusable. There may or may not be anything focusable inside it.
-        // This is only our starting point, we may have to fan out in both directions until we find a match.
-        // Consider a vertical lane containing many horizontal lanes, i.e. a grid, and the user presses "east" to enter
-        // the vertical lane, e.g. from a nav column. The lanes themselves aren't focusable and it's possible that some
-        // horizontal sub-lanes don't have any focusable children or any children at all. So we start with the lane that
-        // lines up with the cursor, but may have to go up or down some lanes to find focus.
-        var startInfo = GetFocusSearchInfo(nearestIndex, position, direction);
-        var endInfo = distance == 0 || nearestIndex >= visibleChildCount - 1
-            // Zero distance tells us that the cursor's position along this axis would actually be within the child's
-            // bounds. This doesn't guarantee there's a focusable element, but it does mean that if there IS a focusable
-            // element, then it is definitely the best one; therefore we can begin our search with both the "start" and
-            // "end" hits on the same index, so that if a match is found here, it will be immediately returned.
-            ? startInfo
-            // Otherwise, we calculated the distance to the edge, but the nearest focusable _descendant_ (assuming the
-            // child is not directly focusable) could be very far away from that edge. We aren't sure yet whether the
-            // ideal candidate is really in the "nearest index", or the following index, and have to try both.
-            : GetFocusSearchInfo(nearestIndex + 1, position, direction);
-        // Now we have to make sure that both the start and end positions have an actual result, unless there's nothing
-        // left to search in that direction.
-        while (startInfo.Focusable is null && startInfo.Index > 0)
-        {
-            startInfo = GetFocusSearchInfo(startInfo.Index - 1, position, direction);
-        }
-        while (endInfo.Focusable is null && endInfo.Index < visibleChildCount - 1)
-        {
-            endInfo = GetFocusSearchInfo(endInfo.Index + 1, position, direction);
-        }
-        // Can finally compare these; whichever subtree had the closer focusable child wins. Note that
-        // GetFocusSearchInfo already yields infinite distance if nothing is found, so we don't need to check nullness.
-        return startInfo.Distance < endInfo.Distance ? startInfo.Focusable : endInfo.Focusable;
+    // Whether a direction is the reverse of the iteration order of the child list.
+    private static bool IsReverseDirection(Direction direction)
+    {
+        return direction == Direction.North || direction == Direction.West;
     }
 
     private void UpdateVisibleChildPositions()

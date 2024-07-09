@@ -39,7 +39,7 @@ public static class DirectionExtensions
     {
         return direction switch
         {
-            Direction.North | Direction.South => Orientation.Vertical,
+            Direction.North or Direction.South => Orientation.Vertical,
             _ => Orientation.Horizontal,
         };
     }

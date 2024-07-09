@@ -126,7 +126,9 @@ public class Grid : View
                 // direction. Navigating east on the final row, past the last item, should NOT return a value here as it
                 // would be considered exiting the entire grid, but navigating up/down from a different row (or from out of
                 // bounds) should snap to the last or closest item.
-                : direction.GetOrientation() != PrimaryOrientation ? childPositions.LastOrDefault() : null;
+                : direction.GetOrientation() == PrimaryOrientation
+                    ? nextIndex > countBeforeWrap ? childPositions[nextIndex - countBeforeWrap] : null
+                    : childPositions.LastOrDefault();
             var found = nextChild?.View.FocusSearch(contentPosition - nextChild.Position, direction);
             if (found is not null)
             {

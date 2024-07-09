@@ -35,6 +35,22 @@ public record ViewChild(IView View, Vector2 Position)
     }
 
     /// <summary>
+    /// Performs a focus search on the referenced view.
+    /// </summary>
+    /// <remarks>
+    /// This is equivalent to <see cref="IView.FocusSearch"/> but implicitly handles its own <see cref="Position"/>, so
+    /// it can be used recursively without directly adjusting any coordinates.
+    /// </remarks>
+    /// <param name="contentPosition">The current position, relative to the parent that owns this child.</param>
+    /// <param name="direction">The direction of cursor movement.</param>
+    /// <returns>The next focusable view reached by moving in the specified <paramref name="direction"/>, or <c>null</c>
+    /// if there are no focusable descendants that are possible to reach in that direction.</returns>
+    public ViewChild? FocusSearch(Vector2 contentPosition, Direction direction)
+    {
+        return View.FocusSearch(contentPosition - Position, direction)?.Offset(Position);
+    }
+
+    /// <summary>
     /// Offsets the position by a given distance.
     /// </summary>
     /// <param name="distance">The offset distance.</param>
