@@ -87,6 +87,13 @@ public interface IView
     ViewChild? FocusSearch(Vector2 position, Direction direction);
 
     /// <summary>
+    /// Finds the child at a given position.
+    /// </summary>
+    /// <param name="position">The search position, relative to the view's top-left coordinate.</param>
+    /// <returns>The view at <paramref name="position"/>, or <c>null</c> if there is no match.</returns>
+    ViewChild? GetChildAt(Vector2 position);
+
+    /// <summary>
     /// Gets the current children of this view.
     /// </summary>
     IEnumerable<ViewChild> GetChildren();

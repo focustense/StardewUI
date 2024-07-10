@@ -150,6 +150,12 @@ public abstract class View : IView
         return null;
     }
 
+    public virtual ViewChild? GetChildAt(Vector2 position)
+    {
+        var offset = GetContentOffset();
+        return GetLocalChildAt(position - offset)?.Offset(offset);
+    }
+
     public IEnumerable<ViewChild> GetChildren()
     {
         var offset = GetContentOffset();
@@ -180,19 +186,15 @@ public abstract class View : IView
     /// <inheritdoc/>
     public void OnClick(ClickEventArgs e)
     {
-        foreach (var child in GetChildren())
+        var child = GetChildAt(e.Position);
+        if (child is not null)
         {
-            if (!child.ContainsPoint(e.Position))
-            {
-                continue;
-            }
             var childCursorPosition = e.Position - child.Position;
             var childArgs = new ClickEventArgs(childCursorPosition, e.Button);
             child.View.OnClick(childArgs);
             if (childArgs.Handled)
             {
                 e.Handled = true;
-                break;
             }
         }
         if (!e.Handled)
@@ -236,6 +238,26 @@ public abstract class View : IView
     protected virtual Edges GetBorderThickness()
     {
         return Edges.NONE;
+    }
+
+    /// <summary>
+    /// Searches for a view at a given position relative to the content area.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation performs a linear search on all children until it finds one whose bounds overlap the
+    /// specified <paramref name="position"/>. Views can override this to provide optimized implementations for their
+    /// layout, or handle overlapping views.
+    /// </remarks>
+    /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
+    /// margin, borders and padding).</param>
+    /// <returns>The topmost child at the specified <paramref name="contentPosition"/>, or <c>null</c> if none is
+    /// found.</returns>
+    protected virtual ViewChild? GetLocalChildAt(Vector2 contentPosition)
+    {
+        return GetLocalChildren()
+            .Where(child => child.ContainsPoint(contentPosition))
+            .OrderByDescending(child => child.View.ZIndex)
+            .FirstOrDefault();
     }
 
     /// <summary>

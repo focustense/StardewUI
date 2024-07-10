@@ -50,6 +50,11 @@ public abstract class WrapperView : IView
         return Root.FocusSearch(position, direction);
     }
 
+    public virtual ViewChild? GetChildAt(Vector2 position)
+    {
+        return Root.GetChildAt(position);
+    }
+
     public virtual IEnumerable<ViewChild> GetChildren()
     {
         return Root.GetChildren();

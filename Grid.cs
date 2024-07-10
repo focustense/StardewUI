@@ -141,6 +141,16 @@ public class Grid : View
         }
     }
 
+    protected override ViewChild? GetLocalChildAt(Vector2 contentPosition)
+    {
+        var cellPosition = GetCellAt(contentPosition);
+        var childIndex = GetChildIndexAt(cellPosition);
+        var child = childIndex >= 0 ? childPositions[childIndex] : null;
+        // GetChildIndexAt has some logic to clamp the final row, so double-check to make sure the point is actually
+        // inside.
+        return (child?.ContainsPoint(contentPosition) ?? false) ? child : null;
+    }
+
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return childPositions;
