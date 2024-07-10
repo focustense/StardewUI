@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 
 namespace SupplyChain.UI;
 
@@ -59,11 +60,25 @@ public class Lane : View
         var nearestChildIndex = FindNearestChildIndex(contentPosition);
         if (nearestChildIndex < 0)
         {
+            LogFocusSearch("Couldn't find any matching children; ending search.");
             return null;
         }
 
         var nearestChild = visibleChildPositions[nearestChildIndex];
+        LogFocusSearch(
+            $"Nearest child '{nearestChild.View.Name}' is at index {nearestChildIndex} with bounds: " +
+            $"[{nearestChild.Position}, {nearestChild.View.ActualSize}]");
         var nearestResult = nearestChild.FocusSearch(contentPosition, direction);
+        if (nearestResult is not null)
+        {
+            LogFocusSearch(
+                $"Nearest child '{nearestChild.View.Name}' matched the query: '{nearestResult.View.Name}' with " +
+                $"bounds: [{nearestResult.Position}, {nearestResult.View.ActualSize}]");
+        }
+        else
+        {
+            LogFocusSearch($"Nearest child '{nearestChild.View.Name}' does NOT match the current query.");
+        }
         // The search result from the nearest child is always where we want to start, but not always where we want to
         // finish. If the cursor is actually within the child bounds, then it's always correct, but otherwise we have
         // to account for the fact that distance to "descendant focusable" may not be the same as distance to to the
@@ -74,6 +89,9 @@ public class Lane : View
         // layout.
         if (nearestResult is not null && nearestChild.ContainsPoint(contentPosition))
         {
+            LogFocusSearch(
+                $"Returning nearest child's result '{nearestResult.View.Name}' since it contains the specified point " +
+                "and has its own match.");
             return nearestResult;
         }
 
@@ -84,19 +102,30 @@ public class Lane : View
         // element might be on the wrong side, so we have to check.
         if (direction.GetOrientation() == Orientation)
         {
+            LogFocusSearch($"Nearest child wasn't exact match; searching ALONG the orientation ({Orientation}) axis.");
             if (nearestResult is not null && IsCorrectDirection(contentPosition, nearestResult, direction))
             {
+                LogFocusSearch(
+                    $"Nearest child's result '{nearestResult.View.Name}' is already in the requested direction " +
+                    $"({direction} of {contentPosition}); returning it.");
                 return nearestResult;
             }
             var searchStep = IsReverseDirection(direction) ? -1 : 1;
             for (int i = nearestChildIndex + searchStep; i >= 0 && i < visibleChildCount; i += searchStep)
             {
-                var childResult = visibleChildPositions[i].FocusSearch(contentPosition, direction);
+                var searchChild = visibleChildPositions[i];
+                LogFocusSearch($"Searching next child '{searchChild.View.Name}' at index {i}");
+                var childResult = searchChild.FocusSearch(contentPosition, direction);
                 if (childResult is not null)
                 {
+                    LogFocusSearch(
+                        $"Found a match: '{searchChild.View.Name}' matched the query: '{childResult.View.Name}' with " +
+                        $"bounds: [{childResult.Position}, {childResult.View.ActualSize}]");
                     return childResult;
                 }
+                LogFocusSearch("No result at this position.");
             }
+            LogFocusSearch("No matches anywhere in this lane.");
             return null;
         }
 
@@ -108,8 +137,10 @@ public class Lane : View
         // way, as opposed to entering the bounds of the entire lane from a different view entirely, then we don't allow
         // the movement, otherwise nonintuitive things can happen like moving UP several views when the RIGHT button is
         // pressed.
+        LogFocusSearch($"Nearest child wasn't exact match; searching OPPOSITE the orientation ({Orientation}) axis.");
         if (nearestChild.ContainsPoint(contentPosition))
         {
+            LogFocusSearch("Nearest child already contains the requested position; no more possible results.");
             return null;
         }
         var nearestDistance = nearestResult is not null
@@ -117,14 +148,28 @@ public class Lane : View
             : float.PositiveInfinity;
         var ahead = (index: nearestChildIndex, distance: nearestDistance, result: nearestResult);
         var behind = ahead;
+        LogFocusSearch("Starting distance search in forward direction");
         for (int i = nearestChildIndex + 1; i < visibleChildCount; i++)
         {
-            var nextResult = visibleChildPositions[i].FocusSearch(contentPosition, direction);
+            var nextChild = visibleChildPositions[i];
+            LogFocusSearch($"Next candidate is '{nextChild.View.Name}' at position {i}");
+            var nextResult = nextChild.FocusSearch(contentPosition, direction);
             var nextDistance = nextResult is not null
                 ? MathF.Abs(GetDistance(contentPosition, nextResult, Orientation))
                 : float.PositiveInfinity;
+            if (nextResult is not null)
+            {
+                LogFocusSearch(
+                    $"Found possible match: '{nextResult.View.Name}' with distance {nextDistance} and bounds: " +
+                    $"[{nextResult.Position}, {nextResult.View.ActualSize}]");
+            }
+            else
+            {
+                LogFocusSearch("No matches in this child.");
+            }
             if (nextDistance < ahead.distance)
             {
+                LogFocusSearch($"Distance {nextDistance} is smaller than best ahead distance {ahead.distance}.");
                 ahead = (i, nextDistance, nextResult);
             }
             else if (!float.IsPositiveInfinity(nextDistance))
@@ -134,14 +179,28 @@ public class Lane : View
                 break;
             }
         }
+        LogFocusSearch("Starting distance search in reverse direction");
         for (int i = nearestChildIndex - 1; i >= 0; i--)
         {
-            var prevResult = visibleChildPositions[i].FocusSearch(contentPosition, direction);
+            var nextChild = visibleChildPositions[i];
+            LogFocusSearch($"Next candidate is {nextChild.View.Name} at position {i}");
+            var prevResult = nextChild.FocusSearch(contentPosition, direction);
             var prevDistance = prevResult is not null
                 ? MathF.Abs(GetDistance(contentPosition, prevResult, Orientation))
                 : float.PositiveInfinity;
+            if (prevResult is not null)
+            {
+                LogFocusSearch(
+                    $"Found possible match: '{prevResult.View.Name}' with distance {prevDistance} and bounds: " +
+                    $"[{prevResult.Position}, {prevResult.View.ActualSize}]");
+            }
+            else
+            {
+                LogFocusSearch("No matches in this child.");
+            }
             if (prevDistance < behind.distance)
             {
+                LogFocusSearch($"Distance {prevDistance} is smaller than best behind distance {behind.distance}.");
                 behind = (i, prevDistance, prevResult);
             }
             else if (!float.IsPositiveInfinity(prevDistance))
@@ -151,10 +210,17 @@ public class Lane : View
         }
         if (ahead.result is null && behind.result is null)
         {
+            LogFocusSearch("Didn't find any matches either behind or ahead of the nearest position");
             return null;
         }
+        LogFocusSearch(
+            "Matches found:\n" +
+            $"  Ahead: '{ahead.result?.View.Name}' [{ahead.result?.Position}, {ahead.result?.View.ActualSize}] " +
+            $"distance={ahead.distance}\n" +
+            $"  Behind: '{behind.result?.View.Name}' [{behind.result?.Position}, {behind.result?.View.ActualSize}] " +
+            $"distance={behind.distance}");
         return ahead.distance < behind.distance ? ahead.result : behind.result;
-    }    
+    }
 
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {

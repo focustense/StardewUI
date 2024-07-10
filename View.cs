@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using System.Diagnostics;
 
 namespace SupplyChain.UI;
 
@@ -68,6 +70,11 @@ public abstract class View : IView
     }
 
     /// <summary>
+    /// Simple name for this view, used in log/debug output; does not affect behavior.
+    /// </summary>
+    public string Name { get; set; }
+
+    /// <summary>
     /// Padding (whitespace inside border) for this view.
     /// </summary>
     public Edges Padding
@@ -95,6 +102,11 @@ public abstract class View : IView
     private readonly DirtyTracker<Edges> margin = new(Edges.NONE);
     private readonly DirtyTracker<Edges> padding = new(Edges.NONE);
 
+    public View()
+    {
+        Name = GetType().Name;
+    }
+
     public void Draw(ISpriteBatch b)
     {
         using var _ = b.SaveTransform();
@@ -113,13 +125,14 @@ public abstract class View : IView
     /// already focused (since we are trying to "move" focus).
     public ViewChild? FocusSearch(Vector2 position, Direction direction)
     {
-        var borderThickness = GetBorderThickness();
-        var offset = new Vector2(Margin.Left, Margin.Top)
-            + new Vector2(borderThickness.Left, borderThickness.Top)
-            + new Vector2(Padding.Left, Padding.Top);
+        var offset = GetContentOffset();
+        LogFocusSearch($"{Name} starting focus search: {position - offset}, {direction}");
         var found = FindFocusableDescendant(position - offset, direction);
         if (found is not null)
         {
+            LogFocusSearch(
+                $"{Name} found focusable descendant '{found.View.Name}' with bounds " +
+                $"[{found.Position}, {found.View.ActualSize}]");
             return new(found.View, found.Position + offset);
         }
         if (IsFocusable && (
@@ -128,17 +141,18 @@ public abstract class View : IView
             || (direction == Direction.South && position.Y < 0)
             || (direction == Direction.North && position.Y >= ActualSize.Y)))
         {
+            LogFocusSearch(
+                $"{Name} found no focusable descendants but matched itself: " +
+                $"[{Vector2.Zero}, {ActualSize}]");
             return new(this, Vector2.Zero);
         }
+        LogFocusSearch($"View '{Name}' found no focusable descendants matching the query.");
         return null;
     }
 
     public IEnumerable<ViewChild> GetChildren()
     {
-        var borderThickness = GetBorderThickness();
-        var offset = new Vector2(Margin.Left, Margin.Top)
-            + new Vector2(borderThickness.Left, borderThickness.Top)
-            + new Vector2(Padding.Left, Padding.Top);
+        var offset = GetContentOffset();
         return GetLocalChildren().Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset));
     }
 
@@ -163,10 +177,37 @@ public abstract class View : IView
         return true;
     }
 
+    /// <inheritdoc/>
+    public void OnClick(ClickEventArgs e)
+    {
+        foreach (var child in GetChildren())
+        {
+            if (!child.ContainsPoint(e.Position))
+            {
+                continue;
+            }
+            var childCursorPosition = e.Position - child.Position;
+            var childArgs = new ClickEventArgs(childCursorPosition, e.Button);
+            child.View.OnClick(childArgs);
+            if (childArgs.Handled)
+            {
+                e.Handled = true;
+                break;
+            }
+        }
+        if (!e.Handled)
+        {
+            Click?.Invoke(this, e);
+        }
+    }
+
     /// <summary>
     /// Searches for a focusable child within this view and returns it if it can be reached in the specified
     /// <paramref name="direction"/>.
     /// </summary>
+    /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
+    /// margin, borders and padding).</param>
+    /// <param name="direction">The search direction.</param>
     /// <remarks>
     /// This is the same as <see cref="FocusSearch"/> but in pre-transformed content coordinates, and does not require
     /// checking for "self-focus" as <see cref="FocusSearch"/> already does this. The default implementation simply
@@ -233,28 +274,10 @@ public abstract class View : IView
         return false;
     }
 
-    /// <inheritdoc/>
-    public void OnClick(ClickEventArgs e)
+    [Conditional("DEBUG_FOCUS_SEARCH")]
+    protected void LogFocusSearch(string message)
     {
-        foreach (var child in GetChildren())
-        {
-            if (!child.ContainsPoint(e.Position))
-            {
-                continue;
-            }
-            var childCursorPosition = e.Position - child.Position;
-            var childArgs = new ClickEventArgs(childCursorPosition, e.Button);
-            child.View.OnClick(childArgs);
-            if (childArgs.Handled)
-            {
-                e.Handled = true;
-                break;
-            }
-        }
-        if (!e.Handled)
-        {
-            Click?.Invoke(this, e);
-        }
+        Logger.Log($"[{GetType().Name}:{Name}] {message}", LogLevel.Debug);
     }
 
     /// <summary>
@@ -303,5 +326,13 @@ public abstract class View : IView
     /// </remarks>
     protected virtual void ResetDirty()
     { 
+    }
+
+    private Vector2 GetContentOffset()
+    {
+        var borderThickness = GetBorderThickness();
+        return new Vector2(Margin.Left, Margin.Top)
+            + new Vector2(borderThickness.Left, borderThickness.Top)
+            + new Vector2(Padding.Left, Padding.Top);
     }
 }

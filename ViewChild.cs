@@ -60,4 +60,23 @@ public record ViewChild(IView View, Vector2 Position)
     {
         return new(View, Position + distance);
     }
+
+    /// <summary>
+    /// Checks if a view can be reached by travelling from a given point in a given direction.
+    /// </summary>
+    /// <param name="origin">The origin point.</param>
+    /// <param name="direction">The direction from <paramref name="origin"/>.</param>
+    /// <returns><c>true</c> if the view's boundaries either already contain the <paramref name="origin"/> or are in the
+    /// specified <paramref name="direction"/> from the <paramref name="origin"/>; otherwise <c>false</c>.</returns>
+    public bool IsInDirection(Vector2 origin, Direction direction)
+    {
+        return direction switch
+        {
+            Direction.North => Position.Y < origin.Y,
+            Direction.South => (Position.Y + View.ActualSize.Y) > origin.Y,
+            Direction.West => Position.X < origin.X,
+            Direction.East => (Position.X + View.ActualSize.X) > origin.X,
+            _ => false,
+        };
+    }
 }

@@ -28,6 +28,21 @@ public interface IView
     LayoutParameters Layout { get; set; }
 
     /// <summary>
+    /// Simple name for this view, used in log/debug output; does not affect behavior.
+    /// </summary>
+    string Name { get; set; }
+
+    /// <summary>
+    /// Localized tooltip to display on hover, if any.
+    /// </summary>
+    string Tooltip { get; set; }
+
+    /// <summary>
+    /// Z order for this view within its direct parent. Higher indices draw later (on top).
+    /// </summary>
+    int ZIndex { get; set; }
+
+    /// <summary>
     /// Draws the content for this view.
     /// </summary>
     /// <remarks>
@@ -110,14 +125,4 @@ public interface IView
     /// </summary>
     /// <param name="e">The event data.</param>
     void OnClick(ClickEventArgs e);
-
-    /// <summary>
-    /// Localized tooltip to display on hover, if any.
-    /// </summary>
-    string Tooltip { get; set; }
-
-    /// <summary>
-    /// Z order for this view within its direct parent. Higher indices draw later (on top).
-    /// </summary>
-    int ZIndex { get; set; }
 }

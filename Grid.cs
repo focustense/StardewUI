@@ -107,16 +107,19 @@ public class Grid : View
 
     protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
-        var cellPosition = FindCellAt(contentPosition);
+        var cellPosition = GetCellAt(contentPosition);
+        LogFocusSearch($"Current cell position: {cellPosition}");
         // If we could guarantee that the implementation were perfect, then there would not really be any need to track
         // the previous index. As it is, this helps prevent an infinite loop in case of an unexpected layout bug.
         int previousCheckedIndex = -1;
         while (true)
         {
             cellPosition = Advance(cellPosition, direction);
+            LogFocusSearch($"Searching next cell position: {cellPosition}");
             var nextIndex = GetChildIndexAt(cellPosition);
             if (nextIndex < 0 || nextIndex == previousCheckedIndex)
             {
+                LogFocusSearch("Cell position is out of bounds; ending search.");
                 return null;
             }
             var nextChild = nextIndex < childPositions.Count
@@ -254,15 +257,6 @@ public class Grid : View
         };
     }
 
-    private CellPosition FindCellAt(Vector2 position)
-    {
-        var primaryIndex = FindPrimaryIndex(position);
-        var secondaryIndex = FindSecondaryIndex(position);
-        return PrimaryOrientation == Orientation.Horizontal
-            ? new(primaryIndex, secondaryIndex)
-            : new(secondaryIndex, primaryIndex);
-    }
-
     private int FindPrimaryIndex(Vector2 position)
     {
         var axisPosition = PrimaryOrientation.Get(position);
@@ -292,6 +286,15 @@ public class Grid : View
         }
         var index = secondaryStartPositions.BinarySearch(axisPosition);
         return index >= 0 ? index : Math.Clamp(~index - 1, 0, secondaryStartPositions.Count - 1);
+    }
+
+    private CellPosition GetCellAt(Vector2 position)
+    {
+        var primaryIndex = FindPrimaryIndex(position);
+        var secondaryIndex = FindSecondaryIndex(position);
+        return PrimaryOrientation == Orientation.Horizontal
+            ? new(primaryIndex, secondaryIndex)
+            : new(secondaryIndex, primaryIndex);
     }
 
     private int GetChildIndexAt(CellPosition position)
