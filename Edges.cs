@@ -77,6 +77,22 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
     }
 
     /// <summary>
+    /// Rotates the edges, transposing the individual edge values.
+    /// </summary>
+    /// <param name="rotation">The rotation type (angle).</param>
+    /// <returns>A rotated copy of this <see cref="Edges"/> instance.</returns>
+    public Edges Rotate(SimpleRotation rotation)
+    {
+        return rotation switch
+        {
+            SimpleRotation.QuarterClockwise => new(Bottom, Left, Top, Right),
+            SimpleRotation.QuarterCounterclockwise => new(Top, Right, Bottom, Left),
+            SimpleRotation.Half => new(Right, Bottom, Left, Top),
+            _ => this
+        };
+    }
+
+    /// <summary>
     /// Gets a copy of this instance with only the vertical edges set (horizontal edges zeroed out).
     /// </summary>
     public Edges VerticalOnly()

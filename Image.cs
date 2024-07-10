@@ -24,6 +24,21 @@ public class Image : View
     public Alignment HorizontalAlignment { get; set; } = Alignment.Start;
 
     /// <summary>
+    /// Rotation to apply to the image.
+    /// </summary>
+    /// <remarks>
+    /// Unlike <see cref="Scale"/>, rotation potentially <b>does</b> affect layout under specific conditions;
+    /// specifically, if any dimensions are <see cref="LengthType.Content"/> sized, and the rotation is 90° in either
+    /// direction, it will take the opposite dimension for layout. However, images whose dimensions are entirely fixed
+    /// or stretch-based will not have their layout affected.
+    /// </remarks>
+    public SimpleRotation? Rotation
+    {
+        get => rotation.Value;
+        set => rotation.Value = value;
+    }
+
+    /// <summary>
     /// Scale to apply to the image.
     /// </summary>
     /// <remarks>
@@ -71,6 +86,7 @@ public class Image : View
     /// </summary>
     public Alignment VerticalAlignment { get; set; } = Alignment.Start;
 
+    private readonly DirtyTracker<SimpleRotation?> rotation = new(null);
     private readonly DirtyTracker<float> scale = new(1.0f);
     private readonly DirtyTracker<Sprite?> sprite = new(null);
 
@@ -81,7 +97,7 @@ public class Image : View
     {
         // We intentionally don't check scale here, as scale doesn't affect layout size.
         // Instead, that is checked (and reset) in the draw method.
-        return sprite.IsDirty && !IsSourceSize();
+        return (sprite.IsDirty || rotation.IsDirty) && !IsSourceSize();
     }
 
     protected override void OnDrawContent(ISpriteBatch b)
@@ -129,13 +145,17 @@ public class Image : View
             return Vector2.Zero;
         }
         var sourceRect = Sprite.SourceRect ?? Sprite.Texture.Bounds;
-        if (Layout.Width.Type == LengthType.Content && sourceRect.Width < limits.X)
+        var swapDimensions = Rotation?.IsQuarter() ?? false;
+        var (sourceWidth, sourceHeight) = !swapDimensions
+            ? (sourceRect.Width, sourceRect.Height)
+            : (sourceRect.Height, sourceRect.Width);
+        if (Layout.Width.Type == LengthType.Content && sourceWidth < limits.X)
         {
-            limits.X = sourceRect.Width;
+            limits.X = sourceWidth;
         }
-        if (Layout.Height.Type == LengthType.Content && sourceRect.Height < limits.Y)
+        if (Layout.Height.Type == LengthType.Content && sourceHeight < limits.Y)
         {
-            limits.Y = sourceRect.Height;
+            limits.Y = sourceHeight;
         }
         if (Fit == ImageFit.Stretch)
         {
@@ -145,8 +165,8 @@ public class Image : View
         {
             return sourceRect.Size.ToVector2();
         }
-        var maxScaleX = limits.X / sourceRect.Width;
-        var maxScaleY = limits.Y / sourceRect.Height;
+        var maxScaleX = limits.X / sourceWidth;
+        var maxScaleY = limits.Y / sourceHeight;
         return Fit switch
         {
             ImageFit.Contain => sourceRect.Size.ToVector2() * MathF.Min(maxScaleX, maxScaleY),
@@ -171,15 +191,16 @@ public class Image : View
 
         if (Scale == 1.0f)
         {
-            slice.Layout(destinationRect);
+            slice.Layout(destinationRect, Rotation);
         }
         else
         {
             var deltaSize = destinationRect.Size.ToVector2() * (Scale - 1) / 2;
             var scaledRect = destinationRect; // Make a copy (Rectangle is struct)
             scaledRect.Inflate(deltaSize.X, deltaSize.Y);
-            slice.Layout(scaledRect);
+            slice.Layout(scaledRect, Rotation);
         }
+        rotation.ResetDirty();
         scale.ResetDirty();
     }
 }
