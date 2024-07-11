@@ -8,6 +8,11 @@ namespace SupplyChain.UI;
 public interface IView
 {
     /// <summary>
+    /// Event raised when the view receives a click.
+    /// </summary>
+    event EventHandler<ClickEventArgs> Click;
+
+    /// <summary>
     /// The bounds of this view relative to the origin (0, 0).
     /// </summary>
     /// <remarks>
@@ -53,6 +58,11 @@ public interface IView
     /// The true computed layout size resulting from a single <see cref="Measure"/> pass.
     /// </summary>
     Vector2 OuterSize { get; }
+
+    /// <summary>
+    /// The user-defined tags for this view.
+    /// </summary>
+    Tags Tags { get; }
 
     /// <summary>
     /// Localized tooltip to display on hover, if any.

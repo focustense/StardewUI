@@ -87,6 +87,11 @@ public abstract class View : IView
     }
 
     /// <summary>
+    /// The user-defined tags for this view.
+    /// </summary>
+    public Tags Tags { get; set; } = new();
+
+    /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
     public string Tooltip { get; set; } = "";

@@ -23,11 +23,14 @@ namespace SupplyChain.UI;
 /// </remarks>
 public abstract class WrapperView : IView
 {
+    public event EventHandler<ClickEventArgs>? Click;
+
     public Bounds ActualBounds => Root.ActualBounds;
     public bool IsFocusable => Root.IsFocusable;
     public LayoutParameters Layout { get => Root.Layout; set => Root.Layout = value; }
     public string Name { get => Root.Name; set => Root.Name = value; }
     public Vector2 OuterSize => Root.OuterSize;
+    public Tags Tags { get; set; } = new();
     public string Tooltip { get => Root.Tooltip; set => Root.Tooltip = value; }
     public int ZIndex { get => Root.ZIndex; set => Root.ZIndex = value; }
 
@@ -38,7 +41,12 @@ public abstract class WrapperView : IView
 
     public WrapperView()
     {
-        root = new(() => CreateView());
+        root = new(() =>
+        {
+            var view = CreateView();
+            view.Click += View_Click;
+            return view;
+        });
     }
 
     public virtual void Draw(ISpriteBatch b)
@@ -80,4 +88,9 @@ public abstract class WrapperView : IView
     /// Creates and returns the root view.
     /// </summary>
     protected abstract IView CreateView();
+
+    private void View_Click(object? sender, ClickEventArgs e)
+    {
+        Click?.Invoke(this, e);
+    }
 }
