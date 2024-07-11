@@ -58,9 +58,10 @@ public class Panel : View
             {
                 LogFocusSearch(
                     $"Found candidate child '{childPosition.View.Name}' with bounds: " +
-                    $"[{childPosition.Position}, {childPosition.View.ActualSize}]");
+                    $"[{childPosition.Position}, {childPosition.View.OuterSize}]");
             }
-            if (isPossibleMatch && view.FocusSearch(contentPosition + position, direction) is ViewChild found)
+            if (isPossibleMatch
+                && new ViewChild(view, position).FocusSearch(contentPosition, direction) is ViewChild found)
             {
                 return found;
             }
@@ -95,7 +96,7 @@ public class Panel : View
         foreach (var child in Children)
         {
             child.Measure(limits);
-            maxChildSize = Vector2.Max(maxChildSize, child.ActualSize);
+            maxChildSize = Vector2.Max(maxChildSize, child.OuterSize);
         }
         ContentSize = Layout.Resolve(availableSize, () => maxChildSize);
         UpdateChildPositions();
@@ -111,8 +112,8 @@ public class Panel : View
         childPositions.Clear();
         foreach (var child in Children)
         {
-            var left = HorizontalContentAlignment.Align(child.ActualSize.X, ContentSize.X);
-            var top = VerticalContentAlignment.Align(child.ActualSize.Y, ContentSize.Y);
+            var left = HorizontalContentAlignment.Align(child.OuterSize.X, ContentSize.X);
+            var top = VerticalContentAlignment.Align(child.OuterSize.Y, ContentSize.Y);
             childPositions.Add(new(child, new(left, top)));
         }
     }

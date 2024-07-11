@@ -18,10 +18,8 @@ public abstract class View : IView
     /// </summary>
     public event EventHandler<ClickEventArgs>? Click;
 
-    /// <summary>
-    /// The size of the entire area occupied by this view including margins, border and padding.
-    /// </summary>
-    public Vector2 ActualSize => BorderSize + Margin.Total;
+    /// <inheritdoc/>
+    public Bounds ActualBounds => GetActualBounds();
 
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
@@ -73,6 +71,11 @@ public abstract class View : IView
     /// Simple name for this view, used in log/debug output; does not affect behavior.
     /// </summary>
     public string Name { get; set; }
+
+    /// <summary>
+    /// The size of the entire area occupied by this view including margins, border and padding.
+    /// </summary>
+    public Vector2 OuterSize => BorderSize + Margin.Total;
 
     /// <summary>
     /// Padding (whitespace inside border) for this view.
@@ -132,18 +135,18 @@ public abstract class View : IView
         {
             LogFocusSearch(
                 $"{Name} found focusable descendant '{found.View.Name}' with bounds " +
-                $"[{found.Position}, {found.View.ActualSize}]");
+                $"[{found.Position}, {found.View.OuterSize}]");
             return new(found.View, found.Position + offset);
         }
         if (IsFocusable && (
             (direction == Direction.East && position.X < 0)
-            || (direction == Direction.West && position.X >= ActualSize.X)
+            || (direction == Direction.West && position.X >= OuterSize.X)
             || (direction == Direction.South && position.Y < 0)
-            || (direction == Direction.North && position.Y >= ActualSize.Y)))
+            || (direction == Direction.North && position.Y >= OuterSize.Y)))
         {
             LogFocusSearch(
                 $"{Name} found no focusable descendants but matched itself: " +
-                $"[{Vector2.Zero}, {ActualSize}]");
+                $"[{Vector2.Zero}, {OuterSize}]");
             return new(this, Vector2.Zero);
         }
         LogFocusSearch($"View '{Name}' found no focusable descendants matching the query.");
@@ -348,6 +351,38 @@ public abstract class View : IView
     /// </remarks>
     protected virtual void ResetDirty()
     { 
+    }
+
+    private Bounds GetActualBounds()
+    {
+        // Only the top/left margins affect drawing positions; the others are incorporated into layout via OuterSize.
+        // For example, a view with margin left = 0, margin right = -20 and content size = 50 will have an outer size of
+        // 30. If aligned on the right side of a parent of size 100, it will be assigned a left position of 70, and
+        // therefore be allowed to draw between 70 and 120. In this case, the "actual bounds" start where the view
+        // starts.
+        //
+        // It's only negative top/left margins where this breaks down, since the canvas is translated during draw. So
+        // the same view of content size 50, but with a *left* margin of -20 and no right margin, aligned left, actually
+        // starts its draw at X=0 but then moves to X=-20. In our implementation, the view itself is internally offset,
+        // as opposed to being given an offset layout position by the parent.
+        var x = MathF.Min(Margin.Left, 0);
+        var y = MathF.Min(Margin.Top, 0);
+        var position = new Vector2(x, y);
+        // Similarly, the size used for layout combines the left/right and top/bottom edges, but we have to separate
+        // them here; each individual positive edge contributes positive to the total size but each individual negative
+        // edge contributes nothing. For our width=50 view, having a left margin of -20, the width is still 50. If we
+        // add a right margin of 30, the width is now 80. Negative top/left margins affect the outer layout explicitly,
+        // and negative right/bottom margins affect it implicitly (via size calculations), but in terms of the actual
+        // size of the view as drawn on screen, none of these matter.
+        //
+        // We'll use the border size as a starting point, on the assumption that negative borders and negative padding
+        // are essentially incoherent (i.e. it's unclear what the "bounds" should really be if a view decides to draw
+        // outside its own border).
+        var width = BorderSize.X + MathF.Max(Margin.Left, 0) + MathF.Max(Margin.Right, 0);
+        var height = BorderSize.Y + MathF.Max(Margin.Top, 0) + MathF.Max(Margin.Bottom, 0);
+        var size = new Vector2(width, height);
+
+        return new(position, size);
     }
 
     private Vector2 GetContentOffset()

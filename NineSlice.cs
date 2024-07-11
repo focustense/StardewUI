@@ -6,7 +6,7 @@ namespace SupplyChain.UI;
 /// Draws sprites according to a nine-slice scale.
 /// </summary>
 /// <remarks>
-/// https://en.wikipedia.org/wiki/9-slice_scaling
+/// See <see href="https://en.wikipedia.org/wiki/9-slice_scaling"/>.
 /// </remarks>
 /// <param name="sprite">The source sprite.</param>
 public class NineSlice(Sprite sprite)

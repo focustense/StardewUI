@@ -14,10 +14,7 @@ public record ViewChild(IView View, Vector2 Position)
     /// </summary>
     public Point Center()
     {
-        return new Vector2(
-            Position.X + View.ActualSize.X / 2,
-            Position.Y + View.ActualSize.Y / 2)
-            .ToPoint();
+        return (Position + View.ActualBounds.Center()).ToPoint();
     }
 
     /// <summary>
@@ -28,10 +25,7 @@ public record ViewChild(IView View, Vector2 Position)
     /// <c>false</c>.</returns>
     public bool ContainsPoint(Vector2 point)
     {
-        return point.X >= Position.X
-            && point.X < Position.X + View.ActualSize.X
-            && point.Y >= Position.Y
-            && point.Y < Position.Y + View.ActualSize.Y;
+        return View.ActualBounds.ContainsPoint(point - Position);
     }
 
     /// <summary>
@@ -70,12 +64,14 @@ public record ViewChild(IView View, Vector2 Position)
     /// specified <paramref name="direction"/> from the <paramref name="origin"/>; otherwise <c>false</c>.</returns>
     public bool IsInDirection(Vector2 origin, Direction direction)
     {
+        var relativePosition = origin - Position;
+        var bounds = View.ActualBounds;
         return direction switch
         {
-            Direction.North => Position.Y < origin.Y,
-            Direction.South => (Position.Y + View.ActualSize.Y) > origin.Y,
-            Direction.West => Position.X < origin.X,
-            Direction.East => (Position.X + View.ActualSize.X) > origin.X,
+            Direction.North => relativePosition.Y >= bounds.Top,
+            Direction.South => relativePosition.Y < bounds.Bottom,
+            Direction.West => relativePosition.X >= bounds.Left,
+            Direction.East => relativePosition.X < bounds.Right,
             _ => false,
         };
     }

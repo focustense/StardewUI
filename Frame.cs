@@ -113,7 +113,7 @@ public class Frame : View
     {
         Content?.Measure(Layout.GetLimits(availableSize));
 
-        ContentSize = Layout.Resolve(availableSize, () => Content?.ActualSize ?? Vector2.Zero);
+        ContentSize = Layout.Resolve(availableSize, () => Content?.OuterSize ?? Vector2.Zero);
         UpdateContentPosition();
 
         if (borderSlice?.Sprite != Border)
@@ -137,13 +137,13 @@ public class Frame : View
 
     private void UpdateContentPosition()
     {
-        if (Content is null || Content.ActualSize == ContentSize)
+        if (Content is null || Content.OuterSize == ContentSize)
         {
             contentPosition = Vector2.Zero;
             return;
         }
-        var left = HorizontalContentAlignment.Align(Content.ActualSize.X, ContentSize.X);
-        var top = VerticalContentAlignment.Align(Content.ActualSize.Y, ContentSize.Y);
+        var left = HorizontalContentAlignment.Align(Content.OuterSize.X, ContentSize.X);
+        var top = VerticalContentAlignment.Align(Content.OuterSize.Y, ContentSize.Y);
         contentPosition = new(left, top);
     }
 }

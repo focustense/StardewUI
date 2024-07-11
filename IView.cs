@@ -8,9 +8,26 @@ namespace SupplyChain.UI;
 public interface IView
 {
     /// <summary>
-    /// The true computed layout size resulting from a single <see cref="Measure"/> pass.
+    /// The bounds of this view relative to the origin (0, 0).
     /// </summary>
-    Vector2 ActualSize { get; }
+    /// <remarks>
+    /// <para>
+    /// Typically, a view's bounds is the rectangle from (0, 0) having size of <see cref="OuterSize"/>, but there may be
+    /// a difference especially in the case of negative margins. The various sizes affect layout flow and can even be
+    /// negative - for example, in a left-to-right layout, a view with left margin -100, right margin 20 and inner width
+    /// 30 (no padding) has an X size of -50, indicating that it actually (correctly) causes adjacent views to be pulled
+    /// left along with it. However, <c>ActualBounds</c> always has a positive <see cref="Bounds.Size"/>, and if an
+    /// implicit content offset is being applied (e.g. because of negative margins) then it will be reflected in
+    /// <see cref="Bounds.Position"/> and not affect the <see cref="Bounds.Size"/>; the previous example would have
+    /// position X = -100 and size X = 50 (30 content + 20 right margin).
+    /// </para>
+    /// <para>
+    /// In terms of usage, <see cref="OuterSize"/> is generally used for the layout itself (<see cref="Measure"/> and
+    /// <see cref="View.OnMeasure"/> of parent views) whereas <see cref="ActualBounds"/> is preferred for click and
+    /// focus targeting.
+    /// </para>
+    /// </remarks>
+    Bounds ActualBounds { get; }
 
     /// <summary>
     /// Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this
@@ -31,6 +48,11 @@ public interface IView
     /// Simple name for this view, used in log/debug output; does not affect behavior.
     /// </summary>
     string Name { get; set; }
+
+    /// <summary>
+    /// The true computed layout size resulting from a single <see cref="Measure"/> pass.
+    /// </summary>
+    Vector2 OuterSize { get; }
 
     /// <summary>
     /// Localized tooltip to display on hover, if any.

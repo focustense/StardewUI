@@ -202,7 +202,7 @@ public class Grid : View
             child.Measure(childLimits);
             childPositions.Add(new(child, position));
             currentCount++;
-            maxSecondary = MathF.Max(maxSecondary, secondaryOrientation.Get(child.ActualSize));
+            maxSecondary = MathF.Max(maxSecondary, secondaryOrientation.Get(child.OuterSize));
             if (currentCount >= countBeforeWrap)
             {
                 var cellBounds = childLimits;
@@ -214,8 +214,8 @@ public class Grid : View
                 for (int i = laneStartIndex; i < childPositions.Count; i++)
                 {
                     var positionOffset = new Vector2(
-                        HorizontalItemAlignment.Align(child.ActualSize.X, cellBounds.X),
-                        VerticalItemAlignment.Align(child.ActualSize.Y, cellBounds.Y));
+                        HorizontalItemAlignment.Align(child.OuterSize.X, cellBounds.X),
+                        VerticalItemAlignment.Align(child.OuterSize.Y, cellBounds.Y));
                     childPositions[i] = new(childPositions[i].View, childPositions[i].Position + positionOffset);
                 }
                 PrimaryOrientation.Set(ref position, 0);

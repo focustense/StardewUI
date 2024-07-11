@@ -67,13 +67,13 @@ public class Lane : View
         var nearestChild = visibleChildPositions[nearestChildIndex];
         LogFocusSearch(
             $"Nearest child '{nearestChild.View.Name}' is at index {nearestChildIndex} with bounds: " +
-            $"[{nearestChild.Position}, {nearestChild.View.ActualSize}]");
+            $"[{nearestChild.Position}, {nearestChild.View.OuterSize}]");
         var nearestResult = nearestChild.FocusSearch(contentPosition, direction);
         if (nearestResult is not null)
         {
             LogFocusSearch(
                 $"Nearest child '{nearestChild.View.Name}' matched the query: '{nearestResult.View.Name}' with " +
-                $"bounds: [{nearestResult.Position}, {nearestResult.View.ActualSize}]");
+                $"bounds: [{nearestResult.Position}, {nearestResult.View.OuterSize}]");
         }
         else
         {
@@ -120,7 +120,7 @@ public class Lane : View
                 {
                     LogFocusSearch(
                         $"Found a match: '{searchChild.View.Name}' matched the query: '{childResult.View.Name}' with " +
-                        $"bounds: [{childResult.Position}, {childResult.View.ActualSize}]");
+                        $"bounds: [{childResult.Position}, {childResult.View.OuterSize}]");
                     return childResult;
                 }
                 LogFocusSearch("No result at this position.");
@@ -161,7 +161,7 @@ public class Lane : View
             {
                 LogFocusSearch(
                     $"Found possible match: '{nextResult.View.Name}' with distance {nextDistance} and bounds: " +
-                    $"[{nextResult.Position}, {nextResult.View.ActualSize}]");
+                    $"[{nextResult.Position}, {nextResult.View.OuterSize}]");
             }
             else
             {
@@ -192,7 +192,7 @@ public class Lane : View
             {
                 LogFocusSearch(
                     $"Found possible match: '{prevResult.View.Name}' with distance {prevDistance} and bounds: " +
-                    $"[{prevResult.Position}, {prevResult.View.ActualSize}]");
+                    $"[{prevResult.Position}, {prevResult.View.OuterSize}]");
             }
             else
             {
@@ -215,9 +215,9 @@ public class Lane : View
         }
         LogFocusSearch(
             "Matches found:\n" +
-            $"  Ahead: '{ahead.result?.View.Name}' [{ahead.result?.Position}, {ahead.result?.View.ActualSize}] " +
+            $"  Ahead: '{ahead.result?.View.Name}' [{ahead.result?.Position}, {ahead.result?.View.OuterSize}] " +
             $"distance={ahead.distance}\n" +
-            $"  Behind: '{behind.result?.View.Name}' [{behind.result?.Position}, {behind.result?.View.ActualSize}] " +
+            $"  Behind: '{behind.result?.View.Name}' [{behind.result?.Position}, {behind.result?.View.OuterSize}] " +
             $"distance={behind.distance}");
         return ahead.distance < behind.distance ? ahead.result : behind.result;
     }
@@ -253,9 +253,9 @@ public class Lane : View
             foreach (var child in Children)
             {
                 child.Measure(limits);
-                limits.X -= child.ActualSize.X;
-                contentWidth += child.ActualSize.X;
-                contentHeight = MathF.Max(contentHeight, child.ActualSize.Y);
+                limits.X -= child.OuterSize.X;
+                contentWidth += child.OuterSize.X;
+                contentHeight = MathF.Max(contentHeight, child.OuterSize.Y);
                 visibleChildCount++;
                 if (limits.X <= 0)
                 {
@@ -268,9 +268,9 @@ public class Lane : View
             foreach (var child in Children)
             {
                 child.Measure(limits);
-                limits.Y -= child.ActualSize.Y;
-                contentHeight += child.ActualSize.Y;
-                contentWidth = MathF.Max(contentWidth, child.ActualSize.X);
+                limits.Y -= child.OuterSize.Y;
+                contentHeight += child.OuterSize.Y;
+                contentWidth = MathF.Max(contentWidth, child.OuterSize.X);
                 visibleChildCount++;
                 if (limits.Y <= 0)
                 {
@@ -299,7 +299,7 @@ public class Lane : View
         {
             var child = visibleChildPositions[i];
             var minExtent = Orientation.Get(child.Position);
-            var maxExtent = Orientation.Get(child.Position + child.View.ActualSize);
+            var maxExtent = Orientation.Get(child.Position + child.View.OuterSize);
             var distance = (axisPosition >= minExtent && axisPosition < maxExtent)
                 ? 0
                 : MathF.Min(MathF.Abs(axisPosition - minExtent), MathF.Abs(axisPosition - maxExtent));
@@ -316,7 +316,7 @@ public class Lane : View
     {
         var axisPosition = orientation.Get(position);
         var minExtent = orientation.Get(target.Position);
-        var maxExtent = orientation.Get(target.Position + target.View.ActualSize);
+        var maxExtent = orientation.Get(target.Position + target.View.OuterSize);
         if (axisPosition >= minExtent && axisPosition < maxExtent)
         {
             return 0;
@@ -349,9 +349,9 @@ public class Lane : View
             var x = HorizontalContentAlignment.Align(childrenSize.X, ContentSize.X);
             foreach (var child in VisibleChildren)
             {
-                var y = VerticalContentAlignment.Align(child.ActualSize.Y, ContentSize.Y);
+                var y = VerticalContentAlignment.Align(child.OuterSize.Y, ContentSize.Y);
                 visibleChildPositions.Add(new(child, new(x, y)));
-                x += child.ActualSize.X;
+                x += child.OuterSize.X;
             }
         }
         else
@@ -359,9 +359,9 @@ public class Lane : View
             var y = VerticalContentAlignment.Align(childrenSize.Y, ContentSize.Y);
             foreach (var child in VisibleChildren)
             {
-                var x = HorizontalContentAlignment.Align(child.ActualSize.X, ContentSize.X);
+                var x = HorizontalContentAlignment.Align(child.OuterSize.X, ContentSize.X);
                 visibleChildPositions.Add(new(child, new(x, y)));
-                y += child.ActualSize.Y;
+                y += child.OuterSize.Y;
             }
         }
     }
