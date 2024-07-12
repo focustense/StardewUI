@@ -145,7 +145,7 @@ public class Grid : View
     {
         var cellPosition = GetCellAt(contentPosition);
         var childIndex = GetChildIndexAt(cellPosition);
-        var child = childIndex >= 0 ? childPositions[childIndex] : null;
+        var child = childIndex >= 0 && childIndex < childPositions.Count ? childPositions[childIndex] : null;
         // GetChildIndexAt has some logic to clamp the final row, so double-check to make sure the point is actually
         // inside.
         return (child?.ContainsPoint(contentPosition) ?? false) ? child : null;
