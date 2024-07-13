@@ -243,7 +243,7 @@ public class Grid : View
         secondaryUsed += maxSecondary;
         var accumulatedSize = limits;
         secondaryOrientation.Set(ref accumulatedSize, secondaryUsed);
-        ContentSize = accumulatedSize;
+        ContentSize = Layout.Resolve(availableSize, () => accumulatedSize);
     }
 
     protected override void ResetDirty()

@@ -26,6 +26,15 @@ namespace SupplyChain.UI;
 public class ScrollContainer : View
 {
     /// <summary>
+    /// Event raised when any aspect of the scrolling changes.
+    /// </summary>
+    /// <remarks>
+    /// This tracks changes to the <see cref="ScrollOffset"/> but also the <see cref="ScrollSize"/>, even if the offset
+    /// has not changed. <see cref="ScrollStep"/> is not included.
+    /// </remarks>
+    public event EventHandler? ScrollChanged;
+
+    /// <summary>
     /// The inner content view which will be scrolled.
     /// </summary>
     public IView? Content
@@ -76,6 +85,8 @@ public class ScrollContainer : View
     private readonly DirtyTracker<Orientation> orientation = new(Orientation.Vertical);
     private readonly DirtyTracker<float> scrollOffset = new(0);
 
+    private float previousScrollSize;
+
     /// <summary>
     /// Scrolls backward (up or left) by the distance configured in <see cref="ScrollStep"/>.
     /// </summary>
@@ -111,11 +122,22 @@ public class ScrollContainer : View
 
     protected override bool IsContentDirty()
     {
-        return orientation.IsDirty || scrollOffset.IsDirty || content.IsDirty || (Content?.IsDirty() ?? false);
+        // Don't check scrollOffset here as it doesn't require new layout.
+        return orientation.IsDirty || content.IsDirty || (Content?.IsDirty() ?? false);
     }
 
     protected override void OnDrawContent(ISpriteBatch b)
     {
+        // Doing this check in Draw is a little unusual, but changes to the scroll position/size generally do not affect
+        // layout, so we can't rely on OnMeasureContent to do this check. Even hooking the dirty check isn't guaranted
+        // to run if the parent already knows that layout hasn't changed.
+        if (scrollOffset.IsDirty || ScrollSize != previousScrollSize)
+        {
+            scrollOffset.ResetDirty();
+            previousScrollSize = ScrollSize;
+            ScrollChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         if (Content is null)
         {
             return;
@@ -142,14 +164,13 @@ public class ScrollContainer : View
         {
             Orientation.Set(ref contentSize, maxContentLength);
         }
-        ContentSize = contentSize;
+        ContentSize = Layout.Resolve(availableSize, () => contentSize);
     }
 
     protected override void ResetDirty()
     {
         content.ResetDirty();
         orientation.ResetDirty();
-        scrollOffset.ResetDirty();
     }
 
     private Vector2 GetScrollOrigin()

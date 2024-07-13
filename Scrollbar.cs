@@ -16,11 +16,7 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
     public ScrollContainer? Container
     {
         get => container;
-        set
-        {
-            container = value;
-            LazyUpdate();
-        }
+        set => SetContainer(value);
     }
 
     /// <summary>
@@ -46,8 +42,11 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
     private Image thumb = null!;
 
     /// <summary>
-    /// Moves the thumb position to match the scroll offset of the associated container.
+    /// Forces an immediate sync of the thumb position with the associated container.
     /// </summary>
+    /// <remarks>
+    /// This is typically automatic and should only need to be called in rare situations.
+    /// </remarks>
     public void SyncPosition()
     {
         if (Container is null || thumb is null)
@@ -92,6 +91,12 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         return lane;
     }
 
+    private void Container_ScrollChanged(object? sender, EventArgs e)
+    {
+        SyncPosition();
+        SyncVisibility(Root);
+    }
+
     private static Image CreateButton(Sprite sprite, int width, int height)
     {
         return new()
@@ -111,14 +116,36 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         }
     }
 
-    private void Update(Lane root)
+    private void SetContainer(ScrollContainer? container)
     {
-        if (Container is null /* || Container.ScrollSize == 0 */)
+        if (container == this.container)
         {
-            root.Visibility = Visibility.Hidden;
             return;
         }
-        root.Visibility = Visibility.Visible;
+        if (this.container is not null)
+        {
+            this.container.ScrollChanged -= Container_ScrollChanged;
+        }
+        this.container = container;
+        if (container is not null)
+        {
+            container.ScrollChanged += Container_ScrollChanged;
+        }
+        LazyUpdate();
+    }
+
+    private void SyncVisibility(Lane root)
+    {
+        root.Visibility = Container?.ScrollSize > 0 ? Visibility.Visible : Visibility.Hidden;
+    }
+
+    private void Update(Lane root)
+    {
+        SyncVisibility(root);
+        if (Container is null || Container.ScrollSize == 0)
+        {
+            return;
+        }
         root.Margin = margin;
         if (Container.Orientation == Orientation.Vertical)
         {

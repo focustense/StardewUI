@@ -251,22 +251,40 @@ public class Lane : View
 
         void measureChild(IView child)
         {
+            var childLimits = limits;
+            bool hasSwapOrientationStretch = swapOrientation.Length(child.Layout).Type == LengthType.Stretch;
+            if (hasSwapOrientationStretch)
+            {
+                swapOrientation.Set(ref childLimits, swapOrientation.Get(childrenSize));
+            }
             child.Measure(limits);
             var outerLength = Orientation.Get(child.OuterSize);
             Orientation.Update(ref limits, v => v - outerLength);
             Orientation.Update(ref childrenSize, v => v + outerLength);
-            swapOrientation.Update(ref childrenSize, v => MathF.Max(v, swapOrientation.Get(child.OuterSize)));
+            if (!hasSwapOrientationStretch)
+            {
+                swapOrientation.Update(ref childrenSize, v => MathF.Max(v, swapOrientation.Get(child.OuterSize)));
+            }
             visibleChildCount++;
         }
 
         var deferredChildren = new List<IView>();
         foreach (var child in Children)
         {
-            if (Orientation.Length(child.Layout).Type == LengthType.Stretch)
+            if (child.Layout.Width.Type == LengthType.Stretch || child.Layout.Height.Type == LengthType.Stretch)
             {
                 // Stretched views have special treatment. A lane should be able to have fixed-size views and then one
                 // or more stretched views that use the *remaining* space (instead of greedily consuming the entire
                 // space). We'll first process all the other children, then figure out how long the stretches can be.
+                //
+                // Children stretched along the opposite axis also receive special, but different treatment. Instead of
+                // expanding to fill all the available size, they should be limited to the max size of other children.
+                //
+                // It's possible to end up with combinations that aren't unambiguously resolvable, e.g. if one child
+                // uses stretched width and has a content height that depends on width, and another child uses stretched
+                // height with width depending on height. We aren't going to implement a huge system of byzantine rules
+                // here like CSS, just enough to get the majority of cases correct; unusual/exceptional cases can be
+                // handled by simply requiring the caller to be more precise, i.e. specify more fixed dimensions.
                 deferredChildren.Add(child);
                 continue;
             }

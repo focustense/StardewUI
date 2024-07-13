@@ -349,9 +349,10 @@ public abstract class View : IView
     /// <remarks>
     /// <para>
     /// This is called from <see cref="Measure"/> only when the layout is dirty (layout parameters or content changed)
-    /// and a new layout is actually required. Subclasses can override this if the layout follows complex rules,
-    /// although in most cases it is sufficient to use the default implementation and only override
-    /// <see cref="GetContentSize"/>.
+    /// and a new layout is actually required. Subclasses must implement this and set <see cref="ContentSize"/> once
+    /// layout is complete. Typically, <see cref="LayoutParameters.Resolve"/> should be used in order to ensure that
+    /// the original <see cref="LayoutParameters"/> are respected (e.g. if the actual content size is smaller than the
+    /// configured size).
     /// </para>
     /// <para>
     /// The <paramref name="availableSize"/> provided to the method is pre-adjusted for <see cref="Margin"/>,
