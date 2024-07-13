@@ -25,6 +25,8 @@ public record Sprite(
 /// to start where the left fixed edge ends.</param>
 /// <param name="CenterY">The origin (top) point where the vertical "center" is considered to start, or <c>null</c> to
 /// start where the top fixed edge ends..</param>
+/// <param name="Scale">Scale to apply to the slices themselves; for example, if a 16x16 source draws to a 64x64 target,
+/// and a scale of 2 is used, then a 2x3 border slice would draw as 16x24 (normal 8x16, multiplied by 2).</param>
 /// <param name="EdgesOnly">If <c>true</c>, then only the outer 8 edge segments should be drawn, and the 9th
 /// (horizontal and vertical middle, i.e. "background") segment will be ignored.</param>
-public record SliceSettings(int? CenterX, int? CenterY, bool EdgesOnly = false);
+public record SliceSettings(int? CenterX = null, int? CenterY = null, int Scale = 1, bool EdgesOnly = false);

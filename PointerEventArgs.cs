@@ -7,13 +7,8 @@ namespace SupplyChain.UI;
 /// </summary>
 /// <param name="position">The position, relative to the view receiving the event, of the pointer when the event
 /// occurred.</param>
-public class PointerEventArgs(Vector2 position) : EventArgs
+public class PointerEventArgs(Vector2 position) : BubbleEventArgs
 {
-    /// <summary>
-    /// Whether or not the view receiving the event handled the event. Set to <c>true</c> to prevent bubbling.
-    /// </summary>
-    public bool Handled { get; set; }
-
     /// <summary>
     /// The position, relative to the view receiving the event, of the pointer when the event occurred.
     /// </summary>

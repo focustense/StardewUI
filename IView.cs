@@ -70,6 +70,11 @@ public interface IView
     string Tooltip { get; set; }
 
     /// <summary>
+    /// Drawing visibility for this view.
+    /// </summary>
+    Visibility Visibility { get; set; }
+
+    /// <summary>
     /// Z order for this view within its direct parent. Higher indices draw later (on top).
     /// </summary>
     int ZIndex { get; set; }
@@ -164,4 +169,10 @@ public interface IView
     /// </summary>
     /// <param name="e">The event data.</param>
     void OnClick(ClickEventArgs e);
+
+    /// <summary>
+    /// Called when a wheel event is received within this view's bounds.
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    void OnWheel(WheelEventArgs e);
 }

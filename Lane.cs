@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
+using StardewValley.Characters;
 
 namespace SupplyChain.UI;
 
@@ -245,46 +245,55 @@ public class Lane : View
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);
-        var contentWidth = 0.0f;
-        var contentHeight = 0.0f;
+        var swapOrientation = Orientation.Swap();
+        childrenSize = Vector2.Zero;
         visibleChildCount = 0;
-        if (Orientation == Orientation.Horizontal)
+
+        void measureChild(IView child)
         {
-            foreach (var child in Children)
+            child.Measure(limits);
+            var outerLength = Orientation.Get(child.OuterSize);
+            Orientation.Update(ref limits, v => v - outerLength);
+            Orientation.Update(ref childrenSize, v => v + outerLength);
+            swapOrientation.Update(ref childrenSize, v => MathF.Max(v, swapOrientation.Get(child.OuterSize)));
+            visibleChildCount++;
+        }
+
+        var deferredChildren = new List<IView>();
+        foreach (var child in Children)
+        {
+            if (Orientation.Length(child.Layout).Type == LengthType.Stretch)
             {
-                child.Measure(limits);
-                limits.X -= child.OuterSize.X;
-                contentWidth += child.OuterSize.X;
-                contentHeight = MathF.Max(contentHeight, child.OuterSize.Y);
-                visibleChildCount++;
-                if (limits.X <= 0)
+                // Stretched views have special treatment. A lane should be able to have fixed-size views and then one
+                // or more stretched views that use the *remaining* space (instead of greedily consuming the entire
+                // space). We'll first process all the other children, then figure out how long the stretches can be.
+                deferredChildren.Add(child);
+                continue;
+            }
+            measureChild(child);
+            if (Orientation.Get(limits) <= 0)
+            {
+                break;
+            }
+        }
+        if (deferredChildren.Count > 0 && Orientation.Get(limits) > 0)
+        {
+            foreach (var child in deferredChildren)
+            {
+                measureChild(child);
+                if (Orientation.Get(limits) <= 0)
                 {
                     break;
                 }
             }
         }
-        else
-        {
-            foreach (var child in Children)
-            {
-                child.Measure(limits);
-                limits.Y -= child.OuterSize.Y;
-                contentHeight += child.OuterSize.Y;
-                contentWidth = MathF.Max(contentWidth, child.OuterSize.X);
-                visibleChildCount++;
-                if (limits.Y <= 0)
-                {
-                    break;
-                }
-            }
-        }
-        childrenSize = new(contentWidth, contentHeight);
         ContentSize = Layout.Resolve(availableSize, () => childrenSize);
         UpdateVisibleChildPositions();
     }
 
     protected override void ResetDirty()
     {
+        children.ResetDirty();
         orientation.ResetDirty();
     }
 

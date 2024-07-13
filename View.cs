@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewValley;
 using System.Diagnostics;
 
 namespace SupplyChain.UI;
@@ -17,6 +18,11 @@ public abstract class View : IView
     /// Event raised when the view receives a click.
     /// </summary>
     public event EventHandler<ClickEventArgs>? Click;
+
+    /// <summary>
+    /// Event raised when the scroll wheel moves.
+    /// </summary>
+    public event EventHandler<WheelEventArgs>? Wheel;
 
     /// <inheritdoc/>
     public Bounds ActualBounds => GetActualBounds();
@@ -97,6 +103,11 @@ public abstract class View : IView
     public string Tooltip { get; set; } = "";
 
     /// <summary>
+    /// Visibility for this view.
+    /// </summary>
+    public Visibility Visibility { get; set; }
+
+    /// <summary>
     /// Z order for this view within its direct parent. Higher indices draw later (on top).
     /// </summary>
     public int ZIndex { get; set; }
@@ -106,7 +117,7 @@ public abstract class View : IView
     /// </summary>
     protected Vector2 LastAvailableSize { get; private set; } = Vector2.Zero;
 
-    private readonly DirtyTracker<LayoutParameters> layout = new(default);
+    private readonly DirtyTracker<LayoutParameters> layout = new(new());
     private readonly DirtyTracker<Edges> margin = new(Edges.NONE);
     private readonly DirtyTracker<Edges> padding = new(Edges.NONE);
 
@@ -117,6 +128,10 @@ public abstract class View : IView
 
     public void Draw(ISpriteBatch b)
     {
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
         using var _ = b.SaveTransform();
         b.Translate(Margin.Left, Margin.Top);
         OnDrawBorder(b);
@@ -192,22 +207,22 @@ public abstract class View : IView
     }
 
     /// <inheritdoc/>
-    public void OnClick(ClickEventArgs e)
+    public virtual void OnClick(ClickEventArgs e)
     {
-        var child = GetChildAt(e.Position);
-        if (child is not null)
-        {
-            var childCursorPosition = e.Position - child.Position;
-            var childArgs = new ClickEventArgs(childCursorPosition, e.Button);
-            child.View.OnClick(childArgs);
-            if (childArgs.Handled)
-            {
-                e.Handled = true;
-            }
-        }
+        DispatchPointerEvent(e, position => new(position, e.Button), (view, args) => view.OnClick(args));
         if (!e.Handled)
         {
             Click?.Invoke(this, e);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnWheel(WheelEventArgs e)
+    {
+        DispatchPointerEvent(e, position => new(position, e.Direction), (view, args) => view.OnWheel(args));
+        if (!e.Handled)
+        {
+            Wheel?.Invoke(this, e);
         }
     }
 
@@ -356,6 +371,21 @@ public abstract class View : IView
     /// </remarks>
     protected virtual void ResetDirty()
     { 
+    }
+
+    private void DispatchPointerEvent<T>(T eventArgs, Func<Vector2, T> cloneWithPosition, Action<IView, T> dispatch) where T : PointerEventArgs
+    {
+        var child = GetChildAt(eventArgs.Position);
+        if (child is not null)
+        {
+            var childCursorPosition = eventArgs.Position - child.Position;
+            var childArgs = cloneWithPosition(childCursorPosition);
+            dispatch(child.View, childArgs);
+            if (childArgs.Handled)
+            {
+                eventArgs.Handled = true;
+            }
+        }
     }
 
     private Bounds GetActualBounds()

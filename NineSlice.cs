@@ -75,18 +75,29 @@ public class NineSlice(Sprite sprite)
     public void Layout(Rectangle destinationRect, SimpleRotation? rotation = null)
     {
         var destinationEdges = Sprite.FixedEdges ?? Edges.NONE;
+        var sliceScale = Sprite.SliceSettings?.Scale ?? 1;
         if (rotation is not null)
         {
             destinationEdges = destinationEdges.Rotate(rotation.Value);
         }
         this.rotation = rotation;
-        destinationGrid = GetGrid(destinationRect, destinationEdges);
+        destinationGrid = GetGrid(destinationRect, destinationEdges, sliceScale: sliceScale);
     }
 
-    private static Rectangle[,] GetGrid(Rectangle bounds, Edges fixedEdges, SliceSettings? settings = null)
+    private static Rectangle[,] GetGrid(
+        Rectangle bounds,
+        Edges fixedEdges,
+        SliceSettings? settings = null,
+        // We pass sliceScale separately (even though it is in SliceSettings) because it actually applies only to the
+        // destination rect, not the source, whereas the SliceSettings are used for source but not destination.
+        int sliceScale = 1)
     {
         var left = bounds.X;
         var top = bounds.Y;
+        if (sliceScale != 1)
+        {
+            fixedEdges *= sliceScale;
+        }
         var centerX = settings?.CenterX is int cx ? cx : left + fixedEdges.Left;
         var centerY = settings?.CenterY is int cy ? cy : top + fixedEdges.Top;
         var innerWidth = bounds.Right - fixedEdges.Right - centerX;

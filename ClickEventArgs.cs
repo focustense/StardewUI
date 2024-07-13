@@ -3,10 +3,10 @@ using StardewModdingAPI;
 
 namespace SupplyChain.UI;
 
-/// <inheritdoc/>
 /// <summary>
 /// Event raised when a UI element is clicked by any source (mouse, gamepad, etc.).
 /// </summary>
+/// <inheritdoc cref="PointerEventArgs(Vector2)" path="/param[@name='position']"/>
 /// <param name="button">The specific button that triggered the click.</param>
 public class ClickEventArgs(Vector2 position, SButton button) : PointerEventArgs(position)
 {

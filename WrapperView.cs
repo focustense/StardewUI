@@ -2,6 +2,9 @@
 
 namespace SupplyChain.UI;
 
+/// <inheritdoc cref="WrapperView{T}"/>
+public abstract class WrapperView : WrapperView<IView> { }
+
 /// <summary>
 /// Base class for "app views" with potentially complex hierarchy using a single root view.
 /// </summary>
@@ -21,7 +24,8 @@ namespace SupplyChain.UI;
 /// Wrapper views can be composed like any other views, or used in a <see cref="ViewMenu"/>.
 /// </para>
 /// </remarks>
-public abstract class WrapperView : IView
+/// <typeparam name="T">Type of view being wrapped.</typeparam>
+public abstract class WrapperView<T> : IView where T: IView
 {
     public event EventHandler<ClickEventArgs>? Click;
 
@@ -32,12 +36,13 @@ public abstract class WrapperView : IView
     public Vector2 OuterSize => Root.OuterSize;
     public Tags Tags { get; set; } = new();
     public string Tooltip { get => Root.Tooltip; set => Root.Tooltip = value; }
+    public Visibility Visibility { get => Root.Visibility; set => Root.Visibility = value; }
     public int ZIndex { get => Root.ZIndex; set => Root.ZIndex = value; }
 
     protected bool IsViewCreated => root.IsValueCreated;
-    protected IView Root => root.Value;
+    protected T Root => root.Value;
 
-    private readonly Lazy<IView> root;
+    private readonly Lazy<T> root;
 
     public WrapperView()
     {
@@ -79,15 +84,20 @@ public abstract class WrapperView : IView
         return Root.Measure(availableSize);
     }
 
-    public void OnClick(ClickEventArgs e)
+    public virtual void OnClick(ClickEventArgs e)
     {
         Root.OnClick(e);
+    }
+
+    public virtual void OnWheel(WheelEventArgs e)
+    {
+        Root.OnWheel(e);
     }
 
     /// <summary>
     /// Creates and returns the root view.
     /// </summary>
-    protected abstract IView CreateView();
+    protected abstract T CreateView();
 
     private void View_Click(object? sender, ClickEventArgs e)
     {

@@ -122,4 +122,9 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
             value1.Right - value2.Right,
             value1.Bottom - value2.Bottom);
     }
+
+    public static Edges operator *(Edges value, int scale)
+    {
+        return new(value.Left * scale, value.Top * scale, value.Right * scale, value.Bottom * scale);
+    }
 }

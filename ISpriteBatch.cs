@@ -12,6 +12,13 @@ namespace SupplyChain.UI;
 /// </remarks>
 public interface ISpriteBatch
 {
+    /// <summary>
+    /// Sets up subsequent draw calls to clip contents within the specified bounds.
+    /// </summary>
+    /// <param name="clipRect">The clipping bounds in local coordinates.</param>
+    /// <returns>A disposable instance which, when disposed, will revert to the previous clipping state.</returns>
+    IDisposable Clip(Rectangle clipRect);
+
     /// <inheritdoc cref="SpriteBatch.Draw(Texture2D, Rectangle, Rectangle?, Color, float, Vector2, SpriteEffects, float)"/>
     void Draw(
         Texture2D texture,

@@ -11,6 +11,17 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
     private readonly SpriteBatch spriteBatch = spriteBatch;
     private Transform transform = transform;
 
+    public IDisposable Clip(Rectangle clipRect)
+    {
+        var previousRect = spriteBatch.GraphicsDevice.ScissorRectangle;
+        var previousRasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+        var location = (clipRect.Location.ToVector2() + transform.Translation).ToPoint();
+        spriteBatch.End();
+        BeginSpriteBatch(new() { ScissorTestEnable = true });
+        spriteBatch.GraphicsDevice.ScissorRectangle = new(location, clipRect.Size);
+        return new ClipReverter(this, previousRasterizerState, previousRect);
+    }
+
     public void Draw(
         Texture2D texture,
         Vector2 position,
@@ -92,6 +103,30 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
     public void Translate(Vector2 translation)
     {
         transform = transform.Translate(translation);
+    }
+
+    private void BeginSpriteBatch(RasterizerState rasterizerState)
+    {
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            BlendState.AlphaBlend,
+            SamplerState.PointClamp,
+            rasterizerState: rasterizerState);
+    }
+
+    private class ClipReverter(
+        PropagatedSpriteBatch owner,
+        RasterizerState previousRasterizerState,
+        Rectangle previousRect)
+        : IDisposable
+    {
+        public void Dispose()
+        {
+            owner.spriteBatch.End();
+            owner.BeginSpriteBatch(previousRasterizerState);
+            owner.spriteBatch.GraphicsDevice.ScissorRectangle = previousRect;
+            GC.SuppressFinalize(this);
+        }
     }
 
     private class TransformReverter(PropagatedSpriteBatch owner) : IDisposable
