@@ -59,7 +59,7 @@ public abstract class WrapperView<T> : IView where T: IView
         Root.Draw(b);
     }
 
-    public virtual ViewChild? FocusSearch(Vector2 position, Direction direction)
+    public virtual FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
         return Root.FocusSearch(position, direction);
     }

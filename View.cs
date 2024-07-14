@@ -146,7 +146,7 @@ public abstract class View : IView
     /// if <see cref="IsFocusable"/> is <c>true</c> and the position is <i>not</i> already within the view's bounds -
     /// meaning, any focusable view can accept focus from any direction, but will not consider itself a result if it is
     /// already focused (since we are trying to "move" focus).
-    public ViewChild? FocusSearch(Vector2 position, Direction direction)
+    public FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
         var offset = GetContentOffset();
         LogFocusSearch($"{Name} starting focus search: {position - offset}, {direction}");
@@ -154,9 +154,9 @@ public abstract class View : IView
         if (found is not null)
         {
             LogFocusSearch(
-                $"{Name} found focusable descendant '{found.View.Name}' with bounds " +
-                $"[{found.Position}, {found.View.OuterSize}]");
-            return new(found.View, found.Position + offset);
+                $"{Name} found focusable descendant '{found.Target.View.Name}' with bounds " +
+                $"[{found.Target.Position}, {found.Target.View.OuterSize}]");
+            return found.AsChild(this, offset);
         }
         if (IsFocusable && (
             (direction == Direction.East && position.X < 0)
@@ -167,7 +167,7 @@ public abstract class View : IView
             LogFocusSearch(
                 $"{Name} found no focusable descendants but matched itself: " +
                 $"[{Vector2.Zero}, {OuterSize}]");
-            return new(this, Vector2.Zero);
+            return new(new(this, Vector2.Zero), []);
         }
         LogFocusSearch($"View '{Name}' found no focusable descendants matching the query.");
         return null;
@@ -227,8 +227,8 @@ public abstract class View : IView
     }
 
     /// <summary>
-    /// Searches for a focusable child within this view and returns it if it can be reached in the specified
-    /// <paramref name="direction"/>.
+    /// Searches for a focusable child within this view that is reachable in the specified <paramref name="direction"/>,
+    /// and returns a result containing the view and search path if found.
     /// </summary>
     /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
     /// margin, borders and padding).</param>
@@ -238,7 +238,7 @@ public abstract class View : IView
     /// checking for "self-focus" as <see cref="FocusSearch"/> already does this. The default implementation simply
     /// returns <c>null</c> as most views do not have children; subclasses with children must override this.
     /// </remarks>
-    protected virtual ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
+    protected virtual FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         return null;
     }

@@ -44,7 +44,7 @@ public class Panel : View
     private readonly DirtyTrackingList<IView> children = [];
     private readonly List<ViewChild> childPositions = [];
 
-    protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
+    protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         foreach (var childPosition in childPositions
             .OrderByDescending(child => child.ContainsPoint(contentPosition))
@@ -61,9 +61,9 @@ public class Panel : View
                     $"[{childPosition.Position}, {childPosition.View.OuterSize}]");
             }
             if (isPossibleMatch
-                && new ViewChild(view, position).FocusSearch(contentPosition, direction) is ViewChild found)
+                && new ViewChild(view, position).FocusSearch(contentPosition, direction) is FocusSearchResult found)
             {
-                return found;
+                return found.AsChild(this);
             }
         }
         return null;

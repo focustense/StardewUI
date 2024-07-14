@@ -105,7 +105,7 @@ public class Grid : View
     private float itemLength;
     private readonly List<float> secondaryStartPositions = [];
 
-    protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
+    protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         var cellPosition = GetCellAt(contentPosition);
         LogFocusSearch($"Current cell position: {cellPosition}");
@@ -135,7 +135,7 @@ public class Grid : View
             var found = nextChild?.View.FocusSearch(contentPosition - nextChild.Position, direction);
             if (found is not null)
             {
-                return found.Offset(nextChild!.Position);
+                return found.AsChild(this, nextChild!.Position);
             }
             previousCheckedIndex = nextIndex;
         }

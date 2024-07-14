@@ -103,10 +103,10 @@ public class ScrollContainer : View
         ScrollOffset += ScrollStep;
     }
 
-    protected override ViewChild? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
+    protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         var origin = GetScrollOrigin();
-        return Content?.FocusSearch(contentPosition + origin, direction)?.Offset(-origin);
+        return Content?.FocusSearch(contentPosition + origin, direction)?.AsChild(this, -origin);
     }
 
     protected override ViewChild? GetLocalChildAt(Vector2 contentPosition)

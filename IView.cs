@@ -121,7 +121,7 @@ public interface IView
     /// <param name="direction">The direction of cursor movement.</param>
     /// <returns>The next focusable view reached by moving in the specified <paramref name="direction"/>, or <c>null</c>
     /// if there are no focusable descendants that are possible to reach in that direction.</returns>
-    ViewChild? FocusSearch(Vector2 position, Direction direction);
+    FocusSearchResult? FocusSearch(Vector2 position, Direction direction);
 
     /// <summary>
     /// Finds the child at a given position.

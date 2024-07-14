@@ -39,9 +39,10 @@ public record ViewChild(IView View, Vector2 Position)
     /// <param name="direction">The direction of cursor movement.</param>
     /// <returns>The next focusable view reached by moving in the specified <paramref name="direction"/>, or <c>null</c>
     /// if there are no focusable descendants that are possible to reach in that direction.</returns>
-    public ViewChild? FocusSearch(Vector2 contentPosition, Direction direction)
+    public FocusSearchResult? FocusSearch(Vector2 contentPosition, Direction direction)
     {
-        return View.FocusSearch(contentPosition - Position, direction)?.Offset(Position);
+        var found = View.FocusSearch(contentPosition - Position, direction);
+        return found is not null ? new(found.Target.Offset(Position), found.Path) : null;
     }
 
     /// <summary>
