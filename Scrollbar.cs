@@ -170,5 +170,6 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
             thumb.Rotation = SimpleRotation.QuarterCounterclockwise;
         }
         SyncPosition();
+        SyncVisibility(root);
     }
 }

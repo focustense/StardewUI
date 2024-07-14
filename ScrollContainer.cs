@@ -85,7 +85,7 @@ public class ScrollContainer : View
     private readonly DirtyTracker<Orientation> orientation = new(Orientation.Vertical);
     private readonly DirtyTracker<float> scrollOffset = new(0);
 
-    private float previousScrollSize;
+    private float previousScrollSize = -1;
 
     /// <summary>
     /// Scrolls backward (up or left) by the distance configured in <see cref="ScrollStep"/>.
@@ -106,7 +106,7 @@ public class ScrollContainer : View
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         var origin = GetScrollOrigin();
-        return Content?.FocusSearch(contentPosition + origin, direction)?.AsChild(this, -origin);
+        return Content?.FocusSearch(contentPosition + origin, direction)?.Offset(-origin);
     }
 
     protected override ViewChild? GetLocalChildAt(Vector2 contentPosition)

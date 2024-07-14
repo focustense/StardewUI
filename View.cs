@@ -226,6 +226,11 @@ public abstract class View : IView
         }
     }
 
+    public override string ToString()
+    {
+        return $"{GetType().Name}('{Name}')";
+    }
+
     /// <summary>
     /// Searches for a focusable child within this view that is reachable in the specified <paramref name="direction"/>,
     /// and returns a result containing the view and search path if found.

@@ -92,7 +92,7 @@ public class Lane : View
             LogFocusSearch(
                 $"Returning nearest child's result '{nearestTarget.View.Name}' since it contains the specified point " +
                 "and has its own match.");
-            return nearestResult!.AsChild(this);
+            return nearestResult;
         }
 
         // At this point we either didn't find anything focusable in the nearest child, or aren't sure if it's the best
@@ -108,7 +108,7 @@ public class Lane : View
                 LogFocusSearch(
                     $"Nearest child's result '{nearestTarget.View.Name}' is already in the requested direction " +
                     $"({direction} of {contentPosition}); returning it.");
-                return nearestResult!.AsChild(this);
+                return nearestResult;
             }
             var searchStep = IsReverseDirection(direction) ? -1 : 1;
             for (int i = nearestChildIndex + searchStep; i >= 0 && i < visibleChildCount; i += searchStep)
@@ -122,7 +122,7 @@ public class Lane : View
                         $"Found a match: '{searchChild.View.Name}' matched the query: " +
                         $"'{childResult.Target.View.Name}' with bounds: " +
                         $"[{childResult.Target.Position}, {childResult.Target.View.OuterSize}]");
-                    return childResult.AsChild(this);
+                    return childResult;
                 }
                 LogFocusSearch("No result at this position.");
             }
@@ -220,7 +220,7 @@ public class Lane : View
             $"{ahead.result?.Target.View.OuterSize}] distance={ahead.distance}\n" +
             $"  Behind: '{behind.result?.Target.View.Name}' [{behind.result?.Target.Position}, " +
             $"{behind.result?.Target.View.OuterSize}] distance={behind.distance}");
-        return ahead.distance < behind.distance ? ahead.result?.AsChild(this) : behind.result?.AsChild(this);
+        return ahead.distance < behind.distance ? ahead.result : behind.result;
     }
 
     protected override IEnumerable<ViewChild> GetLocalChildren()

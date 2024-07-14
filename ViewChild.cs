@@ -41,8 +41,7 @@ public record ViewChild(IView View, Vector2 Position)
     /// if there are no focusable descendants that are possible to reach in that direction.</returns>
     public FocusSearchResult? FocusSearch(Vector2 contentPosition, Direction direction)
     {
-        var found = View.FocusSearch(contentPosition - Position, direction);
-        return found is not null ? new(found.Target.Offset(Position), found.Path) : null;
+        return View.FocusSearch(contentPosition - Position, direction)?.Offset(Position);
     }
 
     /// <summary>

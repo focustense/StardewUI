@@ -132,10 +132,10 @@ public class Grid : View
                 : direction.GetOrientation() == PrimaryOrientation
                     ? nextIndex > countBeforeWrap ? childPositions[nextIndex - countBeforeWrap] : null
                     : childPositions.LastOrDefault();
-            var found = nextChild?.View.FocusSearch(contentPosition - nextChild.Position, direction);
+            var found = nextChild?.FocusSearch(contentPosition, direction);
             if (found is not null)
             {
-                return found.AsChild(this, nextChild!.Position);
+                return found;
             }
             previousCheckedIndex = nextIndex;
         }

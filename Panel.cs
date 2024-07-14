@@ -63,7 +63,7 @@ public class Panel : View
             if (isPossibleMatch
                 && new ViewChild(view, position).FocusSearch(contentPosition, direction) is FocusSearchResult found)
             {
-                return found.AsChild(this);
+                return found;
             }
         }
         return null;

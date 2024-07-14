@@ -70,7 +70,7 @@ public class Frame : View
 
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
-        return Content?.FocusSearch(contentPosition, direction)?.AsChild(this);
+        return Content?.FocusSearch(contentPosition, direction);
     }
 
     protected override Edges GetBorderThickness()
