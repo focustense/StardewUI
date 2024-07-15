@@ -30,4 +30,29 @@ public static class ViewExtensions
             child = child.View.GetChildAt(position);
         } while (child is not null);
     }
+
+    /// <summary>
+    /// Takes an existing view path and resolves it with child coordinates for the view at each level.
+    /// </summary>
+    /// <param name="view">The root view.</param>
+    /// <param name="path">The path from root down to some descendant, such as the path returned by
+    /// <see cref="GetPathToPosition(IView, Vector2)"/>.</param>
+    /// <returns>A sequence of <see cref="ViewChild"/> elements, starting at the <paramref name="view"/>, where each
+    /// child's <see cref="ViewChild.Position"/> is the child's most current location within its parent.</returns>
+    public static IEnumerable<ViewChild> ResolveChildPath(this IView view, IEnumerable<IView> path)
+    {
+        yield return new(view, Vector2.Zero);
+        path = path.SkipWhile(v => v == view);
+        var parent = view;
+        foreach (var descendant in path)
+        {
+            var childPosition = parent.GetChildPosition(descendant);
+            if (childPosition is null)
+            {
+                yield break;
+            }
+            yield return new(descendant, childPosition.Value);
+            parent = descendant;
+        }
+    }
 }

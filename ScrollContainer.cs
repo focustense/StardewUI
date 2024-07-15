@@ -99,17 +99,21 @@ public class ScrollContainer : View
     /// <summary>
     /// Scrolls backward (up or left) by the distance configured in <see cref="ScrollStep"/>.
     /// </summary>
-    public void ScrollBackward()
+    public bool ScrollBackward()
     {
+        var previousOffset = ScrollOffset;
         ScrollOffset -= ScrollStep;
+        return ScrollOffset != previousOffset;
     }
 
     /// <summary>
     /// Scrolls forward (down or right) by the distance configured in <see cref="ScrollStep"/>.
     /// </summary>
-    public void ScrollForward()
+    public bool ScrollForward()
     {
+        var previousOffset = ScrollOffset;
         ScrollOffset += ScrollStep;
+        return ScrollOffset != previousOffset;
     }
 
     public override bool ScrollIntoView(IEnumerable<ViewChild> path, out Vector2 distance)
@@ -177,8 +181,12 @@ public class ScrollContainer : View
 
     protected override ViewChild? GetLocalChildAt(Vector2 contentPosition)
     {
+        if (Content is null)
+        {
+            return null;
+        }
         var origin = GetScrollOrigin();
-        return Content?.GetChildAt(contentPosition + origin)?.Offset(-origin);
+        return new(Content, -origin);
     }
 
     protected override IEnumerable<ViewChild> GetLocalChildren()
