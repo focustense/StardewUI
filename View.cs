@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using System.Diagnostics;
+using System.IO;
 
 namespace SupplyChain.UI;
 
@@ -179,6 +181,14 @@ public abstract class View : IView
         return GetLocalChildAt(position - offset)?.Offset(offset);
     }
 
+    public virtual Vector2? GetChildPosition(IView childView)
+    {
+        return GetChildren()
+            .Where(child => child.View == childView)
+            .Select(child => child.Position as Vector2?)
+            .FirstOrDefault();
+    }
+
     public IEnumerable<ViewChild> GetChildren()
     {
         var offset = GetContentOffset();
@@ -224,6 +234,25 @@ public abstract class View : IView
         {
             Wheel?.Invoke(this, e);
         }
+    }
+
+    /// <inheritdoc/>
+    /// <remarks>
+    /// The default implementation does no scrolling of its own, only passes the request down to the child and aborts if
+    /// the child returns <c>true</c>. Scrollable views must override this to provide scrolling behavior.
+    /// </remarks>
+    public virtual bool ScrollIntoView(IEnumerable<ViewChild> path, out Vector2 distance)
+    {
+        distance = Vector2.Zero;
+        var (parent, children) = path.SplitFirst();
+        if (parent?.View == this)
+        {
+            // Generally should only encounter this condition when called on the root view, using the verbatim path of a
+            // FocusSearchResult. Handling it here is a little more convenient than requiring the caller to remember to
+            // exclude the first element.
+            return ScrollIntoView(children, out distance);
+        }
+        return parent?.View.ScrollIntoView(children, out distance) ?? false;
     }
 
     public override string ToString()

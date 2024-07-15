@@ -24,6 +24,21 @@ public enum Orientation
 public static class OrientationExtensions
 {
     /// <summary>
+    /// Creates a new <see cref="Vector2"/> with the oriented dimension set to a specified length and the other
+    /// dimension set to zero.
+    /// </summary>
+    /// <param name="orientation">The orientation.</param>
+    /// <param name="length">The length along the orientation axis.</param>
+    /// <returns>A new <see cref="Vector2"/> whose length along the <paramref name="orientation"/> axis is
+    /// <paramref name="length"/>.</returns>
+    public static Vector2 CreateVector(this Orientation orientation, float length)
+    {
+        var result = Vector2.Zero;
+        orientation.Set(ref result, length);
+        return result;
+    }
+
+    /// <summary>
     /// Gets the component of a vector along the orientation's axis.
     /// </summary>
     /// <param name="orientation">The orientation.</param>

@@ -131,6 +131,18 @@ public interface IView
     ViewChild? GetChildAt(Vector2 position);
 
     /// <summary>
+    /// Computes or retrieves the position of a given direct child.
+    /// </summary>
+    /// <remarks>
+    /// Implementation of this may be O(N) and therefore it should not be called every frame; it is intended for use in
+    /// directional movement and other user-initiated events.
+    /// </remarks>
+    /// <param name="childView">The child of this view.</param>
+    /// <returns>The local coordinates of the <paramref name="childView"/>, or <c>null</c> if the
+    /// <paramref name="childView"/> is not a current or direct child.</returns>
+    Vector2? GetChildPosition(IView childView);
+
+    /// <summary>
     /// Gets the current children of this view.
     /// </summary>
     IEnumerable<ViewChild> GetChildren();
@@ -175,4 +187,14 @@ public interface IView
     /// </summary>
     /// <param name="e">The event data.</param>
     void OnWheel(WheelEventArgs e);
+
+    /// <summary>
+    /// Attempts to scroll the specified target into view, including all of its ancestors, if not fully in view.
+    /// </summary>
+    /// <param name="path">The path to the view that should be visible, starting from (and not including) this view;
+    /// each element has the local position within its own parent, so the algorithm can run recursively. This is a slice
+    /// of the same path returned in a <see cref="FocusSearchResult"/>.</param>
+    /// <param name="distance">The total distance that was scrolled, including distance scrolled by descendants.</param>
+    /// <returns>Whether or not the scroll was successful; <c>false</c> prevents the request from bubbling.</returns>
+    bool ScrollIntoView(IEnumerable<ViewChild> path, out Vector2 distance);
 }

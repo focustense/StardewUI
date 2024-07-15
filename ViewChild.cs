@@ -45,6 +45,17 @@ public record ViewChild(IView View, Vector2 Position)
     }
 
     /// <summary>
+    /// Returns a <see cref="Bounds"/> representing the parent-relative bounds of this child.
+    /// </summary>
+    /// <remarks>
+    /// Equivalent to the <see cref="IView.ActualBounds"/> offset by this child's <see cref="Position"/>.
+    /// </remarks>
+    public Bounds GetActualBounds()
+    {
+        return View.ActualBounds.Offset(Position);
+    }
+
+    /// <summary>
     /// Offsets the position by a given distance.
     /// </summary>
     /// <param name="distance">The offset distance.</param>

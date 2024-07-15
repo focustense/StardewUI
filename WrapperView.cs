@@ -25,7 +25,7 @@ public abstract class WrapperView : WrapperView<IView> { }
 /// </para>
 /// </remarks>
 /// <typeparam name="T">Type of view being wrapped.</typeparam>
-public abstract class WrapperView<T> : IView where T: IView
+public abstract class WrapperView<T> : IView where T : IView
 {
     public event EventHandler<ClickEventArgs>? Click;
 
@@ -69,6 +69,11 @@ public abstract class WrapperView<T> : IView where T: IView
         return Root.GetChildAt(position);
     }
 
+    public virtual Vector2? GetChildPosition(IView childView)
+    {
+        return Root.GetChildPosition(childView);
+    }
+
     public virtual IEnumerable<ViewChild> GetChildren()
     {
         return Root.GetChildren();
@@ -92,6 +97,11 @@ public abstract class WrapperView<T> : IView where T: IView
     public virtual void OnWheel(WheelEventArgs e)
     {
         Root.OnWheel(e);
+    }
+
+    public virtual bool ScrollIntoView(IEnumerable<ViewChild> path, out Vector2 distance)
+    {
+        return Root.ScrollIntoView(path, out distance);
     }
 
     /// <summary>

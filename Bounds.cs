@@ -10,6 +10,11 @@ namespace SupplyChain.UI;
 public record Bounds(Vector2 Position, Vector2 Size)
 {
     /// <summary>
+    /// Empty bounds, used for invalid results.
+    /// </summary>
+    public static readonly Bounds Empty = new(Vector2.Zero, Vector2.Zero);
+
+    /// <summary>
     /// The Y value at the bottom edge of the bounding rectangle.
     /// </summary>
     public float Bottom => Position.Y + Size.Y;
@@ -45,5 +50,33 @@ public record Bounds(Vector2 Position, Vector2 Size)
     public bool ContainsPoint(Vector2 point)
     {
         return point.X >= Left && point.X < Right && point.Y >= Top && point.Y < Bottom;
+    }
+
+    /// <summary>
+    /// Offsets a <see cref="Bounds"/> by a given distance.
+    /// </summary>
+    /// <param name="distance">The offset distance.</param>
+    /// <returns>A new <see cref="Bounds"/> with the same size as this instance and a <see cref="Position"/> offset by
+    /// the specified <paramref name="distance"/>.</returns>
+    public Bounds Offset(Vector2 distance)
+    {
+        return new(Position + distance, Size);
+    }
+
+    /// <summary>
+    /// Computes the union of this <see cref="Bounds"/> with another instance.
+    /// </summary>
+    /// <param name="other">The other bounds to add to the union.</param>
+    /// <returns>A new <see cref="Bounds"/> whose set is the union of this instance and <paramref name="other"/>; i.e.
+    /// is exactly large enough to contain both bounds.</returns>
+    public Bounds Union(Bounds other)
+    {
+        var left = MathF.Min(Left, other.Left);
+        var top = MathF.Min(Top, other.Top);
+        var right = MathF.Max(Right, other.Right);
+        var bottom = MathF.Max(Bottom, other.Bottom);
+        var position = new Vector2(left, top);
+        var size = new Vector2(right - left, bottom - top);
+        return new(position, size);
     }
 }
