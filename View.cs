@@ -20,6 +20,23 @@ public abstract class View : IView
     public event EventHandler<ClickEventArgs>? Click;
 
     /// <summary>
+    /// Event raised when the view is being dragged using the mouse.
+    /// </summary>
+    public event EventHandler<PointerEventArgs>? Drag;
+
+    /// <summary>
+    /// Event raised when mouse dragging is stopped, i.e. when the button is released. Always raised after the last
+    /// <see cref="Drag"/>, and only once per drag operation.
+    /// </summary>
+    public event EventHandler<PointerEventArgs>? DragEnd;
+
+    /// <summary>
+    /// Event raised when mouse dragging is first activated. Always raised before the first <see cref="Drag"/>, and only
+    /// once per drag operation.
+    /// </summary>
+    public event EventHandler<PointerEventArgs>? DragStart;
+
+    /// <summary>
     /// Event raised when the pointer enters the view.
     /// </summary>
     public event EventHandler<PointerEventArgs>? PointerEnter;
@@ -49,6 +66,11 @@ public abstract class View : IView
     /// <see cref="OnMeasure"/> method and padding, margins, etc. are handled automatically.
     /// </summary>
     public Vector2 ContentSize { get; protected set; }
+
+    /// <summary>
+    /// Whether or not this view should fire drag events such as <see cref="DragStart"/> and <see cref="Drag"/>.
+    /// </summary>
+    public bool Draggable { get; set; }
 
     /// <summary>
     /// The size allocated to the entire area inside the border, i.e. <see cref="ContentSize"/> plus any
@@ -131,6 +153,9 @@ public abstract class View : IView
     private readonly DirtyTracker<Edges> margin = new(Edges.NONE);
     private readonly DirtyTracker<Edges> padding = new(Edges.NONE);
 
+    private IView? draggingView;
+    private bool isDragging;
+
     public View()
     {
         Name = GetType().Name;
@@ -158,6 +183,10 @@ public abstract class View : IView
     /// already focused (since we are trying to "move" focus).
     public FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
+        if (Visibility != Visibility.Visible)
+        {
+            return null;
+        }
         var offset = GetContentOffset();
         LogFocusSearch($"{Name} starting focus search: {position - offset}, {direction}");
         var found = FindFocusableDescendant(position - offset, direction);
@@ -186,7 +215,8 @@ public abstract class View : IView
     public virtual ViewChild? GetChildAt(Vector2 position)
     {
         var offset = GetContentOffset();
-        return GetLocalChildAt(position - offset)?.Offset(offset);
+        var child = GetLocalChildAt(position - offset)?.Offset(offset);
+        return child?.View.Visibility == Visibility.Visible ? child : null;
     }
 
     public virtual Vector2? GetChildPosition(IView childView)
@@ -227,6 +257,10 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnClick(ClickEventArgs e)
     {
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
         DispatchPointerEvent(e, (view, args) => view.OnClick(args));
         if (!e.Handled)
         {
@@ -234,9 +268,84 @@ public abstract class View : IView
         }
     }
 
+    private ViewChild? GetOrUpdateDraggingChild(Vector2 position)
+    {
+        // Since the effect of dragging is usually to move some view, we can't rely on the current cursor position to
+        // accurately tell us which view to drag; instead, we need to track which is view is dragging, and re-read its
+        // current position on each movement.
+        ViewChild? draggingChild;
+        if (draggingView is not null)
+        {
+            var childPosition = GetChildPosition(draggingView);
+            return childPosition is not null ? new(draggingView, childPosition.Value) : null;
+        }
+        else
+        {
+            draggingChild = GetChildAt(position);
+            if (draggingChild is not null)
+            {
+                draggingView = draggingChild.View;
+            }
+            return draggingChild;
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnDrag(PointerEventArgs e)
+    {
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
+        var draggingChild = GetOrUpdateDraggingChild(e.Position);
+        if (draggingChild is not null)
+        {
+            DispatchPointerEvent(draggingChild, e, (view, args) => view.OnDrag(args));
+        }
+        if (e.Handled || !Draggable)
+        {
+            return;
+        }
+        if (!isDragging)
+        {
+            var startArgs = e.Clone();
+            DragStart?.Invoke(this, startArgs);
+            e.Handled |= startArgs.Handled;
+        }
+        isDragging = true;
+        var dragArgs = e.Clone();
+        Drag?.Invoke(this, dragArgs);
+        e.Handled |= dragArgs.Handled;
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnDrop(PointerEventArgs e)
+    {
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
+        var draggingChild = GetOrUpdateDraggingChild(e.Position);
+        if (draggingChild is not null)
+        {
+            DispatchPointerEvent(draggingChild, e, (view, args) => view.OnDrop(args));
+        }
+        draggingView = null;
+        if (e.Handled || !isDragging)
+        {
+            return;
+        }
+        isDragging = false;
+        DragEnd?.Invoke(this, e);
+    }
+
     /// <inheritdoc/>
     public virtual void OnPointerMove(PointerMoveEventArgs e)
     {
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
         var previousTarget = GetChildAt(e.PreviousPosition);
         var currentTarget = GetChildAt(e.Position);
         if (currentTarget != previousTarget && previousTarget is not null)
@@ -272,6 +381,10 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnWheel(WheelEventArgs e)
     {
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
         DispatchPointerEvent(e, (view, args) => view.OnWheel(args));
         if (!e.Handled)
         {

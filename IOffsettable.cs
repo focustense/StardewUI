@@ -14,3 +14,24 @@ public interface IOffsettable<T>
     /// <param name="distance">The offset distance.</param>
     T Offset(Vector2 distance);
 }
+
+/// <summary>
+/// Extensions for the <see cref="IOffsettable{T}"/> interface.
+/// </summary>
+public static class OffsettableExtensions
+{
+    /// <summary>
+    /// Clones an <see cref="IOffsettable{T}"/>.
+    /// </summary>
+    /// <remarks>
+    /// Since every <see cref="IOffsettable{T}.Offset"/> is implicitly a clone, we can perform an "explicit" clone by
+    /// providing a zero offset.
+    /// </remarks>
+    /// <typeparam name="T">The source/output type.</typeparam>
+    /// <param name="instance">The instance to clone.</param>
+    /// <returns>A copy of the <paramref name="instance"/>.</returns>
+    public static T Clone<T>(this T instance) where T : IOffsettable<T>
+    {
+        return instance.Offset(Vector2.Zero);
+    }
+}

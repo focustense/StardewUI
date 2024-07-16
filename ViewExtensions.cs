@@ -3,7 +3,7 @@
 namespace SupplyChain.UI;
 
 /// <summary>
-/// Commonly-used extensions for the <see cref="IView"/> interface.
+/// Commonly-used extensions for the <see cref="IView"/> interface and related types.
 /// </summary>
 public static class ViewExtensions
 {
@@ -13,10 +13,11 @@ public static class ViewExtensions
     /// <param name="view">The view at which to start the search.</param>
     /// <param name="position">The position to search for, in coordinates relative to the
     /// <paramref name="view"/>.</param>
-    /// <returns>A sequence ending with the lowest-level <see cref="IView"/> overlapping the specified
-    /// <paramref name="position"/> and preceded by all parent views, starting with the root <paramref name="view"/>.
+    /// <returns>A sequence of <see cref="ViewChild"/> elements with the <see cref="IView"/> and position (relative to
+    /// parent) at each level, starting with the specified <paramref name="view"/> and ending with the lowest-level
+    /// <see cref="IView"/> that still overlaps with the specified <paramref name="position"/>.
     /// If no match is found, returns an empty sequence.</returns>
-    public static IEnumerable<IView> GetPathToPosition(this IView view, Vector2 position)
+    public static IEnumerable<ViewChild> GetPathToPosition(this IView view, Vector2 position)
     {
         if (position.X < 0 || position.Y < 0 || position.X > view.OuterSize.X || position.Y > view.OuterSize.Y)
         {
@@ -26,7 +27,7 @@ public static class ViewExtensions
         do
         {
             position -= child.Position;
-            yield return child.View;
+            yield return child;
             child = child.View.GetChildAt(position);
         } while (child is not null);
     }
@@ -53,6 +54,27 @@ public static class ViewExtensions
             }
             yield return new(descendant, childPosition.Value);
             parent = descendant;
+        }
+    }
+
+    /// <summary>
+    /// Converts a view path in parent-relative coordinates (e.g. from <see cref="GetPathToPosition"/> and transforms
+    /// each element to have an absolute <see cref="ViewChild.Position"/>.
+    /// </summary>
+    /// <remarks>
+    /// Since <see cref="ViewChild"/> does not specify whether the position is local (parent) or global (absolute), it
+    /// is not possible to validate the incoming sequence and prevent a "double transformation". Callers are responsible
+    /// for knowing whether or not the input sequence is local or global.
+    /// </remarks>
+    /// <param name="path">The path from root down to leaf view.</param>
+    /// <returns>The <paramref name="path"/> with positions in global coordinates.</returns>
+    public static IEnumerable<ViewChild> ToGlobalPositions(this IEnumerable<ViewChild> path)
+    {
+        var position = Vector2.Zero;
+        foreach (var descendant in path)
+        {
+            yield return descendant.Offset(position);
+            position += descendant.Position;
         }
     }
 }

@@ -28,6 +28,12 @@ public abstract class WrapperView : WrapperView<IView> { }
 public abstract class WrapperView<T> : IView where T : IView
 {
     public event EventHandler<ClickEventArgs>? Click;
+    public event EventHandler<PointerEventArgs>? Drag;
+    public event EventHandler<PointerEventArgs>? DragStart;
+    public event EventHandler<PointerEventArgs>? DragEnd;
+    public event EventHandler<PointerEventArgs>? PointerEnter;
+    public event EventHandler<PointerEventArgs>? PointerLeave;
+    public event EventHandler<WheelEventArgs>? Wheel;
 
     public Bounds ActualBounds => Root.ActualBounds;
     public bool IsFocusable => Root.IsFocusable;
@@ -50,6 +56,12 @@ public abstract class WrapperView<T> : IView where T : IView
         {
             var view = CreateView();
             view.Click += View_Click;
+            view.Drag += View_Drag;
+            view.DragEnd += View_DragEnd;
+            view.DragStart += View_DragStart;
+            view.PointerEnter += View_PointerEnter;
+            view.PointerLeave += View_PointerLeave;
+            view.Wheel += View_Wheel;
             return view;
         });
     }
@@ -94,6 +106,16 @@ public abstract class WrapperView<T> : IView where T : IView
         Root.OnClick(e);
     }
 
+    public virtual void OnDrag(PointerEventArgs e)
+    {
+        Root.OnDrag(e);
+    }
+
+    public virtual void OnDrop(PointerEventArgs e)
+    {
+        Root.OnDrop(e);
+    }
+
     public virtual void OnPointerMove(PointerMoveEventArgs e)
     {
         Root.OnPointerMove(e);
@@ -117,5 +139,35 @@ public abstract class WrapperView<T> : IView where T : IView
     private void View_Click(object? sender, ClickEventArgs e)
     {
         Click?.Invoke(this, e);
+    }
+
+    private void View_Drag(object? sender, PointerEventArgs e)
+    {
+        Drag?.Invoke(this, e);
+    }
+
+    private void View_DragEnd(object? sender, PointerEventArgs e)
+    {
+        DragEnd?.Invoke(this, e);
+    }
+
+    private void View_DragStart(object? sender, PointerEventArgs e)
+    {
+        DragStart?.Invoke(this, e);
+    }
+
+    private void View_PointerEnter(object? sender, PointerEventArgs e)
+    {
+        PointerEnter?.Invoke(this, e);
+    }
+
+    private void View_PointerLeave(object? sender, PointerEventArgs e)
+    {
+        PointerLeave?.Invoke(this, e);
+    }
+
+    private void View_Wheel(object? sender, WheelEventArgs e)
+    {
+        Wheel?.Invoke(this, e);
     }
 }

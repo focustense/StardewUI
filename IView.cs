@@ -13,6 +13,38 @@ public interface IView
     event EventHandler<ClickEventArgs> Click;
 
     /// <summary>
+    /// Event raised when the view is being dragged using the mouse.
+    /// </summary>
+    event EventHandler<PointerEventArgs> Drag;
+
+    /// <summary>
+    /// Event raised when mouse dragging is stopped, i.e. when the button is released. Always raised after the last
+    /// <see cref="Drag"/>, and only once per drag operation.
+    /// </summary>
+    event EventHandler<PointerEventArgs> DragEnd;
+
+    /// <summary>
+    /// Event raised when mouse dragging is first activated. Always raised before the first <see cref="Drag"/>, and only
+    /// once per drag operation.
+    /// </summary>
+    event EventHandler<PointerEventArgs> DragStart;
+
+    /// <summary>
+    /// Event raised when the pointer enters the view.
+    /// </summary>
+    event EventHandler<PointerEventArgs> PointerEnter;
+
+    /// <summary>
+    /// Event raised when the pointer exits the view.
+    /// </summary>
+    event EventHandler<PointerEventArgs> PointerLeave;
+
+    /// <summary>
+    /// Event raised when the scroll wheel moves.
+    /// </summary>
+    event EventHandler<WheelEventArgs> Wheel;
+
+    /// <summary>
     /// The bounds of this view relative to the origin (0, 0).
     /// </summary>
     /// <remarks>
@@ -181,6 +213,18 @@ public interface IView
     /// </summary>
     /// <param name="e">The event data.</param>
     void OnClick(ClickEventArgs e);
+
+    /// <summary>
+    /// Called when the view is being dragged (mouse moved while left button held).
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    void OnDrag(PointerEventArgs e);
+
+    /// <summary>
+    /// Called when the mouse button is released after at least one <see cref="OnDrag"/>.
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    void OnDrop(PointerEventArgs e);
 
     /// <summary>
     /// Called when a pointer movement related to this view occurs.
