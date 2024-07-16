@@ -1,4 +1,6 @@
-﻿namespace SupplyChain.UI;
+﻿using StardewValley;
+
+namespace SupplyChain.UI;
 
 /// <summary>
 /// Controls the scrolling of a <see cref="ScrollContainer"/>.
@@ -69,7 +71,9 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
     protected override Lane CreateView()
     {
         upButton = CreateButton(upSprite, 48, 48);
+        upButton.Click += UpButton_Click;
         downButton = CreateButton(downSprite, 48, 48);
+        downButton.Click += DownButton_Click;
         thumb = new()
         {
             Layout = LayoutParameters.FitContent(),
@@ -91,11 +95,31 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         return lane;
     }
 
+    // Events
+
     private void Container_ScrollChanged(object? sender, EventArgs e)
     {
         SyncPosition();
         SyncVisibility(Root);
     }
+
+    private void DownButton_Click(object? sender, ClickEventArgs e)
+    {
+        if (Container?.ScrollForward() == true)
+        {
+            Game1.playSound("shwip");
+        }
+    }
+
+    private void UpButton_Click(object? sender, ClickEventArgs e)
+    {
+        if (Container?.ScrollBackward() == true)
+        {
+            Game1.playSound("shwip");
+        }
+    }
+
+    // Other UI
 
     private static Image CreateButton(Sprite sprite, int width, int height)
     {
