@@ -99,13 +99,15 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
 
     private static Image CreateButton(Sprite sprite, int width, int height)
     {
-        return new()
+        var button = new Image()
         {
             Layout = LayoutParameters.FixedSize(width, height),
             HorizontalAlignment = Alignment.Middle,
             VerticalAlignment = Alignment.Middle,
             Sprite = sprite,
         };
+        HoverScale.Attach(button, 1.1f);
+        return button;
     }
 
     private void LazyUpdate()

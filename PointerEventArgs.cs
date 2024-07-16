@@ -7,10 +7,16 @@ namespace SupplyChain.UI;
 /// </summary>
 /// <param name="position">The position, relative to the view receiving the event, of the pointer when the event
 /// occurred.</param>
-public class PointerEventArgs(Vector2 position) : BubbleEventArgs
+public class PointerEventArgs(Vector2 position) : BubbleEventArgs, IOffsettable<PointerEventArgs>
 {
     /// <summary>
     /// The position, relative to the view receiving the event, of the pointer when the event occurred.
     /// </summary>
     public Vector2 Position { get; } = position;
+
+    /// <inheritdoc/>
+    public PointerEventArgs Offset(Vector2 distance)
+    {
+        return new(Position + distance);
+    }
 }

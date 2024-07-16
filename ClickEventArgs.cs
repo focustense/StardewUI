@@ -8,7 +8,7 @@ namespace SupplyChain.UI;
 /// </summary>
 /// <inheritdoc cref="PointerEventArgs(Vector2)" path="/param[@name='position']"/>
 /// <param name="button">The specific button that triggered the click.</param>
-public class ClickEventArgs(Vector2 position, SButton button) : PointerEventArgs(position)
+public class ClickEventArgs(Vector2 position, SButton button) : PointerEventArgs(position), IOffsettable<ClickEventArgs>
 {
     /// <summary>
     /// The specific button that triggered the click.
@@ -37,5 +37,11 @@ public class ClickEventArgs(Vector2 position, SButton button) : PointerEventArgs
     public bool IsSecondaryButton()
     {
         return Button == SButton.MouseRight || Button.IsUseToolButton();
+    }
+
+    /// <inheritdoc/>
+    public new ClickEventArgs Offset(Vector2 distance)
+    {
+        return new(Position + distance, Button);
     }
 }

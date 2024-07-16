@@ -94,6 +94,11 @@ public abstract class WrapperView<T> : IView where T : IView
         Root.OnClick(e);
     }
 
+    public virtual void OnPointerMove(PointerMoveEventArgs e)
+    {
+        Root.OnPointerMove(e);
+    }
+
     public virtual void OnWheel(WheelEventArgs e)
     {
         Root.OnWheel(e);

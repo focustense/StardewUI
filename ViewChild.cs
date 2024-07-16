@@ -7,7 +7,7 @@ namespace SupplyChain.UI;
 /// </summary>
 /// <param name="View">The child view.</param>
 /// <param name="Position">The position of the <paramref name="View"/>, relative to the parent.</param>
-public record ViewChild(IView View, Vector2 Position)
+public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
 {
     /// <summary>
     /// Gets the point at the exact center of the view.

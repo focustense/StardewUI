@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Characters;
+using System;
 using System.Diagnostics;
-using System.IO;
 
 namespace SupplyChain.UI;
 
@@ -20,6 +18,16 @@ public abstract class View : IView
     /// Event raised when the view receives a click.
     /// </summary>
     public event EventHandler<ClickEventArgs>? Click;
+
+    /// <summary>
+    /// Event raised when the pointer enters the view.
+    /// </summary>
+    public event EventHandler<PointerEventArgs>? PointerEnter;
+
+    /// <summary>
+    /// Event raised when the pointer exits the view.
+    /// </summary>
+    public event EventHandler<PointerEventArgs>? PointerLeave;
 
     /// <summary>
     /// Event raised when the scroll wheel moves.
@@ -219,7 +227,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnClick(ClickEventArgs e)
     {
-        DispatchPointerEvent(e, position => new(position, e.Button), (view, args) => view.OnClick(args));
+        DispatchPointerEvent(e, (view, args) => view.OnClick(args));
         if (!e.Handled)
         {
             Click?.Invoke(this, e);
@@ -227,9 +235,44 @@ public abstract class View : IView
     }
 
     /// <inheritdoc/>
+    public virtual void OnPointerMove(PointerMoveEventArgs e)
+    {
+        var previousTarget = GetChildAt(e.PreviousPosition);
+        var currentTarget = GetChildAt(e.Position);
+        if (currentTarget != previousTarget && previousTarget is not null)
+        {
+            DispatchPointerEvent(previousTarget, e, (view, args) => view.OnPointerMove(args));
+            if (e.Handled)
+            {
+                return;
+            }
+        }
+
+        if (currentTarget is not null)
+        {
+            DispatchPointerEvent(currentTarget, e, (view, args) => view.OnPointerMove(args));
+            if (e.Handled)
+            {
+                return;
+            }
+        }
+
+        var wasPointerInBounds = ActualBounds.ContainsPoint(e.PreviousPosition);
+        var isPointerInBounds = ActualBounds.ContainsPoint(e.Position);
+        if (isPointerInBounds && !wasPointerInBounds)
+        {
+            PointerEnter?.Invoke(this, e);
+        }
+        else if (!isPointerInBounds && wasPointerInBounds)
+        {
+            PointerLeave?.Invoke(this, e);
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void OnWheel(WheelEventArgs e)
     {
-        DispatchPointerEvent(e, position => new(position, e.Direction), (view, args) => view.OnWheel(args));
+        DispatchPointerEvent(e, (view, args) => view.OnWheel(args));
         if (!e.Handled)
         {
             Wheel?.Invoke(this, e);
@@ -408,18 +451,24 @@ public abstract class View : IView
     { 
     }
 
-    private void DispatchPointerEvent<T>(T eventArgs, Func<Vector2, T> cloneWithPosition, Action<IView, T> dispatch) where T : PointerEventArgs
+    private void DispatchPointerEvent<T>(T eventArgs, Action<IView, T> dispatch)
+        where T : PointerEventArgs, IOffsettable<T>
     {
         var child = GetChildAt(eventArgs.Position);
         if (child is not null)
         {
-            var childCursorPosition = eventArgs.Position - child.Position;
-            var childArgs = cloneWithPosition(childCursorPosition);
-            dispatch(child.View, childArgs);
-            if (childArgs.Handled)
-            {
-                eventArgs.Handled = true;
-            }
+            DispatchPointerEvent(child, eventArgs, dispatch);
+        }
+    }
+
+    private static void DispatchPointerEvent<T>(ViewChild child, T eventArgs, Action<IView, T> dispatch)
+        where T : PointerEventArgs, IOffsettable<T>
+    {
+        T childArgs = (eventArgs as IOffsettable<T>).Offset(-child.Position);
+        dispatch(child.View, childArgs);
+        if (childArgs.Handled)
+        {
+            eventArgs.Handled = true;
         }
     }
 

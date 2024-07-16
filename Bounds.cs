@@ -7,7 +7,7 @@ namespace SupplyChain.UI;
 /// </summary>
 /// <param name="Position">The top-left position.</param>
 /// <param name="Size">The width and height.</param>
-public record Bounds(Vector2 Position, Vector2 Size)
+public record Bounds(Vector2 Position, Vector2 Size) : IOffsettable<Bounds>
 {
     /// <summary>
     /// Empty bounds, used for invalid results.

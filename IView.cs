@@ -183,6 +183,16 @@ public interface IView
     void OnClick(ClickEventArgs e);
 
     /// <summary>
+    /// Called when a pointer movement related to this view occurs.
+    /// </summary>
+    /// <remarks>
+    /// This can either be the pointer entering the view, leaving the view, or moving within the view. The method is
+    /// used to trigger events such as <see cref="View.PointerEnter"/> and <see cref="View.PointerLeave"/>.
+    /// </remarks>
+    /// <param name="e">The event data.</param>
+    void OnPointerMove(PointerMoveEventArgs e);
+
+    /// <summary>
     /// Called when a wheel event is received within this view's bounds.
     /// </summary>
     /// <param name="e">The event data.</param>
