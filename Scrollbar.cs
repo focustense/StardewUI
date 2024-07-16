@@ -101,6 +101,9 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
             Margin = new(Left: 2, Top: 2, Bottom: 8),
             Background = trackSprite,
             Content = thumb,
+            ShadowAlpha = 0.4f,
+            ShadowCount = 2,
+            ShadowOffset = new(-5, 5),
         };
         track.Click += Track_Click;
         var lane = new Lane()

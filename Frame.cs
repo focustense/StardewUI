@@ -55,6 +55,26 @@ public class Frame : View
     public Alignment HorizontalContentAlignment { get; set; } = Alignment.Start;
 
     /// <summary>
+    /// Alpha value for the shadow. If set to the default of zero, no shadow will be drawn.
+    /// </summary>
+    public float ShadowAlpha { get; set; } = 0.0f;
+
+    /// <summary>
+    /// Number of shadows to draw if <see cref="ShadowAlpha"/> is non-zero.
+    /// </summary>
+    /// <remarks>
+    /// While rare, some game sprites are supposed to be drawn with multiple stacked shadows. If this number is higher
+    /// than the default of <c>1</c>, shadows will be drawn stacked with the offset repeatedly applied.
+    /// </remarks>
+    public int ShadowCount { get; set; } = 1;
+
+    /// <summary>
+    /// Offset to draw the sprite shadow, which is a second copy of the <see cref="Background"/> drawn entirely black.
+    /// Shadows will not be visible unless <see cref="ShadowAlpha"/> is non-zero.
+    /// </summary>
+    public Vector2 ShadowOffset { get; set; }
+
+    /// <summary>
     /// Specifies how to align the <see cref="Content"/> vertically within the frame's area. Only has an effect if the
     /// frame's content area is larger than the content size, i.e. when <see cref="LayoutParameters.Height"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
@@ -93,6 +113,15 @@ public class Frame : View
         using (b.SaveTransform())
         {
             b.Translate(BorderThickness.Left, BorderThickness.Top);
+            if (ShadowAlpha > 0 && ShadowCount >= 1 && backgroundSlice is not null)
+            {
+                using var _ = b.SaveTransform();
+                for (int i = 0; i < ShadowCount; i++)
+                {
+                    b.Translate(ShadowOffset);
+                    backgroundSlice.Draw(b, new(Color.Black, ShadowAlpha));
+                }
+            }
             backgroundSlice?.Draw(b);
         }
         borderSlice?.Draw(b);
