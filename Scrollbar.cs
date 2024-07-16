@@ -80,9 +80,9 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
 
     protected override Lane CreateView()
     {
-        upButton = CreateButton(upSprite, 48, 48);
+        upButton = CreateButton("ScrollBackButton", upSprite, 48, 48);
         upButton.Click += UpButton_Click;
-        downButton = CreateButton(downSprite, 48, 48);
+        downButton = CreateButton("ScrollForwardButton", downSprite, 48, 48);
         downButton.Click += DownButton_Click;
         thumb = new()
         {
@@ -212,10 +212,11 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
 
     // Other UI
 
-    private static Image CreateButton(Sprite sprite, int width, int height)
+    private static Image CreateButton(string name, Sprite sprite, int width, int height)
     {
         var button = new Image()
         {
+            Name = name,
             Layout = LayoutParameters.FixedSize(width, height),
             HorizontalAlignment = Alignment.Middle,
             VerticalAlignment = Alignment.Middle,
