@@ -92,6 +92,11 @@ public interface IView
     Vector2 OuterSize { get; }
 
     /// <summary>
+    /// Whether or not this view supports text input and should start receiving keyboard characters when clicked.
+    /// </summary>
+    //bool ReceivesKeyboardInput { get; }
+
+    /// <summary>
     /// The user-defined tags for this view.
     /// </summary>
     Tags Tags { get; }

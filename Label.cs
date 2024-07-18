@@ -152,12 +152,15 @@ public class Label : View
         {
             var sb = new StringBuilder();
             var remainingWidth = availableWidth;
+            // Track isFirstWord explicitly instead of checking sb.Length == 0 because the first "word" can be empty when
+            // there is a leading space - and leading spaces should actually render, it's not our job to trim here.
+            bool isFirstWord = true;
             foreach (var word in line)
             {
                 var wordWidth = Font.MeasureString(word).X;
-                if (sb.Length == 0 || remainingWidth >= wordWidth + spaceWidth)
+                if (isFirstWord || remainingWidth >= wordWidth + spaceWidth)
                 {
-                    if (sb.Length > 0)
+                    if (!isFirstWord)
                     {
                         sb.Append(' ');
                         remainingWidth -= spaceWidth;
@@ -165,8 +168,17 @@ public class Label : View
                 }
                 else
                 {
-                    maxLineWidth = MathF.Max(maxLineWidth, availableWidth - remainingWidth);
-                    lines.Add(sb.ToString());
+                    var fittedLine = sb.ToString();
+                    // It might seem mathematically that we can use "availableWidth - remainingWidth" as the line width
+                    // here, but in fact this is inaccurate because of kerning. Instead we need to re-measure the entire
+                    // line in order to get an accurate width.
+                    // Technically, this means a line with many spaces might get broken earlier than it needs to be,
+                    // possibly with the resulting label using more lines than it needs to use. In practice, this tends
+                    // to be a lot less noticeable of an issue than having a wrong final content size on single-line
+                    // text (where the more spaces are added, the bigger a "phantom margin" appears between the text and
+                    // whatever follows it in the layout).
+                    maxLineWidth = MathF.Max(maxLineWidth, Font.MeasureString(fittedLine).X);
+                    lines.Add(fittedLine);
                     if (MaxLines > 0 && lines.Count == MaxLines)
                     {
                         return;
@@ -176,9 +188,11 @@ public class Label : View
                 }
                 sb.Append(word);
                 remainingWidth -= wordWidth;
+                isFirstWord = false;
             }
-            maxLineWidth = MathF.Max(maxLineWidth, availableWidth - remainingWidth);
-            lines.Add(sb.ToString());
+            var lastLine = sb.ToString();
+            maxLineWidth = MathF.Max(maxLineWidth, Font.MeasureString(lastLine).X);
+            lines.Add(lastLine);
         }
     }
 

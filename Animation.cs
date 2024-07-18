@@ -71,6 +71,17 @@ public class Animator<T, V> : IAnimator where T : class
     /// </summary>
     public bool IsReversing { get; private set; }
 
+    /// <summary>
+    /// Whether or not the animation should automatically loop back to the beginning when finished.
+    /// </summary>
+    public bool Loop { get; set; } = false;
+
+    /// <summary>
+    /// Whether or not to pause animation. If <c>true</c>, the animator will hold at the current position and not
+    /// progress until set to <c>false</c> again. Does not affect the <see cref="CurrentAnimation"/>.
+    /// </summary>
+    public bool Paused { get; set; }
+
     private readonly WeakReference<T> targetRef;
     private readonly Func<T, V> getValue;
     private readonly Lerp<V> lerpValue;
@@ -107,6 +118,23 @@ public class Animator<T, V> : IAnimator where T : class
     }
 
     /// <summary>
+    /// Jumps to the first frame of the current animation, or the last frame if <see cref="IsReversing"/> is
+    /// <c>true</c>.
+    /// </summary>
+    /// <remarks>
+    /// Has no effect unless <see cref="CurrentAnimation"/> has been set by a previous call to one of the
+    /// <see cref="Start"/> overloads.
+    /// </remarks>
+    public void Reset()
+    {
+        if (CurrentAnimation is null || !targetRef.TryGetTarget(out var target))
+        {
+            return;
+        }
+        setValue(target, IsReversing ? CurrentAnimation.EndValue : CurrentAnimation.StartValue);
+    }
+
+    /// <summary>
     /// Reverses the current animation, so that it gradually returns to the animation's
     /// <see cref="Animation{T}.StartValue"/>.
     /// </summary>
@@ -132,7 +160,7 @@ public class Animator<T, V> : IAnimator where T : class
         }
         setValue(target, animation.StartValue);
         CurrentAnimation = animation;
-        IsReversing = false;
+        elapsed = IsReversing ? animation.Duration : TimeSpan.Zero;
     }
 
     /// <summary>
@@ -163,18 +191,38 @@ public class Animator<T, V> : IAnimator where T : class
     }
 
     /// <summary>
+    /// Completely stops animating, removing the <see cref="CurrentAnimation"/> and resetting animation state such as
+    /// <see cref="Reverse"/> and <see cref="Paused"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This tries to put the animator in the same state it was in when first created. To preserve the current animation
+    /// but pause progress and be able to resume later, set <see cref="Paused"/> instead.
+    /// </para>
+    /// <para>
+    /// Calling this does <b>not</b> reset the animated object to the animation's starting value. To do this, call
+    /// <see cref="Reset"/> before calling <see cref="Stop"/> (not after, as <see cref="Reset"/> has no effect once the
+    /// <see cref="CurrentAnimation"/> is cleared).
+    /// </para>
+    /// </remarks>
+    public void Stop()
+    {
+        CurrentAnimation = null;
+        IsReversing = false;
+        Paused = false;
+    }
+
+    /// <summary>
     /// Continues animating in the current direction.
     /// </summary>
     /// <param name="elapsed">Time elapsed since last tick.</param>
     public void Tick(TimeSpan elapsed)
     {
-        if (!targetRef.TryGetTarget(out var target))
-        {
-            return;
-        }
-        if (CurrentAnimation is null
-            || (IsReversing && this.elapsed == TimeSpan.Zero)
-            || (!IsReversing && this.elapsed >= CurrentAnimation.Duration))
+        if (Paused
+            || !targetRef.TryGetTarget(out var target)
+            || CurrentAnimation is null
+            || (!Loop && IsReversing && this.elapsed == TimeSpan.Zero)
+            || (!Loop && !IsReversing && this.elapsed >= CurrentAnimation.Duration))
         {
             return;
         }
@@ -183,7 +231,7 @@ public class Animator<T, V> : IAnimator where T : class
             this.elapsed -= elapsed;
             if (this.elapsed < TimeSpan.Zero)
             {
-                this.elapsed = TimeSpan.Zero;
+                this.elapsed = Loop ? CurrentAnimation.Duration : TimeSpan.Zero;
             }
         }
         else
@@ -191,7 +239,7 @@ public class Animator<T, V> : IAnimator where T : class
             this.elapsed += elapsed;
             if (this.elapsed >= CurrentAnimation.Duration)
             {
-                this.elapsed = CurrentAnimation.Duration;
+                this.elapsed = Loop ? TimeSpan.Zero : CurrentAnimation.Duration;
             }
         }
         var progress = CurrentAnimation.Duration > TimeSpan.Zero ? this.elapsed / CurrentAnimation.Duration : 0;
