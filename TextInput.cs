@@ -143,6 +143,15 @@ public class TextInput : View
         set => SetText(value);
     }
 
+    // A very small positive offset we add to the search position when trying to move the caret to the mouse cursor.
+    // In general, the caret should always move BEFORE the character that was clicked on; however, this has a tendency
+    // to "overshoot" if the user tries to click between two characters (as many are accustomed to doing). To
+    // compensate, we shift the position slightly to the right.
+    //
+    // Note: We have to be careful not to overdo this in case of a very thin character, like "i" or "l". If the offset
+    // is bigger or almost as big as the actual character width, we'll just miss it entirely.
+    private const float CARET_SEARCH_OFFSET = 4.0f;
+
     private readonly Image caret;
     private readonly Animator<Image, Visibility> caretBlinkAnimator;
     private readonly Frame frame;
@@ -252,7 +261,8 @@ public class TextInput : View
         }
         else
         {
-            MoveCaretToCursor(cursorPosition);
+            var searchOrigin = new Vector2(BorderThickness.Left - CARET_SEARCH_OFFSET, BorderThickness.Top);
+            MoveCaretToCursor(cursorPosition - searchOrigin);
             caretBlinkAnimator.Start(Visibility.Visible, Visibility.Hidden, TimeSpan.FromSeconds(1));
             Game1.keyboardDispatcher.Subscriber = textInputSubscriber;
         }
@@ -331,7 +341,37 @@ public class TextInput : View
 
     private void MoveCaretToCursor(Vector2 position)
     {
-
+        if (position.X < 0 || position.X > ContentSize.X || Text.Length == 0)
+        {
+            return;
+        }
+        // Taking into account proportional widths, bearings, kernings, etc., we know very little about the relationship
+        // of pixel positions to character positions and don't want to reimplement the entire font system.
+        // A reasonably (?) fast solution should be to actually measure partial strings, using a binary search on the
+        // length of the before/after string.
+        var (previousCharacterCount, labelText, labelOffset) = position.X < labelBeforeCursor.OuterSize.X
+            ? (0, labelBeforeCursor.Text, position.X)
+            : (labelBeforeCursor.Text.Length, labelAfterCursor.Text, position.X - labelBeforeCursor.OuterSize.X);
+        var searchStart = 0;
+        var searchEnd = labelText.Length;
+        var searchMid = 0;
+        while (searchStart < searchEnd)
+        {
+            searchMid = (int)(MathF.Ceiling((searchStart + searchEnd) / 2.0f));
+            var searchText = labelText[0..searchMid];
+            var textWidth = Font.MeasureString(searchText).X;
+            if (labelOffset < textWidth)
+            {
+                searchEnd = Math.Min(searchEnd - 1, searchMid);
+            }
+            else
+            {
+                searchStart = Math.Max(searchStart + 1, searchMid);
+            }
+        }
+        var finalWidth = Font.MeasureString(labelText[0..searchMid]).X;
+        var finalIndex = searchStart;
+        CaretPosition = previousCharacterCount + finalIndex;
     }
 
     private void OnTextChanged()
