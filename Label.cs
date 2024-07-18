@@ -181,6 +181,12 @@ public class Label : View
                     lines.Add(fittedLine);
                     if (MaxLines > 0 && lines.Count == MaxLines)
                     {
+                        // There's a chance that adding the ellipsis could make the line too long; we're ignoring that
+                        // for the time being. If it causes serious issues later on, the fix would be to trim 1-2
+                        // characters at a time and re-measure until the line is short enough.
+                        // In practice, this is unlikely to happen because of the previous issue - any line that
+                        // actually spaces will break slightly sooner than the true formatted width dictates.
+                        lines[^1] += " ...";
                         return;
                     }
                     sb.Clear();
