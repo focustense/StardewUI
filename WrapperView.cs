@@ -66,6 +66,8 @@ public abstract class WrapperView<T> : IView where T : IView
         });
     }
 
+    // View methods
+
     public virtual void Draw(ISpriteBatch b)
     {
         Root.Draw(b);
