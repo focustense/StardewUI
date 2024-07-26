@@ -263,7 +263,7 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
     private void Update(Lane root)
     {
         SyncVisibility(root);
-        if (Container is null || Container.ScrollSize == 0)
+        if (Container is null)
         {
             return;
         }
