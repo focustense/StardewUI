@@ -98,27 +98,51 @@ public class NineSlice(Sprite sprite)
         {
             fixedEdges *= sliceScale;
         }
-        var centerX = settings?.CenterX is int cx ? cx : left + fixedEdges.Left;
-        var centerY = settings?.CenterY is int cy ? cy : top + fixedEdges.Top;
-        var innerWidth = bounds.Right - fixedEdges.Right - centerX;
-        var innerHeight = bounds.Bottom - fixedEdges.Bottom - centerY;
+        var centerStartX = left + fixedEdges.Left;
+        var centerStartY = top + fixedEdges.Top;
+        var centerEndX = bounds.Right - fixedEdges.Right;
+        var centerEndY = bounds.Bottom - fixedEdges.Bottom;
+        if (settings?.CenterX is int cx)
+        {
+            if (settings.CenterXPosition == SliceCenterPosition.Start)
+            {
+                centerStartX = cx;
+            }
+            else
+            {
+                centerEndX = cx;
+            }
+        }
+        if (settings?.CenterY is int cy)
+        {
+            if (settings.CenterYPosition == SliceCenterPosition.Start)
+            {
+                centerStartY = cy;
+            }
+            else
+            {
+                centerEndY = cy;
+            }
+        }
+        var innerWidth = centerEndX - centerStartX;
+        var innerHeight = centerEndY - centerStartY;
         var startRight = bounds.Right - fixedEdges.Right;
         var startBottom = bounds.Bottom - fixedEdges.Bottom;
         return new Rectangle[3, 3]
         {
             {
                 new(left, top, fixedEdges.Left, fixedEdges.Top),
-                new(centerX, top, innerWidth, fixedEdges.Top),
+                new(centerStartX, top, innerWidth, fixedEdges.Top),
                 new(startRight, top, fixedEdges.Right, fixedEdges.Top),
             },
             {
-                new(left, centerY, fixedEdges.Left, innerHeight),
-                new(centerX, centerY, innerWidth, innerHeight),
-                new(startRight, centerY, fixedEdges.Right, innerHeight),
+                new(left, centerStartY, fixedEdges.Left, innerHeight),
+                new(centerStartX, centerStartY, innerWidth, innerHeight),
+                new(startRight, centerStartY, fixedEdges.Right, innerHeight),
             },
             {
                 new(left, startBottom, fixedEdges.Left, fixedEdges.Bottom),
-                new(centerX, startBottom, innerWidth, fixedEdges.Bottom),
+                new(centerStartX, startBottom, innerWidth, fixedEdges.Bottom),
                 new(startRight, startBottom, fixedEdges.Right, fixedEdges.Bottom),
             }
         };

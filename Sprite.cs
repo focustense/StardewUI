@@ -29,4 +29,58 @@ public record Sprite(
 /// and a scale of 2 is used, then a 2x3 border slice would draw as 16x24 (normal 8x16, multiplied by 2).</param>
 /// <param name="EdgesOnly">If <c>true</c>, then only the outer 8 edge segments should be drawn, and the 9th
 /// (horizontal and vertical middle, i.e. "background") segment will be ignored.</param>
-public record SliceSettings(int? CenterX = null, int? CenterY = null, int Scale = 1, bool EdgesOnly = false);
+public record SliceSettings(
+    int? CenterX = null,
+    SliceCenterPosition CenterXPosition = SliceCenterPosition.Start,
+    int? CenterY = null,
+    SliceCenterPosition CenterYPosition = SliceCenterPosition.Start,
+    int Scale = 1,
+    bool EdgesOnly = false);
+
+/// <summary>
+/// Specifies which side the center position of a <see cref="SliceSettings"/> instance is on.
+/// </summary>
+public enum SliceCenterPosition
+{
+    /// <summary>
+    /// The specified center position is the start of the center segment.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The center segment is adjacent to the end segment, and there is a gap between the right/top of the start segment
+    /// and the left/bottom of the center segment.
+    /// </para>
+    /// <example>
+    /// Example of a horizontal center position using this setting:
+    /// <code>
+    /// +---------------------------------------------+
+    /// | [Top Left] XXXXXXX [Top Center] [Top Right] |
+    /// | [Mid Left] XXXXXXX [Mid Center] [Mid Right] |
+    /// | [Bot Left] XXXXXXX [Bot Center] [Bot Right] |
+    /// +---------------------------------------------+
+    /// </code>
+    /// </example>
+    /// </remarks>
+    Start,
+
+    /// <summary>
+    /// The specified center position is the end of the center segment.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The center segment is adjacent to the start segment, and there is a gap between the right/top of the center
+    /// segment and the left/bottom of the end segment.
+    /// </para>
+    /// <example>
+    /// Example of a horizontal center position using this setting:
+    /// <code>
+    /// +---------------------------------------------+
+    /// | [Top Left] [Top Center] XXXXXXX [Top Right] |
+    /// | [Mid Left] [Mid Center] XXXXXXX [Mid Right] |
+    /// | [Bot Left] [Bot Center] XXXXXXX [Bot Right] |
+    /// +---------------------------------------------+
+    /// </code>
+    /// </example>
+    /// </remarks>
+    End,
+}
