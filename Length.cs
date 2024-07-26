@@ -16,8 +16,18 @@ public record Length(LengthType Type, float Value)
     }
 
     /// <summary>
+    /// Creates a new <see cref="Length"/> having <see cref="LengthType.Percent"/> and the specified percent size.
+    /// </summary>
+    /// <param name="value">The length in 100-based percent units (e.g. <c>50.0</c> is 50%).</param>
+    public static Length Percent(float value)
+    {
+        return new(LengthType.Percent, value);
+    }
+
+    /// <summary>
     /// Creates a new <see cref="Length"/> having <see cref="LengthType.Px"/> and the specified pixel size.
     /// </summary>
+    /// <param name="value">The length in pixels.</param>
     public static Length Px(float value)
     {
         return new(LengthType.Px, value);
@@ -54,6 +64,7 @@ public record Length(LengthType Type, float Value)
         return Type switch
         {
             LengthType.Px => Value,
+            LengthType.Percent => availableLength * Value / 100,
             LengthType.Stretch => availableLength,
             LengthType.Content => getContentLength(),
             _ => throw new NotImplementedException($"Invalid length type: {Type}")
@@ -73,6 +84,11 @@ public enum LengthType
     /// Use the exact <see cref="Length.Value"/> specified, in pixels.
     /// </summary>
     Px,
+
+    /// <summary>
+    /// Use the specified <see cref="Length.Value"/> as a percentage of the available width/height.
+    /// </summary>
+    Percent,
 
     /// <summary>
     /// Ignore the specified <see cref="Length.Value"/> and stretch to the full available width/height.

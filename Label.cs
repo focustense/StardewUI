@@ -65,7 +65,6 @@ public class Label : View
     /// |         The quick brown fox jumps          |
     /// |             over the lazy dog              |
     /// +--------------------------------------------+
-    /// test2
     /// </code>
     /// While left-aligned text that is centered in the container looks like:
     /// <code>
