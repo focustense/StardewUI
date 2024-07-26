@@ -22,6 +22,11 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         return new ClipReverter(this, previousRasterizerState, previousRect);
     }
 
+    public void DelegateDraw(Action<SpriteBatch, Vector2> draw)
+    {
+        draw(spriteBatch, transform.Translation);
+    }
+
     public void Draw(
         Texture2D texture,
         Vector2 position,

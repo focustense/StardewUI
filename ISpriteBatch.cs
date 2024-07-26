@@ -19,6 +19,24 @@ public interface ISpriteBatch
     /// <returns>A disposable instance which, when disposed, will revert to the previous clipping state.</returns>
     IDisposable Clip(Rectangle clipRect);
 
+    /// <summary>
+    /// Draws using a delegate action on a concrete <see cref="SpriteBatch"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Delegation is provided as a fallback for game-specific "utilities" that require a <see cref="SpriteBatch"/> and
+    /// are not trivial to reimplement; the method acts as a bridge between the abstract <see cref="ISpriteBatch"/> and
+    /// the concrete-dependent logic.
+    /// </para>
+    /// <para>
+    /// Most view types shouldn't use this; it is only needed for a few niche features like
+    /// <see cref="StardewValley.BellsAndWhistles.SpriteText"/>.
+    /// </para>
+    /// </remarks>
+    /// <param name="draw">A function that accepts an underlying <see cref="SpriteBatch"/> as well as the transformed
+    /// (global/screen) position and draws using that position as the origin (top left).</param>
+    void DelegateDraw(Action<SpriteBatch, Vector2> draw);
+
     /// <inheritdoc cref="SpriteBatch.Draw(Texture2D, Rectangle, Rectangle?, Color, float, Vector2, SpriteEffects, float)"/>
     void Draw(
         Texture2D texture,

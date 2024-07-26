@@ -39,6 +39,15 @@ public class Label : View
     }
 
     /// <summary>
+    /// Whether to draw the text in a bold style.
+    /// </summary>
+    /// <remarks>
+    /// Current implementation is based on overdraw, as <see cref="SpriteFont"/> does not support font variants. Changing
+    /// this setting will not affect size/layout.
+    /// </remarks>
+    public bool Bold { get; set; }
+
+    /// <summary>
     /// The text color.
     /// </summary>
     public Color Color { get; set; } = Game1.textColor; // Not dirty-tracked because it doesn't affect layout.
@@ -111,6 +120,12 @@ public class Label : View
         {
             var x = GetAlignedLeft(line);
             b.DrawString(Font, line, new(x, y), Color);
+            if (Bold)
+            {
+                b.DrawString(Font, line, new(x + 1, y), Color);
+                b.DrawString(Font, line, new(x, y + 1), Color);
+                b.DrawString(Font, line, new(x + 1, y + 1), Color);
+            }
             y += Font.LineSpacing;
         }
     }
