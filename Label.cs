@@ -159,7 +159,6 @@ public class Label : View
             .Select(line => line.Split(' '))
             .ToList();
         // Greedy breaking algorithm. Knuth *probably* isn't necessary in a use case like this?
-        var spaceWidth = Font.MeasureString(" ").X;
         maxLineWidth = 0.0f;
         lines = [];
         foreach (var line in rawLines)
@@ -172,12 +171,12 @@ public class Label : View
             foreach (var word in line)
             {
                 var wordWidth = Font.MeasureString(word).X;
-                if (isFirstWord || remainingWidth >= wordWidth + spaceWidth)
+                if (isFirstWord || remainingWidth >= wordWidth + Font.Spacing)
                 {
                     if (!isFirstWord)
                     {
                         sb.Append(' ');
-                        remainingWidth -= spaceWidth;
+                        remainingWidth -= Font.Spacing;
                     }
                 }
                 else
