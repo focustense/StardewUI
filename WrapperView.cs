@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <inheritdoc cref="WrapperView{T}"/>
 public abstract class WrapperView : WrapperView<IView> { }

@@ -6,7 +6,7 @@ using StardewValley;
 using StardewValley.Menus;
 using System.Diagnostics;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Generic menu implementation based on a root <see cref="IView"/>.

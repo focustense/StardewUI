@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Event raised when a pointer moves relative to some view.

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Represents some arbitrary UI element or layout.

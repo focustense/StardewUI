@@ -1,4 +1,4 @@
-﻿namespace SupplyChain.UI;
+﻿namespace StardewUI;
 
 /// <summary>
 /// Denotes a view or other UI element that can be the active <see cref="StardewValley.IKeyboardSubscriber"/>. Allows

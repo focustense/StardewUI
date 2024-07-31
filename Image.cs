@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// A view that draws a sprite, scaled to the layout size.

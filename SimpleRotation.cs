@@ -1,4 +1,4 @@
-﻿namespace SupplyChain.UI;
+﻿namespace StardewUI;
 
 /// <summary>
 /// Types of rotations that are considered to be "simple", i.e. those that only transpose pixels and are therefore fast

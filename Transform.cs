@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Global transform applied to an <see cref="ISpriteBatch"/>.

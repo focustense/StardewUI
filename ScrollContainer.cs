@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Renders inner content clipped to a boundary and with a modifiable scroll offset.

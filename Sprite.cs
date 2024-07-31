@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Definition for a scalable sprite.

@@ -3,7 +3,7 @@ using StardewModdingAPI;
 using System;
 using System.Diagnostics;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Base class for typical widgets wanting to implement <see cref="IView"/>.

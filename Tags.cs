@@ -1,4 +1,4 @@
-﻿namespace SupplyChain.UI;
+﻿namespace StardewUI;
 
 /// <summary>
 /// Typesafe heterogeneous container for associating arbitrary data with a view or other UI object.

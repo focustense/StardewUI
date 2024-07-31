@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System.Text;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// A view that renders a read-only text string.

@@ -1,4 +1,4 @@
-﻿namespace SupplyChain.UI;
+﻿namespace StardewUI;
 
 using Microsoft.Xna.Framework;
 using System.Diagnostics.CodeAnalysis;

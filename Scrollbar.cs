@@ -2,7 +2,7 @@
 using StardewModdingAPI.Events;
 using StardewValley;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Controls the scrolling of a <see cref="ScrollContainer"/>.

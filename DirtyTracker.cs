@@ -1,4 +1,4 @@
-﻿namespace SupplyChain.UI;
+﻿namespace StardewUI;
 
 /// <summary>
 /// Convenience class for tracking properties that have changed, i.e. for layout dirty checking.

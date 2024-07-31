@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Event raised when a UI element is clicked by any source (mouse, gamepad, etc.).

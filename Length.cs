@@ -1,4 +1,4 @@
-﻿namespace SupplyChain.UI;
+﻿namespace StardewUI;
 
 /// <summary>
 /// Specifies how to calculate the length of a single dimension (width or height).

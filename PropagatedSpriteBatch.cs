@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Sprite batch wrapper with transform propagation.

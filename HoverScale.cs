@@ -1,4 +1,4 @@
-﻿namespace SupplyChain.UI;
+﻿namespace StardewUI;
 
 /// <summary>
 /// Standalone scaling behavior that can be attached to any <see cref="Image"/>, causing it to scale up to a specified

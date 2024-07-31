@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley.BellsAndWhistles;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// Draws banner-style text with an optional background.

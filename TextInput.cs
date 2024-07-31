@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// A text input field that allows typing from a physical or virtual keyboard.

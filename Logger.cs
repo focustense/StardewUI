@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 internal static class Logger
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// The result of a <see cref="IView.FocusSearch"/>. Identifies the specific view/position found, as well as the path

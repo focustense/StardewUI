@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace SupplyChain.UI;
+namespace StardewUI;
 
 /// <summary>
 /// List wrapper that tracks whether changes have been made.
