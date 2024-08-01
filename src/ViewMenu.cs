@@ -113,7 +113,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
         var viewBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(origin.ToVector2()));
         view.Draw(viewBatch);
 
-        var tooltip = hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => !string.IsNullOrEmpty(tooltip));
+        var tooltip = FormatTooltip(hoverPath);
         if (!string.IsNullOrEmpty(tooltip))
         {
             drawToolTip(b, tooltip, null, null);
@@ -229,6 +229,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
         var origin = new Point(xPositionOnScreen, yPositionOnScreen);
         var localPosition = (mousePosition - origin).ToVector2();
         view.OnDrop(new(localPosition));
+    }
+
+    protected virtual string? FormatTooltip(IEnumerable<ViewChild> path)
+    {
+        return hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => !string.IsNullOrEmpty(tooltip));
     }
 
     private static ViewChild? GetDefaultFocus(ViewChild parent)
