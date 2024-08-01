@@ -230,7 +230,7 @@ public class Lane : View
 
     protected override bool IsContentDirty()
     {
-        return orientation.IsDirty || children.IsDirty || children.Any(child => child.IsDirty());
+        return orientation.IsDirty || children.IsDirty || visibleChildPositions.Any(child => child.View.IsDirty());
     }
 
     protected override void OnDrawContent(ISpriteBatch b)
