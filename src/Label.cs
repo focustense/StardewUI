@@ -161,6 +161,7 @@ public class Label : View
         // Greedy breaking algorithm. Knuth *probably* isn't necessary in a use case like this?
         maxLineWidth = 0.0f;
         lines = [];
+        var spacing = Font.MeasureString(" ").X;
         foreach (var line in rawLines)
         {
             var sb = new StringBuilder();
@@ -171,12 +172,12 @@ public class Label : View
             foreach (var word in line)
             {
                 var wordWidth = Font.MeasureString(word).X;
-                if (isFirstWord || remainingWidth >= wordWidth + Font.Spacing)
+                if (isFirstWord || remainingWidth >= wordWidth + spacing)
                 {
                     if (!isFirstWord)
                     {
                         sb.Append(' ');
-                        remainingWidth -= Font.Spacing;
+                        remainingWidth -= spacing;
                     }
                 }
                 else
