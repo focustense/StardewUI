@@ -86,6 +86,7 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         downButton.Click += DownButton_Click;
         thumb = new()
         {
+            Name = "ScrollbarThumb",
             Layout = LayoutParameters.FitContent(),
             HorizontalAlignment = Alignment.Middle,
             VerticalAlignment = Alignment.Middle,
@@ -98,6 +99,7 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         thumb.DragEnd += Thumb_DragEnd;
         track = new()
         {
+            Name = "ScrollbarTrack",
             Margin = new(Left: 2, Top: 2, Bottom: 8),
             Background = trackSprite,
             Content = thumb,
