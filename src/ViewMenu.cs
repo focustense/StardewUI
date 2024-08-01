@@ -41,12 +41,19 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
 
         view = CreateView();
         var viewportSize = GetViewportSize();
-        var availableMenuSize = viewportSize.ToVector2() - (gutter?? DefaultGutter).Total;
+        var availableMenuSize = viewportSize.ToVector2() - (gutter ?? DefaultGutter).Total;
         view.Measure(availableMenuSize);
         width = (int)MathF.Round(view.OuterSize.X);
         height = (int)MathF.Round(view.OuterSize.Y);
         xPositionOnScreen = viewportSize.X / 2 - width / 2;
         yPositionOnScreen = viewportSize.Y / 2 - height / 2;
+
+        var initialFocus = GetDefaultFocus(new(view, Vector2.Zero));
+        if (initialFocus is not null)
+        {
+            var focusPosition = initialFocus.Center();
+            Game1.setMousePosition(new Point(xPositionOnScreen, yPositionOnScreen) + focusPosition, true);
+        }
 
         wasHudDisplayed = Game1.displayHUD;
         Game1.displayHUD = false;
@@ -222,6 +229,23 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
         var origin = new Point(xPositionOnScreen, yPositionOnScreen);
         var localPosition = (mousePosition - origin).ToVector2();
         view.OnDrop(new(localPosition));
+    }
+
+    private static ViewChild? GetDefaultFocus(ViewChild parent)
+    {
+        if (parent.View.IsFocusable)
+        {
+            return parent;
+        }
+        foreach (var child in parent.View.GetChildren())
+        {
+            var childFocus = GetDefaultFocus(child.Offset(parent.Position));
+            if (childFocus is not null)
+            {
+                return childFocus;
+            }
+        }
+        return null;
     }
 
     private static Point GetViewportSize()
