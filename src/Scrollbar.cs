@@ -273,9 +273,8 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         if (Container.Orientation == Orientation.Vertical)
         {
             root.Orientation = Orientation.Vertical;
-            root.HorizontalContentAlignment = track.HorizontalContentAlignment = Alignment.Middle;
-            root.VerticalContentAlignment = track.VerticalContentAlignment = Alignment.Start;
             track.Layout = new() { Width = Length.Content(), Height = Length.Stretch() };
+            track.Margin = new(Left: 14, Top: 2, Bottom: 8);
             upButton.Rotation = null;
             downButton.Rotation = null;
             thumb.Layout = new() { Width = Length.Px(24), Height = Length.Px(40) };
@@ -284,9 +283,8 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         else
         {
             root.Orientation = Orientation.Horizontal;
-            root.HorizontalContentAlignment = track.HorizontalContentAlignment = Alignment.Start;
-            root.VerticalContentAlignment = track.VerticalContentAlignment = Alignment.Middle;
             track.Layout = new() { Width = Length.Stretch(), Height = Length.Content() };
+            track.Margin = new(Left: 2, Top: 14, Bottom: 8);
             upButton.Rotation = SimpleRotation.QuarterCounterclockwise; // Left
             downButton.Rotation = SimpleRotation.QuarterCounterclockwise; // Right
             thumb.Layout = new() { Width = Length.Px(40), Height = Length.Px(24) };
