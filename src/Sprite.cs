@@ -16,7 +16,13 @@ public record Sprite(
     Texture2D Texture,
     Rectangle? SourceRect = null,
     Edges? FixedEdges = null,
-    SliceSettings? SliceSettings = null);
+    SliceSettings? SliceSettings = null)
+{
+    /// <summary>
+    /// The size (width/height) of the sprite, in pixels.
+    /// </summary>
+    public Point Size => SourceRect?.Size ?? Texture.Bounds.Size;
+}
 
 /// <summary>
 /// Additional nine-slice settings for dealing with certain "unique" structures.

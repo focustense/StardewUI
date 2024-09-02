@@ -50,6 +50,15 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// <summary>
     /// Creates a <see cref="LayoutParameters"/> with fixed dimensions, and no other constraints.
     /// </summary>
+    /// <param name="size">The layout size, in pixels.</param>
+    public static LayoutParameters FixedSize(Point size)
+    {
+        return FixedSize(size.X, size.Y);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="LayoutParameters"/> with fixed dimensions, and no other constraints.
+    /// </summary>
     /// <param name="width">The layout width, in pixels.</param>
     /// <param name="height">The layout height, in pixels.</param>
     public static LayoutParameters FixedSize(float width, float height)
