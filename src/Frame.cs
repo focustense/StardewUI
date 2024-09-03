@@ -14,6 +14,11 @@ public class Frame : View
     public Sprite? Background { get; set; }
 
     /// <summary>
+    /// Tint color for the <see cref="Background"/> image.
+    /// </summary>
+    public Color BackgroundTint { get; set; } = Color.White;
+
+    /// <summary>
     /// The border sprite to draw for this frame.
     /// </summary>
     /// <remarks>
@@ -122,7 +127,7 @@ public class Frame : View
                     backgroundSlice.Draw(b, new(Color.Black, ShadowAlpha));
                 }
             }
-            backgroundSlice?.Draw(b);
+            backgroundSlice?.Draw(b, BackgroundTint);
         }
         borderSlice?.Draw(b);
     }
