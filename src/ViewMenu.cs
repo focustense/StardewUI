@@ -28,6 +28,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
 
     private static readonly Edges DefaultGutter = new(100, 50);
 
+    private readonly Edges? gutter;
     private readonly T view;
     private readonly bool wasHudDisplayed;
 
@@ -39,14 +40,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
     {
         Game1.playSound("bigSelect");
 
+        this.gutter = gutter;
         view = CreateView();
-        var viewportSize = GetViewportSize();
-        var availableMenuSize = viewportSize.ToVector2() - (gutter ?? DefaultGutter).Total;
-        view.Measure(availableMenuSize);
-        width = (int)MathF.Round(view.OuterSize.X);
-        height = (int)MathF.Round(view.OuterSize.Y);
-        xPositionOnScreen = viewportSize.X / 2 - width / 2;
-        yPositionOnScreen = viewportSize.Y / 2 - height / 2;
+        MeasureAndCenter();
 
         var initialFocus = GetDefaultFocus(new(view, Vector2.Zero));
         if (initialFocus is not null)
@@ -107,7 +103,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * DimmingAmount);
         }
 
-        view.Measure(new(width, height));
+        MeasureAndCenter();
 
         var origin = new Point(xPositionOnScreen, yPositionOnScreen);
         var viewBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(origin.ToVector2()));
@@ -317,6 +313,17 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
     private static void LogFocusSearchResult(ViewChild? result)
     {
         Logger.Log($"Found: {result?.View.Name} ({result?.View.GetType().Name}) at {result?.Position}", LogLevel.Info);
+    }
+
+    private void MeasureAndCenter()
+    {
+        var viewportSize = GetViewportSize();
+        var availableMenuSize = viewportSize.ToVector2() - (gutter ?? DefaultGutter).Total;
+        view.Measure(availableMenuSize);
+        width = (int)MathF.Round(view.OuterSize.X);
+        height = (int)MathF.Round(view.OuterSize.Y);
+        xPositionOnScreen = viewportSize.X / 2 - width / 2;
+        yPositionOnScreen = viewportSize.Y / 2 - height / 2;
     }
 
     private void OnPageable(Action<IPageable> action)
