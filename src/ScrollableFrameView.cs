@@ -185,6 +185,7 @@ public class ScrollableFrameView : WrapperView
             BackgroundBorderThickness =
                 (UiSprites.BannerBackground.FixedEdges ?? Edges.NONE)
                 * (UiSprites.BannerBackground.SliceSettings?.Scale ?? 1),
+            Visibility = Visibility.Hidden,
         };
         contentContainer = new ScrollContainer()
         {
