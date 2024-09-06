@@ -1,4 +1,6 @@
-﻿namespace StardewUI;
+﻿using StardewValley;
+
+namespace StardewUI;
 
 /// <summary>
 /// Included game sprites that are required for many UI/menu widgets.
@@ -15,6 +17,22 @@ public static class UiSprites
             FixedEdges: new(12, 0),
             SliceSettings: new(Scale: 4)
         );
+
+    /// <summary>
+    /// A caret-style directional arrow pointing left.
+    /// </summary>
+    /// <remarks>
+    /// Can be used to show expanded/collapsed state, or illustrate a movement direction.
+    /// </remarks>
+    public static Sprite CaretLeft => new(Game1.mouseCursors, SourceRect: new(480, 96, 24, 32));
+
+    /// <summary>
+    /// A caret-style directional arrow pointing right.
+    /// </summary>
+    /// <remarks>
+    /// Can be used to show expanded/collapsed state, or illustrate a movement direction.
+    /// </remarks>
+    public static Sprite CaretRight => new(Game1.mouseCursors, SourceRect: new(448, 96, 24, 32));
 
     /// <summary>
     /// Border/background sprite for an individual control, such as a button. Less prominent than
