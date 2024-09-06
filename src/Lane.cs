@@ -256,9 +256,13 @@ public class Lane : View
             bool hasSwapOrientationStretch = swapOrientation.Length(child.Layout).Type == LengthType.Stretch;
             if (hasSwapOrientationStretch)
             {
-                swapOrientation.Set(ref childLimits, swapOrientation.Get(childrenSize));
+                var swapLength = swapOrientation.Get(childrenSize);
+                if (swapLength > 0)
+                {
+                    swapOrientation.Set(ref childLimits, swapLength);
+                }
             }
-            child.Measure(limits);
+            child.Measure(childLimits);
             var outerLength = Orientation.Get(child.OuterSize);
             Orientation.Update(ref limits, v => v - outerLength);
             Orientation.Update(ref childrenSize, v => v + outerLength);
