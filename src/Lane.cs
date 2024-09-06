@@ -310,6 +310,12 @@ public class Lane : View
                 }
             }
         }
+
+        if (swapOrientation.Get(childrenSize) == 0)
+        {
+            swapOrientation.Set(ref childrenSize, Children.Max(c => swapOrientation.Get(c.OuterSize)));
+        }
+
         ContentSize = Layout.Resolve(availableSize, () => childrenSize);
         UpdateVisibleChildPositions();
     }
