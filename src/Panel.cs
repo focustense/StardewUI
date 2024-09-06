@@ -92,10 +92,32 @@ public class Panel : View
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);
+        // Any children set to Stretch should wait until non-Stretch children have measured. That
+        // way, they stretch to whatever size the fixed/content children use.
+        // Similar to Lane, we don't attempt to perfectly resolve ambiguities such as having one
+        // child with stretched width and another with stretched height.
+        var deferredChildren = new List<IView>();
         Vector2 maxChildSize = Vector2.Zero;
         foreach (var child in Children)
         {
+            if (child.Layout.Width.Type == LengthType.Stretch || child.Layout.Height.Type == LengthType.Stretch)
+            {
+                // HACK: It's a bit of a cheat, and inconsistent with the way Lane works, but we can resolve *some*
+                // potential ambiguity by incorporating fixed minimum sizes before actually layout out these children.
+                // Minimum sizes aren't used very often, but the typical use case for this hack would be a border or
+                // background image that is meant to scale around content but looks bad when too small.
+                maxChildSize.X = Math.Max(maxChildSize.X, child.Layout.MinWidth ?? 0);
+                maxChildSize.Y = Math.Max(maxChildSize.Y, child.Layout.MinHeight ?? 0);
+                deferredChildren.Add(child);
+                continue;
+            }
             child.Measure(limits);
+            maxChildSize = Vector2.Max(maxChildSize, child.OuterSize);
+        }
+        var deferredLimits = maxChildSize != Vector2.Zero ? maxChildSize : limits;
+        foreach (var child in deferredChildren)
+        {
+            child.Measure(deferredLimits);
             maxChildSize = Vector2.Max(maxChildSize, child.OuterSize);
         }
         ContentSize = Layout.Resolve(availableSize, () => maxChildSize);
