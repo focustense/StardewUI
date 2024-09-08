@@ -150,15 +150,15 @@ public class Image : View
             ? (sourceRect.Width, sourceRect.Height)
             : (sourceRect.Height, sourceRect.Width);
         var scale = Sprite.SliceSettings?.Scale ?? 1;
-        sourceWidth *= scale;
-        sourceHeight *= scale;
-        if (Layout.Width.Type == LengthType.Content && sourceWidth < limits.X)
+        var scaledSourceWidth = sourceWidth * scale;
+        var scaledSourceHeight = sourceHeight * scale;
+        if (Layout.Width.Type == LengthType.Content && scaledSourceWidth < limits.X)
         {
-            limits.X = sourceWidth;
+            limits.X = scaledSourceWidth;
         }
-        if (Layout.Height.Type == LengthType.Content && sourceHeight < limits.Y)
+        if (Layout.Height.Type == LengthType.Content && scaledSourceHeight < limits.Y)
         {
-            limits.Y = sourceHeight;
+            limits.Y = scaledSourceHeight;
         }
         if (Fit == ImageFit.Stretch)
         {
@@ -166,7 +166,7 @@ public class Image : View
         }
         if (Fit == ImageFit.None || IsSourceSize())
         {
-            return sourceRect.Size.ToVector2() * scale;
+            return new(scaledSourceWidth, scaledSourceHeight);
         }
         var maxScaleX = limits.X / sourceWidth;
         var maxScaleY = limits.Y / sourceHeight;

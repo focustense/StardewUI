@@ -38,8 +38,8 @@ public static class SimpleRotationExtensions
     {
         return rotation switch
         {
-            SimpleRotation.QuarterClockwise => -HALF_PI,
-            SimpleRotation.QuarterCounterclockwise => HALF_PI,
+            SimpleRotation.QuarterClockwise => HALF_PI,
+            SimpleRotation.QuarterCounterclockwise => -HALF_PI,
             SimpleRotation.Half => MathF.PI,
             _ => 0
         };

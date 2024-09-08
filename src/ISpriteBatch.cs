@@ -37,7 +37,7 @@ public interface ISpriteBatch
     /// (global/screen) position and draws using that position as the origin (top left).</param>
     void DelegateDraw(Action<SpriteBatch, Vector2> draw);
 
-    /// <inheritdoc cref="SpriteBatch.Draw(Texture2D, Rectangle, Rectangle?, Color, float, Vector2, SpriteEffects, float)"/>
+    /// <inheritdoc cref="SpriteBatch.Draw(Texture2D, Vector2, Rectangle?, Color, float, Vector2, float, SpriteEffects, float)"/>
     void Draw(
         Texture2D texture,
         Vector2 position,
@@ -46,6 +46,18 @@ public interface ISpriteBatch
         float rotation = 0.0f,
         Vector2? origin = null,
         float scale = 1.0f,
+        SpriteEffects effects = SpriteEffects.None,
+        float layerDepth = 0.0f);
+
+    /// <inheritdoc cref="SpriteBatch.Draw(Texture2D, Vector2, Rectangle?, Color, float, Vector2, Vector2, SpriteEffects, float)"/>
+    void Draw(
+        Texture2D texture,
+        Vector2 position,
+        Rectangle? sourceRectangle,
+        Color? color,
+        float rotation,
+        Vector2? origin,
+        Vector2? scale,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0.0f);
 

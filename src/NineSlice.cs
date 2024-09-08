@@ -51,18 +51,24 @@ public class NineSlice(Sprite sprite)
                     continue;
                 }
                 var destinationRect = destinationGrid[destY, destX];
-                var rotationOrigin = rotation.HasValue ? sourceRect.Size.ToVector2() / 2 : Vector2.Zero;
                 if (rotation.HasValue)
                 {
-                    // Unfortunately, setting the origin ALSO affects positioning, and XNA is very confusing about how
-                    // it really works. Essentially, the "destination rect" is not a rect at all, but rather the origin
-                    // point (which we've just set to be the center) and width/height.
-                    // So we need to completely recalculate it here, which means first computing the scale to figure out
-                    // what the effect of changing the *source* origin is on the *destination* position.
-                    var scale = destinationRect.Size.ToVector2() / sourceRect.Size.ToVector2();
-                    destinationRect.Offset(rotationOrigin * scale);
+                    var rotationOrigin = sourceRect.Size.ToVector2() / 2;
+                    // DestinationRect behaves in very confusing ways when rotation is involved, so
+                    // for these cases, it's easier to place using the point overload after
+                    // computing the scale from src:dest.
+                    var destinationSizeInSourceOrientation = rotation.Value.IsQuarter()
+                        ? new Point(destinationRect.Height, destinationRect.Width)
+                        : destinationRect.Size;
+                    var scale = destinationSizeInSourceOrientation.ToVector2() / sourceRect.Size.ToVector2();
+                    // Don't use .Center.ToVector2() because it truncates and we get 1-pixel offsets.
+                    var center = new Vector2(destinationRect.X + destinationRect.Width / 2f, destinationRect.Y + destinationRect.Height / 2f);
+                    b.Draw(Sprite.Texture, center, sourceRect, tint, rotationAngle, rotationOrigin, scale);
                 }
-                b.Draw(Sprite.Texture, destinationRect, sourceRect, tint, rotationAngle, rotationOrigin);
+                else
+                {
+                    b.Draw(Sprite.Texture, destinationRect, sourceRect, tint);
+                }
             }
         }
     }

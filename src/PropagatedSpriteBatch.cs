@@ -52,6 +52,29 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
 
     public void Draw(
         Texture2D texture,
+        Vector2 position,
+        Rectangle? sourceRectangle,
+        Color? color,
+        float rotation,
+        Vector2? origin,
+        Vector2? scale,
+        SpriteEffects effects = SpriteEffects.None,
+        float layerDepth = 0)
+    {
+        spriteBatch.Draw(
+            texture,
+            position + transform.Translation,
+            sourceRectangle,
+            color ?? Color.White,
+            rotation,
+            origin ?? Vector2.Zero,
+            scale ?? Vector2.One,
+            effects,
+            layerDepth);
+    }
+
+    public void Draw(
+        Texture2D texture,
         Rectangle destinationRectangle,
         Rectangle? sourceRectangle,
         Color? color = null,
