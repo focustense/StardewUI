@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Reflection;
 
 namespace StardewUI;
 
@@ -8,17 +9,22 @@ namespace StardewUI;
 /// </summary>
 public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform) : ISpriteBatch
 {
+    private static readonly FieldInfo rasterizerStateField = typeof(SpriteBatch)
+        .GetField("_rasterizerState", BindingFlags.Instance | BindingFlags.NonPublic)!;
+
     private readonly SpriteBatch spriteBatch = spriteBatch;
     private Transform transform = transform;
 
     public IDisposable Clip(Rectangle clipRect)
     {
         var previousRect = spriteBatch.GraphicsDevice.ScissorRectangle;
-        var previousRasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+        // Doing this with reflection in a draw loop sucks for performance, but there seems to be no other way to get
+        // access to the previous state. `SpriteBatch.GraphcisDevice.RasterizerState` does not sync with it.
+        var previousRasterizerState = (RasterizerState)rasterizerStateField.GetValue(spriteBatch)!;
         var location = (clipRect.Location.ToVector2() + transform.Translation).ToPoint();
         spriteBatch.End();
         BeginSpriteBatch(new() { ScissorTestEnable = true });
-        spriteBatch.GraphicsDevice.ScissorRectangle = new(location, clipRect.Size);
+        spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(previousRect, new(location, clipRect.Size));
         return new ClipReverter(this, previousRasterizerState, previousRect);
     }
 
@@ -140,6 +146,15 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
             BlendState.AlphaBlend,
             SamplerState.PointClamp,
             rasterizerState: rasterizerState);
+    }
+
+    private static Rectangle Intersection(Rectangle r1, Rectangle r2)
+    {
+        var left = Math.Max(r1.Left, r2.Left);
+        var top = Math.Max(r1.Top, r2.Top);
+        var right = Math.Min(r1.Right, r2.Right);
+        var bottom = Math.Min(r1.Bottom, r2.Bottom);
+        return new(left, top, right - left, bottom - top);
     }
 
     private class ClipReverter(
