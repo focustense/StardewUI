@@ -54,6 +54,9 @@ public abstract class View : IView
     /// <inheritdoc/>
     public Bounds ActualBounds => GetActualBounds();
 
+    /// <inheritdoc/>
+    public Bounds ContentBounds => GetContentBounds();
+
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
@@ -615,6 +618,14 @@ public abstract class View : IView
         var size = new Vector2(width, height);
 
         return new(position, size);
+    }
+
+    private Bounds GetContentBounds()
+    {
+        var boundsWithMargin = GetActualBounds();
+        var position = boundsWithMargin.Position
+            + new Vector2(Math.Max(Margin.Left, 0), Math.Max(Margin.Top, 0));
+        return new(position, ContentSize);
     }
 
     private Vector2 GetContentOffset()

@@ -36,6 +36,7 @@ public abstract class WrapperView<T> : IView where T : IView
     public event EventHandler<WheelEventArgs>? Wheel;
 
     public Bounds ActualBounds => Root.ActualBounds;
+    public Bounds ContentBounds => Root.ContentBounds;
     public bool IsFocusable => Root.IsFocusable;
     public LayoutParameters Layout { get => Root.Layout; set => Root.Layout = value; }
     public string Name { get => Root.Name; set => Root.Name = value; }

@@ -14,7 +14,7 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     /// </summary>
     public Point Center()
     {
-        return (Position + View.ActualBounds.Center()).ToPoint();
+        return (Position + View.ContentBounds.Center()).ToPoint();
     }
 
     /// <summary>

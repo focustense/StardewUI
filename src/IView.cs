@@ -67,6 +67,11 @@ public interface IView
     Bounds ActualBounds { get; }
 
     /// <summary>
+    /// The true bounds of this view's content; i.e. <see cref="ActualBounds"/> excluding margins.
+    /// </summary>
+    Bounds ContentBounds { get; }
+
+    /// <summary>
     /// Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this
     /// view. Not generally applicable for mouse controls.
     /// </summary>
