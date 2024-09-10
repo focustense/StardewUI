@@ -77,6 +77,23 @@ public static class UiSprites
         );
 
     /// <summary>
+    /// Background of a slider control.
+    /// </summary>
+    public static Sprite SliderBackground => new(
+        Game1.mouseCursors,
+        SourceRect: OptionsSlider.sliderBGSource,
+        FixedEdges: new(2),
+        SliceSettings: new(Scale: 4));
+
+    /// <summary>
+    /// The movable part of a slider control ("button").
+    /// </summary>
+    public static Sprite SliderButton => new(
+        Game1.mouseCursors,
+        SourceRect: OptionsSlider.sliderButtonRect,
+        SliceSettings: new(Scale: 4));
+
+    /// <summary>
     /// Small up arrow, typically used for scroll bars.
     /// </summary>
     public static Sprite SmallUpArrow => new(Game1.mouseCursors, SourceRect: new(421, 459, 11, 12));

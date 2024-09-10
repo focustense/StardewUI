@@ -121,6 +121,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
 
     public override void leftClickHeld(int x, int y)
     {
+        if (!Game1.lastCursorMotionWasMouse)
+        {
+            // No dragging with gamepad.
+            return;
+        }
         var dragPosition = new Point(x, y);
         if (dragPosition == previousDragPosition)
         {
