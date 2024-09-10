@@ -23,6 +23,19 @@ public class ScrollableFrameView : WrapperView
     }
 
     /// <summary>
+    /// Layout parameters to apply to the actual <see cref="ScrollContainer"/> containing the <see cref="Content"/>.
+    /// </summary>
+    /// <remarks>
+    /// The scroll container sits between the <see cref="Content"/> and the outer frame. By default it is set to stretch
+    /// to the outer layout dimensions, but can be modified to e.g. fit width to content.
+    /// </remarks>
+    public LayoutParameters ContentLayout
+    {
+        get => contentContainer?.Layout ?? default;
+        set => RequireView(() => contentContainer).Layout = value;
+    }
+
+    /// <summary>
     /// Optional footer to display below the <see cref="Content"/>.
     /// </summary>
     /// <remarks>
