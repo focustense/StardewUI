@@ -42,6 +42,17 @@ public class Banner : View
         set => text.Value = value;
     }
 
+    /// <summary>
+    /// Alpha value for the text shadow. If set to the default of zero, no text shadow will be drawn.
+    /// </summary>
+    public float TextShadowAlpha { get; set; } = 0.0f;
+
+    /// <summary>
+    /// Offset to draw the text shadow, which is a second copy of the <see cref="Text"/> drawn entirely black.
+    /// Text shadows will not be visible unless <see cref="TextShadowAlpha"/> is non-zero.
+    /// </summary>
+    public Vector2 TextShadowOffset { get; set; }
+
     private readonly DirtyTracker<Edges> backgroundBorderThickness = new(Edges.NONE);
     private readonly DirtyTracker<string> text = new("");
 
@@ -67,8 +78,21 @@ public class Banner : View
     {
         var centerX = ContentSize.X / 2;
         b.DelegateDraw(
-            (wb, origin) => SpriteText.drawStringHorizontallyCenteredAt(
-                wb, Text, (int)(origin.X + centerX), (int)origin.Y));
+            (wb, origin) =>
+            {
+                if (TextShadowAlpha > 0)
+                {
+                    var shadowColor = new Color(Color.Black, TextShadowAlpha);
+                    SpriteText.drawStringHorizontallyCenteredAt(
+                        wb,
+                        Text,
+                        (int)(origin.X + centerX + TextShadowOffset.X),
+                        (int)(origin.Y + TextShadowOffset.Y),
+                        color: shadowColor);
+                }
+                SpriteText.drawStringHorizontallyCenteredAt(
+                    wb, Text, (int)(origin.X + centerX), (int)origin.Y);
+            });
     }
 
     protected override void OnMeasure(Vector2 availableSize)
