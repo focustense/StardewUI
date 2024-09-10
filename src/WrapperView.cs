@@ -100,7 +100,12 @@ public abstract class WrapperView<T> : IView where T : IView
 
     public virtual bool Measure(Vector2 availableSize)
     {
-        return Root.Measure(availableSize);
+        var wasDirty = Root.Measure(availableSize);
+        if (wasDirty)
+        {
+            OnLayout();
+        }
+        return wasDirty;
     }
 
     public virtual void OnClick(ClickEventArgs e)
