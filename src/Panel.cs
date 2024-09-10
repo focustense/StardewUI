@@ -41,6 +41,36 @@ public class Panel : View
     /// </summary>
     public Alignment VerticalContentAlignment { get; set; } = Alignment.Start;
 
+    /// <summary>
+    /// Creates a <see cref="Panel"/> that is used to align some inner content inside a parent, typically another
+    /// <see cref="Panel"/>.
+    /// </summary>
+    /// <remarks>
+    /// The created panel will stretch to fill all available area, and align the <paramref name="content"/> view within
+    /// itself according to the <paramref name="horizontal"/> and <paramref name="vertical"/> alignments. Several
+    /// <see cref="Align"/> helpers can be used to align different content/controls to different edges or corners of the
+    /// same parent <see cref="Panel"/>.
+    /// </remarks>
+    /// <param name="content">The content to align.</param>
+    /// <param name="horizontal">Horizontal alignment of the content.</param>
+    /// <param name="vertical">Vertical alignment of the content.</param>
+    /// <param name="name">Optional name to give to the panel, for debugging.</param>
+    public static Panel Align(
+        IView content,
+        Alignment horizontal = Alignment.Start,
+        Alignment vertical = Alignment.Start,
+        string name = "")
+    {
+        return new Panel()
+        {
+            Name = name,
+            Layout = LayoutParameters.Fill(),
+            HorizontalContentAlignment = horizontal,
+            VerticalContentAlignment = vertical,
+            Children = [content],
+        };
+    }
+
     private readonly DirtyTrackingList<IView> children = [];
     private readonly List<ViewChild> childPositions = [];
 
@@ -114,7 +144,7 @@ public class Panel : View
             child.Measure(limits);
             maxChildSize = Vector2.Max(maxChildSize, child.OuterSize);
         }
-        var deferredLimits = maxChildSize != Vector2.Zero ? maxChildSize : limits;
+        var deferredLimits = maxChildSize != Vector2.Zero ? Layout.Resolve(availableSize, () => maxChildSize) : limits;
         foreach (var child in deferredChildren)
         {
             child.Measure(deferredLimits);
