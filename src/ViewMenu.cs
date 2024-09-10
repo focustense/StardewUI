@@ -229,7 +229,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
 
     protected virtual string? FormatTooltip(IEnumerable<ViewChild> path)
     {
-        return hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => !string.IsNullOrEmpty(tooltip));
+        var tooltip = hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => !string.IsNullOrEmpty(tooltip));
+        return Game1.parseText(tooltip, Game1.smallFont, 640);
     }
 
     private static ViewChild? GetDefaultFocus(ViewChild parent)
