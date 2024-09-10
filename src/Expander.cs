@@ -21,8 +21,7 @@ public class Expander : WrapperView
         get => contentFrame?.Content;
         set
         {
-            var _ = Root; // Ensure view created
-            contentFrame.Content = value;
+            RequireView(() => contentFrame).Content = value;
             UpdateContent();
         }
     }
@@ -47,11 +46,7 @@ public class Expander : WrapperView
     public IView? Header
     {
         get => headerLane?.Children.ElementAtOrDefault(1);
-        set
-        {
-            var _ = Root; // Ensure view created
-            headerLane.Children = value is not null ? [indicator, value] : [indicator];
-        }
+        set => RequireView(() => headerLane).Children = value is not null ? [indicator, value] : [indicator];
     }
 
     /// <summary>
@@ -60,11 +55,7 @@ public class Expander : WrapperView
     public Sprite? HeaderBackground
     {
         get => headerFrame?.Background;
-        set
-        {
-            var _ = Root; // Ensure view created
-            headerFrame.Background = value;
-        }
+        set => RequireView(() => headerFrame).Background = value;
     }
 
     /// <summary>
@@ -73,11 +64,7 @@ public class Expander : WrapperView
     public Color HeaderBackgroundTint
     {
         get => headerFrame?.BackgroundTint ?? Color.White;
-        set
-        {
-            var _ = Root; // Ensure view created
-            headerFrame.BackgroundTint = value;
-        }
+        set => RequireView(() => headerFrame).BackgroundTint = value;
     }
 
     /// <summary>
@@ -87,11 +74,7 @@ public class Expander : WrapperView
     public LayoutParameters HeaderLayout
     {
         get => headerFrame?.Layout ?? LayoutParameters.AutoRow();
-        set
-        {
-            var _ = Root; // Ensure view created
-            headerFrame.Layout = value;
-        }
+        set => RequireView(() => headerFrame).Layout = value;
     }
 
     /// <summary>
@@ -100,11 +83,7 @@ public class Expander : WrapperView
     public Edges HeaderPadding
     {
         get => headerFrame?.Padding ?? Edges.NONE;
-        set
-        {
-            var _ = Root; // Ensure view created
-            headerFrame.Padding = value;
-        }
+        set => RequireView(() => headerFrame).Padding = value;
     }
 
     /// <summary>
@@ -132,11 +111,7 @@ public class Expander : WrapperView
     public Edges Margin
     {
         get => layout?.Margin ?? Edges.NONE;
-        set
-        {
-            var _ = Root; // Ensure view created
-            layout.Margin = value;
-        }
+        set => RequireView(() => layout).Margin = value;
     }
 
     private bool isExpanded;

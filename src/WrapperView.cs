@@ -138,6 +138,27 @@ public abstract class WrapperView<T> : IView where T : IView
     /// </summary>
     protected abstract T CreateView();
 
+    /// <summary>
+    /// Runs whenever layout occurs as a result of the UI elements changing.
+    /// </summary>
+    protected virtual void OnLayout() { }
+
+    /// <summary>
+    /// Ensures that the root view is created before attempting to access a child view.
+    /// </summary>
+    /// <remarks>
+    /// This is syntactic sugar over accessing <see cref="Root"/> first to force lazy loading.
+    /// </remarks>
+    /// <typeparam name="TChild">Type of child view to access.</typeparam>
+    /// <param name="viewSelector">Function to retrieve the inner view.</param>
+    /// <returns>The inner view.</returns>
+    protected TChild RequireView<TChild>(Func<TChild> viewSelector)
+        where TChild : IView
+    {
+        _ = Root;
+        return viewSelector();
+    }
+
     private void View_Click(object? sender, ClickEventArgs e)
     {
         Click?.Invoke(this, e);
