@@ -41,7 +41,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private Point previousHoverPosition;
     private Point previousDragPosition;
 
-    public ViewMenu(Edges? gutter = null)
+    public ViewMenu(Edges? gutter = null, bool forceDefaultFocus = false)
     {
         Game1.playSound("bigSelect");
 
@@ -50,11 +50,14 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         view = CreateView();
         MeasureAndCenter();
 
-        var initialFocus = GetDefaultFocus(new(view, Vector2.Zero));
-        if (initialFocus is not null)
+        if (forceDefaultFocus || !Game1.lastCursorMotionWasMouse)
         {
-            var focusPosition = initialFocus.CenterPoint();
-            Game1.setMousePosition(new Point(xPositionOnScreen, yPositionOnScreen) + focusPosition, true);
+            var initialFocus = GetDefaultFocus(new(view, Vector2.Zero));
+            if (initialFocus is not null)
+            {
+                var focusPosition = initialFocus.CenterPoint();
+                Game1.setMousePosition(new Point(xPositionOnScreen, yPositionOnScreen) + focusPosition, true);
+            }
         }
 
         wasHudDisplayed = Game1.displayHUD;
