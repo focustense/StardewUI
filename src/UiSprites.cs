@@ -20,6 +20,18 @@ public static class UiSprites
         );
 
     /// <summary>
+    /// Button with a darker background, usually the neutral state.
+    /// </summary>
+    public static Sprite ButtonDark =>
+        new(Game1.mouseCursors, SourceRect: new(256, 256, 10, 10), FixedEdges: new(2), SliceSettings: new(Scale: 4));
+
+    /// <summary>
+    /// Button with a lighter background, usually used to show hover state.
+    /// </summary>
+    public static Sprite ButtonLight =>
+        new(Game1.mouseCursors, SourceRect: new(267, 256, 10, 10), FixedEdges: new(2), SliceSettings: new(Scale: 4));
+
+    /// <summary>
     /// A caret-style directional arrow pointing left.
     /// </summary>
     /// <remarks>
