@@ -258,11 +258,10 @@ public class Lane : View
         childrenSize = Vector2.Zero;
         visibleChildCount = 0;
 
-        void measureChild(IView child)
+        void measureChild(IView child, Vector2 childLimits, bool isDeferred)
         {
-            var childLimits = limits;
             bool hasSwapOrientationStretch = swapOrientation.Length(child.Layout).Type == LengthType.Stretch;
-            if (hasSwapOrientationStretch)
+            if (hasSwapOrientationStretch && (!isDeferred || swapOrientation.Length(Layout).Type == LengthType.Content))
             {
                 var swapLength = swapOrientation.Get(childrenSize);
                 if (swapLength > 0)
@@ -301,7 +300,7 @@ public class Lane : View
                 deferredChildren.Add(child);
                 continue;
             }
-            measureChild(child);
+            measureChild(child, limits, false);
             if (Orientation.Get(limits) <= 0)
             {
                 break;
@@ -309,10 +308,12 @@ public class Lane : View
         }
         if (deferredChildren.Count > 0 && Orientation.Get(limits) > 0)
         {
+            var deferredLimits =
+                childrenSize != Vector2.Zero ? Layout.Resolve(availableSize, () => childrenSize) : limits;
             foreach (var child in deferredChildren)
             {
-                measureChild(child);
-                if (Orientation.Get(limits) <= 0)
+                measureChild(child, deferredLimits, true);
+                if (Orientation.Get(deferredLimits) <= 0)
                 {
                     break;
                 }
