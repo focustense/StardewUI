@@ -165,7 +165,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         var top = Math.Max(r1.Top, r2.Top);
         var right = Math.Min(r1.Right, r2.Right);
         var bottom = Math.Min(r1.Bottom, r2.Bottom);
-        return new(left, top, right - left, bottom - top);
+        return new(left, top, Math.Max(right - left, 0), Math.Max(bottom - top, 0));
     }
 
     private class ClipReverter(
