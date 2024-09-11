@@ -33,6 +33,24 @@ public static class ViewExtensions
     }
 
     /// <summary>
+    /// Retrieves the path to a descendant view.
+    /// </summary>
+    /// <remarks>
+    /// This method has worst-case O(N) performance, so avoid calling it in tight loops such as draw methods, and cache
+    /// the result whenever possible.
+    /// </remarks>
+    /// <param name="view">The view at which to start the search.</param>
+    /// <param name="descendant">The descendant view to search for.</param>
+    /// <returns>A sequence of <see cref="ViewChild"/> elements with the <see cref="IView"/> and position (relative to
+    /// parent) at each level, starting with the specified <paramref name="view"/> and ending with the specified
+    /// <paramref name="descendant"/>. If no match is found, returns <c>null</c>.</returns>
+    public static IEnumerable<ViewChild>? GetPathToView(this IView view, IView descendant)
+    {
+        var self = new ViewChild(view, Vector2.Zero);
+        return GetPathToView(self, descendant);
+    }
+
+    /// <summary>
     /// Takes an existing view path and resolves it with child coordinates for the view at each level.
     /// </summary>
     /// <param name="view">The root view.</param>
@@ -76,5 +94,22 @@ public static class ViewExtensions
             yield return descendant.Offset(position);
             position += descendant.Position;
         }
+    }
+
+    private static IEnumerable<ViewChild>? GetPathToView(ViewChild parent, IView descendant)
+    {
+        if (parent.View == descendant)
+        {
+            return [parent];
+        }
+        foreach (var child in parent.View.GetChildren())
+        {
+            var childPath = GetPathToView(child, descendant);
+            if (childPath is not null)
+            {
+                return [parent, .. childPath];
+            }
+        }
+        return null;
     }
 }

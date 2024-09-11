@@ -12,9 +12,17 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     /// <summary>
     /// Gets the point at the exact center of the view.
     /// </summary>
-    public Point Center()
+    public Vector2 Center()
     {
-        return (Position + View.ContentBounds.Center()).ToPoint();
+        return (Position + View.ContentBounds.Center());
+    }
+
+    /// <summary>
+    /// Gets the nearest whole pixel point at the exact center of the view.
+    /// </summary>
+    public Point CenterPoint()
+    {
+        return Center().ToPoint();
     }
 
     /// <summary>
@@ -45,7 +53,7 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     }
 
     /// <summary>
-    /// Returns a <see cref="Bounds"/> representing the parent-relative bounds of this child.
+    /// Returns a <see cref="Bounds"/> representing the parent-relative layout bounds of this child.
     /// </summary>
     /// <remarks>
     /// Equivalent to the <see cref="IView.ActualBounds"/> offset by this child's <see cref="Position"/>.
@@ -53,6 +61,17 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     public Bounds GetActualBounds()
     {
         return View.ActualBounds.Offset(Position);
+    }
+
+    /// <summary>
+    /// Returns a <see cref="Bounds"/> representing the parent-relative content bounds of this child.
+    /// </summary>
+    /// <remarks>
+    /// Equivalent to the <see cref="IView.ContentBounds"/> offset by this child's <see cref="Position"/>.
+    /// </remarks>
+    public Bounds GetContentBounds()
+    {
+        return View.ContentBounds.Offset(Position);
     }
 
     /// <summary>

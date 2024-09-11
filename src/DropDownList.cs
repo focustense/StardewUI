@@ -1,0 +1,298 @@
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
+
+namespace StardewUI;
+
+/// <summary>
+/// Button/text field with a drop-down menu.
+/// </summary>
+/// <typeparam name="T">The type of list item that can be chosen.</typeparam>
+public class DropDownList<T> : WrapperView
+    where T : notnull
+{
+    /// <summary>
+    /// Specifies how to format the <see cref="SelectedOption"/> in the label text.
+    /// </summary>
+    public Func<T, string> OptionFormat
+    {
+        get => optionFormat;
+        set
+        {
+            optionFormat = value;
+            UpdateOptions();
+        }
+    }
+
+    /// <summary>
+    /// Minimum width for the text area of an option.
+    /// </summary>
+    /// <remarks>
+    /// If this is <c>0</c>, or if all options are larger, then the dropdown will expand horizontally.
+    /// </remarks>
+    public float OptionMinWidth
+    {
+        get => selectionFrame?.Layout.MinWidth ?? 0;
+        set => RequireView(() => selectionFrame).Layout = new() {
+            Width = Length.Content(),
+            Height = Length.Content(),
+            MinWidth = value
+        };
+    }
+
+    /// <summary>
+    /// The options available to select.
+    /// </summary>
+    public IList<T> Options
+    {
+        get => options;
+        set => options.SetItems(value);
+    }
+
+    /// <summary>
+    /// Index of the currently-selected option in the <see cref="Options"/>, or <c>-1</c> if none selected.
+    /// </summary>
+    public int SelectedIndex
+    {
+        get => selectedIndex;
+        set
+        {
+            var validIndex = options.Count > 0 ? Math.Clamp(value, -1, options.Count - 1) : -1;
+            if (validIndex == selectedIndex)
+            {
+                return;
+            }
+            selectedIndex = validIndex;
+            UpdateSelectedOption();
+        }
+    }
+
+    /// <summary>
+    /// The option that is currently selected, or <c>null</c> if there is no selection.
+    /// </summary>
+    public T? SelectedOption
+    {
+        get => SelectedIndex >= 0 && SelectedIndex < options.Count ? options[SelectedIndex] : default;
+        set => SelectedIndex = value is not null ? options.IndexOf(value) : -1;
+    }
+
+    private readonly DirtyTrackingList<T> options = [];
+
+    private IOverlay? overlay;
+    private Func<T, string> optionFormat = v => v.ToString() ?? "";
+    private int selectedIndex = -1;
+
+    // Initialized in CreateView
+    private Lane optionsLane = null!;
+    private DropDownOverlayView overlayView = null!;
+    private Label selectedOptionLabel = null!;
+    private Frame selectionFrame = null!;
+
+    public override bool Measure(Vector2 availableSize)
+    {
+        if (options.IsDirty)
+        {
+            UpdateOptions();
+            options.ResetDirty();
+        }
+        var wasDirty = base.Measure(availableSize);
+        if (wasDirty)
+        {
+            overlayView.Layout = new LayoutParameters()
+            {
+                // Subtract padding from width.
+                Width = Length.Px(selectionFrame.OuterSize.X - 4),
+                Height = Length.Content(),
+            };
+        }
+        return wasDirty;
+    }
+
+    protected override IView CreateView()
+    {
+        // Overlay
+        optionsLane = new Lane()
+        {
+            Layout = LayoutParameters.AutoRow(),
+            Orientation = Orientation.Vertical,
+        };
+        UpdateOptions();
+        overlayView = new(this);
+
+        // Always visible
+        selectedOptionLabel = Label.Simple("");
+        selectionFrame = new Frame()
+        {
+            Layout = LayoutParameters.FitContent(),
+            Padding = new(8, 4),
+            Background = UiSprites.DropDownBackground,
+            Content = selectedOptionLabel,
+        };
+        var button = new Image()
+        {
+            Layout = new()
+            {
+                Width = Length.Content(),
+                Height = Length.Stretch(),
+            },
+            Sprite = UiSprites.DropDownButton,
+            IsFocusable = true,
+        };
+        var lane = new Lane()
+        {
+            Layout = LayoutParameters.FitContent(),
+            Children = [selectionFrame, button],
+        };
+        lane.Click += Lane_Click;
+        return lane;
+    }
+
+    private void Lane_Click(object? sender, ClickEventArgs e)
+    {
+        ToggleOverlay();
+    }
+
+    private void OptionView_Click(object? sender, ClickEventArgs e)
+    {
+        if (sender is not DropDownOptionView optionView)
+        {
+            return;
+        }
+        Game1.playSound("drumkit6");
+        RemoveOverlay();
+        SelectedOption = optionView.Value;
+    }
+
+    private void OptionView_Select(object? sender, EventArgs e)
+    {
+        SetSelectedOptionView(view => view == sender);
+    }
+
+    private bool RemoveOverlay()
+    {
+        if (overlay is null)
+        {
+            return false;
+        }
+        Overlay.Remove(overlay);
+        overlay = null;
+        return true;
+    }
+
+    private void SetSelectedOptionView(Predicate<DropDownOptionView> predicate)
+    {
+        foreach (var optionView in optionsLane.Children.OfType<DropDownOptionView>())
+        {
+            optionView.IsSelected = predicate(optionView);
+        }
+    }
+
+    private void ToggleOverlay()
+    {
+        if (RemoveOverlay())
+        {
+            return;
+        }
+        var selectedOption = SelectedOption;
+        SetSelectedOptionView(view => Equals(view.Value, selectedOption));
+        Game1.playSound("shwip");
+        overlay =
+            new Overlay(
+                overlayView,
+                this,
+                horizontalAlignment: Alignment.Start,
+                horizontalParentAlignment: Alignment.Start,
+                verticalAlignment: Alignment.Start,
+                verticalParentAlignment: Alignment.End)
+            .OnClose(() => overlay = null);
+        Overlay.Push(overlay);
+    }
+
+    private void UpdateOptions()
+    {
+        if (optionsLane is null)
+        {
+            return;
+        }
+        optionsLane.Children = options
+            .Select((option, i) =>
+            {
+                var optionView = new DropDownOptionView(option, optionFormat(option))
+                {
+                    IsSelected = SelectedIndex == i
+                };
+                optionView.Click += OptionView_Click;
+                optionView.Select += OptionView_Select;
+                return optionView as IView;
+            })
+            .ToList();
+    }
+
+    private void UpdateSelectedOption()
+    {
+        selectedOptionLabel.Text = SelectedOption is not null ? optionFormat(SelectedOption) : "";
+    }
+
+    class DropDownOptionView(T value, string text) : WrapperView<Frame>
+    {
+        public event EventHandler<EventArgs>? Select;
+
+        public bool IsSelected
+        {
+            get => isSelected;
+            set
+            {
+                if (isSelected == value)
+                {
+                    return;
+                }
+                isSelected = value;
+                Root.BackgroundTint = GetBackgroundTint();
+            }
+        }
+
+        public T Value { get; } = value;
+
+        private bool isSelected;
+
+        protected override Frame CreateView()
+        {
+            var label = Label.Simple(text);
+            var frame = new Frame()
+            {
+                Layout = LayoutParameters.AutoRow(),
+                Padding = new(4),
+                Background = new(Game1.staminaRect),
+                BackgroundTint = GetBackgroundTint(),
+                Content = label,
+                IsFocusable = true,
+            };
+            frame.PointerEnter += Frame_PointerEnter;
+            return frame;
+        }
+
+        private void Frame_PointerEnter(object? sender, PointerEventArgs e)
+        {
+            IsSelected = true;
+            Select?.Invoke(this, EventArgs.Empty);
+        }
+
+        private Color GetBackgroundTint()
+        {
+            return isSelected ? new(Color.White, 0.35f) : Color.Transparent;
+        }
+    }
+
+    class DropDownOverlayView(DropDownList<T> owner) : WrapperView
+    {
+        protected override IView CreateView()
+        {
+            return new Frame()
+            {
+                Layout = LayoutParameters.AutoRow(),
+                Background = UiSprites.DropDownBackground,
+                Padding = new(4),
+                Content = owner.optionsLane,
+            };
+        }
+    }
+}

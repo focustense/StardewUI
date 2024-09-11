@@ -43,6 +43,24 @@ public static class UiSprites
         new(Game1.menuTexture, SourceRect: new(0, 256, 60, 60), FixedEdges: new(16));
 
     /// <summary>
+    /// Background of a drop-down menu.
+    /// </summary>
+    public static Sprite DropDownBackground => new(
+        Game1.mouseCursors,
+        SourceRect: OptionsDropDown.dropDownBGSource,
+        FixedEdges: new(1),
+        SliceSettings: new(Scale: 4));
+
+    /// <summary>
+    /// Button to pull down a drop-down menu.
+    /// </summary>
+    public static Sprite DropDownButton => new(
+        Game1.mouseCursors,
+        SourceRect: OptionsDropDown.dropDownButtonSource,
+        FixedEdges: new(1, 3, 3, 3),
+        SliceSettings: new(Scale: 4));
+
+    /// <summary>
     /// Background used for the in-game menu, not including borders.
     /// </summary>
     public static Sprite MenuBackground => new(Game1.menuTexture, SourceRect: new(64, 128, 64, 64));
