@@ -36,6 +36,18 @@ public static class UiSprites
     public static Sprite CaretRight => new(Game1.mouseCursors, SourceRect: new(448, 96, 24, 32));
 
     /// <summary>
+    /// Checkbox with a green "X" through it.
+    /// </summary>
+    public static Sprite CheckboxChecked =>
+        new(Game1.mouseCursors, SourceRect: new(236, 425, 9, 9), FixedEdges: new(1), SliceSettings: new(Scale: 4));
+
+    /// <summary>
+    /// Unchecked checkbox, i.e. only the border.
+    /// </summary>
+    public static Sprite CheckboxUnchecked =>
+        new(Game1.mouseCursors, SourceRect: new(227, 425, 9, 9), FixedEdges: new(1), SliceSettings: new(Scale: 4));
+
+    /// <summary>
     /// Border/background sprite for an individual control, such as a button. Less prominent than
     /// <see cref="MenuBorder"/>.
     /// </summary>
