@@ -97,7 +97,7 @@ public class Image : View
     {
         // We intentionally don't check scale here, as scale doesn't affect layout size.
         // Instead, that is checked (and reset) in the draw method.
-        return (sprite.IsDirty || rotation.IsDirty) && !IsSourceSize();
+        return sprite.IsDirty || rotation.IsDirty;
     }
 
     protected override void OnDrawContent(ISpriteBatch b)
