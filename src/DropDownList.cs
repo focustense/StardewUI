@@ -32,11 +32,13 @@ public class DropDownList<T> : WrapperView
     public float OptionMinWidth
     {
         get => selectionFrame?.Layout.MinWidth ?? 0;
-        set => RequireView(() => selectionFrame).Layout = new() {
-            Width = Length.Content(),
-            Height = Length.Content(),
-            MinWidth = value
-        };
+        set =>
+            RequireView(() => selectionFrame).Layout = new()
+            {
+                Width = Length.Content(),
+                Height = Length.Content(),
+                MinWidth = value,
+            };
     }
 
     /// <summary>
@@ -110,11 +112,7 @@ public class DropDownList<T> : WrapperView
     protected override IView CreateView()
     {
         // Overlay
-        optionsLane = new Lane()
-        {
-            Layout = LayoutParameters.AutoRow(),
-            Orientation = Orientation.Vertical,
-        };
+        optionsLane = new Lane() { Layout = LayoutParameters.AutoRow(), Orientation = Orientation.Vertical };
         UpdateOptions();
         overlayView = new(this);
 
@@ -129,19 +127,11 @@ public class DropDownList<T> : WrapperView
         };
         var button = new Image()
         {
-            Layout = new()
-            {
-                Width = Length.Content(),
-                Height = Length.Stretch(),
-            },
+            Layout = new() { Width = Length.Content(), Height = Length.Stretch() },
             Sprite = UiSprites.DropDownButton,
             IsFocusable = true,
         };
-        var lane = new Lane()
-        {
-            Layout = LayoutParameters.FitContent(),
-            Children = [selectionFrame, button],
-        };
+        var lane = new Lane() { Layout = LayoutParameters.FitContent(), Children = [selectionFrame, button] };
         lane.Click += Lane_Click;
         return lane;
     }
@@ -195,15 +185,14 @@ public class DropDownList<T> : WrapperView
         var selectedOption = SelectedOption;
         SetSelectedOptionView(view => Equals(view.Value, selectedOption));
         Game1.playSound("shwip");
-        overlay =
-            new Overlay(
-                overlayView,
-                this,
-                horizontalAlignment: Alignment.Start,
-                horizontalParentAlignment: Alignment.Start,
-                verticalAlignment: Alignment.Start,
-                verticalParentAlignment: Alignment.End)
-            .OnClose(() => overlay = null);
+        overlay = new Overlay(
+            overlayView,
+            this,
+            horizontalAlignment: Alignment.Start,
+            horizontalParentAlignment: Alignment.Start,
+            verticalAlignment: Alignment.Start,
+            verticalParentAlignment: Alignment.End
+        ).OnClose(() => overlay = null);
         Overlay.Push(overlay);
     }
 
@@ -214,16 +203,18 @@ public class DropDownList<T> : WrapperView
             return;
         }
         optionsLane.Children = options
-            .Select((option, i) =>
-            {
-                var optionView = new DropDownOptionView(option, optionFormat(option))
+            .Select(
+                (option, i) =>
                 {
-                    IsSelected = SelectedIndex == i
-                };
-                optionView.Click += OptionView_Click;
-                optionView.Select += OptionView_Select;
-                return optionView as IView;
-            })
+                    var optionView = new DropDownOptionView(option, optionFormat(option))
+                    {
+                        IsSelected = SelectedIndex == i,
+                    };
+                    optionView.Click += OptionView_Click;
+                    optionView.Select += OptionView_Select;
+                    return optionView as IView;
+                }
+            )
             .ToList();
     }
 

@@ -91,7 +91,7 @@ public static class OrientationExtensions
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="orientation">The orientation.</param>
     /// <param name="vec">Any vector value.</param>

@@ -106,9 +106,7 @@ public class Image : View
         {
             UpdateSlice();
         }
-        Rectangle? clipRect = Fit == ImageFit.Cover
-            ? new(0, 0, (int)ContentSize.X, (int)ContentSize.Y)
-            : null;
+        Rectangle? clipRect = Fit == ImageFit.Cover ? new(0, 0, (int)ContentSize.X, (int)ContentSize.Y) : null;
         if (ShadowAlpha > 0 && slice is not null)
         {
             using var _transform = b.SaveTransform();
@@ -179,7 +177,7 @@ public class Image : View
         {
             ImageFit.Contain => sourceRect.Size.ToVector2() * MathF.Min(maxScaleX, maxScaleY),
             ImageFit.Cover => sourceRect.Size.ToVector2() * MathF.Max(maxScaleX, maxScaleY),
-            _ => throw new NotImplementedException($"Invalid fit type: {Fit}")
+            _ => throw new NotImplementedException($"Invalid fit type: {Fit}"),
         };
     }
 

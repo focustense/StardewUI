@@ -16,7 +16,8 @@ public class NineSlice(Sprite sprite)
     private readonly Rectangle[,] sourceGrid = GetGrid(
         sprite.SourceRect ?? sprite.Texture.Bounds,
         sprite.FixedEdges ?? Edges.NONE,
-        sprite.SliceSettings);
+        sprite.SliceSettings
+    );
 
     private Rectangle[,]? destinationGrid;
     private SimpleRotation? rotation;
@@ -62,7 +63,10 @@ public class NineSlice(Sprite sprite)
                         : destinationRect.Size;
                     var scale = destinationSizeInSourceOrientation.ToVector2() / sourceRect.Size.ToVector2();
                     // Don't use .Center.ToVector2() because it truncates and we get 1-pixel offsets.
-                    var center = new Vector2(destinationRect.X + destinationRect.Width / 2f, destinationRect.Y + destinationRect.Height / 2f);
+                    var center = new Vector2(
+                        destinationRect.X + destinationRect.Width / 2f,
+                        destinationRect.Y + destinationRect.Height / 2f
+                    );
                     b.Draw(Sprite.Texture, center, sourceRect, tint, rotationAngle, rotationOrigin, scale);
                 }
                 else
@@ -96,7 +100,8 @@ public class NineSlice(Sprite sprite)
         SliceSettings? settings = null,
         // We pass sliceScale separately (even though it is in SliceSettings) because it actually applies only to the
         // destination rect, not the source, whereas the SliceSettings are used for source but not destination.
-        int sliceScale = 1)
+        int sliceScale = 1
+    )
     {
         var left = bounds.X;
         var top = bounds.Y;
@@ -150,7 +155,7 @@ public class NineSlice(Sprite sprite)
                 new(left, startBottom, fixedEdges.Left, fixedEdges.Bottom),
                 new(centerStartX, startBottom, innerWidth, fixedEdges.Bottom),
                 new(startRight, startBottom, fixedEdges.Right, fixedEdges.Bottom),
-            }
+            },
         };
     }
 

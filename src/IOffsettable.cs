@@ -30,7 +30,8 @@ public static class OffsettableExtensions
     /// <typeparam name="T">The source/output type.</typeparam>
     /// <param name="instance">The instance to clone.</param>
     /// <returns>A copy of the <paramref name="instance"/>.</returns>
-    public static T Clone<T>(this T instance) where T : IOffsettable<T>
+    public static T Clone<T>(this T instance)
+        where T : IOffsettable<T>
     {
         return instance.Offset(Vector2.Zero);
     }

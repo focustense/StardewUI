@@ -96,16 +96,8 @@ public class ScrollableFrameView : WrapperView
             sidebarWidth = value;
             if (IsViewCreated)
             {
-                sidebarContainer.Layout = new()
-                {
-                    Width = Length.Px(sidebarWidth),
-                    Height = Length.Content(),
-                };
-                scrollbar.Layout = new()
-                {
-                    Width = Length.Px(sidebarWidth),
-                    Height = Length.Stretch(),
-                };
+                sidebarContainer.Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Content() };
+                scrollbar.Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Stretch() };
             }
         }
     }
@@ -223,11 +215,7 @@ public class ScrollableFrameView : WrapperView
             Children = [sidebarContainer, contentFrame, scrollbar],
             ZIndex = 1,
         };
-        footerContainer = new Panel()
-        {
-            Name = "ScrollableFrameFooter",
-            Layout = LayoutParameters.FitContent(),
-        };
+        footerContainer = new Panel() { Name = "ScrollableFrameFooter", Layout = LayoutParameters.FitContent() };
         return new Panel()
         {
             Name = "ScrollableFrameContentLayout",

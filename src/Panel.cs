@@ -59,7 +59,8 @@ public class Panel : View
         IView content,
         Alignment horizontal = Alignment.Start,
         Alignment vertical = Alignment.Start,
-        string name = "")
+        string name = ""
+    )
     {
         return new Panel()
         {
@@ -76,9 +77,11 @@ public class Panel : View
 
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
-        foreach (var childPosition in childPositions
-            .OrderByDescending(child => child.ContainsPoint(contentPosition))
-            .ThenByDescending(child => child.View.ZIndex))
+        foreach (
+            var childPosition in childPositions
+                .OrderByDescending(child => child.ContainsPoint(contentPosition))
+                .ThenByDescending(child => child.View.ZIndex)
+        )
         {
             var (view, position) = childPosition;
             // It's possible to move focus to any panel as long as it's in the search direction, but we want to
@@ -87,11 +90,14 @@ public class Panel : View
             if (isPossibleMatch)
             {
                 LogFocusSearch(
-                    $"Found candidate child '{childPosition.View.Name}' with bounds: " +
-                    $"[{childPosition.Position}, {childPosition.View.OuterSize}]");
+                    $"Found candidate child '{childPosition.View.Name}' with bounds: "
+                        + $"[{childPosition.Position}, {childPosition.View.OuterSize}]"
+                );
             }
-            if (isPossibleMatch
-                && new ViewChild(view, position).FocusSearch(contentPosition, direction) is FocusSearchResult found)
+            if (
+                isPossibleMatch
+                && new ViewChild(view, position).FocusSearch(contentPosition, direction) is FocusSearchResult found
+            )
             {
                 return found;
             }

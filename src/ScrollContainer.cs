@@ -247,7 +247,13 @@ public class ScrollContainer : View
         orientation.ResetDirty();
     }
 
-    private enum ScrollResult { FullyScrollable, PartiallyScrollable, NotScrollable, NoMoreElements }
+    private enum ScrollResult
+    {
+        FullyScrollable,
+        PartiallyScrollable,
+        NotScrollable,
+        NoMoreElements,
+    }
 
     private float GetScrollDistance(Bounds scrollableBounds)
     {

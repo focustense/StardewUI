@@ -35,7 +35,8 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
     /// Initializes a new <see cref="Edges"/> with all edges set to the same value.
     /// </summary>
     /// <param name="all">Common value for all edges.</param>
-    public Edges(int all) : this(all, all, all, all) { }
+    public Edges(int all)
+        : this(all, all, all, all) { }
 
     /// <summary>
     /// Initialies a new <see cref="Edges"/> with symmetrical horizontal and vertical values.
@@ -88,7 +89,7 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
             SimpleRotation.QuarterClockwise => new(Bottom, Left, Top, Right),
             SimpleRotation.QuarterCounterclockwise => new(Top, Right, Bottom, Left),
             SimpleRotation.Half => new(Right, Bottom, Left, Top),
-            _ => this
+            _ => this,
         };
     }
 
@@ -111,7 +112,8 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
             value1.Left + value2.Left,
             value1.Top + value2.Top,
             value1.Right + value2.Right,
-            value1.Bottom + value2.Bottom);
+            value1.Bottom + value2.Bottom
+        );
     }
 
     public static Edges operator -(Edges value1, Edges value2)
@@ -120,7 +122,8 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
             value1.Left - value2.Left,
             value1.Top - value2.Top,
             value1.Right - value2.Right,
-            value1.Bottom - value2.Bottom);
+            value1.Bottom - value2.Bottom
+        );
     }
 
     public static Edges operator *(Edges value, int scale)

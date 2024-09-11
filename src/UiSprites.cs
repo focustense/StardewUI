@@ -39,26 +39,29 @@ public static class UiSprites
     /// Border/background sprite for an individual control, such as a button. Less prominent than
     /// <see cref="MenuBorder"/>.
     /// </summary>
-    public static Sprite ControlBorder =>
-        new(Game1.menuTexture, SourceRect: new(0, 256, 60, 60), FixedEdges: new(16));
+    public static Sprite ControlBorder => new(Game1.menuTexture, SourceRect: new(0, 256, 60, 60), FixedEdges: new(16));
 
     /// <summary>
     /// Background of a drop-down menu.
     /// </summary>
-    public static Sprite DropDownBackground => new(
-        Game1.mouseCursors,
-        SourceRect: OptionsDropDown.dropDownBGSource,
-        FixedEdges: new(1),
-        SliceSettings: new(Scale: 4));
+    public static Sprite DropDownBackground =>
+        new(
+            Game1.mouseCursors,
+            SourceRect: OptionsDropDown.dropDownBGSource,
+            FixedEdges: new(1),
+            SliceSettings: new(Scale: 4)
+        );
 
     /// <summary>
     /// Button to pull down a drop-down menu.
     /// </summary>
-    public static Sprite DropDownButton => new(
-        Game1.mouseCursors,
-        SourceRect: OptionsDropDown.dropDownButtonSource,
-        FixedEdges: new(1, 3, 3, 3),
-        SliceSettings: new(Scale: 4));
+    public static Sprite DropDownButton =>
+        new(
+            Game1.mouseCursors,
+            SourceRect: OptionsDropDown.dropDownButtonSource,
+            FixedEdges: new(1, 3, 3, 3),
+            SliceSettings: new(Scale: 4)
+        );
 
     /// <summary>
     /// Background used for the in-game menu, not including borders.
@@ -89,11 +92,13 @@ public static class UiSprites
     /// <see cref="MenuBorder"/> to denote separate "sub-panels" or "sections" of the menu to group logically very
     /// different menu functions (as opposed to lines on a grid).
     /// </summary>
-    public static Sprite MenuHorizontalDivider => new(
-        Game1.menuTexture,
-        SourceRect: new(0, 64, 256, 64),
-        FixedEdges: new(64, 0),
-        SliceSettings: new(CenterX: 128));
+    public static Sprite MenuHorizontalDivider =>
+        new(
+            Game1.menuTexture,
+            SourceRect: new(0, 64, 256, 64),
+            FixedEdges: new(64, 0),
+            SliceSettings: new(CenterX: 128)
+        );
 
     /// <summary>
     /// Margin adjustment to apply to content adjacent to a <see cref="MenuHorizontalDivider"/> to make content flush
@@ -105,29 +110,24 @@ public static class UiSprites
     /// Background for the scroll bar track (which the thumb is inside).
     /// </summary>
     public static Sprite ScrollBarTrack =>
+        new(Game1.mouseCursors, SourceRect: new(403, 383, 6, 6), FixedEdges: new(2), SliceSettings: new(Scale: 4));
+
+    /// <summary>
+    /// Background of a slider control.
+    /// </summary>
+    public static Sprite SliderBackground =>
         new(
             Game1.mouseCursors,
-            SourceRect: new(403, 383, 6, 6),
+            SourceRect: OptionsSlider.sliderBGSource,
             FixedEdges: new(2),
             SliceSettings: new(Scale: 4)
         );
 
     /// <summary>
-    /// Background of a slider control.
-    /// </summary>
-    public static Sprite SliderBackground => new(
-        Game1.mouseCursors,
-        SourceRect: OptionsSlider.sliderBGSource,
-        FixedEdges: new(2),
-        SliceSettings: new(Scale: 4));
-
-    /// <summary>
     /// The movable part of a slider control ("button").
     /// </summary>
-    public static Sprite SliderButton => new(
-        Game1.mouseCursors,
-        SourceRect: OptionsSlider.sliderButtonRect,
-        SliceSettings: new(Scale: 4));
+    public static Sprite SliderButton =>
+        new(Game1.mouseCursors, SourceRect: OptionsSlider.sliderButtonRect, SliceSettings: new(Scale: 4));
 
     /// <summary>
     /// Small up arrow, typically used for scroll bars.
@@ -137,13 +137,10 @@ public static class UiSprites
     /// <summary>
     /// Small down arrow, typically used for scroll bars.
     /// </summary>
-    public static Sprite SmallDownArrow =>
-        new(Game1.mouseCursors, SourceRect: new(421, 472, 11, 12));
+    public static Sprite SmallDownArrow => new(Game1.mouseCursors, SourceRect: new(421, 472, 11, 12));
 
     /// <summary>
     /// Thumb sprite used for vertical scroll bars.
     /// </summary>
-    public static Sprite VerticalScrollThumb =>
-        new(Game1.mouseCursors, SourceRect: new(435, 463, 6, 10));
+    public static Sprite VerticalScrollThumb => new(Game1.mouseCursors, SourceRect: new(435, 463, 6, 10));
 }
-

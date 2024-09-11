@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using System;
+﻿using System;
 using System.Diagnostics;
+using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 
 namespace StardewUI;
 
@@ -196,19 +196,24 @@ public abstract class View : IView
         if (found is not null)
         {
             LogFocusSearch(
-                $"{Name} found focusable descendant '{found.Target.View.Name}' with bounds " +
-                $"[{found.Target.Position}, {found.Target.View.OuterSize}]");
+                $"{Name} found focusable descendant '{found.Target.View.Name}' with bounds "
+                    + $"[{found.Target.Position}, {found.Target.View.OuterSize}]"
+            );
             return found.AsChild(this, offset);
         }
-        if (IsFocusable && (
-            (direction == Direction.East && position.X < 0)
-            || (direction == Direction.West && position.X >= OuterSize.X)
-            || (direction == Direction.South && position.Y < 0)
-            || (direction == Direction.North && position.Y >= OuterSize.Y)))
+        if (
+            IsFocusable
+            && (
+                (direction == Direction.East && position.X < 0)
+                || (direction == Direction.West && position.X >= OuterSize.X)
+                || (direction == Direction.South && position.Y < 0)
+                || (direction == Direction.North && position.Y >= OuterSize.Y)
+            )
+        )
         {
             LogFocusSearch(
-                $"{Name} found no focusable descendants but matched itself: " +
-                $"[{Vector2.Zero}, {OuterSize}]");
+                $"{Name} found no focusable descendants but matched itself: " + $"[{Vector2.Zero}, {OuterSize}]"
+            );
             return new(new(this, Vector2.Zero), []);
         }
         LogFocusSearch($"View '{Name}' found no focusable descendants matching the query.");
@@ -563,9 +568,7 @@ public abstract class View : IView
     /// was marked dirty after the last pass completed. The default implementation is a no-op; subclasses should use it
     /// to clear any private dirty state, e.g. via <see cref="DirtyTracker{T}.ResetDirty"/>.
     /// </remarks>
-    protected virtual void ResetDirty()
-    { 
-    }
+    protected virtual void ResetDirty() { }
 
     private void DispatchPointerEvent<T>(T eventArgs, Action<IView, T> dispatch)
         where T : PointerEventArgs, IOffsettable<T>
@@ -623,8 +626,7 @@ public abstract class View : IView
     private Bounds GetContentBounds()
     {
         var boundsWithMargin = GetActualBounds();
-        var position = boundsWithMargin.Position
-            + new Vector2(Math.Max(Margin.Left, 0), Math.Max(Margin.Top, 0));
+        var position = boundsWithMargin.Position + new Vector2(Math.Max(Margin.Left, 0), Math.Max(Margin.Top, 0));
         return new(position, ContentSize);
     }
 

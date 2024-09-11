@@ -1,7 +1,7 @@
 ﻿namespace StardewUI;
 
-using Microsoft.Xna.Framework;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 
 /// <summary>
 /// Layout parameters for an <see cref="IView"/>.
@@ -15,11 +15,7 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// <returns></returns>
     public static LayoutParameters AutoRow()
     {
-        return new()
-        {
-            Width = Length.Stretch(),
-            Height = Length.Content(),
-        };
+        return new() { Width = Length.Stretch(), Height = Length.Content() };
     }
 
     /// <summary>
@@ -28,11 +24,7 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// <returns></returns>
     public static LayoutParameters Fill()
     {
-        return new()
-        {
-            Width = Length.Stretch(),
-            Height = Length.Stretch()
-        };
+        return new() { Width = Length.Stretch(), Height = Length.Stretch() };
     }
 
     /// <summary>
@@ -40,11 +32,7 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// </summary>
     public static LayoutParameters FitContent()
     {
-        return new()
-        {
-            Width = Length.Content(),
-            Height = Length.Content(),
-        };
+        return new() { Width = Length.Content(), Height = Length.Content() };
     }
 
     /// <summary>
@@ -63,11 +51,7 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// <param name="height">The layout height, in pixels.</param>
     public static LayoutParameters FixedSize(float width, float height)
     {
-        return new()
-        {
-            Width = Length.Px(width),
-            Height = Length.Px(height),
-        };
+        return new() { Width = Length.Px(width), Height = Length.Px(height) };
     }
 
     public LayoutParameters()
@@ -188,10 +172,12 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
             // - If the length is not content-dependent, then use it;
             // - Otherwise, set the limit to the maximum size available (which is subsequently constrained by max).
             Width.Resolve(availableSize.X, () => availableSize.X),
-            MaxWidth ?? float.PositiveInfinity);
+            MaxWidth ?? float.PositiveInfinity
+        );
         var constrainedHeight = Math.Min(
             Height.Resolve(availableSize.Y, () => availableSize.Y),
-            MaxHeight ?? float.PositiveInfinity);
+            MaxHeight ?? float.PositiveInfinity
+        );
         return new Vector2(constrainedWidth, constrainedHeight);
     }
 
@@ -217,7 +203,8 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
         var resolvedHeight = Height.Resolve(availableSize.Y, () => Resolve1D(size => size.Y));
         return new(
             Math.Clamp(resolvedWidth, MinWidth ?? float.NegativeInfinity, MaxWidth ?? float.PositiveInfinity),
-            Math.Clamp(resolvedHeight, MinHeight ?? float.NegativeInfinity, MaxHeight ?? float.PositiveInfinity));
+            Math.Clamp(resolvedHeight, MinHeight ?? float.NegativeInfinity, MaxHeight ?? float.PositiveInfinity)
+        );
     }
 
     public static bool operator ==(LayoutParameters left, LayoutParameters right)

@@ -65,15 +65,17 @@ public class Lane : View
 
         var nearestChild = visibleChildPositions[nearestChildIndex];
         LogFocusSearch(
-            $"Nearest child '{nearestChild.View.Name}' is at index {nearestChildIndex} with bounds: " +
-            $"[{nearestChild.Position}, {nearestChild.View.OuterSize}]");
+            $"Nearest child '{nearestChild.View.Name}' is at index {nearestChildIndex} with bounds: "
+                + $"[{nearestChild.Position}, {nearestChild.View.OuterSize}]"
+        );
         var nearestResult = nearestChild.FocusSearch(contentPosition, direction);
         var nearestTarget = nearestResult?.Target;
         if (nearestTarget is not null)
         {
             LogFocusSearch(
-                $"Nearest child '{nearestChild.View.Name}' matched the query: '{nearestTarget.View.Name}' with " +
-                $"bounds: [{nearestTarget.Position}, {nearestTarget.View.OuterSize}]");
+                $"Nearest child '{nearestChild.View.Name}' matched the query: '{nearestTarget.View.Name}' with "
+                    + $"bounds: [{nearestTarget.Position}, {nearestTarget.View.OuterSize}]"
+            );
         }
         else
         {
@@ -90,8 +92,9 @@ public class Lane : View
         if (nearestTarget is not null && nearestChild.ContainsPoint(contentPosition))
         {
             LogFocusSearch(
-                $"Returning nearest child's result '{nearestTarget.View.Name}' since it contains the specified point " +
-                "and has its own match.");
+                $"Returning nearest child's result '{nearestTarget.View.Name}' since it contains the specified point "
+                    + "and has its own match."
+            );
             return nearestResult;
         }
 
@@ -106,8 +109,9 @@ public class Lane : View
             if (nearestTarget is not null && IsCorrectDirection(contentPosition, nearestTarget, direction))
             {
                 LogFocusSearch(
-                    $"Nearest child's result '{nearestTarget.View.Name}' is already in the requested direction " +
-                    $"({direction} of {contentPosition}); returning it.");
+                    $"Nearest child's result '{nearestTarget.View.Name}' is already in the requested direction "
+                        + $"({direction} of {contentPosition}); returning it."
+                );
                 return nearestResult;
             }
             var searchStep = IsReverseDirection(direction) ? -1 : 1;
@@ -119,9 +123,10 @@ public class Lane : View
                 if (childResult is not null)
                 {
                     LogFocusSearch(
-                        $"Found a match: '{searchChild.View.Name}' matched the query: " +
-                        $"'{childResult.Target.View.Name}' with bounds: " +
-                        $"[{childResult.Target.Position}, {childResult.Target.View.OuterSize}]");
+                        $"Found a match: '{searchChild.View.Name}' matched the query: "
+                            + $"'{childResult.Target.View.Name}' with bounds: "
+                            + $"[{childResult.Target.Position}, {childResult.Target.View.OuterSize}]"
+                    );
                     return childResult;
                 }
                 LogFocusSearch("No result at this position.");
@@ -161,8 +166,9 @@ public class Lane : View
             if (nextResult is not null)
             {
                 LogFocusSearch(
-                    $"Found possible match: '{nextResult.Target.View.Name}' with distance {nextDistance} and bounds: " +
-                    $"[{nextResult.Target.Position}, {nextResult.Target.View.OuterSize}]");
+                    $"Found possible match: '{nextResult.Target.View.Name}' with distance {nextDistance} and bounds: "
+                        + $"[{nextResult.Target.Position}, {nextResult.Target.View.OuterSize}]"
+                );
             }
             else
             {
@@ -192,8 +198,9 @@ public class Lane : View
             if (prevResult is not null)
             {
                 LogFocusSearch(
-                    $"Found possible match: '{prevResult.Target.View.Name}' with distance {prevDistance} and bounds: " +
-                    $"[{prevResult.Target.Position}, {prevResult.Target.View.OuterSize}]");
+                    $"Found possible match: '{prevResult.Target.View.Name}' with distance {prevDistance} and bounds: "
+                        + $"[{prevResult.Target.Position}, {prevResult.Target.View.OuterSize}]"
+                );
             }
             else
             {
@@ -215,11 +222,12 @@ public class Lane : View
             return null;
         }
         LogFocusSearch(
-            "Matches found:\n" +
-            $"  Ahead: '{ahead.result?.Target.View.Name}' [{ahead.result?.Target.Position}, " +
-            $"{ahead.result?.Target.View.OuterSize}] distance={ahead.distance}\n" +
-            $"  Behind: '{behind.result?.Target.View.Name}' [{behind.result?.Target.Position}, " +
-            $"{behind.result?.Target.View.OuterSize}] distance={behind.distance}");
+            "Matches found:\n"
+                + $"  Ahead: '{ahead.result?.Target.View.Name}' [{ahead.result?.Target.Position}, "
+                + $"{ahead.result?.Target.View.OuterSize}] distance={ahead.distance}\n"
+                + $"  Behind: '{behind.result?.Target.View.Name}' [{behind.result?.Target.Position}, "
+                + $"{behind.result?.Target.View.OuterSize}] distance={behind.distance}"
+        );
         return ahead.distance < behind.distance ? ahead.result : behind.result;
     }
 
@@ -338,9 +346,10 @@ public class Lane : View
             var child = visibleChildPositions[i];
             var minExtent = Orientation.Get(child.Position);
             var maxExtent = Orientation.Get(child.Position + child.View.OuterSize);
-            var distance = (axisPosition >= minExtent && axisPosition < maxExtent)
-                ? 0
-                : MathF.Min(MathF.Abs(axisPosition - minExtent), MathF.Abs(axisPosition - maxExtent));
+            var distance =
+                (axisPosition >= minExtent && axisPosition < maxExtent)
+                    ? 0
+                    : MathF.Min(MathF.Abs(axisPosition - minExtent), MathF.Abs(axisPosition - maxExtent));
             if (distance < maxDistance)
             {
                 maxDistance = distance;

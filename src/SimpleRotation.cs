@@ -41,7 +41,7 @@ public static class SimpleRotationExtensions
             SimpleRotation.QuarterClockwise => HALF_PI,
             SimpleRotation.QuarterCounterclockwise => -HALF_PI,
             SimpleRotation.Half => MathF.PI,
-            _ => 0
+            _ => 0,
         };
     }
 

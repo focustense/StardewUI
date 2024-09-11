@@ -1,19 +1,20 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace StardewUI;
 
 /// <summary>
 /// Generic menu implementation based on a root <see cref="IView"/>.
 /// </summary>
-public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
+public abstract class ViewMenu<T> : IClickableMenu, IDisposable
+    where T : IView
 {
     /// <summary>
     /// Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
@@ -75,14 +76,16 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
         using var _ = OverlayContext.PushContext(overlayContext);
         var direction = (Direction)directionValue;
         var mousePosition = Game1.input.GetMouseState().Position;
-        OnViewOrOverlay((view, origin) =>
-        {
-            var found = view.FocusSearch(mousePosition.ToVector2() - origin, direction);
-            if (found is not null)
+        OnViewOrOverlay(
+            (view, origin) =>
             {
-                FinishFocusSearch(view, origin.ToPoint(), found);
+                var found = view.FocusSearch(mousePosition.ToVector2() - origin, direction);
+                if (found is not null)
+                {
+                    FinishFocusSearch(view, origin.ToPoint(), found);
+                }
             }
-        });
+        );
     }
 
     public override bool areGamePadControlsImplemented()
@@ -227,9 +230,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
         // in some far-out scenarios like simultaneous keyboard + controller presses, but eliminates much more obvious
         // and frustrating issues like not being able to navigate or dismiss the menu with a controller after typing on
         // a regular keyboard.
-        if (key == Keys.Escape
+        if (
+            key == Keys.Escape
             || Game1.keyboardDispatcher.Subscriber is not ICaptureTarget
-            || (Game1.options.gamepadControls && Utility.getHeldButtons(Game1.input.GetGamePadState()).Count > 0))
+            || (Game1.options.gamepadControls && Utility.getHeldButtons(Game1.input.GetGamePadState()).Count > 0)
+        )
         {
             base.receiveKeyPress(key);
         }
@@ -320,10 +325,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
         {
             var overlayData = GetOverlayLayoutData(overlay);
             var overlayLocalPosition = screenPoint.ToVector2() - overlayData.Position;
-            if (overlayLocalPosition.X < 0
+            if (
+                overlayLocalPosition.X < 0
                 || overlayLocalPosition.Y < 0
                 || overlayLocalPosition.X >= overlay.View.OuterSize.X
-                || overlayLocalPosition.Y >= overlay.View.OuterSize.Y)
+                || overlayLocalPosition.Y >= overlay.View.OuterSize.Y
+            )
             {
                 overlayContext.Pop();
             }
@@ -351,39 +358,42 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
     private void InitiateWheel(Direction direction)
     {
         var mousePosition = Game1.input.GetMouseState().Position;
-        OnViewOrOverlay((view, origin) =>
-        {
-            var localPosition = mousePosition.ToVector2() - origin;
-            var pathBeforeScroll = view.GetPathToPosition(localPosition).Select(child => child.View).ToList();
-            var args = new WheelEventArgs(localPosition, direction);
-            view.OnWheel(args);
-            if (!args.Handled)
+        OnViewOrOverlay(
+            (view, origin) =>
             {
-                return;
-            }
-            Game1.playSound("shiny4");
-            if (Game1.options.gamepadControls && !Game1.lastCursorMotionWasMouse)
-            {
-                var pathAfterScroll = view.ResolveChildPath(pathBeforeScroll);
-                var (targetView, bounds) = pathAfterScroll.Aggregate(
-                    (view as IView, bounds: Bounds.Empty),
-                    (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize)));
-                if (view.GetPathToPosition(bounds.Center()).LastOrDefault()?.View == targetView)
+                var localPosition = mousePosition.ToVector2() - origin;
+                var pathBeforeScroll = view.GetPathToPosition(localPosition).Select(child => child.View).ToList();
+                var args = new WheelEventArgs(localPosition, direction);
+                view.OnWheel(args);
+                if (!args.Handled)
                 {
-                    Game1.setMousePosition((origin + bounds.Center()).ToPoint(), true);
+                    return;
                 }
-                else
+                Game1.playSound("shiny4");
+                if (Game1.options.gamepadControls && !Game1.lastCursorMotionWasMouse)
                 {
-                    // Can happen if the target view is no longer reachable, i.e. outside the scroll bounds.
-                    var validResult = view.FocusSearch(localPosition, direction);
-                    if (validResult is not null)
+                    var pathAfterScroll = view.ResolveChildPath(pathBeforeScroll);
+                    var (targetView, bounds) = pathAfterScroll.Aggregate(
+                        (view as IView, bounds: Bounds.Empty),
+                        (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize))
+                    );
+                    if (view.GetPathToPosition(bounds.Center()).LastOrDefault()?.View == targetView)
                     {
-                        ReleaseCaptureTarget();
-                        Game1.setMousePosition((origin + validResult.Target.Center()).ToPoint(), true);
+                        Game1.setMousePosition((origin + bounds.Center()).ToPoint(), true);
+                    }
+                    else
+                    {
+                        // Can happen if the target view is no longer reachable, i.e. outside the scroll bounds.
+                        var validResult = view.FocusSearch(localPosition, direction);
+                        if (validResult is not null)
+                        {
+                            ReleaseCaptureTarget();
+                            Game1.setMousePosition((origin + validResult.Target.Center()).ToPoint(), true);
+                        }
                     }
                 }
             }
-        });
+        );
     }
 
     [Conditional("DEBUG_FOCUS_SEARCH")]
@@ -483,10 +493,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
             if (overlay.Parent != immediateParent?.View)
             {
                 ParentPath =
-                    (overlay.Parent is not null
-                        ? root.View.GetPathToView(overlay.Parent)?.ToGlobalPositions().ToArray()
-                        : null)
-                    ?? [];
+                    (
+                        overlay.Parent is not null
+                            ? root.View.GetPathToView(overlay.Parent)?.ToGlobalPositions().ToArray()
+                            : null
+                    ) ?? [];
             }
             immediateParent = GetImmediateParent();
             ParentBounds = immediateParent is not null
@@ -497,13 +508,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
                 ParentBounds.Left,
                 ParentBounds.Right,
                 overlay.HorizontalAlignment,
-                overlay.View.OuterSize.X);
+                overlay.View.OuterSize.X
+            );
             var y = ResolveAlignments(
                 overlay.VerticalParentAlignment,
                 ParentBounds.Top,
                 ParentBounds.Bottom,
                 overlay.VerticalAlignment,
-                overlay.View.OuterSize.Y);
+                overlay.View.OuterSize.Y
+            );
             Position = new Vector2(x, y);
         }
 
@@ -523,14 +536,18 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable where T : IView
             float parentStart,
             float parentEnd,
             Alignment childAlignment,
-            float childLength)
+            float childLength
+        )
         {
             var anchor = parentAlignment switch
             {
                 Alignment.Start => parentStart,
                 Alignment.Middle => (parentEnd - parentStart) / 2,
                 Alignment.End => parentEnd,
-                _ => throw new ArgumentException($"Invalid parent alignment: {parentAlignment}", nameof(parentAlignment)),
+                _ => throw new ArgumentException(
+                    $"Invalid parent alignment: {parentAlignment}",
+                    nameof(parentAlignment)
+                ),
             };
             return childAlignment switch
             {

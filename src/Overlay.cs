@@ -99,8 +99,8 @@ public class Overlay(
     Alignment horizontalParentAlignment = Alignment.Middle,
     Alignment verticalAlignment = Alignment.Middle,
     Alignment verticalParentAlignment = Alignment.Middle,
-    Vector2 parentOffset = default)
-    : IOverlay
+    Vector2 parentOffset = default
+) : IOverlay
 {
     /// <summary>
     /// Raised when the overlay is removed from the active stack.

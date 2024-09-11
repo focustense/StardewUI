@@ -25,7 +25,8 @@ public abstract class WrapperView : WrapperView<IView> { }
 /// </para>
 /// </remarks>
 /// <typeparam name="T">Type of view being wrapped.</typeparam>
-public abstract class WrapperView<T> : IView where T : IView
+public abstract class WrapperView<T> : IView
+    where T : IView
 {
     public event EventHandler<ClickEventArgs>? Click;
     public event EventHandler<PointerEventArgs>? Drag;
@@ -38,13 +39,33 @@ public abstract class WrapperView<T> : IView where T : IView
     public Bounds ActualBounds => Root.ActualBounds;
     public Bounds ContentBounds => Root.ContentBounds;
     public bool IsFocusable => Root.IsFocusable;
-    public LayoutParameters Layout { get => Root.Layout; set => Root.Layout = value; }
-    public string Name { get => Root.Name; set => Root.Name = value; }
+    public LayoutParameters Layout
+    {
+        get => Root.Layout;
+        set => Root.Layout = value;
+    }
+    public string Name
+    {
+        get => Root.Name;
+        set => Root.Name = value;
+    }
     public Vector2 OuterSize => Root.OuterSize;
     public Tags Tags { get; set; } = new();
-    public string Tooltip { get => Root.Tooltip; set => Root.Tooltip = value; }
-    public Visibility Visibility { get => Root.Visibility; set => Root.Visibility = value; }
-    public int ZIndex { get => Root.ZIndex; set => Root.ZIndex = value; }
+    public string Tooltip
+    {
+        get => Root.Tooltip;
+        set => Root.Tooltip = value;
+    }
+    public Visibility Visibility
+    {
+        get => Root.Visibility;
+        set => Root.Visibility = value;
+    }
+    public int ZIndex
+    {
+        get => Root.ZIndex;
+        set => Root.ZIndex = value;
+    }
 
     protected bool IsViewCreated => root.IsValueCreated;
     protected T Root => root.Value;

@@ -67,7 +67,7 @@ public record Length(LengthType Type, float Value)
             LengthType.Percent => availableLength * Value / 100,
             LengthType.Stretch => availableLength,
             LengthType.Content => getContentLength(),
-            _ => throw new NotImplementedException($"Invalid length type: {Type}")
+            _ => throw new NotImplementedException($"Invalid length type: {Type}"),
         };
     }
 }

@@ -49,11 +49,13 @@ public class TinyNumberLabel(IReadOnlyList<Sprite> digitSprites, float baseScale
     }
 
     private readonly float baseScale = baseScale;
-    private readonly IReadOnlyList<Sprite> digitSprites = digitSprites.Count == 10
-        ? digitSprites
-        : throw new ArgumentException(
-            $"Digit sprite list has the wrong number of sprites (expected 10, got {digitSprites.Count}).",
-            nameof(digitSprites));
+    private readonly IReadOnlyList<Sprite> digitSprites =
+        digitSprites.Count == 10
+            ? digitSprites
+            : throw new ArgumentException(
+                $"Digit sprite list has the wrong number of sprites (expected 10, got {digitSprites.Count}).",
+                nameof(digitSprites)
+            );
     private readonly DirtyTracker<int> number = new(0);
     private readonly DirtyTracker<float> scale = new(1.0f);
 
@@ -118,7 +120,8 @@ public class TinyNumberLabel(IReadOnlyList<Sprite> digitSprites, float baseScale
             9 => number / 1_000_000_000,
             _ => throw new ArgumentOutOfRangeException(
                 nameof(position),
-                $"{position} is not a valid digit position for an integer.")
+                $"{position} is not a valid digit position for an integer."
+            ),
         };
         return n % 10;
     }

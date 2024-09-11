@@ -41,7 +41,7 @@ public static class AlignmentExtensions
             Alignment.Start => 0.0f,
             Alignment.Middle => (axisLength - contentLength) / 2,
             Alignment.End => axisLength - contentLength,
-            _ => throw new NotImplementedException($"Invalid horizontal alignment: {alignment}")
+            _ => throw new NotImplementedException($"Invalid horizontal alignment: {alignment}"),
         };
     }
 }

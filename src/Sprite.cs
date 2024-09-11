@@ -16,7 +16,8 @@ public record Sprite(
     Texture2D Texture,
     Rectangle? SourceRect = null,
     Edges? FixedEdges = null,
-    SliceSettings? SliceSettings = null)
+    SliceSettings? SliceSettings = null
+)
 {
     /// <summary>
     /// The size (width/height) of the sprite, in pixels.
@@ -41,7 +42,8 @@ public record SliceSettings(
     int? CenterY = null,
     SliceCenterPosition CenterYPosition = SliceCenterPosition.Start,
     int Scale = 1,
-    bool EdgesOnly = false);
+    bool EdgesOnly = false
+);
 
 /// <summary>
 /// Specifies which side the center position of a <see cref="SliceSettings"/> instance is on.

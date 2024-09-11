@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Reflection;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Reflection;
 
 namespace StardewUI;
 
@@ -9,8 +9,10 @@ namespace StardewUI;
 /// </summary>
 public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform) : ISpriteBatch
 {
-    private static readonly FieldInfo rasterizerStateField = typeof(SpriteBatch)
-        .GetField("_rasterizerState", BindingFlags.Instance | BindingFlags.NonPublic)!;
+    private static readonly FieldInfo rasterizerStateField = typeof(SpriteBatch).GetField(
+        "_rasterizerState",
+        BindingFlags.Instance | BindingFlags.NonPublic
+    )!;
 
     private readonly SpriteBatch spriteBatch = spriteBatch;
     private Transform transform = transform;
@@ -42,7 +44,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         Vector2? origin = null,
         float scale = 1.0f,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0)
+        float layerDepth = 0
+    )
     {
         spriteBatch.Draw(
             texture,
@@ -53,7 +56,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
             origin ?? Vector2.Zero,
             scale,
             effects,
-            layerDepth);
+            layerDepth
+        );
     }
 
     public void Draw(
@@ -65,7 +69,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         Vector2? origin,
         Vector2? scale,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0)
+        float layerDepth = 0
+    )
     {
         spriteBatch.Draw(
             texture,
@@ -76,7 +81,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
             origin ?? Vector2.Zero,
             scale ?? Vector2.One,
             effects,
-            layerDepth);
+            layerDepth
+        );
     }
 
     public void Draw(
@@ -87,7 +93,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         float rotation = 0,
         Vector2? origin = null,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0)
+        float layerDepth = 0
+    )
     {
         var location = (destinationRectangle.Location.ToVector2() + transform.Translation).ToPoint();
         spriteBatch.Draw(
@@ -98,7 +105,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
             rotation,
             origin ?? Vector2.Zero,
             effects,
-            layerDepth);
+            layerDepth
+        );
     }
 
     public void DrawString(
@@ -110,7 +118,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         Vector2? origin = null,
         float scale = 1,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0)
+        float layerDepth = 0
+    )
     {
         spriteBatch.DrawString(
             spriteFont,
@@ -121,7 +130,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
             origin ?? Vector2.Zero,
             scale,
             effects,
-            layerDepth);
+            layerDepth
+        );
     }
 
     public IDisposable SaveTransform()
@@ -145,7 +155,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
             SpriteSortMode.Deferred,
             BlendState.AlphaBlend,
             SamplerState.PointClamp,
-            rasterizerState: rasterizerState);
+            rasterizerState: rasterizerState
+        );
     }
 
     private static Rectangle Intersection(Rectangle r1, Rectangle r2)
@@ -160,8 +171,8 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
     private class ClipReverter(
         PropagatedSpriteBatch owner,
         RasterizerState previousRasterizerState,
-        Rectangle previousRect)
-        : IDisposable
+        Rectangle previousRect
+    ) : IDisposable
     {
         public void Dispose()
         {

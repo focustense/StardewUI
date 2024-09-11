@@ -65,10 +65,12 @@ public class TextInput : View
     public float? CaretWidth
     {
         get => caret.Layout.Width.Type == LengthType.Px ? caret.Layout.Width.Value : null;
-        set => caret.Layout = new() {
-            Width = value.HasValue ? Length.Px(value.Value) : Length.Content(),
-            Height = Length.Stretch()
-        };
+        set =>
+            caret.Layout = new()
+            {
+                Width = value.HasValue ? Length.Px(value.Value) : Length.Content(),
+                Height = Length.Stretch(),
+            };
     }
 
     /// <summary>
@@ -172,11 +174,7 @@ public class TextInput : View
         caret = new Image()
         {
             Name = "TextInputCursor",
-            Layout = new()
-            {
-                Width = Length.Content(),
-                Height = Length.Stretch(),
-            },
+            Layout = new() { Width = Length.Content(), Height = Length.Stretch() },
             Margin = new(-2, 0),
             Fit = ImageFit.Stretch,
             Visibility = Visibility.Hidden,
@@ -185,7 +183,8 @@ public class TextInput : View
             caret,
             i => i.Visibility,
             (_, _, progress) => progress < 0.5f ? Visibility.Visible : Visibility.Hidden,
-            (i, v) => i.Visibility = v);
+            (i, v) => i.Visibility = v
+        );
         caretBlinkAnimator.Loop = true;
         labelBeforeCursor = new()
         {
@@ -349,9 +348,10 @@ public class TextInput : View
         // of pixel positions to character positions and don't want to reimplement the entire font system.
         // A reasonably (?) fast solution should be to actually measure partial strings, using a binary search on the
         // length of the before/after string.
-        var (previousCharacterCount, labelText, labelOffset) = position.X < labelBeforeCursor.OuterSize.X
-            ? (0, labelBeforeCursor.Text, position.X)
-            : (labelBeforeCursor.Text.Length, labelAfterCursor.Text, position.X - labelBeforeCursor.OuterSize.X);
+        var (previousCharacterCount, labelText, labelOffset) =
+            position.X < labelBeforeCursor.OuterSize.X
+                ? (0, labelBeforeCursor.Text, position.X)
+                : (labelBeforeCursor.Text.Length, labelAfterCursor.Text, position.X - labelBeforeCursor.OuterSize.X);
         var searchStart = 0;
         var searchEnd = labelText.Length;
         var searchMid = 0;
@@ -416,7 +416,8 @@ public class TextInput : View
     }
 
     private class TextBoxInterceptor(TextInput owner)
-        : TextBox(Game1.staminaRect, Game1.staminaRect, Game1.smallFont, Color.Black), ICaptureTarget
+        : TextBox(Game1.staminaRect, Game1.staminaRect, Game1.smallFont, Color.Black),
+            ICaptureTarget
     {
         private readonly TextInput owner = owner;
 
@@ -484,7 +485,6 @@ public class TextInput : View
                     }
                     else
                     {
-
                         KeyboardInput.KeyDown += KeyboardInput_KeyDown;
                     }
                 }
@@ -496,7 +496,6 @@ public class TextInput : View
                     }
                     else
                     {
-
                         KeyboardInput.KeyDown -= KeyboardInput_KeyDown;
                     }
                     if (Game1.keyboardDispatcher.Subscriber == this)

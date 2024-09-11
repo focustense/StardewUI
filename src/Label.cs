@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Text;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using System.Text;
 
 namespace StardewUI;
 
@@ -153,11 +153,7 @@ public class Label : View
 
     private void BreakLines(float availableWidth, out float maxLineWidth)
     {
-        var rawLines = Text
-            .Replace("\r\n", "\n")
-            .Split('\r')
-            .Select(line => line.Split(' '))
-            .ToList();
+        var rawLines = Text.Replace("\r\n", "\n").Split('\r').Select(line => line.Split(' ')).ToList();
         // Greedy breaking algorithm. Knuth *probably* isn't necessary in a use case like this?
         maxLineWidth = 0.0f;
         lines = [];

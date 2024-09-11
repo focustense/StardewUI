@@ -122,16 +122,17 @@ public class Grid : View
                 LogFocusSearch("Cell position is out of bounds; ending search.");
                 return null;
             }
-            var nextChild = nextIndex < childPositions.Count
-                ? childPositions[nextIndex]
+            var nextChild =
+                nextIndex < childPositions.Count ? childPositions[nextIndex]
                 // GetChildIndexAt can return a position past the end of the list, only on the final row (if horizontal) or
                 // final column (if vertical). Whether or not this is considered a valid navigation depends on the
                 // direction. Navigating east on the final row, past the last item, should NOT return a value here as it
                 // would be considered exiting the entire grid, but navigating up/down from a different row (or from out of
                 // bounds) should snap to the last or closest item.
                 : direction.GetOrientation() == PrimaryOrientation
-                    ? nextIndex > countBeforeWrap ? childPositions[nextIndex - countBeforeWrap] : null
-                    : childPositions.LastOrDefault();
+                    ? nextIndex > countBeforeWrap ? childPositions[nextIndex - countBeforeWrap]
+                        : null
+                : childPositions.LastOrDefault();
             var found = nextChild?.FocusSearch(contentPosition, direction);
             if (found is not null)
             {
@@ -158,8 +159,11 @@ public class Grid : View
 
     protected override bool IsContentDirty()
     {
-        return itemLayout.IsDirty || itemSpacing.IsDirty || primaryOrientation.IsDirty || children.IsDirty ||
-            children.Any(child => child.IsDirty());
+        return itemLayout.IsDirty
+            || itemSpacing.IsDirty
+            || primaryOrientation.IsDirty
+            || children.IsDirty
+            || children.Any(child => child.IsDirty());
     }
 
     protected override void OnDrawContent(ISpriteBatch b)
@@ -215,7 +219,8 @@ public class Grid : View
                 {
                     var positionOffset = new Vector2(
                         HorizontalItemAlignment.Align(child.OuterSize.X, cellBounds.X),
-                        VerticalItemAlignment.Align(child.OuterSize.Y, cellBounds.Y));
+                        VerticalItemAlignment.Align(child.OuterSize.Y, cellBounds.Y)
+                    );
                     childPositions[i] = new(childPositions[i].View, childPositions[i].Position + positionOffset);
                 }
                 PrimaryOrientation.Set(ref position, 0);

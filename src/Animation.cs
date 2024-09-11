@@ -59,7 +59,8 @@ public static class Animator
 /// </summary>
 /// <typeparam name="T">The target class that will receive the animation.</typeparam>
 /// <typeparam name="V">The type of value belonging to <typeparamref name="T"/> that should be animated.</typeparam>
-public class Animator<T, V> : IAnimator where T : class
+public class Animator<T, V> : IAnimator
+    where T : class
 {
     /// <summary>
     /// The current animation, started by <see cref="Start"/>, if any.
@@ -218,11 +219,13 @@ public class Animator<T, V> : IAnimator where T : class
     /// <param name="elapsed">Time elapsed since last tick.</param>
     public void Tick(TimeSpan elapsed)
     {
-        if (Paused
+        if (
+            Paused
             || !targetRef.TryGetTarget(out var target)
             || CurrentAnimation is null
             || (!Loop && IsReversing && this.elapsed == TimeSpan.Zero)
-            || (!Loop && !IsReversing && this.elapsed >= CurrentAnimation.Duration))
+            || (!Loop && !IsReversing && this.elapsed >= CurrentAnimation.Duration)
+        )
         {
             return;
         }
@@ -325,9 +328,10 @@ public class SpriteAnimator : IAnimator
         this.elapsed += elapsed;
         if (this.elapsed > totalDuration)
         {
-            this.elapsed = StartDelay > TimeSpan.Zero
-                ? TimeSpan.Zero
-                : TimeSpan.FromTicks(this.elapsed.Ticks % totalDuration.Ticks);
+            this.elapsed =
+                StartDelay > TimeSpan.Zero
+                    ? TimeSpan.Zero
+                    : TimeSpan.FromTicks(this.elapsed.Ticks % totalDuration.Ticks);
         }
         var frameIndex = (int)(this.elapsed.TotalMilliseconds / FrameDuration.TotalMilliseconds);
         image.Sprite = Frames[frameIndex];

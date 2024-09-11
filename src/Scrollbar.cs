@@ -11,8 +11,7 @@ namespace StardewUI;
 /// Must be associated with a <see cref="ScrollContainer"/> in order to work; will not draw if the container is not set
 /// or if its <see cref="ScrollContainer.ScrollSize"/> is zero.
 /// </remarks>
-public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, Sprite thumbSprite)
-    : WrapperView<Lane>
+public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, Sprite thumbSprite) : WrapperView<Lane>
 {
     /// <summary>
     /// The scroll container that this <see cref="Scrollbar"/> controls.
@@ -108,10 +107,7 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
             ShadowOffset = new(-5, 5),
         };
         track.Click += Track_Click;
-        var lane = new Lane()
-        {
-            Children = [upButton, track, downButton]
-        };
+        var lane = new Lane() { Children = [upButton, track, downButton] };
         Update(lane);
         return lane;
     }

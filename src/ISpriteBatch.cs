@@ -47,7 +47,8 @@ public interface ISpriteBatch
         Vector2? origin = null,
         float scale = 1.0f,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0.0f);
+        float layerDepth = 0.0f
+    );
 
     /// <inheritdoc cref="SpriteBatch.Draw(Texture2D, Vector2, Rectangle?, Color, float, Vector2, Vector2, SpriteEffects, float)"/>
     void Draw(
@@ -59,7 +60,8 @@ public interface ISpriteBatch
         Vector2? origin,
         Vector2? scale,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0.0f);
+        float layerDepth = 0.0f
+    );
 
     /// <inheritdoc cref="SpriteBatch.Draw(Texture2D, Vector2, Rectangle?, Color, float, Vector2, float, SpriteEffects, float)"/>
     void Draw(
@@ -70,7 +72,8 @@ public interface ISpriteBatch
         float rotation = 0.0f,
         Vector2? origin = null,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0.0f);
+        float layerDepth = 0.0f
+    );
 
     /// <inheritdoc cref="SpriteBatch.DrawString(SpriteFont, string, Vector2, Color, float, Vector2, float, SpriteEffects, float)"/>
     void DrawString(
@@ -82,7 +85,8 @@ public interface ISpriteBatch
         Vector2? origin = null,
         float scale = 1.0f,
         SpriteEffects effects = SpriteEffects.None,
-        float layerDepth = 0.0f);
+        float layerDepth = 0.0f
+    );
 
     /// <summary>
     /// Saves the current transform, so that it can later be restored to its current state.

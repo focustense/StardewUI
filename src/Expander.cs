@@ -128,11 +128,7 @@ public class Expander : WrapperView
         indicator = new Image()
         {
             Name = "ExpanderIndicator",
-            Layout = new()
-            {
-                Width = Length.Content(),
-                Height = Length.Stretch(),
-            },
+            Layout = new() { Width = Length.Content(), Height = Length.Stretch() },
             Margin = new(Left: 8, Right: 16),
             HorizontalAlignment = Alignment.Middle,
             VerticalAlignment = Alignment.Middle,
@@ -152,11 +148,7 @@ public class Expander : WrapperView
             IsFocusable = true,
         };
         headerFrame.Click += HeaderFrame_Click;
-        contentFrame = new Frame()
-        {
-            Name = "ExpanderContentFrame",
-            Layout = LayoutParameters.FitContent(),
-        };
+        contentFrame = new Frame() { Name = "ExpanderContentFrame", Layout = LayoutParameters.FitContent() };
         layout = new Lane()
         {
             Name = "ExpanderLayout",
@@ -178,12 +170,8 @@ public class Expander : WrapperView
         {
             return;
         }
-        indicator.Sprite = isExpanded && ExpandedSprite is not null
-            ? ExpandedSprite
-            : CollapsedSprite;
-        indicator.Rotation = isExpanded && ExpandedSprite is null
-            ? SimpleRotation.QuarterCounterclockwise
-            : null;
+        indicator.Sprite = isExpanded && ExpandedSprite is not null ? ExpandedSprite : CollapsedSprite;
+        indicator.Rotation = isExpanded && ExpandedSprite is null ? SimpleRotation.QuarterCounterclockwise : null;
         layout.Children = isExpanded ? [headerFrame, contentFrame] : [headerFrame];
     }
 }

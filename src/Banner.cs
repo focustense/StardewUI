@@ -88,11 +88,12 @@ public class Banner : View
                         Text,
                         (int)(origin.X + centerX + TextShadowOffset.X),
                         (int)(origin.Y + TextShadowOffset.Y),
-                        color: shadowColor);
+                        color: shadowColor
+                    );
                 }
-                SpriteText.drawStringHorizontallyCenteredAt(
-                    wb, Text, (int)(origin.X + centerX), (int)origin.Y);
-            });
+                SpriteText.drawStringHorizontallyCenteredAt(wb, Text, (int)(origin.X + centerX), (int)origin.Y);
+            }
+        );
     }
 
     protected override void OnMeasure(Vector2 availableSize)
