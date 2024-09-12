@@ -11,6 +11,11 @@ public class DropDownList<T> : WrapperView
     where T : notnull
 {
     /// <summary>
+    /// Event raised when an item in the list is selected.
+    /// </summary>
+    public event EventHandler<EventArgs>? Select;
+
+    /// <summary>
     /// Specifies how to format the <see cref="SelectedOption"/> in the label text.
     /// </summary>
     public Func<T, string> OptionFormat
@@ -65,6 +70,7 @@ public class DropDownList<T> : WrapperView
             }
             selectedIndex = validIndex;
             UpdateSelectedOption();
+            Select?.Invoke(this, EventArgs.Empty);
         }
     }
 

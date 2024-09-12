@@ -11,6 +11,11 @@ namespace StardewUI;
 public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = null) : WrapperView<Lane>
 {
     /// <summary>
+    /// Event raised when the checked state changes.
+    /// </summary>
+    public event EventHandler<EventArgs>? Change;
+
+    /// <summary>
     /// Whether or not the box is checked.
     /// </summary>
     public bool IsChecked
@@ -24,6 +29,7 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
             }
             isChecked = value;
             UpdateCheckImage();
+            Change?.Invoke(this, EventArgs.Empty);
         }
     }
 
