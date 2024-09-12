@@ -373,28 +373,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                     return;
                 }
                 Game1.playSound("shiny4");
-                if (Game1.options.gamepadControls && !Game1.lastCursorMotionWasMouse)
-                {
-                    var pathAfterScroll = view.ResolveChildPath(pathBeforeScroll);
-                    var (targetView, bounds) = pathAfterScroll.Aggregate(
-                        (view as IView, bounds: Bounds.Empty),
-                        (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize))
-                    );
-                    if (view.GetPathToPosition(bounds.Center()).LastOrDefault()?.View == targetView)
-                    {
-                        Game1.setMousePosition((origin + bounds.Center()).ToPoint(), true);
-                    }
-                    else
-                    {
-                        // Can happen if the target view is no longer reachable, i.e. outside the scroll bounds.
-                        var validResult = view.FocusSearch(localPosition, direction);
-                        if (validResult is not null)
-                        {
-                            ReleaseCaptureTarget();
-                            Game1.setMousePosition((origin + validResult.Target.Center()).ToPoint(), true);
-                        }
-                    }
-                }
+                Refocus(view, origin, localPosition, pathBeforeScroll, direction);
             }
         );
     }
@@ -409,11 +388,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     {
         var viewportSize = GetViewportSize();
         var availableMenuSize = viewportSize.ToVector2() - (gutter ?? DefaultGutter).Total;
-        view.Measure(availableMenuSize);
+        if (!view.Measure(availableMenuSize))
+        {
+            return;
+        }
         width = (int)MathF.Round(view.OuterSize.X);
         height = (int)MathF.Round(view.OuterSize.Y);
         xPositionOnScreen = viewportSize.X / 2 - width / 2;
         yPositionOnScreen = viewportSize.Y / 2 - height / 2;
+        Refocus();
     }
 
     private void OnPageable(Action<IPageable> action)
@@ -467,6 +450,70 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         previousHoverPosition = new(mouseX, mouseY);
         hoverPath = rootView.GetPathToPosition(localPosition).ToArray();
         rootView.OnPointerMove(new PointerMoveEventArgs(previousLocalPosition, localPosition));
+    }
+
+    private void Refocus(Direction searchDirection = Direction.South)
+    {
+        if (hoverPath.Length == 0 || !Game1.options.gamepadControls || Game1.lastCursorMotionWasMouse)
+        {
+            return;
+        }
+        var previousLeaf = hoverPath.ToGlobalPositions().Last();
+        OnViewOrOverlay(
+            (view, origin) =>
+            {
+                var newLeaf = view.ResolveChildPath(hoverPath.Select(x => x.View)).ToGlobalPositions().LastOrDefault();
+                if (
+                    newLeaf?.View == previousLeaf.View
+                    && (
+                        newLeaf.Position != previousLeaf.Position
+                        || newLeaf.View.OuterSize != previousLeaf.View.OuterSize
+                    )
+                )
+                {
+                    Refocus(
+                        view,
+                        origin,
+                        previousHoverPosition.ToVector2(),
+                        hoverPath.Select(x => x.View),
+                        searchDirection
+                    );
+                }
+            }
+        );
+    }
+
+    private static void Refocus(
+        IView root,
+        Vector2 origin,
+        Vector2 previousPosition,
+        IEnumerable<IView> previousPath,
+        Direction searchDirection
+    )
+    {
+        if (!Game1.options.gamepadControls || Game1.lastCursorMotionWasMouse)
+        {
+            return;
+        }
+        var pathAfterScroll = root.ResolveChildPath(previousPath);
+        var (targetView, bounds) = pathAfterScroll.Aggregate(
+            (root as IView, bounds: Bounds.Empty),
+            (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize))
+        );
+        if (root.GetPathToPosition(bounds.Center()).LastOrDefault()?.View == targetView)
+        {
+            Game1.setMousePosition((origin + bounds.Center()).ToPoint(), true);
+        }
+        else
+        {
+            // Can happen if the target view is no longer reachable, i.e. outside the scroll bounds.
+            var validResult = root.FocusSearch(previousPosition, searchDirection);
+            if (validResult is not null)
+            {
+                ReleaseCaptureTarget();
+                Game1.setMousePosition((origin + validResult.Target.Center()).ToPoint(), true);
+            }
+        }
     }
 
     private static void ReleaseCaptureTarget()

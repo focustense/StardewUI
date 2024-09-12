@@ -239,6 +239,10 @@ public class ScrollContainer : View
             Orientation.Set(ref contentSize, maxContentLength);
         }
         ContentSize = Layout.Resolve(availableSize, () => contentSize);
+#pragma warning disable CA2245 // Do not assign a property to itself
+        // Property clamps itself, so self-assignment is a cheap way to fix invalid offsets.
+        ScrollOffset = ScrollOffset;
+#pragma warning restore CA2245 // Do not assign a property to itself
     }
 
     protected override void ResetDirty()
