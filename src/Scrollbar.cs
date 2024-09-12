@@ -11,7 +11,12 @@ namespace StardewUI;
 /// Must be associated with a <see cref="ScrollContainer"/> in order to work; will not draw if the container is not set
 /// or if its <see cref="ScrollContainer.ScrollSize"/> is zero.
 /// </remarks>
-public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, Sprite thumbSprite) : WrapperView<Lane>
+public class Scrollbar(
+    Sprite? upSprite = null,
+    Sprite? downSprite = null,
+    Sprite? trackSprite = null,
+    Sprite? thumbSprite = null
+) : WrapperView<Lane>
 {
     /// <summary>
     /// The scroll container that this <see cref="Scrollbar"/> controls.
@@ -79,9 +84,9 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
 
     protected override Lane CreateView()
     {
-        upButton = CreateButton("ScrollBackButton", upSprite, 48, 48);
+        upButton = CreateButton("ScrollBackButton", upSprite ?? UiSprites.SmallUpArrow, 48, 48);
         upButton.Click += UpButton_Click;
-        downButton = CreateButton("ScrollForwardButton", downSprite, 48, 48);
+        downButton = CreateButton("ScrollForwardButton", downSprite ?? UiSprites.SmallDownArrow, 48, 48);
         downButton.Click += DownButton_Click;
         thumb = new()
         {
@@ -89,7 +94,7 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
             Layout = LayoutParameters.FitContent(),
             HorizontalAlignment = Alignment.Middle,
             VerticalAlignment = Alignment.Middle,
-            Sprite = thumbSprite,
+            Sprite = thumbSprite ?? UiSprites.VerticalScrollThumb,
             Draggable = true,
         };
         thumb.Click += Thumb_Click;
@@ -100,7 +105,7 @@ public class Scrollbar(Sprite upSprite, Sprite downSprite, Sprite trackSprite, S
         {
             Name = "ScrollbarTrack",
             Margin = new(Left: 2, Top: 2, Bottom: 8),
-            Background = trackSprite,
+            Background = trackSprite ?? UiSprites.ScrollBarTrack,
             Content = thumb,
             ShadowAlpha = 0.4f,
             ShadowCount = 2,

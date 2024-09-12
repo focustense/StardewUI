@@ -196,12 +196,7 @@ public class ScrollableFrameView : WrapperView
             Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Content() },
             HorizontalContentAlignment = Alignment.End,
         };
-        scrollbar = new Scrollbar(
-            UiSprites.SmallUpArrow,
-            UiSprites.SmallDownArrow,
-            UiSprites.ScrollBarTrack,
-            UiSprites.VerticalScrollThumb
-        )
+        scrollbar = new()
         {
             Name = "ContentPageScroll",
             Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Stretch() },
