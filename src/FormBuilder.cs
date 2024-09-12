@@ -7,9 +7,8 @@
 /// Useful for "settings" style views.
 /// </remarks>
 /// <param name="labelWidth">The width of the label column. Same for all rows.</param>
-public class FormBuilder(int labelWidth)
+public class FormBuilder(int labelWidth, int fieldIndent = 16)
 {
-    private const int FIELD_INDENT = 16;
     private const int FIELD_SPACING = 8;
 
     private readonly List<IView> rows = [];
@@ -48,7 +47,7 @@ public class FormBuilder(int labelWidth)
         var row = new Lane()
         {
             Layout = LayoutParameters.AutoRow(),
-            Margin = new(Left: FIELD_INDENT, Top: FIELD_SPACING, Bottom: FIELD_SPACING),
+            Margin = new(Left: fieldIndent, Top: FIELD_SPACING, Bottom: FIELD_SPACING),
             VerticalContentAlignment = Alignment.Middle,
             Children = views,
         };
@@ -75,7 +74,7 @@ public class FormBuilder(int labelWidth)
         var row = new Lane()
         {
             Layout = LayoutParameters.AutoRow(),
-            Margin = new(Left: FIELD_INDENT, Top: FIELD_SPACING, Bottom: FIELD_SPACING),
+            Margin = new(Left: fieldIndent, Top: FIELD_SPACING, Bottom: FIELD_SPACING),
             VerticalContentAlignment = Alignment.Middle,
             Children = view is not null ? [label, view] : [label],
         };
@@ -90,9 +89,23 @@ public class FormBuilder(int labelWidth)
     /// <returns>The current builder instance.</returns>
     public FormBuilder AddSection(string title)
     {
-        var heading = new Banner() { Margin = new(Top: FIELD_SPACING * 2), Text = title };
+        var heading = CreateSectionHeading(title);
         rows.Add(heading);
         return this;
+    }
+
+    /// <summary>
+    /// Creates the banner used as a section heading.
+    /// </summary>
+    /// <remarks>
+    /// This is the standalone version of <see cref="AddSection(string)"/> that can be used by any views wanting to
+    /// provide form-style section headings outside of an actual form.
+    /// </remarks>
+    /// <param name="title">The section title.</param>
+    /// <returns>Section heading view.</returns>
+    public static IView CreateSectionHeading(string title)
+    {
+        return new Banner() { Margin = new(Top: FIELD_SPACING * 2), Text = title };
     }
 
     /// <summary>
