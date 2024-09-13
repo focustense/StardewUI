@@ -41,7 +41,7 @@ public record SliceSettings(
     SliceCenterPosition CenterXPosition = SliceCenterPosition.Start,
     int? CenterY = null,
     SliceCenterPosition CenterYPosition = SliceCenterPosition.Start,
-    int Scale = 1,
+    float Scale = 1,
     bool EdgesOnly = false
 );
 

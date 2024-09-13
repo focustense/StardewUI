@@ -100,7 +100,7 @@ public class NineSlice(Sprite sprite)
         SliceSettings? settings = null,
         // We pass sliceScale separately (even though it is in SliceSettings) because it actually applies only to the
         // destination rect, not the source, whereas the SliceSettings are used for source but not destination.
-        int sliceScale = 1
+        float sliceScale = 1
     )
     {
         var left = bounds.X;

@@ -130,4 +130,14 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
     {
         return new(value.Left * scale, value.Top * scale, value.Right * scale, value.Bottom * scale);
     }
+
+    public static Edges operator *(Edges value, float scale)
+    {
+        return new(
+            (int)MathF.Round(value.Left * scale),
+            (int)MathF.Round(value.Top * scale),
+            (int)MathF.Round(value.Right * scale),
+            (int)MathF.Round(value.Bottom * scale)
+        );
+    }
 }
