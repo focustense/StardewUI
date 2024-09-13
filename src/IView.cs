@@ -134,6 +134,13 @@ public interface IView
     int ZIndex { get; set; }
 
     /// <summary>
+    /// Checks if a given point, relative to the view's origin, is within its bounds.
+    /// </summary>
+    /// <param name="point">The point to test.</param>
+    /// <returns><c>true</c> if <paramref name="point"/> is within the view bounds; otherwise <c>false</c>.</returns>
+    bool ContainsPoint(Vector2 point);
+
+    /// <summary>
     /// Draws the content for this view.
     /// </summary>
     /// <remarks>
@@ -200,6 +207,15 @@ public interface IView
     /// Gets the current children of this view.
     /// </summary>
     IEnumerable<ViewChild> GetChildren();
+
+    /// <summary>
+    /// Checks if the view has content or elements that are all or partially outside the <see cref="ActualBounds"/>.
+    /// </summary>
+    /// <remarks>
+    /// This may be the case for e.g. floating elements, and covers not only the view's immediate content/children but
+    /// also that of any descendants.
+    /// </remarks>
+    bool HasOutOfBoundsContent();
 
     /// <summary>
     /// Checks whether or not the view is dirty - i.e. requires a new layout with a full <see cref="Measure"/>.

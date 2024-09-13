@@ -33,7 +33,7 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     /// <c>false</c>.</returns>
     public bool ContainsPoint(Vector2 point)
     {
-        return View.ActualBounds.ContainsPoint(point - Position);
+        return View.ContainsPoint(point - Position);
     }
 
     /// <summary>

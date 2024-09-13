@@ -76,6 +76,11 @@ public abstract class View : IView
     public bool Draggable { get; set; }
 
     /// <summary>
+    /// The floating elements to display relative to this view.
+    /// </summary>
+    public IList<FloatingElement> FloatingElements { get; } = [];
+
+    /// <summary>
     /// The size allocated to the entire area inside the border, i.e. <see cref="ContentSize"/> plus any
     /// <see cref="Padding"/>. Does not include border or <see cref="Margin"/>.
     /// </summary>
@@ -164,11 +169,19 @@ public abstract class View : IView
     private readonly DirtyTracker<Edges> padding = new(Edges.NONE);
 
     private IView? draggingView;
+    private bool hasChildrenWithOutOfBoundsContent;
     private bool isDragging;
 
     public View()
     {
         Name = GetType().Name;
+    }
+
+    public bool ContainsPoint(Vector2 point)
+    {
+        return ActualBounds.ContainsPoint(point)
+            || FloatingElements.Any(fe => fe.AsViewChild().ContainsPoint(point))
+            || (hasChildrenWithOutOfBoundsContent && GetChildren().Any(c => c.ContainsPoint(point)));
     }
 
     public void Draw(ISpriteBatch b)
@@ -177,12 +190,18 @@ public abstract class View : IView
         {
             return;
         }
-        using var _ = b.SaveTransform();
         b.Translate(Margin.Left, Margin.Top);
-        OnDrawBorder(b);
-        var borderThickness = GetBorderThickness();
-        b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
-        OnDrawContent(b);
+        using (b.SaveTransform())
+        {
+            OnDrawBorder(b);
+            var borderThickness = GetBorderThickness();
+            b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
+            OnDrawContent(b);
+        }
+        foreach (var floatingElement in FloatingElements)
+        {
+            floatingElement.Draw(b);
+        }
     }
 
     /// <inheritdoc/>
@@ -223,20 +242,36 @@ public abstract class View : IView
             );
             return new(new(this, Vector2.Zero), []);
         }
+        // FIXME: It's probably not quite right to search the floating elements as a last resort; while that should work
+        // when searching from regular content and moving *to* a float, it could lose focus that is already *inside* a
+        // float and move it back to the main content instead of searching within the same float.
+        foreach (var floatingElement in FloatingElements)
+        {
+            var floatingResult = floatingElement.AsViewChild().FocusSearch(position, direction);
+            if (floatingResult is not null)
+            {
+                return floatingResult;
+            }
+        }
         LogFocusSearch($"View '{Name}' found no focusable descendants matching the query.");
         return null;
     }
 
-    public virtual ViewChild? GetChildAt(Vector2 position)
+    public ViewChild? GetChildAt(Vector2 position)
     {
         var offset = GetContentOffset();
         var child = GetLocalChildAt(position - offset)?.Offset(offset);
-        return child?.View.Visibility == Visibility.Visible ? child : null;
+        if (child?.View.Visibility == Visibility.Visible)
+        {
+            return child;
+        }
+        return FloatingElements.Select(fe => fe.AsViewChild()).FirstOrDefault(child => child.ContainsPoint(position));
     }
 
-    public virtual Vector2? GetChildPosition(IView childView)
+    public Vector2? GetChildPosition(IView childView)
     {
         return GetChildren()
+            .Concat(FloatingElements.Select(fe => fe.AsViewChild()))
             .Where(child => child.View == childView)
             .Select(child => child.Position as Vector2?)
             .FirstOrDefault();
@@ -245,7 +280,15 @@ public abstract class View : IView
     public IEnumerable<ViewChild> GetChildren()
     {
         var offset = GetContentOffset();
-        return GetLocalChildren().Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset));
+        return GetLocalChildren()
+            .Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset))
+            .Concat(FloatingElements.Select(fe => fe.AsViewChild()));
+    }
+
+    public bool HasOutOfBoundsContent()
+    {
+        return hasChildrenWithOutOfBoundsContent
+            || FloatingElements.Any(fe => !ActualBounds.ContainsBounds(fe.AsViewChild().GetActualBounds()));
     }
 
     public bool IsDirty()
@@ -257,6 +300,10 @@ public abstract class View : IView
     {
         if (!IsDirty() && availableSize == LastAvailableSize)
         {
+            foreach (var floatingElement in FloatingElements)
+            {
+                floatingElement.MeasureAndPosition(this, wasParentDirty: false);
+            }
             return false;
         }
         var adjustedSize = availableSize - Margin.Total - Padding.Total - GetBorderThickness().Total;
@@ -266,6 +313,11 @@ public abstract class View : IView
         margin.ResetDirty();
         padding.ResetDirty();
         ResetDirty();
+        hasChildrenWithOutOfBoundsContent = GetChildren().Any(child => child.View.HasOutOfBoundsContent());
+        foreach (var floatingElement in FloatingElements)
+        {
+            floatingElement.MeasureAndPosition(this, wasParentDirty: true);
+        }
         return true;
     }
 
@@ -381,8 +433,8 @@ public abstract class View : IView
             }
         }
 
-        var wasPointerInBounds = ActualBounds.ContainsPoint(e.PreviousPosition);
-        var isPointerInBounds = ActualBounds.ContainsPoint(e.Position);
+        var wasPointerInBounds = ContainsPoint(e.PreviousPosition);
+        var isPointerInBounds = ContainsPoint(e.Position);
         if (isPointerInBounds && !wasPointerInBounds)
         {
             PointerEnter?.Invoke(this, e);

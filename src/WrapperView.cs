@@ -95,6 +95,11 @@ public abstract class WrapperView<T> : IView
 
     // View methods
 
+    public virtual bool ContainsPoint(Vector2 point)
+    {
+        return Root.ContainsPoint(point);
+    }
+
     public virtual void Draw(ISpriteBatch b)
     {
         Root.Draw(b);
@@ -118,6 +123,11 @@ public abstract class WrapperView<T> : IView
     public virtual IEnumerable<ViewChild> GetChildren()
     {
         return Root.GetChildren();
+    }
+
+    public virtual bool HasOutOfBoundsContent()
+    {
+        return Root.HasOutOfBoundsContent();
     }
 
     public virtual bool IsDirty()
