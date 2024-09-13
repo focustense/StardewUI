@@ -155,11 +155,19 @@ public class Image : View
         var scale = Sprite.SliceSettings?.Scale ?? 1;
         var scaledSourceWidth = sourceWidth * scale;
         var scaledSourceHeight = sourceHeight * scale;
-        if (Layout.Width.Type == LengthType.Content && scaledSourceWidth < limits.X)
+        if (
+            Layout.Width.Type == LengthType.Content
+            && (Fit != ImageFit.Contain || Layout.Height.Type == LengthType.Content)
+            && scaledSourceWidth < limits.X
+        )
         {
             limits.X = scaledSourceWidth;
         }
-        if (Layout.Height.Type == LengthType.Content && scaledSourceHeight < limits.Y)
+        if (
+            Layout.Height.Type == LengthType.Content
+            && (Fit != ImageFit.Contain || Layout.Width.Type == LengthType.Content)
+            && scaledSourceHeight < limits.Y
+        )
         {
             limits.Y = scaledSourceHeight;
         }
