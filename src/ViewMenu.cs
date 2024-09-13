@@ -120,9 +120,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         foreach (var overlay in overlayContext.BackToFront())
         {
+            b.Draw(Game1.fadeToBlackRect, viewportBounds, Color.Black * overlay.DimmingAmount);
+            if (overlay.Parent is null)
+            {
+                overlay.View.Measure(viewportBounds.Size.ToVector2());
+            }
             var overlayData = GetOverlayLayoutData(overlay);
-            var availableOverlaySize = viewportBounds.Size.ToVector2() - overlayData.Position;
-            overlay.View.Measure(availableOverlaySize);
+            if (overlay.Parent is not null)
+            {
+                var availableOverlaySize = viewportBounds.Size.ToVector2() - overlayData.Position;
+                if (overlay.View.Measure(availableOverlaySize))
+                {
+                    overlayData.Update(overlay);
+                }
+            }
             var overlayBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(overlayData.Position));
             overlay.View.Draw(overlayBatch);
         }

@@ -72,6 +72,16 @@ public interface IOverlay
     Vector2 ParentOffset { get; }
 
     /// <summary>
+    /// Amount to dim whatever is underneath the overlay.
+    /// </summary>
+    /// <remarks>
+    /// This is an alpha value for a black overlay, so the higher value (between 0 and 1) the darker the content
+    /// underneath the overlay. These apply individually to each overlay, so multiple stacked overlays will dim not only
+    /// the underlying main view but also any previous overlays.
+    /// </remarks>
+    float DimmingAmount => 0;
+
+    /// <summary>
     /// The view to be displayed/interacted with as an overlay.
     /// </summary>
     IView View { get; }
