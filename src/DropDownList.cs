@@ -144,12 +144,16 @@ public class DropDownList<T> : WrapperView
 
     private void Lane_Click(object? sender, ClickEventArgs e)
     {
+        if (!e.IsPrimaryButton())
+        {
+            return;
+        }
         ToggleOverlay();
     }
 
     private void OptionView_Click(object? sender, ClickEventArgs e)
     {
-        if (sender is not DropDownOptionView optionView)
+        if (!e.IsPrimaryButton() || sender is not DropDownOptionView optionView)
         {
             return;
         }

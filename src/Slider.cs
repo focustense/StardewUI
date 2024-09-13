@@ -217,6 +217,10 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
 
     private void Track_Click(object? sender, ClickEventArgs e)
     {
+        if (!e.IsPrimaryButton())
+        {
+            return;
+        }
         var trackWidth = sliderPanel.InnerSize.X;
         var thumbWidth = thumbImage.ContentSize.X;
         var progress = Math.Clamp((e.Position.X - thumbWidth / 2) / (trackWidth - thumbWidth), 0, 1);
