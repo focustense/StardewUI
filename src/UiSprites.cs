@@ -88,6 +88,12 @@ public static class UiSprites
         );
 
     /// <summary>
+    /// Simpler, lighter horizontal divider than the <see cref="MenuHorizontalDivider"/>, used as a horizontal rule to
+    /// separate content areas without sectioning the entire menu.
+    /// </summary>
+    public static Sprite GenericHorizontalDivider => new(Game1.menuTexture, SourceRect: new(64, 412, 64, 8));
+
+    /// <summary>
     /// Background used for the in-game menu, not including borders.
     /// </summary>
     public static Sprite MenuBackground => new(Game1.menuTexture, SourceRect: new(64, 128, 64, 64));
@@ -131,6 +137,12 @@ public static class UiSprites
     public static Edges MenuHorizontalDividerMargin => new(-36, -20, -40, -20);
 
     /// <summary>
+    /// Single-line rectangular border with a slight inset look.
+    /// </summary>
+    public static Sprite MenuSlotTransparent =>
+        new(Game1.menuTexture, SourceRect: new(128, 128, 64, 64), FixedEdges: new(4));
+
+    /// <summary>
     /// Background for the scroll bar track (which the thumb is inside).
     /// </summary>
     public static Sprite ScrollBarTrack =>
@@ -162,6 +174,16 @@ public static class UiSprites
     /// Small down arrow, typically used for scroll bars.
     /// </summary>
     public static Sprite SmallDownArrow => new(Game1.mouseCursors, SourceRect: new(421, 472, 11, 12));
+
+    /// <summary>
+    /// Small and tall trash can, larger than the <see cref="TinyTrashCan"/> and more suitable for tall rows.
+    /// </summary>
+    public static Sprite SmallTrashCan => new(Game1.mouseCursors2, SourceRect: new(22, 11, 15, 20));
+
+    /// <summary>
+    /// Very small trash can, e.g. to be used in lists/subforms as "remove" button.
+    /// </summary>
+    public static Sprite TinyTrashCan => new(Game1.mouseCursors, SourceRect: new(323, 433, 9, 10));
 
     /// <summary>
     /// Thumb sprite used for vertical scroll bars.
