@@ -78,7 +78,7 @@ public abstract class View : IView
     /// <summary>
     /// The floating elements to display relative to this view.
     /// </summary>
-    public IList<FloatingElement> FloatingElements { get; } = [];
+    public IList<FloatingElement> FloatingElements { get; set; } = [];
 
     /// <summary>
     /// The size allocated to the entire area inside the border, i.e. <see cref="ContentSize"/> plus any
@@ -216,6 +216,19 @@ public abstract class View : IView
         {
             return null;
         }
+        foreach (var floatingElement in FloatingElements)
+        {
+            var floatingChild = floatingElement.AsViewChild();
+            if (!floatingChild.ContainsPoint(position))
+            {
+                continue;
+            }
+            var floatingResult = floatingElement.AsViewChild().FocusSearch(position, direction);
+            if (floatingResult is not null)
+            {
+                return floatingResult;
+            }
+        }
         var offset = GetContentOffset();
         LogFocusSearch($"{Name} starting focus search: {position - offset}, {direction}");
         var found = FindFocusableDescendant(position - offset, direction);
@@ -242,9 +255,12 @@ public abstract class View : IView
             );
             return new(new(this, Vector2.Zero), []);
         }
-        // FIXME: It's probably not quite right to search the floating elements as a last resort; while that should work
-        // when searching from regular content and moving *to* a float, it could lose focus that is already *inside* a
-        // float and move it back to the main content instead of searching within the same float.
+        // Second floating-element search is done on purpose.
+        //
+        // The first one needs to be prioritized, but only if the cursor is already inside it, in order to be
+        // able to continue navigating inside that element.
+        //
+        // This second iteration is to be able to move the focus INTO a floating element from the main view.
         foreach (var floatingElement in FloatingElements)
         {
             var floatingResult = floatingElement.AsViewChild().FocusSearch(position, direction);
