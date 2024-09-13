@@ -49,6 +49,7 @@ public class FormBuilder(int labelWidth, int fieldIndent = 16)
             Layout = LayoutParameters.AutoRow(),
             Margin = new(Left: fieldIndent, Top: FIELD_SPACING, Bottom: FIELD_SPACING),
             VerticalContentAlignment = Alignment.Middle,
+            ScrollWithChildren = Orientation.Vertical,
             Children = views,
         };
         rows.Add(row);
@@ -76,6 +77,7 @@ public class FormBuilder(int labelWidth, int fieldIndent = 16)
             Layout = LayoutParameters.AutoRow(),
             Margin = new(Left: fieldIndent, Top: FIELD_SPACING, Bottom: FIELD_SPACING),
             VerticalContentAlignment = Alignment.Middle,
+            ScrollWithChildren = Orientation.Vertical,
             Children = view is not null ? [label, view] : [label],
         };
         rows.Add(row);

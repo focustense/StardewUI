@@ -50,6 +50,11 @@ public abstract class WrapperView<T> : IView
         set => Root.Name = value;
     }
     public Vector2 OuterSize => Root.OuterSize;
+    public Orientation? ScrollWithChildren
+    {
+        get => Root.ScrollWithChildren;
+        set => Root.ScrollWithChildren = value;
+    }
     public Tags Tags { get; set; } = new();
     public string Tooltip
     {

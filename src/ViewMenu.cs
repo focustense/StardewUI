@@ -500,9 +500,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             (root as IView, bounds: Bounds.Empty),
             (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize))
         );
-        if (root.GetPathToPosition(bounds.Center()).LastOrDefault()?.View == targetView)
+        var focusedViewChild = root.GetPathToPosition(bounds.Center()).ToGlobalPositions().LastOrDefault();
+        if (focusedViewChild?.View == targetView)
         {
-            Game1.setMousePosition((origin + bounds.Center()).ToPoint(), true);
+            Game1.setMousePosition((origin + focusedViewChild.Center()).ToPoint(), true);
         }
         else
         {

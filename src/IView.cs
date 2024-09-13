@@ -97,9 +97,21 @@ public interface IView
     Vector2 OuterSize { get; }
 
     /// <summary>
-    /// Whether or not this view supports text input and should start receiving keyboard characters when clicked.
+    /// If set to an axis, specifies that when any child of the view is scrolled into view (using
+    /// <see cref="ScrollIntoView"/>), then this entire view should be scrolled along with it.
     /// </summary>
-    //bool ReceivesKeyboardInput { get; }
+    /// <remarks>
+    /// <para>
+    /// For example, if the view lays out children horizontally, and some children may occupy only a very small amount
+    /// of space near the top while others are much taller vertically or positioned near the bottom, it might be
+    /// desirable to configure this with <see cref="Orientation.Vertical"/>, so that the entire "row" is positioned
+    /// within the scrollable viewport.
+    /// </para>
+    /// <para>
+    /// In other words, "if any part of me is made visible via scrolling, then all of me should be visible".
+    /// </para>
+    /// </remarks>
+    Orientation? ScrollWithChildren { get; set; }
 
     /// <summary>
     /// The user-defined tags for this view.

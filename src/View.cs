@@ -127,6 +127,13 @@ public abstract class View : IView
         set => padding.Value = value;
     }
 
+    /// <inheritdoc />
+    /// <summary>
+    /// If set to an axis, specifies that when any child of the view is scrolled into view (using
+    /// <see cref="ScrollIntoView"/>), then this entire view should be scrolled along with it.
+    /// </summary>
+    public Orientation? ScrollWithChildren { get; set; }
+
     /// <summary>
     /// The user-defined tags for this view.
     /// </summary>

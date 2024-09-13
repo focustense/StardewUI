@@ -157,7 +157,7 @@ public class ScrollContainer : View
         // large to fit in the scroll view. Therefore, rather than trying to explicitly ignore the content view, a
         // better approach is to start from the bottom up, and stop as soon as we reach any view that's too large to
         // fit completely in the container; the previous (not too large) union are the bounds to scroll into view.
-        var scrollability = TryAccumulateScrollableBounds(descendantList, out var scrollableBounds);
+        var scrollability = TryAccumulateScrollableBounds(descendantList.ToGlobalPositions(), out var scrollableBounds);
         if (scrollability != ScrollResult.FullyScrollable && scrollability != ScrollResult.PartiallyScrollable)
         {
             return false;
@@ -186,7 +186,8 @@ public class ScrollContainer : View
             return null;
         }
         var origin = GetScrollOrigin();
-        return new(Content, -origin);
+        var result = new ViewChild(Content, -origin);
+        return result.ContainsPoint(contentPosition) ? result : null;
     }
 
     protected override IEnumerable<ViewChild> GetLocalChildren()
@@ -285,17 +286,14 @@ public class ScrollContainer : View
         return Orientation.Get(bounds.Size) <= Orientation.Get(ContentSize);
     }
 
-    private ScrollResult TryAccumulateScrollableBounds(IEnumerable<ViewChild> path, out Bounds bounds)
+    private ScrollResult TryAccumulateScrollableBounds(IEnumerable<ViewChild> globalPath, out Bounds bounds)
     {
-        var (child, rest) = path.SplitFirst();
+        var (child, rest) = globalPath.SplitFirst();
         if (child is null)
         {
             bounds = Bounds.Empty;
             return ScrollResult.NoMoreElements;
         }
-        // Each element has bounds local to *its own* parent, whereas we want the union of bounds all relative to this
-        // scroll container.
-        rest = rest.Select(c => c.Offset(child.Position));
         var descendantResult = TryAccumulateScrollableBounds(rest, out bounds);
         switch (descendantResult)
         {
@@ -303,6 +301,10 @@ public class ScrollContainer : View
                 bounds = child.GetActualBounds();
                 return IsFullyScrollable(bounds) ? ScrollResult.FullyScrollable : ScrollResult.NotScrollable;
             case ScrollResult.FullyScrollable:
+                if (child.View.ScrollWithChildren != Orientation)
+                {
+                    return ScrollResult.FullyScrollable;
+                }
                 var unionBounds = bounds.Union(child.GetActualBounds());
                 if (IsFullyScrollable(unionBounds))
                 {
