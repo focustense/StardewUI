@@ -308,10 +308,17 @@ public class Lane : View
         }
         if (deferredChildren.Count > 0 && Orientation.Get(limits) > 0)
         {
-            var deferredLimits =
-                childrenSize != Vector2.Zero ? Layout.Resolve(availableSize, () => childrenSize) : limits;
+            var deferredLimits = limits;
+            if (childrenSize != Vector2.Zero)
+            {
+                var swapLimit = swapOrientation
+                    .Length(Layout)
+                    .Resolve(swapOrientation.Get(availableSize), () => swapOrientation.Get(childrenSize));
+                swapOrientation.Set(ref deferredLimits, swapLimit);
+            }
             foreach (var child in deferredChildren)
             {
+                Orientation.Set(ref deferredLimits, Orientation.Get(limits));
                 measureChild(child, deferredLimits, true);
                 if (Orientation.Get(deferredLimits) <= 0)
                 {
