@@ -53,7 +53,7 @@ public class FloatingElement(IView view, FloatingPosition position)
         // In terms of whether any work needs to be done, that can happen if *either* the floating view's layout changed
         // *or* the parent view's layout was changed for other reasons (meaning, the floating position may have changed,
         // if it is derived from parent bounds, even if the floating view's size is the same).
-        bool wasViewDirty = View.Measure(parentView.ContentSize);
+        bool wasViewDirty = View.Measure(parentView.OuterSize);
         if (!wasViewDirty && !wasParentDirty)
         {
             return;
