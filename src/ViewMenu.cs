@@ -183,6 +183,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void receiveGamePadButton(Buttons b)
     {
+        var button = b.ToSButton();
+        if (UI.InputHelper.IsSuppressed(button))
+        {
+            return;
+        }
+
         // When the game performs updateActiveMenu, it checks areGamePadControlsImplemented(), and if false, translates
         // those buttons into clicks.
         //
@@ -193,7 +199,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         using var _ = OverlayContext.PushContext(overlayContext);
 
-        switch (b.ToSButton())
+        switch (button)
         {
             case SButton.LeftTrigger:
                 OnTabbable(p => p.PreviousTab());
@@ -229,8 +235,14 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void receiveKeyPress(Keys key)
     {
-        // Note: Key "E" is the gamepad version of "Escape", apparently.
-        if ((key == Keys.Escape || key == Keys.E) && overlayContext.Pop() is not null)
+        var realButton = ButtonResolver.GetPressedButton(key.ToSButton());
+        // See comments on receiveGamePadButton for why we don't dispatch the key itself.
+        if (IsInputCaptured() || UI.InputHelper.IsSuppressed(realButton))
+        {
+            return;
+        }
+        var action = ButtonResolver.GetButtonAction(realButton);
+        if (action == ButtonAction.Cancel && overlayContext.Pop() is not null)
         {
             return;
         }
@@ -247,7 +259,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         if (
             key == Keys.Escape
             || Game1.keyboardDispatcher.Subscriber is not ICaptureTarget
-            || (Game1.options.gamepadControls && Utility.getHeldButtons(Game1.input.GetGamePadState()).Count > 0)
+            || Game1.isAnyGamePadButtonBeingHeld()
         )
         {
             base.receiveKeyPress(key);
@@ -256,14 +268,24 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
+        var button = ButtonResolver.GetPressedButton(SButton.MouseLeft);
+        if (UI.InputHelper.IsSuppressed(button))
+        {
+            return;
+        }
         using var _ = OverlayContext.PushContext(overlayContext);
-        InitiateClick(SButton.MouseLeft, new(x, y));
+        InitiateClick(button, new(x, y));
     }
 
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
+        var button = ButtonResolver.GetPressedButton(SButton.MouseRight);
+        if (UI.InputHelper.IsSuppressed(button))
+        {
+            return;
+        }
         using var _ = OverlayContext.PushContext(overlayContext);
-        InitiateClick(SButton.MouseRight, new(x, y));
+        InitiateClick(button, new(x, y));
     }
 
     public override void receiveScrollWheelAction(int value)

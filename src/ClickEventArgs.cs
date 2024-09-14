@@ -24,7 +24,7 @@ public class ClickEventArgs(Vector2 position, SButton button) : PointerEventArgs
     /// </returns>
     public bool IsPrimaryButton()
     {
-        return Button.IsUseToolButton();
+        return ButtonResolver.GetButtonAction(Button) == ButtonAction.Primary;
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class ClickEventArgs(Vector2 position, SButton button) : PointerEventArgs
     /// </returns>
     public bool IsSecondaryButton()
     {
-        return Button.IsActionButton();
+        return ButtonResolver.GetButtonAction(Button) == ButtonAction.Secondary;
     }
 
     /// <inheritdoc/>
