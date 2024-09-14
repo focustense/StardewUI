@@ -72,6 +72,19 @@ public interface IOverlay
     Vector2 ParentOffset { get; }
 
     /// <summary>
+    /// Whether the overlay wants to capture all keyboard and gamepad inputs, i.e. prevent them from being dispatched
+    /// to the parent menu.
+    /// </summary>
+    /// <remarks>
+    /// This is not necessary to trap focus, which happens automatically; only to capture buttons/keys that would
+    /// normally have a navigation function, like triggers/shoulders for paging, E/Esc/GamepadB for cancellation, etc.
+    /// Overlays that enable capturing should provide their own way for the user to escape using keyboard/gamepad,
+    /// although it is always possible to click the mouse outside the overlay to dismiss it (and implicitly stop the
+    /// capturing).
+    /// </remarks>
+    bool CapturingInput => false;
+
+    /// <summary>
     /// Amount to dim whatever is underneath the overlay.
     /// </summary>
     /// <remarks>
@@ -90,6 +103,12 @@ public interface IOverlay
     /// Runs when the overlay is removed from the active stack.
     /// </summary>
     void OnClose();
+
+    /// <summary>
+    /// Runs on every game update tick.
+    /// </summary>
+    /// <param name="elapsed">The amount of real time elapsed since the last tick.</param>
+    void Update(TimeSpan elapsed) { }
 }
 
 /// <summary>

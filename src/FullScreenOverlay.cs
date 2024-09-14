@@ -46,6 +46,9 @@ public abstract class FullScreenOverlay : IOverlay
     public Vector2 ParentOffset => Vector2.Zero;
 
     /// <inheritdoc />
+    public bool CapturingInput { get; protected set; }
+
+    /// <inheritdoc />
     public float DimmingAmount { get; set; } = 0.8f;
 
     /// <inheritdoc />
@@ -70,6 +73,9 @@ public abstract class FullScreenOverlay : IOverlay
         Game1.playSound("bigDeSelect");
         Close?.Invoke(this, EventArgs.Empty);
     }
+
+    /// <inheritdoc />
+    public virtual void Update(TimeSpan elapsed) { }
 
     /// <summary>
     /// Creates the content view that will be displayed as an overlay.

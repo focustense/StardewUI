@@ -145,12 +145,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
 
         Game1.mouseCursorTransparency = 1.0f;
-        drawMouse(b);
+        if (!IsInputCaptured())
+        {
+            drawMouse(b);
+        }
     }
 
     public override void leftClickHeld(int x, int y)
     {
-        if (!Game1.lastCursorMotionWasMouse)
+        if (!Game1.lastCursorMotionWasMouse || IsInputCaptured())
         {
             // No dragging with gamepad.
             return;
@@ -183,6 +186,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void receiveGamePadButton(Buttons b)
     {
+        // We don't actually dispatch the button to any capturing overlay, just prevent it from affecting the menu.
+        //
+        // This is because a capturing overlay doesn't necessarily just need to know about the button "press", it cares
+        // about the entire press, hold and release cycle, and can handle these directly through InputState or SMAPI.
+        if (IsInputCaptured())
+        {
+            return;
+        }
+
         var button = b.ToSButton();
         if (UI.InputHelper.IsSuppressed(button))
         {
@@ -268,6 +280,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
+        if (IsInputCaptured())
+        {
+            return;
+        }
         var button = ButtonResolver.GetPressedButton(SButton.MouseLeft);
         if (UI.InputHelper.IsSuppressed(button))
         {
@@ -279,6 +295,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
+        if (IsInputCaptured())
+        {
+            return;
+        }
         var button = ButtonResolver.GetPressedButton(SButton.MouseRight);
         if (UI.InputHelper.IsSuppressed(button))
         {
@@ -290,6 +310,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void receiveScrollWheelAction(int value)
     {
+        if (IsInputCaptured())
+        {
+            return;
+        }
         using var _ = OverlayContext.PushContext(overlayContext);
         // IClickableMenu calls the value "direction" but it is actually a magnitude, and always in the Y direction
         // (negative is down).
@@ -299,10 +323,22 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void releaseLeftClick(int x, int y)
     {
+        if (IsInputCaptured())
+        {
+            return;
+        }
         using var _ = OverlayContext.PushContext(overlayContext);
         var mousePosition = new Point(x, y);
         previousDragPosition = mousePosition;
         OnViewOrOverlay((view, origin) => view.OnDrop(new(mousePosition.ToVector2() - origin)));
+    }
+
+    public override void update(GameTime time)
+    {
+        foreach (var overlay in overlayContext.FrontToBack())
+        {
+            overlay.Update(time.ElapsedGameTime);
+        }
     }
 
     protected virtual string? FormatTooltip(IEnumerable<ViewChild> path)
@@ -409,6 +445,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 Refocus(view, origin, localPosition, pathBeforeScroll, direction);
             }
         );
+    }
+
+    private bool IsInputCaptured()
+    {
+        return overlayContext.FrontToBack().Any(overlay => overlay.CapturingInput);
     }
 
     [Conditional("DEBUG_FOCUS_SEARCH")]
