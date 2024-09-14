@@ -71,6 +71,36 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
         }
     }
 
+    /// <summary>
+    /// Specifies what kind of keybind is being edited.
+    /// </summary>
+    /// <remarks>
+    /// This determines the behavior of the capturing as well as what happens after capture:
+    /// <list type="bullet">
+    /// <item><see cref="KeybindType.MultipleKeybinds"/> displays the list of existing keybinds (if any), adds the
+    /// captured keybind when all buttons/keys are released, and allows adding more;</item>
+    /// <item><see cref="KeybindType.SingleKeybind"/> does not display the list or separator, and when all buttons/keys
+    /// are released, updates its <see cref="KeybindList"/> to have that single keybind and closes the overlay.</item>
+    /// <item><see cref="KeybindType.SingleButton"/> is similar to <see cref="KeybindType.SingleKeybind"/> but records
+    /// the keybind and closes the overlay as soon as a single button is pressed.</item>
+    /// </list>
+    /// Typically when using single-bind or single-button modes, the caller should <see cref="StartCapturing"/> upon
+    /// creation of the overlay in order to minimize redundant clicks.
+    /// </remarks>
+    public KeybindType KeybindType
+    {
+        get => keybindType;
+        set
+        {
+            if (value == keybindType)
+            {
+                return;
+            }
+            keybindType = value;
+            UpdateKeybindType();
+        }
+    }
+
     private static readonly HashSet<SButton> bannedButtons =
     [
         SButton.Escape,
@@ -97,6 +127,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
 
     private KeybindList keybindList = new();
     private string deleteButtonTooltip = "";
+    private KeybindType keybindType = KeybindType.MultipleKeybinds;
 
     // Initialized in CreateView
     private Button addButton = null!;
@@ -104,6 +135,29 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
     private KeybindView currentKeybindView = null!;
     private Frame keybindEntryHighlighter = null!;
     private Lane keybindsLane = null!;
+    private Lane layoutLane = null!;
+
+    /// <summary>
+    /// Starts capturing a new keybind.
+    /// </summary>
+    /// <remarks>
+    /// This makes the capture area start flashing and hides the "Add" button; any buttons pressed in the capturing
+    /// state are recorded and combined into a single keybind after the capture ends, when all buttons are released.
+    /// </remarks>
+    public void StartCapturing()
+    {
+        if (CapturingInput)
+        {
+            return;
+        }
+        addButton.Visibility = Visibility.Hidden;
+        capturedButtons.Clear();
+        currentKeybindView.Keybind = new();
+        var endColor = Color.DarkOrange;
+        var startColor = AlphaLerp(Color.Transparent, endColor, 0.3f);
+        capturingAnimator.Start(startColor, endColor, TimeSpan.FromSeconds(1));
+        CapturingInput = true;
+    }
 
     public override void Update(TimeSpan elapsed)
     {
@@ -121,26 +175,41 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
                 return;
             }
         }
-        int previousCapturedCount = capturedButtons.Count;
         var pressedButtons = GetPressedButtons().Where(IsBindable).ToList();
         bool anyPressed = false;
+        bool anyChanged = false;
         foreach (var button in pressedButtons)
         {
-            capturedButtons.Add(button);
+            anyChanged |= capturedButtons.Add(button);
             anyPressed = true;
         }
-        if (capturedButtons.Count != previousCapturedCount)
+        if (KeybindType == KeybindType.SingleButton && anyPressed)
         {
-            currentKeybindView.Keybind = new([.. capturedButtons]);
+            anyChanged |=
+                capturedButtons.RemoveWhere(button =>
+                    !UI.InputHelper.IsDown(button)
+                    // Some buttons, like triggers, can behave erratically due to discrepancies between SDV's definition
+                    // of "down" vs. SMAPI's, so we add this extra condition to prevent removal of any buttons that SDV
+                    // says are still down, even if SMAPI thinks they're not.
+                    && !pressedButtons.Contains(button)
+                ) > 0;
+        }
+        if (anyChanged)
+        {
+            currentKeybindView.Keybind =
+                KeybindType == KeybindType.SingleButton ? new(capturedButtons.First()) : new([.. capturedButtons]);
         }
         if (capturedButtons.Count > 0 && !anyPressed)
         {
             var capturedKeybind = new Keybind([.. capturedButtons]);
-            StopCapturing();
             if (capturedKeybind.IsBound)
             {
-                KeybindList = new([.. KeybindList.Keybinds, capturedKeybind]);
+                KeybindList =
+                    KeybindType == KeybindType.MultipleKeybinds
+                        ? new([.. KeybindList.Keybinds, capturedKeybind])
+                        : new(capturedKeybind);
             }
+            StopCapturing();
         }
     }
 
@@ -178,17 +247,14 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
         };
         keybindsLane = new() { Layout = LayoutParameters.AutoRow(), Orientation = Orientation.Vertical };
         UpdateKeybinds();
+        layoutLane = new Lane() { Layout = LayoutParameters.AutoRow(), Orientation = Orientation.Vertical };
+        UpdateKeybindType();
         return new Frame()
         {
             Layout = new() { Width = Length.Px(640), Height = Length.Content() },
             Border = UiSprites.ControlBorder,
             Padding = UiSprites.ControlBorder.FixedEdges! + new Edges(8),
-            Content = new Lane()
-            {
-                Layout = LayoutParameters.AutoRow(),
-                Orientation = Orientation.Vertical,
-                Children = [keybindEntryHighlighter, horizontalDivider, keybindsLane],
-            },
+            Content = layoutLane,
         };
     }
 
@@ -299,21 +365,6 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
         return !bannedButtons.Contains(button);
     }
 
-    public void StartCapturing()
-    {
-        if (CapturingInput)
-        {
-            return;
-        }
-        addButton.Visibility = Visibility.Hidden;
-        capturedButtons.Clear();
-        currentKeybindView.Keybind = new();
-        var endColor = Color.DarkOrange;
-        var startColor = AlphaLerp(Color.Transparent, endColor, 0.3f);
-        capturingAnimator.Start(startColor, endColor, TimeSpan.FromSeconds(1));
-        CapturingInput = true;
-    }
-
     private void StopCapturing()
     {
         Game1.playSound("drumkit6");
@@ -323,6 +374,10 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
         addButton.Visibility = Visibility.Visible;
         capturedButtons.Clear();
         currentKeybindView.Keybind = new();
+        if (KeybindType != KeybindType.MultipleKeybinds)
+        {
+            Overlay.Remove(this);
+        }
     }
 
     private void UpdateKeybinds()
@@ -339,5 +394,17 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
                 AddKeybindRow(keybind);
             }
         }
+    }
+
+    private void UpdateKeybindType()
+    {
+        if (layoutLane is null)
+        {
+            return;
+        }
+        layoutLane.Children =
+            KeybindType == KeybindType.MultipleKeybinds
+                ? [keybindEntryHighlighter, horizontalDivider, keybindsLane]
+                : [keybindEntryHighlighter];
     }
 }

@@ -193,9 +193,15 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
             AddButtonText = AddButtonText,
             DeleteButtonTooltip = DeleteButtonTooltip,
             KeybindList = KeybindList,
+            KeybindType = EditableType.Value,
         };
         overlay.Close += Overlay_Close;
         Overlay.Push(overlay);
+        if (EditableType != KeybindType.MultipleKeybinds || !KeybindList.IsBound)
+        {
+            UI.InputHelper.Suppress(e.Button);
+            overlay.StartCapturing();
+        }
     }
 
     private void RootLane_PointerEnter(object? sender, PointerEventArgs e)
