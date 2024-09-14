@@ -139,16 +139,16 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
             Draggable = true,
             ZIndex = 1,
         };
-        thumbImage.Click += Thumb_Click;
         thumbImage.DragStart += Thumb_DragStart;
         thumbImage.Drag += Thumb_Drag;
         thumbImage.DragEnd += Thumb_DragEnd;
+        thumbImage.LeftClick += Thumb_LeftClick;
         sliderPanel = new Panel()
         {
             Layout = LayoutParameters.FixedSize(DEFAULT_TRACK_WIDTH, TRACK_HEIGHT),
             Children = [backgroundImage, thumbImage],
         };
-        sliderPanel.Click += Track_Click;
+        sliderPanel.LeftClick += Track_LeftClick;
         valueLabel = Label.Simple("");
         valueLabel.Margin = new(Left: 8);
         UpdateValueLabel();
@@ -174,15 +174,6 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
 
     // Thumb-related methods are all a simplification of the Scrollbar thumb. Refer to that implementation for comments
     // and explanations.
-
-    private void Thumb_Click(object? sender, ClickEventArgs e)
-    {
-        // Prevent clicks on the button from being treated as clicks on the track.
-        if (e.Position.X >= thumbImage.Margin.Left)
-        {
-            e.Handled = true;
-        }
-    }
 
     private void Thumb_Drag(object? sender, PointerEventArgs e)
     {
@@ -215,7 +206,16 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         initialThumbDragCursorOffset = cursorOffset >= 0 ? cursorOffset : null;
     }
 
-    private void Track_Click(object? sender, ClickEventArgs e)
+    private void Thumb_LeftClick(object? sender, ClickEventArgs e)
+    {
+        // Prevent clicks on the button from being treated as clicks on the track.
+        if (e.Position.X >= thumbImage.Margin.Left)
+        {
+            e.Handled = true;
+        }
+    }
+
+    private void Track_LeftClick(object? sender, ClickEventArgs e)
     {
         if (!e.IsPrimaryButton())
         {

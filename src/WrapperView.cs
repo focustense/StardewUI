@@ -32,8 +32,10 @@ public abstract class WrapperView<T> : IView
     public event EventHandler<PointerEventArgs>? Drag;
     public event EventHandler<PointerEventArgs>? DragStart;
     public event EventHandler<PointerEventArgs>? DragEnd;
+    public event EventHandler<ClickEventArgs>? LeftClick;
     public event EventHandler<PointerEventArgs>? PointerEnter;
     public event EventHandler<PointerEventArgs>? PointerLeave;
+    public event EventHandler<ClickEventArgs>? RightClick;
     public event EventHandler<WheelEventArgs>? Wheel;
 
     public Bounds ActualBounds => Root.ActualBounds;
@@ -86,8 +88,10 @@ public abstract class WrapperView<T> : IView
             view.Drag += View_Drag;
             view.DragEnd += View_DragEnd;
             view.DragStart += View_DragStart;
+            view.LeftClick += View_LeftClick;
             view.PointerEnter += View_PointerEnter;
             view.PointerLeave += View_PointerLeave;
+            view.RightClick += View_RightClick;
             view.Wheel += View_Wheel;
             return view;
         });
@@ -221,6 +225,11 @@ public abstract class WrapperView<T> : IView
         DragStart?.Invoke(this, e);
     }
 
+    private void View_LeftClick(object? sender, ClickEventArgs e)
+    {
+        LeftClick?.Invoke(this, e);
+    }
+
     private void View_PointerEnter(object? sender, PointerEventArgs e)
     {
         PointerEnter?.Invoke(this, e);
@@ -229,6 +238,11 @@ public abstract class WrapperView<T> : IView
     private void View_PointerLeave(object? sender, PointerEventArgs e)
     {
         PointerLeave?.Invoke(this, e);
+    }
+
+    private void View_RightClick(object? sender, ClickEventArgs e)
+    {
+        RightClick?.Invoke(this, e);
     }
 
     private void View_Wheel(object? sender, WheelEventArgs e)

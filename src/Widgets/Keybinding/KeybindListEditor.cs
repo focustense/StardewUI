@@ -101,7 +101,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
 
     protected override IView CreateView()
     {
-        rootLane.Click += RootLane_Click;
+        rootLane.LeftClick += RootLane_LeftClick;
         rootLane.PointerEnter += RootLane_PointerEnter;
         rootLane.PointerLeave += RootLane_PointerLeave;
         return rootLane;
@@ -119,7 +119,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
         UpdateTint(Color.White);
     }
 
-    private void RootLane_Click(object? sender, ClickEventArgs e)
+    private void RootLane_LeftClick(object? sender, ClickEventArgs e)
     {
         if (EditableType is null)
         {

@@ -147,7 +147,7 @@ public class Expander : WrapperView
             Content = headerLane,
             IsFocusable = true,
         };
-        headerFrame.Click += HeaderFrame_Click;
+        headerFrame.LeftClick += HeaderFrame_LeftClick;
         contentFrame = new Frame() { Name = "ExpanderContentFrame", Layout = LayoutParameters.FitContent() };
         layout = new Lane()
         {
@@ -159,7 +159,7 @@ public class Expander : WrapperView
         return layout;
     }
 
-    private void HeaderFrame_Click(object? sender, ClickEventArgs e)
+    private void HeaderFrame_LeftClick(object? sender, ClickEventArgs e)
     {
         IsExpanded = !IsExpanded;
     }

@@ -8,7 +8,7 @@ namespace StardewUI;
 public interface IView
 {
     /// <summary>
-    /// Event raised when the view receives a click.
+    /// Event raised when the view receives a click initiated from any button.
     /// </summary>
     event EventHandler<ClickEventArgs> Click;
 
@@ -30,6 +30,16 @@ public interface IView
     event EventHandler<PointerEventArgs> DragStart;
 
     /// <summary>
+    /// Event raised when the view receives a click initiated from the left mouse button, or the controller's action
+    /// button (A).
+    /// </summary>
+    /// <remarks>
+    /// Using this event is a shortcut for handling <see cref="Click"/> and checking for
+    /// <see cref="ClickEventArgs.IsPrimaryButton"/>.
+    /// </remarks>
+    event EventHandler<ClickEventArgs> LeftClick;
+
+    /// <summary>
     /// Event raised when the pointer enters the view.
     /// </summary>
     event EventHandler<PointerEventArgs> PointerEnter;
@@ -38,6 +48,16 @@ public interface IView
     /// Event raised when the pointer exits the view.
     /// </summary>
     event EventHandler<PointerEventArgs> PointerLeave;
+
+    /// <summary>
+    /// Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use
+    /// button (X).
+    /// </summary>
+    /// <remarks>
+    /// Using this event is a shortcut for handling <see cref="Click"/> and checking for
+    /// <see cref="ClickEventArgs.IsSecondaryButton"/>.
+    /// </remarks>
+    event EventHandler<ClickEventArgs> RightClick;
 
     /// <summary>
     /// Event raised when the scroll wheel moves.

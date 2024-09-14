@@ -37,6 +37,12 @@ public abstract class View : IView
     public event EventHandler<PointerEventArgs>? DragStart;
 
     /// <summary>
+    /// Event raised when the view receives a click initiated from the left mouse button, or the controller's action
+    /// button (A).
+    /// </summary>
+    public event EventHandler<ClickEventArgs>? LeftClick;
+
+    /// <summary>
     /// Event raised when the pointer enters the view.
     /// </summary>
     public event EventHandler<PointerEventArgs>? PointerEnter;
@@ -45,6 +51,12 @@ public abstract class View : IView
     /// Event raised when the pointer exits the view.
     /// </summary>
     public event EventHandler<PointerEventArgs>? PointerLeave;
+
+    /// <summary>
+    /// Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use
+    /// button (X).
+    /// </summary>
+    public event EventHandler<ClickEventArgs>? RightClick;
 
     /// <summary>
     /// Event raised when the scroll wheel moves.
@@ -348,6 +360,14 @@ public abstract class View : IView
         if (!e.Handled)
         {
             Click?.Invoke(this, e);
+            if (e.IsPrimaryButton())
+            {
+                LeftClick?.Invoke(this, e);
+            }
+            else if (e.IsSecondaryButton())
+            {
+                RightClick?.Invoke(this, e);
+            }
         }
     }
 

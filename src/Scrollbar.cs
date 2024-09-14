@@ -85,9 +85,9 @@ public class Scrollbar(
     protected override Lane CreateView()
     {
         upButton = CreateButton("ScrollBackButton", upSprite ?? UiSprites.SmallUpArrow, 48, 48);
-        upButton.Click += UpButton_Click;
+        upButton.LeftClick += UpButton_LeftClick;
         downButton = CreateButton("ScrollForwardButton", downSprite ?? UiSprites.SmallDownArrow, 48, 48);
-        downButton.Click += DownButton_Click;
+        downButton.LeftClick += DownButton_LeftClick;
         thumb = new()
         {
             Name = "ScrollbarThumb",
@@ -97,10 +97,10 @@ public class Scrollbar(
             Sprite = thumbSprite ?? UiSprites.VerticalScrollThumb,
             Draggable = true,
         };
-        thumb.Click += Thumb_Click;
         thumb.DragStart += Thumb_DragStart;
         thumb.Drag += Thumb_Drag;
         thumb.DragEnd += Thumb_DragEnd;
+        thumb.LeftClick += Thumb_LeftClick;
         track = new()
         {
             Name = "ScrollbarTrack",
@@ -111,7 +111,7 @@ public class Scrollbar(
             ShadowCount = 2,
             ShadowOffset = new(-5, 5),
         };
-        track.Click += Track_Click;
+        track.LeftClick += Track_LeftClick;
         var lane = new Lane() { Children = [upButton, track, downButton] };
         Update(lane);
         return lane;
@@ -125,24 +125,11 @@ public class Scrollbar(
         SyncVisibility(Root);
     }
 
-    private void DownButton_Click(object? sender, ClickEventArgs e)
+    private void DownButton_LeftClick(object? sender, ClickEventArgs e)
     {
         if (Container?.ScrollForward() == true)
         {
             Game1.playSound("shwip");
-        }
-    }
-
-    private void Thumb_Click(object? sender, ClickEventArgs e)
-    {
-        // Prevent clicks on the thumb from being treated as clicks on the track.
-        if (Container is not null)
-        {
-            var orientationStart = Container.Orientation == Orientation.Vertical ? thumb.Margin.Top : thumb.Margin.Left;
-            if (Container.Orientation.Get(e.Position) >= orientationStart)
-            {
-                e.Handled = true;
-            }
         }
     }
 
@@ -191,7 +178,20 @@ public class Scrollbar(
         initialThumbDragCursorOffset = cursorOffset >= 0 ? cursorOffset : null;
     }
 
-    private void Track_Click(object? sender, ClickEventArgs e)
+    private void Thumb_LeftClick(object? sender, ClickEventArgs e)
+    {
+        // Prevent clicks on the thumb from being treated as clicks on the track.
+        if (Container is not null)
+        {
+            var orientationStart = Container.Orientation == Orientation.Vertical ? thumb.Margin.Top : thumb.Margin.Left;
+            if (Container.Orientation.Get(e.Position) >= orientationStart)
+            {
+                e.Handled = true;
+            }
+        }
+    }
+
+    private void Track_LeftClick(object? sender, ClickEventArgs e)
     {
         if (Container is null)
         {
@@ -208,7 +208,7 @@ public class Scrollbar(
         Container.ScrollOffset = progress * Container.ScrollSize;
     }
 
-    private void UpButton_Click(object? sender, ClickEventArgs e)
+    private void UpButton_LeftClick(object? sender, ClickEventArgs e)
     {
         if (Container?.ScrollBackward() == true)
         {

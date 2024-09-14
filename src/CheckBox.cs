@@ -75,11 +75,11 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
             VerticalContentAlignment = Alignment.Middle,
             Children = [checkImage],
         };
-        lane.Click += Lane_Click;
+        lane.LeftClick += Lane_LeftClick;
         return lane;
     }
 
-    private void Lane_Click(object? sender, ClickEventArgs e)
+    private void Lane_LeftClick(object? sender, ClickEventArgs e)
     {
         Game1.playSound("drumkit6");
         IsChecked = !IsChecked;

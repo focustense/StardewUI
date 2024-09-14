@@ -138,11 +138,11 @@ public class DropDownList<T> : WrapperView
             IsFocusable = true,
         };
         var lane = new Lane() { Layout = LayoutParameters.FitContent(), Children = [selectionFrame, button] };
-        lane.Click += Lane_Click;
+        lane.LeftClick += Lane_LeftClick;
         return lane;
     }
 
-    private void Lane_Click(object? sender, ClickEventArgs e)
+    private void Lane_LeftClick(object? sender, ClickEventArgs e)
     {
         if (!e.IsPrimaryButton())
         {
@@ -151,7 +151,7 @@ public class DropDownList<T> : WrapperView
         ToggleOverlay();
     }
 
-    private void OptionView_Click(object? sender, ClickEventArgs e)
+    private void OptionView_LeftClick(object? sender, ClickEventArgs e)
     {
         if (!e.IsPrimaryButton() || sender is not DropDownOptionView optionView)
         {
@@ -220,7 +220,7 @@ public class DropDownList<T> : WrapperView
                     {
                         IsSelected = SelectedIndex == i,
                     };
-                    optionView.Click += OptionView_Click;
+                    optionView.LeftClick += OptionView_LeftClick;
                     optionView.Select += OptionView_Select;
                     return optionView as IView;
                 }
