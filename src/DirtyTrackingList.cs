@@ -42,9 +42,10 @@ public class DirtyTrackingList<T> : IList<T>, IReadOnlyList<T>
     {
         if (items.Count == 0)
         {
-            items.Clear();
-            IsDirty = true;
+            return;
         }
+        items.Clear();
+        IsDirty = true;
     }
 
     public bool Contains(T item)
