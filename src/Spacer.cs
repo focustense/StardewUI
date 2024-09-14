@@ -1,4 +1,6 @@
-﻿namespace StardewUI;
+﻿using Microsoft.Xna.Framework;
+
+namespace StardewUI;
 
 /// <summary>
 /// An empty view whose sole purpose is to separate other elements.
