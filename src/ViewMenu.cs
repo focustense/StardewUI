@@ -48,7 +48,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         this.gutter = gutter;
         overlayContext.Pushed += OverlayContext_Pushed;
         view = CreateView();
-        MeasureAndCenter();
+        MeasureAndCenterView();
 
         if (forceDefaultFocus || !Game1.lastCursorMotionWasMouse)
         {
@@ -112,7 +112,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         using var _ = OverlayContext.PushContext(overlayContext);
 
-        MeasureAndCenter();
+        MeasureAndCenterView();
 
         var origin = new Point(xPositionOnScreen, yPositionOnScreen);
         var viewBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(origin.ToVector2()));
@@ -121,19 +121,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         foreach (var overlay in overlayContext.BackToFront())
         {
             b.Draw(Game1.fadeToBlackRect, viewportBounds, Color.Black * overlay.DimmingAmount);
-            if (overlay.Parent is null)
-            {
-                overlay.View.Measure(viewportBounds.Size.ToVector2());
-            }
-            var overlayData = GetOverlayLayoutData(overlay);
-            if (overlay.Parent is not null)
-            {
-                var availableOverlaySize = viewportBounds.Size.ToVector2() - overlayData.Position;
-                if (overlay.View.Measure(availableOverlaySize))
-                {
-                    overlayData.Update(overlay);
-                }
-            }
+            var overlayData = MeasureAndPositionOverlay(overlay);
             var overlayBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(overlayData.Position));
             overlay.View.Draw(overlayBatch);
         }
@@ -441,7 +429,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         Logger.Log($"Found: {result?.View.Name} ({result?.View.GetType().Name}) at {result?.Position}", LogLevel.Info);
     }
 
-    private void MeasureAndCenter()
+    private void MeasureAndCenterView()
     {
         var viewportSize = GetViewportSize();
         var availableMenuSize = viewportSize.ToVector2() - (gutter ?? DefaultGutter).Total;
@@ -454,6 +442,27 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         xPositionOnScreen = viewportSize.X / 2 - width / 2;
         yPositionOnScreen = viewportSize.Y / 2 - height / 2;
         Refocus();
+    }
+
+    private OverlayLayoutData MeasureAndPositionOverlay(IOverlay overlay)
+    {
+        var viewportBounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
+        bool isUpdateRequired = overlay.View.OuterSize == Vector2.Zero;
+        if (overlay.Parent is null)
+        {
+            isUpdateRequired = overlay.View.Measure(viewportBounds.Size.ToVector2());
+        }
+        var overlayData = GetOverlayLayoutData(overlay);
+        if (overlay.Parent is not null)
+        {
+            var availableOverlaySize = viewportBounds.Size.ToVector2() - overlayData.Position;
+            isUpdateRequired = overlay.View.Measure(availableOverlaySize);
+        }
+        if (isUpdateRequired)
+        {
+            overlayData.Update(overlay);
+        }
+        return overlayData;
     }
 
     private void OnOverlayRemoved(IOverlay overlay)
@@ -643,6 +652,17 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 overlay.View.OuterSize.Y
             );
             Position = new Vector2(x, y);
+            Logger.Monitor!.Log(
+                new System.Text.StringBuilder()
+                    .AppendLine($"Updated {overlay.GetType().Name} overlay")
+                    .AppendLine($"  Parent bounds: {ParentBounds.Position} {ParentBounds.Size}")
+                    .AppendLine($"  Overlay size: {overlay.View.OuterSize}")
+                    .AppendLine(
+                        $"  Overlay align: H:{overlay.HorizontalAlignment}>{overlay.HorizontalParentAlignment} V:{overlay.VerticalAlignment}>{overlay.VerticalParentAlignment}"
+                    )
+                    .ToString(),
+                LogLevel.Debug
+            );
         }
 
         private ViewChild? GetImmediateParent() => ParentPath.Length > 0 ? ParentPath[^1] : null;
