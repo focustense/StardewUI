@@ -176,6 +176,14 @@ public static class UiSprites
     public static Sprite SmallDownArrow => new(Game1.mouseCursors, SourceRect: new(421, 472, 11, 12));
 
     /// <summary>
+    /// A small green "+" icon.
+    /// </summary>
+    /// <remarks>
+    /// Technically used to represent energy buffs, can sometimes be tinted to communicate a concept like "add to list".
+    /// </remarks>
+    public static Sprite SmallGreenPlus => new(Game1.mouseCursors, SourceRect: new(0, 428, 10, 10));
+
+    /// <summary>
     /// Small and tall trash can, larger than the <see cref="TinyTrashCan"/> and more suitable for tall rows.
     /// </summary>
     public static Sprite SmallTrashCan => new(Game1.mouseCursors2, SourceRect: new(22, 11, 15, 20));

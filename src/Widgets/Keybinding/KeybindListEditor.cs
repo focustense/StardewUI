@@ -90,6 +90,13 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
         }
     }
 
+    /// <inheritdoc cref="View.IsFocusable" />
+    public new bool IsFocusable
+    {
+        get => rootLane?.IsFocusable ?? false;
+        set => RequireView(() => rootLane).IsFocusable = true;
+    }
+
     private IEnumerable<KeybindView> KeybindViews =>
         rootLane.Children.OfType<Frame>().Select(frame => frame.Content).OfType<KeybindView>();
 

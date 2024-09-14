@@ -63,6 +63,11 @@ public class Animator<T, V> : IAnimator
     where T : class
 {
     /// <summary>
+    /// Whether to automatically start playing in reverse after reaching the end.
+    /// </summary>
+    public bool AutoReverse { get; set; } = false;
+
+    /// <summary>
     /// The current animation, started by <see cref="Start"/>, if any.
     /// </summary>
     public Animation<V>? CurrentAnimation { get; private set; }
@@ -224,7 +229,7 @@ public class Animator<T, V> : IAnimator
             || !targetRef.TryGetTarget(out var target)
             || CurrentAnimation is null
             || (!Loop && IsReversing && this.elapsed == TimeSpan.Zero)
-            || (!Loop && !IsReversing && this.elapsed >= CurrentAnimation.Duration)
+            || (!Loop && !AutoReverse && !IsReversing && this.elapsed >= CurrentAnimation.Duration)
         )
         {
             return;
@@ -234,7 +239,14 @@ public class Animator<T, V> : IAnimator
             this.elapsed -= elapsed;
             if (this.elapsed < TimeSpan.Zero)
             {
-                this.elapsed = Loop ? CurrentAnimation.Duration : TimeSpan.Zero;
+                if (AutoReverse)
+                {
+                    IsReversing = !IsReversing;
+                }
+                else
+                {
+                    this.elapsed = Loop ? CurrentAnimation.Duration : TimeSpan.Zero;
+                }
             }
         }
         else
@@ -242,7 +254,14 @@ public class Animator<T, V> : IAnimator
             this.elapsed += elapsed;
             if (this.elapsed >= CurrentAnimation.Duration)
             {
-                this.elapsed = Loop ? TimeSpan.Zero : CurrentAnimation.Duration;
+                if (AutoReverse)
+                {
+                    IsReversing = !IsReversing;
+                }
+                else
+                {
+                    this.elapsed = Loop ? TimeSpan.Zero : CurrentAnimation.Duration;
+                }
             }
         }
         var progress = CurrentAnimation.Duration > TimeSpan.Zero ? this.elapsed / CurrentAnimation.Duration : 0;

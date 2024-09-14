@@ -228,23 +228,6 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
-    private void OnOverlayRemoved(IOverlay overlay)
-    {
-        // A convenience for gamepad users is to try to move the mouse cursor back to whatever triggered the
-        // overlay in the first place, e.g. the button on a drop-down list.
-        // However, it's unnecessarily distracting to do it for mouse controls.
-        if (Game1.lastCursorMotionWasMouse || overlay.Parent is null)
-        {
-            return;
-        }
-        var overlayData = GetOverlayLayoutData(overlay);
-        var defaultFocus = GetDefaultFocus(new(overlay.Parent, overlayData.ParentBounds.Position));
-        if (defaultFocus is not null)
-        {
-            Game1.setMousePosition(defaultFocus.CenterPoint(), true);
-        }
-    }
-
     public override void receiveKeyPress(Keys key)
     {
         var realButton = ButtonResolver.GetPressedButton(key.ToSButton());
@@ -471,6 +454,23 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         xPositionOnScreen = viewportSize.X / 2 - width / 2;
         yPositionOnScreen = viewportSize.Y / 2 - height / 2;
         Refocus();
+    }
+
+    private void OnOverlayRemoved(IOverlay overlay)
+    {
+        // A convenience for gamepad users is to try to move the mouse cursor back to whatever triggered the
+        // overlay in the first place, e.g. the button on a drop-down list.
+        // However, it's unnecessarily distracting to do it for mouse controls.
+        if (Game1.lastCursorMotionWasMouse || overlay.Parent is null)
+        {
+            return;
+        }
+        var overlayData = GetOverlayLayoutData(overlay);
+        var defaultFocus = GetDefaultFocus(new(overlay.Parent, overlayData.ParentBounds.Position));
+        if (defaultFocus is not null)
+        {
+            Game1.setMousePosition(defaultFocus.CenterPoint(), true);
+        }
     }
 
     private void OnPageable(Action<IPageable> action)
