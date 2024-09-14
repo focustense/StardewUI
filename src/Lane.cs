@@ -327,7 +327,7 @@ public class Lane : View
             }
         }
 
-        if (swapOrientation.Get(childrenSize) == 0)
+        if (swapOrientation.Get(childrenSize) == 0 && Children.Count > 0)
         {
             swapOrientation.Set(ref childrenSize, Children.Max(c => swapOrientation.Get(c.OuterSize)));
         }
