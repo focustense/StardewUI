@@ -14,9 +14,16 @@ namespace StardewUI.Widgets.Keybinding;
 /// <see cref="KeybindOverlay"/> to edit the keybinds when clicked.
 /// </remarks>
 /// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-/// <param name="emptyText">Text to display when the keybind is empty (has no buttons).</param>
-public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) : WrapperView
+public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
 {
+    /// <summary>
+    /// The <see cref="KeybindOverlay.AddButtonText"/> to display for adding new bindings.
+    /// </summary>
+    /// <remarks>
+    /// Changing this while the overlay is already displayed will not update the overlay.
+    /// </remarks>
+    public string AddButtonText { get; set; } = "";
+
     /// <summary>
     /// The height for button images/sprites. Images are scaled uniformly, preserving source aspect ratio.
     /// </summary>
@@ -38,6 +45,14 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
     }
 
     /// <summary>
+    /// The <see cref="KeybindOverlay.DeleteButtonTooltip"/> to display for deleting bindings in a multiple-binding UI.
+    /// </summary>
+    /// <remarks>
+    /// Changing this while the overlay is already displayed will not update the overlay.
+    /// </remarks>
+    public string DeleteButtonTooltip { get; set; } = "";
+
+    /// <summary>
     /// Specifies what kind of keybind the editor should allow.
     /// </summary>
     /// <remarks>
@@ -46,6 +61,40 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
     /// correct kind. If this is <c>null</c>, the list is considered read-only.
     /// </remarks>
     public KeybindType? EditableType { get; set; }
+
+    /// <summary>
+    /// Placeholder text to display when the current keybind list is empty.
+    /// </summary>
+    public string EmptyText
+    {
+        get => emptyText;
+        set
+        {
+            if (value == emptyText)
+            {
+                return;
+            }
+            emptyText = value;
+            UpdateEmptyText(EmptyTextColor);
+        }
+    }
+
+    /// <summary>
+    /// Color of the displayed <see cref="EmptyText"/> when the list is empty.
+    /// </summary>
+    public Color EmptyTextColor
+    {
+        get => emptyTextColor;
+        set
+        {
+            if (value == emptyTextColor)
+            {
+                return;
+            }
+            emptyTextColor = value;
+            UpdateEmptyText(EmptyTextColor);
+        }
+    }
 
     /// <summary>
     /// Font used to display text in button/key placeholders.
@@ -105,12 +154,15 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
     private readonly Lane rootLane = new();
 
     private int buttonHeight = KeybindView.DEFAULT_BUTTON_HEIGHT;
+    private string emptyText = "";
+    private Color emptyTextColor = Game1.textColor;
     private SpriteFont font = Game1.smallFont;
     private KeybindList keybindList = new();
 
     protected override IView CreateView()
     {
         rootLane.LeftClick += RootLane_LeftClick;
+        rootLane.RightClick += RootLane_RightClick;
         rootLane.PointerEnter += RootLane_PointerEnter;
         rootLane.PointerLeave += RootLane_PointerLeave;
         return rootLane;
@@ -126,6 +178,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
         // We generally won't receive the PointerLeave event after a full-screen overlay was open.
         // Known issue due to dependency on recursive PointerMove, hard to resolve.
         UpdateTint(Color.White);
+        UpdateEmptyText(EmptyTextColor);
     }
 
     private void RootLane_LeftClick(object? sender, ClickEventArgs e)
@@ -135,7 +188,12 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
             return;
         }
         Game1.playSound("bigSelect");
-        var overlay = new KeybindOverlay(spriteMap, emptyText) { KeybindList = KeybindList };
+        var overlay = new KeybindOverlay(spriteMap)
+        {
+            AddButtonText = AddButtonText,
+            DeleteButtonTooltip = DeleteButtonTooltip,
+            KeybindList = KeybindList,
+        };
         overlay.Close += Overlay_Close;
         Overlay.Push(overlay);
     }
@@ -147,16 +205,28 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
             return;
         }
         UpdateTint(Color.Orange);
+        UpdateEmptyText(Color.SaddleBrown);
     }
 
     private void RootLane_PointerLeave(object? sender, PointerEventArgs e)
     {
         UpdateTint(Color.White);
+        UpdateEmptyText(EmptyTextColor);
+    }
+
+    private void RootLane_RightClick(object? sender, ClickEventArgs e)
+    {
+        if (EditableType is null)
+        {
+            return;
+        }
+        Game1.playSound("drumkit5");
+        KeybindList = new();
     }
 
     private void UpdateAll()
     {
-        rootLane.Children = keybindList
+        var keybindViews = keybindList
             .Keybinds.Where(kb => kb.IsBound)
             .Select(
                 (kb, index) =>
@@ -166,7 +236,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
                         Margin = index > 0 ? new Edges(Left: 16) : Edges.NONE,
                         Background = UiSprites.MenuSlotTransparent,
                         Padding = UiSprites.MenuSlotTransparent.FixedEdges! + new Edges(4),
-                        Content = new KeybindView(spriteMap, emptyText)
+                        Content = new KeybindView(spriteMap)
                         {
                             ButtonHeight = buttonHeight,
                             Font = font,
@@ -176,6 +246,16 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap, string emptyText) 
             )
             .Cast<IView>()
             .ToList();
+        rootLane.Children = keybindViews.Count > 0 ? keybindViews : [Label.Simple(EmptyText)];
+    }
+
+    private void UpdateEmptyText(Color color)
+    {
+        if (rootLane?.Children.Count == 1 && rootLane.Children[0] is Label label)
+        {
+            label.Text = EmptyText;
+            label.Color = color;
+        }
     }
 
     private void UpdateTint(Color tintColor)

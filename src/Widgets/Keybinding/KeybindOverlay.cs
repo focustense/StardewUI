@@ -10,9 +10,50 @@ namespace StardewUI.Widgets.Keybinding;
 /// Overlay control for editing a keybinding, or list of bindings.
 /// </summary>
 /// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-/// <param name="emptyText">Text to display when the keybind is empty (has no buttons).</param>
-public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : FullScreenOverlay
+/// <param name="addText">Button text to display for adding a new binding. If not specified, the button will use a
+/// generic "+" sprite instead.</param>
+/// <param name="deleteTooltip">Tooltip to display when hovering over the delete button (trash can) for an existing
+/// binding. If not specified, then no tooltip will be shown.</param>
+public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
 {
+    /// <summary>
+    /// Text to display on the button used to add a new binding.
+    /// </summary>
+    /// <remarks>
+    /// If not specified, the button will use a generic "+" image instead.
+    /// </remarks>
+    public string AddButtonText
+    {
+        get => addButton?.Text ?? "";
+        set => RequireView(() => addButton).Text = value;
+    }
+
+    /// <summary>
+    /// Tooltip to display for the delete (trash can) button beside each existing binding.
+    /// </summary>
+    /// <remarks>
+    /// If not specified, the delete buttons will have no tooltips.
+    /// </remarks>
+    public string DeleteButtonTooltip
+    {
+        get => deleteButtonTooltip;
+        set
+        {
+            if (value == deleteButtonTooltip)
+            {
+                return;
+            }
+            deleteButtonTooltip = value;
+            foreach (var keybindLane in keybindsLane?.Children ?? [])
+            {
+                if (keybindLane.GetChildren().LastOrDefault()?.View is Image deleteButton)
+                {
+                    deleteButton.Tooltip = value;
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// The current keybinds to display in the list.
     /// </summary>
@@ -55,6 +96,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
         };
 
     private KeybindList keybindList = new();
+    private string deleteButtonTooltip = "";
 
     // Initialized in CreateView
     private Button addButton = null!;
@@ -63,21 +105,49 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
     private Frame keybindEntryHighlighter = null!;
     private Lane keybindsLane = null!;
 
+    public override void Update(TimeSpan elapsed)
+    {
+        if (!CapturingInput)
+        {
+            return;
+        }
+        var cancellationButtons = ButtonResolver.GetActionButtons(ButtonAction.Cancel);
+        foreach (var button in cancellationButtons)
+        {
+            if (UI.InputHelper.IsDown(button))
+            {
+                StopCapturing();
+                UI.InputHelper.Suppress(button);
+                return;
+            }
+        }
+        int previousCapturedCount = capturedButtons.Count;
+        var pressedButtons = GetPressedButtons().Where(IsBindable).ToList();
+        bool anyPressed = false;
+        foreach (var button in pressedButtons)
+        {
+            capturedButtons.Add(button);
+            anyPressed = true;
+        }
+        if (capturedButtons.Count != previousCapturedCount)
+        {
+            currentKeybindView.Keybind = new([.. capturedButtons]);
+        }
+        if (capturedButtons.Count > 0 && !anyPressed)
+        {
+            var capturedKeybind = new Keybind([.. capturedButtons]);
+            StopCapturing();
+            if (capturedKeybind.IsBound)
+            {
+                KeybindList = new([.. KeybindList.Keybinds, capturedKeybind]);
+            }
+        }
+    }
+
     protected override IView CreateView()
     {
-        currentKeybindView = new(spriteMap, "");
-        addButton = new()
-        {
-            Layout = LayoutParameters.FitContent(),
-            Content = new Image()
-            {
-                Layout = LayoutParameters.FixedSize(20, 20),
-                Margin = new(0, 4),
-                Sprite = UiSprites.SmallGreenPlus,
-                Tint = new(0.2f, 0.5f, 1f),
-            },
-        };
-        addButton.LeftClick += AddButton_LeftClick;
+        currentKeybindView = new(spriteMap);
+        addButton = CreateAddButton();
         var currentKeybindLane = new Lane()
         {
             Layout = new()
@@ -87,7 +157,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
                 MinHeight = 64,
             },
             VerticalContentAlignment = Alignment.Middle,
-            Children = [currentKeybindView, new Spacer() { Layout = LayoutParameters.AutoRow() }, addButton],
+            Children = [currentKeybindView, addButton],
         };
         keybindEntryHighlighter = new Frame()
         {
@@ -122,45 +192,6 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
         };
     }
 
-    public override void Update(TimeSpan elapsed)
-    {
-        if (!CapturingInput)
-        {
-            return;
-        }
-        var cancellationButtons = Game1.options.menuButton.Select(ib => ib.ToSButton()).Append(SButton.ControllerB);
-        foreach (var button in cancellationButtons)
-        {
-            if (UI.InputHelper.IsDown(button))
-            {
-                StopCapturing();
-                UI.InputHelper.Suppress(button);
-                return;
-            }
-        }
-        int previousCapturedCount = capturedButtons.Count;
-        var pressedButtons = GetPressedButtons().Where(IsBindable);
-        bool anyPressed = false;
-        foreach (var button in pressedButtons)
-        {
-            capturedButtons.Add(button);
-            anyPressed = true;
-        }
-        if (capturedButtons.Count != previousCapturedCount)
-        {
-            currentKeybindView.Keybind = new([.. capturedButtons]);
-        }
-        if (capturedButtons.Count > 0 && !anyPressed)
-        {
-            var capturedKeybind = new Keybind([.. capturedButtons]);
-            StopCapturing();
-            if (capturedKeybind.IsBound)
-            {
-                KeybindList = new([.. KeybindList.Keybinds, capturedKeybind]);
-            }
-        }
-    }
-
     private void AddButton_LeftClick(object? sender, ClickEventArgs e)
     {
         if (!e.IsPrimaryButton())
@@ -174,7 +205,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
 
     private void AddKeybindRow(Keybind keybind)
     {
-        var keybindView = new KeybindView(spriteMap, emptyText)
+        var keybindView = new KeybindView(spriteMap)
         {
             Layout = LayoutParameters.AutoRow(),
             Margin = keybindsLane.Children.Count > 0 ? new(Top: 16) : Edges.NONE,
@@ -186,6 +217,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
             Sprite = UiSprites.SmallTrashCan,
             ShadowAlpha = 0.35f,
             ShadowOffset = new(-3, 4),
+            Tooltip = DeleteButtonTooltip,
             IsFocusable = true,
             Tags = Tags.Create(keybind),
         };
@@ -204,6 +236,27 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
         amount = MathHelper.Clamp(amount, 0f, 1f);
         var alpha = MathHelper.Lerp(color1.A, color2.A, amount) / 255f;
         return new((int)(color2.R * alpha), (int)(color2.G * alpha), (int)(color2.B * alpha), (int)(alpha * 255));
+    }
+
+    private Button CreateAddButton()
+    {
+        var button = new Button() { Layout = LayoutParameters.FitContent() };
+        if (!string.IsNullOrEmpty(AddButtonText))
+        {
+            button.Text = AddButtonText;
+        }
+        else
+        {
+            button.Content = new Image()
+            {
+                Layout = LayoutParameters.FixedSize(20, 20),
+                Margin = new(0, 4),
+                Sprite = UiSprites.SmallGreenPlus,
+                Tint = new(0.2f, 0.5f, 1f),
+            };
+        }
+        button.LeftClick += AddButton_LeftClick;
+        return button;
     }
 
     private void DeleteButton_LeftClick(object? sender, ClickEventArgs e)
@@ -246,7 +299,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap, string emptyText) : F
         return !bannedButtons.Contains(button);
     }
 
-    private void StartCapturing()
+    public void StartCapturing()
     {
         if (CapturingInput)
         {

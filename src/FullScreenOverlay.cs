@@ -82,6 +82,22 @@ public abstract class FullScreenOverlay : IOverlay
     /// </summary>
     protected abstract IView CreateView();
 
+    /// <summary>
+    /// Ensures that the overlay view is created before attempting to access a child view.
+    /// </summary>
+    /// <remarks>
+    /// This is syntactic sugar over accessing <see cref="View"/> first to force lazy loading.
+    /// </remarks>
+    /// <typeparam name="TChild">Type of child view to access.</typeparam>
+    /// <param name="viewSelector">Function to retrieve the inner view.</param>
+    /// <returns>The inner view.</returns>
+    protected TChild RequireView<TChild>(Func<TChild> viewSelector)
+        where TChild : IView
+    {
+        _ = View;
+        return viewSelector();
+    }
+
     private IView CreateOverlayView()
     {
         return new Frame()

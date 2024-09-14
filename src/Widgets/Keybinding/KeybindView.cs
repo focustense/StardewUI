@@ -10,8 +10,7 @@ namespace StardewUI.Widgets.Keybinding;
 /// Display widget for a single <see cref="Keybind"/> showing all required keys.
 /// </summary>
 /// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-/// <param name="emptyText">Text to display when the keybind is empty (has no buttons).</param>
-public class KeybindView(ISpriteMap<SButton> spriteMap, string emptyText) : WrapperView<Lane>
+public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
 {
     /// <summary>
     /// Default setting for <see cref="ButtonHeight"/>.
@@ -32,6 +31,25 @@ public class KeybindView(ISpriteMap<SButton> spriteMap, string emptyText) : Wrap
             }
             buttonHeight = value;
             UpdateContent();
+        }
+    }
+
+    /// <summary>
+    /// Placeholder text to display when the current keybind is empty.
+    /// </summary>
+    public string EmptyText
+    {
+        get => emptyText;
+        set
+        {
+            if (value == emptyText)
+            {
+                return;
+            }
+            if (IsViewCreated && Root.Children.Count == 1 && Root.Children[0] is Label label)
+            {
+                label.Text = value;
+            }
         }
     }
 
@@ -113,6 +131,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap, string emptyText) : Wrap
     }
 
     private int buttonHeight = DEFAULT_BUTTON_HEIGHT;
+    private string emptyText = "";
     private SpriteFont font = Game1.smallFont;
     private Keybind keybind = new();
     private float spacing;
@@ -165,7 +184,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap, string emptyText) : Wrap
                 .Buttons.SelectMany(button => new IView[] { Label.Simple("+", font), CreateButtonImage(button) })
                 .Skip(1)
                 .ToList()
-            : [Label.Simple(emptyText, font)];
+            : [Label.Simple(EmptyText, font)];
     }
 
     private void UpdateTint()

@@ -47,6 +47,23 @@ public enum ButtonAction
 public static class ButtonResolver
 {
     /// <summary>
+    /// Gets all buttons that can be resolved to a specific action.
+    /// </summary>
+    /// <param name="action">The UI action.</param>
+    /// <returns>A sequence of <see cref="SButton"/> elements each of which is considered to perform the specified
+    /// <paramref name="action"/>.</returns>
+    public static IEnumerable<SButton> GetActionButtons(ButtonAction action)
+    {
+        return action switch
+        {
+            ButtonAction.Primary => [SButton.ControllerA, .. Game1.options.useToolButton.Select(b => b.ToSButton())],
+            ButtonAction.Secondary => [SButton.ControllerX, .. Game1.options.actionButton.Select(b => b.ToSButton())],
+            ButtonAction.Cancel => [SButton.ControllerB, .. Game1.options.menuButton.Select(b => b.ToSButton())],
+            _ => [],
+        };
+    }
+
+    /// <summary>
     /// Determines the action that should be performed by a button.
     /// </summary>
     /// <param name="button">The action button.</param>
@@ -98,16 +115,5 @@ public static class ButtonResolver
             return logicalButton;
         }
         return GetActionButtons(action).Where(UI.InputHelper.IsDown).Cast<SButton?>().FirstOrDefault() ?? logicalButton;
-    }
-
-    private static IEnumerable<SButton> GetActionButtons(ButtonAction action)
-    {
-        return action switch
-        {
-            ButtonAction.Primary => [SButton.ControllerA, .. Game1.options.useToolButton.Select(b => b.ToSButton())],
-            ButtonAction.Secondary => [SButton.ControllerX, .. Game1.options.actionButton.Select(b => b.ToSButton())],
-            ButtonAction.Cancel => [SButton.ControllerB, .. Game1.options.menuButton.Select(b => b.ToSButton())],
-            _ => [],
-        };
     }
 }
