@@ -8,6 +8,38 @@ namespace StardewUI;
 public static class ViewExtensions
 {
     /// <summary>
+    /// Retrieves a path to the default focus child/descendant of a view.
+    /// </summary>
+    /// <param name="view">The view at which to start the search.</param>
+    /// <returns>A sequence of <see cref="ViewChild"/> elements with the <see cref="IView"/> and position (relative to
+    /// parent) at each level, starting with the specified <paramref name="view"/> and ending with the lowest-level
+    /// <see cref="IView"/> in the default focus path. If no focusable descendant is found, returns an empty
+    /// sequence.</returns>
+    public static IEnumerable<ViewChild> GetDefaultFocusPath(this IView view)
+    {
+        // It's possible to implement this recursively, but the default implementation of GetDefaultFocusChild is
+        // already recursive, so adding a recursive enumerator on top of that makes debugging confusing and can have
+        // unpredictable performance.
+        // Technically, we could improve this even more by making IView implement the path method, so we aren't doing
+        // double-lookups each time, but it would be at the cost of a much more difficult API to implement correctly.
+        var currentChild = view.GetDefaultFocusChild();
+        if (currentChild is null)
+        {
+            yield break;
+        }
+        while (true)
+        {
+            yield return currentChild;
+            var nextChild = currentChild.View.GetDefaultFocusChild();
+            if (nextChild is null || nextChild.View == currentChild.View)
+            {
+                break;
+            }
+            currentChild = nextChild;
+        }
+    }
+
+    /// <summary>
     /// Retrieves a path to the view at a given position.
     /// </summary>
     /// <param name="view">The view at which to start the search.</param>

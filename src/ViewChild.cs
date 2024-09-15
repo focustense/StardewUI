@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 
 namespace StardewUI;
 
@@ -9,6 +10,18 @@ namespace StardewUI;
 /// <param name="Position">The position of the <paramref name="View"/>, relative to the parent.</param>
 public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
 {
+    /// <summary>
+    /// Returns a copy of this instance as a weak version that does not keep the <see cref="IView"/> alive.
+    /// </summary>
+    /// <remarks>
+    /// Use whenever it is necessary to store a reference to both the view and its position in places where the view may
+    /// disappear from scope, e.g. a deep descendant of a menu's root view.
+    /// </remarks>
+    internal WeakViewChild AsWeak()
+    {
+        return new(View, Position);
+    }
+
     /// <summary>
     /// Gets the point at the exact center of the view.
     /// </summary>
@@ -104,5 +117,39 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
             Direction.East => relativePosition.X < bounds.Right,
             _ => false,
         };
+    }
+}
+
+/// <summary>
+/// A variant of <see cref="ViewChild"/> that uses a weak <see cref="IView"/> reference, safe to store without keeping
+/// the underlying view alive.
+/// </summary>
+internal class WeakViewChild
+{
+    private readonly Vector2 position;
+    private readonly WeakReference<IView> viewRef;
+
+    [SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "Would probably cause a memory leak")]
+    public WeakViewChild(IView view, Vector2 position)
+    {
+        viewRef = new(view);
+        this.position = position;
+    }
+
+    /// <summary>
+    /// Tries to resolve this instance into a normal <see cref="ViewChild"/> with strong view reference.
+    /// </summary>
+    /// <param name="viewChild">Set to a <see cref="ViewChild"/> with live <see cref="IView"/>, if the underlying view
+    /// is still alive; otherwise <c>null</c>.</param>
+    /// <returns><c>true</c> if the underlying <see cref="IView"/> was still alive; otherwise <c>false</c>.</returns>
+    public bool TryResolve([MaybeNullWhen(false)] out ViewChild viewChild)
+    {
+        if (viewRef.TryGetTarget(out var view))
+        {
+            viewChild = new(view, position);
+            return true;
+        }
+        viewChild = null;
+        return false;
     }
 }

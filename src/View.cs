@@ -313,6 +313,15 @@ public abstract class View : IView
             .Concat(FloatingElements.Select(fe => fe.AsViewChild()));
     }
 
+    public virtual ViewChild? GetDefaultFocusChild()
+    {
+        if (IsFocusable)
+        {
+            return new(this, Vector2.Zero);
+        }
+        return GetChildren().Where(child => child.View.GetDefaultFocusChild() is not null).FirstOrDefault();
+    }
+
     public bool HasOutOfBoundsContent()
     {
         return hasChildrenWithOutOfBoundsContent

@@ -129,6 +129,11 @@ public abstract class WrapperView<T> : IView
         return Root.GetChildren();
     }
 
+    public virtual ViewChild? GetDefaultFocusChild()
+    {
+        return Root.GetDefaultFocusChild();
+    }
+
     public virtual bool HasOutOfBoundsContent()
     {
         return Root.HasOutOfBoundsContent();

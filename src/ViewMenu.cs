@@ -32,12 +32,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private static readonly Edges DefaultGutter = new(100, 50);
 
     private readonly Edges? gutter;
+
+    // For tracking activation paths, we not only want a weak table for the overlay itself (to prevent overlays from
+    // being leaked) but also for the ViewChild path used to activate it, because these views may go out of scope while
+    // the overlay is open.
+    private readonly ConditionalWeakTable<IOverlay, WeakViewChild[]> overlayActivationPaths = [];
     private readonly OverlayContext overlayContext = new();
     private readonly ConditionalWeakTable<IOverlay, OverlayLayoutData> overlayCache = [];
     private readonly T view;
     private readonly bool wasHudDisplayed;
 
     private ViewChild[] hoverPath = [];
+
+    // Whether the overlay was pushed within the last frame.
+    private bool justPushedOverlay;
     private Point previousHoverPosition;
     private Point previousDragPosition;
 
@@ -50,13 +58,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         view = CreateView();
         MeasureAndCenterView();
 
-        if (forceDefaultFocus || !Game1.lastCursorMotionWasMouse)
+        if (forceDefaultFocus || Game1.options.gamepadControls)
         {
-            var initialFocus = GetDefaultFocus(new(view, Vector2.Zero));
-            if (initialFocus is not null)
+            var focusPosition = view.GetDefaultFocusPath().ToGlobalPositions().LastOrDefault()?.CenterPoint();
+            if (focusPosition.HasValue)
             {
-                var focusPosition = initialFocus.CenterPoint();
-                Game1.setMousePosition(new Point(xPositionOnScreen, yPositionOnScreen) + focusPosition, true);
+                Game1.setMousePosition(new Point(xPositionOnScreen, yPositionOnScreen) + focusPosition.Value, true);
             }
         }
 
@@ -126,6 +133,21 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             overlay.View.Draw(overlayBatch);
         }
 
+        if (justPushedOverlay && overlayContext.Front is IOverlay frontOverlay && Game1.options.gamepadControls)
+        {
+            var defaultFocusPosition = frontOverlay
+                .View.GetDefaultFocusPath()
+                .ToGlobalPositions()
+                .LastOrDefault()
+                ?.Center();
+            if (defaultFocusPosition.HasValue)
+            {
+                var overlayData = GetOverlayLayoutData(frontOverlay);
+                Game1.setMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint(), true);
+            }
+        }
+        justPushedOverlay = false;
+
         var tooltip = FormatTooltip(hoverPath);
         if (!string.IsNullOrEmpty(tooltip))
         {
@@ -141,7 +163,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void leftClickHeld(int x, int y)
     {
-        if (!Game1.lastCursorMotionWasMouse || IsInputCaptured())
+        if (Game1.options.gamepadControls || IsInputCaptured())
         {
             // No dragging with gamepad.
             return;
@@ -337,18 +359,17 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         return overlayCache.GetValue(overlay, ov => OverlayLayoutData.FromOverlay(view, rootPosition, overlay));
     }
 
-    private static ViewChild? GetDefaultFocus(ViewChild parent)
+    private Vector2? GetRootViewPosition(IView view)
     {
-        if (parent.View.IsFocusable)
+        if (view.Equals(View))
         {
-            return parent;
+            return new(xPositionOnScreen, yPositionOnScreen);
         }
-        foreach (var child in parent.View.GetChildren())
+        foreach (var overlay in overlayContext.FrontToBack())
         {
-            var childFocus = GetDefaultFocus(child.Offset(parent.Position));
-            if (childFocus is not null)
+            if (overlay.View == view && overlayCache.TryGetValue(overlay, out var layoutData))
             {
-                return childFocus;
+                return layoutData.Position;
             }
         }
         return null;
@@ -470,15 +491,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         // A convenience for gamepad users is to try to move the mouse cursor back to whatever triggered the
         // overlay in the first place, e.g. the button on a drop-down list.
         // However, it's unnecessarily distracting to do it for mouse controls.
-        if (Game1.lastCursorMotionWasMouse || overlay.Parent is null)
+        if (Game1.options.gamepadControls)
         {
-            return;
-        }
-        var overlayData = GetOverlayLayoutData(overlay);
-        var defaultFocus = GetDefaultFocus(new(overlay.Parent, overlayData.ParentBounds.Position));
-        if (defaultFocus is not null)
-        {
-            Game1.setMousePosition(defaultFocus.CenterPoint(), true);
+            RestoreFocusToOverlayActivation(overlay);
         }
     }
 
@@ -522,7 +537,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void OverlayContext_Pushed(object? sender, EventArgs e)
     {
-        overlayContext.Front!.Close += Overlay_Close;
+        var overlay = overlayContext.Front!;
+        overlayActivationPaths.AddOrUpdate(overlay, hoverPath.Select(child => child.AsWeak()).ToArray());
+        overlay.Close += Overlay_Close;
+        justPushedOverlay = true;
     }
 
     private void PerformHoverAction(IView rootView, Vector2 viewPosition, int mouseX, int mouseY)
@@ -537,7 +555,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void Refocus(Direction searchDirection = Direction.South)
     {
-        if (hoverPath.Length == 0 || !Game1.options.gamepadControls || Game1.lastCursorMotionWasMouse)
+        if (hoverPath.Length == 0 || !Game1.options.gamepadControls || !Game1.options.gamepadControls)
         {
             return;
         }
@@ -574,7 +592,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         Direction searchDirection
     )
     {
-        if (!Game1.options.gamepadControls || Game1.lastCursorMotionWasMouse)
+        if (!Game1.options.gamepadControls)
         {
             return;
         }
@@ -605,6 +623,32 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         if (Game1.keyboardDispatcher.Subscriber is ICaptureTarget captureTarget)
         {
             captureTarget.ReleaseCapture();
+        }
+    }
+
+    private void RestoreFocusToOverlayActivation(IOverlay overlay)
+    {
+        var overlayData = GetOverlayLayoutData(overlay);
+        if (overlayActivationPaths.TryGetValue(overlay, out var activationPath) && activationPath.Length > 0)
+        {
+            var strongActivationPath = activationPath
+                .Select(x => x.TryResolve(out var viewChild) ? viewChild : null)
+                .ToList();
+            if (strongActivationPath.Count > 0 && strongActivationPath.All(child => child is not null))
+            {
+                var rootPosition = GetRootViewPosition(strongActivationPath[0]!.View);
+                if (rootPosition is not null)
+                {
+                    var position = strongActivationPath!.ToGlobalPositions().Last().Center();
+                    Game1.setMousePosition((rootPosition.Value + position).ToPoint(), true);
+                    return;
+                }
+            }
+        }
+        var defaultFocusPosition = overlay.Parent?.GetDefaultFocusPath().ToGlobalPositions().LastOrDefault()?.Center();
+        if (defaultFocusPosition.HasValue)
+        {
+            Game1.setMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint(), true);
         }
     }
 

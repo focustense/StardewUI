@@ -285,6 +285,14 @@ public class DropDownList<T> : WrapperView
 
     class DropDownOverlayView(DropDownList<T> owner) : WrapperView
     {
+        public override ViewChild? GetDefaultFocusChild()
+        {
+            return owner
+                .optionsLane.GetChildren()
+                .Where(child => child.View is DropDownOptionView optionView && optionView.IsSelected)
+                .FirstOrDefault();
+        }
+
         protected override IView CreateView()
         {
             return new Frame()

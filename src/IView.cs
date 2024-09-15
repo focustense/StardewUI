@@ -229,6 +229,15 @@ public interface IView
     IEnumerable<ViewChild> GetChildren();
 
     /// <summary>
+    /// Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first
+    /// opened.
+    /// </summary>
+    /// <returns>The child view and position where initial focus should be, either directly or indirectly as a result of
+    /// a descendant receiving focus. If this <see cref="IView"/> is itself <see cref="IsFocusable"/>, then the result
+    /// may be a <see cref="ViewChild"/> referencing this view.</returns>
+    ViewChild? GetDefaultFocusChild();
+
+    /// <summary>
     /// Checks if the view has content or elements that are all or partially outside the <see cref="ActualBounds"/>.
     /// </summary>
     /// <remarks>
