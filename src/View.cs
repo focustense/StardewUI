@@ -491,6 +491,19 @@ public abstract class View : IView
     }
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// When overriding <see cref="View.OnUpdate"/>, be sure to call <c>base.OnUpdate()</c> to ensure that any view
+    /// children also receive their updates.
+    /// </remarks>
+    public virtual void OnUpdate(TimeSpan elapsed)
+    {
+        foreach (var child in GetChildren())
+        {
+            child.View.OnUpdate(elapsed);
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void OnWheel(WheelEventArgs e)
     {
         if (Visibility != Visibility.Visible)

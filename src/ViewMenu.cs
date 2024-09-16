@@ -328,6 +328,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public override void update(GameTime time)
     {
+        View.OnUpdate(time.ElapsedGameTime);
         foreach (var overlay in overlayContext.FrontToBack())
         {
             overlay.Update(time.ElapsedGameTime);
@@ -696,17 +697,6 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 overlay.View.OuterSize.Y
             );
             Position = new Vector2(x, y);
-            Logger.Monitor!.Log(
-                new System.Text.StringBuilder()
-                    .AppendLine($"Updated {overlay.GetType().Name} overlay")
-                    .AppendLine($"  Parent bounds: {ParentBounds.Position} {ParentBounds.Size}")
-                    .AppendLine($"  Overlay size: {overlay.View.OuterSize}")
-                    .AppendLine(
-                        $"  Overlay align: H:{overlay.HorizontalAlignment}>{overlay.HorizontalParentAlignment} V:{overlay.VerticalAlignment}>{overlay.VerticalParentAlignment}"
-                    )
-                    .ToString(),
-                LogLevel.Debug
-            );
         }
 
         private ViewChild? GetImmediateParent() => ParentPath.Length > 0 ? ParentPath[^1] : null;

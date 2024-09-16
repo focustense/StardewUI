@@ -174,6 +174,16 @@ public abstract class WrapperView<T> : IView
         Root.OnPointerMove(e);
     }
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// When overriding <see cref="WrapperView.OnUpdate"/>, be sure to call <c>base.OnUpdate()</c> to ensure that any
+    /// view children also receive their updates.
+    /// </remarks>
+    public virtual void OnUpdate(TimeSpan elapsed)
+    {
+        Root.OnUpdate(elapsed);
+    }
+
     public virtual void OnWheel(WheelEventArgs e)
     {
         Root.OnWheel(e);

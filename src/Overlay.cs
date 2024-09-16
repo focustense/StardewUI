@@ -108,7 +108,10 @@ public interface IOverlay
     /// Runs on every game update tick.
     /// </summary>
     /// <param name="elapsed">The amount of real time elapsed since the last tick.</param>
-    void Update(TimeSpan elapsed) { }
+    void Update(TimeSpan elapsed)
+    {
+        View.OnUpdate(elapsed);
+    }
 }
 
 /// <summary>

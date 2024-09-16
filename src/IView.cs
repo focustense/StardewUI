@@ -304,6 +304,23 @@ public interface IView
     void OnPointerMove(PointerMoveEventArgs e);
 
     /// <summary>
+    /// Runs on every update tick.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Provided as an escape hatch for very unusual scenarios like responding to flips in the game's
+    /// <see cref="Options.gamepadControls"/> state.
+    /// </para>
+    /// <para>
+    /// <b>Override this at your own extreme peril.</b> Frequently performing any layout-affecting logic in this
+    /// function can negate the performance benefits of a retained-mode UI and cause the UI to become sluggish or even
+    /// completely unresponsive.  Do not use it for animation; use <see cref="Animator"/> instead.
+    /// </para>
+    /// </remarks>
+    /// <param name="elapsed">Time elapsed since last game tick.</param>
+    void OnUpdate(TimeSpan elapsed);
+
+    /// <summary>
     /// Called when a wheel event is received within this view's bounds.
     /// </summary>
     /// <param name="e">The event data.</param>

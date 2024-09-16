@@ -64,7 +64,7 @@ public abstract class FullScreenOverlay : IOverlay
 
     public FullScreenOverlay()
     {
-        overlayView = new(() => CreateOverlayView());
+        overlayView = new(CreateOverlayView);
     }
 
     /// <inheritdoc />
@@ -75,7 +75,10 @@ public abstract class FullScreenOverlay : IOverlay
     }
 
     /// <inheritdoc />
-    public virtual void Update(TimeSpan elapsed) { }
+    public virtual void Update(TimeSpan elapsed)
+    {
+        View.OnUpdate(elapsed);
+    }
 
     /// <summary>
     /// Creates the content view that will be displayed as an overlay.

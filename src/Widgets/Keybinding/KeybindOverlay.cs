@@ -161,6 +161,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
 
     public override void Update(TimeSpan elapsed)
     {
+        base.Update(elapsed);
         if (!CapturingInput)
         {
             return;
