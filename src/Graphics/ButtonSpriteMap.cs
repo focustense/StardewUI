@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 
-namespace StardewUI.Widgets.Keybinding;
+namespace StardewUI;
 
 /// <summary>
 /// Base class for a <see cref="ISpriteMap{T}"/> for controller/keyboard bindings.

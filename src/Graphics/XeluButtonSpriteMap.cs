@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 
-namespace StardewUI.Widgets.Keybinding;
+namespace StardewUI;
 
 /// <summary>
 /// Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/
