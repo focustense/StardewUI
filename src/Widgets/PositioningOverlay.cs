@@ -198,29 +198,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         PositioningAction.Snap Snap(Direction direction) => new(direction);
     }
 
-    class GhostView(IView realView, Color tintColor) : View
-    {
-        protected override void OnDrawContent(ISpriteBatch b)
-        {
-            using var _ = b.Blend(
-                new BlendState()
-                {
-                    AlphaSourceBlend = Blend.One,
-                    ColorSourceBlend = Blend.BlendFactor,
-                    BlendFactor = tintColor,
-                    AlphaDestinationBlend = Blend.InverseSourceAlpha,
-                    ColorDestinationBlend = Blend.InverseSourceAlpha,
-                }
-            );
-            realView.Draw(b);
-        }
-
-        protected override void OnMeasure(Vector2 availableSize)
-        {
-            ContentSize = realView.ContentBounds.Size;
-        }
-    }
-
     abstract record PositioningAction
     {
         private PositioningAction() { }
