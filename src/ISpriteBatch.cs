@@ -13,6 +13,13 @@ namespace StardewUI;
 public interface ISpriteBatch
 {
     /// <summary>
+    /// Sets up subsequent draw calls to use the designated blending settings.
+    /// </summary>
+    /// <param name="blendState">Blend state determining the color/alpha blend behavior.</param>
+    /// <returns>A disposable instance which, when disposed, will revert to the previous blending state.</returns>
+    IDisposable Blend(BlendState blendState);
+
+    /// <summary>
     /// Sets up subsequent draw calls to clip contents within the specified bounds.
     /// </summary>
     /// <param name="clipRect">The clipping bounds in local coordinates.</param>

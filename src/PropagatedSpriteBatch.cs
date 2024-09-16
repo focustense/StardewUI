@@ -9,6 +9,10 @@ namespace StardewUI;
 /// </summary>
 public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform) : ISpriteBatch
 {
+    private static readonly FieldInfo blendStateField = typeof(SpriteBatch).GetField(
+        "_blendState",
+        BindingFlags.Instance | BindingFlags.NonPublic
+    )!;
     private static readonly FieldInfo rasterizerStateField = typeof(SpriteBatch).GetField(
         "_rasterizerState",
         BindingFlags.Instance | BindingFlags.NonPublic
@@ -16,6 +20,16 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
 
     private readonly SpriteBatch spriteBatch = spriteBatch;
     private Transform transform = transform;
+
+    public IDisposable Blend(BlendState blendState)
+    {
+        var previousRasterizerState = (RasterizerState)rasterizerStateField.GetValue(spriteBatch)!;
+        var previousBlendState = (BlendState)blendStateField.GetValue(spriteBatch)!;
+        var reverter = new BlendReverter(this, previousRasterizerState, previousBlendState);
+        spriteBatch.End();
+        BeginSpriteBatch(previousRasterizerState, blendState);
+        return reverter;
+    }
 
     public IDisposable Clip(Rectangle clipRect)
     {
@@ -149,11 +163,11 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         transform = transform.Translate(translation);
     }
 
-    private void BeginSpriteBatch(RasterizerState rasterizerState)
+    private void BeginSpriteBatch(RasterizerState rasterizerState, BlendState? blendState = null)
     {
         spriteBatch.Begin(
             SpriteSortMode.Deferred,
-            BlendState.AlphaBlend,
+            blendState ?? BlendState.AlphaBlend,
             SamplerState.PointClamp,
             rasterizerState: rasterizerState
         );
@@ -166,6 +180,20 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         var right = Math.Min(r1.Right, r2.Right);
         var bottom = Math.Min(r1.Bottom, r2.Bottom);
         return new(left, top, Math.Max(right - left, 0), Math.Max(bottom - top, 0));
+    }
+
+    private class BlendReverter(
+        PropagatedSpriteBatch owner,
+        RasterizerState previousRasterizerState,
+        BlendState previousBlendState
+    ) : IDisposable
+    {
+        public void Dispose()
+        {
+            owner.spriteBatch.End();
+            owner.BeginSpriteBatch(previousRasterizerState, previousBlendState);
+            GC.SuppressFinalize(this);
+        }
     }
 
     private class ClipReverter(
