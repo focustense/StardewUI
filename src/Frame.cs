@@ -57,7 +57,11 @@ public class Frame : View
     /// frame's content area is larger than the content size, i.e. when <see cref="LayoutParameters.Width"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
-    public Alignment HorizontalContentAlignment { get; set; } = Alignment.Start;
+    public Alignment HorizontalContentAlignment
+    {
+        get => horizontalContentAlignment.Value;
+        set => horizontalContentAlignment.Value = value;
+    }
 
     /// <summary>
     /// Alpha value for the shadow. If set to the default of zero, no shadow will be drawn.
@@ -84,10 +88,16 @@ public class Frame : View
     /// frame's content area is larger than the content size, i.e. when <see cref="LayoutParameters.Height"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
-    public Alignment VerticalContentAlignment { get; set; } = Alignment.Start;
+    public Alignment VerticalContentAlignment
+    {
+        get => verticalContentAlignment.Value;
+        set => verticalContentAlignment.Value = value;
+    }
 
     private readonly DirtyTracker<Edges> borderThickness = new(Edges.NONE);
     private readonly DirtyTracker<IView?> content = new(null);
+    private readonly DirtyTracker<Alignment> horizontalContentAlignment = new(Alignment.Start);
+    private readonly DirtyTracker<Alignment> verticalContentAlignment = new(Alignment.Start);
 
     private NineSlice? backgroundSlice;
     private NineSlice? borderSlice;
@@ -110,7 +120,11 @@ public class Frame : View
 
     protected override bool IsContentDirty()
     {
-        return borderThickness.IsDirty || content.IsDirty || (Content?.IsDirty() ?? false);
+        return borderThickness.IsDirty
+            || horizontalContentAlignment.IsDirty
+            || verticalContentAlignment.IsDirty
+            || content.IsDirty
+            || (Content?.IsDirty() ?? false);
     }
 
     protected override void OnDrawBorder(ISpriteBatch b)

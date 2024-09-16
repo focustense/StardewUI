@@ -34,12 +34,20 @@ public class Panel : View
     /// <summary>
     /// Specifies how to align each child in <see cref="Children"/> horizontally within the frame's area.
     /// </summary>
-    public Alignment HorizontalContentAlignment { get; set; } = Alignment.Start;
+    public Alignment HorizontalContentAlignment
+    {
+        get => horizontalContentAlignment.Value;
+        set => horizontalContentAlignment.Value = value;
+    }
 
     /// <summary>
     /// Specifies how to align each child in <see cref="Children"/> vertically within the frame's area.
     /// </summary>
-    public Alignment VerticalContentAlignment { get; set; } = Alignment.Start;
+    public Alignment VerticalContentAlignment
+    {
+        get => verticalContentAlignment.Value;
+        set => verticalContentAlignment.Value = value;
+    }
 
     /// <summary>
     /// Creates a <see cref="Panel"/> that is used to align some inner content inside a parent, typically another
@@ -74,6 +82,8 @@ public class Panel : View
 
     private readonly DirtyTrackingList<IView> children = [];
     private readonly List<ViewChild> childPositions = [];
+    private readonly DirtyTracker<Alignment> horizontalContentAlignment = new(Alignment.Start);
+    private readonly DirtyTracker<Alignment> verticalContentAlignment = new(Alignment.Start);
 
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
@@ -112,7 +122,10 @@ public class Panel : View
 
     protected override bool IsContentDirty()
     {
-        return children.IsDirty || children.Any(child => child.IsDirty());
+        return horizontalContentAlignment.IsDirty
+            || verticalContentAlignment.IsDirty
+            || children.IsDirty
+            || children.Any(child => child.IsDirty());
     }
 
     protected override void OnDrawContent(ISpriteBatch b)

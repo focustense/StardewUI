@@ -21,7 +21,11 @@ public class Lane : View
     /// total content area is larger than the content size, i.e. when <see cref="LayoutParameters.Width"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
-    public Alignment HorizontalContentAlignment { get; set; } = Alignment.Start;
+    public Alignment HorizontalContentAlignment
+    {
+        get => horizontalContentAlignment.Value;
+        set => horizontalContentAlignment.Value = value;
+    }
 
     /// <summary>
     /// The layout orientation.
@@ -37,7 +41,11 @@ public class Lane : View
     /// total content area is larger than the content size, i.e. when <see cref="LayoutParameters.Height"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
-    public Alignment VerticalContentAlignment { get; set; } = Alignment.Start;
+    public Alignment VerticalContentAlignment
+    {
+        get => verticalContentAlignment.Value;
+        set => verticalContentAlignment.Value = value;
+    }
 
     /// <summary>
     /// The children that have received layout and have at least some content visible.
@@ -45,7 +53,9 @@ public class Lane : View
     public IEnumerable<IView> VisibleChildren => Children.Take(visibleChildCount);
 
     private readonly DirtyTrackingList<IView> children = [];
+    private readonly DirtyTracker<Alignment> horizontalContentAlignment = new(Alignment.Start);
     private readonly DirtyTracker<Orientation> orientation = new(Orientation.Horizontal);
+    private readonly DirtyTracker<Alignment> verticalContentAlignment = new(Alignment.Start);
     private readonly List<ViewChild> visibleChildPositions = [];
 
     private Vector2 childrenSize;
@@ -238,7 +248,11 @@ public class Lane : View
 
     protected override bool IsContentDirty()
     {
-        return orientation.IsDirty || children.IsDirty || visibleChildPositions.Any(child => child.View.IsDirty());
+        return orientation.IsDirty
+            || horizontalContentAlignment.IsDirty
+            || verticalContentAlignment.IsDirty
+            || children.IsDirty
+            || visibleChildPositions.Any(child => child.View.IsDirty());
     }
 
     protected override void OnDrawContent(ISpriteBatch b)
