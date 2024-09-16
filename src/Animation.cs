@@ -324,6 +324,20 @@ public class SpriteAnimator : IAnimator
         AnimationRunner.Register(this);
     }
 
+    /// <summary>
+    /// Resets the animation to the first frame, and waits any <see cref="StartDelay"/> required again.
+    /// </summary>
+    public void Reset()
+    {
+        if (!imageRef.TryGetTarget(out var image))
+        {
+            return;
+        }
+        image.Sprite = Frames[0];
+        delayElapsed = TimeSpan.Zero;
+        elapsed = TimeSpan.Zero;
+    }
+
     public void Tick(TimeSpan elapsed)
     {
         if (Paused || FrameDuration == TimeSpan.Zero || Frames.Count == 0 || !imageRef.TryGetTarget(out var image))
