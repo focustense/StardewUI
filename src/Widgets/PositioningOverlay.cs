@@ -126,7 +126,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     /// <summary>
     /// The control scheme to use when positioning with a gamepad.
     /// </summary>
-    public GamepadControlScheme GamepadControls { get; set; } =
+    public GamepadControlScheme GamepadControls { get; init; } =
         new()
         {
             FineDown = [SButton.LeftThumbstickDown, SButton.DPadDown],
@@ -149,7 +149,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     /// </summary>
     /// <remarks>
     /// </remarks>
-    public ControlScheme KeyboardControls { get; set; } =
+    public ControlScheme KeyboardControls { get; init; } =
         new()
         {
             FineDown = [SButton.S, SButton.Down],
@@ -168,7 +168,34 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
 
     protected override IView CreateView()
     {
-        return new PositioningView(this);
+        var actionState = BuildActionState();
+        return new PositioningView(this, actionState);
+    }
+
+    private ActionState<PositioningAction> BuildActionState()
+    {
+        return new ActionState<PositioningAction>()
+            .Bind([.. KeyboardControls.FineUp, .. GamepadControls.FineUp], Nudge(Direction.North), suppress: false)
+            .Bind([.. KeyboardControls.FineDown, .. GamepadControls.FineDown], Nudge(Direction.South), suppress: false)
+            .Bind([.. KeyboardControls.FineLeft, .. GamepadControls.FineLeft], Nudge(Direction.West), suppress: false)
+            .Bind([.. KeyboardControls.FineRight, .. GamepadControls.FineRight], Nudge(Direction.East), suppress: false)
+            .Bind(GamepadControls.GridUp, Snap(Direction.North))
+            .Bind(GamepadControls.GridDown, Snap(Direction.South))
+            .Bind(GamepadControls.GridLeft, Snap(Direction.West))
+            .Bind(GamepadControls.GridRight, Snap(Direction.East))
+            .Bind([SButton.D1, SButton.NumPad1], Align(Alignment.Start, Alignment.End))
+            .Bind([SButton.D2, SButton.NumPad2], Align(Alignment.Middle, Alignment.End))
+            .Bind([SButton.D3, SButton.NumPad3], Align(Alignment.End, Alignment.End))
+            .Bind([SButton.D4, SButton.NumPad4], Align(Alignment.Start, Alignment.Middle))
+            .Bind([SButton.D5, SButton.NumPad5], Align(Alignment.Middle, Alignment.Middle))
+            .Bind([SButton.D6, SButton.NumPad6], Align(Alignment.End, Alignment.Middle))
+            .Bind([SButton.D7, SButton.NumPad7], Align(Alignment.Start, Alignment.Start))
+            .Bind([SButton.D8, SButton.NumPad8], Align(Alignment.Middle, Alignment.Start))
+            .Bind([SButton.D9, SButton.NumPad9], Align(Alignment.End, Alignment.Start));
+
+        PositioningAction.Align Align(Alignment horizontal, Alignment vertical) => new(horizontal, vertical);
+        PositioningAction.Nudge Nudge(Direction direction) => new(direction);
+        PositioningAction.Snap Snap(Direction direction) => new(direction);
     }
 
     class GhostView(IView realView, Color tintColor) : View
@@ -194,7 +221,38 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         }
     }
 
-    class PositioningView(PositioningOverlay owner) : WrapperView<Panel>
+    abstract record PositioningAction
+    {
+        private PositioningAction() { }
+
+        public record Align(Alignment Horizontal, Alignment Vertical) : PositioningAction;
+
+        public record Nudge(Direction Direction) : PositioningAction;
+
+        public record Snap(Direction Direction) : PositioningAction;
+
+        public void Dispatch(
+            Action<Alignment, Alignment> alignAction,
+            Action<Direction> nudgeAction,
+            Action<Direction> snapAction
+        )
+        {
+            if (this is Align align)
+            {
+                alignAction(align.Horizontal, align.Vertical);
+            }
+            else if (this is Nudge nudge)
+            {
+                nudgeAction(nudge.Direction);
+            }
+            else if (this is Snap snap)
+            {
+                snapAction(snap.Direction);
+            }
+        }
+    }
+
+    class PositioningView(PositioningOverlay owner, ActionState<PositioningAction> actionState) : WrapperView<Panel>
     {
         private record LabeledButton(SButton Button, string Label);
 
@@ -213,9 +271,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             (Alignment.Middle, Alignment.Start),
             (Alignment.End, Alignment.Start),
         ];
-
-        private static readonly TimeSpan ButtonRepeatDelay = TimeSpan.FromMilliseconds(500);
-        private static readonly TimeSpan ButtonRepeatInterval = TimeSpan.FromMilliseconds(50);
 
         private static readonly Color KeyTint = new(0.5f, 0.5f, 0.5f, 0.5f);
         private static readonly Color MouseTint = new(0.5f, 0.5f, 0.5f, 0.5f);
@@ -250,10 +305,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 ],
             };
 
-        private readonly Dictionary<SButton, Action> keybindings = [];
-
-        private TimeSpan? timeSinceFirstInput;
-        private TimeSpan? timeSinceLastInput;
         private bool wasGamepadControls = Game1.options.gamepadControls;
 
         // Initialized in CreateView
@@ -280,36 +331,9 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             contentFrame.HorizontalContentAlignment = owner.HorizontalContentAlignment;
             contentFrame.VerticalContentAlignment = owner.VerticalContentAlignment;
             UpdateContentOffset();
-            if (timeSinceFirstInput.HasValue)
-            {
-                timeSinceFirstInput += elapsed;
-            }
-            if (timeSinceLastInput.HasValue)
-            {
-                timeSinceLastInput += elapsed;
-            }
+            actionState.Tick(elapsed);
             base.OnUpdate(elapsed);
-            HandleInput();
-        }
-
-        private void UpdateContentOffset()
-        {
-            var (x, y) = owner.ContentOffset;
-            var (marginLeft, marginRight) = contentFrame.HorizontalContentAlignment switch
-            {
-                Alignment.Start => (x, 0),
-                Alignment.Middle => (x, -x),
-                Alignment.End => (0, -x),
-                _ => (0, 0),
-            };
-            var (marginTop, marginBottom) = contentFrame.VerticalContentAlignment switch
-            {
-                Alignment.Start => (y, 0),
-                Alignment.Middle => (y, -y),
-                Alignment.End => (0, -y),
-                _ => (0, 0),
-            };
-            contentFrame.Margin = new(marginLeft, marginTop, marginRight, marginBottom);
+            HandleCurrentActions();
         }
 
         protected override Panel CreateView()
@@ -371,7 +395,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 Children = [dragPrompt, new Spacer() { Layout = LayoutParameters.FixedSize(0, 64) }, wasdPrompt],
             };
             UpdateDirectionalPrompts();
-            RegisterAllBindings();
             return new Panel()
             {
                 Layout = LayoutParameters.FixedSize(GetViewportSize()),
@@ -379,6 +402,19 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 VerticalContentAlignment = Alignment.Middle,
                 Children = [contentFrame, alignmentPromptsPanel, movementPromptsFrame],
             };
+        }
+
+        private void Align(Alignment horizontal, Alignment vertical)
+        {
+            if (horizontal == owner.HorizontalContentAlignment && vertical == owner.VerticalContentAlignment)
+            {
+                return;
+            }
+            Game1.playSound("drumkit6");
+            owner.HorizontalContentAlignment = horizontal;
+            owner.VerticalContentAlignment = vertical;
+            owner.ContentOffset = Point.Zero;
+            UpdateAlignmentPromptVisibilities();
         }
 
         private IView? CreateAlignmentPrompt(Frame frame, int numpadIndex)
@@ -493,34 +529,11 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 : new(maxViewport.Width, maxViewport.Height);
         }
 
-        private void HandleInput()
+        private void HandleCurrentActions()
         {
-            bool anyPressed = false;
-            var canRepeat =
-                (!timeSinceFirstInput.HasValue || timeSinceFirstInput >= ButtonRepeatDelay)
-                && (!timeSinceLastInput.HasValue || timeSinceLastInput >= ButtonRepeatInterval);
-            foreach (var (button, action) in keybindings)
+            foreach (var action in actionState.GetCurrentActions())
             {
-                if (!UI.InputHelper.IsDown(button) || UI.InputHelper.IsSuppressed(button))
-                {
-                    continue;
-                }
-                anyPressed = true;
-                if (canRepeat)
-                {
-                    action();
-                }
-            }
-            if (anyPressed)
-            {
-                // Initialize these to zero but non-null values so they'll get incremented on Update.
-                timeSinceFirstInput ??= TimeSpan.Zero;
-                timeSinceLastInput ??= TimeSpan.Zero;
-            }
-            else
-            {
-                timeSinceFirstInput = null;
-                timeSinceLastInput = null;
+                action.Dispatch(Align, Nudge, Snap);
             }
         }
 
@@ -535,76 +548,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 Direction.South => new(0, 1),
                 _ => Point.Zero,
             };
-        }
-
-        private void RegisterAllBindings()
-        {
-            RegisterBinding(
-                [SButton.W, SButton.Up, SButton.DPadUp, SButton.LeftThumbstickUp],
-                () => Nudge(Direction.North),
-                suppress: false
-            );
-            RegisterBinding(
-                [SButton.A, SButton.Left, SButton.DPadLeft, SButton.LeftThumbstickLeft],
-                () => Nudge(Direction.West),
-                suppress: false
-            );
-            RegisterBinding(
-                [SButton.S, SButton.Down, SButton.DPadDown, SButton.LeftThumbstickDown],
-                () => Nudge(Direction.South),
-                suppress: false
-            );
-            RegisterBinding(
-                [SButton.D, SButton.Right, SButton.DPadRight, SButton.LeftThumbstickRight],
-                () => Nudge(Direction.East),
-                suppress: false
-            );
-            RegisterBinding(SButton.LeftTrigger, () => Snap(Direction.West));
-            RegisterBinding(SButton.RightTrigger, () => Snap(Direction.East));
-            RegisterBinding(SButton.LeftShoulder, () => Snap(Direction.North));
-            RegisterBinding(SButton.RightShoulder, () => Snap(Direction.South));
-            RegisterBinding([SButton.D1, SButton.NumPad1], () => Snap(Alignment.Start, Alignment.End));
-            RegisterBinding([SButton.D2, SButton.NumPad2], () => Snap(Alignment.Middle, Alignment.End));
-            RegisterBinding([SButton.D3, SButton.NumPad3], () => Snap(Alignment.End, Alignment.End));
-            RegisterBinding([SButton.D4, SButton.NumPad4], () => Snap(Alignment.Start, Alignment.Middle));
-            RegisterBinding([SButton.D5, SButton.NumPad5], () => Snap(Alignment.Middle, Alignment.Middle));
-            RegisterBinding([SButton.D6, SButton.NumPad6], () => Snap(Alignment.End, Alignment.Middle));
-            RegisterBinding([SButton.D7, SButton.NumPad7], () => Snap(Alignment.Start, Alignment.Start));
-            RegisterBinding([SButton.D8, SButton.NumPad8], () => Snap(Alignment.Middle, Alignment.Start));
-            RegisterBinding([SButton.D9, SButton.NumPad9], () => Snap(Alignment.End, Alignment.Start));
-        }
-
-        private void RegisterBinding(SButton button, Action action, bool suppress = true)
-        {
-            var wrappedAction = suppress
-                ? () =>
-                {
-                    UI.InputHelper.Suppress(button);
-                    action();
-                }
-                : action;
-            keybindings.Add(button, wrappedAction);
-        }
-
-        private void RegisterBinding(IReadOnlyList<SButton> buttons, Action action, bool suppress = true)
-        {
-            foreach (var button in buttons)
-            {
-                RegisterBinding(button, action, suppress);
-            }
-        }
-
-        private void Snap(Alignment horizontal, Alignment vertical)
-        {
-            if (horizontal == owner.HorizontalContentAlignment && vertical == owner.VerticalContentAlignment)
-            {
-                return;
-            }
-            Game1.playSound("drumkit6");
-            owner.HorizontalContentAlignment = horizontal;
-            owner.VerticalContentAlignment = vertical;
-            owner.ContentOffset = Point.Zero;
-            UpdateAlignmentPromptVisibilities();
         }
 
         private void Snap(Direction direction)
@@ -650,7 +593,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             }
             if (horizontal.HasValue && vertical.HasValue)
             {
-                Snap(horizontal.Value, vertical.Value);
+                Align(horizontal.Value, vertical.Value);
                 // This path is always invoked with gamepad so we need to recreate the (dynamic) prompts.
                 CreateAlignmentPrompts();
             }
@@ -661,7 +604,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             // We only need to update visibility for keyboard prompts, since there are prompts for all 9 spots.
             // Gamepad prompts are already dynamic and there won't be prompts for spots that aren't reachable with a
             // single press.
-            if (alignmentPromptsPanel is null || !Game1.options.gamepadControls)
+            if (alignmentPromptsPanel is null || Game1.options.gamepadControls)
             {
                 return;
             }
@@ -680,6 +623,26 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 frame.HorizontalContentAlignment == owner.HorizontalContentAlignment
                 && frame.VerticalContentAlignment == owner.VerticalContentAlignment;
             frame.Visibility = (isCurrentAlignment || isCenter) ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        private void UpdateContentOffset()
+        {
+            var (x, y) = owner.ContentOffset;
+            var (marginLeft, marginRight) = contentFrame.HorizontalContentAlignment switch
+            {
+                Alignment.Start => (x, 0),
+                Alignment.Middle => (x, -x),
+                Alignment.End => (0, -x),
+                _ => (0, 0),
+            };
+            var (marginTop, marginBottom) = contentFrame.VerticalContentAlignment switch
+            {
+                Alignment.Start => (y, 0),
+                Alignment.Middle => (y, -y),
+                Alignment.End => (0, -y),
+                _ => (0, 0),
+            };
+            contentFrame.Margin = new(marginLeft, marginTop, marginRight, marginBottom);
         }
 
         private void UpdateDirectionalPrompts()
