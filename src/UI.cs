@@ -1,4 +1,6 @@
 ﻿using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace StardewUI;
 
@@ -21,8 +23,13 @@ public static class UI
     /// <param name="monitor">SMAPI logging helper.</param>
     public static void Initialize(IModHelper helper, IMonitor monitor)
     {
+        if (modHelper is not null)
+        {
+            throw new InvalidOperationException("UI is already initialized.");
+        }
         modHelper = helper;
         Logger.Monitor = monitor;
+        helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
     }
 
     private static T EnsureInitialized<T>(Func<T> selector)
@@ -35,5 +42,10 @@ public static class UI
             );
         }
         return selector();
+    }
+
+    private static void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        AnimationRunner.Tick(Game1.currentGameTime.ElapsedGameTime);
     }
 }
