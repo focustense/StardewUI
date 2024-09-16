@@ -23,8 +23,35 @@ public abstract class ButtonSpriteMap : ISpriteMap<SButton>
     /// </remarks>
     protected abstract Sprite KeyboardBlank { get; }
 
+    /// <summary>
+    /// The mouse with left button pressed.
+    /// </summary>
+    protected abstract Sprite MouseLeft { get; }
+
+    /// <summary>
+    /// The mouse with middle button pressed.
+    /// </summary>
+    protected abstract Sprite MouseMiddle { get; }
+
+    /// <summary>
+    /// The mouse with right button pressed.
+    /// </summary>
+    protected abstract Sprite MouseRight { get; }
+
     public Sprite Get(SButton key, out bool isPlaceholder)
     {
+        var mouseSprite = key switch
+        {
+            SButton.MouseLeft => MouseLeft,
+            SButton.MouseMiddle => MouseMiddle,
+            SButton.MouseRight => MouseRight,
+            _ => null,
+        };
+        if (mouseSprite is not null)
+        {
+            isPlaceholder = false;
+            return mouseSprite;
+        }
         var exactSprite = Get(key);
         if (exactSprite is not null)
         {

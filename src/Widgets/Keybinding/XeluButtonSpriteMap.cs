@@ -14,7 +14,8 @@ namespace StardewUI.Widgets.Keybinding;
 /// </remarks>
 /// <param name="gamepad">Gamepad texture atlas, loaded from the mod's copy of <c>GamepadButtons.png</c>.</param>
 /// <param name="keyboard">Keyboard texture atlas, loaded from the mod's copy of <c>KeyboardKeys.png</c>.</param>
-public class XeluButtonSpriteMap(Texture2D gamepad, Texture2D keyboard) : ButtonSpriteMap
+/// <param name="mouse">Mouse texture atlas, loaded from the mod's copy of <c>MouseButtons.png</c>.</param>
+public class XeluButtonSpriteMap(Texture2D gamepad, Texture2D keyboard, Texture2D mouse) : ButtonSpriteMap
 {
     private const int COLUMN_COUNT = 4;
 
@@ -22,9 +23,15 @@ public class XeluButtonSpriteMap(Texture2D gamepad, Texture2D keyboard) : Button
     private static readonly SliceSettings SliceSettings = new(Scale: 0.32f);
     private static readonly Point SpriteSize = new(100, 100);
 
-    protected override Sprite ControllerBlank => new(gamepad, GetSourceRect(16), SliceSettings: SliceSettings);
+    protected override Sprite ControllerBlank => new(gamepad, GetSourceRect(16));
 
-    protected override Sprite KeyboardBlank => new(keyboard, GetSourceRect(2), KeyboardFixedEdges, SliceSettings);
+    protected override Sprite KeyboardBlank => new(keyboard, GetSourceRect(0), KeyboardFixedEdges);
+
+    protected override Sprite MouseLeft => new(mouse, GetSourceRect(1));
+
+    protected override Sprite MouseMiddle => new(mouse, GetSourceRect(2));
+
+    protected override Sprite MouseRight => new(mouse, GetSourceRect(3));
 
     protected override Sprite? Get(SButton button)
     {
@@ -46,6 +53,17 @@ public class XeluButtonSpriteMap(Texture2D gamepad, Texture2D keyboard) : Button
             SButton.DPadDown => 13,
             SButton.DPadLeft => 14,
             SButton.DPadRight => 15,
+            // There's no SButton for "D-pad without any pressed", so to make this sprite accessible we can use a key
+            // that should never be used for any other in-game function.
+            SButton.Sleep => 17,
+            SButton.LeftThumbstickDown
+            or SButton.LeftThumbstickLeft
+            or SButton.LeftThumbstickRight
+            or SButton.LeftThumbstickUp => 18,
+            SButton.RightThumbstickDown
+            or SButton.RightThumbstickRight
+            or SButton.RightThumbstickRight
+            or SButton.RightThumbstickUp => 19,
             _ => null,
         };
         return gamepadSpriteIndex.HasValue
