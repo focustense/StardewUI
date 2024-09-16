@@ -115,13 +115,9 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     public IView? Content { get; set; }
 
     /// <summary>
-    /// Pixel offset from the aligned position.
+    /// Current placement of the <see cref="Content"/> within the viewport.
     /// </summary>
-    /// <remarks>
-    /// The offset is applied after <see cref="HorizontalContentAlignment"/> and <see cref="VerticalContentAlignment"/>;
-    /// i.e. it is not an exact position on screen.
-    /// </remarks>
-    public Point ContentOffset { get; set; }
+    public NineGridPlacement ContentPlacement { get; set; } = new(Alignment.Start, Alignment.Start);
 
     /// <summary>
     /// The control scheme to use when positioning with a gamepad.
@@ -140,11 +136,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         };
 
     /// <summary>
-    /// Horizontal alignment of the <see cref="Content"/> within the viewport.
-    /// </summary>
-    public Alignment HorizontalContentAlignment { get; set; }
-
-    /// <summary>
     /// The control scheme to use when positioning with keyboard/mouse.
     /// </summary>
     /// <remarks>
@@ -157,11 +148,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             FineRight = [SButton.D, SButton.Right],
             FineUp = [SButton.W, SButton.Up],
         };
-
-    /// <summary>
-    /// Vertical alignment of the <see cref="Content"/> within the viewport.
-    /// </summary>
-    public Alignment VerticalContentAlignment { get; set; }
 
     private readonly ISpriteMap<SButton> buttonSpriteMap = buttonSpriteMap;
     private readonly ISpriteMap<Direction> directionSpriteMap = directionSpriteMap;
@@ -198,33 +184,33 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         PositioningAction.Snap Snap(Direction direction) => new(direction);
     }
 
-    abstract record PositioningAction
+    abstract class PositioningAction
     {
         private PositioningAction() { }
 
-        public record Align(Alignment Horizontal, Alignment Vertical) : PositioningAction;
+        public abstract NineGridPlacement? Apply(NineGridPlacement placement);
 
-        public record Nudge(Direction Direction) : PositioningAction;
-
-        public record Snap(Direction Direction) : PositioningAction;
-
-        public void Dispatch(
-            Action<Alignment, Alignment> alignAction,
-            Action<Direction> nudgeAction,
-            Action<Direction> snapAction
-        )
+        public class Align(Alignment horizontal, Alignment vertical) : PositioningAction
         {
-            if (this is Align align)
+            public override NineGridPlacement? Apply(NineGridPlacement placement)
             {
-                alignAction(align.Horizontal, align.Vertical);
+                return new NineGridPlacement(horizontal, vertical, Point.Zero);
             }
-            else if (this is Nudge nudge)
+        }
+
+        public class Nudge(Direction direction) : PositioningAction
+        {
+            public override NineGridPlacement? Apply(NineGridPlacement placement)
             {
-                nudgeAction(nudge.Direction);
+                return placement.Nudge(direction);
             }
-            else if (this is Snap snap)
+        }
+
+        public class Snap(Direction direction) : PositioningAction
+        {
+            public override NineGridPlacement? Apply(NineGridPlacement placement)
             {
-                snapAction(snap.Direction);
+                return placement.Snap(direction, avoidMiddle: true);
             }
         }
     }
@@ -232,22 +218,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     class PositioningView(PositioningOverlay owner, ActionState<PositioningAction> actionState) : WrapperView<Panel>
     {
         private record LabeledButton(SButton Button, string Label);
-
-        // All possible horizontal/vertical alignment combinations.
-        // There are "only" 9, so it's better to hardcode than to use reflection.
-        // Ordered in the same order that the numpad/number buttons should refer to them.
-        private static readonly IReadOnlyList<(Alignment horizontal, Alignment vertical)> alignments =
-        [
-            (Alignment.Start, Alignment.End),
-            (Alignment.Middle, Alignment.End),
-            (Alignment.End, Alignment.End),
-            (Alignment.Start, Alignment.Middle),
-            (Alignment.Middle, Alignment.Middle),
-            (Alignment.End, Alignment.Middle),
-            (Alignment.Start, Alignment.Start),
-            (Alignment.Middle, Alignment.Start),
-            (Alignment.End, Alignment.Start),
-        ];
 
         private static readonly Color KeyTint = new(0.5f, 0.5f, 0.5f, 0.5f);
         private static readonly Color MouseTint = new(0.5f, 0.5f, 0.5f, 0.5f);
@@ -305,9 +275,9 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 wasGamepadControls = Game1.options.gamepadControls;
             }
             contentFrame.Content = owner.Content;
-            contentFrame.HorizontalContentAlignment = owner.HorizontalContentAlignment;
-            contentFrame.VerticalContentAlignment = owner.VerticalContentAlignment;
-            UpdateContentOffset();
+            contentFrame.HorizontalContentAlignment = owner.ContentPlacement.HorizontalAlignment;
+            contentFrame.VerticalContentAlignment = owner.ContentPlacement.VerticalAlignment;
+            contentFrame.Margin = owner.ContentPlacement.GetMargin();
             actionState.Tick(elapsed);
             base.OnUpdate(elapsed);
             HandleCurrentActions();
@@ -315,19 +285,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
 
         protected override Panel CreateView()
         {
-            alignmentPromptsPanel = new Panel()
-            {
-                Layout = LayoutParameters.Fill(),
-                Children = alignments
-                    .Select(a => new Frame()
-                    {
-                        Layout = LayoutParameters.Fill(),
-                        HorizontalContentAlignment = a.horizontal,
-                        VerticalContentAlignment = a.vertical,
-                    })
-                    .Cast<IView>()
-                    .ToList(),
-            };
+            alignmentPromptsPanel = new Panel() { Layout = LayoutParameters.Fill() };
             CreateAlignmentPrompts();
             movementPromptsFrame = new Frame() { Layout = LayoutParameters.FitContent() };
             var wasdPrompt = CreateDirectionalPrompt(
@@ -381,65 +339,57 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             };
         }
 
-        private void Align(Alignment horizontal, Alignment vertical)
+        private static IView CreateAlignmentPrompt(NineGridPlacement placement, IView content)
         {
-            if (horizontal == owner.HorizontalContentAlignment && vertical == owner.VerticalContentAlignment)
+            return new Frame()
             {
-                return;
-            }
-            Game1.playSound("drumkit6");
-            owner.HorizontalContentAlignment = horizontal;
-            owner.VerticalContentAlignment = vertical;
-            owner.ContentOffset = Point.Zero;
-            UpdateAlignmentPromptVisibilities();
-        }
-
-        private IView? CreateAlignmentPrompt(Frame frame, int numpadIndex)
-        {
-            if (!Game1.options.gamepadControls)
-            {
-                return CreateButtonPrompt(SButton.NumPad0 + numpadIndex, numpadIndex.ToString());
-            }
-            if (frame.VerticalContentAlignment == owner.VerticalContentAlignment)
-            {
-                bool skipHorizontalMiddle = frame.VerticalContentAlignment == Alignment.Middle;
-                var configuredIndex = GetAlignmentIndex(owner.HorizontalContentAlignment, skipHorizontalMiddle);
-                var frameIndex = GetAlignmentIndex(frame.HorizontalContentAlignment, skipHorizontalMiddle);
-                var comparison = frameIndex - configuredIndex;
-                return comparison switch
-                {
-                    -1 => CreateButtonPrompt(SButton.LeftTrigger, "LT"),
-                    1 => CreateButtonPrompt(SButton.RightTrigger, "RT"),
-                    _ => null,
-                };
-            }
-            else if (frame.HorizontalContentAlignment == owner.HorizontalContentAlignment)
-            {
-                bool skipHorizontalMiddle = frame.HorizontalContentAlignment == Alignment.Middle;
-                var configuredIndex = GetAlignmentIndex(owner.VerticalContentAlignment, skipHorizontalMiddle);
-                var frameIndex = GetAlignmentIndex(frame.VerticalContentAlignment, skipHorizontalMiddle);
-                var comparison = frameIndex - configuredIndex;
-                return comparison switch
-                {
-                    -1 => CreateButtonPrompt(SButton.LeftShoulder, "LB"),
-                    1 => CreateButtonPrompt(SButton.RightShoulder, "RB"),
-                    _ => null,
-                };
-            }
-            return null;
+                Layout = LayoutParameters.Fill(),
+                HorizontalContentAlignment = placement.HorizontalAlignment,
+                VerticalContentAlignment = placement.VerticalAlignment,
+                Content = content,
+            };
         }
 
         private void CreateAlignmentPrompts()
         {
-            int index = 0;
-            foreach (var frame in alignmentPromptsPanel.Children.OfType<Frame>())
+            if (Game1.options.gamepadControls)
             {
-                frame.Content = CreateAlignmentPrompt(frame, ++index);
-                UpdateAlignmentPromptVisibility(frame);
+                alignmentPromptsPanel.Children = owner
+                    .ContentPlacement.GetNeighbors(avoidMiddle: true)
+                    .Select(p => CreateAlignmentPrompt(p.Placement, CreateButtonPrompt(p.Direction)))
+                    .ToList();
+            }
+            else
+            {
+                alignmentPromptsPanel.Children = NineGridPlacement
+                    .StandardPlacements.Select(
+                        (p, i) =>
+                            CreateAlignmentPrompt(
+                                p,
+                                CreateButtonPrompt(
+                                    SButton.NumPad1 + i,
+                                    (i + 1).ToString(),
+                                    visible: !p.IsMiddle() && !p.EqualsIgnoringOffset(owner.ContentPlacement)
+                                )
+                            )
+                    )
+                    .ToList();
             }
         }
 
-        private IView CreateButtonPrompt(SButton button, string text, Edges? margin = null)
+        private IView CreateButtonPrompt(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.North => CreateButtonPrompt(SButton.LeftShoulder, "LB"),
+                Direction.South => CreateButtonPrompt(SButton.RightShoulder, "RB"),
+                Direction.West => CreateButtonPrompt(SButton.LeftTrigger, "LT"),
+                Direction.East => CreateButtonPrompt(SButton.RightTrigger, "RT"),
+                _ => throw new ArgumentException($"Invalid direction: {direction}", nameof(direction)),
+            };
+        }
+
+        private IView CreateButtonPrompt(SButton button, string text, Edges? margin = null, bool visible = true)
         {
             var sprite = owner.buttonSpriteMap.Get(button, out var isPlaceholder);
             return new Frame()
@@ -451,6 +401,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 HorizontalContentAlignment = Alignment.Middle,
                 VerticalContentAlignment = Alignment.Middle,
                 Content = isPlaceholder ? Label.Simple(text, Game1.dialogueFont, Color.Gray) : null,
+                Visibility = visible ? Visibility.Visible : Visibility.Hidden,
             };
         }
 
@@ -485,19 +436,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             };
         }
 
-        // Since we don't really intend to support both horizontal and vertical centering, we don't want to simply use
-        // the enum ordinal as the "value". Instead we skip the middle when the other axis is already middle.
-        private static int GetAlignmentIndex(Alignment alignment, bool skipMiddle)
-        {
-            return alignment switch
-            {
-                Alignment.Start => 0,
-                Alignment.Middle => skipMiddle ? -1000 : 1,
-                Alignment.End => skipMiddle ? 1 : 2,
-                _ => throw new ArgumentException($"Unrecognized alignment {alignment}", nameof(alignment)),
-            };
-        }
-
         private static Point GetViewportSize()
         {
             var maxViewport = Game1.graphics.GraphicsDevice.Viewport;
@@ -508,118 +446,21 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
 
         private void HandleCurrentActions()
         {
+            bool wasPlacementChanged = false;
             foreach (var action in actionState.GetCurrentActions())
             {
-                action.Dispatch(Align, Nudge, Snap);
+                var nextPlacement = action.Apply(owner.ContentPlacement);
+                if (nextPlacement is not null)
+                {
+                    owner.ContentPlacement = nextPlacement;
+                    wasPlacementChanged = true;
+                }
             }
-        }
-
-        private void Nudge(Direction direction)
-        {
-            Game1.playSound("drumkit6");
-            owner.ContentOffset += direction switch
+            if (wasPlacementChanged)
             {
-                Direction.West => new(-1, 0),
-                Direction.East => new(1, 0),
-                Direction.North => new(0, -1),
-                Direction.South => new(0, 1),
-                _ => Point.Zero,
-            };
-        }
-
-        private void Snap(Direction direction)
-        {
-            Alignment? horizontal = owner.HorizontalContentAlignment;
-            Alignment? vertical = owner.VerticalContentAlignment;
-            switch (direction)
-            {
-                case Direction.West:
-                    horizontal = horizontal switch
-                    {
-                        Alignment.End => vertical == Alignment.Middle ? Alignment.Start : Alignment.Middle,
-                        Alignment.Middle => Alignment.Start,
-                        _ => null,
-                    };
-                    break;
-                case Direction.East:
-                    horizontal = horizontal switch
-                    {
-                        Alignment.Start => vertical == Alignment.Middle ? Alignment.End : Alignment.Middle,
-                        Alignment.Middle => Alignment.End,
-                        _ => null,
-                    };
-                    break;
-                case Direction.North:
-                    vertical = vertical switch
-                    {
-                        Alignment.End => horizontal == Alignment.Middle ? Alignment.Start : Alignment.Middle,
-                        Alignment.Middle => Alignment.Start,
-                        _ => null,
-                    };
-                    break;
-                case Direction.South:
-                    vertical = vertical switch
-                    {
-                        Alignment.Start => horizontal == Alignment.Middle ? Alignment.End : Alignment.Middle,
-                        Alignment.Middle => Alignment.End,
-                        _ => null,
-                    };
-                    break;
-                default:
-                    throw new ArgumentException($"Invalid direction: {direction}", nameof(direction));
-            }
-            if (horizontal.HasValue && vertical.HasValue)
-            {
-                Align(horizontal.Value, vertical.Value);
-                // This path is always invoked with gamepad so we need to recreate the (dynamic) prompts.
+                Game1.playSound("drumkit6");
                 CreateAlignmentPrompts();
             }
-        }
-
-        private void UpdateAlignmentPromptVisibilities()
-        {
-            // We only need to update visibility for keyboard prompts, since there are prompts for all 9 spots.
-            // Gamepad prompts are already dynamic and there won't be prompts for spots that aren't reachable with a
-            // single press.
-            if (alignmentPromptsPanel is null || Game1.options.gamepadControls)
-            {
-                return;
-            }
-            foreach (var frame in alignmentPromptsPanel.Children.OfType<Frame>())
-            {
-                UpdateAlignmentPromptVisibility(frame);
-            }
-        }
-
-        private void UpdateAlignmentPromptVisibility(Frame frame)
-        {
-            bool isCenter =
-                frame.HorizontalContentAlignment == Alignment.Middle
-                && frame.VerticalContentAlignment == Alignment.Middle;
-            bool isCurrentAlignment =
-                frame.HorizontalContentAlignment == owner.HorizontalContentAlignment
-                && frame.VerticalContentAlignment == owner.VerticalContentAlignment;
-            frame.Visibility = (isCurrentAlignment || isCenter) ? Visibility.Hidden : Visibility.Visible;
-        }
-
-        private void UpdateContentOffset()
-        {
-            var (x, y) = owner.ContentOffset;
-            var (marginLeft, marginRight) = contentFrame.HorizontalContentAlignment switch
-            {
-                Alignment.Start => (x, 0),
-                Alignment.Middle => (x, -x),
-                Alignment.End => (0, -x),
-                _ => (0, 0),
-            };
-            var (marginTop, marginBottom) = contentFrame.VerticalContentAlignment switch
-            {
-                Alignment.Start => (y, 0),
-                Alignment.Middle => (y, -y),
-                Alignment.End => (0, -y),
-                _ => (0, 0),
-            };
-            contentFrame.Margin = new(marginLeft, marginTop, marginRight, marginBottom);
         }
 
         private void UpdateDirectionalPrompts()
