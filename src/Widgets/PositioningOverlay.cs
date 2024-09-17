@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
+using StardewUI.Widgets.Keybinding;
 using StardewValley;
 
 namespace StardewUI.Widgets;
@@ -184,41 +186,39 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         PositioningAction.Snap Snap(Direction direction) => new(direction);
     }
 
-    abstract class PositioningAction
+    abstract record PositioningAction
     {
         private PositioningAction() { }
 
         public abstract NineGridPlacement? Apply(NineGridPlacement placement);
 
-        public class Align(Alignment horizontal, Alignment vertical) : PositioningAction
+        public record Align(Alignment Horizontal, Alignment Vertical) : PositioningAction
         {
             public override NineGridPlacement? Apply(NineGridPlacement placement)
             {
-                return new NineGridPlacement(horizontal, vertical, Point.Zero);
+                return new NineGridPlacement(Horizontal, Vertical, Point.Zero);
             }
         }
 
-        public class Nudge(Direction direction) : PositioningAction
+        public record Nudge(Direction Direction) : PositioningAction
         {
             public override NineGridPlacement? Apply(NineGridPlacement placement)
             {
-                return placement.Nudge(direction);
+                return placement.Nudge(Direction);
             }
         }
 
-        public class Snap(Direction direction) : PositioningAction
+        public record Snap(Direction Direction) : PositioningAction, IEquatable<Snap>
         {
             public override NineGridPlacement? Apply(NineGridPlacement placement)
             {
-                return placement.Snap(direction, avoidMiddle: true);
+                return placement.Snap(Direction, avoidMiddle: true);
             }
         }
     }
 
     class PositioningView(PositioningOverlay owner, ActionState<PositioningAction> actionState) : WrapperView<Panel>
     {
-        private record LabeledButton(SButton Button, string Label);
-
         private static readonly Color KeyTint = new(0.5f, 0.5f, 0.5f, 0.5f);
         private static readonly Color MouseTint = new(0.5f, 0.5f, 0.5f, 0.5f);
 
@@ -288,12 +288,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             alignmentPromptsPanel = new Panel() { Layout = LayoutParameters.Fill() };
             CreateAlignmentPrompts();
             movementPromptsFrame = new Frame() { Layout = LayoutParameters.FitContent() };
-            var wasdPrompt = CreateDirectionalPrompt(
-                new(SButton.W, "W"),
-                new(SButton.A, "A"),
-                new(SButton.S, "S"),
-                new(SButton.D, "D")
-            );
+            var wasdPrompt = CreateDirectionalPrompt();
             dpadImage = new() { Layout = LayoutParameters.FixedSize(100, 100), Tint = KeyTint };
             dpadAnimator = new(dpadImage)
             {
@@ -356,7 +351,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             {
                 alignmentPromptsPanel.Children = owner
                     .ContentPlacement.GetNeighbors(avoidMiddle: true)
-                    .Select(p => CreateAlignmentPrompt(p.Placement, CreateButtonPrompt(p.Direction)))
+                    .Select(p => CreateAlignmentPrompt(p.Placement, CreateControllerButtonPrompt(p.Direction)))
                     .ToList();
             }
             else
@@ -368,7 +363,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                                 p,
                                 CreateButtonPrompt(
                                     SButton.NumPad1 + i,
-                                    (i + 1).ToString(),
                                     visible: !p.IsMiddle() && !p.EqualsIgnoringOffset(owner.ContentPlacement)
                                 )
                             )
@@ -377,41 +371,45 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             }
         }
 
-        private IView CreateButtonPrompt(Direction direction)
+        private IView CreateButtonPrompt(SButton button, Edges? margin = null, bool visible = true)
         {
-            return direction switch
-            {
-                Direction.North => CreateButtonPrompt(SButton.LeftShoulder, "LB"),
-                Direction.South => CreateButtonPrompt(SButton.RightShoulder, "RB"),
-                Direction.West => CreateButtonPrompt(SButton.LeftTrigger, "LT"),
-                Direction.East => CreateButtonPrompt(SButton.RightTrigger, "RT"),
-                _ => throw new ArgumentException($"Invalid direction: {direction}", nameof(direction)),
-            };
+            return CreateButtonPrompt(new Keybind(button), margin, visible);
         }
 
-        private IView CreateButtonPrompt(SButton button, string text, Edges? margin = null, bool visible = true)
+        private IView CreateButtonPrompt(Keybind keybind, Edges? margin = null, bool visible = true)
         {
-            var sprite = owner.buttonSpriteMap.Get(button, out var isPlaceholder);
-            return new Frame()
+            return new KeybindView(owner.buttonSpriteMap)
             {
-                Layout = LayoutParameters.FixedSize(100, 100),
+                Layout = new()
+                {
+                    Width = Length.Content(),
+                    Height = Length.Content(),
+                    MinWidth = 100,
+                },
                 Margin = margin ?? Edges.NONE,
-                Background = sprite,
-                BackgroundTint = KeyTint,
-                HorizontalContentAlignment = Alignment.Middle,
-                VerticalContentAlignment = Alignment.Middle,
-                Content = isPlaceholder ? Label.Simple(text, Game1.dialogueFont, Color.Gray) : null,
+                ButtonHeight = 100,
+                ButtonMinWidth = 100,
+                Font = Game1.dialogueFont,
+                TextColor = Color.Gray,
+                TintColor = KeyTint,
+                Keybind = keybind,
                 Visibility = visible ? Visibility.Visible : Visibility.Hidden,
             };
         }
 
-        private Lane CreateDirectionalPrompt(
-            LabeledButton up,
-            LabeledButton left,
-            LabeledButton down,
-            LabeledButton right
-        )
+        private IView CreateControllerButtonPrompt(Direction snapDirection)
         {
+            var action = new PositioningAction.Snap(snapDirection);
+            var binding = actionState.GetControllerBindings(action).FirstOrDefault();
+            return CreateButtonPrompt(binding ?? new());
+        }
+
+        private Lane CreateDirectionalPrompt()
+        {
+            var northBinding = GetKeyboardNudgeBinding(Direction.North);
+            var southBinding = GetKeyboardNudgeBinding(Direction.South);
+            var westBinding = GetKeyboardNudgeBinding(Direction.West);
+            var eastBinding = GetKeyboardNudgeBinding(Direction.East);
             return new()
             {
                 Layout = LayoutParameters.FitContent(),
@@ -419,21 +417,27 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 Orientation = Orientation.Vertical,
                 Children =
                 [
-                    CreateButtonPrompt(up.Button, up.Label),
+                    CreateButtonPrompt(northBinding),
                     new Lane()
                     {
                         Layout = LayoutParameters.FitContent(),
                         VerticalContentAlignment = Alignment.Middle,
                         Children =
                         [
-                            CreateButtonPrompt(left.Button, left.Label, new(0, -16)),
+                            CreateButtonPrompt(westBinding, new(0, -16)),
                             new Spacer() { Layout = LayoutParameters.FixedSize(48, 0) },
-                            CreateButtonPrompt(right.Button, right.Label, new(0, -16)),
+                            CreateButtonPrompt(eastBinding, new(0, -16)),
                         ],
                     },
-                    CreateButtonPrompt(down.Button, down.Label),
+                    CreateButtonPrompt(southBinding),
                 ],
             };
+        }
+
+        private Keybind GetKeyboardNudgeBinding(Direction direction)
+        {
+            var action = new PositioningAction.Nudge(direction);
+            return actionState.GetKeyboardBindings(action).FirstOrDefault() ?? new();
         }
 
         private static Point GetViewportSize()

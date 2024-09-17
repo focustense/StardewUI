@@ -35,6 +35,24 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
     }
 
     /// <summary>
+    /// Minimum width for button images/sprites, used if the layout width would be less than that implied by the
+    /// <see cref="ButtonHeight"/> and placeholder content (if any).
+    /// </summary>
+    public int? ButtonMinWidth
+    {
+        get => buttonMinWidth;
+        set
+        {
+            if (value == buttonMinWidth)
+            {
+                return;
+            }
+            buttonMinWidth = value;
+            UpdateContent();
+        }
+    }
+
+    /// <summary>
     /// Placeholder text to display when the current keybind is empty.
     /// </summary>
     public string EmptyText
@@ -46,6 +64,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             {
                 return;
             }
+            emptyText = value;
             if (IsViewCreated && Root.Children.Count == 1 && Root.Children[0] is Label label)
             {
                 label.Text = value;
@@ -116,6 +135,29 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
         }
     }
 
+    /// <summary>
+    /// Text color for the button text inside any placeholder sprites.
+    /// </summary>
+    public Color TextColor
+    {
+        get => textColor;
+        set
+        {
+            if (value == textColor)
+            {
+                return;
+            }
+            textColor = value;
+            if (IsViewCreated && Root.Children.Count == 1 && Root.Children[0] is Label label)
+            {
+                label.Color = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Color to tint the background/sprite of each key.
+    /// </summary>
     public Color TintColor
     {
         get => tintColor;
@@ -131,10 +173,12 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
     }
 
     private int buttonHeight = DEFAULT_BUTTON_HEIGHT;
+    private int? buttonMinWidth = null;
     private string emptyText = "";
     private SpriteFont font = Game1.smallFont;
     private Keybind keybind = new();
     private float spacing;
+    private Color textColor = Game1.textColor;
     private Color tintColor = Color.White;
 
     protected override Lane CreateView()
@@ -149,18 +193,29 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
         var sprite = spriteMap.Get(button, out var isPlaceholder);
         var image = new Image()
         {
-            Layout = new() { Width = Length.Content(), Height = Length.Px(buttonHeight) },
+            Layout = new()
+            {
+                Width = Length.Content(),
+                Height = Length.Px(buttonHeight),
+                MinWidth = buttonMinWidth,
+            },
             Fit = isPlaceholder ? ImageFit.Stretch : ImageFit.Contain,
             Sprite = sprite,
+            Tint = tintColor,
         };
         return isPlaceholder ? FillPlaceholder(image, button) : image;
     }
 
     private IView FillPlaceholder(Image image, SButton button)
     {
-        var label = Label.Simple(GetButtonText(button), font);
+        var label = Label.Simple(ButtonName.ForButton(button), font, textColor);
         label.Margin = (image.Sprite!.FixedEdges ?? Edges.NONE) * (image.Sprite!.SliceSettings?.Scale ?? 1);
-        image.Layout = new() { Width = Length.Stretch(), Height = image.Layout.Height };
+        image.Layout = new()
+        {
+            Width = Length.Stretch(),
+            Height = image.Layout.Height,
+            MinWidth = buttonMinWidth,
+        };
         return new Panel()
         {
             Layout = LayoutParameters.FitContent(),
@@ -168,12 +223,6 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             VerticalContentAlignment = Alignment.Middle,
             Children = [image, label],
         };
-    }
-
-    private static string GetButtonText(SButton button)
-    {
-        var text = button.ToString();
-        return text.StartsWith("Controller") ? text[10..] : text;
     }
 
     private void UpdateContent(Lane? lane = null)
@@ -185,6 +234,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
                 .Skip(1)
                 .ToList()
             : [Label.Simple(EmptyText, font)];
+        UpdateTint(lane);
     }
 
     private void UpdateTint()

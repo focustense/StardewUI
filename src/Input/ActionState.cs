@@ -119,6 +119,17 @@ public class ActionState<T>(ActionRepeat? defaultRepeat = null, bool defaultSupp
     }
 
     /// <summary>
+    /// Gets all controller bindings associated with a given action.
+    /// </summary>
+    /// <param name="action">The action to look up.</param>
+    /// <returns>A sequence of <see cref="Keybind"/> elements that perform the specified <paramref name="action"/> and
+    /// use at least one controller button.</returns>
+    public IEnumerable<Keybind> GetControllerBindings(T action)
+    {
+        return GetBindings(action, keybind => keybind.Buttons.Any(button => button.TryGetController(out _)));
+    }
+
+    /// <summary>
     /// Gets the actions that should be run right now, either because one of the triggering buttons/combinations was
     /// just pressed, or because it was held and is due to repeat.
     /// </summary>
@@ -137,6 +148,17 @@ public class ActionState<T>(ActionRepeat? defaultRepeat = null, bool defaultSupp
                 yield return registeredAction.Action;
             }
         }
+    }
+
+    /// <summary>
+    /// Gets all keyboard bindings associated with a given action.
+    /// </summary>
+    /// <param name="action">The action to look up.</param>
+    /// <returns>A sequence of <see cref="Keybind"/> elements that perform the specified <paramref name="action"/> and
+    /// use at least one keyboard key.</returns>
+    public IEnumerable<Keybind> GetKeyboardBindings(T action)
+    {
+        return GetBindings(action, keybind => keybind.Buttons.Any(button => button.TryGetKeyboard(out _)));
     }
 
     /// <summary>
@@ -160,6 +182,17 @@ public class ActionState<T>(ActionRepeat? defaultRepeat = null, bool defaultSupp
         }
     }
 
+    private IEnumerable<Keybind> GetBindings(T action, Predicate<Keybind> predicate)
+    {
+        foreach (var registeredAction in registeredActions.Values)
+        {
+            if (Equals(registeredAction.Action, action) && predicate(registeredAction.Keybind))
+            {
+                yield return registeredAction.Keybind;
+            }
+        }
+    }
+
     private class RegisteredAction(Keybind keybind, T action, ActionRepeat repeat, bool suppress)
     {
         public T Action { get; } = action;
@@ -168,12 +201,14 @@ public class ActionState<T>(ActionRepeat? defaultRepeat = null, bool defaultSupp
 
         public bool IsReady { get; private set; }
 
+        public Keybind Keybind { get; } = keybind;
+
         private TimeSpan timeSinceFirst;
         private TimeSpan timeSinceLast;
 
         public void Tick(TimeSpan elapsed)
         {
-            if (keybind.GetState() != SButtonState.Pressed && keybind.GetState() != SButtonState.Held)
+            if (Keybind.GetState() != SButtonState.Pressed && Keybind.GetState() != SButtonState.Held)
             {
                 IsActive = false;
                 IsReady = false;
@@ -197,7 +232,7 @@ public class ActionState<T>(ActionRepeat? defaultRepeat = null, bool defaultSupp
                 IsReady = true;
                 if (suppress)
                 {
-                    foreach (var button in keybind.Buttons)
+                    foreach (var button in Keybind.Buttons)
                     {
                         UI.InputHelper.Suppress(button);
                     }
