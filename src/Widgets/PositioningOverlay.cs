@@ -157,7 +157,9 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     protected override IView CreateView()
     {
         var actionState = BuildActionState();
-        return new PositioningView(this, actionState);
+        var view = new PositioningView(this, actionState);
+        view.RightClick += View_RightClick;
+        return view;
     }
 
     private ActionState<PositioningAction> BuildActionState()
@@ -184,6 +186,11 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         PositioningAction.Align Align(Alignment horizontal, Alignment vertical) => new(horizontal, vertical);
         PositioningAction.Nudge Nudge(Direction direction) => new(direction);
         PositioningAction.Snap Snap(Direction direction) => new(direction);
+    }
+
+    private void View_RightClick(object? sender, ClickEventArgs e)
+    {
+        Overlay.Remove(this);
     }
 
     abstract record PositioningAction
