@@ -144,6 +144,15 @@ public abstract class View : IView
         set => padding.Value = value;
     }
 
+    /// <summary>
+    /// Whether this view should receive pointer events like <see cref="Click"/> or <see cref="Drag"/>.
+    /// </summary>
+    /// <remarks>
+    /// By default, all views receive pointer events; this may be disabled for views that intentionally overlap other
+    /// views but shouldn't block their input, such as local non-modal overlays.
+    /// </remarks>
+    public bool PointerEventsEnabled { get; set; } = true;
+
     /// <inheritdoc />
     /// <summary>
     /// If set to an axis, specifies that when any child of the view is scrolled into view (using
@@ -287,13 +296,7 @@ public abstract class View : IView
 
     public ViewChild? GetChildAt(Vector2 position)
     {
-        var offset = GetContentOffset();
-        var child = GetLocalChildAt(position - offset)?.Offset(offset);
-        if (child?.View.Visibility == Visibility.Visible)
-        {
-            return child;
-        }
-        return FloatingElements.Select(fe => fe.AsViewChild()).FirstOrDefault(child => child.ContainsPoint(position));
+        return GetChildrenAt(position).FirstOrDefault();
     }
 
     public Vector2? GetChildPosition(IView childView)
@@ -311,6 +314,25 @@ public abstract class View : IView
         return GetLocalChildren()
             .Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset))
             .Concat(FloatingElements.Select(fe => fe.AsViewChild()));
+    }
+
+    public IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
+    {
+        var offset = GetContentOffset();
+        var directChildren = GetLocalChildrenAt(position - offset)
+            .Where(child => child.View.Visibility == Visibility.Visible);
+        foreach (var child in directChildren)
+        {
+            yield return child.Offset(offset);
+        }
+        foreach (var floatingElement in FloatingElements)
+        {
+            var floatingChild = floatingElement.AsViewChild();
+            if (floatingChild.ContainsPoint(position))
+            {
+                yield return floatingChild;
+            }
+        }
     }
 
     public virtual ViewChild? GetDefaultFocusChild()
@@ -385,21 +407,21 @@ public abstract class View : IView
         // Since the effect of dragging is usually to move some view, we can't rely on the current cursor position to
         // accurately tell us which view to drag; instead, we need to track which is view is dragging, and re-read its
         // current position on each movement.
-        ViewChild? draggingChild;
         if (draggingView is not null)
         {
             var childPosition = GetChildPosition(draggingView);
             return childPosition is not null ? new(draggingView, childPosition.Value) : null;
         }
-        else
+
+        foreach (var child in GetChildrenAt(position))
         {
-            draggingChild = GetChildAt(position);
-            if (draggingChild is not null)
+            if (child.View.PointerEventsEnabled)
             {
-                draggingView = draggingChild.View;
+                draggingView = child.View;
+                return child;
             }
-            return draggingChild;
         }
+        return null;
     }
 
     /// <inheritdoc/>
@@ -409,6 +431,14 @@ public abstract class View : IView
         {
             return;
         }
+        // HACK: The original design assumed only one child at a position, and at this stage the framework is firmly
+        // in the territory of having intentionally overlapping children all the time. Most pointer events could easily
+        // be refactored, but dragging is a little trickier because dragging is *disabled* by default, meaning unlike
+        // pointer events (where we just skip children who have it disabled, and all their descendants), we would have
+        // to do a recursive search every time to find a draggable child.
+        // The current workaround is just to disable pointer events on any "front" views that shouldn't block the drag
+        // of any views underneath, which should be possible a majority of the time since these views are likely to be
+        // non-interactive overlay views.
         var draggingChild = GetOrUpdateDraggingChild(e.Position);
         if (draggingChild is not null)
         {
@@ -579,26 +609,6 @@ public abstract class View : IView
     }
 
     /// <summary>
-    /// Searches for a view at a given position relative to the content area.
-    /// </summary>
-    /// <remarks>
-    /// The default implementation performs a linear search on all children until it finds one whose bounds overlap the
-    /// specified <paramref name="position"/>. Views can override this to provide optimized implementations for their
-    /// layout, or handle overlapping views.
-    /// </remarks>
-    /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
-    /// margin, borders and padding).</param>
-    /// <returns>The topmost child at the specified <paramref name="contentPosition"/>, or <c>null</c> if none is
-    /// found.</returns>
-    protected virtual ViewChild? GetLocalChildAt(Vector2 contentPosition)
-    {
-        return GetLocalChildren()
-            .Where(child => child.ContainsPoint(contentPosition))
-            .OrderByDescending(child => child.View.ZIndex)
-            .FirstOrDefault();
-    }
-
-    /// <summary>
     /// Gets the view's children with positions relative to the content area.
     /// </summary>
     /// <remarks>
@@ -616,6 +626,25 @@ public abstract class View : IView
     protected virtual IEnumerable<ViewChild> GetLocalChildren()
     {
         return [];
+    }
+
+    /// <summary>
+    /// Searches for all views at a given position relative to the content area.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation performs a linear search on all children and returns all whose bounds overlap the
+    /// specified <paramref name="position"/>. Views can override this to provide optimized implementations for their
+    /// layout, or handle overlapping views.
+    /// </remarks>
+    /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
+    /// margin, borders and padding).</param>
+    /// <returns>The views at the specified <paramref name="contentPosition"/>, sorted in reverse order of their
+    /// <see cref="IView.ZIndex"/>.</returns>
+    protected virtual IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
+    {
+        return GetLocalChildren()
+            .Where(child => child.ContainsPoint(contentPosition))
+            .OrderByDescending(child => child.View.ZIndex);
     }
 
     /// <summary>
@@ -690,10 +719,16 @@ public abstract class View : IView
     private void DispatchPointerEvent<T>(T eventArgs, Action<IView, T> dispatch)
         where T : PointerEventArgs, IOffsettable<T>
     {
-        var child = GetChildAt(eventArgs.Position);
-        if (child is not null)
+        foreach (var child in GetChildrenAt(eventArgs.Position))
         {
-            DispatchPointerEvent(child, eventArgs, dispatch);
+            if (child.View.PointerEventsEnabled)
+            {
+                DispatchPointerEvent(child, eventArgs, dispatch);
+                if (eventArgs.Handled)
+                {
+                    break;
+                }
+            }
         }
     }
 

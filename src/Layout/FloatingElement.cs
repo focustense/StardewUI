@@ -27,17 +27,35 @@ namespace StardewUI;
 /// measured size.</param>
 public class FloatingElement(IView view, FloatingPosition position)
 {
+    /// <summary>
+    /// The element's defined position.
+    /// </summary>
     public FloatingPosition Position { get; } = position;
 
+    /// <summary>
+    /// The view to display within this element.
+    /// </summary>
     public IView View { get; } = view;
 
     private Vector2 offset;
 
+    /// <summary>
+    /// Creates a <see cref="ViewChild"/> with the floating element's view and current position.
+    /// </summary>
+    /// <remarks>
+    /// The result can generally be used as if it were any other non-floating element, e.g. for dispatching clicks,
+    /// focus searches and other events.
+    /// </remarks>
+    /// <returns>The current element represented as a <see cref="ViewChild"/>.</returns>
     public ViewChild AsViewChild()
     {
         return new(View, offset);
     }
 
+    /// <summary>
+    /// Draws the element at its current position.
+    /// </summary>
+    /// <param name="spriteBatch">Sprite batch to hold the drawing output.</param>
     public void Draw(ISpriteBatch spriteBatch)
     {
         using var _ = spriteBatch.SaveTransform();
@@ -45,6 +63,14 @@ public class FloatingElement(IView view, FloatingPosition position)
         View.Draw(spriteBatch);
     }
 
+    /// <summary>
+    /// Measures the view's content and repositions the entire floating element if necessary.
+    /// </summary>
+    /// <param name="parentView">The view whose <see cref="View.FloatingElements"/> this element belongs to. Required
+    /// for repositioning when the layout has changed.</param>
+    /// <param name="wasParentDirty">Whether this measurement is being done because the parent's layout already changed
+    /// and therefore a reposition is always required (<c>true</c>), or whether to reposition only if the floating
+    /// element's internal layout has changed (<c>false</c>).</param>
     public void MeasureAndPosition(View parentView, bool wasParentDirty)
     {
         // Floating views don't participate in the normal flow, so they can't affect the layout of the parent or any

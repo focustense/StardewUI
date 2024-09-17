@@ -37,6 +37,29 @@ public record NineGridPlacement(Alignment HorizontalAlignment, Alignment Vertica
         }
     );
 
+    /// <summary>
+    /// Gets the <see cref="NineGridPlacement"/> for an alignment pair that resolves to a specified exact position.
+    /// </summary>
+    /// <param name="position">The target position on screen or within the container.</param>
+    /// <param name="size">The size of the viewport or container.</param>
+    /// <param name="horizontalAlignment">The desired horizontal alignment.</param>
+    /// <param name="verticalAlignment">The desired vertical alignment.</param>
+    /// <returns>A <see cref="NineGridPlacement"/> whose <see cref="HorizontalAlignment"/> and
+    /// <see cref="VerticalAlignment"/> match the <paramref name="horizontalAlignment"/> and
+    /// <paramref name="verticalAlignment"/>, respectively, and whose <see cref="GetPosition"/> will resolve to exactly
+    /// the specified <paramref name="position"/>.</returns>
+    public static NineGridPlacement AtPosition(
+        Vector2 position,
+        Vector2 size,
+        Alignment horizontalAlignment,
+        Alignment verticalAlignment
+    )
+    {
+        var basePosition = GetPosition(size, horizontalAlignment, verticalAlignment);
+        var offset = position - basePosition;
+        return new(horizontalAlignment, verticalAlignment, offset.ToPoint());
+    }
+
     private static readonly Direction[] neighborDirections =
     [
         Direction.North,
@@ -110,6 +133,16 @@ public record NineGridPlacement(Alignment HorizontalAlignment, Alignment Vertica
                 yield return new(direction, neighbor);
             }
         }
+    }
+
+    /// <summary>
+    /// Computes the aligned pixel position relative to a bounded size.
+    /// </summary>
+    /// <param name="size">The size of the container.</param>
+    /// <returns>The aligned position, relative to the container.</returns>
+    public Vector2 GetPosition(Vector2 size)
+    {
+        return GetPosition(size, HorizontalAlignment, VerticalAlignment) + Offset.ToVector2();
     }
 
     /// <summary>
@@ -204,5 +237,22 @@ public record NineGridPlacement(Alignment HorizontalAlignment, Alignment Vertica
         return horizontal.HasValue && vertical.HasValue
             ? new NineGridPlacement(horizontal.Value, vertical.Value)
             : null;
+    }
+
+    private static Vector2 GetPosition(Vector2 size, Alignment horizontalAlignment, Alignment verticalAlignment)
+    {
+        var x = horizontalAlignment switch
+        {
+            Alignment.Middle => size.X / 2,
+            Alignment.End => size.X,
+            _ => 0,
+        };
+        var y = verticalAlignment switch
+        {
+            Alignment.Middle => size.Y / 2,
+            Alignment.End => size.Y,
+            _ => 0,
+        };
+        return new(x, y);
     }
 }

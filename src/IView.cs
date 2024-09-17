@@ -117,6 +117,15 @@ public interface IView
     Vector2 OuterSize { get; }
 
     /// <summary>
+    /// Whether this view should receive pointer events like <see cref="Click"/> or <see cref="Drag"/>.
+    /// </summary>
+    /// <remarks>
+    /// By default, all views receive pointer events; this may be disabled for views that intentionally overlap other
+    /// views but shouldn't block their input, such as local non-modal overlays.
+    /// </remarks>
+    bool PointerEventsEnabled { get; set; }
+
+    /// <summary>
     /// If set to an axis, specifies that when any child of the view is scrolled into view (using
     /// <see cref="ScrollIntoView"/>), then this entire view should be scrolled along with it.
     /// </summary>
@@ -207,6 +216,9 @@ public interface IView
     /// <summary>
     /// Finds the child at a given position.
     /// </summary>
+    /// <remarks>
+    /// If multiple children overlap the same position, then this returns the topmost child.
+    /// </remarks>
     /// <param name="position">The search position, relative to the view's top-left coordinate.</param>
     /// <returns>The view at <paramref name="position"/>, or <c>null</c> if there is no match.</returns>
     ViewChild? GetChildAt(Vector2 position);
@@ -227,6 +239,14 @@ public interface IView
     /// Gets the current children of this view.
     /// </summary>
     IEnumerable<ViewChild> GetChildren();
+
+    /// <summary>
+    /// Finds all children at a given position.
+    /// </summary>
+    /// <param name="position">The search position, relative to the view's top-left coordinate.</param>
+    /// <returns>A sequence of views at the specified <paramref name="position"/>, in front-to-back (reverse
+    /// <see cref="ZIndex"/>) order.</returns>
+    IEnumerable<ViewChild> GetChildrenAt(Vector2 position);
 
     /// <summary>
     /// Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first

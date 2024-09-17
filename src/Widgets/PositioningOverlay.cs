@@ -222,7 +222,15 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         private static readonly Color KeyTint = new(0.5f, 0.5f, 0.5f, 0.5f);
         private static readonly Color MouseTint = new(0.5f, 0.5f, 0.5f, 0.5f);
 
-        private readonly Frame contentFrame = new() { Layout = LayoutParameters.Fill(), ZIndex = 2 };
+        private readonly Frame contentFrame =
+            new()
+            {
+                Layout = LayoutParameters.Fill(),
+                ZIndex = 2,
+                Draggable = true,
+            };
+
+        private readonly GhostView dragContent = new() { TintColor = Color.Green, Visibility = Visibility.Hidden };
 
         private readonly Lane dragPrompt =
             new()
@@ -278,6 +286,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             contentFrame.HorizontalContentAlignment = owner.ContentPlacement.HorizontalAlignment;
             contentFrame.VerticalContentAlignment = owner.ContentPlacement.VerticalAlignment;
             contentFrame.Margin = owner.ContentPlacement.GetMargin();
+            dragContent.RealView = owner.Content;
             actionState.Tick(elapsed);
             base.OnUpdate(elapsed);
             HandleCurrentActions();
@@ -325,13 +334,69 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 Children = [dragPrompt, new Spacer() { Layout = LayoutParameters.FixedSize(0, 64) }, wasdPrompt],
             };
             UpdateDirectionalPrompts();
+            contentFrame.DragStart += ContentFrame_DragStart;
+            contentFrame.Drag += ContentFrame_Drag;
+            contentFrame.DragEnd += ContentFrame_DragEnd;
+            // Creating a stretched frame for the drag content isn't strictly necessary for moving the content, but
+            // makes it easier to calculate position since the content will be aligned to the top left instead of
+            // the viewport center.
+            var dragFrame = new Frame()
+            {
+                Layout = LayoutParameters.Fill(),
+                Content = dragContent,
+                PointerEventsEnabled = false,
+                ZIndex = 3,
+            };
             return new Panel()
             {
                 Layout = LayoutParameters.FixedSize(GetViewportSize()),
                 HorizontalContentAlignment = Alignment.Middle,
                 VerticalContentAlignment = Alignment.Middle,
-                Children = [contentFrame, alignmentPromptsPanel, movementPromptsFrame],
+                Children = [contentFrame, alignmentPromptsPanel, movementPromptsFrame, dragFrame],
             };
+        }
+
+        private Vector2? dragContentOffset;
+
+        private void ContentFrame_Drag(object? sender, PointerEventArgs e)
+        {
+            if (dragContentOffset is null)
+            {
+                return;
+            }
+            var origin = e.Position - dragContentOffset.Value;
+            dragContent.Margin = new(Left: (int)origin.X, Top: (int)origin.Y);
+            e.Handled = true;
+        }
+
+        private void ContentFrame_DragEnd(object? sender, PointerEventArgs e)
+        {
+            if (dragContentOffset is null)
+            {
+                return;
+            }
+            Game1.playSound("stoneStep");
+            dragContent.Visibility = Visibility.Hidden;
+            alignmentPromptsPanel.Visibility = Visibility.Visible;
+            movementPromptsFrame.Visibility = Visibility.Visible;
+            var origin = e.Position - dragContentOffset.Value;
+            DropAtPosition(origin);
+            e.Handled = true;
+        }
+
+        private void ContentFrame_DragStart(object? sender, PointerEventArgs e)
+        {
+            if (contentFrame.Content is null || contentFrame.GetChildAt(e.Position) is not ViewChild contentChild)
+            {
+                dragContentOffset = null;
+                return;
+            }
+            Game1.playSound("drumkit6");
+            dragContentOffset = e.Position - contentChild.Position;
+            alignmentPromptsPanel.Visibility = Visibility.Hidden;
+            movementPromptsFrame.Visibility = Visibility.Hidden;
+            dragContent.Visibility = Visibility.Visible;
+            e.Handled = true;
         }
 
         private static IView CreateAlignmentPrompt(NineGridPlacement placement, IView content)
@@ -432,6 +497,59 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                     CreateButtonPrompt(southBinding),
                 ],
             };
+        }
+
+        private void DropAtPosition(Vector2 position)
+        {
+            // Drops are special because they essentially lose the alignment contents and place the target at an
+            // arbitrary position. We have to reconstitute the best/most likely combination of alignments and offset to
+            // match the absolute position.
+            //
+            // A possibly naive but probably still mostly accurate answer is just to set the alignments to whichever
+            // ends up closest, and use the offset to adjust from there.
+            var centerDistanceX = position.X - OuterSize.X / 2f;
+            var horizontalAlignment =
+                centerDistanceX < 0
+                    ? (position.X < -centerDistanceX)
+                        ? Alignment.Start
+                        : Alignment.Middle
+                    : ((OuterSize.X - position.X) < centerDistanceX)
+                        ? Alignment.End
+                        : Alignment.Middle;
+            var centerDistanceY = position.Y - OuterSize.Y / 2f;
+            var verticalAlignment =
+                centerDistanceY < 0
+                    ? (position.Y < -centerDistanceY)
+                        ? Alignment.Start
+                        : Alignment.Middle
+                    : ((OuterSize.Y - position.Y) < centerDistanceY)
+                        ? Alignment.End
+                        : Alignment.Middle;
+            // The position we get is the top-left position, but the content offset is relative to the aligned edge.
+            // To get the correct position we must also account for the content size.
+            var contentSize = contentFrame.Content?.OuterSize ?? Vector2.Zero;
+            // It might appear wrong that we are adding the content size instead of removing it, but we are actually
+            // trying to "decompensate" for the content size since the normal layout/alignment will compensate.
+            var placedX = horizontalAlignment switch
+            {
+                Alignment.Middle => position.X + contentSize.X / 2,
+                Alignment.End => position.X + contentSize.X,
+                _ => position.X,
+            };
+            var placedY = verticalAlignment switch
+            {
+                Alignment.Middle => position.Y + contentSize.Y / 2,
+                Alignment.End => position.Y + contentSize.Y,
+                _ => position.Y,
+            };
+            var placedPosition = new Vector2(placedX, placedY);
+            owner.ContentPlacement = NineGridPlacement.AtPosition(
+                placedPosition,
+                OuterSize,
+                horizontalAlignment,
+                verticalAlignment
+            );
+            CreateAlignmentPrompts();
         }
 
         private Keybind GetKeyboardNudgeBinding(Direction direction)

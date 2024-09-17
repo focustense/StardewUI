@@ -179,20 +179,20 @@ public class ScrollContainer : View
         return Content?.FocusSearch(contentPosition + origin, direction)?.Offset(-origin);
     }
 
-    protected override ViewChild? GetLocalChildAt(Vector2 contentPosition)
-    {
-        if (Content is null)
-        {
-            return null;
-        }
-        var origin = GetScrollOrigin();
-        var result = new ViewChild(Content, -origin);
-        return result.ContainsPoint(contentPosition) ? result : null;
-    }
-
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return Content is not null ? [new(Content, -GetScrollOrigin())] : [];
+    }
+
+    protected override IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
+    {
+        if (Content is null)
+        {
+            return [];
+        }
+        var origin = GetScrollOrigin();
+        var result = new ViewChild(Content, -origin);
+        return result.ContainsPoint(contentPosition) ? [result] : [];
     }
 
     protected override bool IsContentDirty()

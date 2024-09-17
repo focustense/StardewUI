@@ -52,6 +52,11 @@ public abstract class WrapperView<T> : IView
         set => Root.Name = value;
     }
     public Vector2 OuterSize => Root.OuterSize;
+    public bool PointerEventsEnabled
+    {
+        get => Root.PointerEventsEnabled;
+        set => Root.PointerEventsEnabled = value;
+    }
     public Orientation? ScrollWithChildren
     {
         get => Root.ScrollWithChildren;
@@ -127,6 +132,11 @@ public abstract class WrapperView<T> : IView
     public virtual IEnumerable<ViewChild> GetChildren()
     {
         return Root.GetChildren();
+    }
+
+    public virtual IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
+    {
+        return Root.GetChildrenAt(position);
     }
 
     public virtual ViewChild? GetDefaultFocusChild()
