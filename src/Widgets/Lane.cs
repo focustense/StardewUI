@@ -352,6 +352,8 @@ public class Lane : View
 
     protected override void ResetDirty()
     {
+        horizontalContentAlignment.ResetDirty();
+        verticalContentAlignment.ResetDirty();
         children.ResetDirty();
         orientation.ResetDirty();
     }

@@ -138,6 +138,7 @@ public class Image : View
 
     protected override void ResetDirty()
     {
+        rotation.ResetDirty();
         sprite.ResetDirty();
     }
 

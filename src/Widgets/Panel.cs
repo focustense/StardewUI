@@ -175,6 +175,8 @@ public class Panel : View
 
     protected override void ResetDirty()
     {
+        horizontalContentAlignment.ResetDirty();
+        verticalContentAlignment.ResetDirty();
         children.ResetDirty();
     }
 

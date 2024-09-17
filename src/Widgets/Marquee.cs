@@ -11,8 +11,6 @@ namespace StardewUI;
 /// </remarks>
 public class Marquee : View
 {
-    private const float ESTIMATED_FRAME_DURATION_MS = 1000f / 60;
-
     /// <summary>
     /// Content to scroll inside the marquee.
     /// </summary>

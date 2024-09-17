@@ -180,6 +180,8 @@ public class Frame : View
     protected override void ResetDirty()
     {
         borderThickness.ResetDirty();
+        horizontalContentAlignment.ResetDirty();
+        verticalContentAlignment.ResetDirty();
         content.ResetDirty();
     }
 
