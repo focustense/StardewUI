@@ -17,21 +17,75 @@ namespace StardewUI;
 /// <param name="mouse">Mouse texture atlas, loaded from the mod's copy of <c>MouseButtons.png</c>.</param>
 public class XeluButtonSpriteMap(Texture2D gamepad, Texture2D keyboard, Texture2D mouse) : ButtonSpriteMap
 {
+    /// <summary>
+    /// Available theme variants for certain sprites.
+    /// </summary>
+    /// <remarks>
+    /// Applies to the keyboard and mouse sprites, but not controller (Xbox style) sprites.
+    /// </remarks>
+    public enum SpriteTheme
+    {
+        /// <summary>
+        /// Black and dark gray, with white highlights (e.g. for pressed mouse button).
+        /// </summary>
+        Dark,
+
+        /// <summary>
+        /// White and light gray, with red highlights (e.g. for pressed mouse button).
+        /// </summary>
+        Light,
+
+        /// <summary>
+        /// Custom theme mimicking the Stardew yellow-orange palette; falls back to <see cref="Light"/> for
+        /// non-customized sprites.
+        /// </summary>
+        Stardew,
+    }
+
+    /// <summary>
+    /// The active theme for keyboard sprites.
+    /// </summary>
+    public SpriteTheme KeyboardTheme { get; set; } = SpriteTheme.Stardew;
+
+    /// <summary>
+    /// The active theme for mouse sprites.
+    /// </summary>
+    public SpriteTheme MouseTheme { get; set; } = SpriteTheme.Stardew;
+
+    /// <summary>
+    /// Scale to apply to nine-slice sprites, specifically keyboard blanks.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This setting exists because the sprite assets are much larger than the space available for
+    /// a typical keybind image in a menu, which - very unusually for Stardew - means they need to
+    /// be scaled down, not up. However, some UIs (e.g. some overlays) may want to display these
+    /// sprites at their normal size or larger, and in these cases, should not scale the slices
+    /// because the borders would look strange or hard to see.
+    /// </para>
+    /// <para>
+    /// In general, considering the base dimensions of 100x100, a comfortable size for menus
+    /// targeting roughly 48px button height should use roughly 1/3 scale (0.3). Overlays and other
+    /// UIs intending to render the sprite at full size (or larger) can leave the default of 1.
+    /// </para>
+    /// </remarks>
+    public float SliceScale { get; set; } = 1f;
+
     private const int COLUMN_COUNT = 4;
 
     private static readonly Edges KeyboardFixedEdges = new(32);
-    private static readonly SliceSettings SliceSettings = new(Scale: 0.32f);
     private static readonly Point SpriteSize = new(100, 100);
 
     protected override Sprite ControllerBlank => new(gamepad, GetSourceRect(16));
 
-    protected override Sprite KeyboardBlank => new(keyboard, GetSourceRect(0), KeyboardFixedEdges);
+    protected override Sprite KeyboardBlank =>
+        new(keyboard, GetKeyboardBlankSourceRect(), KeyboardFixedEdges, SliceSettings: new(Scale: SliceScale));
 
-    protected override Sprite MouseLeft => new(mouse, GetSourceRect(1));
+    protected override Sprite MouseLeft => new(mouse, GetMouseSourceRect(1));
 
-    protected override Sprite MouseMiddle => new(mouse, GetSourceRect(2));
+    protected override Sprite MouseMiddle => new(mouse, GetMouseSourceRect(2));
 
-    protected override Sprite MouseRight => new(mouse, GetSourceRect(3));
+    protected override Sprite MouseRight => new(mouse, GetMouseSourceRect(3));
 
     protected override Sprite? Get(SButton button)
     {
@@ -67,8 +121,25 @@ public class XeluButtonSpriteMap(Texture2D gamepad, Texture2D keyboard, Texture2
             _ => null,
         };
         return gamepadSpriteIndex.HasValue
-            ? new(gamepad, GetSourceRect(gamepadSpriteIndex.Value), SliceSettings: SliceSettings)
+            ? new(gamepad, GetSourceRect(gamepadSpriteIndex.Value), SliceSettings: new(Scale: SliceScale))
             : null;
+    }
+
+    private Rectangle GetKeyboardBlankSourceRect()
+    {
+        var spriteIndex = KeyboardTheme switch
+        {
+            SpriteTheme.Dark => 0,
+            SpriteTheme.Light => 1,
+            _ => 2,
+        };
+        return GetSourceRect(spriteIndex);
+    }
+
+    private Rectangle GetMouseSourceRect(int buttonIndex)
+    {
+        var baseIndex = MouseTheme == SpriteTheme.Dark ? 4 : 0;
+        return GetSourceRect(baseIndex + buttonIndex);
     }
 
     private static Rectangle GetSourceRect(int spriteIndex)
