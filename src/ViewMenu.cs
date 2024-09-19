@@ -454,15 +454,23 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private void MeasureAndCenterView()
     {
         var viewportSize = GetViewportSize();
-        var availableMenuSize = viewportSize.ToVector2() - (gutter ?? DefaultGutter).Total;
+        var currentGutter = gutter ?? DefaultGutter;
+        var availableMenuSize = viewportSize.ToVector2() - currentGutter.Total;
         if (!view.Measure(availableMenuSize))
         {
             return;
         }
+        // Make gutters act as margins; otherwise centering could actually place content in the gutter.
+        // For example, if there is an asymmetrical gutter with left = 100 and right = 200, and it takes up the full
+        // viewport width, then it will actually occupy the horizontal region from 150 to (viewportWidth - 150), which
+        // is the centered region with 300px total margin. In this case we need to push the content left by 50px, or
+        // half the difference between the left and right edge.
+        var gutterOffsetX = (currentGutter.Left - currentGutter.Right) / 2;
+        var gutterOffsetY = (currentGutter.Top - currentGutter.Bottom) / 2;
         width = (int)MathF.Round(view.OuterSize.X);
         height = (int)MathF.Round(view.OuterSize.Y);
-        xPositionOnScreen = viewportSize.X / 2 - width / 2;
-        yPositionOnScreen = viewportSize.Y / 2 - height / 2;
+        xPositionOnScreen = viewportSize.X / 2 - width / 2 + gutterOffsetX;
+        yPositionOnScreen = viewportSize.Y / 2 - height / 2 + gutterOffsetY;
         Refocus();
     }
 

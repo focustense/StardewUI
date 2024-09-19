@@ -263,13 +263,13 @@ public class ScrollContainer : View
     private float GetScrollDistance(Bounds scrollableBounds)
     {
         var start = Orientation.Get(scrollableBounds.Position);
-        if (start < ScrollOffset)
+        if (start < ScrollOffset + Peeking)
         {
             return start - ScrollOffset - Peeking;
         }
         var end = Orientation.Get(scrollableBounds.Position + scrollableBounds.Size);
         var contentLength = Orientation.Get(ContentSize);
-        if (end > ScrollOffset + contentLength)
+        if (end > ScrollOffset + contentLength - Peeking)
         {
             return end - contentLength - ScrollOffset + Peeking;
         }
