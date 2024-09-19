@@ -71,6 +71,7 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
     {
         if (e.IsPrimaryButton())
         {
+            Game1.playSound("bigSelect");
             overlay = new PositioningOverlay(buttonSpriteMap, directionSpriteMap)
             {
                 Content = Content,

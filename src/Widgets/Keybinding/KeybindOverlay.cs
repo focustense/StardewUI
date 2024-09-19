@@ -332,6 +332,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
         {
             return;
         }
+        Game1.playSound("trashcan");
         var keybind = view.Tags.Get<Keybind>();
         KeybindList = new(KeybindList.Keybinds.Where(kb => kb != keybind).ToArray());
     }

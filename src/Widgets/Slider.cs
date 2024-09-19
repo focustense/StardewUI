@@ -169,7 +169,12 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     {
         var exactValueAboveMin = progress * (Max - Min);
         var intervalCount = MathF.Round(exactValueAboveMin / Interval);
-        Value = Min + intervalCount * Interval;
+        var newValue = Min + intervalCount * Interval;
+        if (newValue != Value)
+        {
+            Game1.playSound("stoneStep");
+            Value = newValue;
+        }
     }
 
     // Thumb-related methods are all a simplification of the Scrollbar thumb. Refer to that implementation for comments
@@ -242,6 +247,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         var nextValue = Math.Clamp(Value + interval, Min, Max);
         if (nextValue != Value)
         {
+            Game1.playSound("stoneStep");
             Value = nextValue;
             return true;
         }
