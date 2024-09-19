@@ -17,6 +17,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     where T : IView
 {
     /// <summary>
+    /// Event raised when the menu is closed.
+    /// </summary>
+    public event EventHandler<EventArgs>? Close;
+
+    /// <summary>
     /// Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
     /// </summary>
     /// <remarks>
@@ -43,6 +48,13 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly bool wasHudDisplayed;
 
     private ViewChild[] hoverPath = [];
+
+    // When clearing the activeClickableMenu, the game will call its Dispose method BEFORE actually changing the field
+    // value to null or the new menu. If a Close handler then tries to open a different menu (which is really the
+    // primary use case for the Close event) then this could trigger an infinite loop/stack overflow, i.e.
+    // Dispose -> Close (Handler) -> set Game1.activeClickableMenu -> Dispose again
+    // As a workaround, we can track when dispose has been requested and suppress duplicates.
+    private bool isDisposed;
 
     // Whether the overlay was pushed within the last frame.
     private bool justPushedOverlay;
@@ -105,7 +117,13 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     public void Dispose()
     {
+        if (isDisposed)
+        {
+            return;
+        }
+        isDisposed = true;
         Game1.displayHUD = wasHudDisplayed;
+        Close?.Invoke(this, EventArgs.Empty);
         GC.SuppressFinalize(this);
     }
 
@@ -324,6 +342,39 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         var mousePosition = new Point(x, y);
         previousDragPosition = mousePosition;
         OnViewOrOverlay((view, origin) => view.OnDrop(new(mousePosition.ToVector2() - origin)));
+    }
+
+    /// <summary>
+    /// Activates or deactivates the menu.
+    /// </summary>
+    /// <param name="active">Whether the menu should be active (displayed). If this is <c>false</c>, then the menu will
+    /// be closed if already open; if <c>true</c>, it will be opened if not already open.</param>
+    public void SetActive(bool active)
+    {
+        if (Game1.activeClickableMenu is TitleMenu)
+        {
+            if (active)
+            {
+                TitleMenu.subMenu = this;
+            }
+            else if (TitleMenu.subMenu == this)
+            {
+                Game1.playSound(closeSound);
+                TitleMenu.subMenu = null;
+            }
+        }
+        else
+        {
+            if (active)
+            {
+                Game1.activeClickableMenu = this;
+            }
+            else if (Game1.activeClickableMenu == this)
+            {
+                Game1.playSound(closeSound);
+                Game1.activeClickableMenu = null;
+            }
+        }
     }
 
     public override void update(GameTime time)
