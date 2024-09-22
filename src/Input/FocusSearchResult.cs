@@ -15,7 +15,8 @@ public record FocusSearchResult(ViewChild Target, IEnumerable<ViewChild> Path)
 {
     /// <summary>
     /// Returns a transformed <see cref="FocusSearchResult"/> that adds a view (generally the caller) to the beginning
-    /// of the <see cref="Path"/>, and applies its content offset to the <see cref="Target"/>.
+    /// of the <see cref="Path"/>, and applies its content offset to either the first element of the current
+    /// <see cref="Path"/> (if non-empty) or the <see cref="Target"/> (if the path is empty).
     /// </summary>
     /// <remarks>
     /// Used to propagate results correctly up the view hierarchy in a focus search. This is called by
@@ -23,38 +24,41 @@ public record FocusSearchResult(ViewChild Target, IEnumerable<ViewChild> Path)
     /// <see cref="View.FindFocusableDescendant"/>.
     /// </remarks>
     /// <param name="parent">The parent that contains the current result.</param>
-    /// <param name="position">The content offset of the <paramref name="parent"/>.</param>
+    /// <param name="position">The content offset relative to the <paramref name="parent"/>.</param>
     public FocusSearchResult AsChild(IView parent, Vector2 position)
     {
-        return new(Target.Offset(position), OffsetFirst(Path, position).Prepend(new(parent, Vector2.Zero)));
+        var root = new ViewChild(parent, Vector2.Zero);
+        var (target, path) = OffsetTargetOrPath(position);
+        return new(target, path.Prepend(root));
     }
 
     /// <summary>
     /// Applies a local offset to a search result.
     /// </summary>
     /// <remarks>
-    /// Used to propagate the child position into a search result produced by that child. For example, view X is a
-    /// layout with positioned child view Y, which yields a search result targeting view Z in terms of its (Y's) local
-    /// coordinates. Applying the offset will adjust the <see cref="Target"/> position to be relative to the position of
-    /// Y within X, and also adjust the <see cref="ViewChild.Position"/> of the first element of <see cref="Path"/> to
-    /// be the child position instead of <see cref="Vector2.Zero"/>, but will not modify any other <c>Path</c> elements
-    /// as each element is positioned relative to its parent preceding it in the list.
+    /// Used to propagate the child position into a search result produced by that child. For example, view A is a
+    /// layout with positioned child view C, which yields a search result targeting view Z in terms of its (C's) local
+    /// coordinates. Applying the offset will adjust either the first element of the <see cref="Path"/>, if non-empty,
+    /// or the <see cref="Target"/> itself if <see cref="Path"/> is empty. No other elements of the <see cref="Path"/>
+    /// will be modified, as each element is already positioned relative to its parent preceding it in the list.
     /// </remarks>
     /// <param name="distance">The distance to offset the <see cref="Target"/> and first element of
     /// <see cref="Path"/>.</param>
     /// <returns>A new <see cref="FocusSearchResult"/> with the <paramref name="distance"/> offset applied.</returns>
     public FocusSearchResult Offset(Vector2 distance)
     {
-        return new(Target.Offset(distance), OffsetFirst(Path, distance));
+        var (target, path) = OffsetTargetOrPath(distance);
+        return new(target, path);
     }
 
-    private static IEnumerable<ViewChild> OffsetFirst(IEnumerable<ViewChild> path, Vector2 distance)
+    private (ViewChild target, IEnumerable<ViewChild> path) OffsetTargetOrPath(Vector2 distance)
     {
-        bool isFirst = true;
-        foreach (var child in path)
+        var pathEnumerator = Path.GetEnumerator();
+        if (pathEnumerator.MoveNext())
         {
-            yield return isFirst ? child.Offset(distance) : child;
-            isFirst = false;
+            var first = pathEnumerator.Current;
+            return (Target, pathEnumerator.ToEnumerable().Prepend(first.Offset(distance)));
         }
+        return (Target.Offset(distance), []);
     }
 }

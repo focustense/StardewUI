@@ -397,8 +397,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         LogFocusSearchResult(found.Target);
         ReleaseCaptureTarget();
         Game1.playSound("shiny4");
-        var nextMousePosition = origin + found.Target.CenterPoint();
-        if (rootView.ScrollIntoView(found.Path, out var distance))
+        var pathWithTarget = found.Path.Append(found.Target).ToList();
+        var nextMousePosition = origin + pathWithTarget.ToGlobalPositions().Last().CenterPoint();
+        if (rootView.ScrollIntoView(pathWithTarget, out var distance))
         {
             nextMousePosition -= distance.ToPoint();
         }
@@ -478,7 +479,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             (view, origin) =>
             {
                 var localPosition = mousePosition.ToVector2() - origin;
-                var pathBeforeScroll = view.GetPathToPosition(localPosition).Select(child => child.View).ToList();
+                var pathBeforeScroll = view.GetPathToPosition(localPosition).ToList();
                 var args = new WheelEventArgs(localPosition, direction);
                 view.OnWheel(args);
                 if (!args.Handled)
@@ -632,13 +633,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                     )
                 )
                 {
-                    Refocus(
-                        view,
-                        origin,
-                        previousHoverPosition.ToVector2(),
-                        hoverPath.Select(x => x.View),
-                        searchDirection
-                    );
+                    Refocus(view, origin, previousHoverPosition.ToVector2(), hoverPath, searchDirection);
                 }
             }
         );
@@ -648,7 +643,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         IView root,
         Vector2 origin,
         Vector2 previousPosition,
-        IEnumerable<IView> previousPath,
+        IReadOnlyList<ViewChild> previousPath,
         Direction searchDirection
     )
     {
@@ -656,7 +651,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
-        var pathAfterScroll = root.ResolveChildPath(previousPath);
+        var pathAfterScroll = root.ResolveChildPath(previousPath.Select(child => child.View));
         var (targetView, bounds) = pathAfterScroll.Aggregate(
             (root as IView, bounds: Bounds.Empty),
             (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize))
@@ -669,11 +664,23 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         else
         {
             // Can happen if the target view is no longer reachable, i.e. outside the scroll bounds.
-            var validResult = root.FocusSearch(previousPosition, searchDirection);
+            //
+            // When we try to find a new focus target, we have to accommodate for the fact that previousPosition is the
+            // actual cursor position on screen before the scroll, and not the "adjusted" position of the cursor
+            // relative to the new view bounds; for example, if we just scrolled up by 64 px and the view now has a
+            // negative Y position (which is why we didn't find it with GetPathToPosition), then the value of
+            // previousPosition will be 64px lower (still in bounds) and we have to adjust to compensate.
+            var focusOffset =
+                previousPath.Count > 0
+                    ? bounds.Position - previousPath.ToGlobalPositions().Last().Position
+                    : Vector2.Zero;
+            var validResult = root.FocusSearch(previousPosition + focusOffset, searchDirection);
             if (validResult is not null)
             {
                 ReleaseCaptureTarget();
-                Game1.setMousePosition((origin + validResult.Target.Center()).ToPoint(), true);
+                var pathWithTarget = validResult.Path.Append(validResult.Target);
+                var nextMousePosition = origin + pathWithTarget.ToGlobalPositions().Last().Center();
+                Game1.setMousePosition(nextMousePosition.ToPoint(), true);
             }
         }
     }
