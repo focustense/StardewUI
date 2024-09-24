@@ -1,0 +1,100 @@
+﻿using System.Reflection;
+
+namespace StardewUITest.StarML;
+
+/// <summary>
+/// Helper for creating <see cref="ReflectionProperty{T, TValue}"/> with types not known at compile time.
+/// </summary>
+public static class ReflectionProperty
+{
+    private static readonly Type reflectionPropertyType = typeof(ReflectionProperty<,>);
+
+    /// <summary>
+    /// Creates a binding property from reflected property.
+    /// </summary>
+    /// <param name="propertyInfo">The reflected property info.</param>
+    /// <returns>
+    /// A binding property of type <see cref="ReflectionProperty{T, TValue}"/>, whose generic arguments are the
+    /// property's <see cref="MemberInfo.DeclaringType"/> and <see cref="PropertyInfo.PropertyType"/>, respectively.
+    /// </returns>
+    public static IBindingProperty FromPropertyInfo(PropertyInfo propertyInfo)
+    {
+        var genericType = reflectionPropertyType.MakeGenericType(propertyInfo.DeclaringType!, propertyInfo.PropertyType);
+        return (IBindingProperty)genericType.GetConstructor([typeof(PropertyInfo)])!.Invoke([propertyInfo]);
+    }
+}
+
+/// <summary>
+/// Binding property based on .NET reflection.
+/// </summary>
+/// <typeparam name="T">The type on which the property is declared.</typeparam>
+/// <typeparam name="TValue">The property's value type.</typeparam>
+public class ReflectionProperty<T, TValue> : IBindingProperty<TValue>
+{
+    private readonly Func<T, TValue>? getter;
+    private readonly Action<T, TValue>? setter;
+
+    public bool CanRead => getter is not null;
+
+    public bool CanWrite => setter is not null;
+
+    public Type DeclaringType => typeof(T);
+
+    public Type ValueType { get; }
+
+    public string Name { get; }
+
+    /// <summary>
+    /// Initializes a new <see cref="ReflectionProperty"/> from reflected property info.
+    /// </summary>
+    /// <param name="propertyInfo">The reflected property info.</param>
+    /// <exception cref="ArgumentException">Thrown when the <paramref name="propertyInfo"/> is incompatible with the
+    /// <typeparamref name="T"/> or <typeparamref name="TValue"/>.</exception>
+    public ReflectionProperty(PropertyInfo propertyInfo)
+    {
+        if (propertyInfo.DeclaringType != typeof(T))
+        {
+            throw new ArgumentException(
+                $"Declaring type of property '{propertyInfo.Name}' does not match the target type. " +
+                $"(Expected {typeof(T).Name}, got {propertyInfo.DeclaringType?.Name})",
+                nameof(propertyInfo));
+        }
+        if (propertyInfo.PropertyType != typeof(TValue))
+        {
+            throw new ArgumentException(
+                $"Type of property '{propertyInfo.Name}' does not match the value type. " +
+                $"(Expected {typeof(TValue).Name}, got {propertyInfo.PropertyType.Name})",
+                nameof(propertyInfo));
+        }
+        Name = propertyInfo.Name;
+        ValueType = propertyInfo.PropertyType;
+        if (propertyInfo.CanRead)
+        {
+            var getMethod = propertyInfo.GetGetMethod()!;
+            getter = getMethod.CreateDelegate<Func<T, TValue>>();
+        }
+        if (propertyInfo.CanWrite)
+        {
+            var setMethod = propertyInfo.GetSetMethod()!;
+            setter = setMethod.CreateDelegate<Action<T, TValue>>();
+        }
+    }
+
+    public TValue GetValue(object source)
+    {
+        if (getter is null)
+        {
+            throw new InvalidOperationException("Property does not have a public getter.");
+        }
+        return getter((T)source);
+    }
+
+    public void SetValue(object target, TValue value)
+    {
+        if (setter is null)
+        {
+            throw new InvalidOperationException("Property does not have a public setter.");
+        }
+        setter((T)target, value);
+    }
+}

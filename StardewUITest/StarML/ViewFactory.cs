@@ -71,7 +71,7 @@ public interface IValueSourceFactory
 {
     IValueSource<T> GetValueSource<T>(IAttribute attribute, object? context) where T : notnull;
 
-    Type GetValueType(IAttribute attribute, IProperty property);
+    Type GetValueType(IAttribute attribute, IBindingProperty property);
 }
 
 public class ValueSourceFactory(IAssetCache assetCache, IReflectionCache reflection) : IValueSourceFactory
@@ -88,7 +88,7 @@ public class ValueSourceFactory(IAssetCache assetCache, IReflectionCache reflect
         };
     }
 
-    public Type GetValueType(IAttribute attribute, IProperty property)
+    public Type GetValueType(IAttribute attribute, IBindingProperty property)
     {
         return attribute.ValueType switch
         {
@@ -225,7 +225,7 @@ public class ContextPropertySource<T> : IValueSource<T>, IDisposable
     }
 
     private readonly object? context;
-    private readonly IProperty<T>? property;
+    private readonly IBindingProperty<T>? property;
     private readonly string propertyName;
 
     private bool isDirty = true;
@@ -290,7 +290,7 @@ public class AttributeBindingFactory(IReflectionCache reflection, IValueSourceFa
 {
     delegate IAttributeBinding LocalBindingFactory(IView view, IAttribute attribute, string propertyName, object? context);
 
-    record AttributeBinding<TSource, TDest>(IValueSource<TSource> Source, IValueConverter<TSource, TDest> Converter, IProperty<TDest> Destination) : IAttributeBinding, IDisposable
+    record AttributeBinding<TSource, TDest>(IValueSource<TSource> Source, IValueConverter<TSource, TDest> Converter, IBindingProperty<TDest> Destination) : IAttributeBinding, IDisposable
     {
         public void Dispose()
         {
