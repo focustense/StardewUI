@@ -25,7 +25,7 @@ public static class ReflectionProperty
 }
 
 /// <summary>
-/// Binding property based on .NET reflection.
+/// Binding property based on reflection.
 /// </summary>
 /// <typeparam name="T">The type on which the property is declared.</typeparam>
 /// <typeparam name="TValue">The property's value type.</typeparam>
@@ -68,14 +68,12 @@ public class ReflectionProperty<T, TValue> : IBindingProperty<TValue>
         }
         Name = propertyInfo.Name;
         ValueType = propertyInfo.PropertyType;
-        if (propertyInfo.CanRead)
+        if (propertyInfo.GetGetMethod() is MethodInfo getMethod)
         {
-            var getMethod = propertyInfo.GetGetMethod()!;
             getter = getMethod.CreateDelegate<Func<T, TValue>>();
         }
-        if (propertyInfo.CanWrite)
+        if (propertyInfo.GetSetMethod() is MethodInfo setMethod)
         {
-            var setMethod = propertyInfo.GetSetMethod()!;
             setter = setMethod.CreateDelegate<Action<T, TValue>>();
         }
     }

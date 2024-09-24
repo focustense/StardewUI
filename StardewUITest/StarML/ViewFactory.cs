@@ -58,7 +58,7 @@ public class ViewFactory
 
 public interface IViewBinder : IDisposable
 {
-    void Bind(IView view, IElement element, object? context);
+    void Bind(IView view, IElement element, object? data);
     void Update();
 }
 
@@ -67,23 +67,32 @@ public interface IValueConverter<TSource, TDest>
     TDest Convert(TSource value);
 }
 
+public record Context(IObjectDescriptor Descriptor, object Data)
+{
+    public static Context Create(object data)
+    {
+        var descriptor = ReflectionObjectDescriptor.ForType(data.GetType());
+        return new(descriptor, data);
+    }
+}
+
 public interface IValueSourceFactory
 {
-    IValueSource<T> GetValueSource<T>(IAttribute attribute, object? context) where T : notnull;
+    IValueSource<T> GetValueSource<T>(IAttribute attribute, Context? context) where T : notnull;
 
     Type GetValueType(IAttribute attribute, IBindingProperty property);
 }
 
-public class ValueSourceFactory(IAssetCache assetCache, IReflectionCache reflection) : IValueSourceFactory
+public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
 {
-    public IValueSource<T> GetValueSource<T>(IAttribute attribute, object? context) where T : notnull
+    public IValueSource<T> GetValueSource<T>(IAttribute attribute, Context? context) where T : notnull
     {
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => (IValueSource<T>)new LiteralSource(attribute.Value),
             AttributeValueType.Binding => attribute.Value.StartsWith('@')
                 ? new AssetValueSource<T>(assetCache, attribute.Value[1..])
-                : new ContextPropertySource<T>(context, attribute.Value, reflection),
+                : new ContextPropertySource<T>(context, attribute.Value),
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute))
         };
     }
@@ -224,19 +233,19 @@ public class ContextPropertySource<T> : IValueSource<T>, IDisposable
         get => value;
     }
 
-    private readonly object? context;
+    private readonly object? data;
     private readonly IBindingProperty<T>? property;
     private readonly string propertyName;
 
     private bool isDirty = true;
     private T? value = default;
 
-    public ContextPropertySource(object? context, string propertyName, IReflectionCache reflection)
+    public ContextPropertySource(Context? context, string propertyName)
     {
-        this.context = context;
-        this.property = context is not null ? reflection.GetProperty<T>(context.GetType(), propertyName) : null;
+        data = context?.Data;
+        property = context?.Descriptor.GetProperty(propertyName) as IBindingProperty<T>;
         this.propertyName = propertyName;
-        if (context is INotifyPropertyChanged npc)
+        if (data is INotifyPropertyChanged npc)
         {
             npc.PropertyChanged += Context_PropertyChanged;
         }
@@ -244,7 +253,7 @@ public class ContextPropertySource<T> : IValueSource<T>, IDisposable
 
     public void Dispose()
     {
-        if (context is INotifyPropertyChanged npc)
+        if (data is INotifyPropertyChanged npc)
         {
             npc.PropertyChanged -= Context_PropertyChanged;
         }
@@ -265,7 +274,7 @@ public class ContextPropertySource<T> : IValueSource<T>, IDisposable
         {
             return false;
         }
-        value = property is not null ? property.GetValue(context!) : default;
+        value = property is not null ? property.GetValue(data!) : default;
         isDirty = false;
         return true;
     }
@@ -283,12 +292,12 @@ public interface IAttributeBinding : IDisposable
 
 public interface IAttributeBindingFactory
 {
-    IAttributeBinding CreateBinding(IView view, IAttribute attribute, object? context);
+    IAttributeBinding CreateBinding(IViewDescriptor viewDescriptor, IAttribute attribute, Context? context);
 }
 
-public class AttributeBindingFactory(IReflectionCache reflection, IValueSourceFactory valueSourceFactory, IValueConverterFactory valueConverterFactory) : IAttributeBindingFactory
+public class AttributeBindingFactory(IValueSourceFactory valueSourceFactory, IValueConverterFactory valueConverterFactory) : IAttributeBindingFactory
 {
-    delegate IAttributeBinding LocalBindingFactory(IView view, IAttribute attribute, string propertyName, object? context);
+    delegate IAttributeBinding LocalBindingFactory(IViewDescriptor viewDescriptor, IAttribute attribute, string propertyName, Context? context);
 
     record AttributeBinding<TSource, TDest>(IValueSource<TSource> Source, IValueConverter<TSource, TDest> Converter, IBindingProperty<TDest> Destination) : IAttributeBinding, IDisposable
     {
@@ -319,17 +328,18 @@ public class AttributeBindingFactory(IReflectionCache reflection, IValueSourceFa
 
     private readonly Dictionary<(Type, string), LocalBindingFactory> cache = [];
 
-    public IAttributeBinding CreateBinding(IView view, IAttribute attribute, object? context)
+    public IAttributeBinding CreateBinding(IViewDescriptor viewDescriptor, IAttribute attribute, Context? context)
     {
-        var propertyKey = (view.GetType(), attribute.Name);
+        var propertyKey = (viewDescriptor.TargetType, attribute.Name);
         // TODO: Cache propertyName with the binding factory
         var propertyName = GetPropertyName(attribute.Name);
         if (!cache.TryGetValue(propertyKey, out var bindingFactory))
         {
-            var property = reflection.GetProperty(view.GetType(), propertyName);
+            var property = viewDescriptor.GetProperty(propertyName);
             if (!property.CanWrite)
             {
-                throw new BindingException($"Cannot bind to non-writable property '{propertyName}' of type {view.GetType().Name}.");
+                throw new BindingException(
+                    $"Cannot bind to non-writable property '{propertyName}' of type {viewDescriptor.TargetType.Name}.");
             }
             var typedBindingMethod = typeof(AttributeBindingFactory).GetMethod(nameof(CreateTypedBinding), BindingFlags.NonPublic | BindingFlags.Instance)!;
             var sourceType = valueSourceFactory.GetValueType(attribute, property);
@@ -337,13 +347,13 @@ public class AttributeBindingFactory(IReflectionCache reflection, IValueSourceFa
             bindingFactory = typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
             cache.Add(propertyKey, bindingFactory);
         }
-        return bindingFactory(view, attribute, propertyName, context);
+        return bindingFactory(viewDescriptor, attribute, propertyName, context);
     }
 
-    private IAttributeBinding CreateTypedBinding<TSource, TDest>(IView view, IAttribute attribute, string propertyName, object? context)
+    private IAttributeBinding CreateTypedBinding<TSource, TDest>(IViewDescriptor viewDescriptor, IAttribute attribute, string propertyName, Context context)
         where TSource : notnull
     {
-        var property = reflection.GetProperty<TDest>(view.GetType(), propertyName);
+        var property = (IBindingProperty<TDest>)viewDescriptor.GetProperty(propertyName);
         var source = valueSourceFactory.GetValueSource<TSource>(attribute, context);
         var converter = valueConverterFactory.GetConverter<TSource, TDest>();
         return new AttributeBinding<TSource, TDest>(source, converter, property);
@@ -380,13 +390,15 @@ public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFacto
 
     private WeakReference<IView>? boundViewRef;
 
-    public void Bind(IView view, IElement element, object? context)
+    public void Bind(IView view, IElement element, object? data)
     {
         boundViewRef = new(view);
         ClearBindings();
+        var viewDescriptor = ReflectionViewDescriptor.ForViewType(view.GetType());
+        var context = data is not null ? Context.Create(data) : null;
         foreach (var attribute in element.Attributes)
         {
-            var binding = attributeBindingFactory.CreateBinding(view, attribute, context);
+            var binding = attributeBindingFactory.CreateBinding(viewDescriptor, attribute, context);
             bindings.Add(binding);
             // Initial forced update since some binding types (e.g. literals) never have updates.
             binding.Update(view, force: true);

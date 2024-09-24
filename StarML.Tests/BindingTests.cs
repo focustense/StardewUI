@@ -99,11 +99,10 @@ public class BindingTests(ITestOutputHelper output)
     public void TestBindings()
     {
         var viewFactory = new ViewFactory();
-        var reflectionCache = new ReflectionCache();
         var assetCache = new FakeAssetCache();
-        var valueSourceFactory = new ValueSourceFactory(assetCache, reflectionCache);
+        var valueSourceFactory = new ValueSourceFactory(assetCache);
         var valueConverterFactory = new ValueConverterFactory();
-        var attributeBindingFactory = new AttributeBindingFactory(reflectionCache, valueSourceFactory, valueConverterFactory);
+        var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory);
 
         var element = new SElement("label", [
