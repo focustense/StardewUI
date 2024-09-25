@@ -28,7 +28,12 @@ public record SElement(string Tag, IReadOnlyList<SAttribute> Attributes) : IElem
     IReadOnlyList<IAttribute> IElement.Attributes => Attributes;
 }
 
-public class ViewFactory
+public interface IViewFactory
+{
+    IView CreateView(string tagName);
+}
+
+public class ViewFactory : IViewFactory
 {
     public IView CreateView(string tagName)
     {
@@ -56,10 +61,47 @@ public class ViewFactory
     }
 }
 
-public interface IViewBinder : IDisposable
+public interface IViewBinder
 {
-    void Bind(IView view, IElement element, object? data);
+    IViewBinding Bind(IView view, IElement element, object? data);
+}
+
+public interface IViewBinding : IDisposable
+{
     void Update();
+}
+
+class ViewBinding(IView view, IReadOnlyList<IAttributeBinding> attributeBindings) : IViewBinding
+{
+    private readonly WeakReference<IView> viewRef = new(view);
+
+    private bool isDisposed;
+
+    public void Dispose()
+    {
+        foreach (var binding in attributeBindings)
+        {
+            binding.Dispose();
+        }
+        isDisposed = true;
+        GC.SuppressFinalize(this);
+    }
+
+    public void Update()
+    {
+        if (isDisposed)
+        {
+            throw new ObjectDisposedException(nameof(ViewBinding));
+        }
+        if (!viewRef.TryGetTarget(out var view))
+        {
+            return;
+        }
+        foreach (var binding in attributeBindings)
+        {
+            binding.Update(view);
+        }
+    }
 }
 
 public interface IValueConverter<TSource, TDest>
@@ -173,56 +215,20 @@ public class AttributeBindingFactory(IValueSourceFactory valueSourceFactory, IVa
 
 public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFactory) : IViewBinder
 {
-    private readonly List<IAttributeBinding> bindings = [];
-
-    private WeakReference<IView>? boundViewRef;
-
-    public void Bind(IView view, IElement element, object? data)
+    public IViewBinding Bind(IView view, IElement element, object? data)
     {
-        boundViewRef = new(view);
-        ClearBindings();
         var viewDescriptor = ReflectionViewDescriptor.ForViewType(view.GetType());
         var context = data is not null ? Context.Create(data) : null;
-        foreach (var attribute in element.Attributes)
+        var attributeBindings = element.Attributes
+            .Select(attribute => attributeBindingFactory.CreateBinding(viewDescriptor, attribute, context))
+            .ToList();
+        // Initial forced update since some binding types (e.g. literals) never have updates.
+        foreach (var attributeBinding in attributeBindings)
         {
-            var binding = attributeBindingFactory.CreateBinding(viewDescriptor, attribute, context);
-            bindings.Add(binding);
-            // Initial forced update since some binding types (e.g. literals) never have updates.
-            binding.Update(view, force: true);
+            attributeBinding.Update(view, force: true);
         }
-    }
-
-    public void Dispose()
-    {
-        ClearBindings();
-        boundViewRef = null;
-        GC.SuppressFinalize(this);
-    }
-
-    public void Update()
-    {
-        if (boundViewRef is null)
-        {
-            return;
-        }
-        if (!boundViewRef.TryGetTarget(out var view))
-        {
-            boundViewRef = null;
-            return;
-        }
-        foreach (var binding in bindings)
-        {
-            binding.Update(view);
-        }
-    }
-
-    private void ClearBindings()
-    {
-        foreach (var binding in bindings)
-        {
-            binding.Dispose();
-        }
-        bindings.Clear();
+        var viewBinding = new ViewBinding(view, attributeBindings);
+        return viewBinding;
     }
 }
 

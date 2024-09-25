@@ -112,7 +112,7 @@ public class BindingTests(ITestOutputHelper output)
         ]);
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
-        viewBinder.Bind(view, element, model);
+        using var viewBinding = viewBinder.Bind(view, element, model);
 
         var label = (Label)view;
         Assert.Equal(1, label.MaxLines);
@@ -120,7 +120,7 @@ public class BindingTests(ITestOutputHelper output)
         Assert.Equal(Color.Blue, label.Color);
 
         model.Name = "New text";
-        viewBinder.Update();
+        viewBinding.Update();
         Assert.Equal("New text", label.Text);
     }
 }
