@@ -3,24 +3,82 @@ using System.Text;
 
 namespace StardewUI.Framework.Grammar;
 
+/// <summary>
+/// Types of tokens allowed in StarML.
+/// </summary>
 public enum TokenType
 {
+    /// <summary>
+    /// Unknown token; used when a lexer has not been initialized, or has reached the end of its content.
+    /// </summary>
     Unknown,
+
+    /// <summary>
+    /// Start of an opening tag, i.e. the <c>&lt;</c> character without a subsequent <c>/</c>.
+    /// </summary>
     OpeningTagStart,
+
+    /// <summary>
+    /// Start of a closing tag, i.e. the <c>&lt;/</c> character sequence.
+    /// </summary>
     ClosingTagStart,
+
+    /// <summary>
+    /// End of a regular opening or closing tag, i.e. the <c>&gt;</c> character.
+    /// </summary>
     TagEnd,
+
+    /// <summary>
+    /// End of a self-closing tag, i.e. the <c>/&gt;</c> character sequence.
+    /// </summary>
     SelfClosingTagEnd,
+
+    /// <summary>
+    /// A valid name, i.e. of an element (tag) or attribute.
+    /// </summary>
     Name,
+
+    /// <summary>
+    /// A string of literal text, as found within a quoted or bound attribute.
+    /// </summary>
     Literal,
+
+    /// <summary>
+    /// The <c>=</c> character, as used in an attribute syntax such as <c>attr="value"</c>.
+    /// </summary>
     Assignment,
+
+    /// <summary>
+    /// Double quote character (<c>"</c>) used to start or terminate a <see cref="Literal"/> string.
+    /// </summary>
     Quote,
+
+    /// <summary>
+    /// A pair of opening braces (<c>{{</c>), used to start a binding expression for an attribute value.
+    /// </summary>
     BindingStart,
+
+    /// <summary>
+    /// A pair of closing braces (<c>}}</c>), used to end a binding expression for an attribute value.
+    /// </summary>
     BindingEnd,
 }
 
+/// <summary>
+/// A token emitted by the StarML <see cref="Lexer"/>.
+/// </summary>
+/// <param name="type">The token type.</param>
+/// <param name="text">The exact text of the token in the original markup.</param>
 public readonly ref struct Token(TokenType type, ReadOnlySpan<char> text)
 {
+    /// <summary>
+    /// The token type.
+    /// </summary>
     public ReadOnlySpan<char> Text { get; } = text;
+
+    /// <summary>
+    /// The exact text of the token in the original markup.
+    /// </summary>
     public TokenType Type { get; } = type;
 
     public override string ToString()
@@ -29,6 +87,10 @@ public readonly ref struct Token(TokenType type, ReadOnlySpan<char> text)
     }
 }
 
+/// <summary>
+/// Consumes raw StarML content as a token stream.
+/// </summary>
+/// <param name="text">The markup text.</param>
 public ref struct Lexer(ReadOnlySpan<char> text)
 {
     enum Mode
@@ -40,7 +102,15 @@ public ref struct Lexer(ReadOnlySpan<char> text)
 
     readonly record struct TokenInfo(TokenType Type, int Length);
 
+    /// <summary>
+    /// The most recent token that was read, if the previous call to <see cref="MoveNext"/> was successful; otherwise,
+    /// an empty token.
+    /// </summary>
     public Token Current { get; private set; }
+
+    /// <summary>
+    /// The current position in the markup text, i.e. the position at the <em>end</em> the <see cref="Current"/> token.
+    /// </summary>
     public readonly int Position => position;
 
     private static readonly Rune HYPHEN = new('-');
@@ -50,11 +120,23 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     private int position;
     private ReadOnlySpan<char> text = text;
 
+    /// <summary>
+    /// Returns a reference to this <see cref="Lexer"/>.
+    /// </summary>
+    /// <remarks>
+    /// Implementing this, along with <see cref="Current"/> and <see cref="MoveNext()"/>, allows it to be used in a
+    /// <c>foreach</c> loop without having to implement <see cref="IEnumerable{T}"/>, which is not allowed on a <c>ref
+    /// struct</c>.
+    /// </remarks>
     public readonly Lexer GetEnumerator()
     {
         return this;
     }
 
+    /// <summary>
+    /// Reads the next token into <see cref="Current"/> and advances the <see cref="Position"/>.
+    /// </summary>
+    /// <returns><c>true</c> if a token was read; <c>false</c> if the end of the content was reached.</returns>
     public bool MoveNext()
     {
         int previousLength = text.Length;
@@ -83,11 +165,25 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         return true;
     }
 
+    /// <summary>
+    /// Attempts to read the next token and, if successful, validates that it has a specific type.
+    /// </summary>
+    /// <param name="expectedTypes">The <see cref="TokenType"/>s allowed for the next token.</param>
+    /// <returns><c>true</c> if a token was read and was one of the <paramref name="expectedTypes"/>; <c>false</c> if
+    /// the end of the content was reached.</returns>
+    /// <exception cref="LexerException">Thrown when a token is successfully read, but does not match any of the
+    /// <paramref name="expectedTypes"/>.</exception>
     public bool ReadOptionalToken(params TokenType[] expectedTypes)
     {
         return MoveNext(false, expectedTypes);
     }
 
+    /// <summary>
+    /// Reads the next token and validates that it has a specific type.
+    /// </summary>
+    /// <param name="expectedTypes">The <see cref="TokenType"/>s allowed for the next token.</param>
+    /// <exception cref="LexerException">Thrown when a token cannot be read due to reaching the end of the content, or
+    /// when a token is successfully read but does not match any of the <paramref name="expectedTypes"/>.</exception>
     public void ReadRequiredToken(params TokenType[] expectedTypes)
     {
         MoveNext(true, expectedTypes);
@@ -198,7 +294,15 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     }
 }
 
+/// <summary>
+/// The exception that is thrown when a <see cref="Lexer"/> fails to process the markup it is given.
+/// </summary>
+/// <param name="message">The message that describes the error.</param>
+/// <param name="position">The position within the markup text where the error was encountered.</param>
 public class LexerException(string message, int position) : Exception(message)
 {
+    /// <summary>
+    /// The position within the markup text where the error was encountered.
+    /// </summary>
     public int Position { get; } = position;
 }

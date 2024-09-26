@@ -15,7 +15,7 @@ public class ParserTests(ITestOutputHelper output)
             </lane>";
 
         var reader = new DocumentReader(markup);
-        while (reader.NextElement())
+        while (reader.NextTag())
         {
             var label = reader.Tag.IsClosingTag ? "Closing Tag" : "Opening Tag";
             output.WriteLine($"{label}: {reader.Tag.Name}");
