@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace StardewUI.Framework.Converters;
+﻿namespace StardewUI.Framework.Converters;
 
 /// <summary>
 /// String converter for the XNA <see cref="Vector2"/> type.

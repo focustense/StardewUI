@@ -4,7 +4,6 @@ using System.Text;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
-using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework.Binding;

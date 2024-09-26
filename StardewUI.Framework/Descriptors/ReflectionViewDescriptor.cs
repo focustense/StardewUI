@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using StardewUI;
 
 namespace StardewUI.Framework.Descriptors;
 
