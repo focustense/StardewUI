@@ -67,6 +67,16 @@ public ref struct DocumentReader(Lexer lexer)
     public Attribute Attribute { get; private set; }
 
     /// <summary>
+    /// Whether the end of the document has been reached.
+    /// </summary>
+    public readonly bool Eof => lexer.Eof;
+
+    /// <summary>
+    /// The current position in the document content.
+    /// </summary>
+    public readonly int Position => lexer.Position;
+
+    /// <summary>
     /// The tag that was just read, if the previous <see cref="NextTag"/> returned <c>true</c>; otherwise, an empty tag.
     /// </summary>
     /// <remarks>

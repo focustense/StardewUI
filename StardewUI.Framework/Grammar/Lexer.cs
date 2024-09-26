@@ -109,6 +109,11 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     public Token Current { get; private set; }
 
     /// <summary>
+    /// Whether the lexer is at the end of the content, either at the very end or with only trailing whitespace.
+    /// </summary>
+    public readonly bool Eof => text.IsWhiteSpace();
+
+    /// <summary>
     /// The current position in the markup text, i.e. the position at the <em>end</em> the <see cref="Current"/> token.
     /// </summary>
     public readonly int Position => position;

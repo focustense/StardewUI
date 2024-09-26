@@ -34,4 +34,12 @@ public interface IAttribute
 /// <param name="ValueType">The type of the value expression, defining how the <paramref name="value"/> should be
 /// interpreted.</param>
 /// <param name="Value">The literal value text.</param>
-public record SAttribute(string Name, AttributeValueType ValueType, string Value) : IAttribute;
+public record SAttribute(string Name, AttributeValueType ValueType, string Value) : IAttribute
+{
+    /// <summary>
+    /// Initializes a new <see cref="SAttribute"/> from the data of a parsed attribute.
+    /// </summary>
+    /// <param name="attribute">The parsed attribute.</param>
+    public SAttribute(Grammar.Attribute attribute)
+        : this(attribute.Name.ToString(), attribute.ValueType, attribute.Value.ToString()) { }
+}
