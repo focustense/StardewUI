@@ -12,7 +12,7 @@ using Xunit.Abstractions;
 
 namespace StarML.Tests;
 
-public class BindingTests(ITestOutputHelper output)
+public class BindingTests
 {
     class Model
     {
@@ -82,16 +82,25 @@ public class BindingTests(ITestOutputHelper output)
         public bool IsExpired => false;
     }
 
-    [Fact]
-    public void TestBindings()
+    private readonly FakeAssetCache assetCache;
+    private readonly ITestOutputHelper output;
+    private readonly IViewFactory viewFactory;
+    private readonly IViewBinder viewBinder;
+
+    public BindingTests(ITestOutputHelper output)
     {
-        var viewFactory = new ViewFactory();
-        var assetCache = new FakeAssetCache();
+        this.output = output;
+        viewFactory = new ViewFactory();
+        assetCache = new FakeAssetCache();
         var valueSourceFactory = new ValueSourceFactory(assetCache);
         var valueConverterFactory = new ValueConverterFactory();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
-        var viewBinder = new ReflectionViewBinder(attributeBindingFactory);
+        viewBinder = new ReflectionViewBinder(attributeBindingFactory);
+    }
 
+    [Fact]
+    public void TestBindings()
+    {
         var element = new SElement("label", [
             new SAttribute("max-lines", AttributeValueType.Literal, "1"),
             new SAttribute("color", AttributeValueType.Binding, "Color"),
@@ -114,13 +123,7 @@ public class BindingTests(ITestOutputHelper output)
     [Fact]
     public void TestNodes()
     {
-        var viewFactory = new ViewFactory();
-        var assetCache = new FakeAssetCache();
         assetCache.Put("TestSprite", UiSprites.ButtonDark);
-        var valueSourceFactory = new ValueSourceFactory(assetCache);
-        var valueConverterFactory = new ValueConverterFactory();
-        var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
-        var viewBinder = new ReflectionViewBinder(attributeBindingFactory);
 
         var root = new SElement("lane", [
             new SAttribute("orientation", AttributeValueType.Literal, "vertical"),
@@ -156,6 +159,51 @@ public class BindingTests(ITestOutputHelper output)
                 var image = Assert.IsType<Image>(child);
                 Assert.Equal(3.0f, image.Scale);
                 Assert.Equal(UiSprites.ButtonDark, image.Sprite);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal(Game1.dialogueFont, label.Font);
+                // TODO: Should really be empty string, not null, because type is non-nullable. But
+                // this is hard to figure out with reflection-based bindings.
+                // Assert.Equal("", label.Text);
+                Assert.Null(label.Text);
+            });
+
+        var model = new { HeaderText = "Some text" };
+        tree.Context = model;
+        tree.Update();
+
+        Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
+    }
+
+    [Fact]
+    public void TestEndToEnd()
+    {
+        var viewNodeFactory = new ViewNodeFactory(viewFactory, viewBinder);
+        assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
+
+        string markup =
+            @"<lane orientation=""vertical"" horizontal-content-alignment=""middle"" vertical-content-alignment=""end"">
+                <image scale=""3.5"" sprite={{@Mods/TestMod/TestSprite}} />
+                <label font=""dialogue"" text={{HeaderText}} />
+            </lane>";
+        var document = Document.Parse(markup);
+        var tree = viewNodeFactory.CreateNode(document.Root);
+        tree.Update();
+
+        var rootView = tree.View as Lane;
+        Assert.NotNull(rootView);
+        Assert.Equal(Orientation.Vertical, rootView.Orientation);
+        Assert.Equal(Alignment.Middle, rootView.HorizontalContentAlignment);
+        Assert.Equal(Alignment.End, rootView.VerticalContentAlignment);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var image = Assert.IsType<Image>(child);
+                Assert.Equal(3.5f, image.Scale);
+                Assert.Equal(UiSprites.SmallTrashCan, image.Sprite);
             },
             child =>
             {

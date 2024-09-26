@@ -4,17 +4,14 @@ using StardewUI.Framework.Dom;
 
 namespace StardewUI.Framework.Binding;
 
-public interface IViewNode
-{
-    IReadOnlyList<IViewNode> ChildNodes { get; }
-
-    object? Context { get; set; }
-
-    IView? View { get; }
-
-    bool Update();
-}
-
+/// <summary>
+/// Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.
+/// </summary>
+/// <param name="viewFactory">Factory for creating views, based on their tag names.</param>
+/// <param name="viewBinder">Binding service used to create <see cref="IViewBinding"/> instances that detect changes to
+/// data or assets and propagate them to the bound <see cref="IView"/>.</param>
+/// <param name="element">Element data for this node.</param>
+/// <param name="childNodes">Children of this node.</param>
 public class ViewNode(
     IViewFactory viewFactory,
     IViewBinder viewBinder,
