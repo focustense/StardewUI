@@ -1,7 +1,4 @@
-﻿using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewUI;
-using System.ComponentModel;
+﻿using StardewUI;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -49,6 +46,7 @@ public class ViewFactory : IViewFactory
             "grid" => new Grid(),
             "image" => new Image(),
             "label" => new Label(),
+            "lane" => new Lane(),
             "marquee" => new Marquee(),
             "panel" => new Panel(),
             "scrollableview" => new ScrollableView(),
@@ -64,11 +62,13 @@ public class ViewFactory : IViewFactory
 public interface IViewBinder
 {
     IViewBinding Bind(IView view, IElement element, object? data);
+
+    IViewDescriptor GetDescriptor(IView view);
 }
 
 public interface IViewBinding : IDisposable
 {
-    void Update();
+    bool Update();
 }
 
 class ViewBinding(IView view, IReadOnlyList<IAttributeBinding> attributeBindings) : IViewBinding
@@ -87,7 +87,7 @@ class ViewBinding(IView view, IReadOnlyList<IAttributeBinding> attributeBindings
         GC.SuppressFinalize(this);
     }
 
-    public void Update()
+    public bool Update()
     {
         if (isDisposed)
         {
@@ -95,28 +95,20 @@ class ViewBinding(IView view, IReadOnlyList<IAttributeBinding> attributeBindings
         }
         if (!viewRef.TryGetTarget(out var view))
         {
-            return;
+            return false;
         }
+        bool anyChanged = false;
         foreach (var binding in attributeBindings)
         {
-            binding.Update(view);
+            anyChanged |= binding.Update(view);
         }
+        return anyChanged;
     }
-}
-
-public interface IValueConverter<TSource, TDest>
-{
-    TDest Convert(TSource value);
-}
-
-public interface IValueConverterFactory
-{
-    IValueConverter<TSource, TDest> GetConverter<TSource, TDest>();
 }
 
 public interface IAttributeBinding : IDisposable
 {
-    void Update(IView target, bool force = false);
+    bool Update(IView target, bool force = false);
 }
 
 public interface IAttributeBindingFactory
@@ -143,13 +135,22 @@ public class AttributeBindingFactory(IValueSourceFactory valueSourceFactory, IVa
             GC.SuppressFinalize(this);
         }
 
-        public void Update(IView target, bool force)
+        public bool Update(IView target, bool force)
         {
-            if ((Source.Update() || force) && Source.Value is not null)
+            if (!(Source.Update() || force))
+            {
+                return false;
+            }
+            if (Source.Value is not null)
             {
                 var destValue = Converter.Convert(Source.Value);
                 Destination.SetValue(target, destValue);
             }
+            else
+            {
+                Destination.SetValue(target, default!);
+            }
+            return true;
         }
     }
 
@@ -217,7 +218,7 @@ public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFacto
 {
     public IViewBinding Bind(IView view, IElement element, object? data)
     {
-        var viewDescriptor = ReflectionViewDescriptor.ForViewType(view.GetType());
+        var viewDescriptor = GetDescriptor(view);
         var context = data is not null ? Context.Create(data) : null;
         var attributeBindings = element.Attributes
             .Select(attribute => attributeBindingFactory.CreateBinding(viewDescriptor, attribute, context))
@@ -229,6 +230,11 @@ public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFacto
         }
         var viewBinding = new ViewBinding(view, attributeBindings);
         return viewBinding;
+    }
+
+    public IViewDescriptor GetDescriptor(IView view)
+    {
+        return ReflectionViewDescriptor.ForViewType(view.GetType());
     }
 }
 
