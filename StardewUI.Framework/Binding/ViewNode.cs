@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using StardewUI;
 using StardewUI.Framework.Descriptors;
+using StardewUI.Framework.Dom;
 
 namespace StardewUI.Framework.Binding;
 

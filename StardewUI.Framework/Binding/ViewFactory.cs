@@ -3,30 +3,11 @@ using System.Reflection;
 using System.Text;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
+using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework.Binding;
-
-public interface IAttribute
-{
-    string Name { get; }
-    AttributeValueType ValueType { get; }
-    string Value { get; }
-}
-
-public record SAttribute(string Name, AttributeValueType ValueType, string Value) : IAttribute;
-
-public interface IElement
-{
-    string Tag { get; }
-    IReadOnlyList<IAttribute> Attributes { get; }
-}
-
-public record SElement(string Tag, IReadOnlyList<SAttribute> Attributes) : IElement
-{
-    IReadOnlyList<IAttribute> IElement.Attributes => Attributes;
-}
 
 public interface IViewFactory
 {

@@ -3,6 +3,7 @@ using StardewUI;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
+using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 using StardewValley;

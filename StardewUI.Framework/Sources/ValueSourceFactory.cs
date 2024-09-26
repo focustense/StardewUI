@@ -1,6 +1,7 @@
 ﻿using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Descriptors;
+using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 
 namespace StardewUI.Framework.Sources;
