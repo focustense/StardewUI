@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewUI;
-using StardewUITest.StarML;
+using StardewUI.Framework.Binding;
+using StardewUI.Framework.Content;
+using StardewUI.Framework.Converters;
+using StardewUI.Framework.Grammar;
+using StardewUI.Framework.Sources;
 using StardewValley;
 using System.ComponentModel;
 using Xunit.Abstractions;
