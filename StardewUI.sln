@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUITest", "StardewUIT
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StardewUI", "StardewUI\StardewUI.shproj", "{D3DBB38B-79AF-4B84-B425-1CFFDEFA7A86}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarML.Tests", "StarML.Tests\StarML.Tests.csproj", "{23318673-7067-4801-B8F6-0059E5ECB25A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.Framework.Tests", "StardewUI.Framework.Tests\StardewUI.Framework.Tests.csproj", "{23318673-7067-4801-B8F6-0059E5ECB25A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.Framework", "StardewUI.Framework\StardewUI.Framework.csproj", "{91F57065-E3C0-4832-AD57-18BB271E9D56}"
 EndProject
