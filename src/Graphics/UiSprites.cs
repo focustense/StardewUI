@@ -137,6 +137,16 @@ public static class UiSprites
     public static Edges MenuHorizontalDividerMargin => new(-36, -20, -40, -20);
 
     /// <summary>
+    /// Inset-style background and border, often used to hold an item or represent a slot.
+    /// </summary>
+    public static Sprite MenuSlotInset => new(Game1.menuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(9));
+
+    /// <summary>
+    /// Outset-style background and border, often used to hold an item or represent a slot.
+    /// </summary>
+    public static Sprite MenuSlotOutset => new(Game1.menuTexture, SourceRect: new(64, 320, 60, 60), FixedEdges: new(8));
+
+    /// <summary>
     /// Single-line rectangular border with a slight inset look.
     /// </summary>
     public static Sprite MenuSlotTransparent =>
