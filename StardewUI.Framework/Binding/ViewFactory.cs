@@ -1,19 +1,27 @@
-﻿using System.Globalization;
-using System.Reflection;
-using System.Text;
-using StardewUI.Framework.Converters;
-using StardewUI.Framework.Descriptors;
-using StardewUI.Framework.Dom;
-using StardewUI.Framework.Grammar;
-using StardewUI.Framework.Sources;
+﻿namespace StardewUI.Framework.Binding;
 
-namespace StardewUI.Framework.Binding;
-
+/// <summary>
+/// Factory for creating views from tags.
+/// </summary>
+/// <remarks>
+/// This is a simple, low-level abstraction that simply maps tags to view types. It does not perform any reflection or
+/// participate in view binding.
+/// </remarks>
 public interface IViewFactory
 {
+    /// <summary>
+    /// Creates a new view.
+    /// </summary>
+    /// <param name="tagName">The markup tag that specifies the type of view.</param>
+    /// <returns>A new view of a type corresponding to the <paramref name="tagName"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown when the <paramref name="tagName"/> does not correspond to any
+    /// supported view type.</exception>
     IView CreateView(string tagName);
 }
 
+/// <summary>
+/// View factory for built-in view types.
+/// </summary>
 public class ViewFactory : IViewFactory
 {
     public IView CreateView(string tagName)
@@ -40,211 +48,5 @@ public class ViewFactory : IViewFactory
             //"tinynumberlabel" => new TinyNumberLabel(),
             _ => throw new ArgumentException($"Unsupported view type: {tagName}", nameof(tagName)),
         };
-    }
-}
-
-public interface IViewBinder
-{
-    IViewBinding Bind(IView view, IElement element, object? data);
-
-    IViewDescriptor GetDescriptor(IView view);
-}
-
-public interface IViewBinding : IDisposable
-{
-    bool Update();
-}
-
-class ViewBinding(IView view, IReadOnlyList<IAttributeBinding> attributeBindings) : IViewBinding
-{
-    private readonly WeakReference<IView> viewRef = new(view);
-
-    private bool isDisposed;
-
-    public void Dispose()
-    {
-        foreach (var binding in attributeBindings)
-        {
-            binding.Dispose();
-        }
-        isDisposed = true;
-        GC.SuppressFinalize(this);
-    }
-
-    public bool Update()
-    {
-        if (isDisposed)
-        {
-            throw new ObjectDisposedException(nameof(ViewBinding));
-        }
-        if (!viewRef.TryGetTarget(out var view))
-        {
-            return false;
-        }
-        bool anyChanged = false;
-        foreach (var binding in attributeBindings)
-        {
-            anyChanged |= binding.Update(view);
-        }
-        return anyChanged;
-    }
-}
-
-public interface IAttributeBinding : IDisposable
-{
-    bool Update(IView target, bool force = false);
-}
-
-public interface IAttributeBindingFactory
-{
-    IAttributeBinding CreateBinding(IViewDescriptor viewDescriptor, IAttribute attribute, BindingContext? context);
-}
-
-public class AttributeBindingFactory(
-    IValueSourceFactory valueSourceFactory,
-    IValueConverterFactory valueConverterFactory
-) : IAttributeBindingFactory
-{
-    delegate IAttributeBinding LocalBindingFactory(
-        IViewDescriptor viewDescriptor,
-        IAttribute attribute,
-        string propertyName,
-        BindingContext? context
-    );
-
-    record AttributeBinding<TSource, TDest>(
-        IValueSource<TSource> Source,
-        IValueConverter<TSource, TDest> Converter,
-        IPropertyDescriptor<TDest> Destination
-    ) : IAttributeBinding, IDisposable
-    {
-        public void Dispose()
-        {
-            if (Source is IDisposable sourceDisposable)
-            {
-                sourceDisposable.Dispose();
-            }
-            if (Converter is IDisposable converterDisposable)
-            {
-                converterDisposable.Dispose();
-            }
-            GC.SuppressFinalize(this);
-        }
-
-        public bool Update(IView target, bool force)
-        {
-            if (!(Source.Update() || force))
-            {
-                return false;
-            }
-            if (Source.Value is not null)
-            {
-                var destValue = Converter.Convert(Source.Value);
-                Destination.SetValue(target, destValue);
-            }
-            else
-            {
-                Destination.SetValue(target, default!);
-            }
-            return true;
-        }
-    }
-
-    private static readonly Rune DASH = new('-');
-
-    private readonly Dictionary<(Type, string, Type), LocalBindingFactory> cache = [];
-
-    public IAttributeBinding CreateBinding(
-        IViewDescriptor viewDescriptor,
-        IAttribute attribute,
-        BindingContext? context
-    )
-    {
-        var propertyName = GetPropertyName(attribute.Name);
-        var property = viewDescriptor.GetProperty(propertyName);
-        // For literal attributes and asset bindings, the source type will always be the same - either a string, or the
-        // target property type, respectively. However, for a context binding, the source type belongs to the context
-        // and we can't cache until we know what it is.
-        var sourceType = valueSourceFactory.GetValueType(attribute, property, context);
-        var propertyKey = (viewDescriptor.TargetType, attribute.Name, sourceType);
-        if (!cache.TryGetValue(propertyKey, out var bindingFactory))
-        {
-            if (!property.CanWrite)
-            {
-                throw new BindingException(
-                    $"Cannot bind to non-writable property '{propertyName}' of type {viewDescriptor.TargetType.Name}."
-                );
-            }
-            var typedBindingMethod = typeof(AttributeBindingFactory).GetMethod(
-                nameof(CreateTypedBinding),
-                BindingFlags.NonPublic | BindingFlags.Instance
-            )!;
-            var typedBindingGenericMethod = typedBindingMethod.MakeGenericMethod(sourceType, property.ValueType);
-            bindingFactory = typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
-            cache.Add(propertyKey, bindingFactory);
-        }
-        return bindingFactory(viewDescriptor, attribute, propertyName, context);
-    }
-
-    private IAttributeBinding CreateTypedBinding<TSource, TDest>(
-        IViewDescriptor viewDescriptor,
-        IAttribute attribute,
-        string propertyName,
-        BindingContext context
-    )
-        where TSource : notnull
-    {
-        var property = (IPropertyDescriptor<TDest>)viewDescriptor.GetProperty(propertyName);
-        var source = valueSourceFactory.GetValueSource<TSource>(attribute, context);
-        var converter = valueConverterFactory.GetConverter<TSource, TDest>();
-        return new AttributeBinding<TSource, TDest>(source, converter, property);
-    }
-
-    private static string GetPropertyName(ReadOnlySpan<char> attributeName)
-    {
-        var sb = new StringBuilder(attributeName.Length);
-        bool capitalizeNext = true;
-        foreach (var rune in attributeName.EnumerateRunes())
-        {
-            if (rune == DASH)
-            {
-                capitalizeNext = true;
-                continue;
-            }
-            if (capitalizeNext)
-            {
-                sb.Append(Rune.ToUpper(rune, CultureInfo.CurrentUICulture));
-                capitalizeNext = false;
-            }
-            else
-            {
-                sb.Append(rune);
-            }
-        }
-        return sb.ToString();
-    }
-}
-
-public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFactory) : IViewBinder
-{
-    public IViewBinding Bind(IView view, IElement element, object? data)
-    {
-        var viewDescriptor = GetDescriptor(view);
-        var context = data is not null ? BindingContext.Create(data) : null;
-        var attributeBindings = element
-            .Attributes.Select(attribute => attributeBindingFactory.CreateBinding(viewDescriptor, attribute, context))
-            .ToList();
-        // Initial forced update since some binding types (e.g. literals) never have updates.
-        foreach (var attributeBinding in attributeBindings)
-        {
-            attributeBinding.Update(view, force: true);
-        }
-        var viewBinding = new ViewBinding(view, attributeBindings);
-        return viewBinding;
-    }
-
-    public IViewDescriptor GetDescriptor(IView view)
-    {
-        return ReflectionViewDescriptor.ForViewType(view.GetType());
     }
 }
