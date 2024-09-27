@@ -48,9 +48,9 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => (IValueSource<T>)new LiteralValueSource(attribute.Value),
-            AttributeValueType.Binding => attribute.Value.StartsWith('@')
-                ? new AssetValueSource<T>(assetCache, attribute.Value[1..])
-                : new ContextPropertyValueSource<T>(context, attribute.Value),
+            AttributeValueType.Binding => attribute.IsAssetBinding()
+                ? new AssetValueSource<T>(assetCache, attribute.GetBindingPath())
+                : new ContextPropertyValueSource<T>(context, attribute.GetBindingPath()),
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }
@@ -60,7 +60,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => typeof(string),
-            AttributeValueType.Binding => attribute.Value.StartsWith('@')
+            AttributeValueType.Binding => attribute.IsAssetBinding()
                 // For now, assume that asset types must exactly match the property type.
                 // SMAPI's content pipeline makes it a challenge to cleanly associate an asset name with a type.
                 ? property.ValueType

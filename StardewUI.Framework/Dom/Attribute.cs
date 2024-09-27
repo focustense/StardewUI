@@ -24,6 +24,40 @@ public interface IAttribute
 }
 
 /// <summary>
+/// Extension methods for the <see cref="IAttribute"/> interface.
+/// </summary>
+public static class AttributeExtensions
+{
+    /// <summary>
+    /// Gets the binding path (property name or asset path) of an attribute.
+    /// </summary>
+    /// <param name="attribute">The attribute to resolve.</param>
+    /// <returns>The attribute's binding path; either the asset name, for an asset binding, or the property name, for a
+    /// context binding.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="attribute"/> does not have a bound value, i.e.
+    /// has a <see cref="AttributeValueType.Literal"/> type instead.</exception>
+    public static string GetBindingPath(this IAttribute attribute)
+    {
+        if (attribute.ValueType != AttributeValueType.Binding)
+        {
+            throw new ArgumentException("Specified attribute does not have a bound value type.", nameof(attribute));
+        }
+        return IsAssetBinding(attribute) ? attribute.Value[1..] : attribute.Value;
+    }
+
+    /// <summary>
+    /// Tests whether an attribute is an asset binding.
+    /// </summary>
+    /// <param name="attribute">The attribute to check.</param>
+    /// <returns><c>true</c> if the <paramref name="attribute"/> value references a game asset; <c>false</c> if it is a
+    /// context binding or literal attribute.</returns>
+    public static bool IsAssetBinding(this IAttribute attribute)
+    {
+        return attribute.ValueType == AttributeValueType.Binding && attribute.Value.StartsWith('@');
+    }
+}
+
+/// <summary>
 /// Record implementation of a StarML <see cref="IAttribute"/>.
 /// </summary>
 /// <remarks>

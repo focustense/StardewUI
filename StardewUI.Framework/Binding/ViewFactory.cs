@@ -4,6 +4,7 @@ using System.Text;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
+using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework.Binding;
@@ -151,7 +152,7 @@ public class AttributeBindingFactory(
 
     private static readonly Rune DASH = new('-');
 
-    private readonly Dictionary<(Type, string), LocalBindingFactory> cache = [];
+    private readonly Dictionary<(Type, string, Type), LocalBindingFactory> cache = [];
 
     public IAttributeBinding CreateBinding(
         IViewDescriptor viewDescriptor,
@@ -159,12 +160,15 @@ public class AttributeBindingFactory(
         BindingContext? context
     )
     {
-        var propertyKey = (viewDescriptor.TargetType, attribute.Name);
-        // TODO: Cache propertyName with the binding factory
         var propertyName = GetPropertyName(attribute.Name);
+        var property = viewDescriptor.GetProperty(propertyName);
+        // For literal attributes and asset bindings, the source type will always be the same - either a string, or the
+        // target property type, respectively. However, for a context binding, the source type belongs to the context
+        // and we can't cache until we know what it is.
+        var sourceType = valueSourceFactory.GetValueType(attribute, property, context);
+        var propertyKey = (viewDescriptor.TargetType, attribute.Name, sourceType);
         if (!cache.TryGetValue(propertyKey, out var bindingFactory))
         {
-            var property = viewDescriptor.GetProperty(propertyName);
             if (!property.CanWrite)
             {
                 throw new BindingException(
@@ -175,7 +179,6 @@ public class AttributeBindingFactory(
                 nameof(CreateTypedBinding),
                 BindingFlags.NonPublic | BindingFlags.Instance
             )!;
-            var sourceType = valueSourceFactory.GetValueType(attribute, property, context);
             var typedBindingGenericMethod = typedBindingMethod.MakeGenericMethod(sourceType, property.ValueType);
             bindingFactory = typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
             cache.Add(propertyKey, bindingFactory);
