@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StardewUI.Framework\StardewUI.Framework.csproj" />
+    <ProjectReference Include="..\Framework\StardewUI.Framework.csproj" />
   </ItemGroup>
 
 </Project>

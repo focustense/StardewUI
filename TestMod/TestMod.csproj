@@ -10,6 +10,10 @@
         <WarningsAsErrors>Nullable</WarningsAsErrors>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     </PropertyGroup>
+	
+	<PropertyGroup>
+		<ModFolderName>StardewUITest</ModFolderName>
+	</PropertyGroup>
 
     <ItemGroup>
       <None Remove="i18n\default.json" />
