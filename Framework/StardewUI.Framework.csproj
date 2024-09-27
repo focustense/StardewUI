@@ -41,5 +41,5 @@
       <Using Alias="Vector2" Include="Microsoft.Xna.Framework.Vector2" />
   </ItemGroup>
 
-    <Import Project="..\StardewUI\StardewUI.projitems" Label="Shared" />
+    <Import Project="..\StardewUI.projitems" Label="Shared" />
 </Project>
