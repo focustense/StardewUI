@@ -9,6 +9,6 @@
     <Import_RootNamespace>StardewUI</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)\Core\**\*.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)\**\*.cs" />
   </ItemGroup>
 </Project>
