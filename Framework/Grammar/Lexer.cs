@@ -62,6 +62,12 @@ public enum TokenType
     /// A pair of closing braces (<c>}}</c>), used to end a binding expression for an attribute value.
     /// </summary>
     BindingEnd,
+
+    /// <summary>
+    /// An explicit binding modifier; one of <c>@</c> (asset), <c>&lt;</c> (input only), <c>&gt;</c> (output only) or
+    /// <c>&lt;&gt;</c> (two-way).
+    /// </summary>
+    BindingModifier,
 }
 
 /// <summary>
@@ -235,6 +241,10 @@ public ref struct Lexer(ReadOnlySpan<char> text)
             Mode.Binding => text switch
             {
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
+                ['<', '>', ..] => new(TokenType.BindingModifier, 2),
+                ['<', ..] => new(TokenType.BindingModifier, 1),
+                ['>', ..] => new(TokenType.BindingModifier, 1),
+                ['@', ..] => new(TokenType.BindingModifier, 1),
                 _ => ReadLiteralStringUntil("}}"),
             },
             _ => text switch

@@ -9,10 +9,10 @@
         <Nullable>enable</Nullable>
         <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
-	
-	<PropertyGroup>
-		<ModFolderName>StardewUI</ModFolderName>
-	</PropertyGroup>
+  
+  <PropertyGroup>
+    <ModFolderName>StardewUI</ModFolderName>
+  </PropertyGroup>
 
     <ItemGroup>
       <None Remove="i18n\default.json" />

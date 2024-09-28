@@ -17,7 +17,7 @@ public interface IValueSourceFactory
     /// <typeparam name="T">Type of value to obtain; same as the result of <see cref="GetValueType"/>.</typeparam>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <see cref="AttributeValueType.Binding"/> that are not asset bindings).</param>
+    /// <see cref="AttributeValueType.InputBinding"/> that are not asset bindings).</param>
     IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context)
         where T : notnull;
 
@@ -32,7 +32,7 @@ public interface IValueSourceFactory
     /// <param name="property">Binding metadata for the destination property. Used when the source does not encode any
     /// independent type information.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <see cref="AttributeValueType.Binding"/> that are not asset bindings).</param>
+    /// <see cref="AttributeValueType.InputBinding"/> that are not asset bindings).</param>
     Type GetValueType(IAttribute attribute, IPropertyDescriptor property, BindingContext? context);
 }
 
@@ -48,9 +48,9 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => (IValueSource<T>)new LiteralValueSource(attribute.Value),
-            AttributeValueType.Binding => attribute.IsAssetBinding()
-                ? new AssetValueSource<T>(assetCache, attribute.GetBindingPath())
-                : new ContextPropertyValueSource<T>(context, attribute.GetBindingPath()),
+            AttributeValueType.AssetBinding => new AssetValueSource<T>(assetCache, attribute.Value),
+            AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
+                new ContextPropertyValueSource<T>(context, attribute.Value),
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }
@@ -60,11 +60,9 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => typeof(string),
-            AttributeValueType.Binding => attribute.IsAssetBinding()
-                // For now, assume that asset types must exactly match the property type.
-                // SMAPI's content pipeline makes it a challenge to cleanly associate an asset name with a type.
-                ? property.ValueType
-                : context?.Descriptor.GetProperty(attribute.Value).ValueType ?? property.ValueType,
+            AttributeValueType.AssetBinding => property.ValueType,
+            AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
+                context?.Descriptor.GetProperty(attribute.Value).ValueType ?? property.ValueType,
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }

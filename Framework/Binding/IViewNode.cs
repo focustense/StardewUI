@@ -15,7 +15,7 @@ public interface IViewNode
     IReadOnlyList<IViewNode> ChildNodes { get; }
 
     /// <summary>
-    /// The currently-bound context data, used as the source for any <see cref="Grammar.AttributeValueType.Binding"/>
+    /// The currently-bound context data, used as the source for any <see cref="Grammar.AttributeValueType.InputBinding"/>
     /// attributes that are not asset-bound, i.e. not beginning with <c>@</c>.
     /// </summary>
     object? Context { get; set; }

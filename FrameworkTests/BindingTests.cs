@@ -103,8 +103,8 @@ public class BindingTests
     {
         var element = new SElement("label", [
             new SAttribute("max-lines", AttributeValueType.Literal, "1"),
-            new SAttribute("color", AttributeValueType.Binding, "Color"),
-            new SAttribute("text", AttributeValueType.Binding, "Name"),
+            new SAttribute("color", AttributeValueType.InputBinding, "Color"),
+            new SAttribute("text", AttributeValueType.InputBinding, "Name"),
         ]);
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
@@ -134,11 +134,11 @@ public class BindingTests
             // TODO: How can we handle complex attributes like the Layout in particular?
             //new SAttribute("width", AttributeValueType.Literal, "400"),
             new SAttribute("scale", AttributeValueType.Literal, "3.0"),
-            new SAttribute("sprite", AttributeValueType.Binding, "@TestSprite"),
+            new SAttribute("sprite", AttributeValueType.AssetBinding, "TestSprite"),
         ]);
         var child2 = new SElement("label", [
             new SAttribute("font", AttributeValueType.Literal, "dialogue"),
-            new SAttribute("text", AttributeValueType.Binding, "HeaderText"),
+            new SAttribute("text", AttributeValueType.InputBinding, "HeaderText"),
         ]);
         var tree = new ViewNode(
             viewFactory, viewBinder, root, [

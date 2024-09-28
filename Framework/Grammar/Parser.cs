@@ -1,4 +1,6 @@
-﻿namespace StardewUI.Framework.Grammar;
+﻿using System;
+
+namespace StardewUI.Framework.Grammar;
 
 /// <summary>
 /// Information about a parsed tag in StarML.
@@ -24,9 +26,25 @@ public enum AttributeValueType
     Literal,
 
     /// <summary>
-    /// The value is an instruction for creating a data binding, used to obtain the real value from a different source.
+    /// A read-only binding which obtains the value from a named game asset.
     /// </summary>
-    Binding,
+    AssetBinding,
+
+    /// <summary>
+    /// A one-way data binding which obtains the value from the context data and assigns it to the view.
+    /// </summary>
+    InputBinding,
+
+    /// <summary>
+    /// A one-way data binding which obtains the value from the view and assigns it to the context data.
+    /// </summary>
+    OutputBinding,
+
+    /// <summary>
+    /// A two-way data binding which both assigns the context data's value to the view, and the view's value to the
+    /// context data, depending on which one was most recently changed.
+    /// </summary>
+    TwoWayBinding,
 }
 
 /// <summary>
@@ -121,9 +139,18 @@ public ref struct DocumentReader(Lexer lexer)
                 lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingStart);
                 var valueType =
                     lexer.Current.Type == TokenType.BindingStart
-                        ? AttributeValueType.Binding
+                        ? AttributeValueType.InputBinding
                         : AttributeValueType.Literal;
-                lexer.ReadRequiredToken(TokenType.Literal);
+                lexer.ReadRequiredToken(TokenType.BindingModifier, TokenType.Literal);
+                if (lexer.Current.Type == TokenType.BindingModifier)
+                {
+                    valueType = GetBindingType(lexer.Current.Text);
+                }
+                ;
+                if (lexer.Current.Type == TokenType.BindingModifier)
+                {
+                    lexer.ReadRequiredToken(TokenType.Literal);
+                }
                 var attributeValue = lexer.Current.Text;
                 // We don't bother trying to enforce that the end token matches the start token because the Lexer will
                 // have already failed to parse the literal if it doesn't match.
@@ -170,6 +197,18 @@ public ref struct DocumentReader(Lexer lexer)
         }
         Tag = new(tagName, isClosingTag);
         return true;
+    }
+
+    private static AttributeValueType GetBindingType(in ReadOnlySpan<char> token)
+    {
+        return token switch
+        {
+            "<>" => AttributeValueType.TwoWayBinding,
+            "<" => AttributeValueType.InputBinding,
+            ">" => AttributeValueType.OutputBinding,
+            "@" => AttributeValueType.AssetBinding,
+            _ => throw new ArgumentException($"Invalid binding modifier: {token}", nameof(token)),
+        };
     }
 }
 

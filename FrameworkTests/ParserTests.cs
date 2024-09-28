@@ -6,26 +6,60 @@ namespace StarML.Tests;
 
 public class ParserTests(ITestOutputHelper output)
 {
-    [Fact]
-    public void TestParserBasic()
-    {
-        string markup =
-            @"<lane orientation=""vertical"" align-content=""middle end"">
-                <image width=""400"" sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
-                <label font=""dialogue"" text={{HeaderText}} />
-            </lane>";
+    public record TagExpectation(string Name, SAttribute[]? Attributes = null, bool IsClosingTag = false);
 
-        var reader = new DocumentReader(markup);
-        while (reader.NextTag())
+    public static TheoryData<string, TagExpectation[]> Data => new()
+    {
         {
-            var label = reader.Tag.IsClosingTag ? "Closing Tag" : "Opening Tag";
-            output.WriteLine($"{label}: {reader.Tag.Name}");
-            while (reader.NextAttribute())
+            @"<lane orientation=""vertical"" align-content=""middle end"">
+                <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
+                <label font=""dialogue"" text={{HeaderText}} />
+                <checkbox is-checked={{<>Checked}}/>
+            </lane>",
+            [
+                new("lane", [
+                    new("orientation", AttributeValueType.Literal, "vertical"),
+                    new("align-content", AttributeValueType.Literal, "middle end"),
+                ]),
+                new("image", [
+                    new("width", AttributeValueType.InputBinding, "ImageWidth"),
+                    new("sprite", AttributeValueType.AssetBinding, "Mods/focustense.StardewUITest/Sprites/Header"),
+                ]),
+                new("image", IsClosingTag: true),
+                new("label", [
+                    new("font", AttributeValueType.Literal, "dialogue"),
+                    new("text", AttributeValueType.InputBinding, "HeaderText"),
+                ]),
+                new("label", IsClosingTag: true),
+                new("checkbox", [
+                    new("is-checked", AttributeValueType.TwoWayBinding, "Checked"),
+                ]),
+                new("checkbox", IsClosingTag: true),
+                new("lane", IsClosingTag: true),
+            ]
+        },
+    };
+
+    [Theory]
+    [MemberData(nameof(Data))]
+    public void ParsedSyntax(string markup, TagExpectation[] tags)
+    {
+        var reader = new DocumentReader(markup);
+        foreach (var tag in tags)
+        {
+            Assert.True(reader.NextTag());
+            Assert.Equal(tag.Name, reader.Tag.Name.ToString());
+            Assert.Equal(tag.IsClosingTag, reader.Tag.IsClosingTag);
+            foreach (var attribute in tag.Attributes ?? [])
             {
-                var attribute = reader.Attribute;
-                output.WriteLine($"  {attribute.Name} = [{attribute.ValueType}] {attribute.Value}");
+                Assert.True(reader.NextAttribute());
+                Assert.Equal(attribute.Name, reader.Attribute.Name.ToString());
+                Assert.Equal(attribute.Value, reader.Attribute.Value.ToString());
+                Assert.Equal(attribute.ValueType, reader.Attribute.ValueType);
             }
+            Assert.False(reader.NextAttribute());
         }
+        Assert.True(reader.Eof);
     }
 
     [Fact]
@@ -33,8 +67,9 @@ public class ParserTests(ITestOutputHelper output)
     {
         string markup =
             @"<lane orientation=""vertical"" align-content=""middle end"">
-                <image width=""400"" sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
+                <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
                 <label font=""dialogue"" text={{HeaderText}} />
+                <checkbox is-checked={{<>Checked}}/>
             </lane>";
 
         var document = Document.Parse(markup);
@@ -51,8 +86,8 @@ public class ParserTests(ITestOutputHelper output)
                 Assert.Equal("image", node.Tag);
                 Assert.Collection(
                     node.Attributes,
-                    attr => Assert.Equal(new("width", AttributeValueType.Literal, "400"), attr),
-                    attr => Assert.Equal(new("sprite", AttributeValueType.Binding, "@Mods/focustense.StardewUITest/Sprites/Header"), attr));
+                    attr => Assert.Equal(new("width", AttributeValueType.InputBinding, "ImageWidth"), attr),
+                    attr => Assert.Equal(new("sprite", AttributeValueType.AssetBinding, "Mods/focustense.StardewUITest/Sprites/Header"), attr));
             },
             node =>
             {
@@ -60,7 +95,14 @@ public class ParserTests(ITestOutputHelper output)
                 Assert.Collection(
                     node.Attributes,
                     attr => Assert.Equal(new("font", AttributeValueType.Literal, "dialogue"), attr),
-                    attr => Assert.Equal(new("text", AttributeValueType.Binding, "HeaderText"), attr));
+                    attr => Assert.Equal(new("text", AttributeValueType.InputBinding, "HeaderText"), attr));
+            },
+            node =>
+            {
+                Assert.Equal("checkbox", node.Tag);
+                Assert.Collection(
+                    node.Attributes,
+                    attr => Assert.Equal(new("is-checked", AttributeValueType.TwoWayBinding, "Checked"), attr));
             });
     }
 }

@@ -14,7 +14,7 @@ public interface IViewBinder
     /// <param name="view">The view that will be bound.</param>
     /// <param name="element">The element data providing the literal or binding attributes.</param>
     /// <param name="data">The binding data, for any non-asset bindings using
-    /// <see cref="Grammar.AttributeValueType.Binding"/>.</param>
+    /// <see cref="Grammar.AttributeValueType.InputBinding"/>.</param>
     /// <returns>A view binding that can be used to propagate changes in the <paramref name="data"/> or any dependent
     /// assets to the <paramref name="view"/>.</returns>
     IViewBinding Bind(IView view, IElement element, object? data);
