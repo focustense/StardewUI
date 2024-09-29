@@ -22,7 +22,18 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, Document document,
         tree = viewNodeFactory.CreateNode(document.Root);
         tree.Context = context;
         tree.Update();
-        return tree.View!;
+        return tree.Views.Count switch
+        {
+            0 => throw new BindingException(
+                "No root view detected. Either the document is empty, or has a structural attribute applied to the "
+                    + "root view causing it to be excluded."
+            ),
+            1 => tree.Views[0],
+            _ => throw new BindingException(
+                $"Multiple ({tree.Views.Count}) root views detected. The root of a document must resolve to exactly "
+                    + "one view (no *repeat or other multiple-emitting elements)."
+            ),
+        };
     }
 
     public override void OnUpdate(TimeSpan elapsed)

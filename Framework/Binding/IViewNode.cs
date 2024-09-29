@@ -21,9 +21,9 @@ public interface IViewNode
     object? Context { get; set; }
 
     /// <summary>
-    /// The view for this node, if it exists.
+    /// The views for this node, if any have been created.
     /// </summary>
-    IView? View { get; }
+    IReadOnlyList<IView> Views { get; }
 
     /// <summary>
     /// Performs the regular per-frame update for this node.

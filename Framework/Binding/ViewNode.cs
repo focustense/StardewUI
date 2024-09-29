@@ -35,20 +35,21 @@ public class ViewNode(
         }
     }
 
-    public IView? View { get; private set; }
+    public IReadOnlyList<IView> Views => view is not null ? [view] : [];
 
     private IViewBinding? binding;
     private IChildrenBinder? childrenBinder;
     private object? context;
+    private IView? view;
     private bool wasContextChanged;
 
     public bool Update()
     {
         bool wasChanged = false;
-        if (View is null)
+        if (view is null)
         {
-            View ??= viewFactory.CreateView(element.Tag);
-            var viewDescriptor = viewBinder.GetDescriptor(View);
+            view ??= viewFactory.CreateView(element.Tag);
+            var viewDescriptor = viewBinder.GetDescriptor(view);
             childrenBinder = ReflectionChildrenBinder.FromViewDescriptor(viewDescriptor);
         }
         if (wasContextChanged)
@@ -64,7 +65,7 @@ public class ViewNode(
         else
         {
             // Don't require explicit update because IViewBinder.Bind always does an initial forced update.
-            binding = viewBinder.Bind(View, element, context);
+            binding = viewBinder.Bind(view, element, context);
             wasChanged = true;
         }
         bool wasChildViewChanged = false;
@@ -74,9 +75,11 @@ public class ViewNode(
             {
                 childNode.Context = context;
             }
-            var previousView = childNode.View;
+            // Even though Views is an IReadOnlyList<IView>, that does not make it an immutable list. If we want to
+            // reliably detect changes, we have to account for the possibility of the list being modified in situ.
+            var previousViews = new List<IView>(childNode.Views);
             childNode.Update();
-            wasChildViewChanged |= childNode.View != previousView;
+            wasChildViewChanged |= !childNode.Views.SequenceEqual(previousViews);
         }
         if (wasChildViewChanged)
         {
@@ -88,19 +91,19 @@ public class ViewNode(
 
     private void UpdateViewChildren()
     {
-        if (View is null)
+        if (view is null)
         {
             return;
         }
-        var children = ChildNodes.Select(node => node.View).Where(view => view is not null).Cast<IView>().ToList();
+        var children = ChildNodes.SelectMany(node => node.Views).Where(view => view is not null).Cast<IView>().ToList();
         if (childrenBinder is not null)
         {
-            childrenBinder.SetChildren(View, children);
+            childrenBinder.SetChildren(view, children);
         }
         else if (children.Count > 0)
         {
             throw new BindingException(
-                $"Cannot bind {children.Count} children to view type {View.GetType().Name} because it does not "
+                $"Cannot bind {children.Count} children to view type {view.GetType().Name} because it does not "
                     + "define any publicly writable child/children property."
             );
         }

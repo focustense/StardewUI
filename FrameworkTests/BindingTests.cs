@@ -184,7 +184,7 @@ public partial class BindingTests
             ]);
         tree.Update();
 
-        var rootView = tree.View as Lane;
+        var rootView = tree.Views.SingleOrDefault() as Lane;
         Assert.NotNull(rootView);
         Assert.Equal(Orientation.Vertical, rootView.Orientation);
         Assert.Equal(Alignment.Middle, rootView.HorizontalContentAlignment);
@@ -229,7 +229,7 @@ public partial class BindingTests
         var tree = viewNodeFactory.CreateNode(document.Root);
         tree.Update();
 
-        var rootView = tree.View as Lane;
+        var rootView = tree.Views.SingleOrDefault() as Lane;
         Assert.NotNull(rootView);
         Assert.Equal(Orientation.Vertical, rootView.Orientation);
         Assert.Equal(Alignment.Middle, rootView.HorizontalContentAlignment);
