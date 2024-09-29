@@ -99,7 +99,7 @@ public class BindingTests
     }
 
     [Fact]
-    public void TestBindings()
+    public void Update_WithInputBindings_WritesContextToView()
     {
         var element = new SElement("label", [
             new SAttribute("max-lines", AttributeValueType.Literal, "1"),
@@ -118,6 +118,99 @@ public class BindingTests
         model.Name = "New text";
         viewBinding.Update();
         Assert.Equal("New text", label.Text);
+    }
+
+    class OutputBindingTestModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public bool Checked
+        {
+            get => isChecked;
+            set
+            {
+                if (value != isChecked)
+                {
+                    isChecked = value;
+                    PropertyChanged?.Invoke(this, new(nameof(Checked)));
+                }
+            }
+        }
+        public Vector2 Size
+        {
+            get => size;
+            set
+            {
+                if (value != size)
+                {
+                    size = value;
+                    PropertyChanged?.Invoke(this, new(nameof(Size)));
+                }
+            }
+        }
+
+        private bool isChecked;
+        private Vector2 size;
+    }
+
+    [Fact]
+    public void Update_WithOutputBindings_WritesViewToContext()
+    {
+        var element = new SElement("checkbox", [
+            new SAttribute("layout", AttributeValueType.Literal, "200px 20px"),
+            new SAttribute("is-checked", AttributeValueType.OutputBinding, "Checked"),
+            new SAttribute("outer-size", AttributeValueType.OutputBinding, "Size"),
+        ]);
+        var view = viewFactory.CreateView(element.Tag);
+        var model = new OutputBindingTestModel { Checked = false, Size = Vector2.Zero };
+        using var viewBinding = viewBinder.Bind(view, element, model);
+
+        // Initial bind should generally not cause immediate output sync, because we assume the view isn't completely
+        // stable or fully initialized yet.
+
+        Assert.False(model.Checked);
+        Assert.Equal(Vector2.Zero, model.Size);
+
+        var checkbox = (CheckBox)view;
+        checkbox.Measure(new Vector2(1000, 1000));
+        viewBinding.Update();
+        Assert.False(model.Checked);
+        Assert.Equal(new Vector2(200, 20), model.Size);
+
+        checkbox.IsChecked = true;
+        viewBinding.Update();
+        Assert.True(model.Checked);
+        Assert.Equal(new Vector2(200, 20), model.Size);
+    }
+
+    [Fact]
+    public void Update_WithInOutBindings_WritesBothDirections()
+    {
+        var element = new SElement("checkbox", [
+            new SAttribute("is-checked", AttributeValueType.TwoWayBinding, "Checked"),
+        ]);
+        var view = viewFactory.CreateView(element.Tag);
+        var model = new OutputBindingTestModel { Checked = true };
+        using var viewBinding = viewBinder.Bind(view, element, model);
+
+        var checkbox = (CheckBox)view;
+        Assert.True(model.Checked);
+        Assert.True(checkbox.IsChecked);
+
+        // No changes, nothing should happen here.
+        viewBinding.Update();
+        Assert.True(model.Checked);
+        Assert.True(checkbox.IsChecked);
+
+        // Simulate click to uncheck
+        checkbox.IsChecked = false;
+        viewBinding.Update();
+        Assert.False(model.Checked);
+
+        // Now the context is updated from some other source
+        model.Checked = true;
+        viewBinding.Update();
+        Assert.True(checkbox.IsChecked);
     }
 
     [Fact]

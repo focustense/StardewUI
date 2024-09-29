@@ -7,9 +7,26 @@
 public interface IValueSource<T>
 {
     /// <summary>
-    /// The value obtained as of the last <see cref="Update"/>.
+    /// Whether or not the source can be read from, i.e. if an attempt to <b>get</b> the <see cref="Value"/> should
+    /// succeed.
     /// </summary>
-    T? Value { get; }
+    bool CanRead { get; }
+
+    /// <summary>
+    /// Whether or not the source can be written back to, i.e. if an attempt to <b>set</b> the <see cref="Value"/>
+    /// should succeed.
+    /// </summary>
+    bool CanWrite { get; }
+
+    /// <summary>
+    /// Descriptive name for the property, used primarily for debug views and log/exception messages.
+    /// </summary>
+    string DisplayName { get; }
+
+    /// <summary>
+    /// Gets the current value obtained as of the last <see cref="Update"/>, or writes a new value when set.
+    /// </summary>
+    T? Value { get; set; }
 
     /// <summary>
     /// Checks if the value needs updating, and if so, updates <see cref="Value"/> to the latest.

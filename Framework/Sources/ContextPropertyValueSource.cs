@@ -11,9 +11,24 @@ namespace StardewUI.Framework.Sources;
 public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
     where T : notnull
 {
+    // We actually can "read" from an unbound context; just return a null/default value.
+    public bool CanRead => property?.CanRead ?? true;
+
+    // However, we cannot meaningfully _write_ to an unbound context and should probably error on an attempt to do so.
+    public bool CanWrite => property?.CanWrite ?? false;
+
+    public string DisplayName => property is not null ? $"{property.DeclaringType.Name}.{property.Name}" : "(none)";
+
     public T? Value
     {
         get => value;
+        set
+        {
+            if (data is not null && property is not null && property.CanWrite)
+            {
+                property.SetValue(data, value!);
+            }
+        }
     }
 
     private readonly object? data;

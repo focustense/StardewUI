@@ -20,7 +20,10 @@ public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFacto
         // Initial forced update since some binding types (e.g. literals) never have updates.
         foreach (var attributeBinding in attributeBindings)
         {
-            attributeBinding.Update(view, force: true);
+            if (attributeBinding.Direction.IsIn())
+            {
+                attributeBinding.UpdateView(view, force: true);
+            }
         }
         var viewBinding = new ViewBinding(view, attributeBindings);
         return viewBinding;

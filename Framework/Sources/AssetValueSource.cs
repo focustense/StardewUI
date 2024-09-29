@@ -12,7 +12,17 @@ namespace StardewUI.Framework.Sources;
 public class AssetValueSource<T>(IAssetCache cache, string name) : IValueSource<T>, IDisposable
     where T : notnull
 {
-    public T? Value => cacheEntry is not null ? cacheEntry.Asset : default;
+    public bool CanRead => true;
+
+    public bool CanWrite => false;
+
+    public string DisplayName => $"Asset@{name}";
+
+    public T? Value
+    {
+        get => cacheEntry is not null ? cacheEntry.Asset : default;
+        set => throw new NotSupportedException($"Writing to an {typeof(AssetValueSource<>).Name} is not supported.");
+    }
 
     private IAssetCacheEntry<T>? cacheEntry;
 

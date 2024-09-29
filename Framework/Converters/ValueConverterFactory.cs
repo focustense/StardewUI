@@ -79,8 +79,11 @@ public class ValueConverterFactory : IValueConverterFactory
         // Most enums are fine using the standard string-to-enum conversion.
         Register(new EnumNameConverterFactory());
 
-        // Final fallback for any value, do no conversion if source and destination are same.
+        // If source and destination are the same, use a pass-through converter.
         Register(new IdentityValueConverterFactory());
+
+        // Anything can generally be converted to a string using the default converter.
+        Register(new StringConverterFactory());
     }
 
     /// <summary>

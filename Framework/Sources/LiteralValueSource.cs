@@ -6,7 +6,17 @@
 /// <param name="value">The attribute value.</param>
 public class LiteralValueSource(string value) : IValueSource<string>
 {
-    public string Value => value;
+    public bool CanRead => true;
+
+    public bool CanWrite => false;
+
+    public string DisplayName => $"\"{Value}\"";
+
+    public string? Value
+    {
+        get => value;
+        set => throw new NotSupportedException($"Writing to a {typeof(LiteralValueSource).Name} is not supported.");
+    }
 
     /// <inheritdoc />
     /// <remarks>
