@@ -28,7 +28,13 @@ public class Panel : View
     public IList<IView> Children
     {
         get => children;
-        set => children.SetItems(value);
+        set
+        {
+            if (children.SetItems(value))
+            {
+                OnPropertyChanged(nameof(Children));
+            }
+        }
     }
 
     /// <summary>
@@ -37,7 +43,13 @@ public class Panel : View
     public Alignment HorizontalContentAlignment
     {
         get => horizontalContentAlignment.Value;
-        set => horizontalContentAlignment.Value = value;
+        set
+        {
+            if (horizontalContentAlignment.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(HorizontalContentAlignment));
+            }
+        }
     }
 
     /// <summary>
@@ -46,7 +58,13 @@ public class Panel : View
     public Alignment VerticalContentAlignment
     {
         get => verticalContentAlignment.Value;
-        set => verticalContentAlignment.Value = value;
+        set
+        {
+            if (verticalContentAlignment.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(VerticalContentAlignment));
+            }
+        }
     }
 
     /// <summary>

@@ -30,6 +30,7 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
             isChecked = value;
             UpdateCheckImage();
             Change?.Invoke(this, EventArgs.Empty);
+            OnPropertyChanged(nameof(IsChecked));
         }
     }
 
@@ -39,7 +40,14 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
     public Color LabelColor
     {
         get => label?.Color ?? Color.White;
-        set => RequireView(() => label).Color = value;
+        set
+        {
+            if (value != (label?.Color ?? Color.White))
+            {
+                RequireView(() => label!).Color = value;
+                OnPropertyChanged(nameof(LabelColor));
+            }
+        }
     }
 
     /// <summary>
@@ -53,8 +61,13 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
         get => label?.Text ?? "";
         set
         {
-            RequireView(() => label).Text = value;
-            Root.Children = !string.IsNullOrEmpty(value) ? [checkImage, label] : [checkImage];
+            var label = RequireView(() => this.label);
+            if (value != label.Text)
+            {
+                label.Text = value;
+                Root.Children = !string.IsNullOrEmpty(value) ? [checkImage, label] : [checkImage];
+                OnPropertyChanged(nameof(LabelText));
+            }
         }
     }
 

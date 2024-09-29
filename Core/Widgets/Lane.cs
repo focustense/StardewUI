@@ -13,7 +13,14 @@ public class Lane : View
     public IList<IView> Children
     {
         get => children;
-        set => children.SetItems(value);
+        set
+        {
+            if (children.SetItems(value))
+            {
+                OnPropertyChanged(nameof(Children));
+                OnPropertyChanged(nameof(VisibleChildren));
+            }
+        }
     }
 
     /// <summary>
@@ -24,7 +31,13 @@ public class Lane : View
     public Alignment HorizontalContentAlignment
     {
         get => horizontalContentAlignment.Value;
-        set => horizontalContentAlignment.Value = value;
+        set
+        {
+            if (horizontalContentAlignment.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(HorizontalContentAlignment));
+            }
+        }
     }
 
     /// <summary>
@@ -33,7 +46,13 @@ public class Lane : View
     public Orientation Orientation
     {
         get => orientation.Value;
-        set => orientation.Value = value;
+        set
+        {
+            if (orientation.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Orientation));
+            }
+        }
     }
 
     /// <summary>
@@ -44,7 +63,13 @@ public class Lane : View
     public Alignment VerticalContentAlignment
     {
         get => verticalContentAlignment.Value;
-        set => verticalContentAlignment.Value = value;
+        set
+        {
+            if (verticalContentAlignment.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(VerticalContentAlignment));
+            }
+        }
     }
 
     /// <summary>
@@ -270,6 +295,7 @@ public class Lane : View
         var limits = Layout.GetLimits(availableSize);
         var swapOrientation = Orientation.Swap();
         childrenSize = Vector2.Zero;
+        int previousVisibleChildCount = visibleChildCount;
         visibleChildCount = 0;
 
         void measureChild(IView child, Vector2 childLimits, bool isDeferred)
@@ -348,6 +374,11 @@ public class Lane : View
 
         ContentSize = Layout.Resolve(availableSize, () => childrenSize);
         UpdateVisibleChildPositions();
+
+        if (visibleChildCount != previousVisibleChildCount)
+        {
+            OnPropertyChanged(nameof(VisibleChildren));
+        }
     }
 
     protected override void ResetDirty()

@@ -18,7 +18,18 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     /// <summary>
     /// The interval of which <see cref="Value"/> should be a multiple. Affects which values will be hit while dragging.
     /// </summary>
-    public float Interval { get; set; } = 0.01f;
+    public float Interval
+    {
+        get => interval;
+        set
+        {
+            if (value != interval)
+            {
+                interval = value;
+                OnPropertyChanged(nameof(Interval));
+            }
+        }
+    }
 
     /// <summary>
     /// The maximum value allowed for <see cref="Value"/>.
@@ -28,7 +39,12 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         get => max;
         set
         {
+            if (value == max)
+            {
+                return;
+            }
             max = value;
+            OnPropertyChanged(nameof(Max));
             if (Value > max)
             {
                 Value = max;
@@ -44,7 +60,12 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         get => min;
         set
         {
+            if (value == min)
+            {
+                return;
+            }
             min = value;
+            OnPropertyChanged(nameof(Min));
             if (Value < min)
             {
                 Value = min;
@@ -57,8 +78,16 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     /// </summary>
     public float TrackWidth
     {
-        get => sliderPanel.Layout.Width.Value;
-        set => RequireView(() => sliderPanel).Layout = LayoutParameters.FixedSize(value, TRACK_HEIGHT);
+        get => sliderPanel?.Layout.Width.Value ?? 0;
+        set
+        {
+            var sliderPanel = RequireView(() => this.sliderPanel);
+            if (sliderPanel.Layout.Width.Type != LengthType.Px || sliderPanel.Layout.Width.Value != value)
+            {
+                sliderPanel.Layout = LayoutParameters.FixedSize(value, TRACK_HEIGHT);
+                OnPropertyChanged(nameof(TrackWidth));
+            };
+        }
     }
 
     /// <summary>
@@ -81,7 +110,16 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     public Color? ValueColor
     {
         get => valueLabel?.Color;
-        set => RequireView(() => valueLabel).Color = value ?? Game1.textColor;
+        set
+        {
+            var valueLabel = RequireView(() => this.valueLabel);
+            var color = value ?? Game1.textColor;
+            if (color != valueLabel.Color)
+            {
+                valueLabel.Color = color;
+                OnPropertyChanged(nameof(ValueColor));
+            }
+        }
     }
 
     /// <summary>
@@ -92,8 +130,12 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         get => valueFormat;
         set
         {
-            valueFormat = value;
-            UpdateValueLabel();
+            if (value != valueFormat)
+            {
+                valueFormat = value;
+                UpdateValueLabel();
+                OnPropertyChanged(nameof(ValueFormat));
+            }
         }
     }
 
@@ -105,6 +147,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
 
     // Refer to the similar implementation in Scrollbar for explanation of the drag cursor offset.
     private float? initialThumbDragCursorOffset;
+    private float interval = 0.01f;
     private float max = 1;
     private float min = 0;
     private float value = 0;

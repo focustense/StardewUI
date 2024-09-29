@@ -102,15 +102,16 @@ public class DirtyTrackingList<T> : IList<T>, IReadOnlyList<T>
     /// Replaces the entire list with the specified sequence.
     /// </summary>
     /// <param name="items">The new list items.</param>
-    public void SetItems(IEnumerable<T> items)
+    public bool SetItems(IEnumerable<T> items)
     {
         if (items.SequenceEqual(this.items))
         {
-            return;
+            return false;
         }
         this.items.Clear();
         this.items.AddRange(items);
         IsDirty = true;
+        return true;
     }
 
     IEnumerator IEnumerable.GetEnumerator()

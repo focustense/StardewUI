@@ -22,7 +22,18 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
     /// <remarks>
     /// Changing this while the overlay is already displayed will not update the overlay.
     /// </remarks>
-    public string AddButtonText { get; set; } = "";
+    public string AddButtonText
+    {
+        get => addButtonText;
+        set
+        {
+            if (value != addButtonText)
+            {
+                addButtonText = value;
+                OnPropertyChanged(nameof(AddButtonText));
+            }
+        }
+    }
 
     /// <summary>
     /// The height for button images/sprites. Images are scaled uniformly, preserving source aspect ratio.
@@ -41,6 +52,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
             {
                 keybindView.ButtonHeight = value;
             }
+            OnPropertyChanged(nameof(ButtonHeight));
         }
     }
 
@@ -50,7 +62,18 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
     /// <remarks>
     /// Changing this while the overlay is already displayed will not update the overlay.
     /// </remarks>
-    public string DeleteButtonTooltip { get; set; } = "";
+    public string DeleteButtonTooltip
+    {
+        get => deleteButtonTooltip;
+        set
+        {
+            if (value != deleteButtonTooltip)
+            {
+                deleteButtonTooltip = value;
+                OnPropertyChanged(nameof(DeleteButtonTooltip));
+            }
+        }
+    }
 
     /// <summary>
     /// Specifies what kind of keybind the editor should allow.
@@ -60,7 +83,18 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
     /// semantic type. It is up to the caller to ensure that the value initially assigned to the editor is of the
     /// correct kind. If this is <c>null</c>, the list is considered read-only.
     /// </remarks>
-    public KeybindType? EditableType { get; set; }
+    public KeybindType? EditableType
+    {
+        get => editableType;
+        set
+        {
+            if (value != editableType)
+            {
+                editableType = value;
+                OnPropertyChanged(nameof(EditableType));
+            }
+        }
+    }
 
     /// <summary>
     /// Placeholder text to display when the current keybind list is empty.
@@ -76,6 +110,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
             }
             emptyText = value;
             UpdateEmptyText(EmptyTextColor);
+            OnPropertyChanged(nameof(EmptyText));
         }
     }
 
@@ -93,6 +128,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
             }
             emptyTextColor = value;
             UpdateEmptyText(EmptyTextColor);
+            OnPropertyChanged(nameof(EmptyTextColor));
         }
     }
 
@@ -118,6 +154,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
             {
                 keybindView.Font = value;
             }
+            OnPropertyChanged(nameof(Font));
         }
     }
 
@@ -138,13 +175,14 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
             }
             keybindList = value;
             UpdateAll();
+            OnPropertyChanged(nameof(KeybindList));
         }
     }
 
     /// <inheritdoc cref="View.IsFocusable" />
     public new bool IsFocusable
     {
-        get => rootLane?.IsFocusable ?? false;
+        get => rootLane.IsFocusable;
         set => RequireView(() => rootLane).IsFocusable = true;
     }
 
@@ -153,7 +191,10 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
 
     private readonly Lane rootLane = new();
 
+    private string addButtonText = "";
     private int buttonHeight = KeybindView.DEFAULT_BUTTON_HEIGHT;
+    private string deleteButtonTooltip = "";
+    private KeybindType? editableType;
     private string emptyText = "";
     private Color emptyTextColor = Game1.textColor;
     private SpriteFont font = Game1.smallFont;
@@ -257,7 +298,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
 
     private void UpdateEmptyText(Color color)
     {
-        if (rootLane?.Children.Count == 1 && rootLane.Children[0] is Label label)
+        if (rootLane.Children.Count == 1 && rootLane.Children[0] is Label label)
         {
             label.Text = EmptyText;
             label.Color = color;

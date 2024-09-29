@@ -24,14 +24,7 @@ public sealed class DirtyTracker<T>(T initialValue)
     public T Value
     {
         get => value;
-        set
-        {
-            if (!Equals(value, this.value))
-            {
-                this.value = value;
-                IsDirty = true;
-            }
-        }
+        set => SetIfChanged(value);
     }
 
     /// <summary>
@@ -41,5 +34,27 @@ public sealed class DirtyTracker<T>(T initialValue)
     public void ResetDirty()
     {
         IsDirty = false;
+    }
+
+    /// <summary>
+    /// Updates the tracker with a new value, if it has changed since the last seen value.
+    /// </summary>
+    /// <remarks>
+    /// If this method returns <c>true</c>, then <see cref="IsDirty"/> will always also be <c>true</c> afterward.
+    /// However, if it returns <c>false</c> then the dirty state simply remains unchanged, and will only be <c>false</c>
+    /// if the value was not already dirty from a previous change.
+    /// </remarks>
+    /// <param name="value">The new value.</param>
+    /// <returns><c>true</c> if the <paramref name="value"/> was different from the previous <see cref="Value"/>,
+    /// otherwise <c>false</c>.</returns>
+    public bool SetIfChanged(T value)
+    {
+        if (!Equals(value, this.value))
+        {
+            this.value = value;
+            IsDirty = true;
+            return true;
+        }
+        return false;
     }
 }

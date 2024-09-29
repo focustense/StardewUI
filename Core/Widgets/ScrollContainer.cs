@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.ComponentModel;
 
 namespace StardewUI;
 
@@ -40,7 +41,22 @@ public class ScrollContainer : View
     public IView? Content
     {
         get => content.Value;
-        set => content.Value = value;
+        set
+        {
+            if (value != content.Value)
+            {
+                if (content.Value is not null)
+                {
+                    content.Value.PropertyChanged -= Content_PropertyChanged;
+                }
+                content.Value = value;
+                if (value is not null)
+                {
+                    value.PropertyChanged += Content_PropertyChanged;
+                }
+                OnPropertyChanged(nameof(Content));
+            }
+        }
     }
 
     /// <summary>
@@ -53,7 +69,14 @@ public class ScrollContainer : View
     public Orientation Orientation
     {
         get => orientation.Value;
-        set => orientation.Value = value;
+        set
+        {
+            if (value != orientation.Value)
+            {
+                orientation.Value = value;
+                OnPropertyChanged(nameof(Orientation));
+            }
+        }
     }
 
     /// <summary>
@@ -63,7 +86,18 @@ public class ScrollContainer : View
     /// <remarks>
     /// Nonzero values help with discoverability, making it clear that there is more content.
     /// </remarks>
-    public float Peeking { get; set; }
+    public float Peeking
+    {
+        get => peeking;
+        set
+        {
+            if (peeking != value)
+            {
+                peeking = value;
+                OnPropertyChanged(nameof(Peeking));
+            }
+        }
+    }
 
     /// <summary>
     /// The current scroll position along the <see cref="Orientation"/> axis.
@@ -71,7 +105,15 @@ public class ScrollContainer : View
     public float ScrollOffset
     {
         get => scrollOffset.Value;
-        set => scrollOffset.Value = Math.Clamp(value, 0, ScrollSize);
+        set
+        {
+            var clamped = Math.Clamp(value, 0, ScrollSize);
+            if (clamped != scrollOffset.Value)
+            {
+                scrollOffset.Value = clamped;
+                OnPropertyChanged(nameof(ScrollOffset));
+            }
+        }
     }
 
     /// <summary>
@@ -83,7 +125,18 @@ public class ScrollContainer : View
     /// Default scroll distance when calling <see cref="ScrollForward"/> or <see cref="ScrollBackward"/>. Does not
     /// prevent directly setting the scroll position via <see cref="ScrollOffset"/>.
     /// </summary>
-    public float ScrollStep { get; set; } = 32.0f;
+    public float ScrollStep
+    {
+        get => scrollStep;
+        set
+        {
+            if (value != scrollStep)
+            {
+                scrollStep = value;
+                OnPropertyChanged(nameof(ScrollStep));
+            }
+        }
+    }
 
     /// <summary>
     /// The size of the current content view, or <see cref="Vector2.Zero"/> if there is no content.
@@ -94,7 +147,9 @@ public class ScrollContainer : View
     private readonly DirtyTracker<Orientation> orientation = new(Orientation.Vertical);
     private readonly DirtyTracker<float> scrollOffset = new(0);
 
+    private float peeking;
     private float previousScrollSize = -1;
+    private float scrollStep = 32.0f;
 
     /// <summary>
     /// Scrolls backward (up or left) by the distance configured in <see cref="ScrollStep"/>.
@@ -246,6 +301,15 @@ public class ScrollContainer : View
 #pragma warning restore CA2245 // Do not assign a property to itself
     }
 
+    protected override void OnPropertyChanged(PropertyChangedEventArgs args)
+    {
+        base.OnPropertyChanged(args);
+        if (args.PropertyName == nameof(ContentSize))
+        {
+            OnPropertyChanged(nameof(ScrollSize));
+        }
+    }
+
     protected override void ResetDirty()
     {
         content.ResetDirty();
@@ -258,6 +322,14 @@ public class ScrollContainer : View
         PartiallyScrollable,
         NotScrollable,
         NoMoreElements,
+    }
+
+    private void Content_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(IView.OuterSize))
+        {
+            OnPropertyChanged(nameof(ScrollSize));
+        }
     }
 
     private float GetScrollDistance(Bounds scrollableBounds)

@@ -53,6 +53,24 @@ public class Tags
 
     private readonly Dictionary<Type, object> values = [];
 
+    public override bool Equals(object? obj)
+    {
+        return obj is Tags other
+            && other.values.Count == values.Count
+            && !other.values.Except(values).Any();
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = new HashCode();
+        foreach (var entry in values.OrderBy(entry => entry.Key))
+        {
+            hashCode.Add(entry.Key);
+            hashCode.Add(entry.Value);
+        }
+        return hashCode.ToHashCode();
+    }
+
     /// <summary>
     /// Gets the tag value of the specified type, if one exists.
     /// </summary>

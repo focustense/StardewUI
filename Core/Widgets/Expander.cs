@@ -21,15 +21,31 @@ public class Expander : WrapperView
         get => contentFrame?.Content;
         set
         {
-            RequireView(() => contentFrame).Content = value;
-            UpdateContent();
+            var contentFrame = RequireView(() => this.contentFrame);
+            if (value != contentFrame.Content)
+            {
+                contentFrame.Content = value;
+                UpdateContent();
+                OnPropertyChanged(nameof(Content));
+            }
         }
     }
 
     /// <summary>
     /// Sprite to show next to the header when collapsed.
     /// </summary>
-    public Sprite? CollapsedSprite { get; set; } = UiSprites.CaretRight;
+    public Sprite? CollapsedSprite
+    {
+        get => collapsedSprite;
+        set
+        {
+            if (value != collapsedSprite)
+            {
+                collapsedSprite = value;
+                OnPropertyChanged(nameof(CollapsedSprite));
+            }
+        }
+    }
 
     /// <summary>
     /// Sprite to show next to the header when expanded.
@@ -38,7 +54,18 @@ public class Expander : WrapperView
     /// If this is <c>null</c>, and <see cref="CollapsedSprite"/> is not null, then the
     /// <see cref="CollapsedSprite"/> will be rotated clockwise on expansion.
     /// </remarks>
-    public Sprite? ExpandedSprite { get; set; }
+    public Sprite? ExpandedSprite
+    {
+        get => expandedSprite;
+        set
+        {
+            if (value != expandedSprite)
+            {
+                expandedSprite = value;
+                OnPropertyChanged(nameof(ExpandedSprite));
+            }
+        }
+    }
 
     /// <summary>
     /// The primary content, which displays inside the menu frame and is clipped/scrollable.
@@ -46,7 +73,14 @@ public class Expander : WrapperView
     public IView? Header
     {
         get => headerLane?.Children.ElementAtOrDefault(1);
-        set => RequireView(() => headerLane).Children = value is not null ? [indicator, value] : [indicator];
+        set
+        {
+            if (value != headerLane?.Children.ElementAtOrDefault(1))
+            {
+                RequireView(() => headerLane!).Children = value is not null ? [indicator, value] : [indicator];
+                OnPropertyChanged(nameof(Header));
+            }
+        }
     }
 
     /// <summary>
@@ -55,7 +89,14 @@ public class Expander : WrapperView
     public Sprite? HeaderBackground
     {
         get => headerFrame?.Background;
-        set => RequireView(() => headerFrame).Background = value;
+        set
+        {
+            if (value != headerFrame?.Background)
+            {
+                RequireView(() => headerFrame!).Background = value;
+                OnPropertyChanged(nameof(HeaderBackground));
+            }
+        }
     }
 
     /// <summary>
@@ -64,7 +105,14 @@ public class Expander : WrapperView
     public Color HeaderBackgroundTint
     {
         get => headerFrame?.BackgroundTint ?? Color.White;
-        set => RequireView(() => headerFrame).BackgroundTint = value;
+        set
+        {
+            if (value != (headerFrame?.BackgroundTint ?? Color.White))
+            {
+                RequireView(() => headerFrame!).BackgroundTint = value;
+                OnPropertyChanged(nameof(HeaderBackgroundTint));
+            }
+        }
     }
 
     /// <summary>
@@ -74,7 +122,14 @@ public class Expander : WrapperView
     public LayoutParameters HeaderLayout
     {
         get => headerFrame?.Layout ?? LayoutParameters.AutoRow();
-        set => RequireView(() => headerFrame).Layout = value;
+        set
+        {
+            if (value != (headerFrame?.Layout ?? LayoutParameters.AutoRow()))
+            {
+                RequireView(() => headerFrame!).Layout = value;
+                OnPropertyChanged(nameof(HeaderLayout));
+            }
+        }
     }
 
     /// <summary>
@@ -83,7 +138,14 @@ public class Expander : WrapperView
     public Edges HeaderPadding
     {
         get => headerFrame?.Padding ?? Edges.NONE;
-        set => RequireView(() => headerFrame).Padding = value;
+        set
+        {
+            if (value != (headerFrame?.Padding ?? Edges.NONE))
+            {
+                RequireView(() => headerFrame!).Padding = value;
+                OnPropertyChanged(nameof(HeaderPadding));
+            }
+        }
     }
 
     /// <summary>
@@ -102,6 +164,7 @@ public class Expander : WrapperView
             isExpanded = value;
             UpdateContent();
             ExpandedChange?.Invoke(this, EventArgs.Empty);
+            OnPropertyChanged(nameof(IsExpanded));
         }
     }
 
@@ -111,9 +174,12 @@ public class Expander : WrapperView
     public Edges Margin
     {
         get => layout?.Margin ?? Edges.NONE;
+        // "layout" is the root view so no OnPropertyChanged is required here.
         set => RequireView(() => layout).Margin = value;
     }
 
+    private Sprite? collapsedSprite = UiSprites.CaretRight;
+    private Sprite? expandedSprite;
     private bool isExpanded;
 
     // Initialized in CreateView

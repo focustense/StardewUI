@@ -17,14 +17,31 @@ public class Grid : View
     public IList<IView> Children
     {
         get => children;
-        set => children.SetItems(value);
+        set
+        {
+            if (children.SetItems(value))
+            {
+                OnPropertyChanged(nameof(Children));
+            }
+        }
     }
 
     /// <summary>
     /// Specifies how to align each child <see cref="IView"/> horizontally within its respective cell, i.e. if the view
     /// is narrower than the cell's width.
     /// </summary>
-    public Alignment HorizontalItemAlignment { get; set; } = Alignment.Start;
+    public Alignment HorizontalItemAlignment
+    {
+        get => horizontalItemAlignment;
+        set
+        {
+            if (value != horizontalItemAlignment)
+            {
+                horizontalItemAlignment = value;
+                OnPropertyChanged(nameof(HorizontalItemAlignment));
+            }
+        }
+    }
 
     /// <summary>
     /// The layout for items (cells) in this grid.
@@ -46,7 +63,13 @@ public class Grid : View
     public GridItemLayout ItemLayout
     {
         get => itemLayout.Value;
-        set => itemLayout.Value = value;
+        set
+        {
+            if (itemLayout.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(ItemLayout));
+            }
+        }
     }
 
     /// <summary>
@@ -59,7 +82,13 @@ public class Grid : View
     public Vector2 ItemSpacing
     {
         get => itemSpacing.Value;
-        set => itemSpacing.Value = value;
+        set
+        {
+            if (itemSpacing.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(ItemSpacing));
+            }
+        }
     }
 
     /// <summary>
@@ -81,14 +110,31 @@ public class Grid : View
     public Orientation PrimaryOrientation
     {
         get => primaryOrientation.Value;
-        set => primaryOrientation.Value = value;
+        set
+        {
+            if (primaryOrientation.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(PrimaryOrientation));
+            }
+        }
     }
 
     /// <summary>
     /// Specifies how to align each child <see cref="IView"/> vertically within its respective cell, i.e. if the view
     /// is shorter than the cell's height.
     /// </summary>
-    public Alignment VerticalItemAlignment { get; set; } = Alignment.Start;
+    public Alignment VerticalItemAlignment
+    {
+        get => verticalItemAlignment;
+        set
+        {
+            if (value != verticalItemAlignment)
+            {
+                verticalItemAlignment = value;
+                OnPropertyChanged(nameof(VerticalItemAlignment));
+            }
+        }
+    }
 
     private record CellPosition(int Column, int Row);
 
@@ -97,6 +143,10 @@ public class Grid : View
     private readonly DirtyTracker<GridItemLayout> itemLayout = new(GridItemLayout.Count(5));
     private readonly DirtyTracker<Vector2> itemSpacing = new(Vector2.Zero);
     private readonly DirtyTracker<Orientation> primaryOrientation = new(Orientation.Horizontal);
+
+    // Regular backing fields
+    private Alignment horizontalItemAlignment = Alignment.Start;
+    private Alignment verticalItemAlignment = Alignment.Start;
 
     // These are useful to cache for focus searches. Since the grid is uniform along the primary orientation, we can
     // determine from the coordinates exactly which cell the cursor is sitting in, including its index in the child list

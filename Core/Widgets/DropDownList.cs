@@ -23,8 +23,12 @@ public class DropDownList<T> : WrapperView
         get => optionFormat;
         set
         {
-            optionFormat = value;
-            UpdateOptions();
+            if (value != optionFormat)
+            {
+                optionFormat = value;
+                UpdateOptions();
+                OnPropertyChanged(nameof(OptionFormat));
+            }
         }
     }
 
@@ -37,13 +41,19 @@ public class DropDownList<T> : WrapperView
     public float OptionMinWidth
     {
         get => selectionFrame?.Layout.MinWidth ?? 0;
-        set =>
-            RequireView(() => selectionFrame).Layout = new()
+        set
+        {
+            if (value != (selectionFrame?.Layout.MinWidth ?? 0))
             {
-                Width = Length.Content(),
-                Height = Length.Content(),
-                MinWidth = value,
-            };
+                RequireView(() => selectionFrame!).Layout = new()
+                {
+                    Width = Length.Content(),
+                    Height = Length.Content(),
+                    MinWidth = value,
+                };
+                OnPropertyChanged(nameof(OptionMinWidth));
+            }
+        }
     }
 
     /// <summary>
@@ -52,7 +62,13 @@ public class DropDownList<T> : WrapperView
     public IList<T> Options
     {
         get => options;
-        set => options.SetItems(value);
+        set
+        {
+            if (options.SetItems(value))
+            {
+                OnPropertyChanged(nameof(Options));
+            }
+        }
     }
 
     /// <summary>
@@ -71,6 +87,8 @@ public class DropDownList<T> : WrapperView
             selectedIndex = validIndex;
             UpdateSelectedOption();
             Select?.Invoke(this, EventArgs.Empty);
+            OnPropertyChanged(nameof(SelectedIndex));
+            OnPropertyChanged(nameof(SelectedOption));
         }
     }
 

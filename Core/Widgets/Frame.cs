@@ -11,12 +11,34 @@ public class Frame : View
     /// <summary>
     /// The background sprite to draw for this frame.
     /// </summary>
-    public Sprite? Background { get; set; }
+    public Sprite? Background
+    {
+        get => background;
+        set
+        {
+            if (value != background)
+            {
+                background = value;
+                OnPropertyChanged(nameof(Background));
+            }
+        }
+    }
 
     /// <summary>
     /// Tint color for the <see cref="Background"/> image.
     /// </summary>
-    public Color BackgroundTint { get; set; } = Color.White;
+    public Color BackgroundTint
+    {
+        get => backgroundTint;
+        set
+        {
+            if (value != backgroundTint)
+            {
+                backgroundTint = value;
+                OnPropertyChanged(nameof(BackgroundTint));
+            }
+        }
+    }
 
     /// <summary>
     /// The border sprite to draw for this frame.
@@ -27,7 +49,18 @@ public class Frame : View
     /// To ensure that inner content does not overlap with the border, <see cref="BorderThickness"/> should also be set
     /// when using a border.
     /// </remarks>
-    public Sprite? Border { get; set; }
+    public Sprite? Border
+    {
+        get => border;
+        set
+        {
+            if (value != border)
+            {
+                border = value;
+                OnPropertyChanged(nameof(Border));
+            }
+        }
+    }
 
     /// <summary>
     /// The thickness of the border edges.
@@ -40,7 +73,13 @@ public class Frame : View
     public Edges BorderThickness
     {
         get => borderThickness.Value;
-        set => borderThickness.Value = value;
+        set
+        {
+            if (borderThickness.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(BorderThickness));
+            }
+        }
     }
 
     /// <summary>
@@ -49,7 +88,13 @@ public class Frame : View
     public IView? Content
     {
         get => content.Value;
-        set => content.Value = value;
+        set
+        {
+            if (content.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Content));
+            }
+        }
     }
 
     /// <summary>
@@ -60,13 +105,30 @@ public class Frame : View
     public Alignment HorizontalContentAlignment
     {
         get => horizontalContentAlignment.Value;
-        set => horizontalContentAlignment.Value = value;
+        set
+        {
+            if (horizontalContentAlignment.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(HorizontalContentAlignment));
+            }
+        }
     }
 
     /// <summary>
     /// Alpha value for the shadow. If set to the default of zero, no shadow will be drawn.
     /// </summary>
-    public float ShadowAlpha { get; set; } = 0.0f;
+    public float ShadowAlpha
+    {
+        get => shadowAlpha;
+        set
+        {
+            if (value != shadowAlpha)
+            {
+                shadowAlpha = value;
+                OnPropertyChanged(nameof(ShadowAlpha));
+            }
+        }
+    }
 
     /// <summary>
     /// Number of shadows to draw if <see cref="ShadowAlpha"/> is non-zero.
@@ -75,13 +137,35 @@ public class Frame : View
     /// While rare, some game sprites are supposed to be drawn with multiple stacked shadows. If this number is higher
     /// than the default of <c>1</c>, shadows will be drawn stacked with the offset repeatedly applied.
     /// </remarks>
-    public int ShadowCount { get; set; } = 1;
+    public int ShadowCount
+    {
+        get => shadowCount;
+        set
+        {
+            if (value != shadowCount)
+            {
+                shadowCount = value;
+                OnPropertyChanged(nameof(ShadowCount));
+            }
+        }
+    }
 
     /// <summary>
     /// Offset to draw the sprite shadow, which is a second copy of the <see cref="Background"/> drawn entirely black.
     /// Shadows will not be visible unless <see cref="ShadowAlpha"/> is non-zero.
     /// </summary>
-    public Vector2 ShadowOffset { get; set; }
+    public Vector2 ShadowOffset
+    {
+        get => shadowOffset;
+        set
+        {
+            if (value != shadowOffset)
+            {
+                shadowOffset = value;
+                OnPropertyChanged(nameof(ShadowOffset));
+            }
+        }
+    }
 
     /// <summary>
     /// Specifies how to align the <see cref="Content"/> vertically within the frame's area. Only has an effect if the
@@ -91,7 +175,13 @@ public class Frame : View
     public Alignment VerticalContentAlignment
     {
         get => verticalContentAlignment.Value;
-        set => verticalContentAlignment.Value = value;
+        set
+        {
+            if (verticalContentAlignment.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(VerticalContentAlignment));
+            }
+        }
     }
 
     private readonly DirtyTracker<Edges> borderThickness = new(Edges.NONE);
@@ -99,9 +189,15 @@ public class Frame : View
     private readonly DirtyTracker<Alignment> horizontalContentAlignment = new(Alignment.Start);
     private readonly DirtyTracker<Alignment> verticalContentAlignment = new(Alignment.Start);
 
+    private Sprite? background;
     private NineSlice? backgroundSlice;
+    private Color backgroundTint = Color.White;
+    private Sprite? border;
     private NineSlice? borderSlice;
     private Vector2 contentPosition;
+    private float shadowAlpha;
+    private int shadowCount = 1;
+    private Vector2 shadowOffset;
 
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {

@@ -17,7 +17,13 @@ public class Marquee : View
     public IView? Content
     {
         get => content.Value;
-        set => content.Value = value;
+        set
+        {
+            if (content.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Content));
+            }
+        }
     }
 
     /// <summary>
@@ -38,7 +44,13 @@ public class Marquee : View
     public float ExtraDistance
     {
         get => extraDistance.Value;
-        set => extraDistance.Value = value;
+        set
+        {
+            if (extraDistance.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(ExtraDistance));
+            }
+        }
     }
 
     /// <summary>
@@ -47,7 +59,13 @@ public class Marquee : View
     public float Speed
     {
         get => speed.Value;
-        set => speed.Value = value;
+        set
+        {
+            if (!speed.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Speed));
+            }
+        }
     }
 
     private readonly Animator<Marquee, float> animator;

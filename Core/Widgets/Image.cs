@@ -16,12 +16,34 @@ public class Image : View
     /// will cause the exact <see cref="Sprite.SourceRect"/> (or texture bounds, if not specified) as the layout size.
     /// At least one dimension must be content-independent (fixed or container size) for this to have any effect.
     /// </remarks>
-    public ImageFit Fit { get; set; } = ImageFit.Contain;
+    public ImageFit Fit
+    {
+        get => fit;
+        set
+        {
+            if (value != fit)
+            {
+                fit = value;
+                OnPropertyChanged(nameof(Fit));
+            }
+        }
+    }
 
     /// <summary>
     /// Specifies where to align the image horizontally if the image width is different from the final layout width.
     /// </summary>
-    public Alignment HorizontalAlignment { get; set; } = Alignment.Start;
+    public Alignment HorizontalAlignment
+    {
+        get => horizontalAlignment;
+        set
+        {
+            if (value != horizontalAlignment)
+            {
+                horizontalAlignment = value;
+                OnPropertyChanged(nameof(HorizontalAlignment));
+            }
+        }
+    }
 
     /// <summary>
     /// Rotation to apply to the image.
@@ -35,7 +57,13 @@ public class Image : View
     public SimpleRotation? Rotation
     {
         get => rotation.Value;
-        set => rotation.Value = value;
+        set
+        {
+            if (rotation.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Rotation));
+            }
+        }
     }
 
     /// <summary>
@@ -49,19 +77,47 @@ public class Image : View
     public float Scale
     {
         get => scale.Value;
-        set => scale.Value = value;
+        set
+        {
+            if (scale.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Scale));
+            }
+        }
     }
 
     /// <summary>
     /// Alpha value for the shadow. If set to the default of zero, no shadow will be drawn.
     /// </summary>
-    public float ShadowAlpha { get; set; } = 0.0f;
+    public float ShadowAlpha
+    {
+        get => shadowAlpha;
+        set
+        {
+            if (value != shadowAlpha)
+            {
+                shadowAlpha = value;
+                OnPropertyChanged(nameof(ShadowAlpha));
+            }
+        }
+    }
 
     /// <summary>
     /// Offset to draw the sprite shadow, which is a second copy of the <see cref="Sprite"/> drawn entirely black.
     /// Shadows will not be visible unless <see cref="ShadowAlpha"/> is non-zero.
     /// </summary>
-    public Vector2 ShadowOffset { get; set; }
+    public Vector2 ShadowOffset
+    {
+        get => shadowOffset;
+        set
+        {
+            if (value != shadowOffset)
+            {
+                shadowOffset = value;
+                OnPropertyChanged(nameof(ShadowOffset));
+            }
+        }
+    }
 
     /// <summary>
     /// The sprite to draw.
@@ -73,25 +129,59 @@ public class Image : View
     public Sprite? Sprite
     {
         get => sprite.Value;
-        set => sprite.Value = value;
+        set
+        {
+            if (sprite.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Sprite));
+            }
+        }
     }
 
     /// <summary>
     /// Tint color (multiplier) to apply when drawing.
     /// </summary>
-    public Color Tint { get; set; } = Color.White;
+    public Color Tint
+    {
+        get => tint;
+        set
+        {
+            if (value != tint)
+            {
+                tint = value;
+                OnPropertyChanged(nameof(Tint));
+            }
+        }
+    }
 
     /// <summary>
     /// Specifies where to align the image vertically if the image height is different from the final layout height.
     /// </summary>
-    public Alignment VerticalAlignment { get; set; } = Alignment.Start;
+    public Alignment VerticalAlignment
+    {
+        get => verticalAlignment;
+        set
+        {
+            if (value != verticalAlignment)
+            {
+                verticalAlignment = value;
+                OnPropertyChanged(nameof(VerticalAlignment));
+            }
+        }
+    }
 
     private readonly DirtyTracker<SimpleRotation?> rotation = new(null);
     private readonly DirtyTracker<float> scale = new(1.0f);
     private readonly DirtyTracker<Sprite?> sprite = new(null);
 
     private Rectangle destinationRect = Rectangle.Empty;
+    private ImageFit fit = ImageFit.Contain;
+    private Alignment horizontalAlignment = Alignment.Start;
+    private float shadowAlpha;
+    private Vector2 shadowOffset;
     private NineSlice? slice = null;
+    private Color tint = Color.White;
+    private Alignment verticalAlignment = Alignment.Start;
 
     protected override bool IsContentDirty()
     {

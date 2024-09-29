@@ -31,6 +31,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             }
             buttonHeight = value;
             UpdateContent();
+            OnPropertyChanged(nameof(ButtonHeight));
         }
     }
 
@@ -49,6 +50,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             }
             buttonMinWidth = value;
             UpdateContent();
+            OnPropertyChanged(nameof(ButtonMinWidth));
         }
     }
 
@@ -69,6 +71,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             {
                 label.Text = value;
             }
+            OnPropertyChanged(nameof(EmptyText));
         }
     }
 
@@ -91,6 +94,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             }
             font = value;
             UpdateContent();
+            OnPropertyChanged(nameof(Font));
         }
     }
 
@@ -108,6 +112,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             }
             keybind = value;
             UpdateContent();
+            OnPropertyChanged(nameof(Keybind));
         }
     }
 
@@ -132,6 +137,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             }
             spacing = value;
             UpdateContent();
+            OnPropertyChanged(nameof(Spacing));
         }
     }
 
@@ -152,6 +158,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             {
                 label.Color = value;
             }
+            OnPropertyChanged(nameof(TextColor));
         }
     }
 
@@ -169,6 +176,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
             }
             tintColor = value;
             UpdateTint();
+            OnPropertyChanged(nameof(TintColor));
         }
     }
 

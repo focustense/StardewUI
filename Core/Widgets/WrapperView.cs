@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.ComponentModel;
 
 namespace StardewUI;
 
@@ -35,6 +36,7 @@ public abstract class WrapperView<T> : IView
     public event EventHandler<ClickEventArgs>? LeftClick;
     public event EventHandler<PointerEventArgs>? PointerEnter;
     public event EventHandler<PointerEventArgs>? PointerLeave;
+    public event PropertyChangedEventHandler? PropertyChanged;
     public event EventHandler<ClickEventArgs>? RightClick;
     public event EventHandler<WheelEventArgs>? Wheel;
 
@@ -79,7 +81,32 @@ public abstract class WrapperView<T> : IView
         set => Root.ZIndex = value;
     }
 
+    /// <summary>
+    /// Whether or not the <see cref="Root"/> view has been created.
+    /// </summary>
+    /// <remarks>
+    /// This is only <c>false</c> within the constructor, but may often need to be checked because of the constructor
+    /// sharing logic with property setters or needing to set properties of its own. If the value is <c>false</c> then
+    /// <see cref="OptionalRoot"/> will be <c>null</c>.
+    /// </remarks>
     protected bool IsViewCreated => root.IsValueCreated;
+
+    /// <summary>
+    /// Gets the root view if it has been created, otherwise <c>null</c>.
+    /// </summary>
+    /// <remarks>
+    /// This is similar to <see cref="Root"/> but is guaranteed safe to reference in property getters and from within
+    /// <see cref="CreateView"/>.
+    /// </remarks>
+    protected T? OptionalRoot => root.IsValueCreated ? root.Value : default;
+
+    /// <summary>
+    /// Gets the root view.
+    /// </summary>
+    /// <remarks>
+    /// This invokes the lazy loading and calls <see cref="CreateView"/>, and therefore must never be invoked from
+    /// within <see cref="CreateView"/> otherwise it will result in a stack overflow.
+    /// </remarks>
     protected T Root => root.Value;
 
     private readonly Lazy<T> root;
@@ -96,6 +123,7 @@ public abstract class WrapperView<T> : IView
             view.LeftClick += View_LeftClick;
             view.PointerEnter += View_PointerEnter;
             view.PointerLeave += View_PointerLeave;
+            view.PropertyChanged += View_PropertyChanged;
             view.RightClick += View_RightClick;
             view.Wheel += View_Wheel;
             return view;
@@ -210,6 +238,24 @@ public abstract class WrapperView<T> : IView
     protected abstract T CreateView();
 
     /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="args">The event arguments.</param>
+    protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
+    {
+        PropertyChanged?.Invoke(this, args);
+    }
+
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that was changed.</param>
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new(propertyName));
+    }
+
+    /// <summary>
     /// Runs whenever layout occurs as a result of the UI elements changing.
     /// </summary>
     protected virtual void OnLayout() { }
@@ -263,6 +309,11 @@ public abstract class WrapperView<T> : IView
     private void View_PointerLeave(object? sender, PointerEventArgs e)
     {
         PointerLeave?.Invoke(this, e);
+    }
+
+    private void View_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        PropertyChanged?.Invoke(this, e);
     }
 
     private void View_RightClick(object? sender, ClickEventArgs e)

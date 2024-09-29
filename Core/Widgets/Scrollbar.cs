@@ -33,6 +33,8 @@ public class Scrollbar(
         get => margin;
         set
         {
+            // No OnPropertyChanged here because the margin field is just a lazy initializer for Root.Margin which is
+            // already propagated.
             margin = value;
             LazyUpdate();
         }
@@ -254,6 +256,7 @@ public class Scrollbar(
             container.ScrollChanged += Container_ScrollChanged;
         }
         LazyUpdate();
+        OnPropertyChanged(nameof(Container));
     }
 
     private void SyncVisibility(Lane root)

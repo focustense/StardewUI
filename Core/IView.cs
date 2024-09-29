@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using System.ComponentModel;
 
 namespace StardewUI;
 
 /// <summary>
 /// Represents some arbitrary UI element or layout.
 /// </summary>
-public interface IView
+public interface IView : INotifyPropertyChanged
 {
     /// <summary>
     /// Event raised when the view receives a click initiated from any button.

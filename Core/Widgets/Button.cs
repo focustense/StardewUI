@@ -16,7 +16,14 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
     public IView? Content
     {
         get => contentFrame?.Content;
-        set => RequireView(() => contentFrame).Content = value;
+        set
+        {
+            if (value != contentFrame?.Content)
+            {
+                RequireView(() => contentFrame!).Content = value;
+                OnPropertyChanged(nameof(Content));
+            }
+        }
     }
 
     /// <summary>
@@ -40,6 +47,7 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
             {
                 label.Font = font;
             }
+            OnPropertyChanged(nameof(Font));
         }
     }
 
@@ -58,7 +66,14 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
     public bool ShadowVisible
     {
         get => backgroundImage?.ShadowAlpha > 0;
-        set => RequireView(() => backgroundImage).ShadowAlpha = value ? 0.5f : 0f;
+        set
+        {
+            if (value != backgroundImage?.ShadowAlpha > 0)
+            {
+                RequireView(() => backgroundImage!).ShadowAlpha = value ? 0.5f : 0f;
+                OnPropertyChanged(nameof(ShadowVisible));
+            }
+        }
     }
 
     /// <summary>
@@ -77,11 +92,16 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
             var contentFrame = RequireView(() => this.contentFrame);
             if (contentFrame.Content is Label label)
             {
-                label.Text = value ?? "";
+                if ((value ?? "") != label.Text)
+                {
+                    label.Text = value ?? "";
+                    OnPropertyChanged(nameof(Text));
+                }
             }
             else if (value is not null)
             {
                 contentFrame.Content = Label.Simple(value, font);
+                OnPropertyChanged(nameof(Text));
             }
         }
     }

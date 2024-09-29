@@ -20,22 +20,66 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
     /// <summary>
     /// The default color to draw grid cells (inside the gridlines).
     /// </summary>
-    public Color CellColor { get; set; } = Color.Transparent;
+    public Color CellColor
+    {
+        get => cellColor;
+        set
+        {
+            if (value != cellColor)
+            {
+                cellColor = value;
+                OnPropertyChanged(nameof(CellColor));
+            }
+        }
+    }
 
     /// <summary>
     /// The content to display in the <see cref="PositioningOverlay"/> when editing. Not shown in the editor itself.
     /// </summary>
-    public IView? Content { get; set; }
+    public IView? Content
+    {
+        get => content;
+        set
+        {
+            if (value != content)
+            {
+                content = value;
+                OnPropertyChanged(nameof(Content));
+            }
+        }
+    }
 
     /// <summary>
     /// The color to draw gridlines.
     /// </summary>
-    public Color GridColor { get; set; } = new(64, 64, 64);
+    public Color GridColor
+    {
+        get => gridColor;
+        set
+        {
+            if (value != gridColor)
+            {
+                gridColor = value;
+                OnPropertyChanged(nameof(GridColor));
+            }
+        }
+    }
 
     /// <summary>
     /// Color to tint cells and gridlines while the mouse is hovering over the editor.
     /// </summary>
-    public Color HoverTintColor { get; set; } = Color.White;
+    public Color HoverTintColor
+    {
+        get => hoverTintColor;
+        set
+        {
+            if (value != hoverTintColor)
+            {
+                hoverTintColor = value;
+                OnPropertyChanged(nameof(HoverTintColor));
+            }
+        }
+    }
 
     /// <summary>
     /// Thickness of gridlines.
@@ -43,25 +87,59 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
     public int LineWidth
     {
         get => lineWidth.Value;
-        set => lineWidth.Value = value;
+        set
+        {
+            if (lineWidth.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(LineWidth));
+            }
+        }
     }
 
     /// <summary>
     /// The current content placement.
     /// </summary>
-    public NineGridPlacement Placement { get; set; } = new(Alignment.Start, Alignment.Start);
+    public NineGridPlacement Placement
+    {
+        get => placement;
+        set
+        {
+            if (value != placement)
+            {
+                placement = value;
+                OnPropertyChanged(nameof(Placement));
+            }
+        }
+    }
 
     /// <summary>
     /// Color for the grid cell that is is selected according to <see cref="Placement"/>.
     /// </summary>
-    public Color SelectionBackgroundColor { get; set; } = new(80, 150, 220);
+    public Color SelectionBackgroundColor
+    {
+        get => selectionBackgroundColor;
+        set
+        {
+            if (value !=  selectionBackgroundColor)
+            {
+                selectionBackgroundColor = value;
+                OnPropertyChanged(nameof(SelectionBackgroundColor));
+            }
+        }
+    }
 
     private readonly Rectangle[,] cells = new Rectangle[3, 3];
     private readonly Rectangle[] gridlines = new Rectangle[8];
     private readonly DirtyTracker<int> lineWidth = new(4);
 
+    private Color cellColor = Color.Transparent;
+    private IView? content;
+    private Color gridColor = new(64, 64, 64);
+    private Color hoverTintColor = Color.White;
     private bool isHovering;
     private PositioningOverlay? overlay;
+    private NineGridPlacement placement = new(Alignment.Start, Alignment.Start);
+    private Color selectionBackgroundColor = new(80, 150, 220);
 
     protected override bool IsContentDirty()
     {

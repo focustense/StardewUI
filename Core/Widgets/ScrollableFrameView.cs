@@ -19,7 +19,15 @@ public class ScrollableFrameView : WrapperView
     public IView? Content
     {
         get => contentContainer?.Content;
-        set => RequireView(() => contentContainer).Content = value;
+        set
+        {
+            var contentContainer = RequireView(() => this.contentContainer);
+            if (value != contentContainer.Content)
+            {
+                contentContainer.Content = value;
+                OnPropertyChanged(nameof(Content));
+            }
+        }
     }
 
     /// <summary>
@@ -32,7 +40,15 @@ public class ScrollableFrameView : WrapperView
     public LayoutParameters ContentLayout
     {
         get => contentContainer?.Layout ?? default;
-        set => RequireView(() => contentContainer).Layout = value;
+        set
+        {
+            var contentContainer = RequireView(() => this.contentContainer);
+            if (value != contentContainer.Layout)
+            {
+                contentContainer.Layout = value;
+                OnPropertyChanged(nameof(ContentLayout));
+            }
+        }
     }
 
     /// <summary>
@@ -45,7 +61,15 @@ public class ScrollableFrameView : WrapperView
     public IView? Footer
     {
         get => footerContainer?.Children.FirstOrDefault();
-        set => RequireView(() => footerContainer).Children = value is not null ? [value] : [];
+        set
+        {
+            var footerContainer = RequireView(() => this.footerContainer);
+            if (value != footerContainer.Children.FirstOrDefault())
+            {
+                footerContainer.Children = value is not null ? [value] : [];
+                OnPropertyChanged(nameof(Footer));
+            }
+        }
     }
 
     /// <summary>
@@ -59,7 +83,15 @@ public class ScrollableFrameView : WrapperView
     public LayoutParameters FrameLayout
     {
         get => contentFrame?.Layout ?? default;
-        set => RequireView(() => contentFrame).Layout = value;
+        set
+        {
+            var contentFrame = RequireView(() => this.contentFrame);
+            if (value != contentFrame.Layout)
+            {
+                contentFrame.Layout = value;
+                OnPropertyChanged(nameof(FrameLayout));
+            }
+        }
     }
 
     /// <summary>
@@ -72,7 +104,15 @@ public class ScrollableFrameView : WrapperView
     public IView? Sidebar
     {
         get => sidebarContainer?.Children[0];
-        set => RequireView(() => sidebarContainer).Children = value is not null ? [value] : [];
+        set
+        {
+            var sidebarContainer = RequireView(() => this.sidebarContainer);
+            if (value != sidebarContainer.Children.FirstOrDefault())
+            {
+                sidebarContainer.Children = value is not null ? [value] : [];
+                OnPropertyChanged(nameof(Sidebar));
+            }
+        }
     }
 
     /// <summary>
@@ -99,6 +139,7 @@ public class ScrollableFrameView : WrapperView
                 sidebarContainer.Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Content() };
                 scrollbar.Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Stretch() };
             }
+            OnPropertyChanged(nameof(SidebarWidth));
         }
     }
 
@@ -113,8 +154,14 @@ public class ScrollableFrameView : WrapperView
         get => banner?.Text;
         set
         {
-            RequireView(() => banner).Text = value ?? "";
-            banner.Visibility = !string.IsNullOrEmpty(value) ? Visibility.Visible : Visibility.Hidden;
+            var banner = RequireView(() => this.banner);
+            var text = value ?? "";
+            if (text != banner.Text)
+            {
+                banner.Text = text;
+                banner.Visibility = !string.IsNullOrEmpty(value) ? Visibility.Visible : Visibility.Hidden;
+                OnPropertyChanged(nameof(Title));
+            }
         }
     }
 

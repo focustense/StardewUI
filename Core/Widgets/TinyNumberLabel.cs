@@ -30,8 +30,11 @@ public class TinyNumberLabel(IReadOnlyList<Sprite> digitSprites, float baseScale
         get => number.Value;
         set
         {
-            digits = [.. GetDigits(value)];
-            number.Value = value;
+            if (number.SetIfChanged(value))
+            {
+                digits = [.. GetDigits(value)];
+                OnPropertyChanged(nameof(Number));
+            }
         }
     }
 
@@ -45,7 +48,13 @@ public class TinyNumberLabel(IReadOnlyList<Sprite> digitSprites, float baseScale
     public float Scale
     {
         get => scale.Value;
-        set => scale.Value = value;
+        set
+        {
+            if (scale.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Scale));
+            }
+        }
     }
 
     private readonly float baseScale = baseScale;

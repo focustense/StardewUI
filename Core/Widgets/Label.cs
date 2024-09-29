@@ -45,12 +45,34 @@ public class Label : View
     /// Current implementation is based on overdraw, as <see cref="SpriteFont"/> does not support font variants. Changing
     /// this setting will not affect size/layout.
     /// </remarks>
-    public bool Bold { get; set; }
+    public bool Bold
+    {
+        get => bold;
+        set
+        {
+            if (value != bold)
+            {
+                bold = value;
+                OnPropertyChanged(nameof(Bold));
+            }
+        }
+    }
 
     /// <summary>
     /// The text color.
     /// </summary>
-    public Color Color { get; set; } = Game1.textColor; // Not dirty-tracked because it doesn't affect layout.
+    public Color Color
+    {
+        get => color;
+        set
+        {
+            if (value != color)
+            {
+                color = value;
+                OnPropertyChanged(nameof(Color));
+            }
+        }
+    }
 
     /// <summary>
     /// The font that will be used to render the text.
@@ -58,7 +80,13 @@ public class Label : View
     public SpriteFont Font
     {
         get => font.Value;
-        set => font.Value = value;
+        set
+        {
+            if (font.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Font));
+            }
+        }
     }
 
     /// <summary>
@@ -87,7 +115,18 @@ public class Label : View
     /// <see cref="Alignment.Middle"/> and <see cref="Alignment.End"/> may have no effect if the width type is set to
     /// <see cref="LengthType.Content"/>; for non-default alignments to work, one of the other length types is required.
     /// </remarks>
-    public Alignment HorizontalAlignment { get; set; } // Not dirty-tracked as it doesn't change the max line width.
+    public Alignment HorizontalAlignment
+    {
+        get => horizontalAlignment;
+        set
+        {
+            if (value != horizontalAlignment)
+            {
+                horizontalAlignment = value;
+                OnPropertyChanged(nameof(HorizontalAlignment));
+            }
+        }
+    }
 
     /// <summary>
     /// Maximum number of lines of text to display when wrapping. Default is <c>0</c> which applies no limit.
@@ -95,7 +134,13 @@ public class Label : View
     public int MaxLines
     {
         get => maxLines.Value;
-        set => maxLines.Value = value;
+        set
+        {
+            if (maxLines.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(MaxLines));
+            }
+        }
     }
 
     /// <summary>
@@ -104,13 +149,22 @@ public class Label : View
     public string Text
     {
         get => text.Value;
-        set => text.Value = value;
+        set
+        {
+            if (text.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Text));
+            }
+        }
     }
 
     private readonly DirtyTracker<SpriteFont> font = new(Game1.smallFont);
     private readonly DirtyTracker<int> maxLines = new(0);
     private readonly DirtyTracker<string> text = new("");
 
+    private bool bold;  // Not dirty-tracked because it doesn't affect layout.
+    private Color color = Game1.textColor;  // Not dirty-tracked because it doesn't affect layout.
+    private Alignment horizontalAlignment; // Not dirty-tracked as it doesn't change the max line width.
     private List<string> lines = [];
 
     protected override void OnDrawContent(ISpriteBatch b)

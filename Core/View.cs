@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 
@@ -51,6 +53,9 @@ public abstract class View : IView
     /// </summary>
     public event EventHandler<PointerEventArgs>? PointerLeave;
 
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     /// <summary>
     /// Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use
     /// button (X).
@@ -79,17 +84,50 @@ public abstract class View : IView
     /// The size of the view's content, which is drawn inside the padding. Subclasses set this in their
     /// <see cref="OnMeasure"/> method and padding, margins, etc. are handled automatically.
     /// </summary>
-    public Vector2 ContentSize { get; protected set; }
+    public Vector2 ContentSize
+    {
+        get => contentSize;
+        protected set
+        {
+            if (value != contentSize)
+            {
+                contentSize = value;
+                OnPropertyChanged(nameof(ContentSize));
+            }
+        }
+    }
 
     /// <summary>
     /// Whether or not this view should fire drag events such as <see cref="DragStart"/> and <see cref="Drag"/>.
     /// </summary>
-    public bool Draggable { get; set; }
+    public bool Draggable
+    {
+        get => draggable;
+        set
+        {
+            if (value != draggable)
+            {
+                draggable = value;
+                OnPropertyChanged(nameof(Draggable));
+            }
+        }
+    }
 
     /// <summary>
     /// The floating elements to display relative to this view.
     /// </summary>
-    public IList<FloatingElement> FloatingElements { get; set; } = [];
+    public IList<FloatingElement> FloatingElements
+    {
+        get => floatingElements;
+        set
+        {
+            if (!value.SequenceEqual(floatingElements))
+            {
+                floatingElements = new(value);
+                OnPropertyChanged(nameof(FloatingElement));
+            }
+        }
+    }
 
     /// <summary>
     /// The size allocated to the entire area inside the border, i.e. <see cref="ContentSize"/> plus any
@@ -104,7 +142,18 @@ public abstract class View : IView
     /// All views are non-focusable by default and must have their focus enabled explicitly. Subclasses may choose to
     /// override the default value if they should always be focusable.
     /// </remarks>
-    public virtual bool IsFocusable { get; set; }
+    public virtual bool IsFocusable
+    {
+        get => isFocusable;
+        set
+        {
+            if (value != isFocusable)
+            {
+                isFocusable = value;
+                OnPropertyChanged(nameof(IsFocusable));
+            }
+        }
+    }
 
     /// <summary>
     /// Layout settings for this view; determines how its dimensions will be computed.
@@ -112,7 +161,13 @@ public abstract class View : IView
     public LayoutParameters Layout
     {
         get => layout.Value;
-        set => layout.Value = value;
+        set
+        {
+            if (layout.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Layout));
+            }
+        }
     }
 
     /// <summary>
@@ -121,13 +176,30 @@ public abstract class View : IView
     public Edges Margin
     {
         get => margin.Value;
-        set => margin.Value = value;
+        set
+        {
+            if (margin.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Margin));
+            }
+        }
     }
 
     /// <summary>
     /// Simple name for this view, used in log/debug output; does not affect behavior.
     /// </summary>
-    public string Name { get; set; }
+    public string Name
+    {
+        get => name;
+        set
+        {
+            if (value != name)
+            {
+                name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+    }
 
     /// <summary>
     /// The size of the entire area occupied by this view including margins, border and padding.
@@ -140,7 +212,13 @@ public abstract class View : IView
     public Edges Padding
     {
         get => padding.Value;
-        set => padding.Value = value;
+        set
+        {
+            if (padding.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Padding));
+            }
+        }
     }
 
     /// <summary>
@@ -150,34 +228,100 @@ public abstract class View : IView
     /// By default, all views receive pointer events; this may be disabled for views that intentionally overlap other
     /// views but shouldn't block their input, such as local non-modal overlays.
     /// </remarks>
-    public bool PointerEventsEnabled { get; set; } = true;
+    public bool PointerEventsEnabled
+    {
+        get => pointerEventsEnabled;
+        set
+        {
+            if (value != pointerEventsEnabled)
+            {
+                pointerEventsEnabled = value;
+                OnPropertyChanged(nameof(PointerEventsEnabled));
+            }
+        }
+    }
 
     /// <inheritdoc />
     /// <summary>
     /// If set to an axis, specifies that when any child of the view is scrolled into view (using
     /// <see cref="ScrollIntoView"/>), then this entire view should be scrolled along with it.
     /// </summary>
-    public Orientation? ScrollWithChildren { get; set; }
+    public Orientation? ScrollWithChildren
+    {
+        get => scrollWithChildren;
+        set
+        {
+            if (value != scrollWithChildren)
+            {
+                scrollWithChildren = value;
+                OnPropertyChanged(nameof(ScrollWithChildren));
+            }
+        }
+    }
 
     /// <summary>
     /// The user-defined tags for this view.
     /// </summary>
-    public Tags Tags { get; set; } = new();
+    public Tags Tags
+    {
+        get => tags;
+        set
+        {
+            if (!value.Equals(tags))
+            {
+                tags = value;
+                OnPropertyChanged(nameof(Tags));
+            }
+        }
+    }
 
     /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
-    public string Tooltip { get; set; } = "";
+    public string Tooltip
+    {
+        get => tooltip;
+        set
+        {
+            if (value != tooltip)
+            {
+                tooltip = value;
+                OnPropertyChanged(nameof(Tooltip));
+            }
+        }
+    }
 
     /// <summary>
     /// Visibility for this view.
     /// </summary>
-    public Visibility Visibility { get; set; }
+    public Visibility Visibility
+    {
+        get => visibility;
+        set
+        {
+            if (value != visibility)
+            {
+                visibility = value;
+                OnPropertyChanged(nameof(Visibility));
+            }
+        }
+    }
 
     /// <summary>
     /// Z order for this view within its direct parent. Higher indices draw later (on top).
     /// </summary>
-    public int ZIndex { get; set; }
+    public int ZIndex
+    {
+        get => zIndex;
+        set
+        {
+            if (value != zIndex)
+            {
+                zIndex = value;
+                OnPropertyChanged(nameof(ZIndex));
+            }
+        }
+    }
 
     /// <summary>
     /// The most recent size used in a <see cref="Measure"/> pass. Used for additional dirty checks.
@@ -188,13 +332,24 @@ public abstract class View : IView
     private readonly DirtyTracker<Edges> margin = new(Edges.NONE);
     private readonly DirtyTracker<Edges> padding = new(Edges.NONE);
 
+    private Vector2 contentSize;
+    private bool draggable;
     private IView? draggingView;
+    private ObservableCollection<FloatingElement> floatingElements = [];
     private bool hasChildrenWithOutOfBoundsContent;
     private bool isDragging;
+    private bool isFocusable;
+    private string name;
+    private bool pointerEventsEnabled = true;
+    private Orientation? scrollWithChildren;
+    private Tags tags = new();
+    private string tooltip = "";
+    private Visibility visibility;
+    private int zIndex;
 
     public View()
     {
-        Name = GetType().Name;
+        name = GetType().Name;
     }
 
     public bool ContainsPoint(Vector2 point)
@@ -399,28 +554,6 @@ public abstract class View : IView
                 RightClick?.Invoke(this, e);
             }
         }
-    }
-
-    private ViewChild? GetOrUpdateDraggingChild(Vector2 position)
-    {
-        // Since the effect of dragging is usually to move some view, we can't rely on the current cursor position to
-        // accurately tell us which view to drag; instead, we need to track which is view is dragging, and re-read its
-        // current position on each movement.
-        if (draggingView is not null)
-        {
-            var childPosition = GetChildPosition(draggingView);
-            return childPosition is not null ? new(draggingView, childPosition.Value) : null;
-        }
-
-        foreach (var child in GetChildrenAt(position))
-        {
-            if (child.View.PointerEventsEnabled)
-            {
-                draggingView = child.View;
-                return child;
-            }
-        }
-        return null;
     }
 
     /// <inheritdoc/>
@@ -706,6 +839,61 @@ public abstract class View : IView
     protected abstract void OnMeasure(Vector2 availableSize);
 
     /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="args">The event arguments.</param>
+    protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
+    {
+        PropertyChanged?.Invoke(this, args);
+
+        // Dependent properties.
+        //
+        // We don't always need this, e.g. for a settable property like ContentSize we could simply have the setter call
+        // OnPropertyChanged twice; but for multiple levels of read-only properties, or properties that depend on
+        // multiple other properties, it gets more complicated.
+        //
+        // Ideally this nonsense could be handled by an IL weaver or source generator, but we're very limited in a
+        // shared project.
+        //
+        // Only need to handle one at a time since the call is recursive, i.e. OnPropertyChanged("InnerSize") will call
+        // OnPropertyChanged("BorderSize") which itself will call OnPropertyChanged("OuterSize").
+        switch (args.PropertyName)
+        {
+            case nameof(Margin):
+                OnPropertyChanged(nameof(OuterSize));
+                OnPropertyChanged(nameof(ActualBounds));
+                break;
+            case nameof(Padding):
+                OnPropertyChanged(nameof(InnerSize));
+                break;
+            case nameof(ContentSize):
+                OnPropertyChanged(nameof(InnerSize));
+                break;
+            case nameof(InnerSize):
+                OnPropertyChanged(nameof(BorderSize));
+                break;
+            case nameof(BorderSize):
+                OnPropertyChanged(nameof(OuterSize));
+                OnPropertyChanged(nameof(ActualBounds));
+                break;
+            case nameof(ActualBounds):
+                OnPropertyChanged(nameof(ContentBounds));
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that was changed.</param>
+    protected virtual void OnPropertyChanged(string propertyName)
+    {
+        OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+    }
+
+    /// <summary>
     /// Resets any dirty state associated with this view.
     /// </summary>
     /// <remarks>
@@ -787,5 +975,27 @@ public abstract class View : IView
         return new Vector2(Margin.Left, Margin.Top)
             + new Vector2(borderThickness.Left, borderThickness.Top)
             + new Vector2(Padding.Left, Padding.Top);
+    }
+
+    private ViewChild? GetOrUpdateDraggingChild(Vector2 position)
+    {
+        // Since the effect of dragging is usually to move some view, we can't rely on the current cursor position to
+        // accurately tell us which view to drag; instead, we need to track which is view is dragging, and re-read its
+        // current position on each movement.
+        if (draggingView is not null)
+        {
+            var childPosition = GetChildPosition(draggingView);
+            return childPosition is not null ? new(draggingView, childPosition.Value) : null;
+        }
+
+        foreach (var child in GetChildrenAt(position))
+        {
+            if (child.View.PointerEventsEnabled)
+            {
+                draggingView = child.View;
+                return child;
+            }
+        }
+        return null;
     }
 }

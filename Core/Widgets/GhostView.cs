@@ -16,7 +16,18 @@ public class GhostView : View
     /// <summary>
     /// The view for which a copy will be drawn.
     /// </summary>
-    public IView? RealView { get; set; }
+    public IView? RealView
+    {
+        get => realView;
+        set
+        {
+            if (value != realView)
+            {
+                realView = value;
+                OnPropertyChanged(nameof(RealView));
+            }
+        }
+    }
 
     /// <summary>
     /// Color of the ghost.
@@ -25,7 +36,21 @@ public class GhostView : View
     /// This tint is multiplied against the <see cref="RealView"/>'s pixel values and acts as a recolor; for example,
     /// specifying <see cref="Color.Red"/> here will result in the ghost being entirely red and black.
     /// </remarks>
-    public Color TintColor { get; set; } = Color.White;
+    public Color TintColor
+    {
+        get => tintColor;
+        set
+        {
+            if (value != tintColor)
+            {
+                tintColor = value;
+                OnPropertyChanged(nameof(TintColor));
+            }
+        }
+    }
+
+    private IView? realView;
+    private Color tintColor = Color.White;
 
     protected override void OnDrawContent(ISpriteBatch b)
     {

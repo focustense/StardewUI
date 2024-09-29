@@ -14,15 +14,15 @@ namespace StardewUI;
 /// Currently supports only vertically-scrolling content.
 /// </para>
 /// </remarks>
-public class ScrollableView : WrapperView
+public class ScrollableView : WrapperView<ScrollContainer>
 {
     /// <summary>
     /// The content to make scrollable.
     /// </summary>
     public IView? Content
     {
-        get => container?.Content;
-        set => RequireView(() => container).Content = value;
+        get => OptionalRoot?.Content;
+        set => Root.Content = value;
     }
 
     /// <summary>
@@ -30,12 +30,11 @@ public class ScrollableView : WrapperView
     /// </summary>
     public float Peeking
     {
-        get => container?.Peeking ?? 0;
-        set => RequireView(() => container).Peeking = value;
+        get => OptionalRoot?.Peeking ?? 0;
+        set => Root.Peeking = value;
     }
 
     // Initialized in CreateView
-    private ScrollContainer container = null!;
     private Scrollbar scrollbar = null!;
 
     public override void OnWheel(WheelEventArgs e)
@@ -61,9 +60,9 @@ public class ScrollableView : WrapperView
         }
     }
 
-    protected override IView CreateView()
+    protected override ScrollContainer CreateView()
     {
-        container = new ScrollContainer() { Peeking = 16, ScrollStep = 64 };
+        var container = new ScrollContainer() { Peeking = 16, ScrollStep = 64 };
         scrollbar = new Scrollbar()
         {
             Layout = new() { Width = Length.Px(32), Height = Length.Stretch() },

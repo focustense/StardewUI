@@ -20,7 +20,14 @@ public class TextInput : View
     public Sprite? Background
     {
         get => frame.Background;
-        set => frame.Background = value;
+        set
+        {
+            if (value != frame.Background)
+            {
+                frame.Background = value;
+                OnPropertyChanged(nameof(Background));
+            }
+        }
     }
 
     /// <summary>
@@ -33,7 +40,14 @@ public class TextInput : View
     public Edges BorderThickness
     {
         get => frame.Padding;
-        set => frame.Padding = value;
+        set
+        {
+            if (value != frame.Padding)
+            {
+                frame.Padding = value;
+                OnPropertyChanged(nameof(BorderThickness));
+            }
+        }
     }
 
     /// <summary>
@@ -42,7 +56,14 @@ public class TextInput : View
     public Sprite? Caret
     {
         get => caret.Sprite;
-        set => caret.Sprite = value;
+        set
+        {
+            if (value != caret.Sprite)
+            {
+                caret.Sprite = value;
+                OnPropertyChanged(nameof(Caret));
+            }
+        }
     }
 
     /// <summary>
@@ -56,7 +77,13 @@ public class TextInput : View
     public int CaretPosition
     {
         get => labelBeforeCursor.Text.Length;
-        set => SetCaretPosition(value);
+        set
+        {
+            if (SetCaretPosition(value))
+            {
+                OnPropertyChanged(nameof(CaretPosition));
+            }
+        }
     }
 
     /// <summary>
@@ -65,12 +92,18 @@ public class TextInput : View
     public float? CaretWidth
     {
         get => caret.Layout.Width.Type == LengthType.Px ? caret.Layout.Width.Value : null;
-        set =>
-            caret.Layout = new()
+        set
+        {
+            if (value != CaretWidth)
             {
-                Width = value.HasValue ? Length.Px(value.Value) : Length.Content(),
-                Height = Length.Stretch(),
-            };
+                caret.Layout = new()
+                {
+                    Width = value.HasValue ? Length.Px(value.Value) : Length.Content(),
+                    Height = Length.Stretch(),
+                };
+                OnPropertyChanged(nameof(CaretWidth));
+            }
+        }
     }
 
     /// <summary>
@@ -81,8 +114,12 @@ public class TextInput : View
         get => labelAfterCursor.Font;
         set
         {
-            labelAfterCursor.Font = value;
-            labelBeforeCursor.Font = value;
+            if (value != labelAfterCursor.Font || value != labelBeforeCursor.Font)
+            {
+                labelAfterCursor.Font = value;
+                labelBeforeCursor.Font = value;
+                OnPropertyChanged(nameof(Font));
+            }
         }
     }
 
@@ -97,10 +134,14 @@ public class TextInput : View
         get => maxLength;
         set
         {
-            maxLength = value;
-            if (value > 0 && Text.Length > value)
+            if (value != maxLength)
             {
-                Text = Text[..value];
+                maxLength = value;
+                if (value > 0 && Text.Length > value)
+                {
+                    Text = Text[..value];
+                }
+                OnPropertyChanged(nameof(MaxLength));
             }
         }
     }
@@ -109,14 +150,28 @@ public class TextInput : View
     public float ShadowAlpha
     {
         get => frame.ShadowAlpha;
-        set => frame.ShadowAlpha = value;
+        set
+        {
+            if (value != frame.ShadowAlpha)
+            {
+                frame.ShadowAlpha = value;
+                OnPropertyChanged(nameof(ShadowAlpha));
+            }
+        }
     }
 
     /// <inheritdoc cref="Frame.ShadowOffset"/>
     public Vector2 ShadowOffset
     {
         get => frame.ShadowOffset;
-        set => frame.ShadowOffset = value;
+        set
+        {
+            if (value != frame.ShadowOffset)
+            {
+                frame.ShadowOffset = value;
+                OnPropertyChanged(nameof(ShadowOffset));
+            }
+        }
     }
 
     /// <summary>
@@ -127,9 +182,13 @@ public class TextInput : View
         get => labelBeforeCursor.Color;
         set
         {
-            labelBeforeCursor.Color = value;
-            labelAfterCursor.Color = value;
-            caret.Tint = value;
+            if (value != labelBeforeCursor.Color)
+            {
+                labelBeforeCursor.Color = value;
+                labelAfterCursor.Color = value;
+                caret.Tint = value;
+                OnPropertyChanged(nameof(TextColor));
+            }
         }
     }
 
@@ -377,6 +436,7 @@ public class TextInput : View
     private void OnTextChanged()
     {
         TextChanged?.Invoke(this, EventArgs.Empty);
+        OnPropertyChanged(nameof(Text));
     }
 
     private void Release()
@@ -388,16 +448,17 @@ public class TextInput : View
         caret.Visibility = Visibility.Hidden;
     }
 
-    private void SetCaretPosition(int position)
+    private bool SetCaretPosition(int position)
     {
         var fullText = Text;
         position = Math.Clamp(position, 0, fullText.Length);
         if (position == CaretPosition)
         {
-            return;
+            return false;
         }
         labelBeforeCursor.Text = position > 0 ? fullText[0..position] : "";
         labelAfterCursor.Text = position < fullText.Length ? fullText[position..] : "";
+        return true;
     }
 
     private void SetText(string text)

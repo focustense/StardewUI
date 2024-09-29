@@ -16,7 +16,18 @@ public class Banner : View
     /// <summary>
     /// Background sprite (including border) to draw underneath the text.
     /// </summary>
-    public Sprite? Background { get; set; }
+    public Sprite? Background
+    {
+        get => background;
+        set
+        {
+            if (value != background)
+            {
+                background = value;
+                OnPropertyChanged(nameof(Background));
+            }
+        }
+    }
 
     /// <summary>
     /// The thickness of the border edges within the <see cref="Background"/>. sprite.
@@ -30,7 +41,13 @@ public class Banner : View
     public Edges BackgroundBorderThickness
     {
         get => backgroundBorderThickness.Value;
-        set => backgroundBorderThickness.Value = value;
+        set
+        {
+            if (backgroundBorderThickness.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(BackgroundBorderThickness));
+            }
+        }
     }
 
     /// <summary>
@@ -39,24 +56,55 @@ public class Banner : View
     public string Text
     {
         get => text.Value;
-        set => text.Value = value;
+        set
+        {
+            if (text.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Text));
+            }
+        }
     }
 
     /// <summary>
     /// Alpha value for the text shadow. If set to the default of zero, no text shadow will be drawn.
     /// </summary>
-    public float TextShadowAlpha { get; set; } = 0.0f;
+    public float TextShadowAlpha
+    {
+        get => textShadowAlpha;
+        set
+        {
+            if (value != textShadowAlpha)
+            {
+                textShadowAlpha = value;
+                OnPropertyChanged(nameof(TextShadowAlpha));
+            }
+        }
+    }
 
     /// <summary>
     /// Offset to draw the text shadow, which is a second copy of the <see cref="Text"/> drawn entirely black.
     /// Text shadows will not be visible unless <see cref="TextShadowAlpha"/> is non-zero.
     /// </summary>
-    public Vector2 TextShadowOffset { get; set; }
+    public Vector2 TextShadowOffset
+    {
+        get => textShadowOffset;
+        set
+        {
+            if (value != textShadowOffset)
+            {
+                textShadowOffset = value;
+                OnPropertyChanged(nameof(TextShadowOffset));
+            }
+        }
+    }
 
     private readonly DirtyTracker<Edges> backgroundBorderThickness = new(Edges.NONE);
     private readonly DirtyTracker<string> text = new("");
 
+    private Sprite? background;
     private NineSlice? backgroundSlice;
+    private float textShadowAlpha;
+    private Vector2 textShadowOffset;
     private Vector2 textSize;
 
     protected override Edges GetBorderThickness()
