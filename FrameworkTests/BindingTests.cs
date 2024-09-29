@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using PropertyChanged.SourceGenerator;
 using StardewUI;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
@@ -12,7 +13,7 @@ using Xunit.Abstractions;
 
 namespace StarML.Tests;
 
-public class BindingTests
+public partial class BindingTests
 {
     class Model
     {
@@ -21,40 +22,10 @@ public class BindingTests
         public string Name { get; set; } = "";
     }
 
-    class ModelWithNotify : INotifyPropertyChanged
+    partial class ModelWithNotify : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public Color Color
-        {
-            get => color;
-            set
-            {
-                if (value == color)
-                {
-                    return;
-                }
-                color = value;
-                PropertyChanged?.Invoke(this, new(nameof(Color)));
-            }
-        }
-
-        public string Name
-        {
-            get => name;
-            set
-            {
-                if (value == name)
-                {
-                    return;
-                }
-                name = value;
-                PropertyChanged?.Invoke(this, new(nameof(Name)));
-            }
-        }
-
-        private Color color;
-        private string name = "";
+        [Notify] private Color color;
+        [Notify] private string name = "";
     }
 
     class FakeAssetCache : IAssetCache
@@ -120,37 +91,10 @@ public class BindingTests
         Assert.Equal("New text", label.Text);
     }
 
-    class OutputBindingTestModel : INotifyPropertyChanged
+    partial class OutputBindingTestModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public bool Checked
-        {
-            get => isChecked;
-            set
-            {
-                if (value != isChecked)
-                {
-                    isChecked = value;
-                    PropertyChanged?.Invoke(this, new(nameof(Checked)));
-                }
-            }
-        }
-        public Vector2 Size
-        {
-            get => size;
-            set
-            {
-                if (value != size)
-                {
-                    size = value;
-                    PropertyChanged?.Invoke(this, new(nameof(Size)));
-                }
-            }
-        }
-
-        private bool isChecked;
-        private Vector2 size;
+        [Notify] private bool @checked;
+        [Notify] private Vector2 size;
     }
 
     [Fact]
