@@ -13,6 +13,11 @@ public interface IAttribute
     string Name { get; }
 
     /// <summary>
+    /// The type of the attribute itself, defining how the <see cref="Name"/> should be interpreted.
+    /// </summary>
+    AttributeType Type { get; }
+
+    /// <summary>
     /// The literal value text.
     /// </summary>
     string Value { get; }
@@ -31,15 +36,22 @@ public interface IAttribute
 /// implement interfaces.
 /// </remarks>
 /// <param name="Name">The attribute name.</param>
+/// <param name="Value">The literal value text.</param>
+/// <param name="Type">The type of the attribute itself, defining how the <see cref="Name"/> should be
+/// interpreted.</param>
 /// <param name="ValueType">The type of the value expression, defining how the <paramref name="value"/> should be
 /// interpreted.</param>
-/// <param name="Value">The literal value text.</param>
-public record SAttribute(string Name, AttributeValueType ValueType, string Value) : IAttribute
+public record SAttribute(
+    string Name,
+    string Value,
+    AttributeType Type = AttributeType.Property,
+    AttributeValueType ValueType = AttributeValueType.Literal
+) : IAttribute
 {
     /// <summary>
     /// Initializes a new <see cref="SAttribute"/> from the data of a parsed attribute.
     /// </summary>
     /// <param name="attribute">The parsed attribute.</param>
     public SAttribute(Grammar.Attribute attribute)
-        : this(attribute.Name.ToString(), attribute.ValueType, attribute.Value.ToString()) { }
+        : this(attribute.Name.ToString(), attribute.Value.ToString(), attribute.Type, attribute.ValueType) { }
 }

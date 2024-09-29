@@ -76,6 +76,31 @@ public class LexerTests
                 new(TokenType.Name, "lane"),
                 new(TokenType.TagEnd, ">"),
             ]
+        },
+        {
+            @"<label font=""small"" *repeat={{<Items}} text={{DisplayName}} />",
+            [
+                new(TokenType.OpeningTagStart, "<"),
+                new(TokenType.Name, "label"),
+                new(TokenType.Name, "font"),
+                new(TokenType.Assignment, "="),
+                new(TokenType.Quote, "\""),
+                new(TokenType.Literal, "small"),
+                new(TokenType.Quote, "\""),
+                new(TokenType.AttributeModifier, "*"),
+                new(TokenType.Name, "repeat"),
+                new(TokenType.Assignment, "="),
+                new(TokenType.BindingStart, "{{"),
+                new(TokenType.BindingModifier, "<"),
+                new(TokenType.Literal, "Items"),
+                new(TokenType.BindingEnd, "}}"),
+                new(TokenType.Name, "text"),
+                new(TokenType.Assignment, "="),
+                new(TokenType.BindingStart, "{{"),
+                new(TokenType.Literal, "DisplayName"),
+                new(TokenType.BindingEnd, "}}"),
+                new(TokenType.SelfClosingTagEnd, "/>"),
+            ]
         }
     };
 

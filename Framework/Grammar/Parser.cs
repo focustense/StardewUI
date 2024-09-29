@@ -15,6 +15,22 @@ public readonly ref struct TagInfo(ReadOnlySpan<char> name, bool isClosingTag)
 }
 
 /// <summary>
+/// The different types of an <see cref="Attribute"/>, independent of its value.
+/// </summary>
+public enum AttributeType
+{
+    /// <summary>
+    /// Sets or binds a property on the target view.
+    /// </summary>
+    Property,
+
+    /// <summary>
+    /// Affects the structure or hierarchy of the view tree, e.g. by making a node conditional or repeated.
+    /// </summary>
+    Structural,
+}
+
+/// <summary>
 /// Types allowed for the value of an <see cref="Attribute"/>.
 /// </summary>
 public enum AttributeValueType
@@ -51,15 +67,27 @@ public enum AttributeValueType
 /// A complete attribute assignment parsed from StarML.
 /// </summary>
 /// <param name="name">The attribute name.</param>
+/// <param name="type">The type of the attribute itself, i.e. how its <paramref name="name"/> should be
+/// interpreted.</param>
 /// <param name="valueType">The type of the value expression, defining how the <paramref name="value"/> should be
 /// interpreted.</param>
 /// <param name="value">The literal value text.</param>
-public readonly ref struct Attribute(ReadOnlySpan<char> name, AttributeValueType valueType, ReadOnlySpan<char> value)
+public readonly ref struct Attribute(
+    ReadOnlySpan<char> name,
+    AttributeType type,
+    AttributeValueType valueType,
+    ReadOnlySpan<char> value
+)
 {
     /// <summary>
     /// The attribute name.
     /// </summary>
     public ReadOnlySpan<char> Name { get; } = name;
+
+    /// <summary>
+    /// The type of the attribute itself, i.e. how its <see cref="Name"/> should be interpreted.
+    /// </summary>
+    public AttributeType Type { get; } = type;
 
     /// <summary>
     /// The literal value text.
@@ -130,9 +158,19 @@ public ref struct DocumentReader(Lexer lexer)
         {
             return false;
         }
-        lexer.ReadRequiredToken(TokenType.Name, TokenType.TagEnd, TokenType.SelfClosingTagEnd);
+        lexer.ReadRequiredToken(
+            TokenType.Name,
+            TokenType.AttributeModifier,
+            TokenType.TagEnd,
+            TokenType.SelfClosingTagEnd
+        );
+        var attributeType = AttributeType.Property;
         switch (lexer.Current.Type)
         {
+            case TokenType.AttributeModifier:
+                attributeType = GetAttributeType(lexer.Current.Text);
+                lexer.ReadRequiredToken(TokenType.Name);
+                goto case TokenType.Name;
             case TokenType.Name:
                 var attributeName = lexer.Current.Text;
                 lexer.ReadRequiredToken(TokenType.Assignment);
@@ -155,7 +193,7 @@ public ref struct DocumentReader(Lexer lexer)
                 // We don't bother trying to enforce that the end token matches the start token because the Lexer will
                 // have already failed to parse the literal if it doesn't match.
                 lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingEnd);
-                Attribute = new(attributeName, valueType, attributeValue);
+                Attribute = new(attributeName, attributeType, valueType, attributeValue);
                 return true;
             case TokenType.SelfClosingTagEnd:
                 wasTagSelfClosed = true;
@@ -197,6 +235,15 @@ public ref struct DocumentReader(Lexer lexer)
         }
         Tag = new(tagName, isClosingTag);
         return true;
+    }
+
+    private static AttributeType GetAttributeType(in ReadOnlySpan<char> token)
+    {
+        return token switch
+        {
+            "*" => AttributeType.Structural,
+            _ => throw new ArgumentException($"Invalid attribute modifier: {token}", nameof(token)),
+        };
     }
 
     private static AttributeValueType GetBindingType(in ReadOnlySpan<char> token)

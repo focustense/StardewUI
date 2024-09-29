@@ -73,9 +73,9 @@ public partial class BindingTests
     public void Update_WithInputBindings_WritesContextToView()
     {
         var element = new SElement("label", [
-            new SAttribute("max-lines", AttributeValueType.Literal, "1"),
-            new SAttribute("color", AttributeValueType.InputBinding, "Color"),
-            new SAttribute("text", AttributeValueType.InputBinding, "Name"),
+            new SAttribute("max-lines", "1"),
+            new SAttribute("color", "Color", ValueType: AttributeValueType.InputBinding),
+            new SAttribute("text", "Name", ValueType: AttributeValueType.InputBinding),
         ]);
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
@@ -101,9 +101,9 @@ public partial class BindingTests
     public void Update_WithOutputBindings_WritesViewToContext()
     {
         var element = new SElement("checkbox", [
-            new SAttribute("layout", AttributeValueType.Literal, "200px 20px"),
-            new SAttribute("is-checked", AttributeValueType.OutputBinding, "Checked"),
-            new SAttribute("outer-size", AttributeValueType.OutputBinding, "Size"),
+            new SAttribute("layout", "200px 20px"),
+            new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.OutputBinding),
+            new SAttribute("outer-size", "Size", ValueType: AttributeValueType.OutputBinding),
         ]);
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = false, Size = Vector2.Zero };
@@ -131,7 +131,7 @@ public partial class BindingTests
     public void Update_WithInOutBindings_WritesBothDirections()
     {
         var element = new SElement("checkbox", [
-            new SAttribute("is-checked", AttributeValueType.TwoWayBinding, "Checked"),
+            new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.TwoWayBinding),
         ]);
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = true };
@@ -163,19 +163,19 @@ public partial class BindingTests
         assetCache.Put("TestSprite", UiSprites.ButtonDark);
 
         var root = new SElement("lane", [
-            new SAttribute("orientation", AttributeValueType.Literal, "vertical"),
-            new SAttribute("horizontal-content-alignment", AttributeValueType.Literal, "middle"),
-            new SAttribute("vertical-content-alignment", AttributeValueType.Literal, "end"),
+            new SAttribute("orientation", "vertical"),
+            new SAttribute("horizontal-content-alignment", "middle"),
+            new SAttribute("vertical-content-alignment", "end"),
         ]);
         var child1 = new SElement("image", [
             // TODO: How can we handle complex attributes like the Layout in particular?
             //new SAttribute("width", AttributeValueType.Literal, "400"),
-            new SAttribute("scale", AttributeValueType.Literal, "3.0"),
-            new SAttribute("sprite", AttributeValueType.AssetBinding, "TestSprite"),
+            new SAttribute("scale", "3.0"),
+            new SAttribute("sprite", "TestSprite", ValueType: AttributeValueType.AssetBinding),
         ]);
         var child2 = new SElement("label", [
-            new SAttribute("font", AttributeValueType.Literal, "dialogue"),
-            new SAttribute("text", AttributeValueType.InputBinding, "HeaderText"),
+            new SAttribute("font", "dialogue"),
+            new SAttribute("text", "HeaderText", ValueType: AttributeValueType.InputBinding),
         ]);
         var tree = new ViewNode(
             viewFactory, viewBinder, root, [

@@ -1,10 +1,9 @@
 ﻿using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
-using Xunit.Abstractions;
 
 namespace StarML.Tests;
 
-public class ParserTests(ITestOutputHelper output)
+public class ParserTests
 {
     public record TagExpectation(string Name, SAttribute[]? Attributes = null, bool IsClosingTag = false);
 
@@ -18,26 +17,36 @@ public class ParserTests(ITestOutputHelper output)
             </lane>",
             [
                 new("lane", [
-                    new("orientation", AttributeValueType.Literal, "vertical"),
-                    new("align-content", AttributeValueType.Literal, "middle end"),
+                    new("orientation", "vertical"),
+                    new("align-content", "middle end"),
                 ]),
                 new("image", [
-                    new("width", AttributeValueType.InputBinding, "ImageWidth"),
-                    new("sprite", AttributeValueType.AssetBinding, "Mods/focustense.StardewUITest/Sprites/Header"),
+                    new("width", "ImageWidth", ValueType: AttributeValueType.InputBinding),
+                    new("sprite", "Mods/focustense.StardewUITest/Sprites/Header", ValueType: AttributeValueType.AssetBinding),
                 ]),
                 new("image", IsClosingTag: true),
                 new("label", [
-                    new("font", AttributeValueType.Literal, "dialogue"),
-                    new("text", AttributeValueType.InputBinding, "HeaderText"),
+                    new("font", "dialogue"),
+                    new("text", "HeaderText", ValueType: AttributeValueType.InputBinding),
                 ]),
                 new("label", IsClosingTag: true),
                 new("checkbox", [
-                    new("is-checked", AttributeValueType.TwoWayBinding, "Checked"),
+                    new("is-checked", "Checked", ValueType: AttributeValueType.TwoWayBinding),
                 ]),
                 new("checkbox", IsClosingTag: true),
                 new("lane", IsClosingTag: true),
             ]
         },
+        {
+            @"<label font=""small"" *repeat={{<>Items}} text={{DisplayName}} />",
+            [
+                new("label", [
+                    new("font", "small"),
+                    new("repeat", "Items", AttributeType.Structural, AttributeValueType.TwoWayBinding),
+                    new("text", "DisplayName", ValueType: AttributeValueType.InputBinding),
+                ])
+            ]
+        }
     };
 
     [Theory]
@@ -77,8 +86,8 @@ public class ParserTests(ITestOutputHelper output)
         Assert.Equal("lane", document.Root.Tag);
         Assert.Collection(
             document.Root.Attributes,
-            attr => Assert.Equal(new("orientation", AttributeValueType.Literal, "vertical"), attr),
-            attr => Assert.Equal(new("align-content", AttributeValueType.Literal, "middle end"), attr));
+            attr => Assert.Equal(new("orientation", "vertical"), attr),
+            attr => Assert.Equal(new("align-content", "middle end"), attr));
         Assert.Collection(
             document.Root.ChildNodes,
             node =>
@@ -86,23 +95,23 @@ public class ParserTests(ITestOutputHelper output)
                 Assert.Equal("image", node.Tag);
                 Assert.Collection(
                     node.Attributes,
-                    attr => Assert.Equal(new("width", AttributeValueType.InputBinding, "ImageWidth"), attr),
-                    attr => Assert.Equal(new("sprite", AttributeValueType.AssetBinding, "Mods/focustense.StardewUITest/Sprites/Header"), attr));
+                    attr => Assert.Equal(new("width", "ImageWidth", ValueType: AttributeValueType.InputBinding), attr),
+                    attr => Assert.Equal(new("sprite", "Mods/focustense.StardewUITest/Sprites/Header", ValueType: AttributeValueType.AssetBinding), attr));
             },
             node =>
             {
                 Assert.Equal("label", node.Tag);
                 Assert.Collection(
                     node.Attributes,
-                    attr => Assert.Equal(new("font", AttributeValueType.Literal, "dialogue"), attr),
-                    attr => Assert.Equal(new("text", AttributeValueType.InputBinding, "HeaderText"), attr));
+                    attr => Assert.Equal(new("font", "dialogue"), attr),
+                    attr => Assert.Equal(new("text", "HeaderText", ValueType: AttributeValueType.InputBinding), attr));
             },
             node =>
             {
                 Assert.Equal("checkbox", node.Tag);
                 Assert.Collection(
                     node.Attributes,
-                    attr => Assert.Equal(new("is-checked", AttributeValueType.TwoWayBinding, "Checked"), attr));
+                    attr => Assert.Equal(new("is-checked", "Checked", ValueType: AttributeValueType.TwoWayBinding), attr));
             });
     }
 }

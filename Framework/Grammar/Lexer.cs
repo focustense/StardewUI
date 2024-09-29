@@ -39,6 +39,11 @@ public enum TokenType
     Name,
 
     /// <summary>
+    /// Modifier token designating the type of an attribute; the <c>*</c> character (structural).
+    /// </summary>
+    AttributeModifier,
+
+    /// <summary>
     /// A string of literal text, as found within a quoted or bound attribute.
     /// </summary>
     Literal,
@@ -257,6 +262,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['"', ..] => new(TokenType.Quote, 1),
                 ['{', '{', ..] => new(TokenType.BindingStart, 2),
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
+                ['*', ..] => new(TokenType.AttributeModifier, 1),
                 _ => ReadName(),
             },
         };
