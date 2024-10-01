@@ -11,15 +11,15 @@ namespace StardewUI.Framework.Binding;
 /// <param name="viewBinder">Binding service used to create <see cref="IViewBinding"/> instances that detect changes to
 /// data or assets and propagate them to the bound <see cref="IView"/>.</param>
 /// <param name="element">Element data for this node.</param>
-/// <param name="childNodes">Children of this node.</param>
+/// <param name="childNodes">Initial children of this node.</param>
 public class ViewNode(
     IViewFactory viewFactory,
     IViewBinder viewBinder,
     SElement element,
-    IEnumerable<IViewNode> childNodes
+    IEnumerable<IViewNode>? childNodes = null
 ) : IViewNode
 {
-    public IReadOnlyList<IViewNode> ChildNodes { get; } = childNodes.ToList();
+    public IReadOnlyList<IViewNode> ChildNodes { get; internal set; } = childNodes?.ToList() ?? [];
 
     public object? Context
     {

@@ -24,15 +24,44 @@ public class ViewNodeFactory(
 {
     public IViewNode CreateNode(SNode node)
     {
-        var childNodes = node.ChildNodes.Select(CreateNode);
-        var viewNode = new ViewNode(viewFactory, viewBinder, node.Element, childNodes);
-        IViewNode result = viewNode;
+        return CreateNode(node, null);
+    }
+
+    record SwitchContext(IViewNode Node, IAttribute Attribute);
+
+    private IViewNode CreateNode(SNode node, SwitchContext? switchContext)
+    {
+        var viewNode = new ViewNode(viewFactory, viewBinder, node.Element);
         var structuralAttributes = StructuralAttributes.Get(node.Attributes);
+        IViewNode result = viewNode;
+        if (structuralAttributes.Case is IAttribute caseAttr)
+        {
+            if (switchContext is null)
+            {
+                throw new BindingException(
+                    $"Cannot bind *case attribute (value: '{caseAttr.Value}') without a prior *switch."
+                );
+            }
+            var condition = new BinaryCondition(
+                valueSourceFactory,
+                valueConverterFactory,
+                switchContext.Attribute,
+                caseAttr
+            )
+            {
+                LeftContextSelector = () => switchContext.Node.Context,
+            };
+            result = new ConditionalNode(viewNode, condition);
+        }
         if (structuralAttributes.If is not null)
         {
             var condition = new UnaryCondition(valueSourceFactory, valueConverterFactory, structuralAttributes.If);
             result = new ConditionalNode(result, condition);
         }
+        var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
+            ? new SwitchContext(viewNode, switchAttr)
+            : switchContext;
+        viewNode.ChildNodes = node.ChildNodes.Select(n => CreateNode(n, nextSwitchContext)).ToList();
         return result;
     }
 

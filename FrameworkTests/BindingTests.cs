@@ -357,4 +357,106 @@ public partial class BindingTests
                 Assert.Equal("Second Line", label.Text);
             });
     }
+
+    partial class SwitchCaseLiteralTestModel : INotifyPropertyChanged
+    {
+        [Notify] private int whichItem;
+    }
+
+    [Fact]
+    public void WhenCaseMatchesDirectChildLiteral_RendersView()
+    {
+        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+
+        string markup =
+            @"<lane *switch={{WhichItem}}>
+                <label text=""Always"" />
+                <label *case=""1"" text=""Item 1"" />
+                <label *case=""2"" text=""Item 2"" />
+                <label *case=""3"" text=""Item 3"" />
+            </lane>";
+        var document = Document.Parse(markup);
+        var tree = viewNodeFactory.CreateNode(document.Root);
+        var model = new SwitchCaseLiteralTestModel() { WhichItem = 3 };
+        tree.Context = model;
+        tree.Update();
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Always", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Item 3", label.Text);
+            });
+
+        model.WhichItem = 2;
+        tree.Update();
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Always", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Item 2", label.Text);
+            });
+    }
+
+    partial class SwitchCaseBindingTestModel : INotifyPropertyChanged
+    {
+        public enum Selection { Foo, Bar };
+
+        [Notify] private Selection current = Selection.Foo;
+        [Notify] private Selection first = Selection.Foo;
+        [Notify] private Selection second = Selection.Bar;
+    }
+
+    // TODO: This test would be more useful if implemented using narrowed contexts, i.e. where the bound value is
+    // actually on the item itself. But we don't have those types of attributes yet.
+    [Fact]
+    public void WhenCaseMatchesDirectChildBinding_RendersView()
+    {
+        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+
+        string markup =
+            @"<lane *switch={{Current}}>
+                <label *case={{First}} text=""Item 1"" />
+                <label *case={{Second}} text=""Item 2"" />
+            </lane>";
+        var document = Document.Parse(markup);
+        var tree = viewNodeFactory.CreateNode(document.Root);
+        var model = new SwitchCaseBindingTestModel();
+        tree.Context = model;
+        tree.Update();
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Item 1", label.Text);
+            });
+
+        model.Current = SwitchCaseBindingTestModel.Selection.Bar;
+        tree.Update();
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Item 2", label.Text);
+            });
+    }
 }
