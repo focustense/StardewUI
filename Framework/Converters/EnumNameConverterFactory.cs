@@ -16,9 +16,8 @@ public class EnumNameConverterFactory : IValueConverterFactory
             converter = null;
             return false;
         }
-        converter =
-            (IValueConverter<TSource, TDestination>)
-                typeof(Converter<>).MakeGenericType(typeof(TDestination)).GetConstructor([])!.Invoke([]);
+        var converterType = typeof(Converter<>).MakeGenericType(typeof(TDestination));
+        converter = (IValueConverter<TSource, TDestination>)Activator.CreateInstance(converterType)!;
         return true;
     }
 

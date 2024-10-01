@@ -14,12 +14,14 @@ namespace StardewUI.Framework.Binding;
 public interface IAttributeBindingFactory
 {
     /// <summary>
-    /// Creates a new attribute binding.
+    /// Attempts to creates a new attribute binding.
     /// </summary>
     /// <param name="viewDescriptor">Descriptor for the bound view, providing access to its properties.</param>
     /// <param name="attribute">The attribute data.</param>
     /// <param name="context">The binding context, including the bound data and descriptor for the data type.</param>
-    IAttributeBinding CreateBinding(IViewDescriptor viewDescriptor, IAttribute attribute, BindingContext? context);
+    /// <returns>The created binding, or <c>null</c> if the arguments do not support creating a binding, such as an
+    /// <paramref name="attribute"/> bound to a <c>null</c> value of <paramref name="context"/>.</returns>
+    IAttributeBinding? TryCreateBinding(IViewDescriptor viewDescriptor, IAttribute attribute, BindingContext? context);
 }
 
 /// <summary>
@@ -128,9 +130,10 @@ public class AttributeBindingFactory(
 
     private static readonly Rune DASH = new('-');
 
-    private readonly Dictionary<(Type, string, Type), LocalBindingFactory> cache = [];
+    private readonly Dictionary<(Type, string, Type), LocalBindingFactory> bindingFactoryCache = [];
+    private readonly Dictionary<(Type, Type), MethodInfo> genericMethodCache = [];
 
-    public IAttributeBinding CreateBinding(
+    public IAttributeBinding? TryCreateBinding(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
         BindingContext? context
@@ -142,16 +145,26 @@ public class AttributeBindingFactory(
         // target property type, respectively. However, for a context binding, the source type belongs to the context
         // and we can't cache until we know what it is.
         var sourceType = valueSourceFactory.GetValueType(attribute, property, context);
+        if (sourceType is null)
+        {
+            return null;
+        }
         var propertyKey = (viewDescriptor.TargetType, attribute.Name, sourceType);
-        if (!cache.TryGetValue(propertyKey, out var bindingFactory))
+        if (!bindingFactoryCache.TryGetValue(propertyKey, out var bindingFactory))
         {
             var typedBindingMethod = typeof(AttributeBindingFactory).GetMethod(
                 nameof(CreateTypedBinding),
                 BindingFlags.NonPublic | BindingFlags.Instance
             )!;
-            var typedBindingGenericMethod = typedBindingMethod.MakeGenericMethod(sourceType, property.ValueType);
+            // MakeGenericMethod can be expensive, so it helps to also cache the method itself, independently of the
+            // attribute it's being associated with, in case many attributes use the same types (which they will).
+            if (!genericMethodCache.TryGetValue((sourceType, property.ValueType), out var typedBindingGenericMethod))
+            {
+                typedBindingGenericMethod = typedBindingMethod.MakeGenericMethod(sourceType, property.ValueType);
+                genericMethodCache.Add((sourceType, property.ValueType), typedBindingGenericMethod);
+            }
             bindingFactory = typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
-            cache.Add(propertyKey, bindingFactory);
+            bindingFactoryCache.Add(propertyKey, bindingFactory);
         }
         return bindingFactory(viewDescriptor, attribute, propertyName, context);
     }
@@ -200,10 +213,10 @@ public class AttributeBindingFactory(
             }
         }
         var inputConverter = direction.IsIn()
-            ? valueConverterFactory.GetConverter<TSource, TDest>()
+            ? valueConverterFactory.GetRequiredConverter<TSource, TDest>()
             : InvalidConverter<TSource, TDest>.Instance;
         var outputConverter = direction.IsOut()
-            ? valueConverterFactory.GetConverter<TDest, TSource>()
+            ? valueConverterFactory.GetRequiredConverter<TDest, TSource>()
             : InvalidConverter<TDest, TSource>.Instance;
         return new AttributeBinding<TSource, TDest>(source, inputConverter, outputConverter, property, direction);
     }

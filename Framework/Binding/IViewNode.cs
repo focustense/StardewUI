@@ -26,6 +26,21 @@ public interface IViewNode
     IReadOnlyList<IView> Views { get; }
 
     /// <summary>
+    /// Clears any <see cref="Views"/> associated with this node and resets it to the default state before it was bound.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Propagates the request down to <see cref="ChildNodes"/>, but is not required to clear <see cref="ChildNodes"/>
+    /// and does not affect the <see cref="Context"/> assignment.
+    /// </para>
+    /// <para>
+    /// This is used to "unbind" the target of a structural node like <see cref="ConditionalNode{T, U}"/> and in some
+    /// cases prepare it for subsequent reuse.
+    /// </para>
+    /// </remarks>
+    void Reset();
+
+    /// <summary>
     /// Performs the regular per-frame update for this node.
     /// </summary>
     /// <returns><c>true</c> if any aspect of the view tree from this level downward was changed, i.e. as a result of

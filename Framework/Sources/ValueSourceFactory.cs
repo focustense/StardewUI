@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Binding;
+﻿using System.Reflection;
+using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
@@ -11,6 +12,14 @@ namespace StardewUI.Framework.Sources;
 /// </summary>
 public interface IValueSourceFactory
 {
+    /// <summary>
+    /// Creates a value source that supplies values of a given type according to the specified binding attribute.
+    /// </summary>
+    /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
+    /// <param name="context">The binding context to use for any contextual bindings (those with
+    /// <param name="type">The type of value to obtain; can be determined using <see cref="GetValueType"/>.</param>
+    IValueSource GetValueSource(IAttribute attribute, BindingContext? context, Type type);
+
     /// <summary>
     /// Creates a value source that supplies values according to the specified binding attribute.
     /// </summary>
@@ -29,11 +38,11 @@ public interface IValueSourceFactory
     /// <see cref="GetValueSource{T}(IAttribute, BindingContext?)"/>.
     /// </remarks>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
-    /// <param name="property">Binding metadata for the destination property. Used when the source does not encode any
-    /// independent type information.</param>
+    /// <param name="property">Binding metadata for the destination property; used when the source does not encode any
+    /// independent type information. If not specified, some attribute values may be unsupported.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
     /// <see cref="AttributeValueType.InputBinding"/> that are not asset bindings).</param>
-    Type GetValueType(IAttribute attribute, IPropertyDescriptor property, BindingContext? context);
+    Type? GetValueType(IAttribute attribute, IPropertyDescriptor? property, BindingContext? context);
 }
 
 /// <summary>
@@ -42,12 +51,31 @@ public interface IValueSourceFactory
 /// <param name="assetCache">The current asset cache, for any asset-scoped bindings.</param>
 public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
 {
+    private static readonly MethodInfo getValueSourceGenericMethod = typeof(ValueSourceFactory).GetMethod(
+        nameof(GetValueSource),
+        1,
+        [typeof(IAttribute), typeof(BindingContext)]
+    )!;
+
+    private readonly Dictionary<Type, Func<IAttribute, BindingContext?, IValueSource>> typeCache = [];
+
+    public IValueSource GetValueSource(IAttribute attribute, BindingContext? context, Type type)
+    {
+        if (!typeCache.TryGetValue(type, out var valueSourceDelegate))
+        {
+            var typedMethod = getValueSourceGenericMethod.MakeGenericMethod(type);
+            valueSourceDelegate = typedMethod.CreateDelegate<Func<IAttribute, BindingContext?, IValueSource>>(this);
+            typeCache.Add(type, valueSourceDelegate);
+        }
+        return valueSourceDelegate(attribute, context);
+    }
+
     public IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context)
         where T : notnull
     {
         return attribute.ValueType switch
         {
-            AttributeValueType.Literal => (IValueSource<T>)new LiteralValueSource(attribute.Value),
+            AttributeValueType.Literal => (IValueSource<T>)new ConstantValueSource<string>(attribute.Value),
             AttributeValueType.AssetBinding => new AssetValueSource<T>(assetCache, attribute.Value),
             AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
                 new ContextPropertyValueSource<T>(context, attribute.Value),
@@ -55,14 +83,14 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         };
     }
 
-    public Type GetValueType(IAttribute attribute, IPropertyDescriptor property, BindingContext? context)
+    public Type? GetValueType(IAttribute attribute, IPropertyDescriptor? property, BindingContext? context)
     {
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => typeof(string),
-            AttributeValueType.AssetBinding => property.ValueType,
+            AttributeValueType.AssetBinding => property?.ValueType,
             AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
-                context?.Descriptor.GetProperty(attribute.Value).ValueType ?? property.ValueType,
+                context?.Descriptor.GetProperty(attribute.Value).ValueType,
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }

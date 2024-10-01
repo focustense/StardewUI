@@ -12,13 +12,32 @@ public interface IValueConverterFactory
     /// </summary>
     /// <typeparam name="TSource">The type of value to be converted.</typeparam>
     /// <typeparam name="TDestination">The converted value type.</typeparam>
-    /// <returns>A converter that converts from <typeparamref name="TSource"/> to
-    /// <typeparamref name="TDestination"/>.</returns>
-    IValueConverter<TSource, TDestination> GetConverter<TSource, TDestination>()
+    /// <returns>A converter that converts from <typeparamref name="TSource"/> to <typeparamref name="TDestination"/>,
+    /// or <c>null</c> if the conversion is not supported.</returns>
+    IValueConverter<TSource, TDestination>? GetConverter<TSource, TDestination>()
     {
         return TryGetConverter<TSource, TDestination>(out var converter)
             ? converter
-            : throw new NotImplementedException(
+            : throw new NotSupportedException(
+                $"No value converter registered for {typeof(TSource).Name} -> {typeof(TDestination).Name}."
+            );
+    }
+
+    /// <summary>
+    /// Gets a converter from a given source type to a given destination type, throwing if the conversion is not
+    /// supported.
+    /// </summary>
+    /// <typeparam name="TSource">The type of value to be converted.</typeparam>
+    /// <typeparam name="TDestination">The converted value type.</typeparam>
+    /// <returns>A converter that converts from <typeparamref name="TSource"/> to
+    /// <typeparamref name="TDestination"/>.</returns>
+    /// <exception cref="NotSupportedException">Thrown when there is no registered converter that supports conversion
+    /// from <typeparamref name="TSource"/> to <typeparamref name="TDestination"/>.</exception>
+    IValueConverter<TSource, TDestination> GetRequiredConverter<TSource, TDestination>()
+    {
+        return TryGetConverter<TSource, TDestination>(out var converter)
+            ? converter
+            : throw new NotSupportedException(
                 $"No value converter registered for {typeof(TSource).Name} -> {typeof(TDestination).Name}."
             );
     }
@@ -61,6 +80,7 @@ public class ValueConverterFactory : IValueConverterFactory
         TryRegister<string, decimal>(decimal.Parse);
         TryRegister<string, float>(float.Parse);
         TryRegister<string, double>(double.Parse);
+        TryRegister<string, bool>(bool.Parse);
 
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());

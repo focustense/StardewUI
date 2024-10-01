@@ -23,7 +23,7 @@ public static class ReflectionPropertyDescriptor
             propertyInfo.DeclaringType!,
             propertyInfo.PropertyType
         );
-        return (IPropertyDescriptor)genericType.GetConstructor([typeof(PropertyInfo)])!.Invoke([propertyInfo]);
+        return (IPropertyDescriptor)Activator.CreateInstance(genericType, propertyInfo)!;
     }
 }
 

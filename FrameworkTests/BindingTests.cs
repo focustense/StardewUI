@@ -55,6 +55,8 @@ public partial class BindingTests
 
     private readonly FakeAssetCache assetCache;
     private readonly ITestOutputHelper output;
+    private readonly IValueConverterFactory valueConverterFactory;
+    private readonly IValueSourceFactory valueSourceFactory;
     private readonly IViewFactory viewFactory;
     private readonly IViewBinder viewBinder;
 
@@ -63,8 +65,8 @@ public partial class BindingTests
         this.output = output;
         viewFactory = new ViewFactory();
         assetCache = new FakeAssetCache();
-        var valueSourceFactory = new ValueSourceFactory(assetCache);
-        var valueConverterFactory = new ValueConverterFactory();
+        valueSourceFactory = new ValueSourceFactory(assetCache);
+        valueConverterFactory = new ValueConverterFactory();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         viewBinder = new ReflectionViewBinder(attributeBindingFactory);
     }
@@ -201,10 +203,7 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal(Game1.dialogueFont, label.Font);
-                // TODO: Should really be empty string, not null, because type is non-nullable. But
-                // this is hard to figure out with reflection-based bindings.
-                // Assert.Equal("", label.Text);
-                Assert.Null(label.Text);
+                Assert.Equal("", label.Text);
             });
 
         var model = new { HeaderText = "Some text" };
@@ -217,7 +216,7 @@ public partial class BindingTests
     [Fact]
     public void TestEndToEnd()
     {
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, viewBinder);
+        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
         string markup =
@@ -246,10 +245,7 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal(Game1.dialogueFont, label.Font);
-                // TODO: Should really be empty string, not null, because type is non-nullable. But
-                // this is hard to figure out with reflection-based bindings.
-                // Assert.Equal("", label.Text);
-                Assert.Null(label.Text);
+                Assert.Equal("", label.Text);
             });
 
         var model = new { HeaderText = "Some text" };
@@ -257,5 +253,108 @@ public partial class BindingTests
         tree.Update();
 
         Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
+    }
+
+    partial class ConditionalBindingTestModel : INotifyPropertyChanged
+    {
+        [Notify] private bool firstLineVisible;
+        [Notify] private bool secondLineVisible;
+        [Notify] private bool thirdLineVisible;
+    }
+
+    [Fact]
+    public void WhenConditionalBindingBecomesTrue_AddsView()
+    {
+        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+
+        string markup =
+            @"<lane>
+                <label *if={{FirstLineVisible}} text=""First Line"" />
+                <label text=""Second Line"" />
+                <label *if={{ThirdLineVisible}} text=""Third Line"" />
+            </lane>";
+        var document = Document.Parse(markup);
+        var tree = viewNodeFactory.CreateNode(document.Root);
+        var model = new ConditionalBindingTestModel { FirstLineVisible = true };
+        tree.Context = model;
+        tree.Update();
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("First Line", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Second Line", label.Text);
+            });
+
+        model.ThirdLineVisible = true;
+        tree.Update();
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("First Line", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Second Line", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Third Line", label.Text);
+            });
+    }
+
+    [Fact]
+    public void WhenConditionalBindingBecomesFalse_RemovesView()
+    {
+        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+
+        string markup =
+            @"<lane>
+                <label *if={{FirstLineVisible}} text=""First Line"" />
+                <label *if={{SecondLineVisible}} text=""Second Line"" />
+                <label *if=""false"" text=""Third Line"" />
+            </lane>";
+        var document = Document.Parse(markup);
+        var tree = viewNodeFactory.CreateNode(document.Root);
+        var model = new ConditionalBindingTestModel { FirstLineVisible = true, SecondLineVisible = true };
+        tree.Context = model;
+        tree.Update();
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("First Line", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Second Line", label.Text);
+            });
+
+        model.FirstLineVisible = false;
+        tree.Update();
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Second Line", label.Text);
+            });
     }
 }

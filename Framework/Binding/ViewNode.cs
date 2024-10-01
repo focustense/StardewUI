@@ -43,6 +43,15 @@ public class ViewNode(
     private IView? view;
     private bool wasContextChanged;
 
+    public void Reset()
+    {
+        binding?.Dispose();
+        binding = null;
+        childrenBinder = null;
+        view = null;
+        wasContextChanged = false;
+    }
+
     public bool Update()
     {
         bool wasChanged = false;

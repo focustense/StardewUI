@@ -31,6 +31,8 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
         }
     }
 
+    public Type ValueType => typeof(T);
+
     private readonly object? data;
     private readonly IPropertyDescriptor<T>? property;
     private readonly string propertyName;
