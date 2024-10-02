@@ -1,4 +1,6 @@
-﻿namespace StardewUI.Framework.Binding;
+﻿using StardewModdingAPI;
+
+namespace StardewUI.Framework.Binding;
 
 /// <summary>
 /// A structural node that only passes through its child node when some condition passes.
@@ -21,6 +23,14 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
     public IReadOnlyList<IView> Views => wasMatched ? innerNode.Views : [];
 
     private bool wasMatched;
+
+    public void Dispose()
+    {
+        condition.Dispose();
+        innerNode.Dispose();
+        wasMatched = false;
+        GC.SuppressFinalize(this);
+    }
 
     public void Reset()
     {

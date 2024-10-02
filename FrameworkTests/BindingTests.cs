@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using Microsoft.Xna.Framework;
 using PropertyChanged.SourceGenerator;
 using StardewUI;
 using StardewUI.Framework.Binding;
@@ -8,7 +10,6 @@ using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 using StardewValley;
-using System.ComponentModel;
 using Xunit.Abstractions;
 
 namespace StarML.Tests;
@@ -24,15 +25,19 @@ public partial class BindingTests
 
     partial class ModelWithNotify : INotifyPropertyChanged
     {
-        [Notify] private Color color;
-        [Notify] private string name = "";
+        [Notify]
+        private Color color;
+
+        [Notify]
+        private string name = "";
     }
 
     class FakeAssetCache : IAssetCache
     {
         private readonly Dictionary<string, object> assets = [];
 
-        public IAssetCacheEntry<T> Get<T>(string name) where T : notnull
+        public IAssetCacheEntry<T> Get<T>(string name)
+            where T : notnull
         {
             return assets.TryGetValue(name, out var asset)
                 ? new FakeAssetCacheEntry<T>((T)asset)
@@ -74,11 +79,14 @@ public partial class BindingTests
     [Fact]
     public void Update_WithInputBindings_WritesContextToView()
     {
-        var element = new SElement("label", [
-            new SAttribute("max-lines", "1"),
-            new SAttribute("color", "Color", ValueType: AttributeValueType.InputBinding),
-            new SAttribute("text", "Name", ValueType: AttributeValueType.InputBinding),
-        ]);
+        var element = new SElement(
+            "label",
+            [
+                new SAttribute("max-lines", "1"),
+                new SAttribute("color", "Color", ValueType: AttributeValueType.InputBinding),
+                new SAttribute("text", "Name", ValueType: AttributeValueType.InputBinding),
+            ]
+        );
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
         using var viewBinding = viewBinder.Bind(view, element, model);
@@ -95,18 +103,24 @@ public partial class BindingTests
 
     partial class OutputBindingTestModel : INotifyPropertyChanged
     {
-        [Notify] private bool @checked;
-        [Notify] private Vector2 size;
+        [Notify]
+        private bool @checked;
+
+        [Notify]
+        private Vector2 size;
     }
 
     [Fact]
     public void Update_WithOutputBindings_WritesViewToContext()
     {
-        var element = new SElement("checkbox", [
-            new SAttribute("layout", "200px 20px"),
-            new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.OutputBinding),
-            new SAttribute("outer-size", "Size", ValueType: AttributeValueType.OutputBinding),
-        ]);
+        var element = new SElement(
+            "checkbox",
+            [
+                new SAttribute("layout", "200px 20px"),
+                new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.OutputBinding),
+                new SAttribute("outer-size", "Size", ValueType: AttributeValueType.OutputBinding),
+            ]
+        );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = false, Size = Vector2.Zero };
         using var viewBinding = viewBinder.Bind(view, element, model);
@@ -132,9 +146,10 @@ public partial class BindingTests
     [Fact]
     public void Update_WithInOutBindings_WritesBothDirections()
     {
-        var element = new SElement("checkbox", [
-            new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.TwoWayBinding),
-        ]);
+        var element = new SElement(
+            "checkbox",
+            [new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.TwoWayBinding)]
+        );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = true };
         using var viewBinding = viewBinder.Bind(view, element, model);
@@ -164,26 +179,36 @@ public partial class BindingTests
     {
         assetCache.Put("TestSprite", UiSprites.ButtonDark);
 
-        var root = new SElement("lane", [
-            new SAttribute("orientation", "vertical"),
-            new SAttribute("horizontal-content-alignment", "middle"),
-            new SAttribute("vertical-content-alignment", "end"),
-        ]);
-        var child1 = new SElement("image", [
-            // TODO: How can we handle complex attributes like the Layout in particular?
-            //new SAttribute("width", AttributeValueType.Literal, "400"),
-            new SAttribute("scale", "3.0"),
-            new SAttribute("sprite", "TestSprite", ValueType: AttributeValueType.AssetBinding),
-        ]);
-        var child2 = new SElement("label", [
-            new SAttribute("font", "dialogue"),
-            new SAttribute("text", "HeaderText", ValueType: AttributeValueType.InputBinding),
-        ]);
+        var root = new SElement(
+            "lane",
+            [
+                new SAttribute("orientation", "vertical"),
+                new SAttribute("horizontal-content-alignment", "middle"),
+                new SAttribute("vertical-content-alignment", "end"),
+            ]
+        );
+        var child1 = new SElement(
+            "image",
+            [
+                // TODO: How can we handle complex attributes like the Layout in particular?
+                //new SAttribute("width", AttributeValueType.Literal, "400"),
+                new SAttribute("scale", "3.0"),
+                new SAttribute("sprite", "TestSprite", ValueType: AttributeValueType.AssetBinding),
+            ]
+        );
+        var child2 = new SElement(
+            "label",
+            [
+                new SAttribute("font", "dialogue"),
+                new SAttribute("text", "HeaderText", ValueType: AttributeValueType.InputBinding),
+            ]
+        );
         var tree = new ViewNode(
-            viewFactory, viewBinder, root, [
-                new ViewNode(viewFactory, viewBinder, child1, []),
-                new ViewNode(viewFactory, viewBinder, child2, []),
-            ]);
+            viewFactory,
+            viewBinder,
+            root,
+            [new ViewNode(viewFactory, viewBinder, child1, []), new ViewNode(viewFactory, viewBinder, child2, [])]
+        );
         tree.Update();
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
@@ -204,7 +229,8 @@ public partial class BindingTests
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal(Game1.dialogueFont, label.Font);
                 Assert.Equal("", label.Text);
-            });
+            }
+        );
 
         var model = new { HeaderText = "Some text" };
         tree.Context = model;
@@ -246,7 +272,8 @@ public partial class BindingTests
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal(Game1.dialogueFont, label.Font);
                 Assert.Equal("", label.Text);
-            });
+            }
+        );
 
         var model = new { HeaderText = "Some text" };
         tree.Context = model;
@@ -257,27 +284,27 @@ public partial class BindingTests
 
     partial class ConditionalBindingTestModel : INotifyPropertyChanged
     {
-        [Notify] private bool firstLineVisible;
-        [Notify] private bool secondLineVisible;
-        [Notify] private bool thirdLineVisible;
+        [Notify]
+        private bool firstLineVisible;
+
+        [Notify]
+        private bool secondLineVisible;
+
+        [Notify]
+        private bool thirdLineVisible;
     }
 
     [Fact]
     public void WhenConditionalBindingBecomesTrue_AddsView()
     {
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
-
         string markup =
             @"<lane>
                 <label *if={{FirstLineVisible}} text=""First Line"" />
                 <label text=""Second Line"" />
                 <label *if={{ThirdLineVisible}} text=""Third Line"" />
             </lane>";
-        var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
         var model = new ConditionalBindingTestModel { FirstLineVisible = true };
-        tree.Context = model;
-        tree.Update();
+        var tree = BuildTreeFromMarkup(markup, model);
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
         Assert.NotNull(rootView);
@@ -292,7 +319,8 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Second Line", label.Text);
-            });
+            }
+        );
 
         model.ThirdLineVisible = true;
         tree.Update();
@@ -312,25 +340,21 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Third Line", label.Text);
-            });
+            }
+        );
     }
 
     [Fact]
     public void WhenConditionalBindingBecomesFalse_RemovesView()
     {
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
-
         string markup =
             @"<lane>
                 <label *if={{FirstLineVisible}} text=""First Line"" />
                 <label *if={{SecondLineVisible}} text=""Second Line"" />
                 <label *if=""false"" text=""Third Line"" />
             </lane>";
-        var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
         var model = new ConditionalBindingTestModel { FirstLineVisible = true, SecondLineVisible = true };
-        tree.Context = model;
-        tree.Update();
+        var tree = BuildTreeFromMarkup(markup, model);
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
         Assert.NotNull(rootView);
@@ -345,7 +369,8 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Second Line", label.Text);
-            });
+            }
+        );
 
         model.FirstLineVisible = false;
         tree.Update();
@@ -355,19 +380,19 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Second Line", label.Text);
-            });
+            }
+        );
     }
 
     partial class SwitchCaseLiteralTestModel : INotifyPropertyChanged
     {
-        [Notify] private int whichItem;
+        [Notify]
+        private int whichItem;
     }
 
     [Fact]
     public void WhenCaseMatchesDirectChildLiteral_RendersView()
     {
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
-
         string markup =
             @"<lane *switch={{WhichItem}}>
                 <label text=""Always"" />
@@ -375,11 +400,8 @@ public partial class BindingTests
                 <label *case=""2"" text=""Item 2"" />
                 <label *case=""3"" text=""Item 3"" />
             </lane>";
-        var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
         var model = new SwitchCaseLiteralTestModel() { WhichItem = 3 };
-        tree.Context = model;
-        tree.Update();
+        var tree = BuildTreeFromMarkup(markup, model);
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
         Assert.NotNull(rootView);
@@ -394,7 +416,8 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Item 3", label.Text);
-            });
+            }
+        );
 
         model.WhichItem = 2;
         tree.Update();
@@ -409,16 +432,26 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Item 2", label.Text);
-            });
+            }
+        );
     }
 
     partial class SwitchCaseBindingTestModel : INotifyPropertyChanged
     {
-        public enum Selection { Foo, Bar };
+        public enum Selection
+        {
+            Foo,
+            Bar,
+        };
 
-        [Notify] private Selection current = Selection.Foo;
-        [Notify] private Selection first = Selection.Foo;
-        [Notify] private Selection second = Selection.Bar;
+        [Notify]
+        private Selection current = Selection.Foo;
+
+        [Notify]
+        private Selection first = Selection.Foo;
+
+        [Notify]
+        private Selection second = Selection.Bar;
     }
 
     // TODO: This test would be more useful if implemented using narrowed contexts, i.e. where the bound value is
@@ -426,18 +459,13 @@ public partial class BindingTests
     [Fact]
     public void WhenCaseMatchesDirectChildBinding_RendersView()
     {
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
-
         string markup =
             @"<lane *switch={{Current}}>
                 <label *case={{First}} text=""Item 1"" />
                 <label *case={{Second}} text=""Item 2"" />
             </lane>";
-        var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
         var model = new SwitchCaseBindingTestModel();
-        tree.Context = model;
-        tree.Update();
+        var tree = BuildTreeFromMarkup(markup, model);
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
         Assert.NotNull(rootView);
@@ -447,7 +475,8 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Item 1", label.Text);
-            });
+            }
+        );
 
         model.Current = SwitchCaseBindingTestModel.Selection.Bar;
         tree.Update();
@@ -457,6 +486,214 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Item 2", label.Text);
-            });
+            }
+        );
+    }
+
+    partial class RepeatingElement : INotifyPropertyChanged
+    {
+        [Notify]
+        private string name = "";
+    }
+
+    partial class RepeatingModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private List<RepeatingElement> items = [];
+    }
+
+    [Fact]
+    public void WhenRepeating_RendersViewPerElement()
+    {
+        string markup =
+            @"<lane>
+                <label *repeat={{Items}} text={{Name}} />
+            </lane>";
+        var model = new RepeatingModel()
+        {
+            Items = [new() { Name = "Foo" }, new() { Name = "Bar" }, new() { Name = "Baz" }],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Foo", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Bar", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Baz", label.Text);
+            }
+        );
+    }
+
+    [Fact]
+    public void WhenRepeating_AndItemChanges_UpdatesView()
+    {
+        string markup =
+            @"<lane>
+                <label *repeat={{Items}} text={{Name}} />
+            </lane>";
+        var model = new RepeatingModel()
+        {
+            Items = [new() { Name = "Foo" }, new() { Name = "Bar" }, new() { Name = "Baz" }],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        model.Items[1].Name = "Quux";
+        tree.Update();
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Foo", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Quux", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Baz", label.Text);
+            }
+        );
+    }
+
+    [Fact]
+    public void WhenRepeating_AndCollectionChanges_RebuildsAllViews()
+    {
+        string markup =
+            @"<lane>
+                <label *repeat={{Items}} text={{Name}} />
+            </lane>";
+        var model = new RepeatingModel()
+        {
+            Items = [new() { Name = "Foo" }, new() { Name = "Bar" }, new() { Name = "Baz" }],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        model.Items = [new() { Name = "abc" }, new() { Name = "def" }, new() { Name = "xyz" }];
+        tree.Update();
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("abc", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("def", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("xyz", label.Text);
+            }
+        );
+    }
+
+    partial class RepeatingObservableModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private ObservableCollection<RepeatingElement> items = [];
+    }
+
+    [Fact]
+    public void WhenRepeating_AndNotifyingCollectionChanges_UpdatesAffectedViews()
+    {
+        string markup =
+            @"<lane>
+                <label *repeat={{Items}} text={{Name}} />
+            </lane>";
+        var model = new RepeatingObservableModel()
+        {
+            Items = [new() { Name = "Foo" }, new() { Name = "Bar" }, new() { Name = "Baz" }],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        model.Items.Move(0, 1);
+        model.Items.Insert(0, new() { Name = "Quux" });
+        model.Items.Insert(2, new() { Name = "Plip" });
+        tree.Update();
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Quux", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Bar", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Plip", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Foo", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Baz", label.Text);
+            }
+        );
+
+        model.Items.RemoveAt(2);
+        model.Items.RemoveAt(0);
+        model.Items.RemoveAt(2);
+        tree.Update();
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Bar", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Foo", label.Text);
+            }
+        );
+    }
+
+    private IViewNode BuildTreeFromMarkup(string markup, object model)
+    {
+        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+        var document = Document.Parse(markup);
+        var tree = viewNodeFactory.CreateNode(document.Root);
+        tree.Context = model;
+        tree.Update();
+        return tree;
     }
 }

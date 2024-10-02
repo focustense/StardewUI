@@ -3,7 +3,7 @@
 /// <summary>
 /// Encapsulates a single bound node in a view tree.
 /// </summary>
-public interface IViewNode
+public interface IViewNode : IDisposable
 {
     /// <summary>
     /// The children of this node.

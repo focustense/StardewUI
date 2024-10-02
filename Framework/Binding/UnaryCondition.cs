@@ -10,6 +10,12 @@ namespace StardewUI.Framework.Binding;
 /// <remarks>
 /// Passes whenever the value's boolean representation is <c>true</c>. Used for <c>*if</c> attributes.
 /// </remarks>
+/// <param name="valueSourceFactory">The factory responsible for creating <see cref="IValueSource{T}"/> instances from
+/// attribute data.</param>
+/// <param name="valueConverterFactory">The factory responsible for creating
+/// <see cref="IValueConverter{TSource, TDestination}"/> instances, used to convert bound values to the types required
+/// by the target view.</param>
+/// <param name="attribute">The attribute containing the conditional expression.</param>
 public class UnaryCondition(
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
@@ -36,6 +42,18 @@ public class UnaryCondition(
     private BindingContext? context;
     private IValueSource<bool> valueSource = defaultSource;
     private bool wasContextChanged;
+
+    public void Dispose()
+    {
+        if (valueSource is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+        Passed = false;
+        context = null;
+        wasContextChanged = false;
+        GC.SuppressFinalize(this);
+    }
 
     public void Update()
     {

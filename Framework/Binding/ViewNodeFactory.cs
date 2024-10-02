@@ -31,38 +31,50 @@ public class ViewNodeFactory(
 
     private IViewNode CreateNode(SNode node, SwitchContext? switchContext)
     {
-        var viewNode = new ViewNode(viewFactory, viewBinder, node.Element);
         var structuralAttributes = StructuralAttributes.Get(node.Attributes);
-        IViewNode result = viewNode;
-        if (structuralAttributes.Case is IAttribute caseAttr)
+        if (structuralAttributes.Repeat is IAttribute repeatAttr)
         {
-            if (switchContext is null)
+            return new RepeaterNode(valueSourceFactory, CreateNonRepeatingNode, repeatAttr);
+        }
+        else
+        {
+            return CreateNonRepeatingNode();
+        }
+
+        IViewNode CreateNonRepeatingNode()
+        {
+            var viewNode = new ViewNode(viewFactory, viewBinder, node.Element);
+            IViewNode result = viewNode;
+            if (structuralAttributes.Case is IAttribute caseAttr)
             {
-                throw new BindingException(
-                    $"Cannot bind *case attribute (value: '{caseAttr.Value}') without a prior *switch."
-                );
+                if (switchContext is null)
+                {
+                    throw new BindingException(
+                        $"Cannot bind *case attribute (value: '{caseAttr.Value}') without a prior *switch."
+                    );
+                }
+                var condition = new BinaryCondition(
+                    valueSourceFactory,
+                    valueConverterFactory,
+                    switchContext.Attribute,
+                    caseAttr
+                )
+                {
+                    LeftContextSelector = () => switchContext.Node.Context,
+                };
+                result = new ConditionalNode(viewNode, condition);
             }
-            var condition = new BinaryCondition(
-                valueSourceFactory,
-                valueConverterFactory,
-                switchContext.Attribute,
-                caseAttr
-            )
+            if (structuralAttributes.If is not null)
             {
-                LeftContextSelector = () => switchContext.Node.Context,
-            };
-            result = new ConditionalNode(viewNode, condition);
+                var condition = new UnaryCondition(valueSourceFactory, valueConverterFactory, structuralAttributes.If);
+                result = new ConditionalNode(result, condition);
+            }
+            var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
+                ? new SwitchContext(viewNode, switchAttr)
+                : switchContext;
+            viewNode.ChildNodes = node.ChildNodes.Select(n => CreateNode(n, nextSwitchContext)).ToList();
+            return result;
         }
-        if (structuralAttributes.If is not null)
-        {
-            var condition = new UnaryCondition(valueSourceFactory, valueConverterFactory, structuralAttributes.If);
-            result = new ConditionalNode(result, condition);
-        }
-        var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
-            ? new SwitchContext(viewNode, switchAttr)
-            : switchContext;
-        viewNode.ChildNodes = node.ChildNodes.Select(n => CreateNode(n, nextSwitchContext)).ToList();
-        return result;
     }
 
     class StructuralAttributes

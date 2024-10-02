@@ -3,7 +3,7 @@
 /// <summary>
 /// A condition used in a <see cref="ConditionalNode"/>.
 /// </summary>
-public interface ICondition
+public interface ICondition : IDisposable
 {
     /// <summary>
     /// The context for evaluating the condition; i.e. the context of the node to which the condition applies.

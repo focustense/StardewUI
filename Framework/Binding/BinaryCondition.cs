@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using StardewModdingAPI;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -19,6 +20,13 @@ namespace StardewUI.Framework.Binding;
 /// ambiguous, then left->right conversion will be chosen over right->left.
 /// </para>
 /// </remarks>
+/// <param name="valueSourceFactory">The factory responsible for creating <see cref="IValueSource{T}"/> instances from
+/// attribute data.</param>
+/// <param name="valueConverterFactory">The factory responsible for creating
+/// <see cref="IValueConverter{TSource, TDestination}"/> instances, used to convert bound values to the types required
+/// by the target view.</param>
+/// <param name="leftAttribute">The attribute containing the expression for the LHS operand.</param>
+/// <param name="rightAttribute">The attribute containing the expression for the RHS operand.</param>
 public class BinaryCondition(
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
@@ -95,6 +103,30 @@ public class BinaryCondition(
     private bool wasLeftContextChanged;
     private bool wasRightContextChanged;
 
+    public void Dispose()
+    {
+        LeftContextSelector = null;
+        RightContextSelector = null;
+        comparison?.Dispose();
+        comparison = null;
+        if (leftValueSource is IDisposable leftDisposable)
+        {
+            leftDisposable.Dispose();
+        }
+        leftValueSource = null;
+        if (rightValueSource is IDisposable rightDisposable)
+        {
+            rightDisposable.Dispose();
+        }
+        rightValueSource = null;
+        leftContext = null;
+        rightContext = null;
+        wasLeftContextChanged = false;
+        wasRightContextChanged = false;
+        isPassing = false;
+        GC.SuppressFinalize(this);
+    }
+
     public void Update()
     {
         bool anyContextChanged = false;
@@ -138,7 +170,7 @@ public class BinaryCondition(
         }
     }
 
-    interface IComparison
+    interface IComparison : IDisposable
     {
         Type LeftType { get; }
         Type RightType { get; }
@@ -203,6 +235,14 @@ public class BinaryCondition(
 
         private U? convertedLeftValue;
         private bool result;
+
+        public void Dispose()
+        {
+            if (leftToRightConverter is IDisposable converterDisposable)
+            {
+                converterDisposable.Dispose();
+            }
+        }
 
         public bool Evaluate(bool force = false)
         {

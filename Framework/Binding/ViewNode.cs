@@ -43,8 +43,19 @@ public class ViewNode(
     private IView? view;
     private bool wasContextChanged;
 
+    public void Dispose()
+    {
+        Reset();
+        context = null;
+        GC.SuppressFinalize(this);
+    }
+
     public void Reset()
     {
+        foreach (var childNode in ChildNodes)
+        {
+            childNode.Reset();
+        }
         binding?.Dispose();
         binding = null;
         childrenBinder = null;
