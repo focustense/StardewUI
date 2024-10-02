@@ -1,4 +1,6 @@
-﻿namespace StardewUI.Framework.Binding;
+﻿using StardewUI.Framework.Grammar;
+
+namespace StardewUI.Framework.Binding;
 
 /// <summary>
 /// Encapsulates a single bound node in a view tree.
@@ -15,10 +17,10 @@ public interface IViewNode : IDisposable
     IReadOnlyList<IViewNode> ChildNodes { get; }
 
     /// <summary>
-    /// The currently-bound context data, used as the source for any <see cref="Grammar.AttributeValueType.InputBinding"/>
-    /// attributes that are not asset-bound, i.e. not beginning with <c>@</c>.
+    /// The currently-bound context data, used as the source for any <see cref="AttributeValueType.InputBinding"/>,
+    /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/> attributes.
     /// </summary>
-    object? Context { get; set; }
+    BindingContext? Context { get; set; }
 
     /// <summary>
     /// The views for this node, if any have been created.

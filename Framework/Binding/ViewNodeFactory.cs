@@ -43,7 +43,13 @@ public class ViewNodeFactory(
 
         IViewNode CreateNonRepeatingNode()
         {
-            var viewNode = new ViewNode(viewFactory, viewBinder, node.Element);
+            var viewNode = new ViewNode(
+                valueSourceFactory,
+                viewFactory,
+                viewBinder,
+                node.Element,
+                contextAttribute: structuralAttributes.Context
+            );
             IViewNode result = viewNode;
             if (structuralAttributes.Case is IAttribute caseAttr)
             {
@@ -80,6 +86,7 @@ public class ViewNodeFactory(
     class StructuralAttributes
     {
         public IAttribute? Case { get; set; }
+        public IAttribute? Context { get; set; }
         public IAttribute? If { get; set; }
         public IAttribute? Repeat { get; set; }
         public IAttribute? Switch { get; set; }
@@ -93,6 +100,9 @@ public class ViewNodeFactory(
                 {
                     case "case":
                         result.Case = attribute;
+                        break;
+                    case "context":
+                        result.Context = attribute;
                         break;
                     case "if":
                         result.If = attribute;

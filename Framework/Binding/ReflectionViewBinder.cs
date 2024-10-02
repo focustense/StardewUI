@@ -11,10 +11,9 @@ namespace StardewUI.Framework.Binding;
 /// bind individual attributes of the view.</param>
 public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFactory) : IViewBinder
 {
-    public IViewBinding Bind(IView view, IElement element, object? data)
+    public IViewBinding Bind(IView view, IElement element, BindingContext? context)
     {
         var viewDescriptor = GetDescriptor(view);
-        var context = data is not null ? BindingContext.Create(data) : null;
         var attributeBindings = element
             // Only property attributes are bound to the view; others affect the outer hierarchy.
             .Attributes.Where(attribute => attribute.Type == AttributeType.Property)

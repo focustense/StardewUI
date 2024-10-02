@@ -10,6 +10,12 @@
 public interface IValueSource
 {
     /// <summary>
+    /// Gets or sets the value as a boxed object. The type must be assignable to/from the type parameter of the
+    /// <see cref="IValueSource{T}"/> that this instance implements.
+    /// </summary>
+    object? Value { get; set; }
+
+    /// <summary>
     /// Whether or not the source can be read from, i.e. if an attempt to <b>get</b> the <see cref="Value"/> should
     /// succeed.
     /// </summary>
@@ -52,5 +58,5 @@ public interface IValueSource<T> : IValueSource
     /// <summary>
     /// Gets the current value obtained as of the last <see cref="Update"/>, or writes a new value when set.
     /// </summary>
-    T? Value { get; set; }
+    new T? Value { get; set; }
 }

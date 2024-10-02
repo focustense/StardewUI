@@ -11,7 +11,7 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
 {
     public IReadOnlyList<IViewNode> ChildNodes => innerNode.ChildNodes;
 
-    public object? Context
+    public BindingContext? Context
     {
         get => condition.Context;
         set => innerNode.Context = condition.Context = value;

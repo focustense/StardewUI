@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using StardewModdingAPI;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -34,23 +33,23 @@ public class BinaryCondition(
     IAttribute rightAttribute
 ) : ICondition
 {
-    object? ICondition.Context
+    BindingContext? ICondition.Context
     {
         get => RightContext;
         set => RightContext = value;
     }
 
     /// <summary>
-    /// The context data used to derive the LHS value, if the left attribute is a context binding.
+    /// The context used to derive the LHS value, if the left attribute is a context binding.
     /// </summary>
-    public object? LeftContext
+    public BindingContext? LeftContext
     {
-        get => leftContext?.Data;
+        get => leftContext;
         set
         {
-            if (value != leftContext?.Data)
+            if (value != leftContext)
             {
-                leftContext = value is not null ? BindingContext.Create(value) : null;
+                leftContext = value;
                 wasLeftContextChanged = true;
             }
         }
@@ -64,19 +63,19 @@ public class BinaryCondition(
     /// <see cref="LeftContext"/>; otherwise, the <see cref="LeftContext"/> must be set explicitly in order to change
     /// the evaluation context for the left-hand value.
     /// </remarks>
-    public Func<object?>? LeftContextSelector { get; set; }
+    public Func<BindingContext?>? LeftContextSelector { get; set; }
 
     /// <summary>
-    /// The context data used to derive the RHS value, if the right attribute is a context binding.
+    /// The context used to derive the RHS value, if the right attribute is a context binding.
     /// </summary>
-    public object? RightContext
+    public BindingContext? RightContext
     {
-        get => rightContext?.Data;
+        get => rightContext;
         set
         {
-            if (value != rightContext?.Data)
+            if (value != rightContext)
             {
-                rightContext = value is not null ? BindingContext.Create(value) : null;
+                rightContext = value;
                 wasRightContextChanged = true;
             }
         }
@@ -90,7 +89,7 @@ public class BinaryCondition(
     /// <see cref="RightContext"/>; otherwise, the <see cref="RightContext"/> must be set explicitly in order to change
     /// the evaluation context for the right-hand value.
     /// </remarks>
-    public Func<object?>? RightContextSelector { get; set; }
+    public Func<BindingContext?>? RightContextSelector { get; set; }
 
     public bool Passed => isPassing;
 

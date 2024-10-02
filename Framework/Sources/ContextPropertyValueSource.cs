@@ -31,6 +31,12 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
         }
     }
 
+    object? IValueSource.Value
+    {
+        get => Value;
+        set => Value = value is not null ? (T)value : default;
+    }
+
     public Type ValueType => typeof(T);
 
     private readonly object? data;

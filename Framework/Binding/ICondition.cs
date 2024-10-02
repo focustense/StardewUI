@@ -8,7 +8,7 @@ public interface ICondition : IDisposable
     /// <summary>
     /// The context for evaluating the condition; i.e. the context of the node to which the condition applies.
     /// </summary>
-    object? Context { get; set; }
+    BindingContext? Context { get; set; }
 
     /// <summary>
     /// Whether or not the condition was passing as of the last <see cref="Update"/>.

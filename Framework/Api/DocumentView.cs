@@ -11,8 +11,8 @@ namespace StardewUI.Framework.Api;
 /// </remarks>
 /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
 /// <param name="document">The StarML document describing the view.</param>
-/// <param name="context">Data to be bound to the view.</param>
-internal class DocumentView(IViewNodeFactory viewNodeFactory, Document document, object? context) : WrapperView
+/// <param name="context">Context containing data to be bound to the view.</param>
+internal class DocumentView(IViewNodeFactory viewNodeFactory, Document document, BindingContext? context) : WrapperView
 {
     // Initialized in CreateView
     private IViewNode tree = null!;

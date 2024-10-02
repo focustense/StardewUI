@@ -1,27 +1,34 @@
 ﻿using System.Reflection;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
+using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework.Binding;
 
 /// <summary>
 /// Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.
 /// </summary>
+/// <param name="valueSourceFactory">The factory responsible for creating <see cref="IValueSource{T}"/> instances from
+/// attribute data.</param>
 /// <param name="viewFactory">Factory for creating views, based on their tag names.</param>
 /// <param name="viewBinder">Binding service used to create <see cref="IViewBinding"/> instances that detect changes to
 /// data or assets and propagate them to the bound <see cref="IView"/>.</param>
 /// <param name="element">Element data for this node.</param>
+/// <param name="contextAttribute">Optional attribute specifying how to resolve the context for child nodes based on
+/// this node's assigned <see cref="Context"/>.</param>
 /// <param name="childNodes">Initial children of this node.</param>
 public class ViewNode(
+    IValueSourceFactory valueSourceFactory,
     IViewFactory viewFactory,
     IViewBinder viewBinder,
     SElement element,
-    IEnumerable<IViewNode>? childNodes = null
+    IEnumerable<IViewNode>? childNodes = null,
+    IAttribute? contextAttribute = null
 ) : IViewNode
 {
     public IReadOnlyList<IViewNode> ChildNodes { get; internal set; } = childNodes?.ToList() ?? [];
 
-    public object? Context
+    public BindingContext? Context
     {
         get => context;
         set
@@ -38,14 +45,20 @@ public class ViewNode(
     public IReadOnlyList<IView> Views => view is not null ? [view] : [];
 
     private IViewBinding? binding;
+    private IValueSource? childContextSource;
     private IChildrenBinder? childrenBinder;
-    private object? context;
+    private BindingContext? context;
     private IView? view;
     private bool wasContextChanged;
 
     public void Dispose()
     {
         Reset();
+        if (childContextSource is IDisposable childContextDisposable)
+        {
+            childContextDisposable.Dispose();
+        }
+        childContextSource = null;
         context = null;
         GC.SuppressFinalize(this);
     }
@@ -72,9 +85,22 @@ public class ViewNode(
             var viewDescriptor = viewBinder.GetDescriptor(view);
             childrenBinder = ReflectionChildrenBinder.FromViewDescriptor(viewDescriptor);
         }
+        bool wasChildContextChanged = false;
         if (wasContextChanged)
         {
+            if (contextAttribute is not null)
+            {
+                var childContextType = valueSourceFactory.GetValueType(contextAttribute, null, context);
+                childContextSource = childContextType is not null
+                    ? valueSourceFactory.GetValueSource(contextAttribute, context, childContextType)
+                    : null;
+            }
+            else
+            {
+                childContextSource = context?.Data is not null ? new ConstantValueSource<object?>(context.Data) : null;
+            }
             wasChanged = true;
+            wasChildContextChanged = true;
             binding?.Dispose();
             binding = null;
         }
@@ -88,22 +114,30 @@ public class ViewNode(
             binding = viewBinder.Bind(view, element, context);
             wasChanged = true;
         }
+        if (childContextSource is not null)
+        {
+            wasChildContextChanged |= childContextSource.Update();
+            wasChanged |= wasChildContextChanged;
+        }
         bool wasChildViewChanged = false;
         foreach (var childNode in ChildNodes)
         {
-            if (wasContextChanged)
+            if (wasChildContextChanged)
             {
-                childNode.Context = context;
+                childNode.Context = childContextSource?.Value is not null
+                    ? BindingContext.Create(childContextSource.Value)
+                    : null;
             }
             // Even though Views is an IReadOnlyList<IView>, that does not make it an immutable list. If we want to
             // reliably detect changes, we have to account for the possibility of the list being modified in situ.
             var previousViews = new List<IView>(childNode.Views);
-            childNode.Update();
+            wasChanged |= childNode.Update();
             wasChildViewChanged |= !childNode.Views.SequenceEqual(previousViews);
         }
         if (wasChildViewChanged)
         {
             UpdateViewChildren();
+            wasChanged = true;
         }
         wasContextChanged = false;
         return wasChanged;

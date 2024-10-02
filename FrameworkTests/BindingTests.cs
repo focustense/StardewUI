@@ -89,7 +89,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
-        using var viewBinding = viewBinder.Bind(view, element, model);
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
 
         var label = (Label)view;
         Assert.Equal(1, label.MaxLines);
@@ -123,7 +123,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = false, Size = Vector2.Zero };
-        using var viewBinding = viewBinder.Bind(view, element, model);
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
 
         // Initial bind should generally not cause immediate output sync, because we assume the view isn't completely
         // stable or fully initialized yet.
@@ -152,7 +152,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = true };
-        using var viewBinding = viewBinder.Bind(view, element, model);
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
 
         var checkbox = (CheckBox)view;
         Assert.True(model.Checked);
@@ -204,10 +204,14 @@ public partial class BindingTests
             ]
         );
         var tree = new ViewNode(
+            valueSourceFactory,
             viewFactory,
             viewBinder,
             root,
-            [new ViewNode(viewFactory, viewBinder, child1, []), new ViewNode(viewFactory, viewBinder, child2, [])]
+            [
+                new ViewNode(valueSourceFactory, viewFactory, viewBinder, child1, []),
+                new ViewNode(valueSourceFactory, viewFactory, viewBinder, child2, []),
+            ]
         );
         tree.Update();
 
@@ -233,7 +237,7 @@ public partial class BindingTests
         );
 
         var model = new { HeaderText = "Some text" };
-        tree.Context = model;
+        tree.Context = BindingContext.Create(model);
         tree.Update();
 
         Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
@@ -276,7 +280,7 @@ public partial class BindingTests
         );
 
         var model = new { HeaderText = "Some text" };
-        tree.Context = model;
+        tree.Context = BindingContext.Create(model);
         tree.Update();
 
         Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
@@ -687,12 +691,76 @@ public partial class BindingTests
         );
     }
 
+    partial class ContextTestModel : INotifyPropertyChanged
+    {
+        public partial class OuterData : INotifyPropertyChanged
+        {
+            [Notify]
+            private MiddleData? middle;
+        }
+
+        public partial class MiddleData : INotifyPropertyChanged
+        {
+            [Notify]
+            private InnerData? inner;
+        }
+
+        public partial class InnerData : INotifyPropertyChanged
+        {
+            [Notify]
+            private string text = "";
+        }
+
+        [Notify]
+        private OuterData? outer;
+    }
+
+    [Fact]
+    public void WhenAnyContextChanges_UpdatesAllContextModifiers()
+    {
+        string markup =
+            @"<frame *context={{Outer}}>
+                <panel>
+                    <panel *context={{Middle}}>
+                        <lane *context={{Inner}}>
+                            <label text={{Text}} />
+                        </lane>
+                    </panel>
+                </panel>
+            </frame>";
+        var model = new ContextTestModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var outerFrame = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        var outerPanel = Assert.IsType<Panel>(outerFrame.Content);
+        var middlePanel = Assert.IsType<Panel>(outerPanel.Children.FirstOrDefault());
+        var innerLane = Assert.IsType<Lane>(middlePanel.Children.FirstOrDefault());
+        var label = Assert.IsType<Label>(innerLane.Children.FirstOrDefault());
+
+        Assert.Equal("", label.Text);
+
+        model.Outer = new() { Middle = new() { Inner = new() { Text = "foo" } } };
+        tree.Update();
+
+        Assert.Equal("foo", label.Text);
+
+        model.Outer.Middle = new() { Inner = new() { Text = "bar" } };
+        tree.Update();
+
+        Assert.Equal("bar", label.Text);
+
+        model.Outer.Middle.Inner = new() { Text = "baz" };
+        tree.Update();
+
+        Assert.Equal("baz", label.Text);
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
         var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
         var document = Document.Parse(markup);
         var tree = viewNodeFactory.CreateNode(document.Root);
-        tree.Context = model;
+        tree.Context = BindingContext.Create(model);
         tree.Update();
         return tree;
     }

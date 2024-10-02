@@ -22,14 +22,14 @@ public class RepeaterNode(
 {
     public IReadOnlyList<IViewNode> ChildNodes => childNodes;
 
-    public object? Context
+    public BindingContext? Context
     {
-        get => context?.Data;
+        get => context;
         set
         {
-            if (value != context?.Data)
+            if (value != context)
             {
-                context = value is not null ? BindingContext.Create(value) : null;
+                context = value;
                 wasContextChanged = true;
             }
         }
@@ -110,7 +110,7 @@ public class RepeaterNode(
         foreach (var item in items)
         {
             var newNode = innerNodeCreator();
-            newNode.Context = item;
+            newNode.Context = item is not null ? BindingContext.Create(item) : null;
             // Operating on assumption that repeatedly appending to a temporary list and then inserting the whole list
             // is faster than inserting items one by one (and repeatedly shifting any subsequent items) into the middle.
             newNodes.Add(newNode);
@@ -135,7 +135,7 @@ public class RepeaterNode(
         for (int i = 0; i < count; i++)
         {
             var newItem = newItems?.Count > i ? newItems[i] : null;
-            childNodes[fromIndex + i].Context = newItem;
+            childNodes[fromIndex + i].Context = newItem is not null ? BindingContext.Create(newItem) : null;
         }
     }
 
@@ -169,7 +169,7 @@ public class RepeaterNode(
                 {
                     node = childNodes[index];
                 }
-                node.Context = item;
+                node.Context = item is not null ? BindingContext.Create(item) : null;
                 index++;
             }
             childNodes.RemoveRange(index, childNodes.Count - index);

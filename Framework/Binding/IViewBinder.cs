@@ -13,11 +13,11 @@ public interface IViewBinder
     /// </summary>
     /// <param name="view">The view that will be bound.</param>
     /// <param name="element">The element data providing the literal or binding attributes.</param>
-    /// <param name="data">The binding data, for any non-asset bindings using
+    /// <param name="data">The binding context/data, for any non-asset bindings using
     /// <see cref="Grammar.AttributeValueType.InputBinding"/>.</param>
     /// <returns>A view binding that can be used to propagate changes in the <paramref name="data"/> or any dependent
     /// assets to the <paramref name="view"/>.</returns>
-    IViewBinding Bind(IView view, IElement element, object? data);
+    IViewBinding Bind(IView view, IElement element, BindingContext? context);
 
     /// <summary>
     /// Retrieves the descriptor for a view, which provides information about its properties.

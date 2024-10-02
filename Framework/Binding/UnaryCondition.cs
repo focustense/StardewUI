@@ -24,14 +24,14 @@ public class UnaryCondition(
 {
     private static readonly IValueSource<bool> defaultSource = new ConstantValueSource<bool>(false);
 
-    public object? Context
+    public BindingContext? Context
     {
-        get => context?.Data;
+        get => context;
         set
         {
-            if (value != context?.Data)
+            if (value != context)
             {
-                context = value is not null ? BindingContext.Create(value) : null;
+                context = value;
                 wasContextChanged = true;
             }
         }

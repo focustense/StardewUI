@@ -24,6 +24,12 @@ public class AssetValueSource<T>(IAssetCache cache, string name) : IValueSource<
         set => throw new NotSupportedException($"Writing to an {typeof(AssetValueSource<>).Name} is not supported.");
     }
 
+    object? IValueSource.Value
+    {
+        get => Value;
+        set => Value = value is not null ? (T)value : default;
+    }
+
     public Type ValueType => typeof(T);
 
     private IAssetCacheEntry<T>? cacheEntry;

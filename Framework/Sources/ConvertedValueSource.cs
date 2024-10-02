@@ -93,6 +93,12 @@ public class ConvertedValueSource<TSource, T>(
         }
     }
 
+    object? IValueSource.Value
+    {
+        get => Value;
+        set => Value = value is not null ? (T)value : default;
+    }
+
     public Type ValueType => typeof(T);
 
     private T? value = ReadValue(source, inputConverter);
