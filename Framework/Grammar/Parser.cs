@@ -100,7 +100,8 @@ public readonly ref struct Attribute(
     AttributeType type,
     AttributeValueType valueType,
     ReadOnlySpan<char> value,
-    int parentDepth
+    uint parentDepth,
+    ReadOnlySpan<char> parentType
 )
 {
     /// <summary>
@@ -110,10 +111,17 @@ public readonly ref struct Attribute(
 
     /// <summary>
     /// The depth to walk - i.e. number of parents to traverse - to find the context on which to evaluate a context
-    /// binding. Only valid if the <paramref name="valueType"/> is a type that matches
+    /// binding. Exclusive with <see cref="ParentType"/> and only valid if the <paramref name="valueType"/> is a type
+    /// that matches <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
+    /// </summary>
+    public uint ParentDepth { get; } = parentDepth;
+
+    /// <summary>
+    /// The type name of the parent to walk up to for a context redirect. Exclusive with <see cref="ParentDepth"/> and
+    /// only valid if the <paramref name="valueType"/> is a type that matches
     /// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
     /// </summary>
-    public int ParentDepth { get; } = parentDepth;
+    public ReadOnlySpan<char> ParentType { get; } = parentType;
 
     /// <summary>
     /// The type of the attribute itself, i.e. how its <see cref="Name"/> should be interpreted.
@@ -210,14 +218,24 @@ public ref struct DocumentReader(Lexer lexer)
                     lexer.Current.Type == TokenType.BindingStart
                         ? AttributeValueType.InputBinding
                         : AttributeValueType.Literal;
-                lexer.ReadRequiredToken(TokenType.BindingModifier, TokenType.BindingParent, TokenType.Literal);
+                lexer.ReadRequiredToken(
+                    TokenType.BindingModifier,
+                    TokenType.BindingParentImmediate,
+                    TokenType.BindingParentIndirect,
+                    TokenType.Literal
+                );
                 if (lexer.Current.Type == TokenType.BindingModifier)
                 {
                     valueType = GetBindingType(lexer.Current.Text);
-                    lexer.ReadRequiredToken(TokenType.BindingParent, TokenType.Literal);
+                    lexer.ReadRequiredToken(
+                        TokenType.BindingParentImmediate,
+                        TokenType.BindingParentIndirect,
+                        TokenType.Literal
+                    );
                 }
-                int parentDepth = 0;
-                if (lexer.Current.Type == TokenType.BindingParent)
+                uint parentDepth = 0;
+                var parentType = ReadOnlySpan<char>.Empty;
+                if (lexer.Current.Type == TokenType.BindingParentImmediate)
                 {
                     if (!valueType.IsContextBinding())
                     {
@@ -230,14 +248,29 @@ public ref struct DocumentReader(Lexer lexer)
                     do
                     {
                         parentDepth++;
-                        lexer.ReadRequiredToken(TokenType.BindingParent, TokenType.Literal);
-                    } while (lexer.Current.Type == TokenType.BindingParent);
+                        lexer.ReadRequiredToken(TokenType.BindingParentImmediate, TokenType.Literal);
+                    } while (lexer.Current.Type == TokenType.BindingParentImmediate);
+                }
+                else if (lexer.Current.Type == TokenType.BindingParentIndirect)
+                {
+                    if (!valueType.IsContextBinding())
+                    {
+                        throw ParserException.ForCurrentToken(
+                            lexer,
+                            $"Parent context modifier ({lexer.Current.Text}) is not allowed for attributes with type "
+                                + $"{valueType}; the attribute must be an input, output or 2-way context binding."
+                        );
+                    }
+                    lexer.ReadRequiredToken(TokenType.Literal);
+                    parentType = lexer.Current.Text;
+                    lexer.ReadRequiredToken(TokenType.NameSeparator);
+                    lexer.ReadRequiredToken(TokenType.Literal);
                 }
                 var attributeValue = lexer.Current.Text;
                 // We don't bother trying to enforce that the end token matches the start token because the Lexer will
                 // have already failed to parse the literal if it doesn't match.
                 lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingEnd);
-                Attribute = new(attributeName, attributeType, valueType, attributeValue, parentDepth);
+                Attribute = new(attributeName, attributeType, valueType, attributeValue, parentDepth, parentType);
                 return true;
             case TokenType.SelfClosingTagEnd:
                 wasTagSelfClosed = true;

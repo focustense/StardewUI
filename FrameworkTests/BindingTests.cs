@@ -781,7 +781,7 @@ public partial class BindingTests
     }
 
     [Fact]
-    public void WhenAncestorContextChanges_UpdatesAllWalkingDescendants()
+    public void WhenAncestorContextChanges_UpdatesDescendantsWithDistanceRedirects()
     {
         string markup =
             @"<lane orientation=""vertical"">
@@ -858,6 +858,85 @@ public partial class BindingTests
         model.Items[0].Color = Color.Yellow;
         model.Items[0].Inner!.Text = "Item 3";
         model.Items[1].Color = Color.Lime;
+        tree.Update();
+
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var lane = Assert.IsType<Lane>(child);
+                var frame = Assert.IsType<Frame>(lane.Children.SingleOrDefault());
+                var label = Assert.IsType<Label>(frame.Content);
+                Assert.Equal(2, label.MaxLines);
+                Assert.Equal(Color.Yellow, label.Color);
+                Assert.Equal("Item 3", label.Text);
+            },
+            child =>
+            {
+                var lane = Assert.IsType<Lane>(child);
+                var frame = Assert.IsType<Frame>(lane.Children.SingleOrDefault());
+                var label = Assert.IsType<Label>(frame.Content);
+                Assert.Equal(2, label.MaxLines);
+                Assert.Equal(Color.Lime, label.Color);
+                Assert.Equal("Item 2", label.Text);
+            }
+        );
+    }
+
+    [Fact]
+    public void WhenAncestorContextChanges_UpdatesDescendantsWithTypeRedirects()
+    {
+        string markup =
+            @"<lane orientation=""vertical"">
+                <lane *repeat={{Items}}>
+                    <frame *context={{Inner}}>
+                        <label max-lines={{~ContextWalkingTestModel.MaxLines}} color={{~ItemData.Color}} text={{Text}} />
+                    </frame>
+                </lane>
+            </lane>";
+        var model = new ContextWalkingTestModel()
+        {
+            MaxLines = 1,
+            Items =
+            [
+                new()
+                {
+                    Color = Color.White,
+                    Inner = new() { Text = "Item 1" },
+                },
+                new() { Color = Color.Aqua },
+            ],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var lane = Assert.IsType<Lane>(child);
+                var frame = Assert.IsType<Frame>(lane.Children.SingleOrDefault());
+                var label = Assert.IsType<Label>(frame.Content);
+                Assert.Equal(1, label.MaxLines);
+                Assert.Equal(Color.White, label.Color);
+                Assert.Equal("Item 1", label.Text);
+            },
+            child =>
+            {
+                var lane = Assert.IsType<Lane>(child);
+                var frame = Assert.IsType<Frame>(lane.Children.SingleOrDefault());
+                Assert.IsType<Label>(frame.Content);
+                // It's not useful to assert anything about the label here, because we didn't set the Inner data and
+                // therefore it doesn't have a context. One of the quirks of this system is that the context cannot be
+                // walked unless the current context is set; thus even the ^ and ^^ attributes do nothing at this point.
+            }
+        );
+
+        model.MaxLines = 2;
+        model.Items[0].Color = Color.Yellow;
+        model.Items[0].Inner!.Text = "Item 3";
+        model.Items[1].Color = Color.Lime;
+        model.Items[1].Inner = new() { Text = "Item 2" };
         tree.Update();
 
         Assert.Collection(

@@ -1,5 +1,5 @@
-﻿using System.Collections.Immutable;
-using StardewUI.Framework.Descriptors;
+﻿using StardewUI.Framework.Descriptors;
+using StardewUI.Framework.Dom;
 
 namespace StardewUI.Framework.Binding;
 
@@ -25,21 +25,30 @@ public record BindingContext(IObjectDescriptor Descriptor, object Data, BindingC
         return new(descriptor, data, parent);
     }
 
+    // Used to cache redirects by type name.
+    private static readonly Dictionary<(Type, string), bool> typeNameMatches = [];
+
     /// <summary>
-    /// Traverses up the specified depth to find an ancestor of this context.
+    /// Resolves a redirected context, using this context as the starting point.
     /// </summary>
-    /// <param name="depth">Number of parents to traverse.</param>
-    /// <returns>The <see cref="BindingContext"/> that is <paramref name="depth"/> levels higher than the current
-    /// context, or <c>null</c> if the context stack size is less than the specified depth.</returns>
-    public BindingContext? GetAncestor(int depth)
+    /// <param name="redirect">The redirect data.</param>
+    /// <returns>The resolved <see cref="BindingContext"/>, or <c>null</c> if the <paramref name="redirect"/> does not
+    /// resolve to a valid context.</returns>
+    public BindingContext? Redirect(ContextRedirect? redirect)
     {
-        // In the vast majority of cases, depth will be 0, so short-circuit these cases to save a bit of performance.
-        if (depth == 0)
+        return redirect switch
         {
-            return this;
-        }
+            null => this,
+            ContextRedirect.Distance(uint depth) => GetAncestor(depth),
+            ContextRedirect.Type(string typeName) => GetAncestor(typeName),
+            _ => null,
+        };
+    }
+
+    private BindingContext? GetAncestor(uint depth)
+    {
         var context = this;
-        for (int i = 0; i < depth; i++)
+        for (uint i = 0; i < depth; i++)
         {
             if (context.Parent is null)
             {
@@ -48,5 +57,47 @@ public record BindingContext(IObjectDescriptor Descriptor, object Data, BindingC
             context = context.Parent;
         }
         return context;
+    }
+
+    private static bool DoesTypeNameMatch(Type type, string typeName)
+    {
+        var key = (type, typeName);
+        if (!typeNameMatches.TryGetValue(key, out var isMatch))
+        {
+            isMatch = HasMatchingBaseOrInterface(type, typeName);
+            typeNameMatches.Add(key, isMatch);
+        }
+        return isMatch;
+
+        static bool HasMatchingBaseOrInterface(Type type, string typeName)
+        {
+            for (var baseType = type; baseType is not null; baseType = baseType.BaseType)
+            {
+                if (baseType.Name.Equals(typeName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            foreach (var interfaceType in type.GetInterfaces())
+            {
+                if (interfaceType.Name.Equals(typeName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    private BindingContext? GetAncestor(string typeName)
+    {
+        for (var context = this; context is not null; context = context.Parent)
+        {
+            if (DoesTypeNameMatch(context.Data.GetType(), typeName))
+            {
+                return context;
+            }
+        }
+        return null;
     }
 }

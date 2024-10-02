@@ -8,16 +8,15 @@ namespace StardewUI.Framework.Dom;
 public interface IAttribute
 {
     /// <summary>
+    /// Specifies the redirect to use for a context binding, if applicable and if the <see cref="ValueType"/> is one of
+    /// the context binding types.
+    /// </summary>
+    ContextRedirect? ContextRedirect { get; }
+
+    /// <summary>
     /// The attribute name.
     /// </summary>
     string Name { get; }
-
-    /// <summary>
-    /// The depth to walk - i.e. number of parents to traverse - to find the context on which to evaluate a context
-    /// binding. Only valid if the <paramref name="valueType"/> is a type that matches
-    /// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
-    /// </summary>
-    int ParentDepth { get; }
 
     /// <summary>
     /// The type of the attribute itself, defining how the <see cref="Name"/> should be interpreted.
@@ -33,6 +32,26 @@ public interface IAttribute
     /// The type of the value expression, defining how the <paramref name="Value"/> should be interpreted.
     /// </summary>
     AttributeValueType ValueType { get; }
+}
+
+/// <summary>
+/// Describes how to redirect the target context of any <see cref="IAttribute"/> whose
+/// <see cref="IAttribute.ValueType"/> is one of the <see cref="AttributeValueTypeExtensions.IsContextBinding"/>
+/// matching types.
+/// </summary>
+public abstract record ContextRedirect
+{
+    /// <summary>
+    /// Redirects to an ancestor context by walking up a specified number of levels.
+    /// </summary>
+    /// <param name="Depth">Number of parents to traverse.</param>
+    public sealed record Distance(uint Depth) : ContextRedirect;
+
+    /// <summary>
+    /// Redirects to the nearest ancestor matching a specified type.
+    /// </summary>
+    /// <param name="TypeName">The <see cref="Type.Name"/> of the target ancestor's type.</param>
+    public sealed record Type(string TypeName) : ContextRedirect;
 }
 
 /// <summary>
@@ -57,7 +76,7 @@ public record SAttribute(
     string Value,
     AttributeType Type = AttributeType.Property,
     AttributeValueType ValueType = AttributeValueType.Literal,
-    int ParentDepth = 0
+    ContextRedirect? ContextRedirect = null
 ) : IAttribute
 {
     /// <summary>
@@ -70,6 +89,19 @@ public record SAttribute(
             attribute.Value.ToString(),
             attribute.Type,
             attribute.ValueType,
-            attribute.ParentDepth
+            GetContextRedirect(attribute)
         ) { }
+
+    private static ContextRedirect? GetContextRedirect(Grammar.Attribute attribute)
+    {
+        if (!attribute.ParentType.IsEmpty)
+        {
+            return new ContextRedirect.Type(attribute.ParentType.ToString());
+        }
+        if (attribute.ParentDepth > 0)
+        {
+            return new ContextRedirect.Distance(attribute.ParentDepth);
+        }
+        return null;
+    }
 }

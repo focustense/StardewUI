@@ -57,11 +57,54 @@ public class ParserTests
             },
             {
                 @"<textinput text={{<>^Name}} />",
-                [new("textinput", [new("text", "Name", ValueType: AttributeValueType.TwoWayBinding, ParentDepth: 1)])]
+
+                [
+                    new(
+                        "textinput",
+                        [
+                            new(
+                                "text",
+                                "Name",
+                                ValueType: AttributeValueType.TwoWayBinding,
+                                ContextRedirect: new ContextRedirect.Distance(1)
+                            ),
+                        ]
+                    ),
+                ]
             },
             {
                 @"<label text={{<^^^Name}} />",
-                [new("label", [new("text", "Name", ValueType: AttributeValueType.InputBinding, ParentDepth: 3)])]
+
+                [
+                    new(
+                        "label",
+                        [
+                            new(
+                                "text",
+                                "Name",
+                                ValueType: AttributeValueType.InputBinding,
+                                ContextRedirect: new ContextRedirect.Distance(3)
+                            ),
+                        ]
+                    ),
+                ]
+            },
+            {
+                @"<checkbox is-checked={{>~Foo.Enabled}} />",
+
+                [
+                    new(
+                        "checkbox",
+                        [
+                            new(
+                                "is-checked",
+                                "Enabled",
+                                ValueType: AttributeValueType.OutputBinding,
+                                ContextRedirect: new ContextRedirect.Type("Foo")
+                            ),
+                        ]
+                    ),
+                ]
             },
         };
 

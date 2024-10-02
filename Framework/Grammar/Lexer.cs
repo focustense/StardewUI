@@ -39,6 +39,11 @@ public enum TokenType
     Name,
 
     /// <summary>
+    /// The dot (<c>.</c>) character used to separate components of a name.
+    /// </summary>
+    NameSeparator,
+
+    /// <summary>
     /// Modifier token designating the type of an attribute; the <c>*</c> character (structural).
     /// </summary>
     AttributeModifier,
@@ -77,7 +82,12 @@ public enum TokenType
     /// <summary>
     /// A caret (<c>^</c>) used in a binding expression, indicating a walk up to the parent context.
     /// </summary>
-    BindingParent,
+    BindingParentImmediate,
+
+    /// <summary>
+    /// A tilde (<c>~</c>) used in a binding expression, indicating traversal up to a parent with a named type.
+    /// </summary>
+    BindingParentIndirect,
 }
 
 /// <summary>
@@ -138,6 +148,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     private static readonly Rune UNDERSCORE = new('_');
 
     private Mode mode;
+    private bool nameSeparatorEnabled;
     private int position;
     private ReadOnlySpan<char> text = text;
 
@@ -178,6 +189,10 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 break;
             case TokenType.BindingEnd:
                 mode = Mode.Default;
+                nameSeparatorEnabled = false;
+                break;
+            case TokenType.BindingParentIndirect when mode == Mode.Binding:
+                nameSeparatorEnabled = true;
                 break;
         }
         Current = new(tokenType, text[..tokenLength]);
@@ -227,7 +242,8 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         else if (!expectedTypes.Contains(Current.Type))
         {
             throw new LexerException(
-                $"Invalid token at position {previousPosition}. Expected one of the following: {FormatExpectedTypes()}",
+                $"Invalid {Current.Type} token at position {previousPosition}. "
+                    + $"Expected one of the following: {FormatExpectedTypes()}",
                 previousPosition
             );
         }
@@ -251,12 +267,14 @@ public ref struct Lexer(ReadOnlySpan<char> text)
             Mode.Binding => text switch
             {
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
-                ['^', ..] => new(TokenType.BindingParent, 1),
+                ['^', ..] => new(TokenType.BindingParentImmediate, 1),
+                ['~', ..] => new(TokenType.BindingParentIndirect, 1),
+                ['.', ..] => new(TokenType.NameSeparator, 1),
                 ['<', '>', ..] => new(TokenType.BindingModifier, 2),
                 ['<', ..] => new(TokenType.BindingModifier, 1),
                 ['>', ..] => new(TokenType.BindingModifier, 1),
                 ['@', ..] => new(TokenType.BindingModifier, 1),
-                _ => ReadLiteralStringUntil("}}"),
+                _ => nameSeparatorEnabled ? ReadLiteralStringUntil("}}", ".") : ReadLiteralStringUntil("}}"),
             },
             _ => text switch
             {
@@ -280,6 +298,21 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         if (terminatorIndex < 0)
         {
             throw LexerException($"Unterminated literal; expected closing '{terminator}'.");
+        }
+        return new(TokenType.Literal, terminatorIndex);
+    }
+
+    private readonly TokenInfo ReadLiteralStringUntil(ReadOnlySpan<char> terminator1, ReadOnlySpan<char> terminator2)
+    {
+        var terminatorIndex1 = text.IndexOf(terminator1);
+        var terminatorIndex2 = text.IndexOf(terminator2);
+        int terminatorIndex =
+            terminatorIndex1 < 0 ? terminatorIndex2
+            : terminatorIndex2 < 0 ? terminatorIndex1
+            : Math.Min(terminatorIndex1, terminatorIndex2);
+        if (terminatorIndex < 0)
+        {
+            throw LexerException($"Unterminated literal; expected closing '{terminator1}' or '{terminator2}'.");
         }
         return new(TokenType.Literal, terminatorIndex);
     }
