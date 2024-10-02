@@ -78,7 +78,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
             AttributeValueType.Literal => (IValueSource<T>)new ConstantValueSource<string>(attribute.Value),
             AttributeValueType.AssetBinding => new AssetValueSource<T>(assetCache, attribute.Value),
             AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
-                new ContextPropertyValueSource<T>(context, attribute.Value),
+                new ContextPropertyValueSource<T>(context?.GetAncestor(attribute.ParentDepth), attribute.Value),
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }
@@ -90,7 +90,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
             AttributeValueType.Literal => typeof(string),
             AttributeValueType.AssetBinding => property?.ValueType,
             AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
-                context?.Descriptor.GetProperty(attribute.Value).ValueType,
+                context?.GetAncestor(attribute.ParentDepth)?.Descriptor.GetProperty(attribute.Value).ValueType,
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }

@@ -125,7 +125,9 @@ public class ViewNode(
             if (wasChildContextChanged)
             {
                 childNode.Context = childContextSource?.Value is not null
-                    ? BindingContext.Create(childContextSource.Value, Context)
+                    ? contextAttribute is not null
+                        ? BindingContext.Create(childContextSource.Value, Context)
+                        : Context
                     : null;
             }
             // Even though Views is an IReadOnlyList<IView>, that does not make it an immutable list. If we want to
