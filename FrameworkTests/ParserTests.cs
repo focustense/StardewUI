@@ -12,10 +12,10 @@ public class ParserTests
         {
             {
                 @"<lane orientation=""vertical"" align-content=""middle end"">
-                <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
-                <label font=""dialogue"" text={{HeaderText}} />
-                <checkbox is-checked={{<>Checked}}/>
-            </lane>",
+                    <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
+                    <label font=""dialogue"" text={{HeaderText}} />
+                    <checkbox is-checked={{<>Checked}}/>
+                </lane>",
 
                 [
                     new("lane", [new("orientation", "vertical"), new("align-content", "middle end")]),
@@ -54,6 +54,14 @@ public class ParserTests
                         ]
                     ),
                 ]
+            },
+            {
+                @"<textinput text={{<>^Name}} />",
+                [new("textinput", [new("text", "Name", ValueType: AttributeValueType.TwoWayBinding, ParentDepth: 1)])]
+            },
+            {
+                @"<label text={{<^^^Name}} />",
+                [new("label", [new("text", "Name", ValueType: AttributeValueType.InputBinding, ParentDepth: 3)])]
             },
         };
 

@@ -64,6 +64,26 @@ public enum AttributeValueType
 }
 
 /// <summary>
+/// Extensions for the <see cref="AttributeValueType"/> enum.
+/// </summary>
+public static class AttributeValueTypeExtensions
+{
+    /// <summary>
+    /// Tests if a given <paramref name="valueType"/> is any type of context binding, regardless of its direction.
+    /// </summary>
+    /// <param name="valueType">The value type.</param>
+    /// <returns><c>true</c> if the attribute binds to a context property; <c>false</c> if it is some other type of
+    /// attribute such as <see cref="AttributeValueType.Literal"/> or
+    /// <see cref="AttributeValueType.AssetBinding"/>.</returns>
+    public static bool IsContextBinding(this AttributeValueType valueType)
+    {
+        return valueType == AttributeValueType.InputBinding
+            || valueType == AttributeValueType.OutputBinding
+            || valueType == AttributeValueType.TwoWayBinding;
+    }
+}
+
+/// <summary>
 /// A complete attribute assignment parsed from StarML.
 /// </summary>
 /// <param name="name">The attribute name.</param>
@@ -72,17 +92,28 @@ public enum AttributeValueType
 /// <param name="valueType">The type of the value expression, defining how the <paramref name="value"/> should be
 /// interpreted.</param>
 /// <param name="value">The literal value text.</param>
+/// <param name="parentDepth">The depth to walk - i.e. number of parents to traverse - to find the context on which to
+/// evaluate a context binding. Only valid if the <paramref name="valueType"/> is a type that matches
+/// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.</param>
 public readonly ref struct Attribute(
     ReadOnlySpan<char> name,
     AttributeType type,
     AttributeValueType valueType,
-    ReadOnlySpan<char> value
+    ReadOnlySpan<char> value,
+    int parentDepth
 )
 {
     /// <summary>
     /// The attribute name.
     /// </summary>
     public ReadOnlySpan<char> Name { get; } = name;
+
+    /// <summary>
+    /// The depth to walk - i.e. number of parents to traverse - to find the context on which to evaluate a context
+    /// binding. Only valid if the <paramref name="valueType"/> is a type that matches
+    /// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
+    /// </summary>
+    public int ParentDepth { get; } = parentDepth;
 
     /// <summary>
     /// The type of the attribute itself, i.e. how its <see cref="Name"/> should be interpreted.
@@ -179,21 +210,34 @@ public ref struct DocumentReader(Lexer lexer)
                     lexer.Current.Type == TokenType.BindingStart
                         ? AttributeValueType.InputBinding
                         : AttributeValueType.Literal;
-                lexer.ReadRequiredToken(TokenType.BindingModifier, TokenType.Literal);
+                lexer.ReadRequiredToken(TokenType.BindingModifier, TokenType.BindingParent, TokenType.Literal);
                 if (lexer.Current.Type == TokenType.BindingModifier)
                 {
                     valueType = GetBindingType(lexer.Current.Text);
+                    lexer.ReadRequiredToken(TokenType.BindingParent, TokenType.Literal);
                 }
-                ;
-                if (lexer.Current.Type == TokenType.BindingModifier)
+                int parentDepth = 0;
+                if (lexer.Current.Type == TokenType.BindingParent)
                 {
-                    lexer.ReadRequiredToken(TokenType.Literal);
+                    if (!valueType.IsContextBinding())
+                    {
+                        throw ParserException.ForCurrentToken(
+                            lexer,
+                            $"Parent context modifier ({lexer.Current.Text}) is not allowed for attributes with type "
+                                + $"{valueType}; the attribute must be an input, output or 2-way context binding."
+                        );
+                    }
+                    do
+                    {
+                        parentDepth++;
+                        lexer.ReadRequiredToken(TokenType.BindingParent, TokenType.Literal);
+                    } while (lexer.Current.Type == TokenType.BindingParent);
                 }
                 var attributeValue = lexer.Current.Text;
                 // We don't bother trying to enforce that the end token matches the start token because the Lexer will
                 // have already failed to parse the literal if it doesn't match.
                 lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingEnd);
-                Attribute = new(attributeName, attributeType, valueType, attributeValue);
+                Attribute = new(attributeName, attributeType, valueType, attributeValue, parentDepth);
                 return true;
             case TokenType.SelfClosingTagEnd:
                 wasTagSelfClosed = true;

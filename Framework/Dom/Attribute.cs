@@ -13,6 +13,13 @@ public interface IAttribute
     string Name { get; }
 
     /// <summary>
+    /// The depth to walk - i.e. number of parents to traverse - to find the context on which to evaluate a context
+    /// binding. Only valid if the <paramref name="valueType"/> is a type that matches
+    /// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
+    /// </summary>
+    int ParentDepth { get; }
+
+    /// <summary>
     /// The type of the attribute itself, defining how the <see cref="Name"/> should be interpreted.
     /// </summary>
     AttributeType Type { get; }
@@ -41,11 +48,16 @@ public interface IAttribute
 /// interpreted.</param>
 /// <param name="ValueType">The type of the value expression, defining how the <paramref name="value"/> should be
 /// interpreted.</param>
+/// <param name="ParentDepth">The depth to walk - i.e. number of parents to traverse - to find the context on which to
+/// evaluate a context binding. Only valid if the <paramref name="valueType"/> is a type that matches
+/// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.</param>
+/// </summary>
 public record SAttribute(
     string Name,
     string Value,
     AttributeType Type = AttributeType.Property,
-    AttributeValueType ValueType = AttributeValueType.Literal
+    AttributeValueType ValueType = AttributeValueType.Literal,
+    int ParentDepth = 0
 ) : IAttribute
 {
     /// <summary>
@@ -53,5 +65,11 @@ public record SAttribute(
     /// </summary>
     /// <param name="attribute">The parsed attribute.</param>
     public SAttribute(Grammar.Attribute attribute)
-        : this(attribute.Name.ToString(), attribute.Value.ToString(), attribute.Type, attribute.ValueType) { }
+        : this(
+            attribute.Name.ToString(),
+            attribute.Value.ToString(),
+            attribute.Type,
+            attribute.ValueType,
+            attribute.ParentDepth
+        ) { }
 }

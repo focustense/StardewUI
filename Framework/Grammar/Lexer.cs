@@ -73,6 +73,11 @@ public enum TokenType
     /// <c>&lt;&gt;</c> (two-way).
     /// </summary>
     BindingModifier,
+
+    /// <summary>
+    /// A caret (<c>^</c>) used in a binding expression, indicating a walk up to the parent context.
+    /// </summary>
+    BindingParent,
 }
 
 /// <summary>
@@ -246,6 +251,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
             Mode.Binding => text switch
             {
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
+                ['^', ..] => new(TokenType.BindingParent, 1),
                 ['<', '>', ..] => new(TokenType.BindingModifier, 2),
                 ['<', ..] => new(TokenType.BindingModifier, 1),
                 ['>', ..] => new(TokenType.BindingModifier, 1),

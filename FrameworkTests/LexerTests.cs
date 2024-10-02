@@ -18,10 +18,10 @@ public class LexerTests
         {
             {
                 @"<lane orientation=""vertical"" align-content=""middle end"">
-                <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
-                <label font=""dialogue"" text={{HeaderText}} />
-                <checkbox is-checked={{<>Checked}}/>
-            </lane>",
+                    <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
+                    <label font=""dialogue"" text={{HeaderText}} />
+                    <checkbox is-checked={{<>Checked}}/>
+                </lane>",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
@@ -101,6 +101,40 @@ public class LexerTests
                     new(TokenType.Assignment, "="),
                     new(TokenType.BindingStart, "{{"),
                     new(TokenType.Literal, "DisplayName"),
+                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
+                @"<textinput text={{<>^Name}} />",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "textinput"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingModifier, "<>"),
+                    new(TokenType.BindingParent, "^"),
+                    new(TokenType.Literal, "Name"),
+                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
+                @"<label text={{<^^^Name}} />",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingModifier, "<"),
+                    new(TokenType.BindingParent, "^"),
+                    new(TokenType.BindingParent, "^"),
+                    new(TokenType.BindingParent, "^"),
+                    new(TokenType.Literal, "Name"),
                     new(TokenType.BindingEnd, "}}"),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
