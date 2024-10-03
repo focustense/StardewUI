@@ -12,31 +12,28 @@ internal sealed class ModEntry : Mod
     private ModConfig config = null!;
 
     // Initialized in GameLaunched
+    private string viewAssetPrefix = null!;
     private IViewEngine viewEngine = null!;
-
-    private string ViewMarkup =>
-        @"<lane orientation=""vertical"" horizontal-content-alignment=""middle"">
-            <banner background={{@Mods/StardewUI/Sprites/BannerBackground}} background-border-thickness=""48,0"" padding=""12"" text={{HeaderText}} />
-            <frame background={{@Mods/StardewUI/Sprites/ControlBorder}} margin=""0,16,0,0"" padding=""32,24"">
-                <lane orientation=""vertical"" horizontal-content-alignment=""middle"">
-                    <label font=""dialogue"" text=""Hello, world!"" margin=""0,0,0,8"" />
-                    <label text=""This is an example paragraph."" />
-                    <panel margin=""0,8,0,0"" horizontal-content-alignment=""middle"" vertical-content-alignment=""middle"">
-                        <image layout=""stretch"" fit=""stretch"" sprite={{@Mods/StardewUI/Sprites/MenuSlotInset}} />
-                        <image layout=""64px 64px"" margin=""8"" sprite={{ItemData}} />
-                    </panel>
-                </lane>
-            </frame>
-        </lane>";
 
     public override void Entry(IModHelper helper)
     {
         I18n.Init(helper.Translation);
         UI.Initialize(helper, Monitor);
         config = helper.ReadConfig<ModConfig>();
+        viewAssetPrefix = $"Mods/{ModManifest.UniqueID}/Views/";
 
+        helper.Events.Content.AssetRequested += Content_AssetRequested;
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+    }
+
+    private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)
+    {
+        if (e.NameWithoutLocale.StartsWith(viewAssetPrefix))
+        {
+            var relativePath = e.NameWithoutLocale.Name[viewAssetPrefix.Length..];
+            e.LoadFromModFile<object>($"views/{relativePath}.sml", AssetLoadPriority.Exclusive);
+        }
     }
 
     private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -55,7 +52,7 @@ internal sealed class ModEntry : Mod
                 HeaderText = "Example Menu Title",
                 ItemData = ItemRegistry.GetData("(O)117"),
             };
-            Game1.activeClickableMenu = viewEngine.CreateMenuFromMarkup(ViewMarkup, context);
+            Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}TestView", context);
         }
     }
 }

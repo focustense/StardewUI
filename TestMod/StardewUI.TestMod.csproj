@@ -17,6 +17,13 @@
 
     <ItemGroup>
       <None Remove="i18n\default.json" />
+      <None Remove="views\TestView.sml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="views\TestView.sml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
