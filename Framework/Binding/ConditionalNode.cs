@@ -1,6 +1,4 @@
-﻿using StardewModdingAPI;
-
-namespace StardewUI.Framework.Binding;
+﻿namespace StardewUI.Framework.Binding;
 
 /// <summary>
 /// A structural node that only passes through its child node when some condition passes.

@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using PropertyChanged.SourceGenerator;
 using StardewUI;
 using StardewUI.Framework.Binding;
@@ -10,7 +9,6 @@ using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
-using StardewValley;
 using Xunit.Abstractions;
 
 namespace StarML.Tests;
@@ -41,14 +39,18 @@ public partial class BindingTests
             where T : notnull
         {
             return assets.TryGetValue(name, out var asset)
-                ? new FakeAssetCacheEntry<T>((T)asset)
+                ? (FakeAssetCacheEntry<T>)(asset)
                 : throw new KeyNotFoundException($"Asset '{name}' not registered.");
         }
 
         public void Put<T>(string name, T asset)
             where T : notnull
         {
-            assets[name] = asset;
+            if (assets.TryGetValue(name, out var oldValue) && oldValue is FakeAssetCacheEntry<T> oldEntry)
+            {
+                oldEntry.IsExpired = true;
+            }
+            assets[name] = new FakeAssetCacheEntry<T>(asset);
         }
     }
 
@@ -56,7 +58,7 @@ public partial class BindingTests
     {
         public T Asset { get; } = asset;
 
-        public bool IsExpired => false;
+        public bool IsExpired { get; set; }
     }
 
     private readonly FakeAssetCache assetCache;
@@ -247,7 +249,13 @@ public partial class BindingTests
     [Fact]
     public void TestEndToEnd()
     {
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+        var viewNodeFactory = new ViewNodeFactory(
+            viewFactory,
+            valueSourceFactory,
+            valueConverterFactory,
+            viewBinder,
+            assetCache
+        );
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
         string markup =
@@ -962,9 +970,209 @@ public partial class BindingTests
         );
     }
 
+    partial class SingleIncludeModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private string assetName = "";
+
+        [Notify]
+        private string labelText = "";
+
+        [Notify]
+        private Sprite? sprite;
+    }
+
+    [Fact]
+    public void WhenIncludedDataChanges_UpdatesView()
+    {
+        assetCache.Put("LabelView", Document.Parse(@"<label text={{LabelText}} />"));
+        string markup =
+            @"<frame>
+                <include name=""LabelView"" />
+            </frame>";
+        var model = new SingleIncludeModel() { LabelText = "Foo" };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        var label = Assert.IsType<Label>(rootView.Content);
+        Assert.Equal("Foo", label.Text);
+
+        model.LabelText = "Bar";
+        tree.Update();
+
+        Assert.Equal(label, rootView.Content);
+        Assert.Equal("Bar", label.Text);
+    }
+
+    [Fact]
+    public void WhenIncludedNameChanges_ReplacesView()
+    {
+        assetCache.Put("LabelView", Document.Parse(@"<label text={{LabelText}} />"));
+        assetCache.Put("ImageView", Document.Parse(@"<image sprite={{Sprite}} />"));
+        string markup =
+            @"<frame>
+                <include name={{AssetName}} />
+            </frame>";
+        var model = new SingleIncludeModel()
+        {
+            AssetName = "LabelView",
+            LabelText = "Foo",
+            Sprite = UiSprites.SmallGreenPlus,
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        var label = Assert.IsType<Label>(rootView.Content);
+        Assert.Equal("Foo", label.Text);
+
+        model.AssetName = "ImageView";
+        tree.Update();
+
+        var image = Assert.IsType<Image>(rootView.Content);
+        Assert.Equal(UiSprites.SmallGreenPlus, image.Sprite);
+    }
+
+    [Fact]
+    public void WhenIncludedAssetExpires_ReloadsAndReplacesView()
+    {
+        assetCache.Put("IncludedView", Document.Parse(@"<label text={{LabelText}} />"));
+        string markup =
+            @"<frame>
+                <include name=""IncludedView"" />
+            </frame>";
+        var model = new SingleIncludeModel() { LabelText = "Foo", Sprite = UiSprites.ButtonDark };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        var label = Assert.IsType<Label>(rootView.Content);
+        Assert.Equal("Foo", label.Text);
+
+        assetCache.Put("IncludedView", Document.Parse(@"<image sprite={{Sprite}} tooltip={{LabelText}} />"));
+        tree.Update();
+
+        var image = Assert.IsType<Image>(rootView.Content);
+        Assert.Equal(UiSprites.ButtonDark, image.Sprite);
+        Assert.Equal("Foo", image.Tooltip);
+    }
+
+    partial class NestedIncludeModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private InnerData inner = new();
+
+        public partial class InnerData
+        {
+            [Notify]
+            private string labelText = "";
+        }
+    }
+
+    [Fact]
+    public void WhenIncludedExplicitContextChanges_UpdatesView()
+    {
+        assetCache.Put("LabelView", Document.Parse(@"<label text={{LabelText}} />"));
+        string markup =
+            @"<frame>
+                <include name=""LabelView"" *context={{Inner}} />
+            </frame>";
+        var model = new NestedIncludeModel() { Inner = new() { LabelText = "Foo" } };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        var label = Assert.IsType<Label>(rootView.Content);
+        Assert.Equal("Foo", label.Text);
+
+        model.Inner = new() { LabelText = "Bar" };
+        tree.Update();
+
+        Assert.Equal(label, rootView.Content);
+        Assert.Equal("Bar", label.Text);
+    }
+
+    partial class RepeatingIncludeModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private ObservableCollection<InnerData> items = [];
+
+        [Notify]
+        private int maxLines;
+
+        public partial class InnerData
+        {
+            [Notify]
+            private string labelText = "";
+        }
+    }
+
+    [Fact]
+    public void WhenIncludedImplicitContextChanges_UpdatesView()
+    {
+        assetCache.Put("LabelView", Document.Parse(@"<label max-lines={{^MaxLines}} text={{LabelText}} />"));
+        string markup =
+            @"<lane>
+                <include name=""LabelView"" *repeat={{Items}} />
+            </lane>";
+        var model = new RepeatingIncludeModel()
+        {
+            Items = [new() { LabelText = "Foo" }, new() { LabelText = "Bar" }],
+            MaxLines = 3,
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal(3, label.MaxLines);
+                Assert.Equal("Foo", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal(3, label.MaxLines);
+                Assert.Equal("Bar", label.Text);
+            }
+        );
+
+        model.Items[0] = new() { LabelText = "Baz" };
+        model.Items[1] = new() { LabelText = "Quux" };
+        model.Items.Add(new() { LabelText = "Meep" });
+        tree.Update();
+
+        Assert.Collection(
+            rootView.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal(3, label.MaxLines);
+                Assert.Equal("Baz", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal(3, label.MaxLines);
+                Assert.Equal("Quux", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal(3, label.MaxLines);
+                Assert.Equal("Meep", label.Text);
+            }
+        );
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+        var viewNodeFactory = new ViewNodeFactory(
+            viewFactory,
+            valueSourceFactory,
+            valueConverterFactory,
+            viewBinder,
+            assetCache
+        );
         var document = Document.Parse(markup);
         var tree = viewNodeFactory.CreateNode(document.Root);
         tree.Context = BindingContext.Create(model);

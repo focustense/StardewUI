@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Converters;
+﻿using StardewUI.Framework.Content;
+using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
 
@@ -15,11 +16,13 @@ namespace StardewUI.Framework.Binding;
 /// by the target view or structural property.</param>
 /// <param name="viewBinder">Binding service used to create <see cref="IViewBinding"/> instances that detect changes to
 /// data or assets and propagate them to the bound <see cref="IView"/>.</param>
+/// <param name="assetCache">Cache for obtaining document assets. Used for included views.</param>
 public class ViewNodeFactory(
     IViewFactory viewFactory,
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
-    IViewBinder viewBinder
+    IViewBinder viewBinder,
+    IAssetCache assetCache
 ) : IViewNodeFactory
 {
     public IViewNode CreateNode(SNode node)
@@ -41,15 +44,41 @@ public class ViewNodeFactory(
             return CreateNonRepeatingNode();
         }
 
-        IViewNode CreateNonRepeatingNode()
+        IViewNode CreateDefaultViewNode()
         {
-            var viewNode = new ViewNode(
+            return new ViewNode(
                 valueSourceFactory,
                 viewFactory,
                 viewBinder,
                 node.Element,
                 contextAttribute: structuralAttributes.Context
             );
+        }
+
+        IViewNode CreateIncludedViewNode()
+        {
+            var assetNameAttribute = node.Attributes.SingleOrDefault(attr =>
+                attr.Name.Equals("name", StringComparison.OrdinalIgnoreCase)
+            );
+            if (assetNameAttribute is null)
+            {
+                throw new BindingException("<include> node is missing a 'name' attribute.");
+            }
+            return new IncludedViewNode(
+                valueSourceFactory,
+                valueConverterFactory,
+                assetCache,
+                doc => CreateNode(doc.Root, switchContext),
+                assetNameAttribute,
+                structuralAttributes.Context
+            );
+        }
+
+        IViewNode CreateNonRepeatingNode()
+        {
+            var viewNode = node.Tag.Equals("include", StringComparison.OrdinalIgnoreCase)
+                ? CreateIncludedViewNode()
+                : CreateDefaultViewNode();
             IViewNode result = viewNode;
             if (structuralAttributes.Case is IAttribute caseAttr)
             {
@@ -78,7 +107,10 @@ public class ViewNodeFactory(
             var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
                 ? new SwitchContext(viewNode, switchAttr)
                 : switchContext;
-            viewNode.ChildNodes = node.ChildNodes.Select(n => CreateNode(n, nextSwitchContext)).ToList();
+            if (viewNode is ViewNode defaultViewNode)
+            {
+                defaultViewNode.ChildNodes = node.ChildNodes.Select(n => CreateNode(n, nextSwitchContext)).ToList();
+            }
             return result;
         }
     }

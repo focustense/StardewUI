@@ -57,7 +57,13 @@ internal sealed class ModEntry : Mod
         var valueConverterFactory = new ValueConverterFactory();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory);
-        var viewNodeFactory = new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder);
+        var viewNodeFactory = new ViewNodeFactory(
+            viewFactory,
+            valueSourceFactory,
+            valueConverterFactory,
+            viewBinder,
+            assetCache
+        );
         return new ViewEngine(Helper.GameContent, viewNodeFactory);
     }
 }
