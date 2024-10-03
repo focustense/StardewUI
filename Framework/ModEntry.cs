@@ -1,8 +1,10 @@
-﻿using StardewModdingAPI.Events;
+﻿using HarmonyLib;
+using StardewModdingAPI.Events;
 using StardewUI.Framework.Api;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
+using StardewUI.Framework.Patches;
 using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework;
@@ -19,6 +21,17 @@ internal sealed class ModEntry : Mod
         UI.Initialize(helper, Monitor);
         config = helper.ReadConfig<ModConfig>();
 
+        try
+        {
+            Patcher.Patch(ModManifest.UniqueID);
+        }
+        catch (Exception ex)
+        {
+            Monitor.Log(
+                $"Harmony patching failed; parts of StardewUI may function incorrectly or not at all.\n{ex}",
+                LogLevel.Error
+            );
+        }
         viewEngine = CreateViewEngine();
 
         helper.Events.Content.AssetRequested += Content_AssetRequested;

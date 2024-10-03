@@ -12,6 +12,7 @@
   
   <PropertyGroup>
     <ModFolderName>StardewUI</ModFolderName>
+    <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
     <ItemGroup>
