@@ -105,6 +105,11 @@ public enum TokenType
     ArgumentListEnd,
 
     /// <summary>
+    /// Prefix character for an argument, e.g. <c>$</c> to refer to an event property.
+    /// </summary>
+    ArgumentPrefix,
+
+    /// <summary>
     /// The comma (<c>,</c>) character, used to separator arguments in an argument list.
     /// </summary>
     ArgumentSeparator,
@@ -338,6 +343,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['.', ..] => new(TokenType.NameSeparator, 1),
                 [',', ..] => new(TokenType.ArgumentSeparator, 1),
                 ['"', ..] => new(TokenType.Quote, 1),
+                ['$', ..] => new(TokenType.ArgumentPrefix, 1),
                 _ => ReadName(),
             },
             _ => text switch

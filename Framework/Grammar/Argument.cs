@@ -61,4 +61,10 @@ public enum ArgumentExpressionType
     /// classified as "input" because arguments are always read-only/input-only.
     /// </remarks>
     ContextBinding,
+
+    /// <summary>
+    /// The value of a named property of the <see cref="EventArgs"/> subclass of an associated event, when an argument
+    /// is being provided to an event handler.
+    /// </summary>
+    EventBinding,
 }

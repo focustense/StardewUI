@@ -188,7 +188,7 @@ public class LexerTests
                 ]
             },
             {
-                @"<button click=|^^HandleClick(Foo)| />",
+                @"<button click=|^^HandleClick(Foo, $Bar)| />",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
@@ -201,6 +201,9 @@ public class LexerTests
                     new(TokenType.Name, "HandleClick"),
                     new(TokenType.ArgumentListStart, "("),
                     new(TokenType.Name, "Foo"),
+                    new(TokenType.ArgumentSeparator, ","),
+                    new(TokenType.ArgumentPrefix, "$"),
+                    new(TokenType.Name, "Bar"),
                     new(TokenType.ArgumentListEnd, ")"),
                     new(TokenType.Pipe, "|"),
                     new(TokenType.SelfClosingTagEnd, "/>"),

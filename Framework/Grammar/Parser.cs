@@ -110,10 +110,12 @@ public ref struct DocumentReader(Lexer lexer)
                 TokenType.Quote,
                 TokenType.ContextParent,
                 TokenType.ContextAncestor,
+                TokenType.ArgumentPrefix,
                 TokenType.Name,
                 TokenType.ArgumentListEnd
             );
         }
+        var defaultExpressionType = ArgumentExpressionType.ContextBinding;
         switch (lexer.Current.Type)
         {
             case TokenType.ArgumentListEnd:
@@ -126,6 +128,10 @@ public ref struct DocumentReader(Lexer lexer)
                 lexer.ReadRequiredToken(TokenType.ArgumentSeparator, TokenType.ArgumentListEnd);
                 Argument = new(ArgumentExpressionType.Literal, quotedExpression, 0, []);
                 return true;
+            case TokenType.ArgumentPrefix:
+                defaultExpressionType = ArgumentExpressionType.EventBinding;
+                lexer.ReadRequiredToken(TokenType.Name);
+                goto default;
             default:
                 ReadContextRedirectTokens(
                     AttributeValueType.InputBinding,
@@ -135,7 +141,7 @@ public ref struct DocumentReader(Lexer lexer)
                 );
                 var expression = lexer.Current.Text;
                 lexer.ReadRequiredToken(TokenType.ArgumentSeparator, TokenType.ArgumentListEnd);
-                Argument = new(ArgumentExpressionType.ContextBinding, expression, parentDepth, parentType);
+                Argument = new(defaultExpressionType, expression, parentDepth, parentType);
                 return true;
         }
     }
