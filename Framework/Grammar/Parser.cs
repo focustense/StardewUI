@@ -10,133 +10,37 @@ namespace StardewUI.Framework.Grammar;
 /// the end of a self-closing tag (<c>/&gt;</c>) after the tag attributes.</param>
 public readonly ref struct TagInfo(ReadOnlySpan<char> name, bool isClosingTag)
 {
+    /// <summary>
+    /// The tag name.
+    /// </summary>
     public ReadOnlySpan<char> Name { get; } = name;
+
+    /// <summary>
+    /// Whether or not the tag is a closing tag, either in regular <c>&lt;/tag&gt;</c> form or the end of a self-closing
+    /// tag (<c>/&gt;</c>) after the tag attributes.
+    /// </summary>
     public bool IsClosingTag { get; } = isClosingTag;
 }
 
 /// <summary>
-/// The different types of an <see cref="Attribute"/>, independent of its value.
+/// The type of tag member read, resulting from a call to <see cref="DocumentReader.NextMember"/>.
 /// </summary>
-public enum AttributeType
+public enum TagMember
 {
     /// <summary>
-    /// Sets or binds a property on the target view.
+    /// No member was read, i.e. the reader reached the end of the tag.
     /// </summary>
-    Property,
+    None,
 
     /// <summary>
-    /// Affects the structure or hierarchy of the view tree, e.g. by making a node conditional or repeated.
+    /// A regular attribute, which binds or writes to a property of the target view.
     /// </summary>
-    Structural,
-}
-
-/// <summary>
-/// Types allowed for the value of an <see cref="Attribute"/>.
-/// </summary>
-public enum AttributeValueType
-{
-    /// <summary>
-    /// The value is the literal string in the markup, i.e. it is the actual string representation of the target data
-    /// type such as an integer, enumeration or another string.
-    /// </summary>
-    Literal,
+    Attribute,
 
     /// <summary>
-    /// A read-only binding which obtains the value from a named game asset.
+    /// An event attribute, which attaches an event handler to the target view.
     /// </summary>
-    AssetBinding,
-
-    /// <summary>
-    /// A one-way data binding which obtains the value from the context data and assigns it to the view.
-    /// </summary>
-    InputBinding,
-
-    /// <summary>
-    /// A one-way data binding which obtains the value from the view and assigns it to the context data.
-    /// </summary>
-    OutputBinding,
-
-    /// <summary>
-    /// A two-way data binding which both assigns the context data's value to the view, and the view's value to the
-    /// context data, depending on which one was most recently changed.
-    /// </summary>
-    TwoWayBinding,
-}
-
-/// <summary>
-/// Extensions for the <see cref="AttributeValueType"/> enum.
-/// </summary>
-public static class AttributeValueTypeExtensions
-{
-    /// <summary>
-    /// Tests if a given <paramref name="valueType"/> is any type of context binding, regardless of its direction.
-    /// </summary>
-    /// <param name="valueType">The value type.</param>
-    /// <returns><c>true</c> if the attribute binds to a context property; <c>false</c> if it is some other type of
-    /// attribute such as <see cref="AttributeValueType.Literal"/> or
-    /// <see cref="AttributeValueType.AssetBinding"/>.</returns>
-    public static bool IsContextBinding(this AttributeValueType valueType)
-    {
-        return valueType == AttributeValueType.InputBinding
-            || valueType == AttributeValueType.OutputBinding
-            || valueType == AttributeValueType.TwoWayBinding;
-    }
-}
-
-/// <summary>
-/// A complete attribute assignment parsed from StarML.
-/// </summary>
-/// <param name="name">The attribute name.</param>
-/// <param name="type">The type of the attribute itself, i.e. how its <paramref name="name"/> should be
-/// interpreted.</param>
-/// <param name="valueType">The type of the value expression, defining how the <paramref name="value"/> should be
-/// interpreted.</param>
-/// <param name="value">The literal value text.</param>
-/// <param name="parentDepth">The depth to walk - i.e. number of parents to traverse - to find the context on which to
-/// evaluate a context binding. Only valid if the <paramref name="valueType"/> is a type that matches
-/// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.</param>
-public readonly ref struct Attribute(
-    ReadOnlySpan<char> name,
-    AttributeType type,
-    AttributeValueType valueType,
-    ReadOnlySpan<char> value,
-    uint parentDepth,
-    ReadOnlySpan<char> parentType
-)
-{
-    /// <summary>
-    /// The attribute name.
-    /// </summary>
-    public ReadOnlySpan<char> Name { get; } = name;
-
-    /// <summary>
-    /// The depth to walk - i.e. number of parents to traverse - to find the context on which to evaluate a context
-    /// binding. Exclusive with <see cref="ParentType"/> and only valid if the <paramref name="valueType"/> is a type
-    /// that matches <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
-    /// </summary>
-    public uint ParentDepth { get; } = parentDepth;
-
-    /// <summary>
-    /// The type name of the parent to walk up to for a context redirect. Exclusive with <see cref="ParentDepth"/> and
-    /// only valid if the <paramref name="valueType"/> is a type that matches
-    /// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
-    /// </summary>
-    public ReadOnlySpan<char> ParentType { get; } = parentType;
-
-    /// <summary>
-    /// The type of the attribute itself, i.e. how its <see cref="Name"/> should be interpreted.
-    /// </summary>
-    public AttributeType Type { get; } = type;
-
-    /// <summary>
-    /// The literal value text.
-    /// </summary>
-    public ReadOnlySpan<char> Value { get; } = value;
-
-    /// <summary>
-    /// The type of the value expression, defining how the <paramref name="Value"/> should be interpreted.
-    /// </summary>
-    public AttributeValueType ValueType { get; } = valueType;
+    Event,
 }
 
 /// <summary>
@@ -146,8 +50,14 @@ public readonly ref struct Attribute(
 public ref struct DocumentReader(Lexer lexer)
 {
     /// <summary>
-    /// The attribute that was just read, if the previous <see cref="NextAttribute"/> returned <c>true</c>; otherwise,
-    /// an empty attribute.
+    /// The argument that was just read, if the previous <see cref="NextArgument"/> returned <c>true</c>; otherwise, an
+    /// empty argument.
+    /// </summary>
+    public Argument Argument { get; private set; }
+
+    /// <summary>
+    /// The attribute that was just read, if the previous <see cref="NextMember"/> returned
+    /// <see cref="TagMember.Attribute"/>; otherwise, an empty attribute.
     /// </summary>
     public Attribute Attribute { get; private set; }
 
@@ -155,6 +65,12 @@ public ref struct DocumentReader(Lexer lexer)
     /// Whether the end of the document has been reached.
     /// </summary>
     public readonly bool Eof => lexer.Eof;
+
+    /// <summary>
+    /// The event that was just read, if the previous <see cref="NextMember"/> returned <see cref="TagMember.Event"/>;
+    /// otherwise, an empty event.
+    /// </summary>
+    public Event Event { get; private set; }
 
     /// <summary>
     /// The current position in the document content.
@@ -165,7 +81,7 @@ public ref struct DocumentReader(Lexer lexer)
     /// The tag that was just read, if the previous <see cref="NextTag"/> returned <c>true</c>; otherwise, an empty tag.
     /// </summary>
     /// <remarks>
-    /// The tag remains valid as attributes are read; i.e. <see cref="NextAttribute"/> will never change this value.
+    /// The tag remains valid as attributes are read; i.e. <see cref="ReadNextAttribute"/> will never change this value.
     /// </remarks>
     public TagInfo Tag { get; private set; }
 
@@ -180,6 +96,51 @@ public ref struct DocumentReader(Lexer lexer)
         : this(new Lexer(text)) { }
 
     /// <summary>
+    /// Reads the next <see cref="Argument"/>, if the current scope is within an argument list.
+    /// </summary>
+    /// <returns><c>true</c> if an argument was read; <c>false</c> if there are no more arguments in the list or if the
+    /// current position was not within an argument list.</returns>
+    public bool NextArgument()
+    {
+        // Doing this check allows the "read remaining arguments" branch in NextMember to work correctly even if a
+        // caller already read to the end of the argument list.
+        if (lexer.Current.Type != TokenType.ArgumentListEnd)
+        {
+            lexer.ReadRequiredToken(
+                TokenType.Quote,
+                TokenType.ContextParent,
+                TokenType.ContextAncestor,
+                TokenType.Name,
+                TokenType.ArgumentListEnd
+            );
+        }
+        switch (lexer.Current.Type)
+        {
+            case TokenType.ArgumentListEnd:
+                Argument = default;
+                return false;
+            case TokenType.Quote:
+                lexer.ReadRequiredToken(TokenType.Literal);
+                var quotedExpression = lexer.Current.Text;
+                lexer.ReadRequiredToken(TokenType.Quote);
+                lexer.ReadRequiredToken(TokenType.ArgumentSeparator, TokenType.ArgumentListEnd);
+                Argument = new(ArgumentExpressionType.Literal, quotedExpression, 0, []);
+                return true;
+            default:
+                ReadContextRedirectTokens(
+                    AttributeValueType.InputBinding,
+                    TokenType.Name,
+                    out var parentDepth,
+                    out var parentType
+                );
+                var expression = lexer.Current.Text;
+                lexer.ReadRequiredToken(TokenType.ArgumentSeparator, TokenType.ArgumentListEnd);
+                Argument = new(ArgumentExpressionType.ContextBinding, expression, parentDepth, parentType);
+                return true;
+        }
+    }
+
+    /// <summary>
     /// Reads the next <see cref="Attribute"/>. Only valid in a tag scope, i.e. after a call to <see cref="NextTag"/>
     /// returns <c>true</c>.
     /// </summary>
@@ -187,7 +148,7 @@ public ref struct DocumentReader(Lexer lexer)
     /// current element.</returns>
     /// <exception cref="ParserException">Thrown when the current position is not within a tag, or when unparseable
     /// attribute data is encountered.</exception>
-    public bool NextAttribute()
+    public TagMember NextMember()
     {
         if (Tag.Name.Length == 0)
         {
@@ -195,7 +156,18 @@ public ref struct DocumentReader(Lexer lexer)
         }
         if (Tag.IsClosingTag)
         {
-            return false;
+            return TagMember.None;
+        }
+        if (lexer.Current.Type == TokenType.ArgumentListStart || !Argument.Expression.IsEmpty)
+        {
+            while (NextArgument()) { }
+        }
+        if (lexer.Current.Type == TokenType.ArgumentListEnd)
+        {
+            if (Event.EventName.Length > 0)
+            {
+                lexer.ReadRequiredToken(TokenType.Pipe);
+            }
         }
         lexer.ReadRequiredToken(
             TokenType.Name,
@@ -203,6 +175,8 @@ public ref struct DocumentReader(Lexer lexer)
             TokenType.TagEnd,
             TokenType.SelfClosingTagEnd
         );
+        Attribute = default;
+        Event = default;
         var attributeType = AttributeType.Property;
         switch (lexer.Current.Type)
         {
@@ -213,71 +187,32 @@ public ref struct DocumentReader(Lexer lexer)
             case TokenType.Name:
                 var attributeName = lexer.Current.Text;
                 lexer.ReadRequiredToken(TokenType.Assignment);
-                lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingStart);
-                var valueType =
-                    lexer.Current.Type == TokenType.BindingStart
-                        ? AttributeValueType.InputBinding
-                        : AttributeValueType.Literal;
-                lexer.ReadRequiredToken(
-                    TokenType.BindingModifier,
-                    TokenType.BindingParentImmediate,
-                    TokenType.BindingParentIndirect,
-                    TokenType.Literal
-                );
-                if (lexer.Current.Type == TokenType.BindingModifier)
+                lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingStart, TokenType.Pipe);
+                if (lexer.Current.Type == TokenType.Pipe)
                 {
-                    valueType = GetBindingType(lexer.Current.Text);
-                    lexer.ReadRequiredToken(
-                        TokenType.BindingParentImmediate,
-                        TokenType.BindingParentIndirect,
-                        TokenType.Literal
-                    );
-                }
-                uint parentDepth = 0;
-                var parentType = ReadOnlySpan<char>.Empty;
-                if (lexer.Current.Type == TokenType.BindingParentImmediate)
-                {
-                    if (!valueType.IsContextBinding())
+                    if (attributeType != AttributeType.Property)
                     {
                         throw ParserException.ForCurrentToken(
                             lexer,
-                            $"Parent context modifier ({lexer.Current.Text}) is not allowed for attributes with type "
-                                + $"{valueType}; the attribute must be an input, output or 2-way context binding."
+                            $"Invalid event binding specified for attribute with type {attributeType}. "
+                                + "Events are only allowed on normal, undecorated attribute names."
                         );
                     }
-                    do
-                    {
-                        parentDepth++;
-                        lexer.ReadRequiredToken(TokenType.BindingParentImmediate, TokenType.Literal);
-                    } while (lexer.Current.Type == TokenType.BindingParentImmediate);
+                    ReadNextEvent(attributeName);
+                    return TagMember.Event;
                 }
-                else if (lexer.Current.Type == TokenType.BindingParentIndirect)
+                else
                 {
-                    if (!valueType.IsContextBinding())
-                    {
-                        throw ParserException.ForCurrentToken(
-                            lexer,
-                            $"Parent context modifier ({lexer.Current.Text}) is not allowed for attributes with type "
-                                + $"{valueType}; the attribute must be an input, output or 2-way context binding."
-                        );
-                    }
-                    lexer.ReadRequiredToken(TokenType.Literal);
-                    parentType = lexer.Current.Text;
-                    lexer.ReadRequiredToken(TokenType.NameSeparator);
-                    lexer.ReadRequiredToken(TokenType.Literal);
+                    ReadNextAttribute(attributeType, attributeName);
+                    return TagMember.Attribute;
                 }
-                var attributeValue = lexer.Current.Text;
-                // We don't bother trying to enforce that the end token matches the start token because the Lexer will
-                // have already failed to parse the literal if it doesn't match.
-                lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingEnd);
-                Attribute = new(attributeName, attributeType, valueType, attributeValue, parentDepth, parentType);
-                return true;
             case TokenType.SelfClosingTagEnd:
                 wasTagSelfClosed = true;
                 goto default;
             default:
                 Attribute = default;
-                return false;
+                Event = default;
+                return TagMember.None;
         }
     }
 
@@ -288,9 +223,9 @@ public ref struct DocumentReader(Lexer lexer)
     /// <exception cref="ParserException">Thrown when the next tag is malformed or otherwise unparseable.</exception>
     public bool NextTag()
     {
-        while (Attribute.Name.Length > 0)
+        if (!Attribute.Name.IsEmpty || !Event.EventName.IsEmpty)
         {
-            NextAttribute();
+            while (NextMember() != TagMember.None) { }
         }
         if (wasTagSelfClosed)
         {
@@ -333,6 +268,86 @@ public ref struct DocumentReader(Lexer lexer)
             "@" => AttributeValueType.AssetBinding,
             _ => throw new ArgumentException($"Invalid binding modifier: {token}", nameof(token)),
         };
+    }
+
+    private AttributeValueType ReadContextRedirectTokens(
+        AttributeValueType valueType,
+        TokenType expressionTokenType,
+        out uint parentDepth,
+        out ReadOnlySpan<char> parentType
+    )
+    {
+        parentDepth = 0;
+        parentType = [];
+        if (lexer.Current.Type == TokenType.ContextParent)
+        {
+            if (!valueType.IsContextBinding())
+            {
+                throw ParserException.ForCurrentToken(
+                    lexer,
+                    $"Parent context modifier ({lexer.Current.Text}) is not allowed for attributes with type "
+                        + $"{valueType}; the attribute must be an input, output or 2-way context binding."
+                );
+            }
+            do
+            {
+                parentDepth++;
+                lexer.ReadRequiredToken(TokenType.ContextParent, expressionTokenType);
+            } while (lexer.Current.Type == TokenType.ContextParent);
+        }
+        else if (lexer.Current.Type == TokenType.ContextAncestor)
+        {
+            if (!valueType.IsContextBinding())
+            {
+                throw ParserException.ForCurrentToken(
+                    lexer,
+                    $"Parent context modifier ({lexer.Current.Text}) is not allowed for attributes with type "
+                        + $"{valueType}; the attribute must be an input, output or 2-way context binding."
+                );
+            }
+            lexer.ReadRequiredToken(expressionTokenType);
+            parentType = lexer.Current.Text;
+            lexer.ReadRequiredToken(TokenType.NameSeparator);
+            lexer.ReadRequiredToken(expressionTokenType);
+        }
+        return valueType;
+    }
+
+    private void ReadNextAttribute(AttributeType type, ReadOnlySpan<char> name)
+    {
+        var valueType =
+            lexer.Current.Type == TokenType.BindingStart ? AttributeValueType.InputBinding : AttributeValueType.Literal;
+        lexer.ReadRequiredToken(
+            TokenType.BindingModifier,
+            TokenType.ContextParent,
+            TokenType.ContextAncestor,
+            TokenType.Literal
+        );
+        if (lexer.Current.Type == TokenType.BindingModifier)
+        {
+            valueType = GetBindingType(lexer.Current.Text);
+            lexer.ReadRequiredToken(TokenType.ContextParent, TokenType.ContextAncestor, TokenType.Literal);
+        }
+        ReadContextRedirectTokens(valueType, TokenType.Literal, out var parentDepth, out var parentType);
+        var attributeValue = lexer.Current.Text;
+        // We don't bother trying to enforce that the end token matches the start token because the Lexer will
+        // have already failed to parse the literal if it doesn't match.
+        lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingEnd);
+        Attribute = new(name, type, valueType, attributeValue, parentDepth, parentType);
+    }
+
+    private void ReadNextEvent(ReadOnlySpan<char> name)
+    {
+        lexer.ReadRequiredToken(TokenType.ContextParent, TokenType.ContextAncestor, TokenType.Name);
+        ReadContextRedirectTokens(
+            AttributeValueType.InputBinding,
+            TokenType.Name,
+            out var parentDepth,
+            out var parentType
+        );
+        var handlerName = lexer.Current.Text;
+        lexer.ReadRequiredToken(TokenType.ArgumentListStart);
+        Event = new(name, handlerName, parentDepth, parentType);
     }
 }
 

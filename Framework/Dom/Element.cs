@@ -14,6 +14,11 @@ public interface IElement
     /// The parsed list of attributes applied to this instance of the tag.
     /// </summary>
     IReadOnlyList<IAttribute> Attributes { get; }
+
+    /// <summary>
+    /// The parsed list of events applied to this instance of the tag.
+    /// </summary>
+    IReadOnlyList<IEvent> Events { get; }
 }
 
 /// <summary>
@@ -21,7 +26,10 @@ public interface IElement
 /// </summary>
 /// <param name="Tag">The tag name.</param>
 /// <param name="Attributes">The attributes applied to this tag.</param>
-public record SElement(string Tag, IReadOnlyList<SAttribute> Attributes) : IElement
+/// <param name="Events">The events applied to this tag.</param>
+public record SElement(string Tag, IReadOnlyList<SAttribute> Attributes, IReadOnlyList<SEvent> Events) : IElement
 {
     IReadOnlyList<IAttribute> IElement.Attributes => Attributes;
+
+    IReadOnlyList<IEvent> IElement.Events => Events;
 }

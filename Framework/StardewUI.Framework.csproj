@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyName>StardewUI</AssemblyName>
         <RootNamespace>StardewUI.Framework</RootNamespace>
@@ -40,6 +40,7 @@
       <Using Alias="Color" Include="Microsoft.Xna.Framework.Color" />
       <Using Alias="Rectangle" Include="Microsoft.Xna.Framework.Rectangle" />
       <Using Alias="Vector2" Include="Microsoft.Xna.Framework.Vector2" />
+      <InternalsVisibleTo Include="StardewUI.Framework.Tests" />
   </ItemGroup>
 
     <Import Project="..\Core\StardewUI.projitems" Label="Shared" />

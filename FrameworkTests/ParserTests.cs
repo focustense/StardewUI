@@ -5,7 +5,12 @@ namespace StarML.Tests;
 
 public class ParserTests
 {
-    public record TagExpectation(string Name, SAttribute[]? Attributes = null, bool IsClosingTag = false);
+    public record TagExpectation(
+        string Name,
+        SAttribute[]? Attributes = null,
+        SEvent[]? Events = null,
+        bool IsClosingTag = false
+    );
 
     public static TheoryData<string, TagExpectation[]> Data =>
         new()
@@ -106,6 +111,91 @@ public class ParserTests
                     ),
                 ]
             },
+            {
+                @"<button click=|HandleClick(Foo, ""Bar"", ^^Baz, ~Quux.Abc)| />",
+
+                [
+                    new(
+                        "button",
+                        [],
+                        [
+                            new(
+                                "click",
+                                "HandleClick",
+                                [
+                                    new(ArgumentExpressionType.ContextBinding, "Foo"),
+                                    new(ArgumentExpressionType.Literal, "Bar"),
+                                    new(ArgumentExpressionType.ContextBinding, "Baz", new ContextRedirect.Distance(2)),
+                                    new(ArgumentExpressionType.ContextBinding, "Abc", new ContextRedirect.Type("Quux")),
+                                ]
+                            ),
+                        ]
+                    ),
+                ]
+            },
+            {
+                @"<button click=|^^HandleClick(Foo)| />",
+
+                [
+                    new(
+                        "button",
+                        [],
+                        [
+                            new(
+                                "click",
+                                "HandleClick",
+                                [new(ArgumentExpressionType.ContextBinding, "Foo")],
+                                new ContextRedirect.Distance(2)
+                            ),
+                        ]
+                    ),
+                ]
+            },
+            {
+                @"<button click=|~Foo.HandleClick(Bar)| />",
+
+                [
+                    new(
+                        "button",
+                        [],
+                        [
+                            new(
+                                "click",
+                                "HandleClick",
+                                [new(ArgumentExpressionType.ContextBinding, "Bar")],
+                                new ContextRedirect.Type("Foo")
+                            ),
+                        ]
+                    ),
+                ]
+            },
+            // We don't test or need to test this in the Lexer, but it's useful to have one test combining both
+            // attributes and event bindings to make sure the parser doesn't get confused about what the lexer is
+            // emitting.
+            {
+                @"<checkbox layout=""stretch"" change=|HandleChange(""Foo"", Bar)| label-text={{<>Baz}} click=|^HandleClick()| />",
+
+                [
+                    new(
+                        "checkbox",
+                        [
+                            new("layout", "stretch"),
+                            new("label-text", "Baz", ValueType: AttributeValueType.TwoWayBinding),
+                        ],
+                        [
+                            new(
+                                "change",
+                                "HandleChange",
+                                [
+                                    new(ArgumentExpressionType.Literal, "Foo"),
+                                    new(ArgumentExpressionType.ContextBinding, "Bar"),
+                                ]
+                            ),
+                            new("click", "HandleClick", [], new ContextRedirect.Distance(1)),
+                        ]
+                    ),
+                ]
+            },
         };
 
     [Theory]
@@ -118,14 +208,53 @@ public class ParserTests
             Assert.True(reader.NextTag());
             Assert.Equal(tag.Name, reader.Tag.Name.ToString());
             Assert.Equal(tag.IsClosingTag, reader.Tag.IsClosingTag);
-            foreach (var attribute in tag.Attributes ?? [])
+            var attributeEnumerator = (tag.Attributes ?? []).AsEnumerable().GetEnumerator();
+            var eventEnumerator = (tag.Events ?? []).AsEnumerable().GetEnumerator();
+            TagMember memberType;
+            while ((memberType = reader.NextMember()) != TagMember.None)
             {
-                Assert.True(reader.NextAttribute());
-                Assert.Equal(attribute.Name, reader.Attribute.Name.ToString());
-                Assert.Equal(attribute.Value, reader.Attribute.Value.ToString());
-                Assert.Equal(attribute.ValueType, reader.Attribute.ValueType);
+                switch (memberType)
+                {
+                    case TagMember.Attribute:
+                        Assert.True(attributeEnumerator.MoveNext());
+                        var attribute = attributeEnumerator.Current;
+                        Assert.Equal(attribute.Name, reader.Attribute.Name.ToString());
+                        Assert.Equal(attribute.Value, reader.Attribute.Value.ToString());
+                        Assert.Equal(attribute.ValueType, reader.Attribute.ValueType);
+                        Assert.Equal(
+                            attribute.ContextRedirect,
+                            ContextRedirect.FromParts(reader.Attribute.ParentDepth, reader.Attribute.ParentType)
+                        );
+                        break;
+                    case TagMember.Event:
+                        Assert.True(eventEnumerator.MoveNext());
+                        var @event = eventEnumerator.Current;
+                        Assert.Equal(@event.Name, reader.Event.EventName.ToString());
+                        Assert.Equal(@event.HandlerName, reader.Event.HandlerName.ToString());
+                        Assert.Equal(
+                            @event.ContextRedirect,
+                            ContextRedirect.FromParts(reader.Event.ParentDepth, reader.Event.ParentType)
+                        );
+                        var argumentEnumerator = @event.Arguments.GetEnumerator();
+                        while (true)
+                        {
+                            bool hasExpectedArgument = argumentEnumerator.MoveNext();
+                            bool hasActualArgument = reader.NextArgument();
+                            Assert.Equal(hasExpectedArgument, hasActualArgument);
+                            if (!hasExpectedArgument)
+                            {
+                                break;
+                            }
+                            Assert.Equal(argumentEnumerator.Current.Type, reader.Argument.ExpressionType);
+                            Assert.Equal(argumentEnumerator.Current.Expression, reader.Argument.Expression.ToString());
+                            Assert.Equal(
+                                argumentEnumerator.Current.ContextRedirect,
+                                ContextRedirect.FromParts(reader.Argument.ParentDepth, reader.Argument.ParentType)
+                            );
+                        }
+                        break;
+                }
             }
-            Assert.False(reader.NextAttribute());
         }
         Assert.True(reader.Eof);
     }

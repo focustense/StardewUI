@@ -42,6 +42,27 @@ public interface IAttribute
 public abstract record ContextRedirect
 {
     /// <summary>
+    /// Creates an optional <see cref="ContextRedirect"/> using the constituent parts parsed from a grammar element such
+    /// as an <see cref="Grammar.Attribute"/>.
+    /// </summary>
+    /// <param name="parentDepth">Number of parents to traverse.</param>
+    /// <param name="parentType">The <see cref="Type.Name"/> of the target ancestor's type.</param>
+    /// <returns>A new <see cref="ContextRedirect"/> that performs the requested redirect, or <c>null</c> if the
+    /// arguments would cause no redirection to occur.</returns>
+    public static ContextRedirect? FromParts(uint parentDepth, ReadOnlySpan<char> parentType)
+    {
+        if (!parentType.IsEmpty)
+        {
+            return new Type(parentType.ToString());
+        }
+        if (parentDepth > 0)
+        {
+            return new Distance(parentDepth);
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Redirects to an ancestor context by walking up a specified number of levels.
     /// </summary>
     /// <param name="Depth">Number of parents to traverse.</param>
@@ -67,9 +88,8 @@ public abstract record ContextRedirect
 /// interpreted.</param>
 /// <param name="ValueType">The type of the value expression, defining how the <paramref name="value"/> should be
 /// interpreted.</param>
-/// <param name="ParentDepth">The depth to walk - i.e. number of parents to traverse - to find the context on which to
-/// evaluate a context binding. Only valid if the <paramref name="valueType"/> is a type that matches
-/// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.</param>
+/// <param name="ContextRedirect">Specifies the redirect to use for a context binding, if applicable and if the
+/// <see cref="ValueType"/> is one of the context binding types.</param>
 /// </summary>
 public record SAttribute(
     string Name,
@@ -89,19 +109,6 @@ public record SAttribute(
             attribute.Value.ToString(),
             attribute.Type,
             attribute.ValueType,
-            GetContextRedirect(attribute)
+            ContextRedirect.FromParts(attribute.ParentDepth, attribute.ParentType)
         ) { }
-
-    private static ContextRedirect? GetContextRedirect(Grammar.Attribute attribute)
-    {
-        if (!attribute.ParentType.IsEmpty)
-        {
-            return new ContextRedirect.Type(attribute.ParentType.ToString());
-        }
-        if (attribute.ParentDepth > 0)
-        {
-            return new ContextRedirect.Distance(attribute.ParentDepth);
-        }
-        return null;
-    }
 }

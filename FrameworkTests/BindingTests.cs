@@ -88,7 +88,8 @@ public partial class BindingTests
                 new SAttribute("max-lines", "1"),
                 new SAttribute("color", "Color", ValueType: AttributeValueType.InputBinding),
                 new SAttribute("text", "Name", ValueType: AttributeValueType.InputBinding),
-            ]
+            ],
+            []
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
@@ -122,7 +123,8 @@ public partial class BindingTests
                 new SAttribute("layout", "200px 20px"),
                 new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.OutputBinding),
                 new SAttribute("outer-size", "Size", ValueType: AttributeValueType.OutputBinding),
-            ]
+            ],
+            []
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = false, Size = Vector2.Zero };
@@ -151,7 +153,8 @@ public partial class BindingTests
     {
         var element = new SElement(
             "checkbox",
-            [new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.TwoWayBinding)]
+            [new SAttribute("is-checked", "Checked", ValueType: AttributeValueType.TwoWayBinding)],
+            []
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = true };
@@ -188,7 +191,8 @@ public partial class BindingTests
                 new SAttribute("orientation", "vertical"),
                 new SAttribute("horizontal-content-alignment", "middle"),
                 new SAttribute("vertical-content-alignment", "end"),
-            ]
+            ],
+            []
         );
         var child1 = new SElement(
             "image",
@@ -197,14 +201,16 @@ public partial class BindingTests
                 //new SAttribute("width", AttributeValueType.Literal, "400"),
                 new SAttribute("scale", "3.0"),
                 new SAttribute("sprite", "TestSprite", ValueType: AttributeValueType.AssetBinding),
-            ]
+            ],
+            []
         );
         var child2 = new SElement(
             "label",
             [
                 new SAttribute("max-lines", "2"),
                 new SAttribute("text", "HeaderText", ValueType: AttributeValueType.InputBinding),
-            ]
+            ],
+            []
         );
         var tree = new ViewNode(
             valueSourceFactory,

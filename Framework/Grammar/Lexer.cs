@@ -82,12 +82,32 @@ public enum TokenType
     /// <summary>
     /// A caret (<c>^</c>) used in a binding expression, indicating a walk up to the parent context.
     /// </summary>
-    BindingParentImmediate,
+    ContextParent,
 
     /// <summary>
     /// A tilde (<c>~</c>) used in a binding expression, indicating traversal up to a parent with a named type.
     /// </summary>
-    BindingParentIndirect,
+    ContextAncestor,
+
+    /// <summary>
+    /// The pipe (<c>|</c>) character, which is used to start and end event bindings.
+    /// </summary>
+    Pipe,
+
+    /// <summary>
+    /// The left parenthesis (<c>(</c>) character, used to start an argument list.
+    /// </summary>
+    ArgumentListStart,
+
+    /// <summary>
+    /// The right parenthesis (<c>(</c>) character, used to end an argument list.
+    /// </summary>
+    ArgumentListEnd,
+
+    /// <summary>
+    /// The comma (<c>,</c>) character, used to separator arguments in an argument list.
+    /// </summary>
+    ArgumentSeparator,
 }
 
 /// <summary>
@@ -124,6 +144,8 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         Default,
         Quoted,
         Binding,
+        Event,
+        ArgumentList,
     }
 
     readonly record struct TokenInfo(TokenType Type, int Length);
@@ -149,6 +171,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
 
     private Mode mode;
     private bool nameSeparatorEnabled;
+    private Mode parentMode;
     private int position;
     private ReadOnlySpan<char> text = text;
 
@@ -182,7 +205,16 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         switch (tokenType)
         {
             case TokenType.Quote:
-                mode = mode == Mode.Quoted ? Mode.Default : Mode.Quoted;
+                if (mode == Mode.Quoted)
+                {
+                    mode = parentMode;
+                    parentMode = Mode.Default;
+                }
+                else
+                {
+                    parentMode = mode;
+                    mode = Mode.Quoted;
+                }
                 break;
             case TokenType.BindingStart:
                 mode = Mode.Binding;
@@ -191,8 +223,21 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 mode = Mode.Default;
                 nameSeparatorEnabled = false;
                 break;
-            case TokenType.BindingParentIndirect when mode == Mode.Binding:
+            case TokenType.ContextAncestor when mode == Mode.Binding || mode == Mode.ArgumentList:
                 nameSeparatorEnabled = true;
+                break;
+            case TokenType.Pipe:
+                mode = mode == Mode.Event ? Mode.Default : Mode.Event;
+                break;
+            case TokenType.ArgumentListStart:
+                mode = Mode.ArgumentList;
+                break;
+            case TokenType.ArgumentSeparator:
+                nameSeparatorEnabled = false;
+                break;
+            case TokenType.ArgumentListEnd:
+                nameSeparatorEnabled = false;
+                mode = Mode.Event;
                 break;
         }
         Current = new(tokenType, text[..tokenLength]);
@@ -267,14 +312,33 @@ public ref struct Lexer(ReadOnlySpan<char> text)
             Mode.Binding => text switch
             {
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
-                ['^', ..] => new(TokenType.BindingParentImmediate, 1),
-                ['~', ..] => new(TokenType.BindingParentIndirect, 1),
+                ['^', ..] => new(TokenType.ContextParent, 1),
+                ['~', ..] => new(TokenType.ContextAncestor, 1),
                 ['.', ..] => new(TokenType.NameSeparator, 1),
                 ['<', '>', ..] => new(TokenType.BindingModifier, 2),
                 ['<', ..] => new(TokenType.BindingModifier, 1),
                 ['>', ..] => new(TokenType.BindingModifier, 1),
                 ['@', ..] => new(TokenType.BindingModifier, 1),
                 _ => nameSeparatorEnabled ? ReadLiteralStringUntil("}}", ".") : ReadLiteralStringUntil("}}"),
+            },
+            Mode.Event => text switch
+            {
+                ['|', ..] => new(TokenType.Pipe, 1),
+                ['(', ..] => new(TokenType.ArgumentListStart, 1),
+                ['^', ..] => new(TokenType.ContextParent, 1),
+                ['~', ..] => new(TokenType.ContextAncestor, 1),
+                ['.', ..] => new(TokenType.NameSeparator, 1),
+                _ => ReadName(),
+            },
+            Mode.ArgumentList => text switch
+            {
+                [')', ..] => new(TokenType.ArgumentListEnd, 1),
+                ['^', ..] => new(TokenType.ContextParent, 1),
+                ['~', ..] => new(TokenType.ContextAncestor, 1),
+                ['.', ..] => new(TokenType.NameSeparator, 1),
+                [',', ..] => new(TokenType.ArgumentSeparator, 1),
+                ['"', ..] => new(TokenType.Quote, 1),
+                _ => ReadName(),
             },
             _ => text switch
             {
@@ -287,6 +351,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['{', '{', ..] => new(TokenType.BindingStart, 2),
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
                 ['*', ..] => new(TokenType.AttributeModifier, 1),
+                ['|', ..] => new(TokenType.Pipe, 1),
                 _ => ReadName(),
             },
         };
@@ -319,16 +384,12 @@ public ref struct Lexer(ReadOnlySpan<char> text)
 
     private readonly TokenInfo ReadName()
     {
-        if (text.Length == 0)
-        {
-            throw LexerException("Invalid opening/closing tag at end of text.");
-        }
         int length = 0;
         foreach (var rune in text.EnumerateRunes())
         {
             if (length == 0 && !Rune.IsLetter(rune))
             {
-                throw LexerException($"Invalid tag name; must start with a letter, but found {rune}.");
+                throw LexerException($"Invalid name; must start with a letter, but found {rune}.");
             }
             if (!IsValidForName(rune))
             {

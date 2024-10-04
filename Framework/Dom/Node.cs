@@ -46,10 +46,29 @@ public record SNode(SElement Element, IReadOnlyList<SNode> ChildNodes)
     {
         int tagStartPosition = reader.Position;
         var attributes = new List<SAttribute>();
-        while (reader.NextAttribute())
+        var events = new List<SEvent>();
+        while (true)
         {
-            attributes.Add(new(reader.Attribute));
+            switch (reader.NextMember())
+            {
+                case TagMember.Attribute:
+                    attributes.Add(new(reader.Attribute));
+                    break;
+                case TagMember.Event:
+                    var arguments = new List<SArgument>();
+                    while (reader.NextArgument())
+                    {
+                        arguments.Add(new(reader.Argument));
+                    }
+                    events.Add(new(reader.Event, arguments));
+                    break;
+                default:
+                    // Yes, we have to use a goto. A local function would be cleaner, but isn't allowed with the use of
+                    // ref struct param.
+                    goto TagFinished;
+            }
         }
+        TagFinished:
         // In most documents, the majority of nodes won't have children, so try to avoid allocating the list at all
         // until we know we need it.
         List<SNode>? childNodes = null;
@@ -66,7 +85,7 @@ public record SNode(SElement Element, IReadOnlyList<SNode> ChildNodes)
                         tagEndPosition
                     );
                 }
-                return new(new(openingTagName.ToString(), attributes), childNodes ?? EmptyChildren);
+                return new(new(openingTagName.ToString(), attributes, events), childNodes ?? EmptyChildren);
             }
             else
             {
