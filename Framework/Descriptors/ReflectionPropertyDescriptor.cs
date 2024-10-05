@@ -7,6 +7,7 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 public static class ReflectionPropertyDescriptor
 {
+    private static readonly Dictionary<PropertyInfo, IPropertyDescriptor> cache = [];
     private static readonly Type reflectionPropertyType = typeof(ReflectionPropertyDescriptor<,>);
 
     /// <summary>
@@ -19,11 +20,17 @@ public static class ReflectionPropertyDescriptor
     /// </returns>
     public static IPropertyDescriptor FromPropertyInfo(PropertyInfo propertyInfo)
     {
-        var genericType = reflectionPropertyType.MakeGenericType(
-            propertyInfo.DeclaringType!,
-            propertyInfo.PropertyType
-        );
-        return (IPropertyDescriptor)Activator.CreateInstance(genericType, propertyInfo)!;
+        if (!cache.TryGetValue(propertyInfo, out var descriptor))
+        {
+            var genericType = reflectionPropertyType.MakeGenericType(
+                propertyInfo.DeclaringType!,
+                propertyInfo.PropertyType
+            );
+            descriptor = (IPropertyDescriptor)
+                genericType.GetConstructor([typeof(PropertyInfo)])!.Invoke([propertyInfo]);
+            cache.Add(propertyInfo, descriptor);
+        }
+        return descriptor;
     }
 }
 
