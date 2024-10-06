@@ -20,25 +20,17 @@ internal sealed class ModEntry : Mod
         I18n.Init(helper.Translation);
         UI.Initialize(helper, Monitor);
         config = helper.ReadConfig<ModConfig>();
-        viewAssetPrefix = $"Mods/{ModManifest.UniqueID}/Views/";
+        viewAssetPrefix = $"Mods/{ModManifest.UniqueID}/Views";
 
-        helper.Events.Content.AssetRequested += Content_AssetRequested;
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
-    }
-
-    private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)
-    {
-        if (e.NameWithoutLocale.StartsWith(viewAssetPrefix))
-        {
-            var relativePath = e.NameWithoutLocale.Name[viewAssetPrefix.Length..];
-            e.LoadFromModFile<object>($"views/{relativePath}.sml", AssetLoadPriority.Exclusive);
-        }
     }
 
     private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         viewEngine = Helper.ModRegistry.GetApi<IViewEngine>("focustense.StardewUI")!;
+        viewEngine.RegisterSprites($"Mods/{ModManifest.UniqueID}/Sprites", "assets/sprites");
+        viewEngine.RegisterViews(viewAssetPrefix, "assets/views");
     }
 
     private void Input_ButtonPressed(object? sender, ButtonPressedEventArgs e)
@@ -52,7 +44,7 @@ internal sealed class ModEntry : Mod
                 HeaderText = "Example Menu Title",
                 ItemData = ItemRegistry.GetData("(O)117"),
             };
-            Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}TestView", context);
+            Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/TestView", context);
         }
     }
 }

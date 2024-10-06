@@ -5,8 +5,11 @@
             <label font="dialogue" text="Hello, world!" margin="0,0,0,8" />
             <label text="This is an example paragraph." />
             <panel margin="0,8,0,0" horizontal-content-alignment="middle" vertical-content-alignment="middle">
-                <image layout="stretch" fit="stretch" sprite={{@Mods/StardewUI/Sprites/MenuSlotInset}} />
-                <image layout="64px 64px" margin="8" sprite={{ItemData}} />
+                <image layout="stretch" fit="stretch" sprite={{@Mods/focustense.StardewUITest/Sprites/Cursors:SpecialBorder}} />
+                <image layout="64px 64px" margin="12" sprite={{ItemData}} />
+                <panel layout="stretch" horizontal-content-alignment="end">
+                    <image layout="27px 27px" margin="0,8,8,0" sprite={{@Mods/focustense.StardewUITest/Sprites/Status:Checked}} />
+                </panel>
             </panel>
         </lane>
     </frame>

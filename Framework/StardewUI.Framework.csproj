@@ -24,6 +24,7 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
         <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1">
             <PrivateAssets>all</PrivateAssets>

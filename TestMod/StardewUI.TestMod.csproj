@@ -14,14 +14,32 @@
 	<PropertyGroup>
 		<ModFolderName>StardewUITest</ModFolderName>
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="views\**" />
+	  <EmbeddedResource Remove="views\**" />
+	  <None Remove="views\**" />
+	</ItemGroup>
 
     <ItemGroup>
+      <None Remove="assets\sprites\cursors.json" />
+      <None Remove="assets\sprites\status.json" />
+      <None Remove="assets\sprites\status.png" />
+      <None Remove="assets\views\TestView.sml" />
       <None Remove="i18n\default.json" />
-      <None Remove="views\TestView.sml" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="views\TestView.sml">
+      <Content Include="assets\sprites\cursors.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\sprites\status.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\sprites\status.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\views\TestView.sml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

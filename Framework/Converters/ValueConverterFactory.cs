@@ -84,10 +84,11 @@ public class ValueConverterFactory : IValueConverterFactory
 
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
-        TryRegister(new EdgesConverter());
+        TryRegister<string, Edges>(Edges.Parse);
         TryRegister(new LayoutConverter());
         TryRegister(new NamedFontConverter());
         TryRegister(new PointConverter());
+        TryRegister(new RectangleConverter());
         TryRegister(new Vector2Converter());
 
         // Several converters for just the Sprite type, as it can be surprisingly complex and users won't have the exact

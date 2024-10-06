@@ -43,7 +43,19 @@ public record SliceSettings(
     SliceCenterPosition CenterYPosition = SliceCenterPosition.Start,
     float Scale = 1,
     bool EdgesOnly = false
-);
+)
+{
+    /// <summary>
+    /// Creates a copy of this <see cref="SliceSettings"/> with a different scale.
+    /// </summary>
+    /// <param name="newScale">The scale to use.</param>
+    /// <returns>A copy of this <see cref="SliceSettings"/> with its <see cref="Scale"/> set to
+    /// <paramref name="newScale"/>.</returns>
+    public SliceSettings WithScale(float newScale)
+    {
+        return new(CenterX, CenterXPosition, CenterY, CenterYPosition, newScale, EdgesOnly);
+    }
+}
 
 /// <summary>
 /// Specifies which side the center position of a <see cref="SliceSettings"/> instance is on.

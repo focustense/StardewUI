@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
 
 namespace StardewUI;
 
@@ -30,6 +31,47 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
     /// Gets the total value for all vertical edges (<see cref="Top"/> + <see cref="Bottom"/>).
     /// </summary>
     public int Vertical => Top + Bottom;
+
+    /// <summary>
+    /// Parses an <see cref="Edges"/> value from a comma-separated string representation.
+    /// </summary>
+    /// <remarks>
+    /// The behavior depends on the number of comma-separated tokens in the string, equivalent to the constructor
+    /// overload with that number of parameters:
+    /// <list type="bullet">
+    /// <item>A single value will give all edges the same length</item>
+    /// <item>Two values will set the horizontal (left/right) and vertical (top/bottom) lengths</item>
+    /// <item>Four values will set each length individually</item>
+    /// <item>Any other format will throw <see cref="FormatException"/>.</item>
+    /// </list>
+    /// </remarks>
+    /// <param name="value">The formatted edges to parse.</param>
+    /// <returns>The parsed <see cref="Edges"/>.</returns>
+    /// <exception cref="FormatException">Thrown when the <paramref name="value"/> is not a valid string representation
+    /// for <see cref="Edges"/>.</exception>
+    public static Edges Parse(string value)
+    {
+        var valueAsSpan = value.AsSpan();
+        // We use generic uninformative names for these variables because they mean different things depending on how
+        // many of them appear in the string.
+        int edge1 = ReadNextEdge(ref valueAsSpan);
+        if (valueAsSpan.IsEmpty)
+        {
+            return new(edge1); // Same length for all edges
+        }
+        int edge2 = ReadNextEdge(ref valueAsSpan);
+        if (valueAsSpan.IsEmpty)
+        {
+            return new(edge1, edge2); // Horizontal and vertical lengths
+        }
+        int edge3 = ReadNextEdge(ref valueAsSpan);
+        int edge4 = ReadNextEdge(ref valueAsSpan);
+        if (!valueAsSpan.IsEmpty)
+        {
+            throw new FormatException($"Too many edges specified in string '{value}' (cannot have more than 4).");
+        }
+        return new(edge1, edge2, edge3, edge4);
+    }
 
     /// <summary>
     /// Initializes a new <see cref="Edges"/> with all edges set to the same value.
@@ -93,6 +135,11 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
         };
     }
 
+    public override string ToString()
+    {
+        return $"{Left}, {Top}, {Right}, {Bottom}";
+    }
+
     /// <summary>
     /// Gets a copy of this instance with only the vertical edges set (horizontal edges zeroed out).
     /// </summary>
@@ -139,5 +186,14 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
             (int)MathF.Round(value.Right * scale),
             (int)MathF.Round(value.Bottom * scale)
         );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int ReadNextEdge(ref ReadOnlySpan<char> remaining)
+    {
+        int nextSeparatorIndex = remaining.IndexOf(',');
+        var value = nextSeparatorIndex >= 0 ? int.Parse(remaining[0..nextSeparatorIndex]) : int.Parse(remaining);
+        remaining = nextSeparatorIndex >= 0 ? remaining[(nextSeparatorIndex + 1)..] : [];
+        return value;
     }
 }
