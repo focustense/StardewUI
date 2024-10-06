@@ -16,6 +16,11 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     private const int TRACK_HEIGHT = 24;
 
     /// <summary>
+    /// Event raised when the <see cref="Value"/> changes.
+    /// </summary>
+    public event EventHandler<EventArgs>? ValueChange;
+
+    /// <summary>
     /// The interval of which <see cref="Value"/> should be a multiple. Affects which values will be hit while dragging.
     /// </summary>
     public float Interval
@@ -43,6 +48,10 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
             {
                 return;
             }
+            if (Min > value)
+            {
+                Min = value;
+            }
             max = value;
             OnPropertyChanged(nameof(Max));
             if (Value > max)
@@ -63,6 +72,10 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
             if (value == min)
             {
                 return;
+            }
+            if (Max < value)
+            {
+                Max = value;
             }
             min = value;
             OnPropertyChanged(nameof(Min));
@@ -98,9 +111,16 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         get => value;
         set
         {
-            this.value = value;
+            var clamped = Math.Clamp(value, min, max);
+            if (clamped == this.value)
+            {
+                return;
+            }
+            this.value = clamped;
             UpdatePosition();
             UpdateValueLabel();
+            ValueChange?.Invoke(this, EventArgs.Empty);
+            OnPropertyChanged(nameof(Value));
         }
     }
 
@@ -299,6 +319,10 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
 
     private void UpdatePosition()
     {
+        if (sliderPanel is null)
+        {
+            return;
+        }
         if (Max == Min)
         {
             thumbImage.Margin = new(0);

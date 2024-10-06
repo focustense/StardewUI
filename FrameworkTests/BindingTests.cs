@@ -1312,6 +1312,32 @@ public partial class BindingTests
         Assert.Equal([("image1", 16), ("image2", 23), ("button", 30)], model.Results);
     }
 
+    partial class NoParamsEventTestModel : INotifyPropertyChanged
+    {
+        public float PreviousMoney { get; private set; }
+
+        [Notify]
+        private float money;
+
+        public void HandleChange()
+        {
+            PreviousMoney = Money;
+        }
+    }
+
+    [Fact]
+    public void WhenEventBoundWithNoParameters_InvokesWithReceiverOnly()
+    {
+        string markup = @"<slider min=""50"" max=""200"" value={{<>Money}} value-change=|HandleChange()| />";
+        var model = new NoParamsEventTestModel() { Money = 100 };
+        var tree = BuildTreeFromMarkup(markup, model);
+        var slider = Assert.IsType<Slider>(tree.Views.SingleOrDefault());
+
+        slider.Value = 150;
+
+        Assert.Equal(100, model.PreviousMoney);
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
         var viewNodeFactory = new ViewNodeFactory(
