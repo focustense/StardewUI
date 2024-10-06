@@ -59,7 +59,7 @@ public class DropDownList<T> : WrapperView
     /// <summary>
     /// The options available to select.
     /// </summary>
-    public IList<T> Options
+    public IReadOnlyList<T> Options
     {
         get => options;
         set
@@ -248,6 +248,10 @@ public class DropDownList<T> : WrapperView
 
     private void UpdateSelectedOption()
     {
+        if (selectedOptionLabel is null)
+        {
+            return;
+        }
         selectedOptionLabel.Text = SelectedOption is not null ? optionFormat(SelectedOption) : "";
     }
 

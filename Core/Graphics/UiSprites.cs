@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using Microsoft.Xna.Framework;
+using StardewValley;
 using StardewValley.Menus;
 
 namespace StardewUI;
@@ -8,6 +9,11 @@ namespace StardewUI;
 /// </summary>
 public static class UiSprites
 {
+    private static readonly IReadOnlyList<Rectangle> digitRects = Enumerable
+        .Range(0, 10)
+        .Select(i => new Rectangle(368 + 5 * i, 56, 5, 7))
+        .ToList();
+
     /// <summary>
     /// Background for the a banner or "scroll" style text, often used for menu/dialogue titles.
     /// </summary>
@@ -64,6 +70,12 @@ public static class UiSprites
     /// <see cref="MenuBorder"/>.
     /// </summary>
     public static Sprite ControlBorder => new(Game1.menuTexture, SourceRect: new(0, 256, 60, 60), FixedEdges: new(16));
+
+    /// <summary>
+    /// List of sprites for the outlined "tiny digits" 0-9, in that order.
+    /// </summary>
+    public static IReadOnlyList<Sprite> Digits =>
+        digitRects.Select(rect => new Sprite(Game1.mouseCursors, rect)).ToList();
 
     /// <summary>
     /// Background of a drop-down menu.

@@ -20,7 +20,7 @@ namespace StardewUI;
 /// (element 0 for digit '0', element 4 for digit '4', etc.). This must have exactly 10 elements.</param>
 /// <param name="baseScale">Scale to apply to the base dimensions of the <paramref name="digitSprites"/> before any
 /// extra <see cref="Scale"/>.</param>
-public class TinyNumberLabel(IReadOnlyList<Sprite> digitSprites, float baseScale) : View
+public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float baseScale = 2.0f) : View
 {
     /// <summary>
     /// The number to display.
@@ -58,13 +58,14 @@ public class TinyNumberLabel(IReadOnlyList<Sprite> digitSprites, float baseScale
     }
 
     private readonly float baseScale = baseScale;
-    private readonly IReadOnlyList<Sprite> digitSprites =
-        digitSprites.Count == 10
+    private readonly IReadOnlyList<Sprite> digitSprites = digitSprites is not null
+        ? digitSprites.Count == 10
             ? digitSprites
             : throw new ArgumentException(
                 $"Digit sprite list has the wrong number of sprites (expected 10, got {digitSprites.Count}).",
                 nameof(digitSprites)
-            );
+            )
+        : UiSprites.Digits;
     private readonly DirtyTracker<int> number = new(0);
     private readonly DirtyTracker<float> scale = new(1.0f);
 

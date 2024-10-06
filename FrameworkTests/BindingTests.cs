@@ -303,6 +303,32 @@ public partial class BindingTests
         Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
     }
 
+    partial class DropDownTestModel : INotifyPropertyChanged
+    {
+        public Func<object, string> FormatItem { get; } = item => $"Item {item}";
+
+        [Notify]
+        private List<object> items = [];
+
+        [Notify]
+        private object selectedItem = 3;
+    }
+
+    [Fact]
+    public void WhenModelIsConvertible_BindsWithConversion()
+    {
+        string markup =
+            @"<dropdownlist options={{Items}} selected-option={{<>SelectedItem}} option-format={{FormatItem}} />";
+        var model = new DropDownTestModel { Items = [3, 7, 15] };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var dropdown = Assert.IsType<DropDownList<object>>(tree.Views.SingleOrDefault());
+        dropdown.SelectedIndex = 1;
+        tree.Update();
+
+        Assert.Equal(7, model.SelectedItem);
+    }
+
     partial class ConditionalBindingTestModel : INotifyPropertyChanged
     {
         [Notify]

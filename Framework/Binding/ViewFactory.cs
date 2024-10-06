@@ -31,8 +31,7 @@ public class ViewFactory : IViewFactory
             "banner" => new Banner(),
             "button" => new Button(),
             "checkbox" => new CheckBox(),
-            // TODO: Can we handle drop-down lists of different types by looking at the attributes?
-            "dropdownlist" => new DropDownList<string>(),
+            "dropdownlist" => new DropDownList<object>(),
             "expander" => new Expander(),
             "frame" => new Frame(),
             "grid" => new Grid(),
@@ -45,7 +44,7 @@ public class ViewFactory : IViewFactory
             "slider" => new Slider(),
             "spacer" => new Spacer(),
             "textinput" => new TextInput(),
-            //"tinynumberlabel" => new TinyNumberLabel(),
+            "tinynumberlabel" => new TinyNumberLabel(),
             _ => throw new ArgumentException($"Unsupported view type: {tagName}", nameof(tagName)),
         };
     }
