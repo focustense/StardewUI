@@ -128,8 +128,6 @@ public class AttributeBindingFactory(
         }
     }
 
-    private static readonly Rune DASH = new('-');
-
     private readonly Dictionary<(Type, string, Type), LocalBindingFactory> bindingFactoryCache = [];
     private readonly Dictionary<(Type, Type), MethodInfo> genericMethodCache = [];
 
@@ -139,7 +137,7 @@ public class AttributeBindingFactory(
         BindingContext? context
     )
     {
-        var propertyName = GetPropertyName(attribute.Name);
+        var propertyName = attribute.Name.AsSpan().ToUpperCamelCase();
         var property = viewDescriptor.GetProperty(propertyName);
         // For literal attributes and asset bindings, the source type will always be the same - either a string, or the
         // target property type, respectively. However, for a context binding, the source type belongs to the context
@@ -229,29 +227,5 @@ public class AttributeBindingFactory(
             Grammar.AttributeValueType.TwoWayBinding => BindingDirection.InOut,
             _ => BindingDirection.In,
         };
-    }
-
-    private static string GetPropertyName(ReadOnlySpan<char> attributeName)
-    {
-        var sb = new StringBuilder(attributeName.Length);
-        bool capitalizeNext = true;
-        foreach (var rune in attributeName.EnumerateRunes())
-        {
-            if (rune == DASH)
-            {
-                capitalizeNext = true;
-                continue;
-            }
-            if (capitalizeNext)
-            {
-                sb.Append(Rune.ToUpper(rune, CultureInfo.CurrentUICulture));
-                capitalizeNext = false;
-            }
-            else
-            {
-                sb.Append(rune);
-            }
-        }
-        return sb.ToString();
     }
 }

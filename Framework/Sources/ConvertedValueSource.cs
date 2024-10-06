@@ -20,21 +20,37 @@ public static class ConvertedValueSource
     /// <summary>
     /// Creates a converted source with a specified output type, using an original source with unknown value type.
     /// </summary>
+    /// <param name="original">The original value source.</param>
+    /// <param name="destinationType">The type to convert to.</param>
+    /// <param name="converterFactory">Factory for creating instances of
+    /// <see cref="IValueConverter{TSource, TDestination}"/>.</param>
+    public static IValueSource Create(
+        IValueSource original,
+        Type destinationType,
+        IValueConverterFactory converterFactory
+    )
+    {
+        var typeKey = (original.ValueType, destinationType);
+        if (!creationCache.TryGetValue(typeKey, out var creator))
+        {
+            creator = createInternalMethod
+                .MakeGenericMethod(original.ValueType, destinationType)
+                .CreateDelegate<CreateValueSourceDelegate>();
+            creationCache.Add(typeKey, creator);
+        }
+        return creator(original, converterFactory);
+    }
+
+    /// <summary>
+    /// Creates a converted source with a specified output type, using an original source with unknown value type.
+    /// </summary>
     /// <typeparam name="T">The converted value type.</typeparam>
     /// <param name="original">The original value source.</param>
     /// <param name="converterFactory">Factory for creating instances of
     /// <see cref="IValueConverter{TSource, TDestination}"/>.</param>
     public static IValueSource<T> Create<T>(IValueSource original, IValueConverterFactory converterFactory)
     {
-        var typeKey = (original.ValueType, typeof(T));
-        if (!creationCache.TryGetValue(typeKey, out var creator))
-        {
-            creator = createInternalMethod
-                .MakeGenericMethod(original.ValueType, typeof(T))
-                .CreateDelegate<CreateValueSourceDelegate>();
-            creationCache.Add(typeKey, creator);
-        }
-        return (IValueSource<T>)creator(original, converterFactory);
+        return (IValueSource<T>)Create(original, typeof(T), converterFactory);
     }
 
     private static IValueSource CreateInternal<TSource, T>(

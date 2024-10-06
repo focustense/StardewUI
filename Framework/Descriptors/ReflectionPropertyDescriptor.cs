@@ -42,6 +42,7 @@ public static class ReflectionPropertyDescriptor
 public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValue>
 {
     private readonly Func<T, TValue>? getter;
+    private readonly PropertyInfo propertyInfo;
     private readonly Action<T, TValue>? setter;
 
     public bool CanRead => getter is not null;
@@ -50,9 +51,9 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
 
     public Type DeclaringType => typeof(T);
 
-    public Type ValueType { get; }
+    public Type ValueType => propertyInfo.PropertyType;
 
-    public string Name { get; }
+    public string Name => propertyInfo.Name;
 
     /// <summary>
     /// Initializes a new <see cref="ReflectionPropertyDescriptor"/> from reflected property info.
@@ -78,8 +79,7 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
                 nameof(propertyInfo)
             );
         }
-        Name = propertyInfo.Name;
-        ValueType = propertyInfo.PropertyType;
+        this.propertyInfo = propertyInfo;
         if (propertyInfo.GetGetMethod() is MethodInfo getMethod)
         {
             getter = getMethod.CreateDelegate<Func<T, TValue>>();
@@ -88,6 +88,16 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
         {
             setter = setMethod.CreateDelegate<Action<T, TValue>>();
         }
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is ReflectionPropertyDescriptor<T, TValue> other && other.propertyInfo.Equals(propertyInfo);
+    }
+
+    public override int GetHashCode()
+    {
+        return propertyInfo.GetHashCode();
     }
 
     public TValue GetValue(object source)

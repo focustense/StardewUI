@@ -9,7 +9,12 @@ namespace StardewUI.Framework.Binding;
 /// </summary>
 /// <param name="attributeBindingFactory">Factory for creating the <see cref="IAttributeBinding"/> instances used to
 /// bind individual attributes of the view.</param>
-public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFactory) : IViewBinder
+/// <param name="eventBindingFactory">Factory for creating the <see cref="IEventBinding"/> instances used to bind events
+/// raised by the view.</param>
+public class ReflectionViewBinder(
+    IAttributeBindingFactory attributeBindingFactory,
+    IEventBindingFactory eventBindingFactory
+) : IViewBinder
 {
     public IViewBinding Bind(IView view, IElement element, BindingContext? context)
     {
@@ -29,7 +34,12 @@ public class ReflectionViewBinder(IAttributeBindingFactory attributeBindingFacto
                 attributeBinding.UpdateView(view, force: true);
             }
         }
-        var viewBinding = new ViewBinding(view, attributeBindings);
+        var eventBindings = element
+            .Events.Select(@event => eventBindingFactory.TryCreateBinding(view, viewDescriptor, @event, context))
+            .Where(binding => binding is not null)
+            .Cast<IEventBinding>()
+            .ToList();
+        var viewBinding = new ViewBinding(view, attributeBindings, eventBindings);
         return viewBinding;
     }
 

@@ -13,6 +13,14 @@ namespace StardewUI.Framework.Sources;
 public interface IValueSourceFactory
 {
     /// <summary>
+    /// Creates a value source that supplies values of a given type according to the specified argument binding.
+    /// </summary>
+    /// <param name="argument">The parsed markup argument containing the binding info.</param>
+    /// <param name="context">The binding context to use for any contextual bindings (those with
+    /// <param name="type">The type of value to obtain; can be determined using <see cref="GetValueType"/>.</param>
+    IValueSource GetValueSource(IArgument argument, BindingContext? context, Type type);
+
+    /// <summary>
     /// Creates a value source that supplies values of a given type according to the specified binding attribute.
     /// </summary>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
@@ -31,7 +39,19 @@ public interface IValueSourceFactory
         where T : notnull;
 
     /// <summary>
-    /// Determines the type of value that will be supplied by a given binding, and with the specified context.
+    /// Determines the type of value that will be supplied by a given argument binding, and with the specified context.
+    /// </summary>
+    /// <remarks>
+    /// This provides the type argument that must be supplied to
+    /// <see cref="GetValueSource{T}(IArgument, BindingContext?)"/>.
+    /// </remarks>
+    /// <param name="argument">The parsed markup argument containing the binding info.</param>
+    /// <param name="context">The binding context to use for any contextual bindings (those with
+    /// <see cref="ArgumentExpressionType.ContextBinding"/>).</param>
+    Type? GetValueType(IArgument argument, BindingContext? context);
+
+    /// <summary>
+    /// Determines the type of value that will be supplied by a given attribute binding, and with the specified context.
     /// </summary>
     /// <remarks>
     /// This provides the type argument that must be supplied to
@@ -51,21 +71,55 @@ public interface IValueSourceFactory
 /// <param name="assetCache">The current asset cache, for any asset-scoped bindings.</param>
 public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
 {
-    private static readonly MethodInfo getValueSourceGenericMethod = typeof(ValueSourceFactory).GetMethod(
+    private static readonly MethodInfo getArgumentValueSourceMethod = typeof(ValueSourceFactory).GetMethod(
+        nameof(GetValueSource),
+        1,
+        [typeof(IArgument), typeof(BindingContext)]
+    )!;
+    private static readonly MethodInfo getAttributeValueSourceMethod = typeof(ValueSourceFactory).GetMethod(
         nameof(GetValueSource),
         1,
         [typeof(IAttribute), typeof(BindingContext)]
     )!;
 
-    private readonly Dictionary<Type, Func<IAttribute, BindingContext?, IValueSource>> typeCache = [];
+    private readonly Dictionary<Type, Func<IArgument, BindingContext?, IValueSource>> argumentCache = [];
+    private readonly Dictionary<Type, Func<IAttribute, BindingContext?, IValueSource>> attributeCache = [];
+
+    public IValueSource GetValueSource(IArgument argument, BindingContext? context, Type type)
+    {
+        if (!argumentCache.TryGetValue(type, out var valueSourceDelegate))
+        {
+            var typedMethod = getArgumentValueSourceMethod.MakeGenericMethod(type);
+            valueSourceDelegate = typedMethod.CreateDelegate<Func<IArgument, BindingContext?, IValueSource>>(this);
+            argumentCache.Add(type, valueSourceDelegate);
+        }
+        return valueSourceDelegate(argument, context);
+    }
+
+    public IValueSource<T> GetValueSource<T>(IArgument argument, BindingContext? context)
+        where T : notnull
+    {
+        return argument.Type switch
+        {
+            ArgumentExpressionType.Literal => (IValueSource<T>)new ConstantValueSource<string>(argument.Expression),
+            ArgumentExpressionType.ContextBinding => new ContextPropertyValueSource<T>(
+                context?.Redirect(argument.ContextRedirect),
+                argument.Expression
+            ),
+            _ => throw new ArgumentException(
+                $"Invalid or unsupported argument type {argument.Type}.",
+                nameof(argument)
+            ),
+        };
+    }
 
     public IValueSource GetValueSource(IAttribute attribute, BindingContext? context, Type type)
     {
-        if (!typeCache.TryGetValue(type, out var valueSourceDelegate))
+        if (!attributeCache.TryGetValue(type, out var valueSourceDelegate))
         {
-            var typedMethod = getValueSourceGenericMethod.MakeGenericMethod(type);
+            var typedMethod = getAttributeValueSourceMethod.MakeGenericMethod(type);
             valueSourceDelegate = typedMethod.CreateDelegate<Func<IAttribute, BindingContext?, IValueSource>>(this);
-            typeCache.Add(type, valueSourceDelegate);
+            attributeCache.Add(type, valueSourceDelegate);
         }
         return valueSourceDelegate(attribute, context);
     }
@@ -80,6 +134,22 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
             AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
                 new ContextPropertyValueSource<T>(context?.Redirect(attribute.ContextRedirect), attribute.Value),
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
+        };
+    }
+
+    public Type? GetValueType(IArgument argument, BindingContext? context)
+    {
+        return argument.Type switch
+        {
+            ArgumentExpressionType.Literal => typeof(string),
+            ArgumentExpressionType.ContextBinding => context
+                ?.Redirect(argument.ContextRedirect)
+                ?.Descriptor.GetProperty(argument.Expression)
+                .ValueType,
+            _ => throw new ArgumentException(
+                $"Invalid or unsupported argument type {argument.Type}.",
+                nameof(argument)
+            ),
         };
     }
 

@@ -3,7 +3,7 @@
 /// <summary>
 /// Describes a single property on a bindable object (i.e. a view).
 /// </summary>
-public interface IPropertyDescriptor
+public interface IPropertyDescriptor : IMemberDescriptor
 {
     /// <summary>
     /// Whether or not the property is readable, i.e. has a public getter.
@@ -14,16 +14,6 @@ public interface IPropertyDescriptor
     /// Whether or not the property is writable, i.e. has a public setter.
     /// </summary>
     bool CanWrite { get; }
-
-    /// <summary>
-    /// The type on which the property is declared.
-    /// </summary>
-    Type DeclaringType { get; }
-
-    /// <summary>
-    /// The property name.
-    /// </summary>
-    string Name { get; }
 
     /// <summary>
     /// The property's value type.

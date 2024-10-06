@@ -22,6 +22,7 @@ public interface IViewBinding : IDisposable
 internal class ViewBinding : IViewBinding
 {
     private readonly IReadOnlyList<IAttributeBinding> attributeBindings;
+    private readonly IReadOnlyList<IEventBinding> eventBindings;
     private readonly HashSet<string> viewPropertiesChanged = [];
     private readonly WeakReference<IView> viewRef;
 
@@ -32,10 +33,16 @@ internal class ViewBinding : IViewBinding
     /// </summary>
     /// <param name="view">The bound view.</param>
     /// <param name="attributeBindings">The attribute bindings for the <paramref name="view"/>.</param>
-    public ViewBinding(IView view, IReadOnlyList<IAttributeBinding> attributeBindings)
+    /// <param name="eventBindings">The event bindings for the <paramref name="view"/>.</param>
+    public ViewBinding(
+        IView view,
+        IReadOnlyList<IAttributeBinding> attributeBindings,
+        IReadOnlyList<IEventBinding> eventBindings
+    )
     {
         viewRef = new(view);
         this.attributeBindings = attributeBindings;
+        this.eventBindings = eventBindings;
         if (view is INotifyPropertyChanged viewNpc)
         {
             viewNpc.PropertyChanged += View_PropertyChanged;
@@ -44,6 +51,10 @@ internal class ViewBinding : IViewBinding
 
     public void Dispose()
     {
+        foreach (var binding in eventBindings)
+        {
+            binding.Dispose();
+        }
         foreach (var binding in attributeBindings)
         {
             binding.Dispose();

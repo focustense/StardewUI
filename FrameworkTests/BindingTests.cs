@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using PropertyChanged.SourceGenerator;
+using StardewModdingAPI;
 using StardewUI;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
@@ -76,7 +77,8 @@ public partial class BindingTests
         valueSourceFactory = new ValueSourceFactory(assetCache);
         valueConverterFactory = new ValueConverterFactory();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
-        viewBinder = new ReflectionViewBinder(attributeBindingFactory);
+        var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
+        viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
     }
 
     [Fact]
@@ -1168,6 +1170,51 @@ public partial class BindingTests
                 Assert.Equal("Meep", label.Text);
             }
         );
+    }
+
+    class EventTestModel
+    {
+        public int Delta { get; } = 5;
+        public List<Item> Items { get; set; } = [];
+
+        public void IncrementItem(string id, int delta, SButton button)
+        {
+            var item = Items.Find(item => item.Id == id);
+            Assert.NotNull(item);
+            int multiplier = button == SButton.ControllerX ? 5 : 1;
+            item.Quantity += delta * multiplier;
+        }
+
+        public class Item(string id)
+        {
+            public string Id { get; } = id;
+            public int Quantity { get; set; }
+        }
+    }
+
+    [Fact]
+    public void WhenViewRaisesEvent_InvokesBoundMethod()
+    {
+        string markup =
+            @"<lane>
+                <frame *repeat={{Items}}>
+                    <button click=|^IncrementItem(Id, ^Delta, $Button)| />
+                </frame>
+            </lane>";
+        var model = new EventTestModel() { Items = [new("foo"), new("bar"), new("baz")] };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        var bazFrame = Assert.IsType<Frame>(rootView.Children[2]);
+        var bazButton = Assert.IsType<Button>(bazFrame.Content);
+
+        bazButton.OnClick(new(Vector2.Zero, SButton.ControllerA));
+
+        Assert.Equal(5, model.Items[2].Quantity);
+
+        bazButton.OnClick(new(Vector2.Zero, SButton.ControllerX));
+
+        Assert.Equal(30, model.Items[2].Quantity);
     }
 
     private IViewNode BuildTreeFromMarkup(string markup, object model)
