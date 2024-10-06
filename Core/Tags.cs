@@ -6,6 +6,11 @@
 public class Tags
 {
     /// <summary>
+    /// Empty tags that can be used as a placeholder.
+    /// </summary>
+    public static readonly Tags Empty = new();
+
+    /// <summary>
     /// Creates a new <see cref="Tags"/> holding a single initial value.
     /// </summary>
     /// <typeparam name="T">Type of tag value.</typeparam>

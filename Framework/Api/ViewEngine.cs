@@ -1,7 +1,8 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI.Events;
+﻿using StardewModdingAPI.Events;
 using StardewUI.Framework.Binding;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;
+using StardewUI.Framework.Sources;
 using StardewValley.Menus;
 
 namespace StardewUI.Framework.Api;
@@ -9,11 +10,13 @@ namespace StardewUI.Framework.Api;
 /// <summary>
 /// Implementation for the public <see cref="IViewEngine"/> API.
 /// </summary>
+/// <param name="assetCache">Cache for obtaining document assets. Used for asset-based views.</param>
 /// <param name="contentHelper">SMAPI content helper; used for referencing named <see cref="Document"/> assets.</param>
 /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
 /// <param name="contentEvents">SMAPI content events; used to register views and other assets.</param>
 /// <param name="monitor">Monitor for logging events.</param>
 public class ViewEngine(
+    IAssetCache assetCache,
     IGameContentHelper contentHelper,
     IViewNodeFactory viewNodeFactory,
     IContentEvents contentEvents,
@@ -24,14 +27,15 @@ public class ViewEngine(
 
     public IClickableMenu CreateMenuFromAsset(string assetName, object? context = null)
     {
-        var document = contentHelper.Load<Document>(assetName);
-        return new DocumentViewMenu(viewNodeFactory, document, context);
+        var documentSource = new AssetValueSource<Document>(assetCache, assetName);
+        return new DocumentViewMenu(viewNodeFactory, documentSource, context);
     }
 
     public IClickableMenu CreateMenuFromMarkup(string markup, object? context = null)
     {
         var document = Document.Parse(markup);
-        return new DocumentViewMenu(viewNodeFactory, document, context);
+        var documentSource = new ConstantValueSource<Document>(document);
+        return new DocumentViewMenu(viewNodeFactory, documentSource, context);
     }
 
     public void RegisterSprites(string assetPrefix, string modDirectory)

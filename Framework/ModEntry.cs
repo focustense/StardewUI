@@ -12,6 +12,7 @@ namespace StardewUI.Framework;
 internal sealed class ModEntry : Mod
 {
     // Initialized in Entry
+    private IAssetCache assetCache = null!;
     private ModConfig config = null!;
     private IViewNodeFactory viewNodeFactory = null!;
 
@@ -50,7 +51,7 @@ internal sealed class ModEntry : Mod
             );
             return null;
         }
-        return new ViewEngine(mod.Helper.GameContent, viewNodeFactory, mod.Helper.Events.Content, Monitor);
+        return new ViewEngine(assetCache, mod.Helper.GameContent, viewNodeFactory, mod.Helper.Events.Content, Monitor);
     }
 
     private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)
@@ -64,7 +65,7 @@ internal sealed class ModEntry : Mod
     private IViewNodeFactory CreateViewNodeFactory()
     {
         var viewFactory = new ViewFactory();
-        var assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
+        assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
         var valueSourceFactory = new ValueSourceFactory(assetCache);
         var valueConverterFactory = new ValueConverterFactory();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
