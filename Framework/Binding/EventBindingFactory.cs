@@ -98,7 +98,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
                     + "required)."
             );
         }
-        int argumentSourceCount = Math.Min(@event.Arguments.Count, requiredArgumentCount);
+        int argumentSourceCount = Math.Max(@event.Arguments.Count, requiredArgumentCount);
         var argumentSources = new IArgumentSource[argumentSourceCount];
         for (int i = 0; i < argumentSourceCount; i++)
         {

@@ -1217,6 +1217,101 @@ public partial class BindingTests
         Assert.Equal(30, model.Items[2].Quantity);
     }
 
+    class ManyToOneEventTestModel
+    {
+        public Outer? Data { get; set; }
+        public List<(string, int)> Results { get; } = [];
+        public int Value { get; set; }
+
+        public void AddResult(string s, int i)
+        {
+            Results.Add((s, i));
+        }
+
+        public record Outer(int Value, string Name, Inner Inner1, Inner Inner2);
+
+        public record Inner(int Value);
+    }
+
+    // Our goal with this test is simply to be as punishing as possible in terms of caching behavior and ambiguity
+    // around scoping and argument types. We use the same event bound to the same handler, but always on different
+    // views, with context that might be different or the same, arguments that might be bound or literal, and
+    // ambiguous names all over the place (everything is intentionally "Value").
+    [Fact]
+    public void WhenSameEventBoundForManyViews_InvokesWithSeparateArgs()
+    {
+        string markup =
+            @"<frame *context={{Data}} click=|AddResult(""frame"", Value)|>
+                <lane click=|^AddResult(Name, Value)|>
+                    <panel>
+                        <frame *context={{Inner1}}>
+                            <image click=|^^AddResult(""image1"", Value)| />
+                        </frame>
+                        <frame *context={{Inner2}}>
+                            <image click=|~ManyToOneEventTestModel.AddResult(""image2"", Value)| />
+                        </frame>
+                    </panel>
+                    <button click=|^AddResult(""button"", ""999"")| />
+                </lane>
+            </frame>";
+        var model = new ManyToOneEventTestModel { Data = new(10, "nameFromData", new(50), new(51)), Value = 3 };
+        var tree = BuildTreeFromMarkup(markup, model);
+        var frame = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        var lane = Assert.IsType<Lane>(frame.Content);
+        var panel = Assert.IsType<Panel>(lane.Children[0]);
+        var image1 = Assert.IsType<Image>(Assert.IsType<Frame>(panel.Children[0]).Content);
+        var image2 = Assert.IsType<Image>(Assert.IsType<Frame>(panel.Children[1]).Content);
+        var button = Assert.IsType<Button>(lane.Children[1]);
+
+        var dummyEventArgs = new ClickEventArgs(Vector2.Zero, SButton.ControllerA);
+        image1.OnClick(dummyEventArgs);
+        button.OnClick(dummyEventArgs);
+        panel.OnClick(dummyEventArgs); // Should do nothing, no event bound
+        frame.OnClick(dummyEventArgs);
+        lane.OnClick(dummyEventArgs);
+        image2.OnClick(dummyEventArgs);
+        button.OnClick(dummyEventArgs);
+
+        Assert.Equal(
+            [("image1", 50), ("button", 999), ("frame", 3), ("nameFromData", 10), ("image2", 51), ("button", 999)],
+            model.Results
+        );
+    }
+
+    class OptionalParamsEventTestModel
+    {
+        public List<(string, int)> Results { get; } = [];
+
+        public void AddResult(string name, int value, int toAdd = 0, bool alsoAddOne = false)
+        {
+            Results.Add((name, value + toAdd + (alsoAddOne ? 1 : 0)));
+        }
+    }
+
+    [Fact]
+    public void WhenEventBoundWithOptionalParameters_InvokesWithDefinedArgs()
+    {
+        string markup =
+            @"<panel>
+                <image click=|AddResult(""image1"", ""10"", ""5"", ""true"")| />
+                <image click=|AddResult(""image2"", ""20"", ""3"")| />
+                <button click=|AddResult(""button"", ""30"")| />
+            </panel>";
+        var model = new OptionalParamsEventTestModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+        var panel = Assert.IsType<Panel>(tree.Views.SingleOrDefault());
+        var image1 = Assert.IsType<Image>(panel.Children[0]);
+        var image2 = Assert.IsType<Image>(panel.Children[1]);
+        var button = Assert.IsType<Button>(panel.Children[2]);
+
+        var dummyEventArgs = new ClickEventArgs(Vector2.Zero, SButton.ControllerA);
+        image1.OnClick(dummyEventArgs);
+        image2.OnClick(dummyEventArgs);
+        button.OnClick(dummyEventArgs);
+
+        Assert.Equal([("image1", 16), ("image2", 23), ("button", 30)], model.Results);
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
         var viewNodeFactory = new ViewNodeFactory(

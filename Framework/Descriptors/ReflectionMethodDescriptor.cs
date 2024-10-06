@@ -36,11 +36,26 @@ public static class ReflectionMethodDescriptor
 
     private static IMethodDescriptor CreateDescriptorFactory<TResult>(MethodInfo method)
     {
-        var argumentAndResultTypes = GetArgumentAndResultTypes(method, out int optionalArgumentCount);
-        return new ReflectionMethodDescriptor<TResult>(method, argumentAndResultTypes, optionalArgumentCount);
+        GetArgumentAndResultTypes(
+            method,
+            out var argumentAndResultTypes,
+            out var defaultValues,
+            out int optionalArgumentCount
+        );
+        return new ReflectionMethodDescriptor<TResult>(
+            method,
+            argumentAndResultTypes,
+            defaultValues,
+            optionalArgumentCount
+        );
     }
 
-    private static Type[] GetArgumentAndResultTypes(MethodInfo method, out int optionalArgumentCount)
+    private static void GetArgumentAndResultTypes(
+        MethodInfo method,
+        out Type[] argumentAndResultTypes,
+        out object?[] defaultValues,
+        out int optionalArgumentCount
+    )
     {
         optionalArgumentCount = 0;
         var declaringType =
@@ -51,11 +66,12 @@ public static class ReflectionMethodDescriptor
             );
         var parameters = method.GetParameters();
         int argCount = method.IsStatic ? parameters.Length + 1 : parameters.Length + 2;
-        var argTypes = new Type[argCount];
+        argumentAndResultTypes = new Type[argCount];
+        defaultValues = new object?[argCount - 2];
         int argIndex = 0;
         if (!method.IsStatic)
         {
-            argTypes[0] = declaringType;
+            argumentAndResultTypes[0] = declaringType;
             argIndex++;
         }
         foreach (var param in parameters)
@@ -68,14 +84,14 @@ public static class ReflectionMethodDescriptor
                     nameof(method)
                 );
             }
-            argTypes[argIndex++] = param.ParameterType;
+            defaultValues[argIndex - 1] = param.DefaultValue;
+            argumentAndResultTypes[argIndex++] = param.ParameterType;
             if (param.IsOptional)
             {
                 optionalArgumentCount++;
             }
         }
-        argTypes[argIndex] = method.ReturnType != typeof(void) ? method.ReturnType : typeof(object);
-        return argTypes;
+        argumentAndResultTypes[argIndex] = method.ReturnType != typeof(void) ? method.ReturnType : typeof(object);
     }
 
     private static DescriptorFactory GetDescriptorFactory(Type returnType)
@@ -100,7 +116,7 @@ public static class ReflectionMethodDescriptor
 internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
 {
     public ReadOnlySpan<Type> ArgumentTypes =>
-        method.IsStatic ? argumentAndResultTypes : argumentAndResultTypes.AsSpan()[1..^1];
+        method.IsStatic ? argumentAndResultTypes.AsSpan()[..^1] : argumentAndResultTypes.AsSpan()[1..^1];
 
     public Type DeclaringType => method.DeclaringType!; // Validated to be non-null in GetArgumentTypes.
 
@@ -111,8 +127,10 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
     public Type ReturnType => method.ReturnType;
 
     private readonly Type[] argumentAndResultTypes;
+    private readonly object?[] defaultValues;
     private readonly IInvoker<TResult> invoker;
     private readonly MethodInfo method;
+    private readonly Dictionary<int, IInvoker<TResult>> optionalInvokers = [];
 
     /// <summary>
     /// Initializes a new instance of <see cref="ReflectionMethodDescriptor{TResult}"/>.
@@ -121,8 +139,15 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
     /// <param name="argumentAndResultTypes">An array whose elements are the method's declaring type (only if the method
     /// is not <c>static</c>), followed by all the normal argument types, and ending with the method's return type
     /// or the <see cref="Object"/> type if the method has void return.</param>
+    /// <param name="defaultValues">An array of the default values for each argument, in the same order that they appear
+    /// in <paramref name="argumentAndResultTypes"/> but not including the final entry for the return type.</param>
     /// <param name="optionalArgumentCount">Number of optional arguments at the end of the argument list.</param>
-    public ReflectionMethodDescriptor(MethodInfo method, Type[] argumentAndResultTypes, int optionalArgumentCount)
+    public ReflectionMethodDescriptor(
+        MethodInfo method,
+        Type[] argumentAndResultTypes,
+        object?[] defaultValues,
+        int optionalArgumentCount
+    )
     {
         if (method.IsGenericMethod || method.IsGenericMethodDefinition)
         {
@@ -133,6 +158,7 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
         }
         this.method = method;
         this.argumentAndResultTypes = argumentAndResultTypes;
+        this.defaultValues = defaultValues;
         OptionalArgumentCount = optionalArgumentCount;
         invoker = CreateInvoker();
     }
@@ -149,27 +175,43 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
 
     public virtual TResult Invoke(object? target, object?[] args)
     {
+        if (!invoker.SupportsMissingArguments && args.Length > 0 && args[^1] == Type.Missing)
+        {
+            for (int i = args.Length - 1; i >= 0; i--)
+            {
+                if (args[i] != Type.Missing)
+                {
+                    break;
+                }
+                args[i] = defaultValues[i];
+            }
+        }
         return invoker.Invoke(target, args);
     }
 
     private IInvoker<TResult> CreateInvoker()
     {
-        var invokerType = argumentAndResultTypes.Length switch
+        return CreateInvoker(argumentAndResultTypes);
+    }
+
+    private IInvoker<TResult> CreateInvoker(Type[] argumentTypes)
+    {
+        var invokerType = argumentTypes.Length switch
         {
-            1 => typeof(Invoker<>).MakeGenericType(argumentAndResultTypes),
-            2 => typeof(Invoker<,>).MakeGenericType(argumentAndResultTypes),
-            3 => typeof(Invoker<,,>).MakeGenericType(argumentAndResultTypes),
-            4 => typeof(Invoker<,,,>).MakeGenericType(argumentAndResultTypes),
-            5 => typeof(Invoker<,,,,>).MakeGenericType(argumentAndResultTypes),
-            6 => typeof(Invoker<,,,,,>).MakeGenericType(argumentAndResultTypes),
-            7 => typeof(Invoker<,,,,,,>).MakeGenericType(argumentAndResultTypes),
-            8 => typeof(Invoker<,,,,,,,>).MakeGenericType(argumentAndResultTypes),
-            9 => typeof(Invoker<,,,,,,,,>).MakeGenericType(argumentAndResultTypes),
+            1 => typeof(Invoker<>).MakeGenericType(argumentTypes),
+            2 => typeof(Invoker<,>).MakeGenericType(argumentTypes),
+            3 => typeof(Invoker<,,>).MakeGenericType(argumentTypes),
+            4 => typeof(Invoker<,,,>).MakeGenericType(argumentTypes),
+            5 => typeof(Invoker<,,,,>).MakeGenericType(argumentTypes),
+            6 => typeof(Invoker<,,,,,>).MakeGenericType(argumentTypes),
+            7 => typeof(Invoker<,,,,,,>).MakeGenericType(argumentTypes),
+            8 => typeof(Invoker<,,,,,,,>).MakeGenericType(argumentTypes),
+            9 => typeof(Invoker<,,,,,,,,>).MakeGenericType(argumentTypes),
             _ => null,
         };
         return invokerType is not null
             ? (IInvoker<TResult>)invokerType.GetConstructor([typeof(MethodInfo)])!.Invoke([method])
-            : new DefaultInvoker<TResult>(method);
+            : new ReflectionInvoker<TResult>(method);
     }
 }
 
@@ -179,14 +221,38 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
 /// <typeparam name="TResult">The method's return type.</typeparam>
 internal interface IInvoker<TResult>
 {
+    /// <summary>
+    /// Whether or not the invoker can handle <see cref="Type.Missing"/> in arguments.
+    /// </summary>
+    /// <remarks>
+    /// Invokers that do not support this (i.e. any delegates) must have those arguments replaced with defaults.
+    /// </remarks>
+    bool SupportsMissingArguments => false;
+
+    /// <summary>
+    /// Invokes the method.
+    /// </summary>
+    /// <param name="target">The instance on which to invoke.</param>
+    /// <param name="args">The arguments to provide to the method.</param>
+    /// <returns>The method's return value.</returns>
     TResult Invoke(object? target, object?[] args);
 }
 
-file class DefaultInvoker<T>(MethodInfo method) : IInvoker<T>
+/// <summary>
+/// Invoker using standard reflection.
+/// </summary>
+/// <remarks>
+/// Optional arguments must be provided as <see cref="Type.Missing"/>.
+/// </remarks>
+/// <typeparam name="TResult">The method's return type.</typeparam>
+/// <param name="method">The method to invoke.</param>
+file class ReflectionInvoker<TResult>(MethodInfo method) : IInvoker<TResult>
 {
-    public T Invoke(object? target, object?[] args)
+    public bool SupportsMissingArguments => true;
+
+    public TResult Invoke(object? target, object?[] args)
     {
-        return (T)method.Invoke(target, args)!;
+        return (TResult)method.Invoke(target, args)!;
     }
 }
 
