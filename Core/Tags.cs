@@ -55,9 +55,7 @@ public class Tags
 
     public override bool Equals(object? obj)
     {
-        return obj is Tags other
-            && other.values.Count == values.Count
-            && !other.values.Except(values).Any();
+        return obj is Tags other && other.values.Count == values.Count && !other.values.Except(values).Any();
     }
 
     public override int GetHashCode()

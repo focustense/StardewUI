@@ -162,8 +162,8 @@ public class Label : View
     private readonly DirtyTracker<int> maxLines = new(0);
     private readonly DirtyTracker<string> text = new("");
 
-    private bool bold;  // Not dirty-tracked because it doesn't affect layout.
-    private Color color = Game1.textColor;  // Not dirty-tracked because it doesn't affect layout.
+    private bool bold; // Not dirty-tracked because it doesn't affect layout.
+    private Color color = Game1.textColor; // Not dirty-tracked because it doesn't affect layout.
     private Alignment horizontalAlignment; // Not dirty-tracked as it doesn't change the max line width.
     private List<string> lines = [];
 

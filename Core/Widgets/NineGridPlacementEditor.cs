@@ -120,7 +120,7 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
         get => selectionBackgroundColor;
         set
         {
-            if (value !=  selectionBackgroundColor)
+            if (value != selectionBackgroundColor)
             {
                 selectionBackgroundColor = value;
                 OnPropertyChanged(nameof(SelectionBackgroundColor));

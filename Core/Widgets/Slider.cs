@@ -99,7 +99,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
             {
                 sliderPanel.Layout = LayoutParameters.FixedSize(value, TRACK_HEIGHT);
                 OnPropertyChanged(nameof(TrackWidth));
-            };
+            }
         }
     }
 
