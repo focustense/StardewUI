@@ -74,6 +74,7 @@ public class AssetCache : IAssetCache
             if (entries.TryGetValue(name.BaseName, out var entry))
             {
                 entry.Invalidate();
+                entries.Remove(name.BaseName);
             }
         }
     }
