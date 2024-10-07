@@ -85,6 +85,7 @@ public class ValueConverterFactory : IValueConverterFactory
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
         TryRegister<string, Edges>(Edges.Parse);
+        TryRegister(new GridItemLayoutConverter());
         TryRegister(new LayoutConverter());
         TryRegister(new NamedFontConverter());
         TryRegister(new PointConverter());

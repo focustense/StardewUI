@@ -140,7 +140,7 @@ public class Grid : View
 
     private readonly DirtyTrackingList<IView> children = [];
     private readonly List<ViewChild> childPositions = [];
-    private readonly DirtyTracker<GridItemLayout> itemLayout = new(GridItemLayout.Count(5));
+    private readonly DirtyTracker<GridItemLayout> itemLayout = new(new GridItemLayout.Count(5));
     private readonly DirtyTracker<Vector2> itemSpacing = new(Vector2.Zero);
     private readonly DirtyTracker<Orientation> primaryOrientation = new(Orientation.Horizontal);
 
@@ -385,32 +385,45 @@ public class Grid : View
 /// <summary>
 /// Describes the layout of all items in a <see cref="Grid"/>.
 /// </summary>
-public sealed class GridItemLayout
+public abstract record GridItemLayout
 {
+    /// <summary>
+    /// A <see cref="GridItemLayout"/> specifying the maximum divisions - rows or columns, depending on the grid's
+    /// <see cref="Orientation"/>; items will be sized distributed uniformly along that axis.
+    /// </summary>
+    /// <param name="ItemCount">Maximum number of cell divisions along the primary orientation axis.</param>
+    public sealed record Count(int ItemCount) : GridItemLayout
+    {
+        public override (float, int) GetItemCountAndLength(float available, float spacing)
+        {
+            var validCount = Math.Max(ItemCount, 1);
+            var length = (available + spacing) / validCount - spacing;
+            return (length, validCount);
+        }
+    }
+
+    /// <summary>
+    /// A <see cref="GridItemLayout"/> specifying that each item is to have the same fixed length (width or height,
+    /// depending on the grid's <see cref="Orientation"/>) and to wrap to the next row/column afterward.
+    /// </summary>
+    /// <param name="Px">The length, in pixels, of each item along the grid's orientation axis.</param>
+    public sealed record Length(float Px) : GridItemLayout
+    {
+        public override (float, int) GetItemCountAndLength(float available, float spacing)
+        {
+            if (Px + spacing <= 0) // Invalid layout
+            {
+                return (1.0f, 1);
+            }
+            var exactCount = (available + spacing) / (Px + spacing);
+            // Rounding this wouldn't be good, since that could overflow; but we also don't want tiny floating-point
+            // errors to cause premature wrapping. OK solution is to truncate after adding some epsilon.
+            var approximateCount = Math.Max((int)(exactCount + 4 * float.Epsilon), 1);
+            return (Px, approximateCount);
+        }
+    }
+
     private GridItemLayout() { }
-
-    private int? itemCount;
-    private float? itemLength;
-
-    /// <summary>
-    /// Creates a <see cref="GridItemLayout"/> specifying the maximum divisions - rows or columns, depending on the
-    /// grid's <see cref="Orientation"/>; items will be sized distributed uniformly along that axis.
-    /// </summary>
-    /// <param name="itemCount">Maximum number of cell divisions along the primary orientation axis.</param>
-    public static GridItemLayout Count(int itemCount)
-    {
-        return new() { itemCount = itemCount };
-    }
-
-    /// <summary>
-    /// Creates a <see cref="GridItemLayout"/> specifying that each item is to have the same fixed length (width or
-    /// height, depending on the grid's <see cref="Orientation"/>) and to wrap to the next row/column afterward.
-    /// </summary>
-    /// <param name="px">The length, in pixels, of each item along the grid's orientation axis.</param>
-    public static GridItemLayout Length(float px)
-    {
-        return new() { itemLength = px };
-    }
 
     /// <summary>
     /// Computes the length (along the grid's <see cref="Grid.PrimaryOrientation"/> axis) of a single item, and the
@@ -419,46 +432,5 @@ public sealed class GridItemLayout
     /// <param name="available">The length available along the same axis.</param>
     /// <param name="spacing">Spacing between items, to adjust count-based layouts.</param>
     /// <returns>The length to apply to each item.</returns>
-    internal (float, int) GetItemCountAndLength(float available, float spacing)
-    {
-        if (itemCount.HasValue)
-        {
-            var validCount = Math.Max(itemCount.Value, 1);
-            var length = (available + spacing) / validCount - spacing;
-            return (length, validCount);
-        }
-        else
-        {
-            var length = itemLength!.Value;
-            if (length + spacing <= 0) // Invalid layout
-            {
-                return (1.0f, 1);
-            }
-            var exactCount = (available + spacing) / (length + spacing);
-            // Rounding this wouldn't be good, since that could overflow; but we also don't want tiny floating-point
-            // errors to cause premature wrapping. OK solution is to truncate after adding some epsilon.
-            var approximateCount = Math.Max((int)(exactCount + 4 * float.Epsilon), 1);
-            return (length, approximateCount);
-        }
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is GridItemLayout other && other.itemCount == itemCount && other.itemLength == itemLength;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(itemCount, itemLength);
-    }
-
-    public static bool operator ==(GridItemLayout left, GridItemLayout right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(GridItemLayout left, GridItemLayout right)
-    {
-        return !(left == right);
-    }
+    public abstract (float, int) GetItemCountAndLength(float available, float spacing);
 }
