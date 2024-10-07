@@ -15,6 +15,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     private readonly IReadOnlyDictionary<string, Lazy<IEventDescriptor>> eventsByName;
     private readonly IReadOnlyDictionary<string, Lazy<IMethodDescriptor>> methodsByName;
     private readonly IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> propertiesByName;
+    private readonly Lazy<IPropertyDescriptor> thisDescriptor;
 
     /// <summary>
     /// Creates or retrieves a descriptor for a given object type.
@@ -68,6 +69,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
         this.propertiesByName = propertiesByName;
         this.methodsByName = methodsByName;
         this.eventsByName = eventsByName;
+        thisDescriptor = new(() => ThisPropertyDescriptor.ForTypeUncached(type));
     }
 
     public bool TryGetEvent(string name, [MaybeNullWhen(false)] out IEventDescriptor @event)
@@ -86,6 +88,11 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
 
     public bool TryGetProperty(string name, [MaybeNullWhen(false)] out IPropertyDescriptor property)
     {
+        if (name.Equals("this", StringComparison.OrdinalIgnoreCase))
+        {
+            property = thisDescriptor.Value;
+            return true;
+        }
         bool exists = propertiesByName.TryGetValue(name, out var lazyProperty);
         property = lazyProperty?.Value;
         return exists;
