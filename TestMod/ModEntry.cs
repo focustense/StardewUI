@@ -36,16 +36,53 @@ internal sealed class ModEntry : Mod
 
     private void Input_ButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
-        if (Context.IsPlayerFree && e.Button == SButton.F8)
+        if (!Context.IsPlayerFree)
         {
-            // Game1.activeClickableMenu = new TestMenu();
-
-            var context = new
-            {
-                HeaderText = "Example Menu Title",
-                ItemData = ItemRegistry.GetData("(O)117"),
-            };
-            Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/TestView", context);
+            return;
         }
+        switch (e.Button)
+        {
+            case SButton.F8:
+                ShowExampleMenu1();
+                break;
+            case SButton.F9:
+                ShowExampleMenu2();
+                break;
+        }
+    }
+
+    private void ShowExampleMenu1()
+    {
+        var context = new
+        {
+            HeaderText = "Example Menu Title",
+            ItemData = ItemRegistry.GetData("(O)117"),
+        };
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/TestView", context);
+    }
+
+    private void ShowExampleMenu2()
+    {
+        int[] edibleCategories = [
+                StardewValley.Object.CookingCategory,
+                StardewValley.Object.EggCategory,
+                StardewValley.Object.FishCategory,
+                StardewValley.Object.FruitsCategory,
+                StardewValley.Object.meatCategory,
+                StardewValley.Object.MilkCategory,
+                StardewValley.Object.VegetableCategory,
+            ];
+        var items = ItemRegistry.ItemTypes
+            .Single(type => type.Identifier == ItemRegistry.type_object)
+            .GetAllIds()
+            .Select(id => ItemRegistry.GetDataOrErrorItem(id))
+            .Where(data => edibleCategories.Contains(data.Category))
+            .ToList();
+        var context = new
+        {
+            HeaderText = "All Edibles",
+            Items = items,
+        };
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-ScrollingItemGrid", context);
     }
 }
