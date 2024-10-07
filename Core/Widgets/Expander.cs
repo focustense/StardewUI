@@ -211,7 +211,7 @@ public class Expander : WrapperView
             Name = "ExpanderHeaderFrame",
             Layout = LayoutParameters.AutoRow(),
             Content = headerLane,
-            IsFocusable = true,
+            Focusable = true,
         };
         headerFrame.LeftClick += HeaderFrame_LeftClick;
         contentFrame = new Frame() { Name = "ExpanderContentFrame", Layout = LayoutParameters.FitContent() };

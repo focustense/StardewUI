@@ -130,19 +130,13 @@ public abstract class View : IView
     }
 
     /// <summary>
-    /// The size allocated to the entire area inside the border, i.e. <see cref="ContentSize"/> plus any
-    /// <see cref="Padding"/>. Does not include border or <see cref="Margin"/>.
-    /// </summary>
-    public Vector2 InnerSize => ContentSize + Padding.Total;
-
-    /// <summary>
     /// Whether or not the view should be able to receive focus. Applies only to this specific view, not its children.
     /// </summary>
     /// <remarks>
     /// All views are non-focusable by default and must have their focus enabled explicitly. Subclasses may choose to
     /// override the default value if they should always be focusable.
     /// </remarks>
-    public virtual bool IsFocusable
+    public virtual bool Focusable
     {
         get => isFocusable;
         set
@@ -150,10 +144,21 @@ public abstract class View : IView
             if (value != isFocusable)
             {
                 isFocusable = value;
-                OnPropertyChanged(nameof(IsFocusable));
+                OnPropertyChanged(nameof(Focusable));
+                OnPropertyChanged(nameof(IView.IsFocusable));
             }
         }
     }
+
+    /// <summary>
+    /// The size allocated to the entire area inside the border, i.e. <see cref="ContentSize"/> plus any
+    /// <see cref="Padding"/>. Does not include border or <see cref="Margin"/>.
+    /// </summary>
+    public Vector2 InnerSize => ContentSize + Padding.Total;
+
+    /// <inheritdoc />
+    [Obsolete("Use Focusable instead of IsFocusable when interacting directly with a concrete View.")]
+    public bool IsFocusable => Focusable;
 
     /// <summary>
     /// Layout settings for this view; determines how its dimensions will be computed.
@@ -416,7 +421,7 @@ public abstract class View : IView
             return found.AsChild(this, offset);
         }
         if (
-            IsFocusable
+            Focusable
             && (
                 (direction == Direction.East && position.X < 0)
                 || (direction == Direction.West && position.X >= OuterSize.X)
@@ -491,7 +496,7 @@ public abstract class View : IView
 
     public virtual ViewChild? GetDefaultFocusChild()
     {
-        if (IsFocusable)
+        if (Focusable)
         {
             return new(this, Vector2.Zero);
         }

@@ -134,7 +134,7 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
             HorizontalContentAlignment = Alignment.Middle,
             VerticalContentAlignment = Alignment.Middle,
             Children = [backgroundImage, contentFrame],
-            IsFocusable = true,
+            Focusable = true,
         };
         panel.PointerEnter += Panel_PointerEnter;
         panel.PointerLeave += Panel_PointerLeave;

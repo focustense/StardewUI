@@ -198,7 +198,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
                 : LayoutParameters.FitContent(),
             Sprite = thumbSprite ?? UiSprites.SliderButton,
             Fit = ImageFit.Stretch,
-            IsFocusable = true,
+            Focusable = true,
             Draggable = true,
             ZIndex = 1,
         };

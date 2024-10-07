@@ -285,7 +285,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
             ShadowAlpha = 0.35f,
             ShadowOffset = new(-3, 4),
             Tooltip = DeleteButtonTooltip,
-            IsFocusable = true,
+            Focusable = true,
             Tags = Tags.Create(keybind),
         };
         deleteButton.LeftClick += DeleteButton_LeftClick;

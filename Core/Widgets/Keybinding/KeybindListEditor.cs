@@ -132,6 +132,13 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
         }
     }
 
+    /// <inheritdoc cref="View.Focusable" />
+    public bool Focusable
+    {
+        get => rootLane.Focusable;
+        set => RequireView(() => rootLane).Focusable = true;
+    }
+
     /// <summary>
     /// Font used to display text in button/key placeholders.
     /// </summary>
@@ -177,13 +184,6 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
             UpdateAll();
             OnPropertyChanged(nameof(KeybindList));
         }
-    }
-
-    /// <inheritdoc cref="View.IsFocusable" />
-    public new bool IsFocusable
-    {
-        get => rootLane.IsFocusable;
-        set => RequireView(() => rootLane).IsFocusable = true;
     }
 
     private IEnumerable<KeybindView> KeybindViews =>

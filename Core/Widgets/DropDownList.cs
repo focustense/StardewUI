@@ -153,7 +153,7 @@ public class DropDownList<T> : WrapperView
         {
             Layout = new() { Width = Length.Content(), Height = Length.Stretch() },
             Sprite = UiSprites.DropDownButton,
-            IsFocusable = true,
+            Focusable = true,
         };
         var lane = new Lane() { Layout = LayoutParameters.FitContent(), Children = [selectionFrame, button] };
         lane.LeftClick += Lane_LeftClick;
@@ -287,7 +287,7 @@ public class DropDownList<T> : WrapperView
                 Background = new(Game1.staminaRect),
                 BackgroundTint = GetBackgroundTint(),
                 Content = label,
-                IsFocusable = true,
+                Focusable = true,
             };
             frame.PointerEnter += Frame_PointerEnter;
             return frame;

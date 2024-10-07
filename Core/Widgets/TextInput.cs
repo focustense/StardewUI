@@ -228,7 +228,7 @@ public class TextInput : View
     /// </summary>
     public TextInput()
     {
-        IsFocusable = true;
+        Focusable = true;
 
         caret = new Image()
         {

@@ -23,9 +23,9 @@ internal class TestView : WrapperView
                             Name = i.ToString(),
                             Layout = LayoutParameters.FixedSize(64, 64),
                             Sprite = questionIcon,
-                            IsFocusable = false
+                            Focusable = false
                         },
-                        IsFocusable = true
+                        Focusable = true
                     };
                 }).ToList<IView>(),
             }

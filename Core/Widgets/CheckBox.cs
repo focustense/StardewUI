@@ -80,7 +80,7 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
     protected override Lane CreateView()
     {
         label = new Label() { Layout = LayoutParameters.FitContent(), Margin = new(Left: 12) };
-        checkImage = new Image() { Layout = LayoutParameters.FitContent(), IsFocusable = true };
+        checkImage = new Image() { Layout = LayoutParameters.FitContent(), Focusable = true };
         UpdateCheckImage();
         var lane = new Lane()
         {
