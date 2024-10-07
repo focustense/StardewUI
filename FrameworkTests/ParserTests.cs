@@ -17,9 +17,9 @@ public class ParserTests
         {
             {
                 @"<lane orientation=""vertical"" align-content=""middle end"">
-                    <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
+                    <image width={<ImageWidth} sprite={@Mods/focustense.StardewUITest/Sprites/Header} />
                     <label font=""dialogue"" text={{HeaderText}} />
-                    <checkbox is-checked={{<>Checked}}/>
+                    <checkbox is-checked={<>Checked}/>
                 </lane>",
 
                 [
@@ -47,7 +47,7 @@ public class ParserTests
                 ]
             },
             {
-                @"<label font=""small"" *repeat={{<>Items}} text={{DisplayName}} />",
+                @"<label font=""small"" *repeat={<>Items} text={{DisplayName}} />",
 
                 [
                     new(
@@ -61,7 +61,7 @@ public class ParserTests
                 ]
             },
             {
-                @"<textinput text={{<>^Name}} />",
+                @"<textinput text={<>^Name} />",
 
                 [
                     new(
@@ -95,7 +95,7 @@ public class ParserTests
                 ]
             },
             {
-                @"<checkbox is-checked={{>~Foo.Enabled}} />",
+                @"<checkbox is-checked={>~Foo.Enabled} />",
 
                 [
                     new(
@@ -176,7 +176,7 @@ public class ParserTests
             // attributes and event bindings to make sure the parser doesn't get confused about what the lexer is
             // emitting.
             {
-                @"<checkbox layout=""stretch"" change=|HandleChange(""Foo"", Bar)| label-text={{<>Baz}} click=|^HandleClick()| />",
+                @"<checkbox layout=""stretch"" change=|HandleChange(""Foo"", Bar)| label-text={<>Baz} click=|^HandleClick()| />",
 
                 [
                     new(

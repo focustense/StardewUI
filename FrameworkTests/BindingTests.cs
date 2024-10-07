@@ -268,8 +268,8 @@ public partial class BindingTests
 
         string markup =
             @"<lane orientation=""vertical"" horizontal-content-alignment=""middle"" vertical-content-alignment=""end"">
-                <image scale=""3.5"" sprite={{@Mods/TestMod/TestSprite}} />
-                <label max-lines=""2"" text={{HeaderText}} />
+                <image scale=""3.5"" sprite={@Mods/TestMod/TestSprite} />
+                <label max-lines=""2"" text={HeaderText} />
             </lane>";
         var document = Document.Parse(markup);
         var tree = viewNodeFactory.CreateNode(document.Root);
@@ -317,8 +317,7 @@ public partial class BindingTests
     [Fact]
     public void WhenModelIsConvertible_BindsWithConversion()
     {
-        string markup =
-            @"<dropdownlist options={{Items}} selected-option={{<>SelectedItem}} option-format={{FormatItem}} />";
+        string markup = @"<dropdownlist options={Items} selected-option={<>SelectedItem} option-format={FormatItem} />";
         var model = new DropDownTestModel { Items = [3, 7, 15] };
         var tree = BuildTreeFromMarkup(markup, model);
 
@@ -346,9 +345,9 @@ public partial class BindingTests
     {
         string markup =
             @"<lane>
-                <label *if={{FirstLineVisible}} text=""First Line"" />
+                <label *if={FirstLineVisible} text=""First Line"" />
                 <label text=""Second Line"" />
-                <label *if={{ThirdLineVisible}} text=""Third Line"" />
+                <label *if={ThirdLineVisible} text=""Third Line"" />
             </lane>";
         var model = new ConditionalBindingTestModel { FirstLineVisible = true };
         var tree = BuildTreeFromMarkup(markup, model);
@@ -396,8 +395,8 @@ public partial class BindingTests
     {
         string markup =
             @"<lane>
-                <label *if={{FirstLineVisible}} text=""First Line"" />
-                <label *if={{SecondLineVisible}} text=""Second Line"" />
+                <label *if={FirstLineVisible} text=""First Line"" />
+                <label *if={SecondLineVisible} text=""Second Line"" />
                 <label *if=""false"" text=""Third Line"" />
             </lane>";
         var model = new ConditionalBindingTestModel { FirstLineVisible = true, SecondLineVisible = true };
@@ -441,7 +440,7 @@ public partial class BindingTests
     public void WhenCaseMatchesDirectChildLiteral_RendersView()
     {
         string markup =
-            @"<lane *switch={{WhichItem}}>
+            @"<lane *switch={WhichItem}>
                 <label text=""Always"" />
                 <label *case=""1"" text=""Item 1"" />
                 <label *case=""2"" text=""Item 2"" />
@@ -507,9 +506,9 @@ public partial class BindingTests
     public void WhenCaseMatchesDirectChildBinding_RendersView()
     {
         string markup =
-            @"<lane *switch={{Current}}>
-                <label *case={{First}} text=""Item 1"" />
-                <label *case={{Second}} text=""Item 2"" />
+            @"<lane *switch={Current}>
+                <label *case={First} text=""Item 1"" />
+                <label *case={Second} text=""Item 2"" />
             </lane>";
         var model = new SwitchCaseBindingTestModel();
         var tree = BuildTreeFromMarkup(markup, model);
@@ -554,7 +553,7 @@ public partial class BindingTests
     {
         string markup =
             @"<lane>
-                <label *repeat={{Items}} text={{Name}} />
+                <label *repeat={Items} text={Name} />
             </lane>";
         var model = new RepeatingModel()
         {
@@ -589,7 +588,7 @@ public partial class BindingTests
     {
         string markup =
             @"<lane>
-                <label *repeat={{Items}} text={{Name}} />
+                <label *repeat={Items} text={Name} />
             </lane>";
         var model = new RepeatingModel()
         {
@@ -627,7 +626,7 @@ public partial class BindingTests
     {
         string markup =
             @"<lane>
-                <label *repeat={{Items}} text={{Name}} />
+                <label *repeat={Items} text={Name} />
             </lane>";
         var model = new RepeatingModel()
         {
@@ -671,7 +670,7 @@ public partial class BindingTests
     {
         string markup =
             @"<lane>
-                <label *repeat={{Items}} text={{Name}} />
+                <label *repeat={Items} text={Name} />
             </lane>";
         var model = new RepeatingObservableModel()
         {
@@ -762,11 +761,11 @@ public partial class BindingTests
     public void WhenAnyContextChanges_UpdatesAllContextModifiers()
     {
         string markup =
-            @"<frame *context={{Outer}}>
+            @"<frame *context={Outer}>
                 <panel>
-                    <panel *context={{Middle}}>
-                        <lane *context={{Inner}}>
-                            <label text={{Text}} />
+                    <panel *context={Middle}>
+                        <lane *context={Inner}>
+                            <label text={Text} />
                         </lane>
                     </panel>
                 </panel>
@@ -827,9 +826,9 @@ public partial class BindingTests
     {
         string markup =
             @"<lane orientation=""vertical"">
-                <lane *repeat={{Items}}>
-                    <frame *context={{Inner}}>
-                        <label max-lines={{^^MaxLines}} color={{^Color}} text={{Text}} />
+                <lane *repeat={Items}>
+                    <frame *context={Inner}>
+                        <label max-lines={^^MaxLines} color={^Color} text={Text} />
                     </frame>
                 </lane>
             </lane>";
@@ -930,9 +929,9 @@ public partial class BindingTests
     {
         string markup =
             @"<lane orientation=""vertical"">
-                <lane *repeat={{Items}}>
-                    <frame *context={{Inner}}>
-                        <label max-lines={{~ContextWalkingTestModel.MaxLines}} color={{~ItemData.Color}} text={{Text}} />
+                <lane *repeat={Items}>
+                    <frame *context={Inner}>
+                        <label max-lines={~ContextWalkingTestModel.MaxLines} color={~ItemData.Color} text={Text} />
                     </frame>
                 </lane>
             </lane>";
@@ -1019,7 +1018,7 @@ public partial class BindingTests
     [Fact]
     public void WhenIncludedDataChanges_UpdatesView()
     {
-        assetCache.Put("LabelView", Document.Parse(@"<label text={{LabelText}} />"));
+        assetCache.Put("LabelView", Document.Parse(@"<label text={LabelText} />"));
         string markup =
             @"<frame>
                 <include name=""LabelView"" />
@@ -1041,11 +1040,11 @@ public partial class BindingTests
     [Fact]
     public void WhenIncludedNameChanges_ReplacesView()
     {
-        assetCache.Put("LabelView", Document.Parse(@"<label text={{LabelText}} />"));
-        assetCache.Put("ImageView", Document.Parse(@"<image sprite={{Sprite}} />"));
+        assetCache.Put("LabelView", Document.Parse(@"<label text={LabelText} />"));
+        assetCache.Put("ImageView", Document.Parse(@"<image sprite={Sprite} />"));
         string markup =
             @"<frame>
-                <include name={{AssetName}} />
+                <include name={AssetName} />
             </frame>";
         var model = new SingleIncludeModel()
         {
@@ -1069,7 +1068,7 @@ public partial class BindingTests
     [Fact]
     public void WhenIncludedAssetExpires_ReloadsAndReplacesView()
     {
-        assetCache.Put("IncludedView", Document.Parse(@"<label text={{LabelText}} />"));
+        assetCache.Put("IncludedView", Document.Parse(@"<label text={LabelText} />"));
         string markup =
             @"<frame>
                 <include name=""IncludedView"" />
@@ -1081,7 +1080,7 @@ public partial class BindingTests
         var label = Assert.IsType<Label>(rootView.Content);
         Assert.Equal("Foo", label.Text);
 
-        assetCache.Put("IncludedView", Document.Parse(@"<image sprite={{Sprite}} tooltip={{LabelText}} />"));
+        assetCache.Put("IncludedView", Document.Parse(@"<image sprite={Sprite} tooltip={LabelText} />"));
         tree.Update();
 
         var image = Assert.IsType<Image>(rootView.Content);
@@ -1104,10 +1103,10 @@ public partial class BindingTests
     [Fact]
     public void WhenIncludedExplicitContextChanges_UpdatesView()
     {
-        assetCache.Put("LabelView", Document.Parse(@"<label text={{LabelText}} />"));
+        assetCache.Put("LabelView", Document.Parse(@"<label text={LabelText} />"));
         string markup =
             @"<frame>
-                <include name=""LabelView"" *context={{Inner}} />
+                <include name=""LabelView"" *context={Inner} />
             </frame>";
         var model = new NestedIncludeModel() { Inner = new() { LabelText = "Foo" } };
         var tree = BuildTreeFromMarkup(markup, model);
@@ -1141,10 +1140,10 @@ public partial class BindingTests
     [Fact]
     public void WhenIncludedImplicitContextChanges_UpdatesView()
     {
-        assetCache.Put("LabelView", Document.Parse(@"<label max-lines={{^MaxLines}} text={{LabelText}} />"));
+        assetCache.Put("LabelView", Document.Parse(@"<label max-lines={^MaxLines} text={LabelText} />"));
         string markup =
             @"<lane>
-                <include name=""LabelView"" *repeat={{Items}} />
+                <include name=""LabelView"" *repeat={Items} />
             </lane>";
         var model = new RepeatingIncludeModel()
         {
@@ -1223,7 +1222,7 @@ public partial class BindingTests
     {
         string markup =
             @"<lane>
-                <frame *repeat={{Items}}>
+                <frame *repeat={Items}>
                     <button click=|^IncrementItem(Id, ^Delta, $Button)| />
                 </frame>
             </lane>";
@@ -1267,13 +1266,13 @@ public partial class BindingTests
     public void WhenSameEventBoundForManyViews_InvokesWithSeparateArgs()
     {
         string markup =
-            @"<frame *context={{Data}} click=|AddResult(""frame"", Value)|>
+            @"<frame *context={Data} click=|AddResult(""frame"", Value)|>
                 <lane click=|^AddResult(Name, Value)|>
                     <panel>
-                        <frame *context={{Inner1}}>
+                        <frame *context={Inner1}>
                             <image click=|^^AddResult(""image1"", Value)| />
                         </frame>
-                        <frame *context={{Inner2}}>
+                        <frame *context={Inner2}>
                             <image click=|~ManyToOneEventTestModel.AddResult(""image2"", Value)| />
                         </frame>
                     </panel>
@@ -1354,7 +1353,7 @@ public partial class BindingTests
     [Fact]
     public void WhenEventBoundWithNoParameters_InvokesWithReceiverOnly()
     {
-        string markup = @"<slider min=""50"" max=""200"" value={{<>Money}} value-change=|HandleChange()| />";
+        string markup = @"<slider min=""50"" max=""200"" value={<>Money} value-change=|HandleChange()| />";
         var model = new NoParamsEventTestModel() { Money = 100 };
         var tree = BuildTreeFromMarkup(markup, model);
         var slider = Assert.IsType<Slider>(tree.Views.SingleOrDefault());

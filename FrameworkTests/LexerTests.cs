@@ -13,14 +13,17 @@ public class LexerTests
         }
     }
 
+    // Test cases alternate between single and double braces, just to ensure that both actually work in a variety of
+    // contexts. In general, new templates should use single braces, but doubles are supported for those who are used
+    // to Content Patcher syntax.
     public static TheoryData<string, TestableToken[]> Data =>
         new()
         {
             {
                 @"<lane orientation=""vertical"" align-content=""middle end"">
-                    <image width={{<ImageWidth}} sprite={{@Mods/focustense.StardewUITest/Sprites/Header}} />
+                    <image width={<ImageWidth} sprite={@Mods/focustense.StardewUITest/Sprites/Header} />
                     <label font=""dialogue"" text={{HeaderText}} />
-                    <checkbox is-checked={{<>Checked}}/>
+                    <checkbox is-checked={<>Checked}/>
                 </lane>",
 
                 [
@@ -41,16 +44,16 @@ public class LexerTests
                     new(TokenType.Name, "image"),
                     new(TokenType.Name, "width"),
                     new(TokenType.Assignment, "="),
-                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingStart, "{"),
                     new(TokenType.BindingModifier, "<"),
                     new(TokenType.Literal, "ImageWidth"),
-                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.BindingEnd, "}"),
                     new(TokenType.Name, "sprite"),
                     new(TokenType.Assignment, "="),
-                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingStart, "{"),
                     new(TokenType.BindingModifier, "@"),
                     new(TokenType.Literal, "Mods/focustense.StardewUITest/Sprites/Header"),
-                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.BindingEnd, "}"),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -69,10 +72,10 @@ public class LexerTests
                     new(TokenType.Name, "checkbox"),
                     new(TokenType.Name, "is-checked"),
                     new(TokenType.Assignment, "="),
-                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingStart, "{"),
                     new(TokenType.BindingModifier, "<>"),
                     new(TokenType.Literal, "Checked"),
-                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.BindingEnd, "}"),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                     new(TokenType.ClosingTagStart, "</"),
                     new(TokenType.Name, "lane"),
@@ -80,7 +83,7 @@ public class LexerTests
                 ]
             },
             {
-                @"<label font=""small"" *repeat={{<Items}} text={{DisplayName}} />",
+                @"<label font=""small"" *repeat={<Items} text={{DisplayName}} />",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
@@ -93,10 +96,10 @@ public class LexerTests
                     new(TokenType.AttributeModifier, "*"),
                     new(TokenType.Name, "repeat"),
                     new(TokenType.Assignment, "="),
-                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingStart, "{"),
                     new(TokenType.BindingModifier, "<"),
                     new(TokenType.Literal, "Items"),
-                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.BindingEnd, "}"),
                     new(TokenType.Name, "text"),
                     new(TokenType.Assignment, "="),
                     new(TokenType.BindingStart, "{{"),
@@ -106,18 +109,18 @@ public class LexerTests
                 ]
             },
             {
-                @"<textinput text={{<>^Name}} />",
+                @"<textinput text={<>^Name} />",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "textinput"),
                     new(TokenType.Name, "text"),
                     new(TokenType.Assignment, "="),
-                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingStart, "{"),
                     new(TokenType.BindingModifier, "<>"),
                     new(TokenType.ContextParent, "^"),
                     new(TokenType.Literal, "Name"),
-                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.BindingEnd, "}"),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },
@@ -140,20 +143,20 @@ public class LexerTests
                 ]
             },
             {
-                @"<checkbox is-checked={{>~Foo.Enabled}} />",
+                @"<checkbox is-checked={>~Foo.Enabled} />",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "checkbox"),
                     new(TokenType.Name, "is-checked"),
                     new(TokenType.Assignment, "="),
-                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingStart, "{"),
                     new(TokenType.BindingModifier, ">"),
                     new(TokenType.ContextAncestor, "~"),
                     new(TokenType.Literal, "Foo"),
                     new(TokenType.NameSeparator, "."),
                     new(TokenType.Literal, "Enabled"),
-                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.BindingEnd, "}"),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },

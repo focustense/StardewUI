@@ -317,6 +317,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
             Mode.Binding => text switch
             {
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
+                ['}', ..] => new(TokenType.BindingEnd, 1),
                 ['^', ..] => new(TokenType.ContextParent, 1),
                 ['~', ..] => new(TokenType.ContextAncestor, 1),
                 ['.', ..] => new(TokenType.NameSeparator, 1),
@@ -324,7 +325,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['<', ..] => new(TokenType.BindingModifier, 1),
                 ['>', ..] => new(TokenType.BindingModifier, 1),
                 ['@', ..] => new(TokenType.BindingModifier, 1),
-                _ => nameSeparatorEnabled ? ReadLiteralStringUntil("}}", ".") : ReadLiteralStringUntil("}}"),
+                _ => nameSeparatorEnabled ? ReadLiteralStringUntil("}", ".") : ReadLiteralStringUntil("}"),
             },
             Mode.Event => text switch
             {
@@ -355,7 +356,9 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['=', ..] => new(TokenType.Assignment, 1),
                 ['"', ..] => new(TokenType.Quote, 1),
                 ['{', '{', ..] => new(TokenType.BindingStart, 2),
+                ['{', ..] => new(TokenType.BindingStart, 1),
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
+                ['}', ..] => new(TokenType.BindingEnd, 1),
                 ['*', ..] => new(TokenType.AttributeModifier, 1),
                 ['|', ..] => new(TokenType.Pipe, 1),
                 _ => ReadName(),
