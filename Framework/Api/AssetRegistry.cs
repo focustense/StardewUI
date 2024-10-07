@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
+﻿using System.Collections.Concurrent;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewUI.Framework.Dom;
 
 namespace StardewUI.Framework.Api;
@@ -20,7 +21,7 @@ internal class AssetRegistry
     // which is essentially how helpers like UiSprites behave.
     record SpriteCacheEntry(string TextureAssetName, Func<Texture2D, Sprite> Selector);
 
-    private readonly IGameContentHelper gameContent;
+    private readonly IModHelper helper;
     private readonly IMonitor monitor;
     private readonly List<DirectoryMapping> spriteDirectories = [];
     private readonly List<DirectoryMapping> viewDirectories = [];
@@ -39,13 +40,32 @@ internal class AssetRegistry
     // also have to monitor them for invalidation and also ensure they're not disposed before using them.
     private readonly Dictionary<string, WeakReference<Texture2D>> textureCache = new(StringComparer.OrdinalIgnoreCase);
 
-    public AssetRegistry(IGameContentHelper gameContent, IContentEvents contentEvents, IMonitor monitor)
+    private ConcurrentBag<string> assetsToInvalidate = [];
+    private FileSystemWatcher? fileSystemWatcher;
+
+    public AssetRegistry(IModHelper helper, IMonitor monitor)
     {
-        this.gameContent = gameContent;
+        this.helper = helper;
         this.monitor = monitor;
 
+        var contentEvents = helper.Events.Content;
         contentEvents.AssetRequested += Content_AssetRequested;
         contentEvents.AssetsInvalidated += Content_AssetsInvalidated;
+    }
+
+    /// <summary>
+    /// Starts monitoring the file system for changes to any of the mod's assets.
+    /// </summary>
+    public void EnableHotReloading()
+    {
+        if (fileSystemWatcher is not null)
+        {
+            return;
+        }
+        helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+        fileSystemWatcher = new FileSystemWatcher(helper.DirectoryPath) { IncludeSubdirectories = true };
+        fileSystemWatcher.Changed += FileSystemWatcher_Changed;
+        fileSystemWatcher.EnableRaisingEvents = true;
     }
 
     /// <inheritdoc cref="IViewEngine.RegisterSprites(string, string)" />
@@ -55,7 +75,7 @@ internal class AssetRegistry
         {
             assetPrefix += '/';
         }
-        spriteDirectories.Add(new(assetPrefix, modDirectory));
+        spriteDirectories.Add(new(assetPrefix, PathUtilities.NormalizePath(modDirectory)));
     }
 
     /// <inheritdoc cref="IViewEngine.RegisterViews(string, string)" />
@@ -65,7 +85,7 @@ internal class AssetRegistry
         {
             assetPrefix += '/';
         }
-        viewDirectories.Add(new(assetPrefix, modDirectory));
+        viewDirectories.Add(new(assetPrefix, PathUtilities.NormalizePath(modDirectory)));
     }
 
     private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)
@@ -82,24 +102,75 @@ internal class AssetRegistry
 
     private void Content_AssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e)
     {
+        var isMainThread = Game1.IsOnMainThread();
         foreach (var assetName in e.Names)
         {
-            textureCache.Remove(assetName.Name);
-            spriteCache.Remove(assetName.Name);
-            if (spriteSheetCache.Remove(assetName.Name))
+            var key = assetName.Name;
+            if (key.EndsWith("@data"))
+            {
+                key = key[..^5];
+            }
+            textureCache.Remove(key);
+            spriteCache.Remove(key);
+            if (spriteSheetCache.Remove(key))
             {
                 // Invalidating an entire sprite sheet means we should also invalidate all of its sprites.
                 // Here we make the same assumptions as TryLoadSprite, namely that sprite assets are of the form
                 // "Path/To/Spritesheet:SpriteName".
-                var dependentKeys = spriteCache.Keys.Where(key =>
-                    key.StartsWith(assetName.Name, StringComparison.OrdinalIgnoreCase)
+                var dependentKeys = spriteCache.Keys.Where(otherKey =>
+                    otherKey.StartsWith(key, StringComparison.OrdinalIgnoreCase)
                 );
-                foreach (var key in dependentKeys)
+                foreach (var dependentKey in dependentKeys)
                 {
-                    spriteCache.Remove(key);
+                    if (isMainThread)
+                    {
+                        helper.GameContent.InvalidateCache(dependentKey);
+                    }
+                    else
+                    {
+                        assetsToInvalidate.Add(dependentKey);
+                    }
                 }
             }
         }
+    }
+
+    private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
+    {
+        // Tweak: Don't invalidate the asset until we know we can read from it, otherwise we can get an access exception
+        // when trying to load it on the next frame.
+        //
+        // This handles the typical case when FSW might fire a couple of events, the first one or two while the file is
+        // still locked; it might behave badly for pathological cases like copying a gigabyte-long file over hundreds of
+        // frames.
+        //
+        // Also, it helps to do this on the FSW thread instead of checking it in the Update loop, as this way we won't
+        // block the update loop.
+        try
+        {
+            using var _ = File.OpenRead(e.FullPath);
+        }
+        catch (IOException)
+        {
+            return;
+        }
+        switch (Path.GetExtension(e.Name))
+        {
+            case ".sml":
+                InvalidateFile(viewDirectories, e.Name!);
+                break;
+            case ".json":
+                InvalidateFile(spriteDirectories, e.Name!, "@data");
+                break;
+            case ".png":
+                InvalidateFile(spriteDirectories, e.Name!);
+                break;
+        }
+    }
+
+    private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        MainThreadUpdate();
     }
 
     private static string? GetRelativeAssetPath(AssetRequestedEventArgs e, string prefix)
@@ -113,7 +184,7 @@ internal class AssetRegistry
         {
             try
             {
-                data = gameContent.Load<SpriteSheetData>(assetName + "@data");
+                data = helper.GameContent.Load<SpriteSheetData>(assetName + "@data");
             }
             catch (Exception ex)
             {
@@ -137,7 +208,7 @@ internal class AssetRegistry
         Texture2D texture;
         try
         {
-            texture = gameContent.Load<Texture2D>(assetName);
+            texture = helper.GameContent.Load<Texture2D>(assetName);
         }
         catch (Exception ex)
         {
@@ -146,6 +217,45 @@ internal class AssetRegistry
         }
         textureCache[assetName] = new(texture);
         return texture;
+    }
+
+    private void InvalidateFile(
+        IReadOnlyList<DirectoryMapping> directories,
+        string relativePath,
+        string assetSuffix = ""
+    )
+    {
+        var isMainThread = Game1.IsOnMainThread();
+        relativePath = PathUtilities.NormalizePath(Path.ChangeExtension(relativePath, null));
+        foreach (var (assetPrefix, modDirectory) in directories)
+        {
+            if (relativePath.StartsWith(modDirectory))
+            {
+                // Mod directory path won't have the trailing path separator, so we need to add 1 to length.
+                var assetName = assetPrefix + relativePath[(modDirectory.Length + 1)..] + assetSuffix;
+                if (isMainThread)
+                {
+                    helper.GameContent.InvalidateCache(assetName);
+                }
+                else
+                {
+                    assetsToInvalidate.Add(assetName);
+                }
+                break;
+            }
+        }
+    }
+
+    // Performs scheduled tasks that must be run on the main thread.
+    // In particular, cache invalidation for objects such as textures is dangerous to run in the background.
+    private void MainThreadUpdate()
+    {
+        var assetsToInvalidate = this.assetsToInvalidate;
+        this.assetsToInvalidate = [];
+        while (assetsToInvalidate.TryTake(out var assetName))
+        {
+            helper.GameContent.InvalidateCache(assetName);
+        }
     }
 
     private static bool TryLoadAsset<T>(

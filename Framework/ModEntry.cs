@@ -51,7 +51,7 @@ internal sealed class ModEntry : Mod
             );
             return null;
         }
-        return new ViewEngine(assetCache, mod.Helper.GameContent, viewNodeFactory, mod.Helper.Events.Content, Monitor);
+        return new ViewEngine(assetCache, mod.Helper, viewNodeFactory, Monitor);
     }
 
     private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)

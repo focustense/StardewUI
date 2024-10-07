@@ -6,9 +6,9 @@
             <label text="This is an example paragraph." />
             <panel margin="0,8,0,0" horizontal-content-alignment="middle" vertical-content-alignment="middle">
                 <image layout="stretch" fit="stretch" sprite={{@Mods/focustense.StardewUITest/Sprites/Cursors:SpecialBorder}} />
-                <image layout="64px 64px" margin="12" sprite={{ItemData}} />
+                <image layout="64px 64px" margin="14" sprite={{ItemData}} />
                 <panel layout="stretch" horizontal-content-alignment="end">
-                    <image layout="27px 27px" margin="0,8,8,0" sprite={{@Mods/focustense.StardewUITest/Sprites/Status:Checked}} />
+                    <image layout="27px 27px" margin="0,10,10,0" sprite={{@Mods/focustense.StardewUITest/Sprites/Status:Checked}} />
                 </panel>
             </panel>
         </lane>

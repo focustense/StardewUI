@@ -38,6 +38,15 @@ public interface IViewEngine
     IClickableMenu CreateMenuFromMarkup(string markup, object? context = null);
 
     /// <summary>
+    /// Starts monitoring this mod's directory for changes to assets managed by any of the <c>Register</c> methods, e.g.
+    /// views and sprites.
+    /// </summary>
+    /// <remarks>
+    /// May impact game performance and should normally only be used during development and/or in debug mode.
+    /// </remarks>
+    void EnableHotReloading();
+
+    /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
     /// </summary>
     /// <param name="assetPrefix">The prefix for all asset names, e.g. <c>Mods/MyMod/Sprites</c>. This can be any value

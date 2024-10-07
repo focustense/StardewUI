@@ -31,6 +31,7 @@ internal sealed class ModEntry : Mod
         viewEngine = Helper.ModRegistry.GetApi<IViewEngine>("focustense.StardewUI")!;
         viewEngine.RegisterSprites($"Mods/{ModManifest.UniqueID}/Sprites", "assets/sprites");
         viewEngine.RegisterViews(viewAssetPrefix, "assets/views");
+        viewEngine.EnableHotReloading();
     }
 
     private void Input_ButtonPressed(object? sender, ButtonPressedEventArgs e)
