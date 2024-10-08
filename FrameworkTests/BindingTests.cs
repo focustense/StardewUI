@@ -523,8 +523,6 @@ public partial class BindingTests
         private Selection second = Selection.Bar;
     }
 
-    // TODO: This test would be more useful if implemented using narrowed contexts, i.e. where the bound value is
-    // actually on the item itself. But we don't have those types of attributes yet.
     [Fact]
     public void WhenCaseMatchesDirectChildBinding_RendersView()
     {
@@ -557,6 +555,30 @@ public partial class BindingTests
                 Assert.Equal("Item 2", label.Text);
             }
         );
+    }
+
+    [Fact]
+    public void WhenCaseMatchesIndirectChildBinding_RendersView()
+    {
+        string markup =
+            @"<lane *switch={Current}>
+                <frame layout=""24px 24px"">
+                    <label *case=""Foo"" text=""Item 1"" />
+                    <label *case=""Bar"" text=""Item 2"" />
+                </frame>
+            </lane>";
+        var model = new SwitchCaseBindingTestModel() { Current = SwitchCaseBindingTestModel.Selection.Bar };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        var frame = Assert.IsType<Frame>(rootView.Children[0]);
+        var label = Assert.IsType<Label>(frame.Content);
+        Assert.Equal("Item 2", label.Text);
+
+        model.Current = SwitchCaseBindingTestModel.Selection.Foo;
+        tree.Update();
+        label = Assert.IsType<Label>(frame.Content);
+        Assert.Equal("Item 1", label.Text);
     }
 
     partial class RepeatingElement : INotifyPropertyChanged
@@ -1384,6 +1406,80 @@ public partial class BindingTests
         slider.Value = 150;
 
         Assert.Equal(100, model.PreviousMoney);
+    }
+
+    partial class TabsTestModel : INotifyPropertyChanged
+    {
+        public enum Tab
+        {
+            One,
+            Two,
+            Three,
+        };
+
+        public string HeaderText { get; set; } = "";
+        public string Page1Text { get; set; } = "";
+        public string Page2Text { get; set; } = "";
+        public string Page3Text { get; set; } = "";
+
+        [Notify]
+        private Tab selectedTab;
+
+        public void ChangeTab(Tab tab)
+        {
+            SelectedTab = tab;
+        }
+    }
+
+    [Fact]
+    public void WhenEventHandlerChangesModel_UpdatesViewContent()
+    {
+        string markup =
+            @"<lane orientation=""vertical"" horizontal-content-alignment=""middle"">
+                <banner background-border-thickness=""48,0"" padding=""12"" text={HeaderText} />
+                <lane orientation=""horizontal"" horizontal-content-alignment=""middle"">
+                    <button text=""Tab 1"" click=|ChangeTab(""One"")|/>
+                    <button text=""Tab 2"" click=|ChangeTab(""Two"")|/>
+                    <button text=""Tab 3"" click=|ChangeTab(""Three"")|/>
+                </lane>
+                <frame *switch={SelectedTab} layout=""200px 200px"" margin=""0,16,0,0"" padding=""32,24"">
+                    <label *case=""One"" text={Page1Text} />
+                    <label *case=""Two"" text={Page2Text} />
+                    <label *case=""Three"" text={Page3Text} />
+                </frame>
+            </lane>";
+        var model = new TabsTestModel()
+        {
+            HeaderText = "Tabbed Menu",
+            Page1Text = "This is the first page.",
+            Page2Text = "This is the second page.",
+            Page3Text = "This is the third page.",
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var root = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        var banner = Assert.IsType<Banner>(root.Children[0]);
+        Assert.Equal("Tabbed Menu", banner.Text);
+        var tabsLane = Assert.IsType<Lane>(root.Children[1]);
+        var tab2Button = Assert.IsType<Button>(tabsLane.Children[1]);
+        var tab3Button = Assert.IsType<Button>(tabsLane.Children[2]);
+        var contentFrame = Assert.IsType<Frame>(root.Children[2]);
+
+        var label = Assert.IsType<Label>(contentFrame.Content);
+        Assert.Equal("This is the first page.", label.Text);
+
+        var dummyEventArgs = new ClickEventArgs(Vector2.Zero, SButton.ControllerA);
+        tab2Button.OnClick(dummyEventArgs);
+        tree.Update();
+
+        label = Assert.IsType<Label>(contentFrame.Content);
+        Assert.Equal("This is the second page.", label.Text);
+
+        tab3Button.OnClick(dummyEventArgs);
+        tree.Update();
+
+        label = Assert.IsType<Label>(contentFrame.Content);
+        Assert.Equal("This is the third page.", label.Text);
     }
 
     private IViewNode BuildTreeFromMarkup(string markup, object model)
