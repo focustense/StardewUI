@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 
 namespace StardewUI.Framework.Converters;
 
@@ -85,6 +86,10 @@ public class ValueConverterFactory : IValueConverterFactory
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
         TryRegister<string, Edges>(Edges.Parse);
+        TryRegister<int, Edges>(all => new(all));
+        TryRegister<Tuple<int, int>, Edges>(t => new(t.Item1, t.Item2));
+        TryRegister<Point, Edges>(p => new(p.X, p.Y));
+        TryRegister<Tuple<int, int, int, int>, Edges>(t => new(t.Item1, t.Item2, t.Item3, t.Item4));
         TryRegister(new GridItemLayoutConverter());
         TryRegister(new LayoutConverter());
         TryRegister(new NamedFontConverter());
