@@ -482,6 +482,29 @@ public partial class BindingTests
         );
     }
 
+    [Fact]
+    public void WhenCaseUsedInSingleChildLayout_RendersOneChild()
+    {
+        string markup =
+            @"<frame *switch={WhichItem}>
+                <label *case=""1"" text=""Item 1"" />
+                <label *case=""2"" text=""Item 2"" />
+                <label *case=""3"" text=""Item 3"" />
+            </frame>";
+        var model = new SwitchCaseLiteralTestModel() { WhichItem = 3 };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        Assert.NotNull(rootView);
+        var label = Assert.IsType<Label>(rootView.Content);
+        Assert.Equal("Item 3", label.Text);
+
+        model.WhichItem = 2;
+        tree.Update();
+        label = Assert.IsType<Label>(rootView.Content);
+        Assert.Equal("Item 2", label.Text);
+    }
+
     partial class SwitchCaseBindingTestModel : INotifyPropertyChanged
     {
         public enum Selection
