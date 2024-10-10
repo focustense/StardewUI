@@ -86,16 +86,33 @@ public class ValueConverterFactory : IValueConverterFactory
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
         TryRegister<string, Edges>(Edges.Parse);
-        TryRegister<int, Edges>(all => new(all));
-        TryRegister<Tuple<int, int>, Edges>(t => new(t.Item1, t.Item2));
-        TryRegister<Point, Edges>(p => new(p.X, p.Y));
-        TryRegister<Tuple<int, int, int, int>, Edges>(t => new(t.Item1, t.Item2, t.Item3, t.Item4));
         TryRegister(new GridItemLayoutConverter());
         TryRegister(new LayoutConverter());
         TryRegister(new NamedFontConverter());
         TryRegister(new PointConverter());
         TryRegister(new RectangleConverter());
         TryRegister(new Vector2Converter());
+
+        // Edges are better to bind as numbers, so we can use tuples and XNA equivalents in some cases.
+        TryRegister<int, Edges>(all => new(all));
+        TryRegister<Tuple<int, int>, Edges>(t => new(t.Item1, t.Item2));
+        TryRegister<Point, Edges>(p => new(p.X, p.Y));
+        TryRegister<Vector2, Edges>(v => new((int)v.X, (int)v.Y));
+        TryRegister<Tuple<int, int, int, int>, Edges>(t => new(t.Item1, t.Item2, t.Item3, t.Item4));
+        TryRegister<Tuple<Point, Point>, Edges>(t => new(t.Item1.X, t.Item1.Y, t.Item2.X, t.Item2.Y));
+        TryRegister<Tuple<Vector2, Vector2>, Edges>(t =>
+            new((int)t.Item1.X, (int)t.Item1.Y, (int)t.Item2.X, (int)t.Item2.Y)
+        );
+        TryRegister<Vector4, Edges>(v => new((int)v.X, (int)v.Y, (int)v.Z, (int)v.W));
+        // And the reverse conversions, where applicable...
+        TryRegister<Edges, Tuple<int, int, int, int>>(e => Tuple.Create(e.Left, e.Top, e.Right, e.Bottom));
+        TryRegister<Edges, Vector4>(e => new(e.Left, e.Top, e.Right, e.Bottom));
+
+        // Bounds are similar to edges, except we never accept them as inputs, so only need reverse conversions.
+        TryRegister<Bounds, Tuple<float, float, float, float>>(b => Tuple.Create(b.Left, b.Top, b.Right, b.Bottom));
+        TryRegister<Bounds, Tuple<Vector2, Vector2>>(b => Tuple.Create(b.Position, b.Size));
+        TryRegister<Bounds, Vector4>(b => new(b.Left, b.Top, b.Right, b.Bottom));
+        TryRegister<Bounds, Rectangle>(b => new(b.Position.ToPoint(), b.Size.ToPoint()));
 
         // Several converters for just the Sprite type, as it can be surprisingly complex and users won't have the exact
         // type.
