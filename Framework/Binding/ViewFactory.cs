@@ -31,7 +31,8 @@ public class ViewFactory : IViewFactory
             "banner" => new Banner(),
             "button" => new Button(),
             "checkbox" => new CheckBox(),
-            "dropdownlist" => new DropDownList<object>(),
+            "digits" => new TinyNumberLabel(),
+            "dropdown" => new DropDownList<object>(),
             "expander" => new Expander(),
             "frame" => new Frame(),
             "grid" => new Grid(),
@@ -40,11 +41,10 @@ public class ViewFactory : IViewFactory
             "lane" => new Lane(),
             "marquee" => new Marquee(),
             "panel" => new Panel(),
-            "scrollableview" => new ScrollableView(),
+            "scrollable" => new ScrollableView(),
             "slider" => new Slider(),
             "spacer" => new Spacer(),
             "textinput" => new TextInput(),
-            "tinynumberlabel" => new TinyNumberLabel(),
             _ => throw new ArgumentException($"Unsupported view type: {tagName}", nameof(tagName)),
         };
     }
