@@ -1,0 +1,32 @@
+.md-grid {
+  
+}
+
+table .md-tooltip {
+    top: inherit;
+    left: inherit;
+    margin-left: 12px;
+    margin-top: 7px;
+}
+
+.attribute-table th:nth-child(1) { width: 180px; }
+
+.event-table th:nth-child(1) { width: 150px; }
+
+.span-table [colspan], .span-table [rowspan] {
+    font-weight: inherit;
+}
+
+.type-conversions td {
+	border: 0.05rem solid var(--md-typeset-table-color);
+	padding: 0.25rem 0.5rem;
+}
+
+.type-conversions tr:first-child td:nth-child(3) { width: 240px; }
+.type-conversions tr:first-child td:nth-child(4) { width: 240px; }
+.md-typeset .type-conversions code { word-break: normal; }
+
+.md-typeset .no-code-break code {
+    word-break: normal;
+	white-space: nowrap;
+}
