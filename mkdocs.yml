@@ -3,9 +3,6 @@ site_url: https://focustense.github.io/StardewUI
 repo_url: https://github.com/focustense/StardewUI
 theme:
   name: material
-  features:
-    - navigation.instant
-    - navigation.instant.progress
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
