@@ -5,6 +5,7 @@
 /// </summary>
 public class Vector2Converter : IValueConverter<string, Vector2>
 {
+    /// <inheritdoc />
     public Vector2 Convert(string value)
     {
         var valueAsSpan = value.AsSpan();

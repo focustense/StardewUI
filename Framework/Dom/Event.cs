@@ -52,7 +52,7 @@ public record SEvent(
     /// <summary>
     /// Initializes a new <see cref="SArgument"/> from the data of a parsed argument.
     /// </summary>
-    /// <param name="event">The parsed event.</param>
+    /// <param name="e">The parsed event.</param>
     /// <param name="arguments">The event arguments.</param>
     public SEvent(Event e, IReadOnlyList<SArgument> arguments)
         : this(

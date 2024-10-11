@@ -10,15 +10,10 @@ namespace StardewUI.Widgets;
 /// An overlay that can be used to edit the position of some arbitrary content.
 /// </summary>
 /// <remarks>
-/// <para>
-/// The current position is controlled by the <see cref="HorizontalContentAlignment"/>,
-/// <see cref="VerticalContentAlignment"/> and <see cref="ContentOffset"/>.
-/// </para>
-/// <para>
 /// Note that the widget only provides a means to visually/interactively obtain a new position, similar to e.g.
-/// obtaining a text string from a modal input query. It is up to the caller to persist these values to configuration
-/// and determine how to actually position the content in its usual context (e.g. game HUD).
-/// </para>
+/// obtaining a text string from a modal input query. It is up to the caller to persist the resulting
+/// <see cref="ContentPlacement"/> to configuration and determine how to actually position the content in its usual
+/// context (e.g. game HUD).
 /// </remarks>
 /// <param name="buttonSpriteMap">Map of buttons to button prompt sprites.</param>
 /// <param name="directionSpriteMap">Map of directions to directional arrow sprites; used to indicate dragging.</param>
@@ -32,7 +27,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     /// <para>
     /// For all <see cref="IReadOnlyList{T}"/> properties, <b>any</b> of the buttons can be pressed in order to perform
     /// that function; it is primarily intended to support left-stick/d-pad equivalency and WASD/arrow-key equivalency.
-    /// Button combinations are not supported except as part of <see cref="Modifier"/>.
+    /// Button combinations are not supported.
     /// </para>
     /// <para>
     /// Keyboard control schemes only specify the fine movements; alignments are always controlled using number/numpad
@@ -42,22 +37,26 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     public class ControlScheme
     {
         /// <summary>
-        /// Buttons to shift the content down one pixel by modifying <see cref="ContentOffset"/>.
+        /// Buttons to shift the content down one pixel by modifying the <see cref="NineGridPlacement.Offset"/> of the
+        /// <see cref="ContentPlacement"/>.
         /// </summary>
         public IReadOnlyList<SButton> FineDown { get; init; } = [];
 
         /// <summary>
-        /// Buttons to shift the content left one pixel by modifying <see cref="ContentOffset"/>.
+        /// Buttons to shift the content left one pixel by modifying the <see cref="NineGridPlacement.Offset"/> of the
+        /// <see cref="ContentPlacement"/>.
         /// </summary>
         public IReadOnlyList<SButton> FineLeft { get; init; } = [];
 
         /// <summary>
-        /// Buttons to shift the content right one pixel by modifying <see cref="ContentOffset"/>.
+        /// Buttons to shift the content right one pixel by modifying the <see cref="NineGridPlacement.Offset"/> of the
+        /// <see cref="ContentPlacement"/>.
         /// </summary>
         public IReadOnlyList<SButton> FineRight { get; init; } = [];
 
         /// <summary>
-        /// Buttons to shift the content up one pixel by modifying <see cref="ContentOffset"/>.
+        /// Buttons to shift the content up one pixel by modifying the <see cref="NineGridPlacement.Offset"/> of the
+        /// <see cref="ContentPlacement"/>.
         /// </summary>
         public IReadOnlyList<SButton> FineUp { get; init; } = [];
     }
@@ -69,28 +68,32 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     public class GamepadControlScheme : ControlScheme
     {
         /// <summary>
-        /// Buttons to shift the content down by one grid cell by changing <see cref="VerticalContentAlignment"/>.
+        /// Buttons to shift the content down by one grid cell by changing the
+        /// <see cref="NineGridPlacement.VerticalAlignment"/> of the <see cref="ContentPlacement"/>.
         /// <see cref="Alignment.Start"/> becomes <see cref="Alignment.Middle"/> and <see cref="Alignment.Middle"/>
         /// becomes <see cref="Alignment.End"/>.
         /// </summary>
         public IReadOnlyList<SButton> GridDown { get; init; } = [];
 
         /// <summary>
-        /// Buttons to shift the content left by one grid cell by changing <see cref="HorizontalContentAlignment"/>.
+        /// Buttons to shift the content left by one grid cell by changing the
+        /// <see cref="NineGridPlacement.HorizontalAlignment"/> of the <see cref="ContentPlacement"/>.
         /// <see cref="Alignment.End"/> becomes <see cref="Alignment.Middle"/> and <see cref="Alignment.Middle"/>
         /// becomes <see cref="Alignment.Start"/>.
         /// </summary>
         public IReadOnlyList<SButton> GridLeft { get; init; } = [];
 
         /// <summary>
-        /// Buttons to shift the content right by one grid cell by changing <see cref="HorizontalContentAlignment"/>.
+        /// Buttons to shift the content right by one grid cell by changing the
+        /// <see cref="NineGridPlacement.HorizontalAlignment"/> of the <see cref="ContentPlacement"/>.
         /// <see cref="Alignment.Start"/> becomes <see cref="Alignment.Middle"/> and <see cref="Alignment.Middle"/>
         /// becomes <see cref="Alignment.End"/>.
         /// </summary>
         public IReadOnlyList<SButton> GridRight { get; init; } = [];
 
         /// <summary>
-        /// Buttons to shift the content up by one grid cell by changing <see cref="VerticalContentAlignment"/>.
+        /// Buttons to shift the content up by one grid cell by changing the
+        /// <see cref="NineGridPlacement.VerticalAlignment"/> of the <see cref="ContentPlacement"/>.
         /// <see cref="Alignment.End"/> becomes <see cref="Alignment.Middle"/> and <see cref="Alignment.Middle"/>
         /// becomes <see cref="Alignment.Start"/>.
         /// </summary>
@@ -153,6 +156,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
     private readonly ISpriteMap<SButton> buttonSpriteMap = buttonSpriteMap;
     private readonly ISpriteMap<Direction> directionSpriteMap = directionSpriteMap;
 
+    /// <inheritdoc />
     protected override IView CreateView()
     {
         var actionState = BuildActionState();

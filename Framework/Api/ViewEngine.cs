@@ -13,19 +13,19 @@ namespace StardewUI.Framework.Api;
 /// <param name="helper">SMAPI mod helper for the API consumer mod (not for StardewUI).</param>
 /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
 /// <param name="monitor">Monitor for logging events.</param>
-/// <param name="enableHotReloading">Whether to enable automatic hot reloading by watching the mod's physical files in
-/// the mod directory.</param>
 public class ViewEngine(IAssetCache assetCache, IModHelper helper, IViewNodeFactory viewNodeFactory, IMonitor monitor)
     : IViewEngine
 {
     private readonly AssetRegistry assetRegistry = new(helper, monitor);
 
+    /// <inheritdoc />
     public IClickableMenu CreateMenuFromAsset(string assetName, object? context = null)
     {
         var documentSource = new AssetValueSource<Document>(assetCache, assetName);
         return new DocumentViewMenu(viewNodeFactory, documentSource, context);
     }
 
+    /// <inheritdoc />
     public IClickableMenu CreateMenuFromMarkup(string markup, object? context = null)
     {
         var document = Document.Parse(markup);
@@ -33,16 +33,19 @@ public class ViewEngine(IAssetCache assetCache, IModHelper helper, IViewNodeFact
         return new DocumentViewMenu(viewNodeFactory, documentSource, context);
     }
 
+    /// <inheritdoc />
     public void EnableHotReloading()
     {
         assetRegistry.EnableHotReloading();
     }
 
+    /// <inheritdoc />
     public void RegisterSprites(string assetPrefix, string modDirectory)
     {
         assetRegistry.RegisterSprites(assetPrefix, modDirectory);
     }
 
+    /// <inheritdoc />
     public void RegisterViews(string assetPrefix, string modDirectory)
     {
         assetRegistry.RegisterViews(assetPrefix, modDirectory);

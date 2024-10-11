@@ -111,7 +111,7 @@ public class Label : View
     /// +--------------------------------------------+
     /// </code>
     /// </example>
-    /// Alignment behavior is also sensitive to the width settings in <see cref="Layout"/>.
+    /// Alignment behavior is also sensitive to the width settings in <see cref="View.Layout"/>.
     /// <see cref="Alignment.Middle"/> and <see cref="Alignment.End"/> may have no effect if the width type is set to
     /// <see cref="LengthType.Content"/>; for non-default alignments to work, one of the other length types is required.
     /// </remarks>
@@ -167,6 +167,7 @@ public class Label : View
     private Alignment horizontalAlignment; // Not dirty-tracked as it doesn't change the max line width.
     private List<string> lines = [];
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         var y = 0;
@@ -184,11 +185,13 @@ public class Label : View
         }
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return font.IsDirty || maxLines.IsDirty || text.IsDirty;
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         // For text, we need to always perform the line-breaking algorithm on layout (so that it is
@@ -198,6 +201,7 @@ public class Label : View
         ContentSize = Layout.Resolve(availableSize, () => new(maxLineWidth, lines.Count * Font.LineSpacing));
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         font.ResetDirty();

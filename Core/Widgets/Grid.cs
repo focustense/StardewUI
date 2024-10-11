@@ -155,6 +155,7 @@ public class Grid : View
     private float itemLength;
     private readonly List<float> secondaryStartPositions = [];
 
+    /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         var cellPosition = GetCellAt(contentPosition);
@@ -192,11 +193,13 @@ public class Grid : View
         }
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return childPositions;
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
         var cellPosition = GetCellAt(contentPosition);
@@ -207,6 +210,7 @@ public class Grid : View
         return (child?.ContainsPoint(contentPosition) ?? false) ? [child] : [];
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return itemLayout.IsDirty
@@ -216,6 +220,7 @@ public class Grid : View
             || children.Any(child => child.IsDirty());
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         foreach (var (child, position) in childPositions.OrderBy(child => child.View.ZIndex))
@@ -226,6 +231,7 @@ public class Grid : View
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         childPositions.Clear();
@@ -301,6 +307,7 @@ public class Grid : View
         ContentSize = Layout.Resolve(availableSize, () => accumulatedSize);
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         itemLayout.ResetDirty();
@@ -394,6 +401,7 @@ public abstract record GridItemLayout
     /// <param name="ItemCount">Maximum number of cell divisions along the primary orientation axis.</param>
     public sealed record Count(int ItemCount) : GridItemLayout
     {
+        /// <inheritdoc />
         public override (float, int) GetItemCountAndLength(float available, float spacing)
         {
             var validCount = Math.Max(ItemCount, 1);
@@ -409,6 +417,7 @@ public abstract record GridItemLayout
     /// <param name="Px">The length, in pixels, of each item along the grid's orientation axis.</param>
     public sealed record Length(float Px) : GridItemLayout
     {
+        /// <inheritdoc />
         public override (float, int) GetItemCountAndLength(float available, float spacing)
         {
             if (Px + spacing <= 0) // Invalid layout

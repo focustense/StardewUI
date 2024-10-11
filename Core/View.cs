@@ -352,11 +352,18 @@ public abstract class View : IView
     private Visibility visibility;
     private int zIndex;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="View"/>.
+    /// </summary>
+    /// <remarks>
+    /// The view's <see cref="Name"/> will default to the simple name of its most derived <see cref="Type"/>.
+    /// </remarks>
     public View()
     {
         name = GetType().Name;
     }
 
+    /// <inheritdoc />
     public bool ContainsPoint(Vector2 point)
     {
         return ActualBounds.ContainsPoint(point)
@@ -364,6 +371,11 @@ public abstract class View : IView
             || (hasChildrenWithOutOfBoundsContent && GetChildren().Any(c => c.ContainsPoint(point)));
     }
 
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
+    /// Drawing always happens after the measure pass, so <see cref="ContentSize"/> should be known and stable at this
+    /// time, as long as the implementation itself is stable.
+    /// </remarks>
     public void Draw(ISpriteBatch b)
     {
         if (Visibility != Visibility.Visible)
@@ -384,12 +396,14 @@ public abstract class View : IView
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc path="//*[not(self::remarks)]"/>
+    /// <remarks>
     /// This will first call <see cref="FindFocusableDescendant"/> to see if the specific view type wants to implement
     /// its own focus search. If there is no focusable descendant, then this will return a reference to the current view
     /// if <see cref="IsFocusable"/> is <c>true</c> and the position is <i>not</i> already within the view's bounds -
     /// meaning, any focusable view can accept focus from any direction, but will not consider itself a result if it is
     /// already focused (since we are trying to "move" focus).
+    /// </remarks>
     public FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
         if (Visibility != Visibility.Visible)
@@ -453,11 +467,13 @@ public abstract class View : IView
         return null;
     }
 
+    /// <inheritdoc />
     public ViewChild? GetChildAt(Vector2 position)
     {
         return GetChildrenAt(position).FirstOrDefault();
     }
 
+    /// <inheritdoc />
     public Vector2? GetChildPosition(IView childView)
     {
         return GetChildren()
@@ -467,6 +483,7 @@ public abstract class View : IView
             .FirstOrDefault();
     }
 
+    /// <inheritdoc />
     public IEnumerable<ViewChild> GetChildren()
     {
         var offset = GetContentOffset();
@@ -475,6 +492,7 @@ public abstract class View : IView
             .Concat(FloatingElements.Select(fe => fe.AsViewChild()));
     }
 
+    /// <inheritdoc />
     public IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
     {
         var offset = GetContentOffset();
@@ -494,6 +512,7 @@ public abstract class View : IView
         }
     }
 
+    /// <inheritdoc />
     public virtual ViewChild? GetDefaultFocusChild()
     {
         if (Focusable)
@@ -503,17 +522,20 @@ public abstract class View : IView
         return GetChildren().Where(child => child.View.GetDefaultFocusChild() is not null).FirstOrDefault();
     }
 
+    /// <inheritdoc />
     public bool HasOutOfBoundsContent()
     {
         return hasChildrenWithOutOfBoundsContent
             || FloatingElements.Any(fe => !ActualBounds.ContainsBounds(fe.AsViewChild().GetActualBounds()));
     }
 
+    /// <inheritdoc />
     public bool IsDirty()
     {
         return layout.IsDirty || margin.IsDirty || padding.IsDirty || IsContentDirty();
     }
 
+    /// <inheritdoc />
     public bool Measure(Vector2 availableSize)
     {
         if (!IsDirty() && availableSize == LastAvailableSize)
@@ -703,6 +725,7 @@ public abstract class View : IView
         return parent?.View.ScrollIntoView(children, out distance) ?? false;
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"{GetType().Name}('{Name}')";
@@ -770,8 +793,8 @@ public abstract class View : IView
     /// </summary>
     /// <remarks>
     /// The default implementation performs a linear search on all children and returns all whose bounds overlap the
-    /// specified <paramref name="position"/>. Views can override this to provide optimized implementations for their
-    /// layout, or handle overlapping views.
+    /// specified <paramref name="contentPosition"/>. Views can override this to provide optimized implementations for
+    /// their layout, or handle overlapping views.
     /// </remarks>
     /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
     /// margin, borders and padding).</param>
@@ -800,6 +823,7 @@ public abstract class View : IView
         return false;
     }
 
+    /// <inheritdoc />
     [Conditional("DEBUG_FOCUS_SEARCH")]
     protected void LogFocusSearch(string message)
     {

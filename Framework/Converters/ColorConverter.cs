@@ -19,6 +19,7 @@ public class ColorConverter : IValueConverter<string, Color>
         .Select(field => (name: field.Name, color: new Lazy<Color>(() => (Color)field.GetValue(null)!)))
         .ToDictionary(x => x.name, x => x.color);
 
+    /// <inheritdoc />
     public Color Convert(string value)
     {
         if (!value.StartsWith('#'))

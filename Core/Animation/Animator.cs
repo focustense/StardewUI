@@ -48,12 +48,12 @@ public class Animator<T, V> : IAnimator
     public bool AutoReverse { get; set; } = false;
 
     /// <summary>
-    /// The current animation, started by <see cref="Start"/>, if any.
+    /// The current animation, if any, started by <see cref="Start(Animation{V})"/> or any <c>Start</c> overloads.
     /// </summary>
     public Animation<V>? CurrentAnimation { get; private set; }
 
     /// <summary>
-    /// Gets whether or not the animator is currently animating in <see cref="Reverse">.
+    /// Gets whether or not the animator is currently animating in <see cref="Reverse" />.
     /// </summary>
     public bool IsReversing { get; private set; }
 
@@ -80,7 +80,7 @@ public class Animator<T, V> : IAnimator
     /// </summary>
     /// <param name="target">The object whose property will be animated.</param>
     /// <param name="getValue">Function to get the current value. Used for animations that don't explicit specify a
-    /// start value, e.g. when using the <see cref="Start(T, TimeSpan)"/> overload.</param>
+    /// start value, e.g. when using the <see cref="Start(V, TimeSpan)"/> overload.</param>
     /// <param name="lerpValue">Function to linearly interpolate between the start and end values.</param>
     /// <param name="setValue">Delegate to set the value on the <paramref name="target"/>.</param>
     public Animator(T target, Func<T, V> getValue, Lerp<V> lerpValue, Action<T, V> setValue)
@@ -109,7 +109,7 @@ public class Animator<T, V> : IAnimator
     /// </summary>
     /// <remarks>
     /// Has no effect unless <see cref="CurrentAnimation"/> has been set by a previous call to one of the
-    /// <see cref="Start"/> overloads.
+    /// <see cref="Start(Animation{V})"/> overloads.
     /// </remarks>
     public void Reset()
     {

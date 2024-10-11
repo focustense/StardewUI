@@ -91,6 +91,7 @@ public class BinaryCondition(
     /// </remarks>
     public Func<BindingContext?>? RightContextSelector { get; set; }
 
+    /// <inheritdoc />
     public bool Passed => isPassing;
 
     private IComparison? comparison;
@@ -102,6 +103,7 @@ public class BinaryCondition(
     private bool wasLeftContextChanged;
     private bool wasRightContextChanged;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         LeftContextSelector = null;
@@ -126,6 +128,7 @@ public class BinaryCondition(
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc />
     public void Update()
     {
         bool anyContextChanged = false;

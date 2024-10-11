@@ -49,6 +49,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
 
     private static readonly Dictionary<CacheKey, LocalBindingFactory> cache = [];
 
+    /// <inheritdoc />
     public IEventBinding? TryCreateBinding(
         IView view,
         IViewDescriptor viewDescriptor,

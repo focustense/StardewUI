@@ -8,6 +8,7 @@ namespace StardewUI.Framework.Converters;
 /// </summary>
 public class CastingValueConverterFactory : IValueConverterFactory
 {
+    /// <inheritdoc />
     public bool TryGetConverter<TSource, TDestination>(
         [MaybeNullWhen(false)] out IValueConverter<TSource, TDestination> converter
     )

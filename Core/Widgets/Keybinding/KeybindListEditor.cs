@@ -200,6 +200,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
     private SpriteFont font = Game1.smallFont;
     private KeybindList keybindList = new();
 
+    /// <inheritdoc />
     protected override IView CreateView()
     {
         rootLane.LeftClick += RootLane_LeftClick;

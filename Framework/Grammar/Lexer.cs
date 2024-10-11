@@ -132,6 +132,7 @@ public readonly ref struct Token(TokenType type, ReadOnlySpan<char> text)
     /// </summary>
     public TokenType Type { get; } = type;
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"[{Type}, '{Text}']";

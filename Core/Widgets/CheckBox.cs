@@ -77,6 +77,7 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
     private Image checkImage = null!;
     private Label label = null!;
 
+    /// <inheritdoc />
     protected override Lane CreateView()
     {
         label = new Label() { Layout = LayoutParameters.FitContent(), Margin = new(Left: 12) };

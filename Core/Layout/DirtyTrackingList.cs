@@ -15,6 +15,7 @@ public class DirtyTrackingList<T> : IList<T>, IReadOnlyList<T>
     /// </summary>
     public bool IsDirty { get; private set; }
 
+    /// <inheritdoc />
     public T this[int index]
     {
         get => items[index];
@@ -28,16 +29,20 @@ public class DirtyTrackingList<T> : IList<T>, IReadOnlyList<T>
         }
     }
 
+    /// <inheritdoc />
     public int Count => items.Count;
 
+    /// <inheritdoc />
     public bool IsReadOnly => false;
 
+    /// <inheritdoc />
     public void Add(T item)
     {
         items.Add(item);
         IsDirty = true;
     }
 
+    /// <inheritdoc />
     public void Clear()
     {
         if (items.Count == 0)
@@ -48,32 +53,38 @@ public class DirtyTrackingList<T> : IList<T>, IReadOnlyList<T>
         IsDirty = true;
     }
 
+    /// <inheritdoc />
     public bool Contains(T item)
     {
         return items.Contains(item);
     }
 
+    /// <inheritdoc />
     public void CopyTo(T[] array, int arrayIndex)
     {
         items.CopyTo(array, arrayIndex);
     }
 
+    /// <inheritdoc />
     public IEnumerator<T> GetEnumerator()
     {
         return items.GetEnumerator();
     }
 
+    /// <inheritdoc />
     public int IndexOf(T item)
     {
         return items.IndexOf(item);
     }
 
+    /// <inheritdoc />
     public void Insert(int index, T item)
     {
         items.Insert(index, item);
         IsDirty = true;
     }
 
+    /// <inheritdoc />
     public bool Remove(T item)
     {
         var wasRemoved = items.Remove(item);
@@ -84,6 +95,7 @@ public class DirtyTrackingList<T> : IList<T>, IReadOnlyList<T>
         return wasRemoved;
     }
 
+    /// <inheritdoc />
     public void RemoveAt(int index)
     {
         items.RemoveAt(index);

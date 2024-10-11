@@ -8,6 +8,7 @@ namespace StardewUI.Framework.Converters;
 /// </summary>
 public class ItemSpriteConverter : IValueConverter<ParsedItemData, Sprite>
 {
+    /// <inheritdoc />
     public Sprite Convert(ParsedItemData value)
     {
         return new(value.GetTexture(), value.GetSourceRect());
@@ -19,6 +20,7 @@ public class ItemSpriteConverter : IValueConverter<ParsedItemData, Sprite>
 /// </summary>
 public class TextureRectSpriteConverter : IValueConverter<Tuple<Texture2D, Rectangle>, Sprite>
 {
+    /// <inheritdoc />
     public Sprite Convert(Tuple<Texture2D, Rectangle> value)
     {
         return new(value.Item1, value.Item2);
@@ -30,6 +32,7 @@ public class TextureRectSpriteConverter : IValueConverter<Tuple<Texture2D, Recta
 /// </summary>
 public class TextureSpriteConverter : IValueConverter<Texture2D, Sprite>
 {
+    /// <inheritdoc />
     public Sprite Convert(Texture2D value)
     {
         return new(value);

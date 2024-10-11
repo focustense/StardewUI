@@ -54,6 +54,9 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
         return new() { Width = Length.Px(width), Height = Length.Px(height) };
     }
 
+    /// <summary>
+    /// Initializes a new <see cref="LayoutParameters"/> with default layout settings.
+    /// </summary>
     public LayoutParameters()
     {
         Width = Length.Content();
@@ -74,8 +77,8 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// Maximum width allowed.
     /// </summary>
     /// <remarks>
-    /// If specified, the <see cref="Vector2.X"/> component of <see cref="IView.ContentSize"/> can never exceed this
-    /// value, regardless of how the <see cref="Width"/> is configured.
+    /// If specified, the <see cref="Vector2.X"/> component of a view's content size should never exceed this value,
+    /// regardless of how the <see cref="Width"/> is configured.
     /// </remarks>
     public float? MaxWidth { get; init; }
 
@@ -83,8 +86,8 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// Maximum height allowed.
     /// </summary>
     /// <remarks>
-    /// If specified, the <see cref="Vector2.Y"/> component of <see cref="IView.ContentSize"/> can never exceed this
-    /// value, regardless of how the <see cref="Width"/> is configured.
+    /// If specified, the <see cref="Vector2.Y"/> component of a view's content size should never exceed this value,
+    /// regardless of how the <see cref="Height"/> is configured.
     /// </remarks>
     public float? MaxHeight { get; init; }
 
@@ -92,8 +95,8 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// Minimum width to occupy.
     /// </summary>
     /// <remarks>
-    /// If specified, the <see cref="Vector2.X"/> component of <see cref="IView.ContentSize"/> will always be at least
-    /// this value, regardless of how the <see cref="Width"/> is configured. Typically, minimum sizes are only used with
+    /// If specified, the <see cref="Vector2.X"/> component of a view's content size will always be at least this value,
+    /// regardless of how the <see cref="Width"/> is configured. Typically, minimum sizes are only used with
     /// <see cref="LengthType.Content"/> if there might be very little content. If a <see cref="MaxWidth"/> is also
     /// specified and is smaller than the <c>MinWidth</c>, then <c>MaxWidth</c> takes precedence.
     /// </remarks>
@@ -103,10 +106,10 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
     /// Minimum height to occupy.
     /// </summary>
     /// <remarks>
-    /// If specified, the <see cref="Vector2.Y"/> component of <see cref="IView.ContentSize"/> will always be at least
-    /// this value, regardless of how the <see cref="Height"/> is configured. Typically, minimum sizes are only used
-    /// with <see cref="LengthType.Content"/> if there might be very little content. If a <see cref="MaxHeight"/> is
-    /// also specified and is smaller than the <c>MinHeight</c>, then <c>MaxHeight</c> takes precedence.
+    /// If specified, the <see cref="Vector2.Y"/> component of a view's content size will always be at least this value,
+    /// regardless of how the <see cref="Height"/> is configured. Typically, minimum sizes are only used with
+    /// <see cref="LengthType.Content"/> if there might be very little content. If a <see cref="MaxHeight"/> is also
+    /// specified and is smaller than the <c>MinHeight</c>, then <c>MaxHeight</c> takes precedence.
     /// </remarks>
     public float? MinHeight { get; init; }
 
@@ -119,6 +122,7 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
         return obj is LayoutParameters other && Equals(other);
     }
 
+    /// <inheritdoc />
     public bool Equals(LayoutParameters other)
     {
         return Width == other.Width
@@ -129,6 +133,7 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
             && MinHeight == other.MinHeight;
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         var hash = new HashCode();
@@ -207,11 +212,25 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
         );
     }
 
+    /// <summary>
+    /// Compares two <see cref="LayoutParameters"/> values for equality.
+    /// </summary>
+    /// <param name="left">The first value.</param>
+    /// <param name="right">The second value.</param>
+    /// <returns><c>true</c> if <paramref name="left"/> and <paramref name="right"/> are the same layout, otherwise
+    /// <c>false</c>.</returns>
     public static bool operator ==(LayoutParameters left, LayoutParameters right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Compares two <see cref="LayoutParameters"/> values for inequality.
+    /// </summary>
+    /// <param name="left">The first value.</param>
+    /// <param name="right">The second value.</param>
+    /// <returns><c>true</c> if <paramref name="left"/> and <paramref name="right"/> are different layouts, otherwise
+    /// <c>false</c>.</returns>
     public static bool operator !=(LayoutParameters left, LayoutParameters right)
     {
         return !(left == right);

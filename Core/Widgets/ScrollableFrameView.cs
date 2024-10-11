@@ -176,6 +176,7 @@ public class ScrollableFrameView : WrapperView
     private Panel sidebarContainer = null!;
     private Lane scrollingLayout = null!;
 
+    /// <inheritdoc />
     public override bool Measure(Vector2 availableSize)
     {
         var wasDirty = base.Measure(availableSize);
@@ -186,6 +187,7 @@ public class ScrollableFrameView : WrapperView
         return wasDirty;
     }
 
+    /// <inheritdoc />
     public override void OnWheel(WheelEventArgs e)
     {
         if (e.Handled || scrollbar.Container is not ScrollContainer container)
@@ -209,6 +211,7 @@ public class ScrollableFrameView : WrapperView
         }
     }
 
+    /// <inheritdoc />
     protected override IView CreateView()
     {
         banner = new Banner()

@@ -25,6 +25,7 @@ public class ViewNodeFactory(
     IAssetCache assetCache
 ) : IViewNodeFactory
 {
+    /// <inheritdoc />
     public IViewNode CreateNode(SNode node)
     {
         return CreateNode(node, null);

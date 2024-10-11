@@ -20,9 +20,9 @@ public interface IObjectDescriptor
     /// Retrieves a named event on the <see cref="TargetType"/>.
     /// </summary>
     /// <param name="name">The event name.</param>
-    /// <returns>The <see cref="IEventDescriptor"/> whose <see cref="IEventDescriptor.Name"/> is
+    /// <returns>The <see cref="IEventDescriptor"/> whose <see cref="IMemberDescriptor.Name"/> is
     /// <paramref name="name"/>.</returns>
-    /// <exception cref="BindingException">Thrown when no event exists with the specified
+    /// <exception cref="DescriptorException">Thrown when no event exists with the specified
     /// <paramref name="name"/>.</exception>
     IEventDescriptor GetEvent(string name)
     {
@@ -38,9 +38,9 @@ public interface IObjectDescriptor
     /// Overloaded methods are not supported. If different signatures are required, use optional parameters.
     /// </remarks>
     /// <param name="name">The method name.</param>
-    /// <returns>The <see cref="IMethodDescriptor"/> whose <see cref="IMethodDescriptor.Name"/> is
+    /// <returns>The <see cref="IMethodDescriptor"/> whose <see cref="IMemberDescriptor.Name"/> is
     /// <paramref name="name"/>.</returns>
-    /// <exception cref="BindingException">Thrown when no method exists with the specified
+    /// <exception cref="DescriptorException">Thrown when no method exists with the specified
     /// <paramref name="name"/>.</exception>
     IMethodDescriptor GetMethod(string name)
     {
@@ -53,9 +53,9 @@ public interface IObjectDescriptor
     /// Retrieves a named property of the <see cref="TargetType"/>.
     /// </summary>
     /// <param name="name">The property name.</param>
-    /// <returns>The <see cref="IPropertyDescriptor"/> whose <see cref="IPropertyDescriptor.Name"/> is
+    /// <returns>The <see cref="IPropertyDescriptor"/> whose <see cref="IMemberDescriptor.Name"/> is
     /// <paramref name="name"/>.</returns>
-    /// <exception cref="BindingException">Thrown when no property exists with the specified
+    /// <exception cref="DescriptorException">Thrown when no property exists with the specified
     /// <paramref name="name"/>.</exception>
     IPropertyDescriptor GetProperty(string name)
     {

@@ -103,6 +103,7 @@ public class Panel : View
     private readonly DirtyTracker<Alignment> horizontalContentAlignment = new(Alignment.Start);
     private readonly DirtyTracker<Alignment> verticalContentAlignment = new(Alignment.Start);
 
+    /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         foreach (
@@ -133,11 +134,13 @@ public class Panel : View
         return null;
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return childPositions;
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return horizontalContentAlignment.IsDirty
@@ -146,6 +149,7 @@ public class Panel : View
             || children.Any(child => child.IsDirty());
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         foreach (var (child, position) in childPositions.OrderBy(child => child.View.ZIndex))
@@ -156,6 +160,7 @@ public class Panel : View
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);
@@ -191,6 +196,7 @@ public class Panel : View
         UpdateChildPositions();
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         horizontalContentAlignment.ResetDirty();

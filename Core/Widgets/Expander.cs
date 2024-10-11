@@ -189,6 +189,7 @@ public class Expander : WrapperView
     private Image indicator = null!;
     private Lane layout = null!;
 
+    /// <inheritdoc />
     protected override IView CreateView()
     {
         indicator = new Image()

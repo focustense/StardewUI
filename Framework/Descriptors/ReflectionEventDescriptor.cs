@@ -127,14 +127,19 @@ public class ReflectionEventDescriptor<TTarget, THandler> : IEventDescriptor
     private readonly EventInfo eventInfo;
     private readonly Action<TTarget, THandler> remove;
 
+    /// <inheritdoc />
     public IObjectDescriptor? ArgsTypeDescriptor { get; }
 
+    /// <inheritdoc />
     public int DelegateParameterCount { get; }
 
+    /// <inheritdoc />
     public Type DelegateType => typeof(THandler);
 
+    /// <inheritdoc />
     public Type DeclaringType => eventInfo.DeclaringType!;
 
+    /// <inheritdoc />
     public string Name => eventInfo.Name;
 
     internal ReflectionEventDescriptor(
@@ -152,21 +157,25 @@ public class ReflectionEventDescriptor<TTarget, THandler> : IEventDescriptor
         this.remove = remove;
     }
 
+    /// <inheritdoc />
     public void Add(object target, Delegate handler)
     {
         add((TTarget)target, (THandler)handler);
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj is ReflectionEventDescriptor<TTarget, THandler> other && other.eventInfo.Equals(eventInfo);
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         return eventInfo.GetHashCode();
     }
 
+    /// <inheritdoc />
     public void Remove(object target, Delegate handler)
     {
         remove((TTarget)target, (THandler)handler);

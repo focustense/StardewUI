@@ -24,7 +24,7 @@ public readonly ref struct Argument(
     public ReadOnlySpan<char> Expression { get; } = expression;
 
     /// <summary>
-    /// The type describing how <paramref name="Expression"/> should be interpreted.
+    /// The type describing how <see cref="Expression"/> should be interpreted.
     /// </summary>
     public ArgumentExpressionType ExpressionType { get; } = expressionType;
 
@@ -43,7 +43,7 @@ public readonly ref struct Argument(
 }
 
 /// <summary>
-/// Defines the possible types of an <see cref="IArgument"/>, which specifies how to resolve its value at runtime.
+/// Defines the possible types of an <see cref="Argument"/>, which specifies how to resolve its value at runtime.
 /// </summary>
 public enum ArgumentExpressionType
 {

@@ -36,8 +36,8 @@ public interface IViewNode : IDisposable
     /// and does not affect the <see cref="Context"/> assignment.
     /// </para>
     /// <para>
-    /// This is used to "unbind" the target of a structural node like <see cref="ConditionalNode{T, U}"/> and in some
-    /// cases prepare it for subsequent reuse.
+    /// This is used to "unbind" the target of a structural node like <see cref="ConditionalNode"/> and in some cases
+    /// prepare it for subsequent reuse.
     /// </para>
     /// </remarks>
     void Reset();

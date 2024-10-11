@@ -113,6 +113,7 @@ public class DropDownList<T> : WrapperView
     private Label selectedOptionLabel = null!;
     private Frame selectionFrame = null!;
 
+    /// <inheritdoc />
     public override bool Measure(Vector2 availableSize)
     {
         if (options.IsDirty)
@@ -133,6 +134,7 @@ public class DropDownList<T> : WrapperView
         return wasDirty;
     }
 
+    /// <inheritdoc />
     protected override IView CreateView()
     {
         // Overlay

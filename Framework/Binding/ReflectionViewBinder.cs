@@ -16,6 +16,7 @@ public class ReflectionViewBinder(
     IEventBindingFactory eventBindingFactory
 ) : IViewBinder
 {
+    /// <inheritdoc />
     public IViewBinding Bind(IView view, IElement element, BindingContext? context)
     {
         var viewDescriptor = GetDescriptor(view);
@@ -43,6 +44,7 @@ public class ReflectionViewBinder(
         return viewBinding;
     }
 
+    /// <inheritdoc />
     public IViewDescriptor GetDescriptor(IView view)
     {
         return ReflectionViewDescriptor.ForViewType(view.GetType());

@@ -11,6 +11,9 @@ public class PointerMoveEventArgs(Vector2 previousPosition, Vector2 position)
     : PointerEventArgs(position),
         IOffsettable<PointerMoveEventArgs>
 {
+    /// <summary>
+    /// The previously-tracked position of the pointer.
+    /// </summary>
     public Vector2 PreviousPosition { get; } = previousPosition;
 
     /// <inheritdoc/>

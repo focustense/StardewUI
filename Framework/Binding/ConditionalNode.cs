@@ -7,8 +7,10 @@
 /// <param name="condition">The condition to evaluate.</param>
 public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewNode
 {
+    /// <inheritdoc />
     public IReadOnlyList<IViewNode> ChildNodes => innerNode.ChildNodes;
 
+    /// <inheritdoc />
     public BindingContext? Context
     {
         get => condition.Context;
@@ -18,10 +20,12 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
     // In general, child nodes shouldn't have any views when the condition didn't match, because we'll reset them when
     // that happens, but in case of a buggy reset, rechecking here guarantees we won't accidentally show any descendant
     // views if they do still exist.
+    /// <inheritdoc />
     public IReadOnlyList<IView> Views => wasMatched ? innerNode.Views : [];
 
     private bool wasMatched;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         condition.Dispose();
@@ -30,12 +34,14 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc />
     public void Reset()
     {
         innerNode.Reset();
         wasMatched = false;
     }
 
+    /// <inheritdoc />
     public bool Update()
     {
         condition.Update();

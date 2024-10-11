@@ -101,6 +101,7 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
         return other.Left == Left && other.Top == Top && other.Right == Right && other.Bottom == Bottom;
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         var hashCode = new HashCode();
@@ -135,6 +136,7 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
         };
     }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return $"{Left}, {Top}, {Right}, {Bottom}";
@@ -148,11 +150,24 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
         return new(0, Top, 0, Bottom);
     }
 
+    /// <summary>
+    /// Negates an <see cref="Edges"/> value.
+    /// </summary>
+    /// <param name="value">The edges.</param>
+    /// <returns>An <see cref="Edges"/> whose individual edge values are each the negation of the corresponding edge in
+    /// <paramref name="value"/>.</returns>
     public static Edges operator -(Edges value)
     {
         return new(-value.Left, -value.Top, -value.Right, -value.Bottom);
     }
 
+    /// <summary>
+    /// Computes the sum of two <see cref="Edges"/> values.
+    /// </summary>
+    /// <param name="value1">The first value.</param>
+    /// <param name="value2">The second value.</param>
+    /// <returns>An <see cref="Edges"/> whose individual edge values are the sum of the corresponding edges from
+    /// <paramref name="value1"/> and <paramref name="value2"/>.</returns>
     public static Edges operator +(Edges value1, Edges value2)
     {
         return new(
@@ -163,6 +178,13 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
         );
     }
 
+    /// <summary>
+    /// Computes the difference of two <see cref="Edges"/> values.
+    /// </summary>
+    /// <param name="value1">The first value, to subtract from.</param>
+    /// <param name="value2">The second value, to be subtracted.</param>
+    /// <returns>An <see cref="Edges"/> whose individual edge values are the difference of the corresponding edges
+    /// between <paramref name="value1"/> and <paramref name="value2"/>.</returns>
     public static Edges operator -(Edges value1, Edges value2)
     {
         return new(
@@ -173,11 +195,25 @@ public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
         );
     }
 
+    /// <summary>
+    /// Scales an <see cref="Edges"/> value uniformly.
+    /// </summary>
+    /// <param name="value">The value to scale.</param>
+    /// <param name="scale">The scale amount (multiplier).</param>
+    /// <returns>An <see cref="Edges"/> whose individual edge values are the corresponding edges from
+    /// <paramref name="value"/>, each multiplied by the <paramref name="scale"/>.</returns>
     public static Edges operator *(Edges value, int scale)
     {
         return new(value.Left * scale, value.Top * scale, value.Right * scale, value.Bottom * scale);
     }
 
+    /// <summary>
+    /// Scales an <see cref="Edges"/> value uniformly.
+    /// </summary>
+    /// <param name="value">The value to scale.</param>
+    /// <param name="scale">The scale amount (multiplier).</param>
+    /// <returns>An <see cref="Edges"/> whose individual edge values are the corresponding edges from
+    /// <paramref name="value"/>, each multiplied by the <paramref name="scale"/>.</returns>
     public static Edges operator *(Edges value, float scale)
     {
         return new(

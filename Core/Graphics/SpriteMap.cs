@@ -16,6 +16,7 @@ namespace StardewUI;
 /// <param name="defaultSprite">Default sprite to show when looking up a key without a corresponding sprite.</param>
 public class SpriteMap<T>(IReadOnlyDictionary<T, Sprite> sprites, Sprite defaultSprite) : ISpriteMap<T>
 {
+    /// <inheritdoc />
     public Sprite Get(T key, out bool isPlaceholder)
     {
         if (sprites.TryGetValue(key, out var sprite))

@@ -62,6 +62,9 @@ public abstract class FullScreenOverlay : IOverlay
 
     private readonly Lazy<IView> overlayView;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="FullScreenOverlay"/>.
+    /// </summary>
     public FullScreenOverlay()
     {
         overlayView = new(CreateOverlayView);

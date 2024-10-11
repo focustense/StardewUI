@@ -7,6 +7,7 @@ namespace StardewUI.Framework.Converters;
 /// </summary>
 public class RectangleConverter : IValueConverter<string, Rectangle>
 {
+    /// <inheritdoc />
     public Rectangle Convert(string value)
     {
         return Parse(value);

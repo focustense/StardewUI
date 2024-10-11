@@ -12,7 +12,7 @@ namespace StardewUI;
 public class TextInput : View
 {
     /// <summary>
-    /// Event raised when the <see cref="Text"> changes.
+    /// Event raised when the <see cref="Text"/> changes.
     /// </summary>
     public event EventHandler<EventArgs>? TextChanged;
 
@@ -277,27 +277,32 @@ public class TextInput : View
         TextColor = Game1.textColor;
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return [new(frame, Vector2.Zero)];
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return frame.IsDirty();
     }
 
+    /// <inheritdoc />
     public override void OnClick(ClickEventArgs e)
     {
         Capture(e.Position);
         e.Handled = true;
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         frame.Draw(b);
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);

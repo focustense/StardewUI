@@ -5,6 +5,7 @@
 /// </summary>
 public class GridItemLayoutConverter : IValueConverter<string, GridItemLayout>
 {
+    /// <inheritdoc />
     public GridItemLayout Convert(string value)
     {
         var valueAsSpan = value.ToLower().AsSpan();

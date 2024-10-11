@@ -7,16 +7,16 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 /// <remarks>
 /// The binding target is independent of the actual <see cref="StardewUI.IView"/> instance; it provides methods and data
-/// to support interacting with any view of the given <see cref="TargetType"/>.
+/// to support interacting with any view of the given <see cref="IObjectDescriptor.TargetType"/>.
 /// </remarks>
 public interface IViewDescriptor : IObjectDescriptor
 {
     /// <summary>
-    /// Retrieves the property of the <see cref="TargetType"/> that holds the view's children/content.
+    /// Retrieves the property of the <see cref="IObjectDescriptor.TargetType"/> that holds the view's children/content.
     /// </summary>
     /// <returns>The view children property.</returns>
-    /// <exception cref="BindingException">Thrown when the <see cref="TargetType"/> lacks any visible property that
-    /// could be used to hold child views.</exception>
+    /// <exception cref="DescriptorException">Thrown when the <see cref="IObjectDescriptor.TargetType"/> lacks any
+    /// visible property that could be used to hold child views.</exception>
     IPropertyDescriptor GetChildrenProperty()
     {
         return TryGetChildrenProperty(out var property)
@@ -27,7 +27,8 @@ public interface IViewDescriptor : IObjectDescriptor
     }
 
     /// <summary>
-    /// Attempts to retrieve the property of the <see cref="TargetType"/> that holds the view's children/content.
+    /// Attempts to retrieve the property of the <see cref="IObjectDescriptor.TargetType"/> that holds the view's
+    /// children/content.
     /// </summary>
     /// <param name="property">When this method returns, holds a reference to the <see cref="IPropertyDescriptor"/> that
     /// holds the view's children/content, or <c>null</c> if no such property is available.</param>

@@ -12,12 +12,16 @@ namespace StardewUI.Framework.Sources;
 public class AssetValueSource<T>(IAssetCache cache, string name) : IValueSource<T>, IDisposable
     where T : notnull
 {
+    /// <inheritdoc />
     public bool CanRead => true;
 
+    /// <inheritdoc />
     public bool CanWrite => false;
 
+    /// <inheritdoc />
     public string DisplayName => $"Asset@{name}";
 
+    /// <inheritdoc />
     public T? Value
     {
         get => cacheEntry is not null ? cacheEntry.Asset : default;
@@ -30,10 +34,12 @@ public class AssetValueSource<T>(IAssetCache cache, string name) : IValueSource<
         set => Value = value is not null ? (T)value : default;
     }
 
+    /// <inheritdoc />
     public Type ValueType => typeof(T);
 
     private IAssetCacheEntry<T>? cacheEntry;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         // It's unnecessary to null this for resource/memory-management purposes, but we want to prevent any subsequent

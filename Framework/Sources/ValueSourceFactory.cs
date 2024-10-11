@@ -17,7 +17,9 @@ public interface IValueSourceFactory
     /// </summary>
     /// <param name="argument">The parsed markup argument containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <param name="type">The type of value to obtain; can be determined using <see cref="GetValueType"/>.</param>
+    /// <see cref="ArgumentExpressionType.ContextBinding"/>).</param>
+    /// <param name="type">The type of value to obtain; can be determined using
+    /// <see cref="GetValueType(IArgument, BindingContext?)"/>.</param>
     IValueSource GetValueSource(IArgument argument, BindingContext? context, Type type);
 
     /// <summary>
@@ -25,16 +27,32 @@ public interface IValueSourceFactory
     /// </summary>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <param name="type">The type of value to obtain; can be determined using <see cref="GetValueType"/>.</param>
+    /// <see cref="ArgumentExpressionType.ContextBinding"/>).</param>
+    /// <param name="type">The type of value to obtain; can be determined using
+    /// <see cref="GetValueType(IAttribute, IPropertyDescriptor?, BindingContext?)"/>.</param>
     IValueSource GetValueSource(IAttribute attribute, BindingContext? context, Type type);
+
+    /// <summary>
+    /// Creates a value source that supplies values according to the specified argument binding.
+    /// </summary>
+    /// <typeparam name="T">Type of value to obtain; same as the result of
+    /// <see cref="GetValueType(IArgument, BindingContext?)"/>.</typeparam>
+    /// <param name="argument">The parsed markup argument containing the binding info.</param>
+    /// <param name="context">The binding context to use for any contextual bindings (those with
+    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OutputBinding"/> or
+    /// <see cref="AttributeValueType.TwoWayBinding"/>).</param>
+    IValueSource<T> GetValueSource<T>(IArgument argument, BindingContext? context)
+        where T : notnull;
 
     /// <summary>
     /// Creates a value source that supplies values according to the specified binding attribute.
     /// </summary>
-    /// <typeparam name="T">Type of value to obtain; same as the result of <see cref="GetValueType"/>.</typeparam>
+    /// <typeparam name="T">Type of value to obtain; same as the result of
+    /// <see cref="GetValueType(IAttribute, IPropertyDescriptor?, BindingContext?)"/>.</typeparam>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <see cref="AttributeValueType.InputBinding"/> that are not asset bindings).</param>
+    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OutputBinding"/> or
+    /// <see cref="AttributeValueType.TwoWayBinding"/>).</param>
     IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context)
         where T : notnull;
 
@@ -43,7 +61,7 @@ public interface IValueSourceFactory
     /// </summary>
     /// <remarks>
     /// This provides the type argument that must be supplied to
-    /// <see cref="GetValueSource{T}(IArgument, BindingContext?)"/>.
+    /// <see cref="GetValueSource(IArgument, BindingContext?, Type)"/>.
     /// </remarks>
     /// <param name="argument">The parsed markup argument containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
@@ -61,7 +79,8 @@ public interface IValueSourceFactory
     /// <param name="property">Binding metadata for the destination property; used when the source does not encode any
     /// independent type information. If not specified, some attribute values may be unsupported.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <see cref="AttributeValueType.InputBinding"/> that are not asset bindings).</param>
+    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OutputBinding"/> or
+    /// <see cref="AttributeValueType.TwoWayBinding"/>).</param>
     Type? GetValueType(IAttribute attribute, IPropertyDescriptor? property, BindingContext? context);
 }
 
@@ -85,6 +104,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
     private readonly Dictionary<Type, Func<IArgument, BindingContext?, IValueSource>> argumentCache = [];
     private readonly Dictionary<Type, Func<IAttribute, BindingContext?, IValueSource>> attributeCache = [];
 
+    /// <inheritdoc />
     public IValueSource GetValueSource(IArgument argument, BindingContext? context, Type type)
     {
         if (!argumentCache.TryGetValue(type, out var valueSourceDelegate))
@@ -96,6 +116,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         return valueSourceDelegate(argument, context);
     }
 
+    /// <inheritdoc />
     public IValueSource<T> GetValueSource<T>(IArgument argument, BindingContext? context)
         where T : notnull
     {
@@ -113,6 +134,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         };
     }
 
+    /// <inheritdoc />
     public IValueSource GetValueSource(IAttribute attribute, BindingContext? context, Type type)
     {
         if (!attributeCache.TryGetValue(type, out var valueSourceDelegate))
@@ -124,6 +146,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         return valueSourceDelegate(attribute, context);
     }
 
+    /// <inheritdoc />
     public IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context)
         where T : notnull
     {
@@ -137,6 +160,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         };
     }
 
+    /// <inheritdoc />
     public Type? GetValueType(IArgument argument, BindingContext? context)
     {
         return argument.Type switch
@@ -153,6 +177,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         };
     }
 
+    /// <inheritdoc />
     public Type? GetValueType(IAttribute attribute, IPropertyDescriptor? property, BindingContext? context)
     {
         return attribute.ValueType switch

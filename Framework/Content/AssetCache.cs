@@ -51,6 +51,7 @@ public class AssetCache : IAssetCache
         events.AssetsInvalidated += Content_AssetsInvalidated;
     }
 
+    /// <inheritdoc />
     public IAssetCacheEntry<T> Get<T>(string name)
         where T : notnull
     {

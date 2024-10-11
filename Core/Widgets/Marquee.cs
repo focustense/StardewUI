@@ -75,27 +75,34 @@ public class Marquee : View
 
     private float progress;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="Marquee"/>.
+    /// </summary>
     public Marquee()
     {
         animator = Animator.On(this, x => x.progress, (x, v) => x.progress = v);
         animator.Loop = true;
     }
 
+    /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         return Content?.FocusSearch(contentPosition, direction);
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return Content is not null ? [new(Content, Vector2.Zero)] : [];
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return extraDistance.IsDirty || speed.IsDirty || content.IsDirty || (Content?.IsDirty() ?? false);
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         if (Content is null)
@@ -110,6 +117,7 @@ public class Marquee : View
         Content.Draw(b);
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var containerLimits = Layout.GetLimits(availableSize);
@@ -120,6 +128,7 @@ public class Marquee : View
         UpdateAnimation();
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         content.ResetDirty();

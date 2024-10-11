@@ -25,6 +25,7 @@ public interface IValueConverter<TSource, TDestination>
 public class ValueConverter<TSource, TDestination>(Func<TSource, TDestination> convert)
     : IValueConverter<TSource, TDestination>
 {
+    /// <inheritdoc />
     public TDestination Convert(TSource value)
     {
         return convert(value);

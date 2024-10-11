@@ -37,6 +37,7 @@ public class ScrollableView : WrapperView<ScrollContainer>
     // Initialized in CreateView
     private Scrollbar scrollbar = null!;
 
+    /// <inheritdoc />
     public override void OnWheel(WheelEventArgs e)
     {
         if (e.Handled || scrollbar.Container is not ScrollContainer container)
@@ -60,6 +61,7 @@ public class ScrollableView : WrapperView<ScrollContainer>
         }
     }
 
+    /// <inheritdoc />
     protected override ScrollContainer CreateView()
     {
         var container = new ScrollContainer() { Peeking = 16, ScrollStep = 64 };

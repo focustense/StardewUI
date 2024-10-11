@@ -84,12 +84,16 @@ public class ConvertedValueSource<TSource, T>(
     IValueConverter<T, TSource>? outputConverter
 ) : IValueSource<T>
 {
+    /// <inheritdoc />
     public bool CanRead => source.CanRead && inputConverter is not null;
 
+    /// <inheritdoc />
     public bool CanWrite => source.CanWrite && outputConverter is not null;
 
+    /// <inheritdoc />
     public string DisplayName => $"Convert({source.DisplayName} -> {typeof(T).Name})";
 
+    /// <inheritdoc />
     public T? Value
     {
         get => value;
@@ -115,10 +119,12 @@ public class ConvertedValueSource<TSource, T>(
         set => Value = value is not null ? (T)value : default;
     }
 
+    /// <inheritdoc />
     public Type ValueType => typeof(T);
 
     private T? value = ReadValue(source, inputConverter);
 
+    /// <inheritdoc />
     public bool Update()
     {
         if (source.Update())

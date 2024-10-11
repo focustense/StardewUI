@@ -6,12 +6,16 @@
 /// <param name="value">The attribute value.</param>
 public class ConstantValueSource<T>(T value) : IValueSource<T>
 {
+    /// <inheritdoc />
     public bool CanRead => true;
 
+    /// <inheritdoc />
     public bool CanWrite => false;
 
+    /// <inheritdoc />
     public string DisplayName => $"\"{Value}\"";
 
+    /// <inheritdoc />
     public T? Value
     {
         get => value;
@@ -24,12 +28,13 @@ public class ConstantValueSource<T>(T value) : IValueSource<T>
         set => Value = value is not null ? (T)value : default;
     }
 
+    /// <inheritdoc />
     public Type ValueType => typeof(T);
 
     /// <inheritdoc />
     /// <remarks>
-    /// As implemented on <see cref="ConstantValueSource"/>, always returns <c>false</c> as there can never be any change
-    /// that requires an update.
+    /// As implemented on <see cref="ConstantValueSource{T}"/>, always returns <c>false</c> as there can never be any
+    /// change that requires an update.
     /// </remarks>
     public bool Update()
     {

@@ -8,6 +8,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>Nullable</WarningsAsErrors>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>0419 <!-- https://github.com/dotnet/csharplang/issues/320 --></NoWarn>
     </PropertyGroup>
   
   <PropertyGroup>

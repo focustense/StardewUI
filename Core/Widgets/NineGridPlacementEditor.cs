@@ -141,11 +141,7 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
     private NineGridPlacement placement = new(Alignment.Start, Alignment.Start);
     private Color selectionBackgroundColor = new(80, 150, 220);
 
-    protected override bool IsContentDirty()
-    {
-        return lineWidth.IsDirty;
-    }
-
+    /// <inheritdoc />
     public override void OnClick(ClickEventArgs e)
     {
         if (e.IsPrimaryButton())
@@ -164,6 +160,19 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
         base.OnClick(e);
     }
 
+    /// <inheritdoc />
+    public override void OnPointerMove(PointerMoveEventArgs e)
+    {
+        isHovering = ContainsPoint(e.Position);
+    }
+
+    /// <inheritdoc />
+    protected override bool IsContentDirty()
+    {
+        return lineWidth.IsDirty;
+    }
+
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         var tintedSelectedCellColor = Tint(SelectionBackgroundColor);
@@ -190,6 +199,7 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);
@@ -228,11 +238,7 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
         }
     }
 
-    public override void OnPointerMove(PointerMoveEventArgs e)
-    {
-        isHovering = ContainsPoint(e.Position);
-    }
-
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         lineWidth.ResetDirty();

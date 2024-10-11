@@ -76,17 +76,23 @@ public class XeluButtonSpriteMap(Texture2D gamepad, Texture2D keyboard, Texture2
     private static readonly Edges KeyboardFixedEdges = new(32);
     private static readonly Point SpriteSize = new(100, 100);
 
+    /// <inheritdoc />
     protected override Sprite ControllerBlank => new(gamepad, GetSourceRect(16));
 
+    /// <inheritdoc />
     protected override Sprite KeyboardBlank =>
         new(keyboard, GetKeyboardBlankSourceRect(), KeyboardFixedEdges, SliceSettings: new(Scale: SliceScale));
 
+    /// <inheritdoc />
     protected override Sprite MouseLeft => new(mouse, GetMouseSourceRect(1));
 
+    /// <inheritdoc />
     protected override Sprite MouseMiddle => new(mouse, GetMouseSourceRect(2));
 
+    /// <inheritdoc />
     protected override Sprite MouseRight => new(mouse, GetMouseSourceRect(3));
 
+    /// <inheritdoc />
     protected override Sprite? Get(SButton button)
     {
         int? gamepadSpriteIndex = button switch

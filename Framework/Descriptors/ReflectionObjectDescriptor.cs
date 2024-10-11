@@ -8,6 +8,7 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 public class ReflectionObjectDescriptor : IObjectDescriptor
 {
+    /// <inheritdoc />
     public Type TargetType { get; }
 
     private static readonly Dictionary<Type, ReflectionObjectDescriptor> cache = [];
@@ -72,6 +73,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
         thisDescriptor = new(() => ThisPropertyDescriptor.ForTypeUncached(type));
     }
 
+    /// <inheritdoc />
     public bool TryGetEvent(string name, [MaybeNullWhen(false)] out IEventDescriptor @event)
     {
         bool exists = eventsByName.TryGetValue(name, out var lazyEvent);
@@ -79,6 +81,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
         return exists;
     }
 
+    /// <inheritdoc />
     public bool TryGetMethod(string name, [MaybeNullWhen(false)] out IMethodDescriptor method)
     {
         bool exists = methodsByName.TryGetValue(name, out var lazyMethod);
@@ -86,6 +89,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
         return exists;
     }
 
+    /// <inheritdoc />
     public bool TryGetProperty(string name, [MaybeNullWhen(false)] out IPropertyDescriptor property)
     {
         if (name.Equals("this", StringComparison.OrdinalIgnoreCase))

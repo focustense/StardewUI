@@ -34,14 +34,14 @@ public interface IPropertyDescriptor<T> : IPropertyDescriptor
     /// <summary>
     /// Reads the current property value.
     /// </summary>
-    /// <param name="source">An instance of the property's <see cref="IPropertyDescriptor.DeclaringType"/>.</param>
+    /// <param name="source">An instance of the property's <see cref="IMemberDescriptor.DeclaringType"/>.</param>
     /// <returns>The current property value.</returns>
     T GetValue(object source);
 
     /// <summary>
     /// Writes a new property value.
     /// </summary>
-    /// <param name="target">An instance of the property's <see cref="IPropertyDescriptor.DeclaringType"/>.</param>
+    /// <param name="target">An instance of the property's <see cref="IMemberDescriptor.DeclaringType"/>.</param>
     /// <param name="value">The new property value.</param>
     void SetValue(object target, T value);
 }

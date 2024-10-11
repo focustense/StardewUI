@@ -11,8 +11,10 @@ namespace StardewUI;
 /// </remarks>
 public class Spacer : View
 {
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b) { }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);

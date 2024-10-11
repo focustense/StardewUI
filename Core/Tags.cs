@@ -58,11 +58,13 @@ public class Tags
 
     private readonly Dictionary<Type, object> values = [];
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj is Tags other && other.values.Count == values.Count && !other.values.Except(values).Any();
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         var hashCode = new HashCode();

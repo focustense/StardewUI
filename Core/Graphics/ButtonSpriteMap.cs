@@ -38,6 +38,7 @@ public abstract class ButtonSpriteMap : ISpriteMap<SButton>
     /// </summary>
     protected abstract Sprite MouseRight { get; }
 
+    /// <inheritdoc />
     public Sprite Get(SButton key, out bool isPlaceholder)
     {
         var mouseSprite = key switch

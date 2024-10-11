@@ -32,7 +32,7 @@ public enum Direction
 public static class DirectionExtensions
 {
     /// <summary>
-    /// Gets the orientation axis associated with a given <paramref name="direction">, i.e. whether it flows
+    /// Gets the orientation axis associated with a given <paramref name="direction" />, i.e. whether it flows
     /// horizontally or vertically.
     /// </summary>
     public static Orientation GetOrientation(this Direction direction)

@@ -31,14 +31,14 @@ public readonly ref struct Attribute(
 
     /// <summary>
     /// The depth to walk - i.e. number of parents to traverse - to find the context on which to evaluate a context
-    /// binding. Exclusive with <see cref="ParentType"/> and only valid if the <paramref name="valueType"/> is a type
-    /// that matches <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
+    /// binding. Exclusive with <see cref="ParentType"/> and only valid if the <see cref="ValueType"/> is a type that
+    /// matches <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
     /// </summary>
     public uint ParentDepth { get; } = parentDepth;
 
     /// <summary>
     /// The type name of the parent to walk up to for a context redirect. Exclusive with <see cref="ParentDepth"/> and
-    /// only valid if the <paramref name="valueType"/> is a type that matches
+    /// only valid if the <see cref="ValueType"/> is a type that matches
     /// <see cref="AttributeValueTypeExtensions.IsContextBinding"/>.
     /// </summary>
     public ReadOnlySpan<char> ParentType { get; } = parentType;
@@ -54,7 +54,7 @@ public readonly ref struct Attribute(
     public ReadOnlySpan<char> Value { get; } = value;
 
     /// <summary>
-    /// The type of the value expression, defining how the <paramref name="Value"/> should be interpreted.
+    /// The type of the value expression, defining how the <see cref="Value"/> should be interpreted.
     /// </summary>
     public AttributeValueType ValueType { get; } = valueType;
 }

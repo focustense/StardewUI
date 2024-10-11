@@ -12,6 +12,7 @@ namespace StardewUI;
 /// <param name="FixedEdges">The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these
 /// values can prevent corner distortion for images that have been designed for such scaling. See
 /// <see href="https://en.wikipedia.org/wiki/9-slice_scaling"/>. for a detailed explanation.</param>
+/// <param name="SliceSettings">Additional settings for the scaling and slicing behavior.</param>
 public record Sprite(
     Texture2D Texture,
     Rectangle? SourceRect = null,
@@ -28,10 +29,14 @@ public record Sprite(
 /// <summary>
 /// Additional nine-slice settings for dealing with certain "unique" structures.
 /// </summary>
-/// <param name="CenterX">The origin (left) point where the horizontal "center" is considered to start, or <c>null</c>
-/// to start where the left fixed edge ends.</param>
-/// <param name="CenterY">The origin (top) point where the vertical "center" is considered to start, or <c>null</c> to
-/// start where the top fixed edge ends..</param>
+/// <param name="CenterX">The X position to use for the horizontal center slices, or <c>null</c> to start where the left
+/// fixed edge ends.</param>
+/// <param name="CenterXPosition">Specifies whether the <see cref="CenterX"/> should be understood as the start position
+/// or the end position of the horizontal center slice.</param>
+/// <param name="CenterY">The Y position to use for the vertical center slices, or <c>null</c> to start where the top
+/// fixed edge ends.</param>
+/// <param name="CenterYPosition">Specifies whether the <see cref="CenterY"/> should be understood as the start position
+/// or the end position of the vertical center slice.</param>
 /// <param name="Scale">Scale to apply to the slices themselves; for example, if a 16x16 source draws to a 64x64 target,
 /// and a scale of 2 is used, then a 2x3 border slice would draw as 16x24 (normal 8x16, multiplied by 2).</param>
 /// <param name="EdgesOnly">If <c>true</c>, then only the outer 8 edge segments should be drawn, and the 9th

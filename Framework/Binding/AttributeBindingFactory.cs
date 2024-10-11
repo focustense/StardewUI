@@ -131,6 +131,7 @@ public class AttributeBindingFactory(
     private readonly Dictionary<(Type, string, Type), LocalBindingFactory> bindingFactoryCache = [];
     private readonly Dictionary<(Type, Type), MethodInfo> genericMethodCache = [];
 
+    /// <inheritdoc />
     public IAttributeBinding? TryCreateBinding(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,

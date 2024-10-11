@@ -36,23 +36,30 @@ public class ThisPropertyDescriptor<T> : IPropertyDescriptor<T>
     /// </summary>
     public static readonly ThisPropertyDescriptor<T> Instance = new();
 
+    /// <inheritdoc />
     public bool CanRead => true;
 
+    /// <inheritdoc />
     public bool CanWrite => false;
 
+    /// <inheritdoc />
     public Type ValueType => typeof(T);
 
+    /// <inheritdoc />
     public Type DeclaringType => typeof(T);
 
+    /// <inheritdoc />
     public string Name => "this";
 
     private ThisPropertyDescriptor() { }
 
+    /// <inheritdoc />
     public T GetValue(object source)
     {
         return (T)source;
     }
 
+    /// <inheritdoc />
     public void SetValue(object target, T value)
     {
         throw new NotSupportedException("'this' properties cannot be written.");

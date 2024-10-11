@@ -7,8 +7,7 @@ namespace StardewUI.Framework.Content;
 /// </summary>
 /// <remarks>
 /// Similar to SMAPI's content helpers, but instead of providing just the current asset at the time of the request,
-/// returns entry objects with an expired flag for effective (and performant) use in
-/// <see cref="IValueSource{T}.Update"/>.
+/// returns entry objects with an expired flag for effective (and performant) use in <see cref="IValueSource.Update"/>.
 /// </remarks>
 public interface IAssetCache
 {

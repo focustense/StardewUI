@@ -29,7 +29,7 @@ public interface IAttribute
     string Value { get; }
 
     /// <summary>
-    /// The type of the value expression, defining how the <paramref name="Value"/> should be interpreted.
+    /// The type of the value expression, defining how the <see cref="Value"/> should be interpreted.
     /// </summary>
     AttributeValueType ValueType { get; }
 }
@@ -46,7 +46,8 @@ public abstract record ContextRedirect
     /// as an <see cref="Grammar.Attribute"/>.
     /// </summary>
     /// <param name="parentDepth">Number of parents to traverse.</param>
-    /// <param name="parentType">The <see cref="Type.Name"/> of the target ancestor's type.</param>
+    /// <param name="parentType">The <see cref="System.Reflection.MemberInfo.Name"/> of the target ancestor's
+    /// <see cref="System.Type"/>.</param>
     /// <returns>A new <see cref="ContextRedirect"/> that performs the requested redirect, or <c>null</c> if the
     /// arguments would cause no redirection to occur.</returns>
     public static ContextRedirect? FromParts(uint parentDepth, ReadOnlySpan<char> parentType)
@@ -71,7 +72,8 @@ public abstract record ContextRedirect
     /// <summary>
     /// Redirects to the nearest ancestor matching a specified type.
     /// </summary>
-    /// <param name="TypeName">The <see cref="Type.Name"/> of the target ancestor's type.</param>
+    /// <param name="TypeName">The <see cref="System.Reflection.MemberInfo.Name"/> of the target ancestor's
+    /// <see cref="System.Type"/>.</param>
     public sealed record Type(string TypeName) : ContextRedirect;
 }
 
@@ -84,13 +86,12 @@ public abstract record ContextRedirect
 /// </remarks>
 /// <param name="Name">The attribute name.</param>
 /// <param name="Value">The literal value text.</param>
-/// <param name="Type">The type of the attribute itself, defining how the <see cref="Name"/> should be
+/// <param name="Type">The type of the attribute itself, defining how the <paramref value="Name"/> should be
 /// interpreted.</param>
-/// <param name="ValueType">The type of the value expression, defining how the <paramref name="value"/> should be
+/// <param name="ValueType">The type of the value expression, defining how the <paramref name="Value"/> should be
 /// interpreted.</param>
 /// <param name="ContextRedirect">Specifies the redirect to use for a context binding, if applicable and if the
-/// <see cref="ValueType"/> is one of the context binding types.</param>
-/// </summary>
+/// <paramref name="ValueType"/> is one of the context binding types.</param>
 public record SAttribute(
     string Name,
     string Value,

@@ -52,6 +52,7 @@ public class GhostView : View
     private IView? realView;
     private Color tintColor = Color.White;
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         if (RealView is null)
@@ -71,6 +72,7 @@ public class GhostView : View
         RealView.Draw(b);
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         ContentSize = RealView?.ContentBounds.Size ?? Vector2.Zero;

@@ -199,21 +199,25 @@ public class Frame : View
     private int shadowCount = 1;
     private Vector2 shadowOffset;
 
+    /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         return Content?.FocusSearch(contentPosition, direction);
     }
 
+    /// <inheritdoc />
     protected override Edges GetBorderThickness()
     {
         return BorderThickness;
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return Content is not null ? [new(Content, contentPosition)] : [];
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return borderThickness.IsDirty
@@ -223,6 +227,7 @@ public class Frame : View
             || (Content?.IsDirty() ?? false);
     }
 
+    /// <inheritdoc />
     protected override void OnDrawBorder(ISpriteBatch b)
     {
         using (b.SaveTransform())
@@ -242,6 +247,7 @@ public class Frame : View
         borderSlice?.Draw(b);
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         if (Content is null)
@@ -253,6 +259,7 @@ public class Frame : View
         Content.Draw(b);
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         Content?.Measure(Layout.GetLimits(availableSize));
@@ -273,6 +280,7 @@ public class Frame : View
         backgroundSlice?.Layout(new(Point.Zero, InnerSize.ToPoint()));
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         borderThickness.ResetDirty();

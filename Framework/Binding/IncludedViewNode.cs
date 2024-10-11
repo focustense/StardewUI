@@ -17,8 +17,10 @@ public class IncludedViewNode(
     IAttribute? contextAttribute
 ) : IViewNode
 {
+    /// <inheritdoc />
     public IReadOnlyList<IViewNode> ChildNodes => childNode is not null ? [childNode] : [];
 
+    /// <inheritdoc />
     public BindingContext? Context
     {
         get => context;
@@ -32,6 +34,7 @@ public class IncludedViewNode(
         }
     }
 
+    /// <inheritdoc />
     public IReadOnlyList<IView> Views => childNode?.Views ?? [];
 
     private IAssetCacheEntry<Document>? assetCacheEntry;
@@ -42,6 +45,7 @@ public class IncludedViewNode(
     private BindingContext? context;
     private bool wasContextChanged;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         Reset();
@@ -59,6 +63,7 @@ public class IncludedViewNode(
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc />
     public void Reset()
     {
         childNode?.Dispose();
@@ -67,6 +72,7 @@ public class IncludedViewNode(
         assetName = null;
     }
 
+    /// <inheritdoc />
     public bool Update()
     {
         if (wasContextChanged)

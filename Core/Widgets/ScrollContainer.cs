@@ -171,6 +171,7 @@ public class ScrollContainer : View
         return ScrollOffset != previousOffset;
     }
 
+    /// <inheritdoc />
     public override bool ScrollIntoView(IEnumerable<ViewChild> path, out Vector2 distance)
     {
         distance = Vector2.Zero;
@@ -228,17 +229,20 @@ public class ScrollContainer : View
         return descendantScrolled;
     }
 
+    /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         var origin = GetScrollOrigin();
         return Content?.FocusSearch(contentPosition + origin, direction)?.Offset(-origin);
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return Content is not null ? [new(Content, -GetScrollOrigin())] : [];
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
         if (Content is null)
@@ -250,12 +254,14 @@ public class ScrollContainer : View
         return result.ContainsPoint(contentPosition) ? [result] : [];
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         // Don't check scrollOffset here as it doesn't require new layout.
         return orientation.IsDirty || content.IsDirty || (Content?.IsDirty() ?? false);
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         // Doing this check in Draw is a little unusual, but changes to the scroll position/size generally do not affect
@@ -280,6 +286,7 @@ public class ScrollContainer : View
         Content.Draw(b);
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var containerLimits = Layout.GetLimits(availableSize);
@@ -301,6 +308,7 @@ public class ScrollContainer : View
 #pragma warning restore CA2245 // Do not assign a property to itself
     }
 
+    /// <inheritdoc />
     protected override void OnPropertyChanged(PropertyChangedEventArgs args)
     {
         base.OnPropertyChanged(args);
@@ -310,6 +318,7 @@ public class ScrollContainer : View
         }
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         content.ResetDirty();

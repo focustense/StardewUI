@@ -8,6 +8,7 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 public class ReflectionViewDescriptor : IViewDescriptor
 {
+    /// <inheritdoc />
     public Type TargetType => innerDescriptor.TargetType;
 
     private static readonly Dictionary<Type, ReflectionViewDescriptor> cache = [];
@@ -57,22 +58,26 @@ public class ReflectionViewDescriptor : IViewDescriptor
             : null;
     }
 
+    /// <inheritdoc />
     public bool TryGetChildrenProperty([MaybeNullWhen(false)] out IPropertyDescriptor property)
     {
         property = childrenProperty;
         return childrenProperty is not null;
     }
 
+    /// <inheritdoc />
     public bool TryGetEvent(string name, [MaybeNullWhen(false)] out IEventDescriptor @event)
     {
         return innerDescriptor.TryGetEvent(name, out @event);
     }
 
+    /// <inheritdoc />
     public bool TryGetMethod(string name, [MaybeNullWhen(false)] out IMethodDescriptor method)
     {
         return innerDescriptor.TryGetMethod(name, out method);
     }
 
+    /// <inheritdoc />
     public bool TryGetProperty(string name, [MaybeNullWhen(false)] out IPropertyDescriptor property)
     {
         return innerDescriptor.TryGetProperty(name, out property);

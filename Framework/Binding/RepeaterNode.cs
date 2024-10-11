@@ -20,8 +20,10 @@ public class RepeaterNode(
     IAttribute repeatAttribute
 ) : IViewNode
 {
+    /// <inheritdoc />
     public IReadOnlyList<IViewNode> ChildNodes => childNodes;
 
+    /// <inheritdoc />
     public BindingContext? Context
     {
         get => context;
@@ -35,6 +37,7 @@ public class RepeaterNode(
         }
     }
 
+    /// <inheritdoc />
     public IReadOnlyList<IView> Views { get; private set; } = [];
 
     private List<IViewNode> childNodes = [];
@@ -42,6 +45,7 @@ public class RepeaterNode(
     private BindingContext? context;
     private bool wasContextChanged;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         Reset();
@@ -50,6 +54,7 @@ public class RepeaterNode(
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc />
     public void Reset()
     {
         foreach (var childNode in childNodes)
@@ -67,6 +72,7 @@ public class RepeaterNode(
         wasContextChanged = true;
     }
 
+    /// <inheritdoc />
     public bool Update()
     {
         if (wasContextChanged)

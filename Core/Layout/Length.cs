@@ -5,7 +5,7 @@
 /// </summary>
 /// <param name="Type">Specifies how to interpret the <see cref="Value"/>.</param>
 /// <param name="Value">The dimension value, with behavior determined by <see cref="Type"/>.</param>
-public record Length(LengthType Type, float Value)
+public readonly record struct Length(LengthType Type, float Value)
 {
     /// <summary>
     /// Creates a new <see cref="Length"/> having <see cref="LengthType.Content"/>.
@@ -47,7 +47,7 @@ public record Length(LengthType Type, float Value)
     /// <remarks>
     /// <para>
     /// This is a convenience method for common layout scenarios, where content length is relatively simple to compute.
-    /// Its use is optional; complex widgets can use any means they prefer to compute <see cref="IView.ContentSize"/>.
+    /// Its use is optional; complex widgets can use any means they prefer to compute <see cref="View.ContentSize"/>.
     /// </para>
     /// <para>
     /// The result is intentionally not constrained to <paramref name="availableLength"/>, which is only used for the
@@ -59,7 +59,7 @@ public record Length(LengthType Type, float Value)
     /// <param name="getContentLength">A function to get the length of inner content. Will not be called unless the
     /// <see cref="LengthType"/> requires it.</param>
     /// <returns></returns>
-    public float Resolve(float availableLength, Func<float> getContentLength)
+    public readonly float Resolve(float availableLength, Func<float> getContentLength)
     {
         return Type switch
         {
@@ -81,6 +81,11 @@ public record Length(LengthType Type, float Value)
 public enum LengthType
 {
     /// <summary>
+    /// Ignore the specified <see cref="Length.Value"/> and use a value just high enough to fit all content.
+    /// </summary>
+    Content,
+
+    /// <summary>
     /// Use the exact <see cref="Length.Value"/> specified, in pixels.
     /// </summary>
     Px,
@@ -94,9 +99,4 @@ public enum LengthType
     /// Ignore the specified <see cref="Length.Value"/> and stretch to the full available width/height.
     /// </summary>
     Stretch,
-
-    /// <summary>
-    /// Ignore the specified <see cref="Length.Value"/> and use a value just high enough to fit all content.
-    /// </summary>
-    Content,
 }

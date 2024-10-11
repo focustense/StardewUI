@@ -24,6 +24,7 @@ public interface IViewFactory
 /// </summary>
 public class ViewFactory : IViewFactory
 {
+    /// <inheritdoc />
     public IView CreateView(string tagName)
     {
         return tagName.ToLowerInvariant() switch

@@ -107,21 +107,25 @@ public class Banner : View
     private Vector2 textShadowOffset;
     private Vector2 textSize;
 
+    /// <inheritdoc />
     protected override Edges GetBorderThickness()
     {
         return BackgroundBorderThickness;
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return backgroundBorderThickness.IsDirty || text.IsDirty;
     }
 
+    /// <inheritdoc />
     protected override void OnDrawBorder(ISpriteBatch b)
     {
         backgroundSlice?.Draw(b);
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         var centerX = ContentSize.X / 2;
@@ -144,6 +148,7 @@ public class Banner : View
         );
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var width = SpriteText.getWidthOfString(Text);
@@ -158,6 +163,7 @@ public class Banner : View
         backgroundSlice?.Layout(new(Point.Zero, BorderSize.ToPoint()));
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         backgroundBorderThickness.ResetDirty();

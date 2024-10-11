@@ -8,6 +8,7 @@
 /// </remarks>
 public class LayoutConverter : IValueConverter<string, LayoutParameters>
 {
+    /// <inheritdoc />
     public LayoutParameters Convert(string value)
     {
         var valueAsSpan = value.AsSpan().Trim();

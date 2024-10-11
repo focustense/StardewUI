@@ -82,6 +82,7 @@ public class Scrollbar(
         }
     }
 
+    /// <inheritdoc />
     protected override Lane CreateView()
     {
         upButton = CreateButton("ScrollBackButton", upSprite ?? UiSprites.SmallUpArrow, 48, 48);

@@ -112,6 +112,7 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
     private Image backgroundImage = null!;
     private Frame contentFrame = null!;
 
+    /// <inheritdoc />
     protected override View CreateView()
     {
         backgroundImage = new Image()

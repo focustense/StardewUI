@@ -24,7 +24,7 @@ public class Lane : View
     }
 
     /// <summary>
-    /// Specifies how to align the <see cref="Content"/> horizontally within the lane's area. Only has an effect if the
+    /// Specifies how to align the <see cref="Children"/> horizontally within the lane's area. Only has an effect if the
     /// total content area is larger than the content size, i.e. when <see cref="LayoutParameters.Width"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
@@ -56,7 +56,7 @@ public class Lane : View
     }
 
     /// <summary>
-    /// Specifies how to align the <see cref="Content"/> vertically within the lane's area. Only has an effect if the
+    /// Specifies how to align the <see cref="Children"/> vertically within the lane's area. Only has an effect if the
     /// total content area is larger than the content size, i.e. when <see cref="LayoutParameters.Height"/> does
     /// <i>not</i> use <see cref="LengthType.Content"/>.
     /// </summary>
@@ -86,6 +86,7 @@ public class Lane : View
     private Vector2 childrenSize;
     private int visibleChildCount;
 
+    /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
         // No matter what the navigation direction is, if the cursor is already within one of the children, then we
@@ -266,11 +267,13 @@ public class Lane : View
         return ahead.distance < behind.distance ? ahead.result : behind.result;
     }
 
+    /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return visibleChildPositions;
     }
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return orientation.IsDirty
@@ -280,6 +283,7 @@ public class Lane : View
             || visibleChildPositions.Any(child => child.View.IsDirty());
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         foreach (var (child, position) in visibleChildPositions.OrderBy(child => child.View.ZIndex))
@@ -290,6 +294,7 @@ public class Lane : View
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);
@@ -381,6 +386,7 @@ public class Lane : View
         }
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         horizontalContentAlignment.ResetDirty();

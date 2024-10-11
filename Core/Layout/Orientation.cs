@@ -53,6 +53,7 @@ public static class OrientationExtensions
     /// <summary>
     /// Gets the dimension setting of a layout along the orientation's axis.
     /// </summary>
+    /// <param name="orientation">The orientation.</param>
     /// <param name="layout">Layout parameters to extract from.</param>
     /// <returns>The <see cref="LayoutParameters.Width"/> of the specified <paramref name="layout"/> if the orientation
     /// is <see cref="Orientation.Horizontal"/>; <see cref="LayoutParameters.Height"/> if

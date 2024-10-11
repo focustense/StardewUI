@@ -60,6 +60,13 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private Point previousHoverPosition;
     private Point previousDragPosition;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="ViewMenu{T}"/>.
+    /// </summary>
+    /// <param name="gutter">Gutter edges, in which no content should be drawn. Used for overscan, or general
+    /// aesthetics.</param>
+    /// <param name="forceDefaultFocus">Whether to always focus (snap the cursor to) the default element, even if the
+    /// menu was triggered by keyboard/mouse.</param>
     public ViewMenu(Edges? gutter = null, bool forceDefaultFocus = false)
     {
         Game1.playSound("bigSelect");
@@ -92,6 +99,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <returns>The created view.</returns>
     protected abstract T CreateView();
 
+    /// <summary>
+    /// Initiates a focus search in the specified direction.
+    /// </summary>
+    /// <param name="directionValue">An integer value corresponding to the direction; one of 0 (up), 1 (right), 2 (down)
+    /// or 3 (left).</param>
     public override void applyMovementKey(int directionValue)
     {
         using var _ = OverlayContext.PushContext(overlayContext);
@@ -109,11 +121,22 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         );
     }
 
+    /// <summary>
+    /// Returns whether or not the menu wants <b>exclusive</b> gamepad controls.
+    /// </summary>
+    /// <remarks>
+    /// This implementation always returns <c>false</c>. Contrary to what the name in Stardew's code implies, this
+    /// setting is not required for <see cref="receiveGamePadButton(Buttons)"/> to work; instead, when enabled, it
+    /// suppresses the game's default mapping of button presses to clicks, and would therefore require reimplementing
+    /// key-repeat and other basic behaviors. There is no reason to enable it here.
+    /// </remarks>
+    /// <returns>Always <c>false</c>.</returns>
     public override bool areGamePadControlsImplemented()
     {
         return false;
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (isDisposed)
@@ -126,6 +149,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         GC.SuppressFinalize(this);
     }
 
+    /// <summary>
+    /// Draws the current menu content.
+    /// </summary>
+    /// <param name="b">The target batch.</param>
     public override void draw(SpriteBatch b)
     {
         var viewportBounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
@@ -178,6 +205,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
+    /// <summary>
+    /// Invoked on every frame in which a mouse button is down, regardless of the state in the previous frame.
+    /// </summary>
+    /// <param name="x">The mouse's current X position on screen.</param>
+    /// <param name="y">The mouse's current Y position on screen.</param>
     public override void leftClickHeld(int x, int y)
     {
         if (Game1.options.gamepadControls || IsInputCaptured())
@@ -195,6 +227,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         OnViewOrOverlay((view, origin) => view.OnDrag(new(dragPosition.ToVector2() - origin)));
     }
 
+    /// <summary>
+    /// Invoked on every frame with the mouse's current coordinates.
+    /// </summary>
+    /// <remarks>
+    /// Essentially the same as <see cref="update(GameTime)"/> but slightly more convenient for mouse hover/movement
+    /// effects because of the arguments provided.
+    /// </remarks>
+    /// <param name="x">The mouse's current X position on screen.</param>
+    /// <param name="y">The mouse's current Y position on screen.</param>
     public override void performHoverAction(int x, int y)
     {
         if (previousHoverPosition.X == x && previousHoverPosition.Y == y)
@@ -205,12 +246,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin, x, y));
     }
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// Always a no-op for menus in StardewUI.
+    /// </remarks>
     public override void populateClickableComponentList()
     {
         // The base class does a bunch of nasty reflection to populate the list, none of which is compatible with how
         // this menu works. To save time, we can simply do nothing here.
     }
 
+    /// <summary>
+    /// Invoked whenever a controller button is newly pressed.
+    /// </summary>
+    /// <param name="b">The button that was pressed.</param>
     public override void receiveGamePadButton(Buttons b)
     {
         // We don't actually dispatch the button to any capturing overlay, just prevent it from affecting the menu.
@@ -255,6 +304,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
+    /// <summary>
+    /// Invoked whenever a keyboard key is newly pressed.
+    /// </summary>
+    /// <param name="key">The key that was pressed.</param>
     public override void receiveKeyPress(Keys key)
     {
         var realButton = ButtonResolver.GetPressedButton(key.ToSButton());
@@ -288,6 +341,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
+    /// <summary>
+    /// Invoked whenever the left mouse button is newly pressed.
+    /// </summary>
+    /// <param name="x">The mouse's current X position on screen.</param>
+    /// <param name="y">The mouse's current Y position on screen.</param>
+    /// <param name="playSound">Currently not used.</param>
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
         if (IsInputCaptured())
@@ -303,6 +362,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         InitiateClick(button, new(x, y));
     }
 
+    /// <summary>
+    /// Invoked whenever the right mouse button is newly pressed.
+    /// </summary>
+    /// <param name="x">The mouse's current X position on screen.</param>
+    /// <param name="y">The mouse's current Y position on screen.</param>
+    /// <param name="playSound">Currently not used.</param>
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
         if (IsInputCaptured())
@@ -318,6 +383,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         InitiateClick(button, new(x, y));
     }
 
+    /// <summary>
+    /// Invoked whenever the mouse wheel is used. Only works with vertical scrolls.
+    /// </summary>
+    /// <param name="value">A value indicating the desired vertical scroll direction; negative values indicate "down"
+    /// and positive values indicate "up".</param>
     public override void receiveScrollWheelAction(int value)
     {
         if (IsInputCaptured())
@@ -331,6 +401,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         InitiateWheel(direction);
     }
 
+    /// <summary>
+    /// Invoked whenever the left mouse button is just released, after being pressed/held on the last frame.
+    /// </summary>
+    /// <param name="x">The mouse's current X position on screen.</param>
+    /// <param name="y">The mouse's current Y position on screen.</param>
     public override void releaseLeftClick(int x, int y)
     {
         if (IsInputCaptured())
@@ -376,6 +451,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
+    /// <summary>
+    /// Runs on every update tick.
+    /// </summary>
+    /// <param name="time">The current <see cref="GameTime"/> including the time elapsed since last update tick.</param>
     public override void update(GameTime time)
     {
         View.OnUpdate(time.ElapsedGameTime);
@@ -385,6 +464,16 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
+    /// <summary>
+    /// Formats a tooltip given the sequence of views from root to the lowest-level hovered child.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation reads the string value of the <em>last</em> (lowest-level) view with a non-empty
+    /// <see cref="IView.Tooltip"/>, and breaks lines longer than 640px, which is the default vanilla tooltip width.
+    /// </remarks>
+    /// <param name="path">Sequence of all elements, and their relative positions, that the mouse coordinates are
+    /// currently within.</param>
+    /// <returns>The tooltip string to display, or <c>null</c> to not show any tooltip.</returns>
     protected virtual string? FormatTooltip(IEnumerable<ViewChild> path)
     {
         var tooltip = hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => !string.IsNullOrEmpty(tooltip));

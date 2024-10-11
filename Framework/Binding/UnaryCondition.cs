@@ -24,6 +24,7 @@ public class UnaryCondition(
 {
     private static readonly IValueSource<bool> defaultSource = new ConstantValueSource<bool>(false);
 
+    /// <inheritdoc />
     public BindingContext? Context
     {
         get => context;
@@ -37,12 +38,14 @@ public class UnaryCondition(
         }
     }
 
+    /// <inheritdoc />
     public bool Passed { get; private set; }
 
     private BindingContext? context;
     private IValueSource<bool> valueSource = defaultSource;
     private bool wasContextChanged;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (valueSource is IDisposable disposable)
@@ -55,6 +58,7 @@ public class UnaryCondition(
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc />
     public void Update()
     {
         if (wasContextChanged)

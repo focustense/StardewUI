@@ -183,6 +183,7 @@ public class Image : View
     private Color tint = Color.White;
     private Alignment verticalAlignment = Alignment.Start;
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         // We intentionally don't check scale here, as scale doesn't affect layout size.
@@ -190,6 +191,7 @@ public class Image : View
         return sprite.IsDirty || rotation.IsDirty;
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         if (scale.IsDirty)
@@ -208,6 +210,7 @@ public class Image : View
         slice?.Draw(b, Tint);
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         var limits = Layout.GetLimits(availableSize);
@@ -226,6 +229,7 @@ public class Image : View
         }
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         rotation.ResetDirty();

@@ -11,6 +11,9 @@ namespace StardewUI;
 /// <param name="sprite">The source sprite.</param>
 public class NineSlice(Sprite sprite)
 {
+    /// <summary>
+    /// The source sprite.
+    /// </summary>
     public Sprite Sprite { get; init; } = sprite;
 
     private readonly Rectangle[,] sourceGrid = GetGrid(

@@ -17,7 +17,7 @@ public class SpriteAnimator : IAnimator
 
     /// <summary>
     /// Whether or not to pause animation. If <c>true</c>, the animator will hold at the current position and not
-    /// progress until set to <c>false</c> again. Does not affect the <see cref="CurrentAnimation"/>.
+    /// progress until set to <c>false</c> again.
     /// </summary>
     public bool Paused { get; set; }
 
@@ -34,6 +34,10 @@ public class SpriteAnimator : IAnimator
     private TimeSpan delayElapsed;
     private TimeSpan elapsed;
 
+    /// <summary>
+    /// Initializes a new instance of <see cref="SpriteAnimator"/> that animates the sprite on a specified image.
+    /// </summary>
+    /// <param name="image">The image to animate.</param>
     public SpriteAnimator(Image image)
     {
         imageRef = new(image);
@@ -54,6 +58,7 @@ public class SpriteAnimator : IAnimator
         elapsed = TimeSpan.Zero;
     }
 
+    /// <inheritdoc />
     public void Tick(TimeSpan elapsed)
     {
         if (Paused || FrameDuration == TimeSpan.Zero || Frames.Count == 0 || !imageRef.TryGetTarget(out var image))

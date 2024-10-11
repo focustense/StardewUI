@@ -11,6 +11,12 @@ namespace StardewUI;
 /// </remarks>
 public class Transform
 {
+    /// <summary>
+    /// Creates a <see cref="Transform"/> using a specified translation offset.
+    /// </summary>
+    /// <param name="translation">The translation offset.</param>
+    /// <returns>A <see cref="Transform"/> whose <see cref="Translation"/> is equal to
+    /// <paramref name="translation"/>.</returns>
     public static Transform FromTranslation(Vector2 translation)
     {
         return new Transform { Translation = translation };

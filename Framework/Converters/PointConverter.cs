@@ -7,6 +7,7 @@ namespace StardewUI.Framework.Converters;
 /// </summary>
 public class PointConverter : IValueConverter<string, Point>
 {
+    /// <inheritdoc />
     public Point Convert(string value)
     {
         var valueAsSpan = value.AsSpan();

@@ -11,14 +11,22 @@ namespace StardewUI.Framework.Sources;
 public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
     where T : notnull
 {
-    // We actually can "read" from an unbound context; just return a null/default value.
-    public bool CanRead => property?.CanRead ?? true;
+    /// <inheritdoc />
+    public bool CanRead =>
+        property?.CanRead
+        // We actually can "read" from an unbound context; just return a null/default value.
+        ?? true;
 
-    // However, we cannot meaningfully _write_ to an unbound context and should probably error on an attempt to do so.
-    public bool CanWrite => property?.CanWrite ?? false;
+    /// <inheritdoc />
+    public bool CanWrite =>
+        property?.CanWrite
+        // However, we cannot meaningfully _write_ to an unbound context and should probably error on an attempt to do so.
+        ?? false;
 
+    /// <inheritdoc />
     public string DisplayName => property is not null ? $"{property.DeclaringType.Name}.{property.Name}" : "(none)";
 
+    /// <inheritdoc />
     public T? Value
     {
         get => value;
@@ -37,6 +45,7 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
         set => Value = value is not null ? (T)value : default;
     }
 
+    /// <inheritdoc />
     public Type ValueType => typeof(T);
 
     private readonly object? data;
@@ -51,13 +60,13 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
     /// property name.
     /// </summary>
     /// <remarks>
-    /// If the <see cref="Context.Data"/> of the supplied <paramref name="context"/> implements
+    /// If the <see cref="BindingContext.Data"/> of the supplied <paramref name="context"/> implements
     /// <see cref="INotifyPropertyChanged"/>, then <see cref="Update"/> and <see cref="Value"/> will respond to changes
     /// to the given <paramref name="propertyName"/>. Otherwise, the source is "static" and will never change its value
     /// or return <c>true</c> from <see cref="Update"/>.
     /// </remarks>
     /// <param name="context">Context used for the data binding.</param>
-    /// <param name="propertyName">Property to read on the <see cref="Context.Data"/> of the supplied
+    /// <param name="propertyName">Property to read on the <see cref="BindingContext.Data"/> of the supplied
     /// <paramref name="context"/> when updating.</param>
     public ContextPropertyValueSource(BindingContext? context, string propertyName)
     {
@@ -70,6 +79,7 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (data is INotifyPropertyChanged npc)
@@ -87,6 +97,7 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
         }
     }
 
+    /// <inheritdoc />
     public bool Update()
     {
         if (!isDirty)

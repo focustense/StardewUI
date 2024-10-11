@@ -10,6 +10,7 @@ namespace StardewUI.Framework.Converters;
 /// </remarks>
 public class IdentityValueConverterFactory : IValueConverterFactory
 {
+    /// <inheritdoc />
     public bool TryGetConverter<TSource, TDestination>(
         [MaybeNullWhen(false)] out IValueConverter<TSource, TDestination> converter
     )

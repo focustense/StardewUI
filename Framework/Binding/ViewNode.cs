@@ -26,8 +26,10 @@ public class ViewNode(
     IAttribute? contextAttribute = null
 ) : IViewNode
 {
+    /// <inheritdoc />
     public IReadOnlyList<IViewNode> ChildNodes { get; internal set; } = childNodes?.ToList() ?? [];
 
+    /// <inheritdoc />
     public BindingContext? Context
     {
         get => context;
@@ -42,6 +44,7 @@ public class ViewNode(
         }
     }
 
+    /// <inheritdoc />
     public IReadOnlyList<IView> Views => view is not null ? [view] : [];
 
     private IViewBinding? binding;
@@ -51,6 +54,7 @@ public class ViewNode(
     private IView? view;
     private bool wasContextChanged;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         Reset();
@@ -63,6 +67,7 @@ public class ViewNode(
         GC.SuppressFinalize(this);
     }
 
+    /// <inheritdoc />
     public void Reset()
     {
         foreach (var childNode in ChildNodes)
@@ -76,6 +81,7 @@ public class ViewNode(
         wasContextChanged = false;
     }
 
+    /// <inheritdoc />
     public bool Update()
     {
         bool wasChanged = false;

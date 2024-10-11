@@ -10,10 +10,6 @@ namespace StardewUI.Widgets.Keybinding;
 /// Overlay control for editing a keybinding, or list of bindings.
 /// </summary>
 /// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-/// <param name="addText">Button text to display for adding a new binding. If not specified, the button will use a
-/// generic "+" sprite instead.</param>
-/// <param name="deleteTooltip">Tooltip to display when hovering over the delete button (trash can) for an existing
-/// binding. If not specified, then no tooltip will be shown.</param>
 public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
 {
     /// <summary>
@@ -159,6 +155,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
         CapturingInput = true;
     }
 
+    /// <inheritdoc />
     public override void Update(TimeSpan elapsed)
     {
         base.Update(elapsed);
@@ -214,6 +211,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
         }
     }
 
+    /// <inheritdoc />
     protected override IView CreateView()
     {
         currentKeybindView = new(spriteMap);

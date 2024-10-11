@@ -189,6 +189,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
     private Color textColor = Game1.textColor;
     private Color tintColor = Color.White;
 
+    /// <inheritdoc />
     protected override Lane CreateView()
     {
         var lane = new Lane() { Layout = LayoutParameters.FitContent(), VerticalContentAlignment = Alignment.Middle };

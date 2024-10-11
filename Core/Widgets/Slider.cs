@@ -173,6 +173,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     private float value = 0;
     private Func<float, string> valueFormat = v => v.ToString();
 
+    /// <inheritdoc />
     public override FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
         if (ContentBounds.ContainsPoint(position) && TryMoveValue(direction))
@@ -183,6 +184,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         return base.FocusSearch(position, direction);
     }
 
+    /// <inheritdoc />
     protected override IView CreateView()
     {
         backgroundImage = new()
@@ -223,6 +225,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         };
     }
 
+    /// <inheritdoc />
     protected override void OnLayout()
     {
         UpdatePosition();

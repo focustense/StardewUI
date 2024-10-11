@@ -45,14 +45,19 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
     private readonly PropertyInfo propertyInfo;
     private readonly Action<T, TValue>? setter;
 
+    /// <inheritdoc />
     public bool CanRead => getter is not null;
 
+    /// <inheritdoc />
     public bool CanWrite => setter is not null;
 
+    /// <inheritdoc />
     public Type DeclaringType => typeof(T);
 
+    /// <inheritdoc />
     public Type ValueType => propertyInfo.PropertyType;
 
+    /// <inheritdoc />
     public string Name => propertyInfo.Name;
 
     /// <summary>
@@ -90,16 +95,19 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
         }
     }
 
+    /// <inheritdoc />
     public override bool Equals(object? obj)
     {
         return obj is ReflectionPropertyDescriptor<T, TValue> other && other.propertyInfo.Equals(propertyInfo);
     }
 
+    /// <inheritdoc />
     public override int GetHashCode()
     {
         return propertyInfo.GetHashCode();
     }
 
+    /// <inheritdoc />
     public TValue GetValue(object source)
     {
         if (getter is null)
@@ -109,6 +117,7 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
         return getter((T)source);
     }
 
+    /// <inheritdoc />
     public void SetValue(object target, TValue value)
     {
         if (setter is null)

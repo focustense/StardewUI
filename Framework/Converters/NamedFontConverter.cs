@@ -10,6 +10,7 @@ namespace StardewUI.Framework.Converters;
 /// </remarks>
 public class NamedFontConverter : IValueConverter<string, SpriteFont>
 {
+    /// <inheritdoc />
     public SpriteFont Convert(string value)
     {
         return value switch

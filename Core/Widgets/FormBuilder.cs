@@ -7,6 +7,7 @@
 /// Useful for "settings" style views.
 /// </remarks>
 /// <param name="labelWidth">The width of the label column. Same for all rows.</param>
+/// <param name="fieldIndent">Pixel amount by which to indent the field rows, relative to any heading rows.</param>
 public class FormBuilder(int labelWidth, int fieldIndent = 16)
 {
     private const int FIELD_SPACING = 8;

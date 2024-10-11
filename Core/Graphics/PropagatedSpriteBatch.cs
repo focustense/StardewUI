@@ -21,6 +21,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
     private readonly SpriteBatch spriteBatch = spriteBatch;
     private Transform transform = transform;
 
+    /// <inheritdoc />
     public IDisposable Blend(BlendState blendState)
     {
         var previousRasterizerState = (RasterizerState)rasterizerStateField.GetValue(spriteBatch)!;
@@ -31,6 +32,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         return reverter;
     }
 
+    /// <inheritdoc />
     public IDisposable Clip(Rectangle clipRect)
     {
         var previousRect = spriteBatch.GraphicsDevice.ScissorRectangle;
@@ -44,11 +46,13 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         return new ClipReverter(this, previousRasterizerState, previousRect);
     }
 
+    /// <inheritdoc />
     public void DelegateDraw(Action<SpriteBatch, Vector2> draw)
     {
         draw(spriteBatch, transform.Translation);
     }
 
+    /// <inheritdoc />
     public void Draw(
         Texture2D texture,
         Vector2 position,
@@ -74,6 +78,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         );
     }
 
+    /// <inheritdoc />
     public void Draw(
         Texture2D texture,
         Vector2 position,
@@ -99,6 +104,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         );
     }
 
+    /// <inheritdoc />
     public void Draw(
         Texture2D texture,
         Rectangle destinationRectangle,
@@ -123,6 +129,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         );
     }
 
+    /// <inheritdoc />
     public void DrawString(
         SpriteFont spriteFont,
         string text,
@@ -148,16 +155,19 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         );
     }
 
+    /// <inheritdoc />
     public IDisposable SaveTransform()
     {
         return new TransformReverter(this);
     }
 
+    /// <inheritdoc />
     public void Translate(float x, float y)
     {
         Translate(new(x, y));
     }
 
+    /// <inheritdoc />
     public void Translate(Vector2 translation)
     {
         transform = transform.Translate(translation);

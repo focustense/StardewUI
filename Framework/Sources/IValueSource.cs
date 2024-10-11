@@ -50,13 +50,14 @@ public interface IValueSource
 }
 
 /// <summary>
-/// Abstract representation of the source of some value bound to a view's <see cref="IPropertyDescriptor"/>.
+/// Abstract representation of the source of any value, generally as used in a data binding.
 /// </summary>
 /// <typeparam name="T">Type of value supplied.</typeparam>
 public interface IValueSource<T> : IValueSource
 {
     /// <summary>
-    /// Gets the current value obtained as of the last <see cref="Update"/>, or writes a new value when set.
+    /// Gets the current value obtained from the most recent <see cref="IValueSource.Update"/>, or writes a new value
+    /// when set.
     /// </summary>
     new T? Value { get; set; }
 }

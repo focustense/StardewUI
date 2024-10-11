@@ -72,11 +72,13 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
     private Rectangle[] digitRects = [];
     private int[] digits = [];
 
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return number.IsDirty || scale.IsDirty;
     }
 
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         for (int i = 0; i < digits.Length; i++)
@@ -87,6 +89,7 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
         }
     }
 
+    /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
         int totalWidth = 0;
@@ -105,6 +108,7 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
         ContentSize = Layout.Resolve(availableSize, () => new(totalWidth, maxHeight));
     }
 
+    /// <inheritdoc />
     protected override void ResetDirty()
     {
         number.ResetDirty();

@@ -174,9 +174,8 @@ public interface IView : INotifyPropertyChanged
     /// Draws the content for this view.
     /// </summary>
     /// <remarks>
-    /// Drawing always happens after the measure pass, so <see cref="ContentSize"/> should be known and stable at this
-    /// time, as long as the implementation itself is stable. Note that a position is not provided because the
-    /// <see cref="ISpriteBatch"/> is pre-transformed; the top-left coordinates of this view are always (0, 0).
+    /// No positional argument is included because <see cref="ISpriteBatch"/> handles its own transformations; the
+    /// top-left coordinates of this view are always (0, 0).
     /// </remarks>
     /// <param name="b">Sprite batch to hold the drawing output.</param>
     void Draw(ISpriteBatch b);
@@ -286,7 +285,8 @@ public interface IView : INotifyPropertyChanged
     bool IsDirty();
 
     /// <summary>
-    /// Computes the size of this view in the current pass, and stores the result in <see cref="ContentSize"/>.
+    /// Performs layout on this view, updating its <see cref="OuterSize"/>, <see cref="ActualBounds"/> and
+    /// <see cref="ContentBounds"/>, and arranging any children in their respective positions.
     /// </summary>
     /// <remarks>
     /// Most views should save the value of <paramref name="availableSize"/> for use in <see cref="IsDirty"/> checks.
