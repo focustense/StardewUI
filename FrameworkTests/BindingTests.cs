@@ -317,7 +317,7 @@ public partial class BindingTests
     [Fact]
     public void WhenModelIsConvertible_BindsWithConversion()
     {
-        string markup = @"<dropdownlist options={Items} selected-option={<>SelectedItem} option-format={FormatItem} />";
+        string markup = @"<dropdown options={Items} selected-option={<>SelectedItem} option-format={FormatItem} />";
         var model = new DropDownTestModel { Items = [3, 7, 15] };
         var tree = BuildTreeFromMarkup(markup, model);
 

@@ -224,10 +224,10 @@ public class RepeaterNode(
             if (!factoryCache.TryGetValue(collectionSource.ValueType, out var factory))
             {
                 var elementType =
-                    collectionSource
+                    GetEnumerableElementType(collectionSource.ValueType)
+                    ?? collectionSource
                         .ValueType.GetInterfaces()
-                        .Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                        .Select(t => t.GetGenericArguments()[0])
+                        .Select(GetEnumerableElementType)
                         .Where(e => e is not null)
                         .FirstOrDefault()
                     ?? throw new BindingException(
@@ -245,6 +245,13 @@ public class RepeaterNode(
             where TCollection : IEnumerable<TElement>
         {
             return new CollectionWatcher<TCollection, TElement>((IValueSource<TCollection>)collectionSource);
+        }
+
+        private static Type? GetEnumerableElementType(Type t)
+        {
+            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                ? t.GetGenericArguments()[0]
+                : null;
         }
     }
 
