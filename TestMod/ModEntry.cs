@@ -1,12 +1,14 @@
-﻿using StardewModdingAPI;
+﻿using PropertyChanged.SourceGenerator;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewUI;
 using StardewUI.Framework;
 using StardewValley;
+using System.ComponentModel;
 
 namespace StardewUITest;
 
-internal sealed class ModEntry : Mod
+internal sealed partial class ModEntry : Mod
 {
     // Initialized in Entry
     private ModConfig config = null!;
@@ -43,7 +45,7 @@ internal sealed class ModEntry : Mod
         switch (e.Button)
         {
             case SButton.F8:
-                ShowExampleMenu1();
+                ShowExampleMenu3();
                 break;
             case SButton.F9:
                 ShowExampleMenu2();
@@ -84,5 +86,17 @@ internal sealed class ModEntry : Mod
             Items = items,
         };
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-ScrollingItemGrid", context);
+    }
+
+    partial class Example3Model : INotifyPropertyChanged
+    {
+        [Notify] private bool enableTurboBoost = true;
+        [Notify] private float speedMultiplier = 25;
+    }
+
+    private void ShowExampleMenu3()
+    {
+        var context = new Example3Model();
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Form", context);
     }
 }
