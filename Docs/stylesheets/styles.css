@@ -18,8 +18,21 @@ table .md-tooltip {
 }
 
 .type-conversions td {
-	border: 0.05rem solid var(--md-typeset-table-color);
-	padding: 0.25rem 0.5rem;
+    border: 0.05rem solid var(--md-typeset-table-color);
+    padding: 0.25rem 0.5rem;
+}
+
+.tree-table table {
+    background: var(--md-primary-fg-color--light);
+    margin-bottom: 0;
+}
+
+.tree-table .span-table td {
+    padding: 0.25rem 0.5rem;
+}
+
+.table-stretch {
+    width: 100%;
 }
 
 .type-conversions tr:first-child td:nth-child(3) { width: 240px; }
@@ -28,5 +41,9 @@ table .md-tooltip {
 
 .md-typeset .no-code-break code {
     word-break: normal;
-	white-space: nowrap;
+    white-space: nowrap;
+}
+
+.width-lg {
+    width: 500px;
 }
