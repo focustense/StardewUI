@@ -1,0 +1,34 @@
+{
+  "name": "vscode-sml",
+  "displayName": "vscode-sml",
+  "description": "VSCode Syntax highlighting for StarML",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sml",
+        "aliases": [
+          "StarML",
+          "sml"
+        ],
+        "extensions": [
+          ".sml"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sml",
+        "scopeName": "source.sml",
+        "path": "./syntaxes/sml.tmLanguage.json"
+      }
+    ]
+  }
+}
