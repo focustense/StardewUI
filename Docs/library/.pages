@@ -1,0 +1,6 @@
+nav:
+    - index.md
+    - standard-views.md
+    - custom-views.md
+    - animation.md
+    - ...

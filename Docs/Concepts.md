@@ -16,7 +16,7 @@ StardewUI calls them _Views_, not because of any affinity with mobile frameworks
 
 Nothing useful happens in StardewUI without a View. Underneath it all is still MonoGame's [`SpriteBatch`](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html)—we do need a destination for those pixels—but Views are what enable [layout](#layout) and reuse.
 
-Some views might seem very simple, even too trivial to be a view at all. Is a [Label](Standard-Views.md#label) really anything more than a wrapper around [`SpriteBatch.DrawString`](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html#Microsoft_Xna_Framework_Graphics_SpriteBatch_DrawString_Microsoft_Xna_Framework_Graphics_SpriteFont_System_String_Microsoft_Xna_Framework_Vector2_Microsoft_Xna_Framework_Color_System_Single_Microsoft_Xna_Framework_Vector2_Microsoft_Xna_Framework_Vector2_Microsoft_Xna_Framework_Graphics_SpriteEffects_System_Single_), perhaps with a `Game1.parseText` thrown in?
+Some views might seem very simple, even too trivial to be a view at all. Is a [Label](library/standard-views.md#label) really anything more than a wrapper around [`SpriteBatch.DrawString`](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html#Microsoft_Xna_Framework_Graphics_SpriteBatch_DrawString_Microsoft_Xna_Framework_Graphics_SpriteFont_System_String_Microsoft_Xna_Framework_Vector2_Microsoft_Xna_Framework_Color_System_Single_Microsoft_Xna_Framework_Vector2_Microsoft_Xna_Framework_Vector2_Microsoft_Xna_Framework_Graphics_SpriteEffects_System_Single_), perhaps with a `Game1.parseText` thrown in?
 
 In a word, yes:
 
@@ -24,7 +24,7 @@ In a word, yes:
 * What if we want multiple lines to be horizontally centered, or even right-aligned?
 * What if we want to simulate bold, or draw outlined or shadowed text?
 
-Text seems easy at first, but rarely stays that way. It's the same with images, which are all, in a sense, just `SpriteBatch.Draw` underneath; but is that all they are? What if the image isn't perfectly-sized for the area it needs to fit in - or if a single region needs to accommodate images of multiple sizes? Do we scale or stretch? Clip or crop? Can it be [animated](Animation.md)?
+Text seems easy at first, but rarely stays that way. It's the same with images, which are all, in a sense, just `SpriteBatch.Draw` underneath; but is that all they are? What if the image isn't perfectly-sized for the area it needs to fit in - or if a single region needs to accommodate images of multiple sizes? Do we scale or stretch? Clip or crop? Can it be [animated](library/animation.md)?
 
 The `SpriteBatch` is just a blank canvas on which to draw; views provide the reusability, interactivity, reactivity, and everything else we've come to expect from a user interface.
 
@@ -57,7 +57,7 @@ A layout view isn't a specific type, or supertype; it describes any view that is
 
 </div>
 
-The structure is the same whether you're using the [Core Library](Core-Library.md) or [StarML](StarML.md). At the end of the day, everything resolves to a pixel position, but you almost never deal with pixel positions directly; instead, you work with views (or elements, in StarML), and the layout views—in the above example, the [Frame](Standard-Views.md#frame) and [Lanes](Standard-Views.md#lane)—decide how to lay out their children—in this case, the various [Labels](Standard-Views.md#label), [Checkbox](Standard-Views.md#checkbox) and [Slider](Standard-Views.md#slider).
+The structure is the same whether you're using the [Core Library](library/index.md) or [StarML](framework/starml.md). At the end of the day, everything resolves to a pixel position, but you almost never deal with pixel positions directly; instead, you work with views (or elements, in StarML), and the layout views—in the above example, the [Frame](library/standard-views.md#frame) and [Lanes](library/standard-views.md#lane)—decide how to lay out their children—in this case, the various [Labels](library/standard-views.md#label), [Checkbox](library/standard-views.md#checkbox) and [Slider](library/standard-views.md#slider).
 
 ## Layout
 
@@ -123,13 +123,13 @@ If you ever run into a poorly-performing UI, use this knowledge to help. If you 
 
 A term from the heyday of visual database tools like Microsoft Access, the phrase _Data Binding_ in modern usage refers to the ability of a UI framework to keep the state of the UI in sync with some data that is _not_ part of the UI.
 
-Most real-world UI is not static. For example, you have a [label](Standard-Views.md#label) that is supposed to display the name of some item. But which item?
+Most real-world UI is not static. For example, you have a [label](library/standard-views.md#label) that is supposed to display the name of some item. But which item?
 
 ```html
 <label text="Parsnip" />
 ```
 
-isn't very helpful unless you know the item is always going to be a Parsnip. When you build your own UI from scratch using `SpriteBatch`, you tell it exactly what text to display on every `draw` call. However, when you write [StarML](StarML.md) and use the [Framework API](UI-Framework.md) to display it, you don't have access to the actual `Label` instance, nor any ability to set its `Text`. How do we make this display the name of _any_ item, not just static text?
+isn't very helpful unless you know the item is always going to be a Parsnip. When you build your own UI from scratch using `SpriteBatch`, you tell it exactly what text to display on every `draw` call. However, when you write [StarML](framework/starml.md) and use the [Framework API](framework/index.md) to display it, you don't have access to the actual `Label` instance, nor any ability to set its `Text`. How do we make this display the name of _any_ item, not just static text?
 
 The answer is a data binding:
 
@@ -146,8 +146,8 @@ public class ViewData
 }
 ```
 
-The full details are covered in the [StarML guide](StarML.md#attribute-flavors); at a conceptual level, what matters is that StardewUI does the synchronization work for you. You don't control the `Label` directly, but you don't need to, because you have _bound_ its text to a model (`ViewData`) that you _do_ control. `ViewData` is part of your mod.
+The full details are covered in the [StarML guide](framework/starml.md#attribute-flavors); at a conceptual level, what matters is that StardewUI does the synchronization work for you. You don't control the `Label` directly, but you don't need to, because you have _bound_ its text to a model (`ViewData`) that you _do_ control. `ViewData` is part of your mod.
 
 This style of UI development favors the "Model-View" family – informally, [Model-View-Whatever](https://www.beyondjava.net/model-view-whatever).
 
-**But, there's a catch...** if you want these data bindings to be more than a one-shot deal—that is, if you want to be able to _change_ the `ItemName` and see the changes show up immediately in the UI—then you need to implement [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged?view=net-8.0) (aka: "INPC"). Doing so can be very tedious, so head on over to [Binding Context](Binding-Context.md) for helpful tips and shortcuts to make it much faster and easier.
+**But, there's a catch...** if you want these data bindings to be more than a one-shot deal—that is, if you want to be able to _change_ the `ItemName` and see the changes show up immediately in the UI—then you need to implement [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged?view=net-8.0) (aka: "INPC"). Doing so can be very tedious, so head on over to [Binding Context](framework/binding-context.md) for helpful tips and shortcuts to make it much faster and easier.

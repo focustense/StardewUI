@@ -3,6 +3,12 @@ site_url: https://focustense.github.io/StardewUI
 repo_url: https://github.com/focustense/StardewUI
 theme:
   name: material
+  features:
+    - navigation.indexes
+    - navigation.path
+    - navigation.prune
+    - navigation.sections
+    - navigation.tabs
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
@@ -27,6 +33,8 @@ extra_css:
   - stylesheets/neoteroi-mkdocs.css
   - stylesheets/styles.css
 plugins:
+  - awesome-pages
+  - search
   - social
 markdown_extensions:
   - admonition

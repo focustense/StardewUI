@@ -1,8 +1,8 @@
 # Stardew Markup Language (StarML)
 
-StarML is the markup language used by the [UI Framework](UI-Framework.md). It is an HTML-like syntax based on a tree of [elements](#elements), each corresponding to a [view](Concepts.md#views).
+StarML is the markup language used by the [UI Framework](index.md). It is an HTML-like syntax based on a tree of [elements](#elements), each corresponding to a [view](../concepts.md#views).
 
-It shares many traits with [Angular templates](https://angular.dev/guide/templates), particularly an enhanced set of [attributes](#attributes) that perform [data binding](Concepts.md#data-binding) and other special functions.
+It shares many traits with [Angular templates](https://angular.dev/guide/templates), particularly an enhanced set of [attributes](#attributes) that perform [data binding](../concepts.md#data-binding) and other special functions.
 
 !!! example
 
@@ -29,7 +29,7 @@ As with most markup languages, StarML is built around elements. An element is:
 - with any number of distinct [attributes](#attributes)
 - and zero or more [children](#children).
 
-Every StarML element corresponds to a [View](Concepts.md#views), whose type is decided by its tag; every attribute corresponds to a property or event on that view (except [structural attributes](#structural-attributes)), and child elements correspond to the view's child views.
+Every StarML element corresponds to a [View](../concepts.md#views), whose type is decided by its tag; every attribute corresponds to a property or event on that view (except [structural attributes](#structural-attributes)), and child elements correspond to the view's child views.
 
 Like HTML and XML, elements can either have an explicit closing tag, or be self-closing:
 
@@ -53,7 +53,7 @@ Like HTML and XML, elements can either have an explicit closing tag, or be self-
 
 There are no strict rules around the use of opening/closing vs. self-closing tags—any element can be written using either style. The difference is that self-closing tags cannot have any children; thus tend to be used for "simple" views such as `<label />` and `<image />`, while open tags are used for _layout_ views like `<frame>`, `<lane>` and `<panel>`.
 
-:material-sign-caution: Because the [UI Framework](UI-Framework.md) is an [abstraction](https://en.wikipedia.org/wiki/Abstraction_(computer_science)) over regular Views, it will not enable you to do anything with a View that would be impossible or prohibited in the [Core Library](Core-Library.md), such as add children to a non-layout view.
+:material-sign-caution: Because the [UI Framework](index.md) is an [abstraction](https://en.wikipedia.org/wiki/Abstraction_(computer_science)) over regular Views, it will not enable you to do anything with a View that would be impossible or prohibited in the [Core Library](../library/index.md), such as add children to a non-layout view.
 
 ### Tags
 
@@ -65,7 +65,7 @@ A tag is anything between a pair of angle brackets `<  >`, one of:
 
 While the term "tag" may sometimes be used synonymously with "element", tags refer more narrowly to the specific markup above, i.e. not including any [attributes](#attributes) or [children](#children).
 
-In StarML, tags are not arbitrary; except for `<include>`, the tag defines the specific type of [view](Concepts.md#views) that is to be created, which in turn determines what attributes are allowed and how many children it is allowed to have.
+In StarML, tags are not arbitrary; except for `<include>`, the tag defines the specific type of [view](../concepts.md#views) that is to be created, which in turn determines what attributes are allowed and how many children it is allowed to have.
 
 These are the standard tags available in the UI framework:
 
@@ -75,24 +75,24 @@ These are the standard tags available in the UI framework:
 
 | <div style="min-width:120px">Tag</div> | <div style="min-width:150px">View/Behavior</div> | Description |
 | -------------- | --------------- | -------------- |
-| `<banner>`     | [Banner](Standard-Views.md#banner) | Displays a banner, aka ["scroll"](https://www.kdau.com/scrollish/), using a cartoonish font. Background optional. |
-| `<button>`     | [Button](Standard-Views.md#button) | Simple raised button with optional hover effect. |
-| `<checkbox>`   | [Checkbox](Standard-Views.md#checkbox) | Checkbox with optional clickable label. |
-| `<digits>`     | [Tiny Number Label](Standard-Views.md#tiny-number-label) | Displays a number in extra-small font; used for item quantities. |
-| `<dropdown>`   | [Drop-Down List](Standard-Views.md#drop-down-list) | Select from a list of options. |
-| `<expander>`   | [Expander](Standard-Views.md#expander) | Can be clicked to show or hide more content. |
-| `<frame>`      | [Frame](Standard-Views.md#frame) | Draws a border and/or background around another view. |
-| `<grid>`       | [Grid](Standard-Views.md#grid) | Uniform grid layout using either fixed size per item or fixed number of items per row/column. |
-| `<image>`      | [Image](Standard-Views.md#image) | Displays one image using a variety of scaling and fit options. |
-| `<include>`    | [Included View](Included-Views.md) | Insert a different StarML view in this position, using its asset `name` to load the content. |
-| `<label>`      | [Label](Standard-Views.md#label) | Displays single- or multi-line text using a standard `SpriteFont`. |
-| `<lane>`       | [Lane](Standard-Views.md#lane) | Arranges other views along one axis, either horizontal (left to right) or vertical (top to bottom). |
-| `<marquee>`    | [Marquee](Standard-Views.md#marquee) | Animates scrolling text or other content horizontally; named after the [HTML Marquee](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). |
-| `<panel>`      | [Panel](Standard-Views.md#panel) | Displays all children as layers ordered by z-index. Positions can be adjusted using margins. |
-| `<scrollable>` | [Scrollable View](Standard-Views.md#scrollable-view) | Shows scroll bars and arrows when content is too large to fit. |
-| `<slider>`     | [Slider](Standard-Views.md#slider) | A numeric slider that can be moved between a minimum and maximum range. |
-| `<spacer>`     | [Spacer](Standard-Views.md#spacer) | Draws nothing, but takes up space in the layout; used to "push" siblings to one side. |
-| `<textinput>`  | [Text Input](Standard-Views.md#text-input) | Input box for entering text; includes on-screen keyboard when activated by gamepad. |
+| `<banner>`     | [Banner](../library/standard-views.md#banner) | Displays a banner, aka ["scroll"](https://www.kdau.com/scrollish/), using a cartoonish font. Background optional. |
+| `<button>`     | [Button](../library/standard-views.md#button) | Simple raised button with optional hover effect. |
+| `<checkbox>`   | [Checkbox](../library/standard-views.md#checkbox) | Checkbox with optional clickable label. |
+| `<digits>`     | [Tiny Number Label](../library/standard-views.md#tiny-number-label) | Displays a number in extra-small font; used for item quantities. |
+| `<dropdown>`   | [Drop-Down List](../library/standard-views.md#drop-down-list) | Select from a list of options. |
+| `<expander>`   | [Expander](../library/standard-views.md#expander) | Can be clicked to show or hide more content. |
+| `<frame>`      | [Frame](../library/standard-views.md#frame) | Draws a border and/or background around another view. |
+| `<grid>`       | [Grid](../library/standard-views.md#grid) | Uniform grid layout using either fixed size per item or fixed number of items per row/column. |
+| `<image>`      | [Image](../library/standard-views.md#image) | Displays one image using a variety of scaling and fit options. |
+| `<include>`    | [Included View](included-views.md) | Insert a different StarML view in this position, using its asset `name` to load the content. |
+| `<label>`      | [Label](../library/standard-views.md#label) | Displays single- or multi-line text using a standard `SpriteFont`. |
+| `<lane>`       | [Lane](../library/standard-views.md#lane) | Arranges other views along one axis, either horizontal (left to right) or vertical (top to bottom). |
+| `<marquee>`    | [Marquee](../library/standard-views.md#marquee) | Animates scrolling text or other content horizontally; named after the [HTML Marquee](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). |
+| `<panel>`      | [Panel](../library/standard-views.md#panel) | Displays all children as layers ordered by z-index. Positions can be adjusted using margins. |
+| `<scrollable>` | [Scrollable View](../library/standard-views.md#scrollable-view) | Shows scroll bars and arrows when content is too large to fit. |
+| `<slider>`     | [Slider](../library/standard-views.md#slider) | A numeric slider that can be moved between a minimum and maximum range. |
+| `<spacer>`     | [Spacer](../library/standard-views.md#spacer) | Draws nothing, but takes up space in the layout; used to "push" siblings to one side. |
+| `<textinput>`  | [Text Input](../library/standard-views.md#text-input) | Input box for entering text; includes on-screen keyboard when activated by gamepad. |
 
 ## Attributes
 
@@ -106,8 +106,8 @@ There are also [structural attributes](#structural-attributes) which are a separ
 
 !!! note
 
-    These are the attributes common to **all** types of views (tags). Specific views usually have additional properties. Refer to the [standard views](Standard-Views.md) documentation for details.
-
+    These are the attributes common to **all** types of views (tags). Specific views usually have additional properties. Refer to the [standard views](../library/standard-views.md) documentation for details.
+    
     In StarML, the name of an attribute is always the [kebab-case](https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case) version of the property name, e.g. `HorizontalContentAlignment` becomes `horizontal-content-alignment`.
 
 <div class="annotate attribute-table" markdown>
@@ -127,7 +127,7 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `outer-size` | Out | `Bounds` | Total layout size occupied by the element, including padding, borders and margins. |
 | `padding` | In/Out | `Edges` | Pixel sizes for whitespace inside the border/background. |
 | `pointer-events-enabled` | In/Out | `bool` | Can be set to `false` to prevent receiving clicks, mouseovers, etc. Use when a transparent view is drawn on top of an interactive view. |
-| `scroll-with-children` | In/Out | `Orientation` | Forces the entire view to be visible when navigating in the specified direction. See the [ScrollableView](Standard-Views.md#scrollable-view) documentation for details. |
+| `scroll-with-children` | In/Out | `Orientation` | Forces the entire view to be visible when navigating in the specified direction. See the [ScrollableView](../library/standard-views.md#scrollable-view) documentation for details. |
 | `tags` | In/Out | `Tags` | Allows arbitrary data to be associated with the view. **Not supported in StarML yet** - may be supported in the future. |
 | `tooltip` | In/Out | `string` | Tooltip to show when hovered with the mouse, or focused on via game controller. |
 | `visibility` | In/Out | `Visibility` | Whether to show or hide the view; hiding does *not* remove it from the layout, use `*if` for that. |
@@ -152,9 +152,9 @@ Structural attributes look like regular attributes, but with a `*` prefix. Inste
 | Attribute  | <div style="width: 120px">Expected Type</div>    | Description |
 | ---------- | ---------------- | ----------- |
 | `*case`    | Any              | Removes the element unless the value is equal to the most recent `*switch`. The types of `*switch` and `*case` must either match exactly or be [convertible](#type-conversions). |
-| `*context` | Any              | Changes the [context](Binding-Context.md) that all child nodes bind to; used for heavily-nested data models. |
+| `*context` | Any              | Changes the [context](binding-context.md) that all child nodes bind to; used for heavily-nested data models. |
 | `*if`      | `bool`           | Removes the element unless the specified condition is met. |
-| `*repeat`  | `IEnumerable` | Repeats the element over a collection, creating a new view for every item and setting its [context](Binding-Context.md) to that item. Applies to both regular and structural attributes; e.g. if `*repeat` and `*if` are both specified, then `*repeat` applies first. |
+| `*repeat`  | `IEnumerable` | Repeats the element over a collection, creating a new view for every item and setting its [context](binding-context.md) to that item. Applies to both regular and structural attributes; e.g. if `*repeat` and `*if` are both specified, then `*repeat` applies first. |
 | `*switch`  | Any              | Sets the object that any subsequent `*case` attributes must match in order for their elements to show. |
 
 ### Events
@@ -169,12 +169,12 @@ Bindings for events use a specific [flavor](#attribute-flavors), where the handl
 <image click=|PlantCrops("corn", ^Quantity, $Button)| />
 ```
 
-To experienced C# programmers, this may look like an ordinary method call, but it isn't. [Event bindings](Binding-Events.md) are a powerful and complex feature, and reading the documentation on them is strongly recommended before using them.
+To experienced C# programmers, this may look like an ordinary method call, but it isn't. [Event bindings](binding-events.md) are a powerful and complex feature, and reading the documentation on them is strongly recommended before using them.
 
 !!! note
 
-    The events described below are the events common to **all** types of views (tags). Specific views may have additional events. Refer to the [standard views](Standard-Views.md) documentation for details.
-
+    The events described below are the events common to **all** types of views (tags). Specific views may have additional events. Refer to the [standard views](../library/standard-views.md) documentation for details.
+    
     In StarML, the name of an attribute is always the [kebab-case](https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case) version of the event name, e.g. `LeftClick` becomes `left-click`.
 
 <div class="annotate event-table" markdown>
@@ -193,7 +193,7 @@ To experienced C# programmers, this may look like an ordinary method call, but i
 
 </div>
 
-1.  Provided here as a reference for looking up the properties in [Events Source](https://github.com/focustense/StardewUI/tree/dev/Core/Events). You don't consume these types directly in your event handlers; consult the [Event Docs](Binding-Events.md) for details on how to set up handlers.
+1.  Provided here as a reference for looking up the properties in [Events Source](https://github.com/focustense/StardewUI/tree/dev/Core/Events). You don't consume these types directly in your event handlers; consult the [Event Docs](binding-events.md) for details on how to set up handlers.
 
 ### Attribute Flavors
 
@@ -206,9 +206,9 @@ Regular HTML uses quoted attributes; to support the more complex behaviors where
 | <div style="width: 240px">Format</div> | Meaning    |
 | --------------------------- | ----------- |
 | `attr="value"`              | The literal ([converted](#type-conversions)) value inside the quotes. |
-| `attr={PropertyName}`       | The current value of the specified [context property](Binding-Context.md). |
+| `attr={PropertyName}`       | The current value of the specified [context property](binding-context.md). |
 | `attr={@AssetName}`         | The current content of the [named asset](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F). |
-| `attr=|Handler(Arg1, ...)|` | Call the specified [context method](Binding-Context.md), with the specified arguments; only valid for [event attributes](#events). |
+| `attr=|Handler(Arg1, ...)|` | Call the specified [context method](binding-context.md), with the specified arguments; only valid for [event attributes](#events). |
 
 ??? note
 
@@ -216,14 +216,14 @@ Regular HTML uses quoted attributes; to support the more complex behaviors where
 
 ### Binding Modifiers
 
-In addition to the different [attribute flavors](#attribute-flavors),  context binding attributes—that is, those of the form `attr={PropertyName}`—can use modifier prefixes to either redirect to a different [context](Binding-Context.md) or change the direction of synchronization between context and view.
+In addition to the different [attribute flavors](#attribute-flavors),  context binding attributes—that is, those of the form `attr={PropertyName}`—can use modifier prefixes to either redirect to a different [context](binding-context.md) or change the direction of synchronization between context and view.
 
 These modifiers work **only** with context property and event bindings; they cannot be used on literal attributes or assets.
 
 | Modifier | <div style="width: 100px">Example</div> | Effect |
 | --- | --- | --- |
-| `^` | `{^Prop}` | Binds to the [parent context](Binding-Context.md#redirects) instead of the current context. Multiple `^` characters can be appended to go farther up, e.g. `^^^Prop`.
-| `~` | `{~Foo.Prop}` | Binds to the [typed ancestor](Binding-Context.md#redirects) instead of the current context. |
+| `^` | `{^Prop}` | Binds to the [parent context](binding-context.md#redirects) instead of the current context. Multiple `^` characters can be appended to go farther up, e.g. `^^^Prop`.
+| `~` | `{~Foo.Prop}` | Binds to the [typed ancestor](binding-context.md#redirects) instead of the current context. |
 | `<` | `{<Prop}` | Specifies an input binding, where the view receives its value from the model but does not write back. This is the default behavior when no modifier is used, and can generally be omitted. |
 | `>` | `{>Prop}` | Specifies an output binding, where the view writes its value to the model but does not read back. |
 | `<>` | `{<>Prop}` | Specifies an in/out binding, where the view both receives its value from the model _and_ writes back to the model. |
@@ -243,7 +243,7 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 !!! note
 
     All primitive types (numeric and `bool`) can be converted from their string representation, and are not shown explicitly in the conversion table. All types can also be converted _to_ a string, though whether or not the string is useful depends on its `ToString()` implementation.
-
+    
     :material-decimal-decrease: indicates a possible loss of numeric precision.
 
 <div class="annotate" markdown>
@@ -299,9 +299,9 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 6.  Reference to `Game1.dialogueFont`
 7.  Reference to `Game1.smallFont`
 8.  Reference to `Game1.tinyFont`
-9.  Sprites can be bound to model properties, but should only be done for sprites that _must_ be dynamic. In the majority of cases, you should use [sprite assets](API.md#register-assets) instead.
-10.  `n` is any positive integer; lays out the [grid](Standard-Views.md#grid) using _n_ items per row/column and adjusts their size accordingly.
-11.  `n` is any positive integer; lays out the [grid](Standard-Views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.
+9.  Sprites can be bound to model properties, but should only be done for sprites that _must_ be dynamic. In the majority of cases, you should use [sprite assets](../getting-started/adding-ui-assets.md) instead.
+10.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using _n_ items per row/column and adjusts their size accordingly.
+11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.
 
 If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from `string` to be used in literal attributes.
 
@@ -327,7 +327,7 @@ In the above example:
 * `<label text="Title" />` and `<frame>` are children of the `<lane>`
 * `<label text="Content"` is a child of the `<frame>`
 
-In general, only [layout views](Standard-Views.md#layouts) can have children; attempting to add children to any other view type will cause an error.
+In general, only [layout views](../library/standard-views.md#layouts) can have children; attempting to add children to any other view type will cause an error.
 
 Children can only be added to elements with separate opening and closing tags, e.g. `<lane>...</lane>`. Any self-closing tag, **even if** it corresponds to a layout view, cannot contain children, because a self-closing tag cannot be paired with a regular closing tag; just as with HTML or XML, `<lane/>...</lane>` is simply invalid StarML and will fail to parse.
 {.no-code-break}
@@ -336,7 +336,7 @@ Because of these constraints, all documentation and examples on this site use op
 
 ### Child Limits
 
-Some layout views can have only **one** child, for example [frames](Standard-Views.md#frame) and [scrollables](Standard-Views.md#scrollable-view). That means the following is invalid markup:
+Some layout views can have only **one** child, for example [frames](../library/standard-views.md#frame) and [scrollables](../library/standard-views.md#scrollable-view). That means the following is invalid markup:
 
 !!! failure
 
@@ -347,7 +347,7 @@ Some layout views can have only **one** child, for example [frames](Standard-Vie
     </frame>
     ```
 
-This will parse, but will either fail to display at all or fail to display correctly, because the actual frame _view_ only has a single `Content` view, not a list of views like a [lane](Standard-Views.md#lane) or [panel](Standard-Views.md#panel).
+This will parse, but will either fail to display at all or fail to display correctly, because the actual frame _view_ only has a single `Content` view, not a list of views like a [lane](../library/standard-views.md#lane) or [panel](../library/standard-views.md#panel).
 
 However, this rule applies only to the constructed view, not the markup itself. If only one of the children can actually display at a time, then there is no problem.
 
@@ -407,7 +407,7 @@ An alternative would be something similar to XAML, but these have a way of getti
 <Label Content="{Binding Path=DisplayName, RelativeSource={RelativeSource Mode=FindAncestor AncestorType={x:Type Foo}}}"/>
 ```
 
-Compare to a StarML [context redirect](Binding-Context.md#redirects):
+Compare to a StarML [context redirect](binding-context.md#redirects):
 
 ```html
 <label text={^DisplayName} />
@@ -420,7 +420,7 @@ This is not intended as a slight against XAML, which is actually a very powerful
 
 It is precisely because XML is so extensible that XML-based languages become convoluted over time; they encourage a way of thinking wherein new features are designed to fit into the XML structure somehow, even if the existing syntax is already confusing, verbose or requires some separately-interpreted micro-grammar, instead of the alternative of making a tiny change to the parser to support a relatively simple addition, like the `<>` or `^` modifiers above.
 
-StardewUI is a mod, which means it is easy to change the parser, easy to roll out said updates, and has fewer users and UI scenarios to cover, so more effort can go into making easy things easy, instead of making nearly-impossible things possible. For scenarios that StarML can't cover, the [Core Library](Core-Library.md) is the escape hatch.
+StardewUI is a mod, which means it is easy to change the parser, easy to roll out said updates, and has fewer users and UI scenarios to cover, so more effort can go into making easy things easy, instead of making nearly-impossible things possible. For scenarios that StarML can't cover, the [Core Library](../library/index.md) is the escape hatch.
 
 ## Why not JSON?
 
