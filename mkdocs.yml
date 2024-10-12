@@ -4,6 +4,7 @@ repo_url: https://github.com/focustense/StardewUI
 theme:
   name: material
   features:
+    - navigation.footer
     - navigation.indexes
     - navigation.path
     - navigation.prune
@@ -64,3 +65,9 @@ markdown_extensions:
           case: lower
   - toc:
       toc_depth: 4
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/focustense
+    - icon: simple/nexusmods
+      link: https://next.nexusmods.com/profile/focustense/mods?gameId=1303
