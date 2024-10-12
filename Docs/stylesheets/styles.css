@@ -47,3 +47,12 @@ table .md-tooltip {
 .width-lg {
     width: 500px;
 }
+
+.file-tree p {
+    background-color: var(--md-code-bg-color);
+    font-feature-settings: "kern";
+    font-family: var(--md-code-font-family);
+    margin: 0;
+    padding: 0.5rem;
+    white-space: pre;
+}
