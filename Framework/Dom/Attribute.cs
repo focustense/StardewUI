@@ -86,7 +86,7 @@ public abstract record ContextRedirect
 /// </remarks>
 /// <param name="Name">The attribute name.</param>
 /// <param name="Value">The literal value text.</param>
-/// <param name="Type">The type of the attribute itself, defining how the <paramref value="Name"/> should be
+/// <param name="Type">The type of the attribute itself, defining how the <paramref name="Name"/> should be
 /// interpreted.</param>
 /// <param name="ValueType">The type of the value expression, defining how the <paramref name="Value"/> should be
 /// interpreted.</param>
