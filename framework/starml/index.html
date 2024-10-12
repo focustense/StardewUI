@@ -1,0 +1,2031 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://focustense.github.io/StardewUI/framework/starml/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../binding-context/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+    
+    
+      
+        <title>Stardew Markup Language (StarML) - StardewUI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/styles.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Stardew Markup Language (StarML) - StardewUI Documentation" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/framework/starml.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://focustense.github.io/StardewUI/framework/starml/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Stardew Markup Language (StarML) - StardewUI Documentation" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/framework/starml.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#stardew-markup-language-starml" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="StardewUI Documentation" class="md-header__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
+      
+  <img src="../../images/logo-alt.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            StardewUI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Stardew Markup Language (StarML)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="orange"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/focustense/StardewUI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/" class="md-tabs__link">
+          
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+    
+  
+  Framework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../library/" class="md-tabs__link">
+          
+  
+    
+  
+  Library
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../examples/" class="md-tabs__link">
+          
+  
+    
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="StardewUI Documentation" class="md-nav__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
+      
+  <img src="../../images/logo-alt.png" alt="logo">
+
+    </a>
+    StardewUI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/focustense/StardewUI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../.." class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../getting-started/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Framework
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Framework
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Stardew Markup Language (StarML)
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Stardew Markup Language (StarML)
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Elements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tags
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structural Attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attribute-flavors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute Flavors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binding-modifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binding Modifiers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Conversions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#children" class="md-nav__link">
+    <span class="md-ellipsis">
+      Children
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Children">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#child-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Child Limits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why not HTML?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why not JSON?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binding-context/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Binding Context
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binding-events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Binding events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../included-views/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Included views
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../focus-and-interaction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Focus and interaction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../extensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../library/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Library
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../examples/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#elements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Elements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Elements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tags
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structural Attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#attribute-flavors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attribute Flavors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#binding-modifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binding Modifiers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Type Conversions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#children" class="md-nav__link">
+    <span class="md-ellipsis">
+      Children
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Children">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#child-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Child Limits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-html" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why not HTML?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why not JSON?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="stardew-markup-language-starml">Stardew Markup Language (StarML)</h1>
+<p>StarML is the markup language used by the <a href="../">UI Framework</a>. It is an HTML-like syntax based on a tree of <a href="#elements">elements</a>, each corresponding to a <a href="../../concepts/#views">view</a>.</p>
+<p>It shares many traits with <a href="https://angular.dev/guide/templates">Angular templates</a>, particularly an enhanced set of <a href="#attributes">attributes</a> that perform <a href="../../concepts/#data-binding">data binding</a> and other special functions.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;850px 500px&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>       <span class="na">background</span><span class="o">=</span><span class="s">{@Mods/StardewUI/Sprites/MenuBackground}</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>       <span class="na">border</span><span class="o">=</span><span class="s">{@Mods/StardewUI/Sprites/MenuBorder}</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>       <span class="na">border-thickness</span><span class="o">=</span><span class="s">&quot;36, 36, 40, 36&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">font</span><span class="o">=</span><span class="s">&quot;dialogue&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Hello from StardewUI!&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{IntroParagraph}</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="p">&lt;</span><span class="nt">textinput</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;200px content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{&lt;</span><span class="p">&gt;</span>FarmerName} /&gt;
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="p">&lt;</span><span class="nt">image</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;400px 100px&quot;</span> <span class="na">sprite</span><span class="o">=</span><span class="s">{@Mods/TestMod/Sprites/Hello}</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Launch&quot;</span> <span class="na">click</span><span class="o">=</span><span class="s">|LaunchCoolFeature(&quot;now&quot;)|</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<h2 id="elements">Elements</h2>
+<p>As with most markup languages, StarML is built around elements. An element is:</p>
+<ul>
+<li>A single <a href="#tags">tag</a></li>
+<li>with any number of distinct <a href="#attributes">attributes</a></li>
+<li>and zero or more <a href="#children">children</a>.</li>
+</ul>
+<p>Every StarML element corresponds to a <a href="../../concepts/#views">View</a>, whose type is decided by its tag; every attribute corresponds to a property or event on that view (except <a href="#structural-attributes">structural attributes</a>), and child elements correspond to the view's child views.</p>
+<p>Like HTML and XML, elements can either have an explicit closing tag, or be self-closing:</p>
+<div class="grid">
+<div class="admonition example">
+<p class="admonition-title">Opening/Closing Tags</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;50px 50px&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    ...
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Self-Closing Tag</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Hello&quot;</span> <span class="p">/&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+<p>There are no strict rules around the use of opening/closing vs. self-closing tags—any element can be written using either style. The difference is that self-closing tags cannot have any children; thus tend to be used for "simple" views such as <code>&lt;label /&gt;</code> and <code>&lt;image /&gt;</code>, while open tags are used for <em>layout</em> views like <code>&lt;frame&gt;</code>, <code>&lt;lane&gt;</code> and <code>&lt;panel&gt;</code>.</p>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 3h20v10h-4v8h-2v-8H8v8H6v-8H2zm16.97 8L20 9.97V7.15L16.15 11zm-5.65 0 6-6H16.5l-6 6zm-5.66 0 6-6h-2.83l-6 6zM5.18 5 4 6.18V9l4-4z"/></svg></span> Because the <a href="../">UI Framework</a> is an <a href="https://en.wikipedia.org/wiki/Abstraction_(computer_science)">abstraction</a> over regular Views, it will not enable you to do anything with a View that would be impossible or prohibited in the <a href="../../library/">Core Library</a>, such as add children to a non-layout view.</p>
+<h3 id="tags">Tags</h3>
+<p>A tag is anything between a pair of angle brackets <code>&lt;  &gt;</code>, one of:</p>
+<ul>
+<li>An opening tag: <code>&lt;panel&gt;</code></li>
+<li>A closing tag: <code>&lt;/panel&gt;</code></li>
+<li>A self-closing tag: <code>&lt;panel /&gt;</code>.</li>
+</ul>
+<p>While the term "tag" may sometimes be used synonymously with "element", tags refer more narrowly to the specific markup above, i.e. not including any <a href="#attributes">attributes</a> or <a href="#children">children</a>.</p>
+<p>In StarML, tags are not arbitrary; except for <code>&lt;include&gt;</code>, the tag defines the specific type of <a href="../../concepts/#views">view</a> that is to be created, which in turn determines what attributes are allowed and how many children it is allowed to have.</p>
+<p>These are the standard tags available in the UI framework:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The full list of tags currently supported can always be found in the <a href="https://github.com/focustense/StardewUI/blob/dev/Framework/Binding/ViewFactory.cs">ViewFactory source</a>.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th><div style="min-width:120px">Tag</div></th>
+<th><div style="min-width:150px">View/Behavior</div></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;banner&gt;</code></td>
+<td><a href="../../library/standard-views/#banner">Banner</a></td>
+<td>Displays a banner, aka <a href="https://www.kdau.com/scrollish/">"scroll"</a>, using a cartoonish font. Background optional.</td>
+</tr>
+<tr>
+<td><code>&lt;button&gt;</code></td>
+<td><a href="../../library/standard-views/#button">Button</a></td>
+<td>Simple raised button with optional hover effect.</td>
+</tr>
+<tr>
+<td><code>&lt;checkbox&gt;</code></td>
+<td><a href="../../library/standard-views/#checkbox">Checkbox</a></td>
+<td>Checkbox with optional clickable label.</td>
+</tr>
+<tr>
+<td><code>&lt;digits&gt;</code></td>
+<td><a href="../../library/standard-views/#tiny-number-label">Tiny Number Label</a></td>
+<td>Displays a number in extra-small font; used for item quantities.</td>
+</tr>
+<tr>
+<td><code>&lt;dropdown&gt;</code></td>
+<td><a href="../../library/standard-views/#drop-down-list">Drop-Down List</a></td>
+<td>Select from a list of options.</td>
+</tr>
+<tr>
+<td><code>&lt;expander&gt;</code></td>
+<td><a href="../../library/standard-views/#expander">Expander</a></td>
+<td>Can be clicked to show or hide more content.</td>
+</tr>
+<tr>
+<td><code>&lt;frame&gt;</code></td>
+<td><a href="../../library/standard-views/#frame">Frame</a></td>
+<td>Draws a border and/or background around another view.</td>
+</tr>
+<tr>
+<td><code>&lt;grid&gt;</code></td>
+<td><a href="../../library/standard-views/#grid">Grid</a></td>
+<td>Uniform grid layout using either fixed size per item or fixed number of items per row/column.</td>
+</tr>
+<tr>
+<td><code>&lt;image&gt;</code></td>
+<td><a href="../../library/standard-views/#image">Image</a></td>
+<td>Displays one image using a variety of scaling and fit options.</td>
+</tr>
+<tr>
+<td><code>&lt;include&gt;</code></td>
+<td><a href="../included-views/">Included View</a></td>
+<td>Insert a different StarML view in this position, using its asset <code>name</code> to load the content.</td>
+</tr>
+<tr>
+<td><code>&lt;label&gt;</code></td>
+<td><a href="../../library/standard-views/#label">Label</a></td>
+<td>Displays single- or multi-line text using a standard <code>SpriteFont</code>.</td>
+</tr>
+<tr>
+<td><code>&lt;lane&gt;</code></td>
+<td><a href="../../library/standard-views/#lane">Lane</a></td>
+<td>Arranges other views along one axis, either horizontal (left to right) or vertical (top to bottom).</td>
+</tr>
+<tr>
+<td><code>&lt;marquee&gt;</code></td>
+<td><a href="../../library/standard-views/#marquee">Marquee</a></td>
+<td>Animates scrolling text or other content horizontally; named after the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee">HTML Marquee</a>.</td>
+</tr>
+<tr>
+<td><code>&lt;panel&gt;</code></td>
+<td><a href="../../library/standard-views/#panel">Panel</a></td>
+<td>Displays all children as layers ordered by z-index. Positions can be adjusted using margins.</td>
+</tr>
+<tr>
+<td><code>&lt;scrollable&gt;</code></td>
+<td><a href="../../library/standard-views/#scrollable-view">Scrollable View</a></td>
+<td>Shows scroll bars and arrows when content is too large to fit.</td>
+</tr>
+<tr>
+<td><code>&lt;slider&gt;</code></td>
+<td><a href="../../library/standard-views/#slider">Slider</a></td>
+<td>A numeric slider that can be moved between a minimum and maximum range.</td>
+</tr>
+<tr>
+<td><code>&lt;spacer&gt;</code></td>
+<td><a href="../../library/standard-views/#spacer">Spacer</a></td>
+<td>Draws nothing, but takes up space in the layout; used to "push" siblings to one side.</td>
+</tr>
+<tr>
+<td><code>&lt;textinput&gt;</code></td>
+<td><a href="../../library/standard-views/#text-input">Text Input</a></td>
+<td>Input box for entering text; includes on-screen keyboard when activated by gamepad.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="attributes">Attributes</h2>
+<p>Tags define what view will be created; attributes define <em>how</em> it will look and behave, and specifically its <a href="#common-attributes">properties</a> and <a href="#events">events</a>.</p>
+<p>An attribute is any string appearing inside a tag that has the form <code>attr=value</code>, where <code>value</code> is one of the supported <a href="#attribute-flavors">flavors</a>, such as a quoted string like <code>text="Hello"</code> or data binding expression like <code>text={HelloMessage}</code>.</p>
+<p>There are also <a href="#structural-attributes">structural attributes</a> which are a separate topic.</p>
+<h3 id="common-attributes">Common Attributes</h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These are the attributes common to <strong>all</strong> types of views (tags). Specific views usually have additional properties. Refer to the <a href="../../library/standard-views/">standard views</a> documentation for details.</p>
+<p>In StarML, the name of an attribute is always the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case">kebab-case</a> version of the property name, e.g. <code>HorizontalContentAlignment</code> becomes <code>horizontal-content-alignment</code>.</p>
+</div>
+<div class="annotate attribute-table">
+<table>
+<thead>
+<tr>
+<th>Attribute </th>
+<th>Direction&nbsp;(1)</th>
+<th>Type&nbsp;(2)</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>actual-bounds</code></td>
+<td>Out</td>
+<td><code>Bounds</code></td>
+<td>True outer bounds of the view relative to its parent, including margins.</td>
+</tr>
+<tr>
+<td><code>border-size</code></td>
+<td>Out</td>
+<td><code>Vector2</code></td>
+<td>Size of the view's content plus padding and border width.</td>
+</tr>
+<tr>
+<td><code>content-bounds</code></td>
+<td>Out</td>
+<td><code>Bounds</code></td>
+<td>True bounds of the view's content relative to its parent, excluding margins.</td>
+</tr>
+<tr>
+<td><code>content-size</code></td>
+<td>Out</td>
+<td><code>Vector2</code></td>
+<td>Size of the view's content, not including padding, borders or margins.</td>
+</tr>
+<tr>
+<td><code>draggable</code></td>
+<td>In/Out</td>
+<td><code>bool</code></td>
+<td>Allows this view to receive <a href="#events">drag events</a> (<code>drag</code>, <code>drag-start</code> and <code>drag-end</code>).</td>
+</tr>
+<tr>
+<td><code>focusable</code></td>
+<td>In/Out</td>
+<td><code>bool</code></td>
+<td>Allows this view to receive focus, or "snap", when using a gamepad. Automatically enabled for most interactive elements like <code>button</code> or <code>dropdown</code>.</td>
+</tr>
+<tr>
+<td><code>inner-size</code></td>
+<td>Out</td>
+<td><code>Vector2</code></td>
+<td>Size of the view's content and padding, excluding borders and margins.</td>
+</tr>
+<tr>
+<td><code>layout</code></td>
+<td>In/Out</td>
+<td><code>LayoutParameters</code></td>
+<td>The intended width and height. See <a href="#type-conversions">conversions</a> for allowed values.</td>
+</tr>
+<tr>
+<td><code>margin</code></td>
+<td>In/Out</td>
+<td><code>Edges</code></td>
+<td>Pixel sizes for whitespace outside the border/background.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>In/Out</td>
+<td><code>string</code></td>
+<td>For <code>&lt;include&gt;</code> elements, the view's asset name; for all other elements, a user-defined name used mainly for logging and troubleshooting.</td>
+</tr>
+<tr>
+<td><code>outer-size</code></td>
+<td>Out</td>
+<td><code>Bounds</code></td>
+<td>Total layout size occupied by the element, including padding, borders and margins.</td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td>In/Out</td>
+<td><code>Edges</code></td>
+<td>Pixel sizes for whitespace inside the border/background.</td>
+</tr>
+<tr>
+<td><code>pointer-events-enabled</code></td>
+<td>In/Out</td>
+<td><code>bool</code></td>
+<td>Can be set to <code>false</code> to prevent receiving clicks, mouseovers, etc. Use when a transparent view is drawn on top of an interactive view.</td>
+</tr>
+<tr>
+<td><code>scroll-with-children</code></td>
+<td>In/Out</td>
+<td><code>Orientation</code></td>
+<td>Forces the entire view to be visible when navigating in the specified direction. See the <a href="../../library/standard-views/#scrollable-view">ScrollableView</a> documentation for details.</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>In/Out</td>
+<td><code>Tags</code></td>
+<td>Allows arbitrary data to be associated with the view. <strong>Not supported in StarML yet</strong> - may be supported in the future.</td>
+</tr>
+<tr>
+<td><code>tooltip</code></td>
+<td>In/Out</td>
+<td><code>string</code></td>
+<td>Tooltip to show when hovered with the mouse, or focused on via game controller.</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>In/Out</td>
+<td><code>Visibility</code></td>
+<td>Whether to show or hide the view; hiding does <em>not</em> remove it from the layout, use <code>*if</code> for that.</td>
+</tr>
+<tr>
+<td><code>z-index</code></td>
+<td>In/Out</td>
+<td><code>int</code></td>
+<td>Drawing order within the parent; higher indices are drawn later (on top).</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li>
+<p><strong>In/Out</strong> properties can accept any directional <a href="#binding-modifiers">binding modifier</a>; <strong>Out</strong> properties are read-only and can only be used to write <strong>to</strong> the model, e.g. if you need to receive the view's actual pixel size after a layout.</p>
+<p>Attempting to bind an <code>Out</code> property without the <code>&gt;</code> modifier, or attempting to assign it a literal value with a <code>="value"</code> type attribute, will cause it to fail.</p>
+</li>
+<li>
+<p>StardewUI's views will often have property types that can't be carried across the API boundary due to current limitations on <a href="https://smapi.io/">SMAPI</a> and its version of <a href="https://github.com/Nanoray-pl/Pintail">Pintail</a>.</p>
+<p>To help you through this, <a href="#type-conversions">automatic conversions</a> to and from other common types, such as tuples and XNA/MonoGame structures, are often provided if you want to bind one to your model and would rather not make everything a <code>string</code>.</p>
+<p>Note that some conversions may be <em>lossy</em>, i.e. if there is a difference in numeric precision.</p>
+</li>
+</ol>
+<h3 id="structural-attributes">Structural Attributes</h3>
+<p>Structural attributes look like regular attributes, but with a <code>*</code> prefix. Instead of binding to properties or events, they control aspects of how the view tree is constructed.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute </th>
+<th><div style="width: 120px">Expected Type</div></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*case</code></td>
+<td>Any</td>
+<td>Removes the element unless the value is equal to the most recent <code>*switch</code>. The types of <code>*switch</code> and <code>*case</code> must either match exactly or be <a href="#type-conversions">convertible</a>.</td>
+</tr>
+<tr>
+<td><code>*context</code></td>
+<td>Any</td>
+<td>Changes the <a href="../binding-context/">context</a> that all child nodes bind to; used for heavily-nested data models.</td>
+</tr>
+<tr>
+<td><code>*if</code></td>
+<td><code>bool</code></td>
+<td>Removes the element unless the specified condition is met.</td>
+</tr>
+<tr>
+<td><code>*repeat</code></td>
+<td><code>IEnumerable</code></td>
+<td>Repeats the element over a collection, creating a new view for every item and setting its <a href="../binding-context/">context</a> to that item. Applies to both regular and structural attributes; e.g. if <code>*repeat</code> and <code>*if</code> are both specified, then <code>*repeat</code> applies first.</td>
+</tr>
+<tr>
+<td><code>*switch</code></td>
+<td>Any</td>
+<td>Sets the object that any subsequent <code>*case</code> attributes must match in order for their elements to show.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events">Events</h3>
+<p>Event attributes look similar to property attributes, but deal specifically with .NET <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/event">events</a> raised by views. More generally, they are one of the two ways it is possible for the UI to communicate something <strong>back</strong> to your mod (the other being <a href="#binding-modifiers">output/two-way bindings</a>).</p>
+<p>While some UI might be purely informational (e.g. a tooltip or HUD), any <em>interactive</em> UI will probably involve one or more event bindings.</p>
+<p>Bindings for events use a specific <a href="#attribute-flavors">flavor</a>, where the handler and its arguments are enclosed in a pair of pipes (<code>|</code>):</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">image</span> <span class="na">click</span><span class="o">=</span><span class="s">|PlantCrops(&quot;corn&quot;,</span> <span class="err">^</span><span class="na">Quantity</span><span class="err">,</span> <span class="err">$</span><span class="na">Button</span><span class="err">)|</span> <span class="p">/&gt;</span>
+</span></code></pre></div>
+<p>To experienced C# programmers, this may look like an ordinary method call, but it isn't. <a href="../binding-events/">Event bindings</a> are a powerful and complex feature, and reading the documentation on them is strongly recommended before using them.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The events described below are the events common to <strong>all</strong> types of views (tags). Specific views may have additional events. Refer to the <a href="../../library/standard-views/">standard views</a> documentation for details.</p>
+<p>In StarML, the name of an attribute is always the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case">kebab-case</a> version of the event name, e.g. <code>LeftClick</code> becomes <code>left-click</code>.</p>
+</div>
+<div class="annotate event-table">
+<table>
+<thead>
+<tr>
+<th>Event </th>
+<th>Arguments&nbsp;Type&nbsp;(1)</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>click</code></td>
+<td><code>ClickEventArgs</code></td>
+<td>Any mouse/gamepad button clicked.</td>
+</tr>
+<tr>
+<td><code>drag</code></td>
+<td><code>PointerEventArgs</code></td>
+<td>Ongoing drag operation; mouse was moved while button is still held.</td>
+</tr>
+<tr>
+<td><code>drag-end</code></td>
+<td><code>PointerEventArgs</code></td>
+<td>End of a drag operation, mouse button was released.</td>
+</tr>
+<tr>
+<td><code>drag-start</code></td>
+<td><code>PointerEventArgs</code></td>
+<td>First frame of a drag operation.</td>
+</tr>
+<tr>
+<td><code>left-click</code></td>
+<td><code>ClickEventArgs</code></td>
+<td>Left mouse button or controller A was pressed.</td>
+</tr>
+<tr>
+<td><code>pointer-enter</code></td>
+<td><code>PointerEventArgs</code></td>
+<td>Cursor just moved inside the view's bounds.</td>
+</tr>
+<tr>
+<td><code>pointer-leave</code></td>
+<td><code>PointerEventArgs</code></td>
+<td>Cursor just moved outside the view's bounds.</td>
+</tr>
+<tr>
+<td><code>right-click</code></td>
+<td><code>ClickEventArgs</code></td>
+<td>Right mouse button or controller X was pressed.</td>
+</tr>
+<tr>
+<td><code>wheel</code></td>
+<td><code>WheelEventArgs</code></td>
+<td>Mouse wheel movement was detected.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ol>
+<li>Provided here as a reference for looking up the properties in <a href="https://github.com/focustense/StardewUI/tree/dev/Core/Events">Events Source</a>. You don't consume these types directly in your event handlers; consult the <a href="../binding-events/">Event Docs</a> for details on how to set up handlers.</li>
+</ol>
+<h3 id="attribute-flavors">Attribute Flavors</h3>
+<p>Regular HTML uses quoted attributes; to support the more complex behaviors where the attribute value should not be interpreted <em>literally</em> (as in, the exact value inside the quotes), StarML uses different "flavors" of attributes using different punctuation.</p>
+<div class="admonition danger">
+<p class="admonition-title">Bindings are not tokens</p>
+<p>Those accustomed to <a href="https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#tokens">Content Patcher Tokens</a> may need to unlearn certain habits, because what goes on behind the scenes with StarML is far more complicated than string replacement. If you attempt to write "tokens" of the form <code>attr="A {{value}} B"</code>, you are going to be disappointed.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th><div style="width: 240px">Format</div></th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attr="value"</code></td>
+<td>The literal (<a href="#type-conversions">converted</a>) value inside the quotes.</td>
+</tr>
+<tr>
+<td><code>attr={PropertyName}</code></td>
+<td>The current value of the specified <a href="../binding-context/">context property</a>.</td>
+</tr>
+<tr>
+<td><code>attr={@AssetName}</code></td>
+<td>The current content of the <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F">named asset</a>.</td>
+</tr>
+<tr>
+<td><code>attr=|Handler(Arg1, ...)|</code></td>
+<td>Call the specified <a href="../binding-context/">context method</a>, with the specified arguments; only valid for <a href="#events">event attributes</a>.</td>
+</tr>
+</tbody>
+</table>
+<details class="note">
+<summary>Note</summary>
+<p>Double-braces (<code>{{</code> and <code>}}</code>) are allowed in place of single braces, for those heavily accustomed to Content Patcher syntax and JSON tokens in general, but are not recommended due to the inconsistency with other attributes and reduced readability.</p>
+</details>
+<h3 id="binding-modifiers">Binding Modifiers</h3>
+<p>In addition to the different <a href="#attribute-flavors">attribute flavors</a>,  context binding attributes—that is, those of the form <code>attr={PropertyName}</code>—can use modifier prefixes to either redirect to a different <a href="../binding-context/">context</a> or change the direction of synchronization between context and view.</p>
+<p>These modifiers work <strong>only</strong> with context property and event bindings; they cannot be used on literal attributes or assets.</p>
+<table>
+<thead>
+<tr>
+<th>Modifier</th>
+<th><div style="width: 100px">Example</div></th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^</code></td>
+<td><code>{^Prop}</code></td>
+<td>Binds to the <a href="../binding-context/#redirects">parent context</a> instead of the current context. Multiple <code>^</code> characters can be appended to go farther up, e.g. <code>^^^Prop</code>.</td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td><code>{~Foo.Prop}</code></td>
+<td>Binds to the <a href="../binding-context/#redirects">typed ancestor</a> instead of the current context.</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td><code>{&lt;Prop}</code></td>
+<td>Specifies an input binding, where the view receives its value from the model but does not write back. This is the default behavior when no modifier is used, and can generally be omitted.</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td><code>{&gt;Prop}</code></td>
+<td>Specifies an output binding, where the view writes its value to the model but does not read back.</td>
+</tr>
+<tr>
+<td><code>&lt;&gt;</code></td>
+<td><code>{&lt;&gt;Prop}</code></td>
+<td>Specifies an in/out binding, where the view both receives its value from the model <em>and</em> writes back to the model.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Context modifiers can be combined with direction modifiers, but order matters; the direction must come first. You can write <code>{&lt;&gt;^^Prop}</code> or <code>{&gt;~Foo.Prop}</code>, but not <code>{^^&lt;&gt;Prop}</code> or <code>{~&gt;Foo.Prop}</code>.</p>
+</div>
+<h3 id="type-conversions">Type Conversions</h3>
+<p>In the <a href="https://smapi.io/">SMAPI</a> world, integrations between mods, including framework mods, are accomplished by <a href="https://en.wikipedia.org/wiki/Duck_typing">duck typing</a>, specifically through the <a href="https://github.com/Nanoray-pl/Pintail">Pintail</a> library. This is a highly effective system for backward-compatibility and in some cases forward-compatibility; however, it presents many challenges for a UI library that uses many complex types.</p>
+<p>Many <a href="#common-attributes">attribute types</a> like <code>Bounds</code> and <code>Edges</code> simply can't be transmitted across the API boundary, even if you copy their definitions. Interface types such as <code>IView</code> are far too complex to copy over. StardewUI doesn't want you to have to deal with these issues on a one-off basis. Instead, it has a highly integrated system of type conversions: regardless of the actual, <em>real</em> type of a view's property or event argument, it can be assigned or bound to any property with a <em>convertible</em> type.</p>
+<p>In the table below, the <em>String Format</em> is what you can put in a <a href="#attribute-flavors">literal attribute</a> or a <code>string</code> typed context property; <em>Converts From</em> can be used with <a href="#binding-modifiers">input bindings</a> and <em>Converts To</em> can be used with output bindings or <a href="#events">event arguments</a>. For two-way bindings, the type must either be <code>string</code> or be in both the "from" and "to" lists.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All primitive types (numeric and <code>bool</code>) can be converted from their string representation, and are not shown explicitly in the conversion table. All types can also be converted <em>to</em> a string, though whether or not the string is useful depends on its <code>ToString()</code> implementation.</p>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 17 3 3v-2h6v-2h-6v-2zM9 5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3 3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m0 2a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1 1 1 0 0 0 1-1V8a1 1 0 0 0-1-1m-5 5a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1"/></svg></span> indicates a possible loss of numeric precision.</p>
+</div>
+<div class="annotate">
+<div class="span-table-wrapper">
+<table class="span-table type-conversions">
+<tr>
+<td>Type</td>
+<td>String Format</td>
+<td>Converts From</td>
+<td>Converts To</td>
+</tr>
+<tr>
+<td>Any <code>enum</code></td>
+<td>(Field Name)</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>Point</code></td>
+<td><code>"x, y"</code></td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>Vector2</code></td>
+<td><code>"x, y"</code></td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><code>Rectangle</code></td>
+<td><code>"x, y, width, height"</code></td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td rowspan="2"><code>LayoutParameters</code></td>
+<td><code>"&lt;Length&gt;"</code>&nbsp;(1)</td>
+<td rowspan="2">N/A</td>
+<td rowspan="2">N/A</td>
+</tr>
+<tr>
+<td><code>"&lt;Width&gt; &lt;Height&gt;"</code></td>
+</tr>
+<tr>
+<td rowspan="4"><code>Length</code></td>
+<td><code>"&lt;num&gt;px"</code> (2)</td>
+<td rowspan="4">N/A</td>
+<td rowspan="4">N/A</td>
+</tr>
+<tr>
+<td><code>"&lt;num&gt;%"</code> (3)</td>
+</tr>
+<tr>
+<td><code>"content"</code> (4)</td>
+</tr>
+<tr>
+<td><code>"stretch"</code> (5)</td>
+</tr>
+<tr>
+<td rowspan="8"><code>Edges</code></td>
+<td rowspan="8"><code>"left, right, top, bottom"</code></td>
+<td><code>Tuple&lt;int, int, int, int&gt;</code></td>
+<td><code>Tuple&lt;int, int, int, int&gt;</code></td>
+</tr>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 17 3 3v-2h6v-2h-6v-2zM9 5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3 3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m0 2a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1 1 1 0 0 0 1-1V8a1 1 0 0 0-1-1m-5 5a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1"/></svg></span> <code>Vector4</code></td>
+<td><code>Vector4</code></td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td rowspan="6"></td>
+</tr>
+<tr>
+<td><code>Point</code></td>
+</tr>
+<tr>
+<td><code>Tuple&lt;int, int&gt;</code></td>
+</tr>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 17 3 3v-2h6v-2h-6v-2zM9 5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3 3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m0 2a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1 1 1 0 0 0 1-1V8a1 1 0 0 0-1-1m-5 5a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1"/></svg></span> <code>Vector2</code></td>
+</tr>
+<tr>
+<td><code>Tuple&lt;Point, Point&gt;</code></td>
+</tr>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 17 3 3v-2h6v-2h-6v-2zM9 5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3 3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m0 2a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1 1 1 0 0 0 1-1V8a1 1 0 0 0-1-1m-5 5a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1"/></svg></span> <code>Tuple&lt;Vector2, Vector2&gt;</code></td>
+</tr>
+<tr>
+<td rowspan="4"><code>Bounds</code></td>
+<td rowspan="4">N/A</td>
+<td rowspan="4">N/A</td>
+<td><code>Tuple&lt;float, float, float, float&gt;</code></td>
+</tr>
+<tr>
+<td><code>Tuple&lt;Vector2, Vector2&gt;</code></td>
+</tr>
+<tr>
+<td><code>Vector4</code></td>
+</tr>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12 17 3 3v-2h6v-2h-6v-2zM9 5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3 3 3 0 0 1-3-3V8a3 3 0 0 1 3-3m0 2a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1 1 1 0 0 0 1-1V8a1 1 0 0 0-1-1m-5 5a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1"/></svg></span> <code>Rectangle</code></td>
+</tr>
+<tr>
+<td rowspan="4"><code>Color</code></td>
+<td><code>"#rgb"</code></td>
+<td rowspan="4">N/A</td>
+<td rowspan="4">N/A</td>
+</tr>
+<tr>
+<td><code>"#rgba"</code></td>
+</tr>
+<tr>
+<td><code>"#rrggbb"</code></td>
+</tr>
+<tr>
+<td><code>"#rrggbbaa"</code></td>
+</tr>
+<tr>
+<td rowspan="3"><code>Sprite</code> (9)</td>
+<td rowspan="3">N/A</td>
+<td><code>Texture2D</code></td>
+<td rowspan="3">N/A</td>
+</tr>
+<tr>
+<td><code>Tuple&lt;Texture2D, Rectangle&gt;</code></td>
+</tr>
+<tr>
+<td><code>ParsedItemData</code></td>
+</tr>
+<tr>
+<td rowspan="3"><code>SpriteFont</code></td>
+<td><code>"dialogue"</code> (6)</td>
+<td rowspan="3">N/A</td>
+<td rowspan="3">N/A</td>
+</tr>
+<tr>
+<td><code>"small"</code> (7)</td>
+</tr>
+<tr>
+<td><code>"tiny"</code> (8)</td>
+</tr>
+<tr>
+<td rowspan="2"><code>GridItemLayout</code></td>
+<td><code>"count: n"</code> (10)</td>
+<td rowspan="2">N/A</td>
+<td rowspan="2">N/A</td>
+</tr>
+<tr>
+<td><code>"length: n"</code> (11)</td>
+</tr>
+</table>
+</div>
+</div>
+<ol>
+<li>Applies the same value to both the <code>Width</code> and <code>Height</code>. See <code>Length</code> conversions below for what values are allowed for <code>&lt;Length&gt;</code>, <code>&lt;Width&gt;</code> or <code>&lt;Height&gt;</code>.</li>
+<li>Specifies an exact value in pixels, e.g. <code>100px</code>.</li>
+<li>Percentage of the container's available width or height, e.g. <code>50%</code>.</li>
+<li>As wide/tall as the content wants itself to be, up to the available container size.</li>
+<li>Use the entire width/height available, <em>after</em> any siblings that are not stretched.</li>
+<li>Reference to <code>Game1.dialogueFont</code></li>
+<li>Reference to <code>Game1.smallFont</code></li>
+<li>Reference to <code>Game1.tinyFont</code></li>
+<li>Sprites can be bound to model properties, but should only be done for sprites that <em>must</em> be dynamic. In the majority of cases, you should use <a href="../../getting-started/adding-ui-assets/">sprite assets</a> instead.</li>
+<li><code>n</code> is any positive integer; lays out the <a href="../../library/standard-views/#grid">grid</a> using <em>n</em> items per row/column and adjusts their size accordingly.</li>
+<li><code>n</code> is any positive integer; lays out the <a href="../../library/standard-views/#grid">grid</a> using a fixed width/height of <code>n</code> per item, and wraps to the next row/column when reaching the end.</li>
+</ol>
+<p>If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from <code>string</code> to be used in literal attributes.</p>
+<p>Unfortunately, allowing mods to arbitrarily extend this list would be a chicken-egg problem: you need direct access to the destination type in order to implement a converter. However, if anything important is missing, feel free to make a <a href="https://github.com/focustense/StardewUI/issues">request</a> or a <a href="https://github.com/focustense/StardewUI/blob/dev/Framework/Converters/ValueConverterFactory.cs">contribution</a> (writing a converter is usually very simple, often a single line of code).</p>
+<h2 id="children">Children</h2>
+<p>In StarML—as in HTML or XML—an element's children are any tags appearing between the parent element's opening and closing tags:</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Title&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="p">&lt;</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Content&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<p>In the above example:</p>
+<ul>
+<li><code>&lt;label text="Title" /&gt;</code> and <code>&lt;frame&gt;</code> are children of the <code>&lt;lane&gt;</code></li>
+<li><code>&lt;label text="Content"</code> is a child of the <code>&lt;frame&gt;</code></li>
+</ul>
+<p>In general, only <a href="../../library/standard-views/#layouts">layout views</a> can have children; attempting to add children to any other view type will cause an error.</p>
+<p class="no-code-break">Children can only be added to elements with separate opening and closing tags, e.g. <code>&lt;lane&gt;...&lt;/lane&gt;</code>. Any self-closing tag, <strong>even if</strong> it corresponds to a layout view, cannot contain children, because a self-closing tag cannot be paired with a regular closing tag; just as with HTML or XML, <code>&lt;lane/&gt;...&lt;/lane&gt;</code> is simply invalid StarML and will fail to parse.</p>
+<p>Because of these constraints, all documentation and examples on this site use opening/closing tags for layout views, and self-closing tags for other views. While this is not a requirement for valid StarML, it is recommended that you do the same in order to avoid confusion and lower the chances of creating invalid markup.</p>
+<h3 id="child-limits">Child Limits</h3>
+<p>Some layout views can have only <strong>one</strong> child, for example <a href="../../library/standard-views/#frame">frames</a> and <a href="../../library/standard-views/#scrollable-view">scrollables</a>. That means the following is invalid markup:</p>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">&lt;</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Item 1&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Item 2&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<p>This will parse, but will either fail to display at all or fail to display correctly, because the actual frame <em>view</em> only has a single <code>Content</code> view, not a list of views like a <a href="../../library/standard-views/#lane">lane</a> or <a href="../../library/standard-views/#panel">panel</a>.</p>
+<p>However, this rule applies only to the constructed view, not the markup itself. If only one of the children can actually display at a time, then there is no problem.</p>
+<div class="admonition warning">
+<p class="admonition-title">Risky</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">&lt;</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">if</span><span class="o">=</span><span class="s">{Item1Visible}</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Item 1&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">if</span><span class="o">=</span><span class="s">{Item2Visible}</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Item 2&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<p>This is a "maybe" because, while you might personally know – or expect – that <code>Item1Visible</code> and <code>Item2Visible</code> cannot both be <code>true</code> at the same time, the framework itself does not know that and cannot enforce it, and doing it this way could cause it to fail when you least expect it, e.g. long after your mod has been released and been downloaded several times.</p>
+<p>A better way is to use <code>*switch</code>:</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="err">*</span><span class="na">switch</span><span class="o">=</span><span class="s">{VisibleItem}</span><span class="p">&gt;</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">case</span><span class="o">=</span><span class="s">&quot;Item1&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Item 1&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">case</span><span class="o">=</span><span class="s">&quot;Item2&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Item 2&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<p>This version <em>cannot</em> fail because <code>VisibleItem</code> cannot be both <code>Item1</code> and <code>Item2</code> at the same time. In other words, it is always OK to have multiple child nodes underneath a single-view layout, <strong>if</strong> all of those nodes have a distinct <code>*case</code>. Otherwise, there is the possibility of failure.</p>
+<h2 id="why-not-html">Why not HTML?</h2>
+<p>Some web frameworks, like Vue, are a subset of HTML; their templates are syntactically valid HTML, constructed in such a way that any special behavior can be understood using special tags, attributes with unusual but valid prefixes like <code>:class</code>, and so on. So, why not simply pull in an HTML (or XHTML) parser and use that?</p>
+<p>This went through careful consideration but ultimately seemed to have more negatives than positives. The potential positives:</p>
+<ul>
+<li>Several preexisting parsers are available for .NET;</li>
+<li>Common editors (Visual Studio Code, Notepad++, etc.) provide built-in syntax highlighting and validation;</li>
+<li>Already familiar to anyone with web development experience.</li>
+</ul>
+<p>The negatives:</p>
+<div class="no-code-break">
+<ul>
+<li>Using a third-party parser (or any third-party library) in a SMAPI environment is risky, and most parsers are not totally optimized for memory and speed.</li>
+<li>Common editors provide built-in syntax highlighting and validation <strong>that could be misleading</strong> given the real constraints of a Stardew UI. For example, interpolations like <code>attr="{value1} {value2}"</code> are valid HTML but not actually supported.</li>
+<li>Prior web development experience only helps through the shallowest part of the learning curve, not with binding/event attributes, model design, asset organization, etc.</li>
+<li>If all attributes are quoted, then character escaping becomes a more significant issue, especially for literal expressions; imagine documents full of <code><button @click="Foo(&quot;Bar&quot;, Baz)" /></code>.</li>
+<li>An HTML parser only breaks the raw text down into stringly-typed elements and attributes; StardewUI would then need to do a second round of parsing (i.e. twice as much work) on all the tags and attribute values to determine which attributes are standard vs. structural, which values are literals vs. bindings vs. events, determine all the property names and types involved in an event handler, and so on.</li>
+<li>The actual runtime model (widget tree) is not comparable to an HTML DOM; does not understand unknown tags or standard HTML tags, does not distinguish between block/inline/other styles, and so on. As an abstraction over native UI, the inner workings are more like Qt or Android than a web browser; therefore, an "it's just HTML" approach would eventually end up causing more friction and confusion than a custom language.</li>
+</ul>
+</div>
+<p><strong>What about XML?</strong></p>
+<p>An alternative would be something similar to XAML, but these have a way of getting out of control; consider, for example, a "simple" binding redirect in XAML:</p>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">&lt;Label</span><span class="w"> </span><span class="na">Content=</span><span class="s">&quot;{Binding Path=DisplayName, RelativeSource={RelativeSource Mode=FindAncestor AncestorLevel=1}}&quot;</span><span class="nt">/&gt;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">&lt;Label</span><span class="w"> </span><span class="na">Content=</span><span class="s">&quot;{Binding Path=DisplayName, RelativeSource={RelativeSource Mode=FindAncestor AncestorType={x:Type Foo}}}&quot;</span><span class="nt">/&gt;</span>
+</span></code></pre></div>
+<p>Compare to a StarML <a href="../binding-context/#redirects">context redirect</a>:</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{^DisplayName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{~Foo.DisplayName}</span> <span class="p">/&gt;</span>
+</span></code></pre></div>
+<p>And this is without any <a href="#binding-modifiers">binding modifiers</a> which add even more noise to XAML.</p>
+<p>This is not intended as a slight against XAML, which is actually a very powerful and mature tool for cross-platform development and far better than most of the available alternatives. However, it reflects a different use case: backing an <em>enormous</em> framework (WPF) that is difficult to update once released, needs to scale to almost any imaginable UI scenario, and can expect a very high level of expertise from dev-users.</p>
+<p>It is precisely because XML is so extensible that XML-based languages become convoluted over time; they encourage a way of thinking wherein new features are designed to fit into the XML structure somehow, even if the existing syntax is already confusing, verbose or requires some separately-interpreted micro-grammar, instead of the alternative of making a tiny change to the parser to support a relatively simple addition, like the <code>&lt;&gt;</code> or <code>^</code> modifiers above.</p>
+<p>StardewUI is a mod, which means it is easy to change the parser, easy to roll out said updates, and has fewer users and UI scenarios to cover, so more effort can go into making easy things easy, instead of making nearly-impossible things possible. For scenarios that StarML can't cover, the <a href="../../library/">Core Library</a> is the escape hatch.</p>
+<h2 id="why-not-json">Why not JSON?</h2>
+<p>In many ways, JSON is the lingua franca of Stardew modding; it is the notation used by every content pack, not only for <a href="https://stardewvalleywiki.com/Modding:Content_Patcher">Content Patcher</a> but for every <a href="https://stardewvalleywiki.com/Modding:Content_pack_frameworks#Other_popular_frameworks">other framework</a> out there. Why should StardewUI be different?</p>
+<p>While sharing some of the same concerns as HTML, such as double-parsing and character-escaping, it does route around other issues such as third-party libraries (<a href="https://www.newtonsoft.com/json">Json.NET</a> is technically third-party, but is already available in every SMAPI environment).</p>
+<p>To understand why it's not a good fit, we can take a look at what kind of structure might be required for a very simple view. In this example, we display a frame border, a single header line, and the names of a list of NPCs.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="starml" name="__tabbed_1" type="radio" /><input id="hypothetical-json" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="starml">StarML</label><label for="hypothetical-json">Hypothetical JSON</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;800px content&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">font</span><span class="o">=</span><span class="s">&quot;dialogue&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Header Text&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Npcs}</span> <span class="na">text</span><span class="o">=</span><span class="s">{DisplayName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">&quot;Layout&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;800px content&quot;</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nt">&quot;Children&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">            </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lane&quot;</span><span class="p">,</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">            </span><span class="nt">&quot;Orientation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical&quot;</span><span class="p">,</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">            </span><span class="nt">&quot;Children&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">                </span><span class="p">{</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">                    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Label&quot;</span><span class="p">,</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">                    </span><span class="nt">&quot;Font&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dialogue&quot;</span><span class="p">,</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">                    </span><span class="nt">&quot;Text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Header Text&quot;</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">                </span><span class="p">},</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">                </span><span class="p">{</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">                    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Repeat&quot;</span><span class="p">,</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">                    </span><span class="nt">&quot;Collection&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{Npcs}}&quot;</span><span class="p">,</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">                    </span><span class="nt">&quot;Content&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">                        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Label&quot;</span><span class="p">,</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">                        </span><span class="nt">&quot;Text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{DisplayName}}&quot;</span>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">            </span><span class="p">]</span>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<p>Notice how much longer, more verbose, and more <em>indented</em> the JSON version is? Now picture how it would look in a view that is 5 levels deep, or 10. This is also the <em>best case</em> scenario for syntax, assuming we make some negative tradeoffs on the parsing side and use <code>JObject</code> instead of any concrete type, which is what allows us to use dictionary-style attributes for <code>Orientation</code>, <code>Font</code> and so on instead of defining yet another <code>"Attributes": [...]</code> array with objects inside it.</p>
+<p>At scale, the JSON version becomes unreadable; it is difficult to look at this data and even understand what it is supposed to do in broad strokes, to say nothing of keeping track of which indentation level you're at, what the context is at that level, etc. JSON <em>can</em> be used to represent a syntax tree, but it is not very good at it (or any other tree).</p>
+<p>JSON is native to the web; the "J" stands for "JavaScript", and yet it is not used by any mainstream web frameworks for defining the UI. This is because, while JSON is a good format for data storage, a full user interface cannot be represented very efficiently as plain data; it is not what we call <em>ergonomic</em>. That is exactly the problem that markup languages like HTML evolved to solve, and why we see similar mechanisms continue to evolve organically in every domain from <a href="https://learn.microsoft.com/en-us/dotnet/desktop/wpf/xaml/?view=netdesktop-8.0">.NET</a> to <a href="https://doc.qt.io/qt-6/qtqml-index.html">Qt</a> to <a href="https://slint.dev/">Rust</a>.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.path", "navigation.prune", "navigation.sections", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>

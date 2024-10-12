@@ -2,62 +2,78 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://focustense.github.io/StardewUI/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/API/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/concepts/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Animation/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/examples/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Binding-Context/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/framework/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Binding-Events/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/framework/binding-context/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Concepts/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/framework/binding-events/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Core-Library/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/framework/extensions/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Custom-Views/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/framework/focus-and-interaction/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Examples/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/framework/included-views/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Focus-and-Interaction/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/framework/starml/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Framework-Extensibility/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/getting-started/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Included-Views/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/getting-started/adding-ui-assets/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/Standard-Views/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/getting-started/displaying-ui/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/StarML/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/getting-started/editor-setup/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
     <url>
-         <loc>https://focustense.github.io/StardewUI/UI-Framework/</loc>
-         <lastmod>2024-10-11</lastmod>
+         <loc>https://focustense.github.io/StardewUI/getting-started/hot-reload/</loc>
+         <lastmod>2024-10-12</lastmod>
+    </url>
+    <url>
+         <loc>https://focustense.github.io/StardewUI/library/</loc>
+         <lastmod>2024-10-12</lastmod>
+    </url>
+    <url>
+         <loc>https://focustense.github.io/StardewUI/library/animation/</loc>
+         <lastmod>2024-10-12</lastmod>
+    </url>
+    <url>
+         <loc>https://focustense.github.io/StardewUI/library/custom-views/</loc>
+         <lastmod>2024-10-12</lastmod>
+    </url>
+    <url>
+         <loc>https://focustense.github.io/StardewUI/library/standard-views/</loc>
+         <lastmod>2024-10-12</lastmod>
     </url>
 </urlset>

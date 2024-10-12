@@ -12,7 +12,7 @@
       
       
       
-        <link rel="next" href="API/">
+        <link rel="next" href="concepts/">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>StardewUI Documentation</title>
+        <title>Stardew UI - StardewUI Documentation</title>
       
     
     
@@ -59,7 +59,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="StardewUI Documentation" >
+        <meta  property="og:title"  content="Stardew UI - StardewUI Documentation" >
       
         <meta  property="og:description"  content="None" >
       
@@ -75,7 +75,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="StardewUI Documentation" >
+        <meta  name="twitter:title"  content="Stardew UI - StardewUI Documentation" >
       
         <meta  name="twitter:description"  content="None" >
       
@@ -102,7 +102,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#features" class="md-skip">
+        <a href="#stardew-ui" class="md-skip">
           Skip to content
         </a>
       
@@ -114,9 +114,7 @@
     
       
 
-  
-
-<header class="md-header md-header--shadow" data-md-component="header">
+<header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="." title="StardewUI Documentation" class="md-header__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
       
@@ -137,7 +135,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Stardew UI
             
           </span>
         </div>
@@ -185,6 +183,43 @@
     
     
     
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
     
       <div class="md-header__source">
         <a href="https://github.com/focustense/StardewUI" title="Go to repository" class="md-source" data-md-component="source">
@@ -207,6 +242,117 @@
       
         
           
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="getting-started/" class="md-tabs__link">
+          
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="framework/" class="md-tabs__link">
+          
+  
+    
+  
+  Framework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="library/" class="md-tabs__link">
+          
+  
+    
+  
+  Library
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="examples/" class="md-tabs__link">
+          
+  
+    
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
         
       
       <main class="md-main" data-md-component="main">
@@ -220,8 +366,10 @@
                     
 
 
+  
 
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="." title="StardewUI Documentation" class="md-nav__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
       
@@ -253,178 +401,71 @@
   
   
   
-    <li class="md-nav__item md-nav__item--active">
+    
+    
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+        
           
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="." class="md-nav__link md-nav__link--active">
+              
   
   <span class="md-ellipsis">
     Home
   </span>
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_1" id="__nav_1_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-  
-  <span class="md-ellipsis">
-    Home
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Start
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      Next Steps
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#happy-modding" class="md-nav__link">
-    <span class="md-ellipsis">
-      Happy Modding!
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-    
-      
-      
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
   
   
   
   
     <li class="md-nav__item">
-      <a href="API/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    API
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Animation/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Animation
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Binding-Context/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Binding Context
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Binding-Events/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Binding Events
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Concepts/" class="md-nav__link">
+      <a href="concepts/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -436,23 +477,11 @@
     </li>
   
 
-    
+              
+            
+          </ul>
+        </nav>
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Core-Library/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Core Library
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -463,16 +492,54 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="Custom-Views/" class="md-nav__link">
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
         
   
+  
+    <a href="getting-started/" class="md-nav__link">
+      
+  
   <span class="md-ellipsis">
-    Custom Views
+    Getting started
   </span>
   
 
-      </a>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
     </li>
   
 
@@ -483,136 +550,164 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="Examples/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="framework/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Framework
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="library/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Library
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="examples/" class="md-nav__link">
+      
   
   <span class="md-ellipsis">
     Examples
   </span>
   
 
-      </a>
-    </li>
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
   
 
-    
       
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Focus-and-Interaction/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Focus and Interaction
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Framework-Extensibility/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Framework Extensibility
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Included-Views/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Included Views
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="Standard-Views/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Standard Views
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="StarML/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Stardew Markup Language (StarML)
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="UI-Framework/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    UI Framework
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -633,6 +728,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -695,16 +792,15 @@
   
 
 
-  <h1>Home</h1>
-
+<h1 id="stardew-ui">Stardew UI</h1>
 <p><img alt="Logo" src="images/logo-text.png" /></p>
 <p>A convenient, fast and scalable UI framework for <a href="https://www.stardewvalley.net/">Stardew Valley</a> mods, dedicated to making UI development a breeze rather than a chore. Inspired in part by <a href="https://angular.dev/">Angular</a> and <a href="https://learn.microsoft.com/en-us/dotnet/desktop/wpf/xaml/?view=netdesktop-8.0">XAML</a>.</p>
 <ul>
 <li>
-<p><a href="Core-Library/"><img alt="🌱" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f331.svg" title=":seedling:" /> StardewUI Core</a> is an includable code library in the form of a .NET Shared Project, containing the layout and rendering services, fundamental widgets, and integrations with the Stardew Valley base game, in particular its Menu system.</p>
+<p><a href="library/"><img alt="🌱" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f331.svg" title=":seedling:" /> StardewUI Core</a> is an includable code library in the form of a .NET Shared Project, containing the layout and rendering services, fundamental widgets, and integrations with the Stardew Valley base game, in particular its Menu system.</p>
 </li>
 <li>
-<p><a href="UI-Framework/"><img alt="🌳" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f333.svg" title=":deciduous_tree:" /> StardewUI Framework</a> is a standalone mod that hosts its own version of the Core library and provides a <a href="https://www.beyondjava.net/model-view-whatever">Model-View-Whatever</a> (MVW) binding system using <a href="StarML/">StarML</a> as well as many other quality-of-life features not found in the Core.</p>
+<p><a href="framework/"><img alt="🌳" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f333.svg" title=":deciduous_tree:" /> StardewUI Framework</a> is a standalone mod that hosts its own version of the Core library and provides a <a href="https://www.beyondjava.net/model-view-whatever">Model-View-Whatever</a> (MVW) binding system using <a href="framework/starml/">StarML</a> as well as many other quality-of-life features not found in the Core.</p>
 </li>
 </ul>
 <h2 id="features">Features</h2>
@@ -714,42 +810,42 @@
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 5v6h11V5m-5 13h5v-6h-5M4 18h5V5H4m6 13h5v-6h-5z"/></svg></span> <strong>Dynamic layout</strong></p>
 <hr />
 <p>Don't fuss with pixel positions; design with flows, grids and other layouts that adapt to your content.</p>
-<p><a href="Standard-Views/#layouts"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Built-in layouts</a></p>
+<p><a href="library/standard-views/#layouts"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Built-in layouts</a></p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16a3 3 0 0 1-3-3c0-1.12.61-2.1 1.5-2.61l9.71-5.62-5.53 9.58c-.5.98-1.51 1.65-2.68 1.65m0-13c1.81 0 3.5.5 4.97 1.32l-2.1 1.21C14 5.19 13 5 12 5a8 8 0 0 0-8 8c0 2.21.89 4.21 2.34 5.65h.01c.39.39.39 1.02 0 1.41s-1.03.39-1.42.01A9.97 9.97 0 0 1 2 13 10 10 0 0 1 12 3m10 10c0 2.76-1.12 5.26-2.93 7.07-.39.38-1.02.38-1.41-.01a.996.996 0 0 1 0-1.41A7.95 7.95 0 0 0 20 13c0-1-.19-2-.54-2.9L20.67 8C21.5 9.5 22 11.18 22 13"/></svg></span> <strong>High performance</strong></p>
 <hr />
 <p>Retained-mode UI only updates the things that change, when they change. Your UI will never stutter, even on potatoes.</p>
-<p><a href="Performance.md"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Details and benchmarks</a></p>
+<p><a href="performance.md"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Details and benchmarks</a></p>
 </li>
 <li>
 <p><img alt="🎮" class="twemoji lg middle" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/1f3ae.svg" title=":video_game:" /> <strong>Controller ready</strong></p>
 <hr />
 <p>No fussy neighbor lists, clunky clickable components or other boilerplate. Mouse or gamepad,  <em>it just works</em>.</p>
-<p><a href="Focus-and-Interaction/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Focus and interaction</a></p>
+<p><a href="framework/focus-and-interaction/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Focus and interaction</a></p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 14.5c1.11 0 2.11.45 2.83 1.17L22 14.5v4h-4l1.77-1.77A2.5 2.5 0 1 0 20 20h1.71A3.99 3.99 0 0 1 18 22.5c-2.21 0-4-1.79-4-4s1.79-4 4-4M4 3h14a2 2 0 0 1 2 2v7.17c-.5-.11-1-.17-1.5-.17-1.27 0-2.46.37-3.46 1H12v4h.18q-.18.75-.18 1.5v.5H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2m0 4v4h6V7zm8 0v4h6V7zm-8 6v4h6v-4z"/></svg></span> <strong>Model-View-Whatever</strong></p>
 <hr />
 <p>Keep your views and data separate, using an enhanced HTML-like markup with data binding and hot reload.</p>
-<p><a href="StarML/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> StarML guide</a></p>
+<p><a href="framework/starml/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> StarML guide</a></p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 5h3l-1.5 2zM3 2h18a2 2 0 0 1 2 2v4c0 1.11-.89 2-2 2h-5v10c0 1.11-.89 2-2 2H3a2 2 0 0 1-2-2V4c0-1.1.9-2 2-2m0 2v4h11V4zm18 4V4h-5v4zM3 20h11V10H3zm2-8h7v2H5zm0 4h7v2H5z"/></svg></span> <strong>Don't reinvent the wheel</strong></p>
 <hr />
 <p>Pre-made widgets cover everything from simple text and images to drop-down lists, sliders, input boxes and scrollbars.</p>
-<p><a href="Standard-Views/#widgets"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Standard views</a></p>
+<p><a href="library/standard-views/#widgets"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> Standard views</a></p>
 </li>
 <li>
 <p><span class="twemoji lg middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.75 8h6.5a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-.75.75h-6.5a.75.75 0 0 1-.75-.75v-6.5A.75.75 0 0 1 8.75 8m.75 6.5h5v-5h-5Z"/><path d="M15.25 1a.75.75 0 0 1 .75.75V4h2.25c.966 0 1.75.784 1.75 1.75V8h2.25a.75.75 0 0 1 0 1.5H20v5h2.25a.75.75 0 0 1 0 1.5H20v2.25A1.75 1.75 0 0 1 18.25 20H16v2.25a.75.75 0 0 1-1.5 0V20h-5v2.25a.75.75 0 0 1-1.5 0V20H5.75A1.75 1.75 0 0 1 4 18.25V16H1.75a.75.75 0 0 1 0-1.5H4v-5H1.75a.75.75 0 0 1 0-1.5H4V5.75C4 4.784 4.784 4 5.75 4H8V1.75a.75.75 0 0 1 1.5 0V4h5V1.75a.75.75 0 0 1 .75-.75m3 17.5a.25.25 0 0 0 .25-.25V5.75a.25.25 0 0 0-.25-.25H5.75a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25Z"/></svg></span> <strong>Made for modding</strong></p>
 <hr />
 <p>Designed for <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations#Using_an_API">SMAPI</a>. StarML documents are normal game assets, and can be edited or replaced without Harmony patching.</p>
-<p><a href="API/#register-assets"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> All about assets</a></p>
+<p><a href="getting-started/adding-ui-assets/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13.22 19.03a.75.75 0 0 1 0-1.06L18.19 13H3.75a.75.75 0 0 1 0-1.5h14.44l-4.97-4.97a.749.749 0 0 1 .326-1.275.75.75 0 0 1 .734.215l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0"/></svg></span> All about assets</a></p>
 </li>
 </ul>
 </div>
 <h2 id="quick-start">Quick Start</h2>
-<p>In this introductory example, we'll be using the <a href="UI-Framework/">Framework</a>, which is recommended if you're new to StardewUI. You'll need to be familiar with <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/Get_Started">basic C# modding</a>.</p>
+<p>In this introductory example, we'll be using the <a href="framework/">Framework</a>, which is recommended if you're new to StardewUI. You'll need to be familiar with <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/Get_Started">basic C# modding</a>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Try it out</p>
 <p>Want to see the complete working example in game? The full source can be found in the <a href="https://github.com/focustense/StardewUI/blob/dev/TestMod/ModEntry.cs">test mod</a>. Install it along with StardewUI and press <kbd>F9</kbd> after loading a save.</p>
@@ -850,16 +946,16 @@
 <p>The result:</p>
 <p><img alt="Video of scrolling item grid" src="images/example1.webp" /></p>
 <h2 id="next-steps">Next Steps</h2>
-<p>To get started on your own UI, you can either browse the <a href="Examples/">Examples</a> or follow through the recommended reading order below:</p>
+<p>To get started on your own UI, you can either browse the <a href="examples/">Examples</a> or follow through the recommended reading order below:</p>
 <ol>
-<li><a href="StarML/">StarML</a>: Features, rules, and a handy syntax reference.</li>
-<li><a href="Concepts/">Concepts</a>: Semi-technical shallow dive into the framework's underlying concepts and design. Learn what "views" and "bindings" are, and get the necessary background for troubleshooting bugs or performance problems.</li>
-<li><a href="Binding-Context/">Binding Context</a>: How to design a good data model for powering StarML views and menus, and make your UI responsive to changes in game/user state.</li>
-<li><a href="Binding-Events/">Events</a>: Eventually you'll probably want to make your UI <em>do something</em>, like interact with the game world or update some of your mod's state or setting. Event bindings are powerful enough to deserve their own page.</li>
-<li><a href="Included-Views/">Includes</a>: As UIs grow in complexity, you'll often find yourself wanting to create reusable components to be used in many different menus, HUDs, etc. This tutorial goes over the process and potential pitfalls.</li>
-<li><a href="Core-Library/">The Core Library</a>: How and when to use it; both the "safe" and "unsafe" ways.</li>
-<li><a href="Custom-Views/">Custom Views</a>: If the Framework doesn't have what you need, you can create your own, whether it's something simple like the <code>Banner</code> to an entirely new kind of layout.</li>
-<li><a href="Framework-Extensibility/">Framework Extensibility</a>: Adding custom tags, conversions, attributes and more; most useful to those who have created one or more custom widgets and want to make them available in StarML.</li>
+<li><a href="framework/starml/">StarML</a>: Features, rules, and a handy syntax reference.</li>
+<li><a href="concepts/">Concepts</a>: Semi-technical shallow dive into the framework's underlying concepts and design. Learn what "views" and "bindings" are, and get the necessary background for troubleshooting bugs or performance problems.</li>
+<li><a href="framework/binding-context/">Binding Context</a>: How to design a good data model for powering StarML views and menus, and make your UI responsive to changes in game/user state.</li>
+<li><a href="framework/binding-events/">Events</a>: Eventually you'll probably want to make your UI <em>do something</em>, like interact with the game world or update some of your mod's state or setting. Event bindings are powerful enough to deserve their own page.</li>
+<li><a href="framework/included-views/">Includes</a>: As UIs grow in complexity, you'll often find yourself wanting to create reusable components to be used in many different menus, HUDs, etc. This tutorial goes over the process and potential pitfalls.</li>
+<li><a href="library/">The Core Library</a>: How and when to use it; both the "safe" and "unsafe" ways.</li>
+<li><a href="library/custom-views/">Custom Views</a>: If the Framework doesn't have what you need, you can create your own, whether it's something simple like the <code>Banner</code> to an entirely new kind of layout.</li>
+<li><a href="framework/extensions/">Framework Extensibility</a>: Adding custom tags, conversions, attributes and more; most useful to those who have created one or more custom widgets and want to make them available in StarML.</li>
 </ol>
 <h2 id="happy-modding">Happy Modding!</h2>
 
@@ -911,7 +1007,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.indexes", "navigation.path", "navigation.prune", "navigation.sections", "navigation.tabs"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="assets/javascripts/bundle.525ec568.min.js"></script>
