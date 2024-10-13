@@ -152,7 +152,7 @@ In this introductory example, we'll be using the [Framework](framework/index.md)
                background={@Mods/StardewUI/Sprites/ControlBorder}
                margin="0,16,0,0"
                padding="32,24">
-            <scrollableview>
+            <scrollable>
                 <grid layout="stretch content"
                       item-layout="length: 64"
                       item-spacing="16,16"
@@ -162,7 +162,7 @@ In this introductory example, we'll be using the [Framework](framework/index.md)
                            sprite={this}
                            focusable="true" />
                 </grid>
-            </scrollableview>
+            </scrollable>
         </frame>
     </lane>
     ```
