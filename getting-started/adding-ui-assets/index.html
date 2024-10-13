@@ -555,6 +555,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Adding UI Assets
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -564,6 +575,91 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conventions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Views
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Sprites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding Sprites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vanilla-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vanilla Sprites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vanilla Sprites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nine-slicing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nine-Slicing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custommodded-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom/Modded Sprites
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -807,6 +903,80 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conventions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Views
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding Sprites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding Sprites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vanilla-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vanilla Sprites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vanilla Sprites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nine-slicing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nine-Slicing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custommodded-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom/Modded Sprites
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -824,6 +994,180 @@
 
 
 <h1 id="adding-ui-assets">Adding UI Assets</h1>
+<p>StardewUI has its own asset system based on SMAPI's own <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content">content APIs</a> but providing some additional features: <a href="#conventions">convention-based registration</a> and <a href="../hot-reload/">hot reload</a>.</p>
+<h2 id="conventions">Conventions</h2>
+<p>Assets are registered by <em>convention</em> in StardewUI. You only need to specify where your assets are located, and it handles the translation between file names and asset names for you.</p>
+<p>Suppose your mod looks as follows:</p>
+<div class="file-tree">
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8z"/></svg></span> ModName
+   <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8z"/></svg></span> assets
+      <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8z"/></svg></span> sprites
+         <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 3h2v2H5v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5h2v2H5c-1.07-.27-2-.9-2-2v-4a2 2 0 0 0-2-2H0v-2h1a2 2 0 0 0 2-2V5a2 2 0 0 1 2-2m14 0a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h1v2h-1a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2v-2h2v-5a2 2 0 0 1 2-2 2 2 0 0 1-2-2V5h-2V3zm-7 12a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1m-4 0a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1m8 0a1 1 0 0 1 1 1 1 1 0 0 1-1 1 1 1 0 0 1-1-1 1 1 0 0 1 1-1"/></svg></span> ui.json
+         <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m0 18h12v-8l-4 4-2-2zM8 9a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2"/></svg></span> ui.png
+      <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8z"/></svg></span> views
+         <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm4 18H6V4h7v5h5zm-8.5-2 .7-2.8L8 13.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9.7 2.8-2.5-1.4z"/></svg></span> config.sml
+         <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8zm4 18H6V4h7v5h5zm-8.5-2 .7-2.8L8 13.3l2.9-.2 1.1-2.7 1.1 2.6 2.9.2-2.2 1.9.7 2.8-2.5-1.4z"/></svg></span> gifts.sml
+   <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> IViewEngine.cs
+   <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m.12 13.5 3.74 3.74 1.42-1.41-2.33-2.33 2.33-2.33-1.42-1.41zm11.16 0-3.74-3.74-1.42 1.41 2.33 2.33-2.33 2.33 1.42 1.41z"/></svg></span> ModEntry.cs</p>
+</div>
+<p>For now, don't worry about what the various files do; the important thing is that <a href="#adding-views">views</a> are in the directory <code>assets/views</code>, and the <em>asset prefix</em> is a setting you provide. If you choose a prefix of <code>Mods/author.ModName/Views</code>, then the <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F">asset names</a> for these assets will be:</p>
+<ul>
+<li><code>Mods/author.ModName/Views/Config</code></li>
+<li><code>Mods/author.ModName/Views/Gifts</code></li>
+</ul>
+<p>That is, without the <code>assets/views</code> path and without the <code>.sml</code> extension.</p>
+<h2 id="adding-views">Adding Views</h2>
+<p>The actual "UI" in StardewUI is based on <a href="../../concepts/#views">Views</a>. When using the <a href="../../framework/">framework</a>—which this part of the guide is based on—your views will be in the form of <code>.sml</code> (<a href="../../framework/starml/">StarML</a>) files.</p>
+<p>To create a view, simply create the <code>.sml</code> file in your desired location, such as the <code>assets/views/config.sml</code> used above. Refer to the <a href="../../framework/starml/">StarML guide</a> or <a href="../../examples/">examples</a> for more info on authoring views, i.e. what the actual contents of the file should be.</p>
+<div class="admonition tip">
+<p class="admonition-title">Important</p>
+<p>Like any other mod content asset, you need to make sure that it is <em>deployed</em> with your mod build; Visual Studio, VSCode, Rider, etc. do <em>not</em> automatically do this for you. To do this:
+- Set <strong>Build Action</strong> to "Content"
+- Set <strong>Copy to Output Directory</strong> to "Copy always" or "Copy if newer"</p>
+<blockquote>
+<p><img alt="Asset file properties" src="../../images/screenshot-vs-asset-properties.png" />
+</p>
+</blockquote>
+<p>If you are not using any standard IDE or cannot find these settings, then you must add them to the <code>.csproj</code> file, e.g.</p>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&lt;ItemGroup&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&lt;None</span><span class="w"> </span><span class="na">Remove=</span><span class="s">&quot;assets\views\config.sml&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">&lt;/ItemGroup&gt;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">&lt;ItemGroup&gt;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">&lt;Content</span><span class="w"> </span><span class="na">Include=</span><span class="s">&quot;assets\views\config.sml&quot;</span><span class="nt">&gt;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">&lt;CopyToOutputDirectory&gt;</span>PreserveNewest<span class="nt">&lt;/CopyToOutputDirectory&gt;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">&lt;/Content&gt;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">&lt;/ItemGroup&gt;</span>
+</span></code></pre></div>
+</div>
+<p>Once the physical files are set up, you can register the view folder – not the individual views – using the <a href="../#adding-the-api">API</a>:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">viewEngine</span><span class="p">.</span><span class="n">RegisterViews</span><span class="p">(</span><span class="s">&quot;Mods/author.ModName/Views&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;assets/views&quot;</span><span class="p">);</span>
+</span></code></pre></div>
+<p>That's it—just a single line!</p>
+<h2 id="adding-sprites">Adding Sprites</h2>
+<p>Stardew Valley's visuals, like those of most 2D games, are based around <a href="https://docs.monogame.net/articles/getting_to_know/whatis/graphics/WhatIs_Sprite.html">sprites</a>. All of Stardew's image assets and most mod assets are in the form of "sprite sheets", more formally known as a <a href="https://en.wikipedia.org/wiki/Texture_atlas">texture atlas</a>, in which a single image (i.e. <code>.png</code> file) contains <em>many</em> individual "objects", each occupying its own rectangular region.</p>
+<p>Neither Stardew nor SMAPI have an explicit concept of a <em>sprite</em>. Since StardewUI needs to deal quite heavily with sprites, it defines its own <a href="../reference/stardewui/sprite.md">Sprite</a> type, which includes not only the source image and rectangular region but also information pertaining to <a href="https://en.wikipedia.org/wiki/9-slice_scaling">9-slice scaling</a>, which is how it is able to display elements such as frame borders and menu backgrounds without having them appear awkwardly stretched.</p>
+<p>A variety of useful UI sprites are already included in the <a href="../reference/stardewui/uisprites.md">UiSprites</a> class, and each of these sprites is available to StarML via an <a href="../../framework/starml/#attribute-flavors">asset binding</a> of the form <code>@Mods/StardewUI/Sprites/{Name}</code>; for example, <code>@Mods/StardewUI/Sprites/CaretRight</code>. However, Stardew Valley has thousands of individual sprites, and if you want to use anything that's not in <code>UiSprites</code>, or any sprite that you've produced yourself, then you need to register it as an asset.</p>
+<p>You can accomplish this with <a href="../../concepts/#data-binding">model binding</a> by providing a <code>Texture2D</code> or <code>Tuple&lt;Texture2D, Rectangle&gt;</code> property, as described in <a href="../../framework/starml/#type-conversions">conversion reference</a>, but the <strong>recommended</strong> way to deal with sprites is to register them with StardewUI.</p>
+<p>In addition to allowing them to be used as asset bindings, like the <code>UiSprites</code>, StardewUI will also handle any cache management and hot reload for registered sprites, ensuring that (a) the UI will never crash because of an invalid (disposed) texture and (b) hot reload works correctly, and any changes to the game content, such as seasonal themes, are reflected immediately in the UI, even the UI is already on the screen.</p>
+<p>The process is almost the same whether you intend to use vanilla assets or provide custom images/sprites in your mod. Sprites are registered by convention, similar to views:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">viewEngine</span><span class="p">.</span><span class="n">RegisterSprites</span><span class="p">(</span><span class="s">$&quot;Mods/author.ModName/Sprites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;assets/sprites&quot;</span><span class="p">);</span>
+</span></code></pre></div>
+<p>Continue reading for an explanation of what goes in <code>assets/sprites</code>.</p>
+<h3 id="vanilla-sprites">Vanilla Sprites</h3>
+<p>If you intend to take many images from a single texture atlas ("sprite sheet") then it is convenient to declare them all in one place. StardewUI provides a simple JSON structure for doing so. Suppose we are interested in the icons of various <a href="https://stardewvalleywiki.com/Buffs">buffs</a>:</p>
+<div class="language-json highlight"><span class="filename">assets/sprites/buffs.json</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nt">&quot;Texture&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LooseSprites/BuffsIcons&quot;</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">&quot;Sprites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="nt">&quot;Fishing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">            </span><span class="nt">&quot;SourceRect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;16, 0, 16, 16&quot;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="nt">&quot;Mining&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">            </span><span class="nt">&quot;SourceRect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;32, 0, 16, 16&quot;</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="nt">&quot;MonsterMusk&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">            </span><span class="nt">&quot;SourceRect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0, 32, 16, 16&quot;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>This instructs StardewUI to use the <code>LooseSprites/BuffsIcons</code> <em>texture</em> as the source, and provides the rectangular regions (in the form <code>"left, top, width, height"</code>) of the individual sprites we want. It just so happens that these are all 16x16, but that will not necessarily always be the case; <code>LooseSprites/Cursors</code>, for example, is notorious for both its enormous size and its total irregularity.</p>
+<h4 id="nine-slicing">Nine-Slicing</h4>
+<p>Another advantage of the JSON format is that you can specify <a href="https://en.wikipedia.org/wiki/9-slice_scaling">9-slice scaling</a> options. Suppose we want to use this image as a background <em>(note: all images in this section have been scaled up 8x for clarity)</em>:</p>
+<p><img alt="Inset Background" src="../../images/sprite-inset-scaled.png" /></p>
+<p>The Cursors sheet doesn't have this exact size; what it has instead is:</p>
+<p><img alt="Inset Original" src="../../images/sprite-inset-original.png" /></p>
+<p>If we simply stretched this image to an arbitrary size, we would not get a good result:</p>
+<p><img alt="Inset Stretched" src="../../images/sprite-inset-stretched.png" /></p>
+<p>Instead, we distinguish between the image's <em>borders</em>, which are not meant to stretch, and the <em>center</em> or <em>middle</em> slices which can stretch in one or both directions:</p>
+<p><img alt="Inset Sliced" src="../../images/sprite-inset-sliced.png" /></p>
+<p>What we get are nine slices:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Left</th>
+<th>Middle</th>
+<th>Right</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Top</strong></td>
+<td>No Stretch</td>
+<td>Stretch Horizontal</td>
+<td>No Stretch</td>
+</tr>
+<tr>
+<td><strong>Middle</strong></td>
+<td>Stretch Vertical</td>
+<td>Stretch H + V</td>
+<td>Stretch Vertical</td>
+</tr>
+<tr>
+<td><strong>Bottom</strong></td>
+<td>No Stretch</td>
+<td>Stretch Horizontal</td>
+<td>No Stretch</td>
+</tr>
+</tbody>
+</table>
+<p>In this specific case, it should be apparent that there are:</p>
+<ul>
+<li>2 border pixels on the left</li>
+<li>3 border pixels on top</li>
+<li>3 border pixels on the right</li>
+<li>2 border pixels on the bottom.</li>
+</ul>
+<p>To configure this in the JSON:</p>
+<div class="language-json highlight"><span class="filename">assets/sprites/cursors.json</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="nt">&quot;Texture&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LooseSprites/Cursors&quot;</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">&quot;Sprites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="nt">&quot;SpecialBorder&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">            </span><span class="nt">&quot;SourceRect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;129, 338, 7, 9&quot;</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">            </span><span class="nt">&quot;FixedEdges&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2, 3, 3, 2&quot;</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">            </span><span class="nt">&quot;Scale&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>One additional property we've specified here is <code>Scale: 4</code>. This tells StardewUI to first scale uniformly by 4x, <em>then</em> do the 9-slicing. The reason for this is that the Cursors image is based on a 16x16 "tile" size, but menus and other UI are based on a 64x64 "tile" size. Compare the version without scale to the version with scale:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Unscaled</th>
+<th style="text-align: center;">Scaled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><img alt="Inset Background Unscaled" src="../../images/sprite-inset-unscaled.png" /></td>
+<td style="text-align: center;"><img alt="Inset Background Scaled" src="../../images/sprite-inset-scaled.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>The unscaled version might look better in a web browser, but it will look strange in the game, appearing far too "HD" compared to the content around it and clashing with other UI.</p>
+<p>Apply scaling according to the <em>reference size</em> vs. <em>actual screen size</em>. If you are using sprites from <code>Maps/MenuTiles</code>, those are already designed for a 64x64 tile size and should not be scaled (no <code>Scale</code> field), only sliced (<code>FixedEdges</code> field).</p>
+<h3 id="custommodded-sprites">Custom/Modded Sprites</h3>
+<p>If the sprites you want to use are your own sprites, designed specifically for your mod (i.e. <em>not</em> simply replacing a vanilla asset, in which case you should configure StardewUI with the <a href="#vanilla-sprites">vanilla sprite</a> instead), then the configuration requires only a few small tweaks from vanilla:</p>
+<ol>
+<li>Place your <code>.png</code> and <code>.json</code> files in the same directory, and give them the same name, e.g. <code>assets/sprites/ui.png</code> and <code>assets/sprites/ui.json</code>.</li>
+<li>
+<p><strong>Remove</strong> the "Texture" line from the JSON file, so that it only contains <code>Sprites</code>. For instance, as used in one of the <a href="https://github.com/focustense/StardewUI/blob/dev/TestMod/assets/sprites/status.json">examples</a>:</p>
+<div class="language-json highlight"><span class="filename">assets/sprites/ui.json</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="nt">&quot;Sprites&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">        </span><span class="nt">&quot;Checked&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">            </span><span class="nt">&quot;SourceRect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0, 0, 9, 9&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="nt">&quot;Unchecked&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">            </span><span class="nt">&quot;SourceRect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9, 0, 9, 9&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+</ol>
+<p>Aside from the addition of the <code>.png</code> file and the removal of the <code>Texture</code> field, it is exactly the same as a vanilla sprite.</p>
 
 
 
@@ -851,6 +1195,46 @@
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../editor-setup/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Editor Setup">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Editor Setup
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../displaying-ui/" class="md-footer__link md-footer__link--next" aria-label="Next: Displaying UI">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Displaying UI
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -859,6 +1243,32 @@
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
       Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/focustense" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://next.nexusmods.com/profile/focustense/mods?gameId=1303" target="_blank" rel="noopener" title="next.nexusmods.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.376 0c-.993 0-2.18.686-2.907 1.182-1.676-.36-4.036-.545-6.787.635-1.365-.513-2.425-.562-3.32-.488a2.16 2.16 0 0 0-1.27.429c-.33.22-2.788 2.69-3.069 4.652C-.15 7.508.68 8.932 1.218 9.718c-.44 1.76-.2 4.572.517 6.188-.353 1.041-.713 2.089-.664 3.205.01.584.061 1.188.398 1.684C1.72 21.19 4.528 24 6.545 24c.957 0 1.93-.428 3.07-1.24 2.16.383 4.402.348 6.448-.532 2.573 1.001 4.224.625 4.84.162.587-.457 2.826-2.915 3.07-4.622.1-.672-.023-1.638-1.226-3.397a11 11 0 0 0-.501-6.455c.396-1.069.673-2.188.59-3.337-.015-.68-.221-1.167-.487-1.507-.209-.335-2.415-2.39-4.028-2.91A3.1 3.1 0 0 0 17.376 0m-.03 2.082c.65.015 2.155 1.093 3.01 1.906l.355.34c-.959-.163-2.125.428-3.26 1.55a10.3 10.3 0 0 0-1.358 1.595c-.28.384-.517.768-.753 1.285l1.18.635-3.895 1.477-1.122-4.18 1.033.547c1.358-3.102 2.524-3.973 3.232-4.416h.015a5.1 5.1 0 0 1 1.49-.724zM12 3.065a9 9 0 0 1 2.22.279 8 8 0 0 0-.42.488 8.4 8.4 0 0 0-1.8-.196 8.34 8.34 0 0 0-5.897 2.432 8 8 0 0 1-.37-.433A8.9 8.9 0 0 1 12 3.065m-7.076.305c.71-.002 1.309.127 2.2.466a9.5 9.5 0 0 0-1.713 1.337c-.327-.542-.624-1.156-.488-1.803m-.606.042c-.162.96.428 2.126 1.55 3.264.457.487 1.003.945 1.594 1.358.383.281.767.517 1.283.754l.62-1.182 1.49 3.914-4.176 1.122.546-1.033c-3.099-1.36-3.969-2.526-4.412-3.235v-.015a5.1 5.1 0 0 1-.723-1.491l-.015-.074c.015-.65 1.092-2.156 1.904-3.013Zm16.035 1.483a1.3 1.3 0 0 1 .26.015l.14.023a5 5 0 0 1-.13 1.137v.015q-.152.574-.377 1.148a9.5 9.5 0 0 0-1.346-1.776c.547-.357 1.051-.546 1.453-.562M18.43 5.8a8.9 8.9 0 0 1 2.506 6.2 9 9 0 0 1-.27 2.183 8 8 0 0 0-.488-.425A8.4 8.4 0 0 0 20.364 12 8.33 8.33 0 0 0 18 6.173a8 8 0 0 1 .429-.373M3.315 9.905q.235.222.488.425A8.4 8.4 0 0 0 3.636 12c0 2.248.887 4.286 2.327 5.788a8 8 0 0 1-.426.376A8.9 8.9 0 0 1 3.065 12a9 9 0 0 1 .25-2.095m13.988 1.541-.546 1.034c3.098 1.359 3.969 2.526 4.412 3.235v.014c.34.488.575.99.723 1.492l.014.074c-.014.65-1.092 2.156-1.903 3.013l-.34.354c.163-.96-.427-2.127-1.549-3.264a10.3 10.3 0 0 0-1.594-1.359 7 7 0 0 0-1.283-.753l-.605 1.152-1.505-3.87zm-6.006 1.684 1.121 4.18-1.033-.547c-1.357 3.102-2.523 3.973-3.231 4.416h-.015c-.487.34-.989.576-1.49.724l-.074.015c-.65-.015-2.154-1.093-3.01-1.906l-.354-.34c.959.163 2.124-.428 3.26-1.55.488-.458.945-1.004 1.358-1.595.28-.384.517-.768.753-1.285l-1.166-.635ZM3.72 16.663A9.5 9.5 0 0 0 5.086 18.5c-.697.47-1.33.665-1.777.59l-.138-.024c0-.367.038-.748.128-1.137v-.015c.11-.417.254-.835.42-1.252m14.131 1.314q.194.21.372.43A8.9 8.9 0 0 1 12 20.936a9 9 0 0 1-2.282-.296 8 8 0 0 0 .417-.487 8.34 8.34 0 0 0 7.716-2.175m.696.889c.43.666.607 1.267.534 1.698l-.023.138a5 5 0 0 1-1.136-.128h-.014a11 11 0 0 1-1.114-.366 9.5 9.5 0 0 0 1.753-1.342"/></svg>
     </a>
   
 </div>
@@ -873,7 +1283,7 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.path", "navigation.prune", "navigation.sections", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.sections", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.525ec568.min.js"></script>
