@@ -2,6 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "StarML",
   "scopeName": "source.sml",
+  "fileTypes": [
+    ".sml",
+    ".starml"
+  ],
   "patterns": [
     {
       "include": "#tag-start"
