@@ -16,8 +16,9 @@ To create a menu from a StardewUI view, use the `CreateMenu` methods:
 
     ```cs
     var context = new SomeViewModel(...);
-    IClickableMenu menu =
-        viewEngine.CreateMenuFromAsset("Mods/authorName.ModName/Views/SomeView");
+    IClickableMenu menu = viewEngine.CreateMenuFromAsset(
+        "Mods/authorName.ModName/Views/SomeView",
+        context);
     ```
 
 === "Menu From Markup"
@@ -29,7 +30,7 @@ To create a menu from a StardewUI view, use the `CreateMenu` methods:
             <label font=""dialogue"" text=""Things"" />
             <label *repeat={Things} text={DisplayName} />
         </lane>";
-    IClickableMenu menu = viewEngine.CreateMenuFromMarkup(markup);
+    IClickableMenu menu = viewEngine.CreateMenuFromMarkup(markup, context);
     ```
 
 Where `Mods/authorName.ModName/Views/SomeView` is the concatenation of the view's [asset prefix](adding-ui-assets.md#adding-views), e.g. `Mods/authorName.ModName/Views`, with the StarML file name/path, e.g. `SomeView` (excluding the `.sml` extension).
@@ -46,25 +47,84 @@ Once created, the menu is shown the same way as a vanilla menu, e.g. by assignin
 
 Several complete [examples](https://github.com/focustense/StardewUI/blob/fba9ea25465af4caa9b341441b3a54cf3f8ba6d3/TestMod/ModEntry.cs#L58) are provided in the test mod:
 
-!!! example
-
-    ```cs
-    var context = new
-    {
-        HeaderText = "Example Menu Title",
-        ItemData = ItemRegistry.GetData("(O)117"),
-    };
-    Game1.activeClickableMenu =
-        viewEngine.CreateMenuFromAsset($"Mods/StardewUITest/Views/TestView", context);
-    ```
+```cs
+var context = new
+{
+    HeaderText = "Example Menu Title",
+    ItemData = ItemRegistry.GetData("(O)117"),
+};
+Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+    "Mods/focustense.StardewUITest/Views/TestView",
+    context);
+```
 
 ## HUD
 
 The game's HUD – Heads Up Display – refers to the persistent UI that is drawn over top of the game world, such as the date/time widget, health/energy bars, and so on.
 
-At present, it is only possible to create views for HUD purposes using the [core library](../library/index.md), because only `IView` is meant to be used directly with a `SpriteBatch`. However, the [standalone drawables](https://github.com/focustense/StardewUI/issues/16) feature will soon make this available for StarML/framework users.
+### Using the API
 
-[A Fishing Sea](https://github.com/focustense/StardewFishingSea) uses StardewUI for its HUD:
+The recommended way to display HUD-style UI is to create a Drawable from StarML. The API for this is very similar to the [menu](#menus) API:
+
+=== "Drawable From Asset"
+
+    ```cs
+    IViewDrawable drawable =
+        viewEngine.CreateDrawableFromAsset("Mods/authorName.ModName/Views/SomeView");
+    drawable.Context = new SomeViewModel(...);
+    // Optional, only needed if the view is not fixed-size
+    drawable.MaxSize = new(maxWidth, maxHeight);
+    ```
+
+=== "Drawable From Markup"
+
+    ```cs
+    var context = new SomeViewModel();
+    string markup =
+        @"<lane layout=""500px content"" orientation=""vertical"">
+            <label font=""dialogue"" text=""Things"" />
+            <label *repeat={Things} text={DisplayName} />
+        </lane>";
+    IViewDrawable drawable = viewEngine.CreateDrawableFromMarkup(markup);
+    drawable.Context = new SomeViewModel(...);
+    // Optional, only needed if the view is not fixed-size
+    drawable.MaxSize = new(maxWidth, maxHeight);
+    ```
+
+!!! danger
+
+    Avoid using the `CreateDrawableFromMarkup` variant in release builds for the same reasons described in [menus](#menus).
+
+`IViewDrawable` implements `IDisposable`. If you are done with an instance and never going to draw it again, make sure to call its `Dispose()` method. StardewUI will attempt to detect unreachable drawables and stop updating them, but this is less reliable and will take longer than a drawable that was disposed correctly, potentially degrading game performance over time.
+
+The test mod also has a simple [HUD example](https://github.com/focustense/StardewUI/blob/440cb50d6bdd61228128585f29dee595527d369b/TestMod/ModEntry.cs#L117):
+
+```cs
+private void ToggleHud()
+{
+    if (hudWidget is not null)
+    {
+        hudWidget.Dispose();
+        hudWidget = null;
+    }
+    else
+    {
+        hudWidget = viewEngine.CreateDrawableFromAsset(
+            "Mods/focustense.StardewUITest/Views/Example-Hud");
+        hudWidget.Context = new { Title = "I'm a HUD!" };
+    }
+}
+```
+
+### Using Views Directly
+
+!!! warning "Advanced usage warning"
+
+    This section is provided for disambiguation, since there are more differences between the Core Library and Framework usage for HUD-style UI than there are for menus. If you aren't already using the Core Library to handle specialized scenarios or [extend the framework](../framework/extensions.md), ignore this section and use the [drawable API](#using-the-api) instead.
+
+When working with the [core library](../library/index.md), the `IViewDrawable` abstraction is not involved; instead, `IView` can be used directly with a `SpriteBatch`.
+
+[A Fishing Sea](https://github.com/focustense/StardewFishingSea) uses this older method for its HUD:
 
 !!! example
 
