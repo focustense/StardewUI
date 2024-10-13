@@ -3,7 +3,7 @@
     <frame layout="880px 640px" background={@Mods/StardewUI/Sprites/ControlBorder} margin="0,16,0,0" padding="32,24">
         <scrollable>
 			<grid layout="stretch content" item-layout="length: 64" item-spacing="16,16" horizontal-item-alignment="middle">
-				<image layout="stretch content" *repeat={Items} sprite={this} focusable="true" />
+				<image layout="stretch content" *repeat={Items} sprite={this} tooltip={DisplayName} focusable="true" />
 			</grid>
 		</scrollable>
     </frame>

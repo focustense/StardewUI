@@ -303,6 +303,25 @@ public partial class BindingTests
         Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
     }
 
+    class FieldBindingTestModel
+    {
+        public string Name = "";
+        public string Description = "";
+    }
+
+    [Fact]
+    public void WhenModelContainsFields_BindsInitialValues()
+    {
+        string markup = @"<label text={Name} tooltip={Description} />";
+        var model = new FieldBindingTestModel() { Name = "Foo", Description = "Bar" };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var label = Assert.IsType<Label>(tree.Views.SingleOrDefault());
+
+        Assert.Equal("Foo", label.Text);
+        Assert.Equal("Bar", label.Tooltip);
+    }
+
     partial class DropDownTestModel : INotifyPropertyChanged
     {
         public Func<object, string> FormatItem { get; } = item => $"Item {item}";

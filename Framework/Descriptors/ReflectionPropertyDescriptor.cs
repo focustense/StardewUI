@@ -55,10 +55,10 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
     public Type DeclaringType => typeof(T);
 
     /// <inheritdoc />
-    public Type ValueType => propertyInfo.PropertyType;
+    public string Name => propertyInfo.Name;
 
     /// <inheritdoc />
-    public string Name => propertyInfo.Name;
+    public Type ValueType => propertyInfo.PropertyType;
 
     /// <summary>
     /// Initializes a new <see cref="ReflectionPropertyDescriptor"/> from reflected property info.

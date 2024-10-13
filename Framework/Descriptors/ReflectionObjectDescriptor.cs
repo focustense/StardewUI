@@ -14,6 +14,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     private static readonly Dictionary<Type, ReflectionObjectDescriptor> cache = [];
 
     private readonly IReadOnlyDictionary<string, Lazy<IEventDescriptor>> eventsByName;
+    private readonly IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> fieldsByName;
     private readonly IReadOnlyDictionary<string, Lazy<IMethodDescriptor>> methodsByName;
     private readonly IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> propertiesByName;
     private readonly Lazy<IPropertyDescriptor> thisDescriptor;
@@ -36,6 +37,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     private static ReflectionObjectDescriptor CreateDescriptor(Type type)
     {
         var allMembers = type.GetMembers(BindingFlags.Instance | BindingFlags.Public);
+        var fieldsByName = allMembers.OfType<FieldInfo>().ToLazyDictionary(LazyExpressionFieldDescriptor.FromFieldInfo);
         var propertiesByName = allMembers
             .OfType<PropertyInfo>()
             .Where(prop => prop.GetIndexParameters().Length == 0)
@@ -49,24 +51,27 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
             .OfType<EventInfo>()
             .Where(ev => ev.EventHandlerType is not null)
             .ToLazyDictionary(ReflectionEventDescriptor.FromEventInfo);
-        return new(type, propertiesByName, methodsByName, eventsByName);
+        return new(type, fieldsByName, propertiesByName, methodsByName, eventsByName);
     }
 
     /// <summary>
     /// Initializes a new <see cref="ReflectionObjectDescriptor"/> with the given target type and members.
     /// </summary>
     /// <param name="type">The <see cref="TargetType"/>.</param>
+    /// <param name="fieldsByName">Dictionary of field names to the corresponding field descriptors.</param>
     /// <param name="propertiesByName">Dictionary of property names to the corresponding property descriptors.</param>
     /// <param name="methodsByName">Dictionary of method names to the corresponding method descriptors.</param>
     /// <param name="eventsByName">Dictionary of event names to the corresponding event descriptors.</param>
     protected ReflectionObjectDescriptor(
         Type type,
+        IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> fieldsByName,
         IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> propertiesByName,
         IReadOnlyDictionary<string, Lazy<IMethodDescriptor>> methodsByName,
         IReadOnlyDictionary<string, Lazy<IEventDescriptor>> eventsByName
     )
     {
         TargetType = type;
+        this.fieldsByName = fieldsByName;
         this.propertiesByName = propertiesByName;
         this.methodsByName = methodsByName;
         this.eventsByName = eventsByName;
@@ -78,6 +83,14 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     {
         bool exists = eventsByName.TryGetValue(name, out var lazyEvent);
         @event = lazyEvent?.Value;
+        return exists;
+    }
+
+    /// <inheritdoc />
+    public bool TryGetField(string name, [MaybeNullWhen(false)] out IPropertyDescriptor field)
+    {
+        bool exists = fieldsByName.TryGetValue(name, out var lazyField);
+        field = lazyField?.Value;
         return exists;
     }
 
@@ -97,7 +110,9 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
             property = thisDescriptor.Value;
             return true;
         }
-        bool exists = propertiesByName.TryGetValue(name, out var lazyProperty);
+        bool exists =
+            propertiesByName.TryGetValue(name, out var lazyProperty)
+            || fieldsByName.TryGetValue(name, out lazyProperty);
         property = lazyProperty?.Value;
         return exists;
     }

@@ -25,8 +25,8 @@ public interface IPropertyDescriptor : IMemberDescriptor
 /// Describes a single property on a bindable object (i.e. a view) and provides methods to read or write the value.
 /// </summary>
 /// <remarks>
-/// The read and write methods take <see cref="object"/> as a receiver, as they are intended to be invoked from a
-/// non-generic context; however, they are mostly intended to be used on <see cref="StardewUI.IView"/>.
+/// The read and write methods take <see cref="object"/> as a receiver because they are intended to be invoked from a
+/// non-generic context.
 /// </remarks>
 /// <typeparam name="T">The property type.</typeparam>
 public interface IPropertyDescriptor<T> : IPropertyDescriptor
