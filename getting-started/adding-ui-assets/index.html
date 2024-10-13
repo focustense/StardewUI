@@ -652,6 +652,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#referencing-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Referencing Sprites
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -788,6 +797,8 @@
       
         
           
+        
+      
         
       
         
@@ -965,6 +976,15 @@
   <a href="#custommodded-sprites" class="md-nav__link">
     <span class="md-ellipsis">
       Custom/Modded Sprites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#referencing-sprites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Referencing Sprites
     </span>
   </a>
   
@@ -1168,6 +1188,13 @@
 </li>
 </ol>
 <p>Aside from the addition of the <code>.png</code> file and the removal of the <code>Texture</code> field, it is exactly the same as a vanilla sprite.</p>
+<h3 id="referencing-sprites">Referencing Sprites</h3>
+<p>When using JSON configuration, the primary asset is the Texture and JSON data itself. To reference an individual sprite, use the form: <code>{AssetPrefix}/{SpriteSheetName}:{SpriteName}</code>.</p>
+<p>For example, using the previous example of <a href="#vanilla-sprites">buff sprites</a>, along with the <a href="#custommodded-sprites">modded sprites</a>, we might end up with the following template:</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">background</span><span class="o">=</span><span class="s">{@Mods/author.ModName/Sprites/Cursors:SpecialBorder}</span><span class="p">&gt;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="p">&lt;</span><span class="nt">image</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;36px 36px&quot;</span> <span class="na">sprite</span><span class="o">=</span><span class="s">{@Mods/author.ModName/Sprites/UI:Checked}</span> <span class="p">/&gt;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
 
 
 
