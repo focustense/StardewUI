@@ -1,10 +1,18 @@
 {
-	"Texture": "LooseSprites/Cursors",
-	"Sprites": {
-		"SpecialBorder": {
-			"SourceRect": "129, 338, 7, 9",
-			"FixedEdges": "2, 3, 3, 2",
-			"Scale": 4
-		}
-	}
+  "Texture": "LooseSprites/Cursors",
+  "Sprites": {
+    "HudBorder": {
+      "SourceRect": "293, 360, 24, 24",
+      "FixedEdges": "5",
+      "Scale": 4
+    },
+    "QueenOfSauce1": {
+      "SourceRect": "602, 361, 42, 28"
+    },
+    "SpecialBorder": {
+      "SourceRect": "129, 338, 7, 9",
+      "FixedEdges": "2, 3, 3, 2",
+      "Scale": 4
+    }
+  }
 }

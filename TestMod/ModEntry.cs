@@ -17,6 +17,9 @@ internal sealed partial class ModEntry : Mod
     private string viewAssetPrefix = null!;
     private IViewEngine viewEngine = null!;
 
+    // Mod state
+    private IViewDrawable? hudWidget;
+
     public override void Entry(IModHelper helper)
     {
         I18n.Init(helper.Translation);
@@ -24,8 +27,14 @@ internal sealed partial class ModEntry : Mod
         config = helper.ReadConfig<ModConfig>();
         viewAssetPrefix = $"Mods/{ModManifest.UniqueID}/Views";
 
+        helper.Events.Display.RenderedHud += Display_RenderedHud;
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+    }
+
+    private void Display_RenderedHud(object? sender, RenderedHudEventArgs e)
+    {
+        hudWidget?.Draw(e.SpriteBatch, new(0, 100));
     }
 
     private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -44,6 +53,9 @@ internal sealed partial class ModEntry : Mod
         }
         switch (e.Button)
         {
+            case SButton.Multiply:
+                ToggleHud();
+                break;
             case SButton.F8:
                 ShowExampleMenu3();
                 break;
@@ -98,5 +110,19 @@ internal sealed partial class ModEntry : Mod
     {
         var context = new Example3Model();
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Form", context);
+    }
+
+    private void ToggleHud()
+    {
+        if (hudWidget is not null)
+        {
+            hudWidget.Dispose();
+            hudWidget = null;
+        }
+        else
+        {
+            hudWidget = viewEngine.CreateDrawableFromAsset($"{viewAssetPrefix}/Example-Hud");
+            hudWidget.Context = new { Title = "I'm a HUD!" };
+        }
     }
 }

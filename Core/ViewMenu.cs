@@ -516,14 +516,6 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         return null;
     }
 
-    private static Point GetViewportSize()
-    {
-        var maxViewport = Game1.graphics.GraphicsDevice.Viewport;
-        return Game1.uiViewport.Width <= maxViewport.Width
-            ? new(Game1.uiViewport.Width, Game1.uiViewport.Height)
-            : new(maxViewport.Width, maxViewport.Height);
-    }
-
     private void InitiateClick(SButton button, Point screenPoint)
     {
         if (overlayContext.Front is IOverlay overlay)
@@ -593,7 +585,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void MeasureAndCenterView()
     {
-        var viewportSize = GetViewportSize();
+        var viewportSize = UiViewport.GetMaxSize();
         var currentGutter = gutter ?? DefaultGutter;
         var availableMenuSize = viewportSize.ToVector2() - currentGutter.Total;
         if (!view.Measure(availableMenuSize))

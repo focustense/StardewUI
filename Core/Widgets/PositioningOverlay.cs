@@ -359,7 +359,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             };
             return new Panel()
             {
-                Layout = LayoutParameters.FixedSize(GetViewportSize()),
+                Layout = LayoutParameters.FixedSize(UiViewport.GetMaxSize()),
                 HorizontalContentAlignment = Alignment.Middle,
                 VerticalContentAlignment = Alignment.Middle,
                 Children = [contentFrame, alignmentPromptsPanel, movementPromptsFrame, dragFrame],
@@ -566,14 +566,6 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         {
             var action = new PositioningAction.Nudge(direction);
             return actionState.GetKeyboardBindings(action).FirstOrDefault() ?? new();
-        }
-
-        private static Point GetViewportSize()
-        {
-            var maxViewport = Game1.graphics.GraphicsDevice.Viewport;
-            return Game1.uiViewport.Width <= maxViewport.Width
-                ? new(Game1.uiViewport.Width, Game1.uiViewport.Height)
-                : new(maxViewport.Width, maxViewport.Height);
         }
 
         private void HandleCurrentActions()

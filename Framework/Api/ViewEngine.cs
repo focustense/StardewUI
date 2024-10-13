@@ -1,4 +1,6 @@
-﻿using StardewUI.Framework.Binding;
+﻿using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -9,14 +11,49 @@ namespace StardewUI.Framework.Api;
 /// <summary>
 /// Implementation for the public <see cref="IViewEngine"/> API.
 /// </summary>
-/// <param name="assetCache">Cache for obtaining document assets. Used for asset-based views.</param>
-/// <param name="helper">SMAPI mod helper for the API consumer mod (not for StardewUI).</param>
-/// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
-/// <param name="monitor">Monitor for logging events.</param>
-public class ViewEngine(IAssetCache assetCache, IModHelper helper, IViewNodeFactory viewNodeFactory, IMonitor monitor)
-    : IViewEngine
+public class ViewEngine : IViewEngine
 {
-    private readonly AssetRegistry assetRegistry = new(helper, monitor);
+    private readonly IAssetCache assetCache;
+    private readonly AssetRegistry assetRegistry;
+    private readonly List<WeakReference<IUpdatable>> updatables = [];
+    private readonly IViewNodeFactory viewNodeFactory;
+
+    /// <summary>
+    /// Initializes a new <see cref="ViewEngine"/> instance.
+    /// </summary>
+    /// <param name="assetCache">Cache for obtaining document assets. Used for asset-based views.</param>
+    /// <param name="helper">SMAPI mod helper for the API consumer mod (not for StardewUI).</param>
+    /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
+    /// <param name="monitor">Monitor for logging events.</param>
+    public ViewEngine(IAssetCache assetCache, IModHelper helper, IViewNodeFactory viewNodeFactory, IMonitor monitor)
+    {
+        this.assetCache = assetCache;
+        this.viewNodeFactory = viewNodeFactory;
+        assetRegistry = new(helper, monitor);
+
+        helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+    }
+
+    /// <inheritdoc />
+    public IViewDrawable CreateDrawableFromAsset(string assetName)
+    {
+        var documentSource = new AssetValueSource<Document>(assetCache, assetName);
+        var view = new DocumentView(viewNodeFactory, documentSource);
+        var drawable = new ViewDrawable(view);
+        updatables.Add(new(drawable));
+        return drawable;
+    }
+
+    /// <inheritdoc />
+    public IViewDrawable CreateDrawableFromMarkup(string markup)
+    {
+        var document = Document.Parse(markup);
+        var documentSource = new ConstantValueSource<Document>(document);
+        var view = new DocumentView(viewNodeFactory, documentSource);
+        var drawable = new ViewDrawable(view);
+        updatables.Add(new(drawable));
+        return drawable;
+    }
 
     /// <inheritdoc />
     public IClickableMenu CreateMenuFromAsset(string assetName, object? context = null)
@@ -49,5 +86,18 @@ public class ViewEngine(IAssetCache assetCache, IModHelper helper, IViewNodeFact
     public void RegisterViews(string assetPrefix, string modDirectory)
     {
         assetRegistry.RegisterViews(assetPrefix, modDirectory);
+    }
+
+    private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        updatables.RemoveAll(updatableRef =>
+        {
+            if (updatableRef.TryGetTarget(out var updatable) && !updatable.IsDisposed)
+            {
+                updatable.Update(Game1.currentGameTime.ElapsedGameTime);
+                return false;
+            }
+            return true;
+        });
     }
 }
