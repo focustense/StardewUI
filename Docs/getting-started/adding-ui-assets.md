@@ -187,4 +187,17 @@ If the sprites you want to use are your own sprites, designed specifically for y
     }
     ```
     
+
 Aside from the addition of the `.png` file and the removal of the `Texture` field, it is exactly the same as a vanilla sprite.
+
+### Referencing Sprites
+
+When using JSON configuration, the primary asset is the Texture and JSON data itself. To reference an individual sprite, use the form: `{AssetPrefix}/{SpriteSheetName}:{SpriteName}`.
+
+For example, using the previous example of [buff sprites](#vanilla-sprites), along with the [modded sprites](#custommodded-sprites), we might end up with the following template:
+
+```html
+<frame background={@Mods/author.ModName/Sprites/Cursors:SpecialBorder}>
+    <image layout="36px 36px" sprite={@Mods/author.ModName/Sprites/UI:Checked} />
+</frame>
+```
