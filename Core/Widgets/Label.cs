@@ -144,6 +144,24 @@ public class Label : View
     }
 
     /// <summary>
+    /// Font scaling to apply. Default is <c>1.0</c> (normal size).
+    /// </summary>
+    /// <remarks>
+    /// Applies only to the text itself and not layout properties such as <see cref="View.Margin"/>.
+    /// </remarks>
+    public float Scale
+    {
+        get => scale.Value;
+        set
+        {
+            if (scale.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(Scale));
+            }
+        }
+    }
+
+    /// <summary>
     /// The text string to display.
     /// </summary>
     public string Text
@@ -160,6 +178,7 @@ public class Label : View
 
     private readonly DirtyTracker<SpriteFont> font = new(Game1.smallFont);
     private readonly DirtyTracker<int> maxLines = new(0);
+    private readonly DirtyTracker<float> scale = new(1.0f);
     private readonly DirtyTracker<string> text = new("");
 
     private bool bold; // Not dirty-tracked because it doesn't affect layout.
@@ -174,12 +193,12 @@ public class Label : View
         foreach (var line in lines)
         {
             var x = GetAlignedLeft(line);
-            b.DrawString(Font, line, new(x, y), Color);
+            b.DrawString(Font, line, new(x, y), Color, scale: Scale);
             if (Bold)
             {
-                b.DrawString(Font, line, new(x + 1, y), Color);
-                b.DrawString(Font, line, new(x, y + 1), Color);
-                b.DrawString(Font, line, new(x + 1, y + 1), Color);
+                b.DrawString(Font, line, new(x + 1, y), Color, scale: Scale);
+                b.DrawString(Font, line, new(x, y + 1), Color, scale: Scale);
+                b.DrawString(Font, line, new(x + 1, y + 1), Color, scale: Scale);
             }
             y += Font.LineSpacing;
         }
@@ -188,7 +207,7 @@ public class Label : View
     /// <inheritdoc />
     protected override bool IsContentDirty()
     {
-        return font.IsDirty || maxLines.IsDirty || text.IsDirty;
+        return font.IsDirty || maxLines.IsDirty || scale.IsDirty || text.IsDirty;
     }
 
     /// <inheritdoc />
@@ -198,7 +217,7 @@ public class Label : View
         // available on draw) even if the layout size is not content-dependent.
         var maxTextSize = Layout.GetLimits(availableSize);
         BreakLines(maxTextSize.X, out var maxLineWidth);
-        ContentSize = Layout.Resolve(availableSize, () => new(maxLineWidth, lines.Count * Font.LineSpacing));
+        ContentSize = Layout.Resolve(availableSize, () => new(maxLineWidth, lines.Count * Font.LineSpacing * Scale));
     }
 
     /// <inheritdoc />
@@ -206,11 +225,15 @@ public class Label : View
     {
         font.ResetDirty();
         maxLines.ResetDirty();
+        scale.ResetDirty();
         text.ResetDirty();
     }
 
     private void BreakLines(float availableWidth, out float maxLineWidth)
     {
+        // To incorporate font scaling more cheaply, without having to perform float multiplications for every word,
+        // we can instead invert the scaling on available width, and reapply it at the end.
+        availableWidth /= Scale;
         var rawLines = Text.Replace("\r\n", "\n").Split('\n').Select(line => line.Split(' ')).ToList();
         // Greedy breaking algorithm. Knuth *probably* isn't necessary in a use case like this?
         maxLineWidth = 0.0f;
@@ -255,6 +278,7 @@ public class Label : View
                         // In practice, this is unlikely to happen because of the previous issue - any line that
                         // actually spaces will break slightly sooner than the true formatted width dictates.
                         lines[^1] += " ...";
+                        maxLineWidth *= Scale;
                         return;
                     }
                     sb.Clear();
@@ -268,6 +292,7 @@ public class Label : View
             maxLineWidth = MathF.Max(maxLineWidth, Font.MeasureString(lastLine).X);
             lines.Add(lastLine);
         }
+        maxLineWidth *= Scale;
     }
 
     private float GetAlignedLeft(string text)
@@ -277,10 +302,10 @@ public class Label : View
             case Alignment.Start:
                 return 0;
             case Alignment.Middle:
-                var textWidth = Font.MeasureString(text).X;
+                var textWidth = Font.MeasureString(text).X * Scale;
                 return ContentSize.X / 2 - textWidth / 2;
             case Alignment.End:
-                textWidth = Font.MeasureString(text).X;
+                textWidth = Font.MeasureString(text).X * Scale;
                 return ContentSize.X - textWidth;
             default:
                 throw new NotImplementedException($"Invalid alignment type: {HorizontalAlignment}");
