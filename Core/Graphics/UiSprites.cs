@@ -188,14 +188,24 @@ public static class UiSprites
         new(Game1.mouseCursors, SourceRect: OptionsSlider.sliderButtonRect, SliceSettings: new(Scale: 4));
 
     /// <summary>
-    /// Small up arrow, typically used for scroll bars.
-    /// </summary>
-    public static Sprite SmallUpArrow => new(Game1.mouseCursors, SourceRect: new(421, 459, 11, 12));
-
-    /// <summary>
     /// Small down arrow, typically used for scroll bars.
     /// </summary>
     public static Sprite SmallDownArrow => new(Game1.mouseCursors, SourceRect: new(421, 472, 11, 12));
+
+    /// <summary>
+    /// Small left arrow, typically used for top-level list navigation.
+    /// </summary>
+    public static Sprite SmallLeftArrow => new(Game1.mouseCursors, SourceRect: new(352, 495, 12, 11));
+
+    /// <summary>
+    /// Small right arrow, typically used for top-level list navigation.
+    /// </summary>
+    public static Sprite SmallRightArrow => new(Game1.mouseCursors, SourceRect: new(365, 495, 12, 11));
+
+    /// <summary>
+    /// Small up arrow, typically used for scroll bars.
+    /// </summary>
+    public static Sprite SmallUpArrow => new(Game1.mouseCursors, SourceRect: new(421, 459, 11, 12));
 
     /// <summary>
     /// A small green "+" icon.
