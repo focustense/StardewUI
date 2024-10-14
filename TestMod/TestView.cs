@@ -14,21 +14,26 @@ internal class TestView : WrapperView
             Layout = LayoutParameters.FixedSize(400, 400),
             Content = new Grid()
             {
-                Children = Enumerable.Range(0, 200).Select((i) =>
-                {
-                    return new Frame()
-                    {
-                        Content = new Image()
+                Children = Enumerable
+                    .Range(0, 200)
+                    .Select(
+                        (i) =>
                         {
-                            Name = i.ToString(),
-                            Layout = LayoutParameters.FixedSize(64, 64),
-                            Sprite = questionIcon,
-                            Focusable = false
-                        },
-                        Focusable = true
-                    };
-                }).ToList<IView>(),
-            }
+                            return new Frame()
+                            {
+                                Content = new Image()
+                                {
+                                    Name = i.ToString(),
+                                    Layout = LayoutParameters.FixedSize(64, 64),
+                                    Sprite = questionIcon,
+                                    Focusable = false,
+                                },
+                                Focusable = true,
+                            };
+                        }
+                    )
+                    .ToList<IView>(),
+            },
         };
     }
 }

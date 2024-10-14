@@ -1,11 +1,11 @@
-﻿using PropertyChanged.SourceGenerator;
+﻿using System.ComponentModel;
+using PropertyChanged.SourceGenerator;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewUI;
 using StardewUI.Framework;
 using StardewUITest.Examples;
 using StardewValley;
-using System.ComponentModel;
 
 namespace StardewUITest;
 
@@ -88,43 +88,26 @@ internal sealed partial class ModEntry : Mod
 
     private void ShowExampleMenu1()
     {
-        var context = new
-        {
-            HeaderText = "Example Menu Title",
-            ItemData = ItemRegistry.GetData("(O)117"),
-        };
+        var context = new { HeaderText = "Example Menu Title", ItemData = ItemRegistry.GetData("(O)117") };
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/TestView", context);
     }
 
     private void ShowExampleMenu2()
     {
-        int[] edibleCategories = [
-                StardewValley.Object.CookingCategory,
-                StardewValley.Object.EggCategory,
-                StardewValley.Object.FishCategory,
-                StardewValley.Object.FruitsCategory,
-                StardewValley.Object.meatCategory,
-                StardewValley.Object.MilkCategory,
-                StardewValley.Object.VegetableCategory,
-            ];
-        var items = ItemRegistry.ItemTypes
-            .Single(type => type.Identifier == ItemRegistry.type_object)
-            .GetAllIds()
-            .Select(id => ItemRegistry.GetDataOrErrorItem(id))
-            .Where(data => edibleCategories.Contains(data.Category))
-            .ToList();
-        var context = new
-        {
-            HeaderText = "All Edibles",
-            Items = items,
-        };
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-ScrollingItemGrid", context);
+        var context = EdiblesViewModel.LoadFromGameData();
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+            $"{viewAssetPrefix}/Example-ScrollingItemGrid",
+            context
+        );
     }
 
     partial class Example3Model : INotifyPropertyChanged
     {
-        [Notify] private bool enableTurboBoost = true;
-        [Notify] private float speedMultiplier = 25;
+        [Notify]
+        private bool enableTurboBoost = true;
+
+        [Notify]
+        private float speedMultiplier = 25;
     }
 
     private void ShowExampleMenu3()
