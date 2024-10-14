@@ -4,6 +4,7 @@ repo_url: https://github.com/focustense/StardewUI
 theme:
   name: material
   features:
+    - content.tooltips
     - navigation.footer
     - navigation.indexes
     - navigation.path
@@ -38,6 +39,7 @@ plugins:
   - search
   - social
 markdown_extensions:
+  - abbr
   - admonition
   - attr_list
   - footnotes
