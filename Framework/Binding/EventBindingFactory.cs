@@ -45,7 +45,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
     // which implements the value equality required to use correctly as a cache key.
     record CacheKey(IEventDescriptor Event, IMethodDescriptor Handler, IEvent EventAttribute, Type BoundContextType);
 
-    delegate IEventBinding? LocalBindingFactory(IView view, BindingContext context);
+    delegate IEventBinding? LocalBindingFactory(IView view, BindingContext viewContext, BindingContext handlerContext);
 
     private static readonly Dictionary<CacheKey, LocalBindingFactory> cache = [];
 
@@ -74,11 +74,11 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         var cacheKey = new CacheKey(eventDescriptor, handlerMethod, @event, context!.GetType());
         if (!cache.TryGetValue(cacheKey, out var localFactory))
         {
-            localFactory = (view, viewContext) =>
+            localFactory = (view, viewContext, handlerContext) =>
                 TryCreateBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext);
             cache.Add(cacheKey, localFactory);
         }
-        return localFactory(view, context);
+        return localFactory(view, context, handlerContext);
     }
 
     private IEventBinding? TryCreateBinding(
