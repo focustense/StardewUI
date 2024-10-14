@@ -25,6 +25,7 @@
       <None Remove="assets\sprites\cursors.json" />
       <None Remove="assets\sprites\status.json" />
       <None Remove="assets\sprites\status.png" />
+      <None Remove="assets\views\Example-Bestiary.sml" />
       <None Remove="assets\views\Example-Form.sml" />
       <None Remove="assets\views\Example-Hud.sml" />
       <None Remove="assets\views\Example-ScrollingItemGrid.sml" />
@@ -33,13 +34,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="assets\sprites\cursors.json">
+      <Content Include="assets\sprites\Cursors.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="assets\sprites\status.json">
+      <Content Include="assets\sprites\Status.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-      <Content Include="assets\sprites\status.png">
+      <Content Include="assets\sprites\Status.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <Content Include="assets\views\Example-Form.sml">
@@ -49,6 +50,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <Content Include="assets\views\Example-ScrollingItemGrid.sml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\views\Example-Bestiary.sml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <Content Include="assets\views\TestView.sml">

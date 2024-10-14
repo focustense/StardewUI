@@ -6,13 +6,28 @@
       "FixedEdges": "5",
       "Scale": 4
     },
-    "QueenOfSauce1": {
-      "SourceRect": "602, 361, 42, 28"
-    },
     "SpecialBorder": {
       "SourceRect": "129, 338, 7, 9",
       "FixedEdges": "2, 3, 3, 2",
       "Scale": 4
+    },
+    "QueenOfSauce1": {
+      "SourceRect": "602, 361, 42, 28"
+    },
+    "AttackIcon": {
+      "SourceRect": "120, 428, 10, 10"
+    },
+    "DefenseIcon": {
+      "SourceRect": "110, 428, 10, 10"
+    },
+    "HealthIcon": {
+      "SourceRect": "0, 438, 10, 10"
+    },
+    "SpeedIcon": {
+      "SourceRect": "130, 428, 10, 10"
+    },
+    "LuckIcon": {
+      "SourceRect": "50, 428, 10, 10"
     }
   }
 }

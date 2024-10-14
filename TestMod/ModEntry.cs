@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewUI;
 using StardewUI.Framework;
+using StardewUITest.Examples;
 using StardewValley;
 using System.ComponentModel;
 
@@ -18,6 +19,7 @@ internal sealed partial class ModEntry : Mod
     private IViewEngine viewEngine = null!;
 
     // Mod state
+    private BestiaryViewModel? bestiary;
     private IViewDrawable? hudWidget;
 
     public override void Entry(IModHelper helper)
@@ -29,6 +31,7 @@ internal sealed partial class ModEntry : Mod
 
         helper.Events.Display.RenderedHud += Display_RenderedHud;
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+        helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
     }
 
@@ -43,6 +46,11 @@ internal sealed partial class ModEntry : Mod
         viewEngine.RegisterSprites($"Mods/{ModManifest.UniqueID}/Sprites", "assets/sprites");
         viewEngine.RegisterViews(viewAssetPrefix, "assets/views");
         viewEngine.EnableHotReloading();
+    }
+
+    private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        bestiary?.Update(Game1.currentGameTime.ElapsedGameTime);
     }
 
     private void Input_ButtonPressed(object? sender, ButtonPressedEventArgs e)
@@ -60,9 +68,22 @@ internal sealed partial class ModEntry : Mod
                 ShowExampleMenu3();
                 break;
             case SButton.F9:
-                ShowExampleMenu2();
+                if (e.IsDown(SButton.LeftShift))
+                {
+                    ShowBestiary();
+                }
+                else
+                {
+                    ShowExampleMenu2();
+                }
                 break;
         }
+    }
+
+    private void ShowBestiary()
+    {
+        bestiary = BestiaryViewModel.LoadFromGameData();
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Bestiary", bestiary);
     }
 
     private void ShowExampleMenu1()
