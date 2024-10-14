@@ -56,3 +56,24 @@ table .md-tooltip {
     padding: 0.5rem;
     white-space: pre;
 }
+
+.example-header {
+    margin-top: -1em;
+}
+
+.md-typeset .grid.cards.dense {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+    margin-bottom: 2em;
+}
+
+.md-typeset .grid.cards.dense>ul>li {
+    background-color: var(--md-accent-fg-color--transparent);
+    border-radius: 0.25rem;
+    padding: 0.4rem 0.4rem 0.2rem 0.4rem;
+}
+
+.md-typeset .grid.cards.examples>ul>li {
+    background-color: #f8f8f8;
+    border-radius: 0.4rem;
+    text-align: center;
+}
