@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Grammar;
+﻿using System.Text;
+using StardewUI.Framework.Grammar;
 
 namespace StardewUI.Framework.Dom;
 
@@ -32,6 +33,38 @@ public interface IAttribute
     /// The type of the value expression, defining how the <see cref="Value"/> should be interpreted.
     /// </summary>
     AttributeValueType ValueType { get; }
+
+    /// <summary>
+    /// Prints the textual representation of this node.
+    /// </summary>
+    /// <param name="sb">Builder to receive the attribute's text output.</param>
+    void Print(StringBuilder sb)
+    {
+        if (Type == AttributeType.Structural)
+        {
+            sb.Append('*');
+        }
+        sb.Append(Name);
+        sb.Append('=');
+        var (openChars, closeChars) = GetValueTypePair(ValueType);
+        sb.Append(openChars);
+        ContextRedirect?.Print(sb);
+        sb.Append(Value);
+        sb.Append(closeChars);
+    }
+
+    private static (string, string) GetValueTypePair(AttributeValueType type)
+    {
+        return type switch
+        {
+            AttributeValueType.Literal => ("\"", "\""),
+            AttributeValueType.InputBinding => ("{<", "}"),
+            AttributeValueType.OutputBinding => ("{>", "}"),
+            AttributeValueType.TwoWayBinding => ("{<>", "}"),
+            AttributeValueType.AssetBinding => ("{@", "}"),
+            _ => throw new ArgumentException($"Invalid attribute value type: {type}", nameof(type)),
+        };
+    }
 }
 
 /// <summary>
@@ -64,17 +97,39 @@ public abstract record ContextRedirect
     }
 
     /// <summary>
+    /// Prints the textual representation of this redirect.
+    /// </summary>
+    /// <param name="sb">Builder to receive the redirect's text output.</param>
+    internal abstract void Print(StringBuilder sb);
+
+    /// <summary>
     /// Redirects to an ancestor context by walking up a specified number of levels.
     /// </summary>
     /// <param name="Depth">Number of parents to traverse.</param>
-    public sealed record Distance(uint Depth) : ContextRedirect;
+    public sealed record Distance(uint Depth) : ContextRedirect
+    {
+        /// <inheritdoc />
+        internal override void Print(StringBuilder sb)
+        {
+            sb.Append(new string('^', (int)Depth));
+        }
+    }
 
     /// <summary>
     /// Redirects to the nearest ancestor matching a specified type.
     /// </summary>
     /// <param name="TypeName">The <see cref="System.Reflection.MemberInfo.Name"/> of the target ancestor's
     /// <see cref="System.Type"/>.</param>
-    public sealed record Type(string TypeName) : ContextRedirect;
+    public sealed record Type(string TypeName) : ContextRedirect
+    {
+        /// <inheritdoc />
+        internal override void Print(StringBuilder sb)
+        {
+            sb.Append('~');
+            sb.Append(TypeName);
+            sb.Append('.');
+        }
+    }
 }
 
 /// <summary>

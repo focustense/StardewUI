@@ -17,12 +17,14 @@ namespace StardewUI.Framework.Binding;
 /// <param name="viewBinder">Binding service used to create <see cref="IViewBinding"/> instances that detect changes to
 /// data or assets and propagate them to the bound <see cref="IView"/>.</param>
 /// <param name="assetCache">Cache for obtaining document assets. Used for included views.</param>
+/// <param name="monitor">Monitor for logging events.</param>
 public class ViewNodeFactory(
     IViewFactory viewFactory,
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
     IViewBinder viewBinder,
-    IAssetCache assetCache
+    IAssetCache assetCache,
+    IMonitor? monitor
 ) : IViewNodeFactory
 {
     /// <inheritdoc />
@@ -34,6 +36,12 @@ public class ViewNodeFactory(
     record SwitchContext(IViewNode Node, IAttribute Attribute);
 
     private IViewNode CreateNode(SNode node, SwitchContext? switchContext)
+    {
+        var innerNdoe = CreateNodeWithoutBackoff(node, switchContext);
+        return new BackoffNodeDecorator(innerNdoe, BackoffRule.Default, monitor);
+    }
+
+    private IViewNode CreateNodeWithoutBackoff(SNode node, SwitchContext? switchContext)
     {
         var structuralAttributes = StructuralAttributes.Get(node.Attributes);
         if (structuralAttributes.Repeat is IAttribute repeatAttr)

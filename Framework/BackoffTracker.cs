@@ -7,21 +7,11 @@
 /// Keys are stored in a <see cref="Dictionary{TKey, TValue}"/>, so must have unique hash codes for correct operation.
 /// </remarks>
 /// <typeparam name="T">Type of key or other object to track.</typeparam>
-/// <param name="initialDuration">Duration to wait before the first retry attempt.</param>
-/// <param name="maxDuration">Maximum duration to wait before any retry attempt; i.e. no matter how many retries have
-/// already occurred for a given key, it will not extend the duration any longer than this.</param>
-/// <param name="multiplier">Amount to multiply the current duration on each subsequent retry, starting from
-/// <paramref name="initialDuration"/> and going no higher than <paramref name="maxDuration"/>.</param>
-internal class BackoffTracker<T>(TimeSpan initialDuration, TimeSpan maxDuration, float multiplier)
+/// <param name="rule">Configures the backoff duration and scaling.</param>
+internal class BackoffTracker<T>(BackoffRule rule)
     where T : notnull
 {
-    class BackoffEntry(TimeSpan initialDuration)
-    {
-        public TimeSpan Duration { get; set; } = initialDuration;
-        public TimeSpan Elapsed { get; set; }
-    }
-
-    private readonly Dictionary<T, BackoffEntry> entries = [];
+    private readonly Dictionary<T, BackoffState> entries = [];
 
     /// <summary>
     /// Advances the timer on any pending keys, allowing them to be used again on the next
@@ -71,16 +61,12 @@ internal class BackoffTracker<T>(TimeSpan initialDuration, TimeSpan maxDuration,
         {
             if (entry is not null)
             {
-                if (entry.Duration < maxDuration)
-                {
-                    var nextDuration = entry.Duration * multiplier;
-                    entry.Duration = nextDuration < maxDuration ? nextDuration : maxDuration;
-                }
+                entry.Duration = rule.GetNextDuration(entry.Duration);
                 entry.Elapsed = TimeSpan.Zero;
             }
             else
             {
-                entries.Add(key, new(initialDuration));
+                entries.Add(key, new(rule.InitialDuration));
             }
             throw;
         }

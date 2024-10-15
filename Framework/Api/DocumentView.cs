@@ -205,7 +205,7 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
         {
             return;
         }
-        if (rootNode.Update())
+        if (rootNode.Update(elapsed))
         {
             var nextRootView = rootNode.Views.FirstOrDefault();
             if (nextRootView != rootView)

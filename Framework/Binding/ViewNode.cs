@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -68,6 +69,25 @@ public class ViewNode(
     }
 
     /// <inheritdoc />
+    public void Print(StringBuilder sb, bool includeChildren)
+    {
+        IElement printableElement = element;
+        if (includeChildren && ChildNodes.Count > 0)
+        {
+            printableElement.Print(sb);
+            foreach (var childNode in ChildNodes)
+            {
+                childNode.Print(sb, includeChildren);
+            }
+            printableElement.PrintClosingTag(sb);
+        }
+        else
+        {
+            printableElement.Print(sb, true);
+        }
+    }
+
+    /// <inheritdoc />
     public void Reset()
     {
         foreach (var childNode in ChildNodes)
@@ -82,7 +102,15 @@ public class ViewNode(
     }
 
     /// <inheritdoc />
-    public bool Update()
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        Print(sb, true);
+        return sb.ToString();
+    }
+
+    /// <inheritdoc />
+    public bool Update(TimeSpan elapsed)
     {
         bool wasChanged = false;
         if (view is null)
@@ -139,7 +167,7 @@ public class ViewNode(
             // Even though Views is an IReadOnlyList<IView>, that does not make it an immutable list. If we want to
             // reliably detect changes, we have to account for the possibility of the list being modified in situ.
             var previousViews = new List<IView>(childNode.Views);
-            wasChanged |= childNode.Update();
+            wasChanged |= childNode.Update(elapsed);
             wasChildViewChanged |= !childNode.Views.SequenceEqual(previousViews);
         }
         if (wasChildViewChanged)

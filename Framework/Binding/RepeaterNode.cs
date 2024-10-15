@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.Text;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
 
@@ -55,6 +56,27 @@ public class RepeaterNode(
     }
 
     /// <inheritdoc />
+    public void Print(StringBuilder sb, bool includeChildren)
+    {
+        if (childNodes.Count > 0)
+        {
+            childNodes[0].Print(sb, includeChildren);
+        }
+        else
+        {
+            try
+            {
+                using var dummyNode = innerNodeCreator();
+                dummyNode.Print(sb, includeChildren);
+            }
+            catch
+            {
+                sb.Append("<Failed to inspect repeater node>");
+            }
+        }
+    }
+
+    /// <inheritdoc />
     public void Reset()
     {
         foreach (var childNode in childNodes)
@@ -73,7 +95,15 @@ public class RepeaterNode(
     }
 
     /// <inheritdoc />
-    public bool Update()
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        Print(sb, true);
+        return sb.ToString();
+    }
+
+    /// <inheritdoc />
+    public bool Update(TimeSpan elapsed)
     {
         if (wasContextChanged)
         {
@@ -97,7 +127,7 @@ public class RepeaterNode(
         // Even if the "tree" itself wasn't updated, we still have to pass the update down to existing child nodes.
         foreach (var childNode in childNodes)
         {
-            result |= childNode.Update();
+            result |= childNode.Update(elapsed);
         }
         if (result)
         {

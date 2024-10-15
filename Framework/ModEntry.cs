@@ -72,7 +72,14 @@ internal sealed class ModEntry : Mod
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
-        return new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder, assetCache);
+        return new ViewNodeFactory(
+            viewFactory,
+            valueSourceFactory,
+            valueConverterFactory,
+            viewBinder,
+            assetCache,
+            Monitor
+        );
     }
 
     private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)

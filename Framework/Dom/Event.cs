@@ -1,5 +1,6 @@
 ﻿namespace StardewUI.Framework.Dom;
 
+using System.Text;
 using Event = Grammar.Event;
 
 /// <summary>
@@ -30,6 +31,29 @@ public interface IEvent
     /// The event name, i.e. name of the <c>event</c> field on the target <see cref="IView"/>.
     /// </summary>
     string Name { get; }
+
+    /// <summary>
+    /// Prints the textual representation of this event attribute.
+    /// </summary>
+    /// <param name="sb">Builder to receive the attribute's text output.</param>
+    void Print(StringBuilder sb)
+    {
+        sb.Append(Name);
+        sb.Append('=');
+        sb.Append('|');
+        ContextRedirect?.Print(sb);
+        sb.Append(HandlerName);
+        sb.Append('(');
+        for (int i = 0; i < Arguments.Count; i++)
+        {
+            if (i > 0)
+            {
+                sb.Append(", ");
+            }
+            Arguments[i].Print(sb);
+        }
+        sb.Append(")|");
+    }
 }
 
 /// <summary>

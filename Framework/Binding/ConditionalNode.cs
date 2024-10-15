@@ -1,4 +1,6 @@
-﻿namespace StardewUI.Framework.Binding;
+﻿using System.Text;
+
+namespace StardewUI.Framework.Binding;
 
 /// <summary>
 /// A structural node that only passes through its child node when some condition passes.
@@ -42,7 +44,21 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
     }
 
     /// <inheritdoc />
-    public bool Update()
+    public void Print(StringBuilder sb, bool includeChildren)
+    {
+        innerNode.Print(sb, includeChildren);
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        Print(sb, true);
+        return sb.ToString();
+    }
+
+    /// <inheritdoc />
+    public bool Update(TimeSpan elapsed)
     {
         condition.Update();
         bool conditionChanged = condition.Passed != wasMatched;
@@ -51,7 +67,7 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
         // update, and the final outcome is a change in either the match state OR the inner node.
         if (condition.Passed)
         {
-            return innerNode.Update() || conditionChanged;
+            return innerNode.Update(elapsed) || conditionChanged;
         }
         // However, we only need to clear the inner node after an actual transition from matched to unmatched, and
         // definitely shouldn't run the update in this case (otherwise it would recreate the child views).

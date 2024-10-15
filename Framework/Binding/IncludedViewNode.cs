@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Content;
+﻿using System.Text;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -64,6 +65,19 @@ public class IncludedViewNode(
     }
 
     /// <inheritdoc />
+    public void Print(StringBuilder sb, bool includeChildren)
+    {
+        sb.Append("<include ");
+        assetNameAttribute.Print(sb);
+        if (contextAttribute is not null)
+        {
+            sb.Append(' ');
+            contextAttribute.Print(sb);
+        }
+        sb.Append("/>");
+    }
+
+    /// <inheritdoc />
     public void Reset()
     {
         childNode?.Dispose();
@@ -73,7 +87,15 @@ public class IncludedViewNode(
     }
 
     /// <inheritdoc />
-    public bool Update()
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        Print(sb, true);
+        return sb.ToString();
+    }
+
+    /// <inheritdoc />
+    public bool Update(TimeSpan elapsed)
     {
         if (wasContextChanged)
         {
@@ -101,7 +123,7 @@ public class IncludedViewNode(
                     ? BindingContext.Create(childContextSource.Value, context)
                     : null
                 : context;
-            wasChanged |= childNode.Update();
+            wasChanged |= childNode.Update(elapsed);
         }
         return wasChanged;
     }

@@ -37,7 +37,7 @@ public class AssetCache : IAssetCache
         }
     }
 
-    private readonly BackoffTracker<string> backoff = new(TimeSpan.FromMilliseconds(50), TimeSpan.FromSeconds(5), 4f);
+    private readonly BackoffTracker<string> backoff = new(BackoffRule.Default);
     private readonly IGameContentHelper content;
     private readonly Dictionary<string, InternalEntry> entries = [];
     private readonly IMonitor monitor;

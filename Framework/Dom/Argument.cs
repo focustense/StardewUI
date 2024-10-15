@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Grammar;
+﻿using System.Text;
+using StardewUI.Framework.Grammar;
 
 namespace StardewUI.Framework.Dom;
 
@@ -22,6 +23,30 @@ public interface IArgument
     /// The type of argument, indicating how it is to be evaluated in any method calls.
     /// </summary>
     ArgumentExpressionType Type { get; }
+
+    /// <summary>
+    /// Prints the textual representation of this argument.
+    /// </summary>
+    /// <param name="sb">Builder to receive the argument's text output.</param>
+    void Print(StringBuilder sb)
+    {
+        var (openChars, closeChars) = GetExpressionTypePair(Type);
+        sb.Append(openChars);
+        ContextRedirect?.Print(sb);
+        sb.Append(Expression);
+        sb.Append(closeChars);
+    }
+
+    private static (string, string) GetExpressionTypePair(ArgumentExpressionType type)
+    {
+        return type switch
+        {
+            ArgumentExpressionType.ContextBinding => ("", ""),
+            ArgumentExpressionType.EventBinding => ("$", ""),
+            ArgumentExpressionType.Literal => ("\"", "\""),
+            _ => throw new ArgumentException($"Invalid argument expression type: {type}", nameof(type)),
+        };
+    }
 }
 
 /// <summary>

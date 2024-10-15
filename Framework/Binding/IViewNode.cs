@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Grammar;
+﻿using System.Text;
+using StardewUI.Framework.Grammar;
 
 namespace StardewUI.Framework.Binding;
 
@@ -28,6 +29,15 @@ public interface IViewNode : IDisposable
     IReadOnlyList<IView> Views { get; }
 
     /// <summary>
+    /// Prints the string representation of this node.
+    /// </summary>
+    /// <param name="sb">The output builder to receive to the node's text.</param>
+    /// <param name="includeChildren">Whether or not to include the string representation of any/all child nodes between
+    /// this node's opening and close tags. If this is <c>false</c> or there are no children, it will be formatted as a
+    /// self-closing tag.</param>
+    void Print(StringBuilder sb, bool includeChildren);
+
+    /// <summary>
     /// Clears any <see cref="Views"/> associated with this node and resets it to the default state before it was bound.
     /// </summary>
     /// <remarks>
@@ -45,8 +55,9 @@ public interface IViewNode : IDisposable
     /// <summary>
     /// Performs the regular per-frame update for this node.
     /// </summary>
+    /// <param name="elapsed">Time elapsed since last update.</param>
     /// <returns><c>true</c> if any aspect of the view tree from this level downward was changed, i.e. as a result of
     /// a new <see cref="Context"/>, changed context properties, invalidated assets, or the <see cref="View"/> being
     /// created for the first time; <c>false</c> if no changes were made.</returns>
-    bool Update();
+    bool Update(TimeSpan elapsed);
 }

@@ -262,7 +262,8 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache
+            assetCache,
+            null
         );
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
@@ -1508,12 +1509,22 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache
+            assetCache,
+            null
         );
         var document = Document.Parse(markup);
         var tree = viewNodeFactory.CreateNode(document.Root);
         tree.Context = BindingContext.Create(model);
         tree.Update();
         return tree;
+    }
+}
+
+file static class ViewNodeExtensions
+{
+    // Small helper to avoid having to specify the 'elapsed' argument in tests, where it is usually meaningless.
+    public static bool Update(this IViewNode node)
+    {
+        return node.Update(TimeSpan.Zero);
     }
 }
