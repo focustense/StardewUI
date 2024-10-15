@@ -37,12 +37,12 @@ public interface IAssetCacheEntry<T>
     T Asset { get; }
 
     /// <summary>
-    /// Whether or not the <see cref="Asset"/> is expired and no longer valid.
+    /// Whether or not the <see cref="Asset"/> is valid and can be accessed.
     /// </summary>
     /// <remarks>
-    /// Expired assets have been invalidated at the source and may be disposed (if <see cref="IDisposable"/>) or
-    /// otherwise unusable. Consumers of the cache entry <b>must not</b> attempt to read or use the <see cref="Asset"/>
-    /// property of an expired asset.
+    /// Invalid assets either failed to load or have been invalidated at the source and may be disposed (if
+    /// <see cref="IDisposable"/>) or otherwise unusable. Consumers of the cache entry <b>must not</b> attempt to read
+    /// or use the <see cref="Asset"/> property of an invalid asset.
     /// </remarks>
-    bool IsExpired { get; }
+    bool IsValid { get; }
 }

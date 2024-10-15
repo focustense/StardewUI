@@ -83,7 +83,7 @@ public class IncludedViewNode(
         }
         bool wasChanged = false;
         assetNameSource?.Update();
-        if (assetNameSource?.Value != assetName || assetCacheEntry?.IsExpired == true)
+        if (assetNameSource?.Value != assetName || assetCacheEntry?.IsValid != true)
         {
             assetName = assetNameSource?.Value;
             var childNode = TryCreateChildNode();

@@ -12,7 +12,7 @@ namespace StardewUI.Framework;
 internal sealed class ModEntry : Mod
 {
     // Initialized in Entry
-    private IAssetCache assetCache = null!;
+    private AssetCache assetCache = null!;
     private ModConfig config = null!;
     private IViewNodeFactory viewNodeFactory = null!;
 
@@ -24,7 +24,7 @@ internal sealed class ModEntry : Mod
 
         try
         {
-            Patcher.Patch(ModManifest.UniqueID);
+            Patcher.Patch(ModManifest.UniqueID, Monitor);
         }
         catch (Exception ex)
         {
@@ -37,6 +37,7 @@ internal sealed class ModEntry : Mod
         viewNodeFactory = CreateViewNodeFactory();
 
         helper.Events.Content.AssetRequested += Content_AssetRequested;
+        helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
     }
 
     public override object? GetApi(IModInfo modInfo)
@@ -65,12 +66,17 @@ internal sealed class ModEntry : Mod
     private IViewNodeFactory CreateViewNodeFactory()
     {
         var viewFactory = new ViewFactory();
-        assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
+        assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content, Monitor);
         var valueSourceFactory = new ValueSourceFactory(assetCache);
         var valueConverterFactory = new ValueConverterFactory();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
         return new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder, assetCache);
+    }
+
+    private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        assetCache.Update(Game1.currentGameTime.ElapsedGameTime);
     }
 }

@@ -49,7 +49,7 @@ public partial class BindingTests
         {
             if (assets.TryGetValue(name, out var oldValue) && oldValue is FakeAssetCacheEntry<T> oldEntry)
             {
-                oldEntry.IsExpired = true;
+                oldEntry.IsValid = false;
             }
             assets[name] = new FakeAssetCacheEntry<T>(asset);
         }
@@ -59,7 +59,7 @@ public partial class BindingTests
     {
         public T Asset { get; } = asset;
 
-        public bool IsExpired { get; set; }
+        public bool IsValid { get; set; } = true;
     }
 
     private readonly FakeAssetCache assetCache;

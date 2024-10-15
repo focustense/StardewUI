@@ -41,12 +41,16 @@ internal class AssetRegistry
     private readonly Dictionary<string, WeakReference<Texture2D>> textureCache = new(StringComparer.OrdinalIgnoreCase);
 
     private ConcurrentBag<string> assetsToInvalidate = [];
+    private ConcurrentDictionary<string, string> changedFiles = [];
+    private readonly Timer fileRetryTimer;
     private FileSystemWatcher? fileSystemWatcher;
 
     public AssetRegistry(IModHelper helper, IMonitor monitor)
     {
         this.helper = helper;
         this.monitor = monitor;
+
+        fileRetryTimer = new(FileRetryTimerCallback);
 
         var contentEvents = helper.Events.Content;
         contentEvents.AssetRequested += Content_AssetRequested;
@@ -66,6 +70,8 @@ internal class AssetRegistry
         fileSystemWatcher = new FileSystemWatcher(helper.DirectoryPath) { IncludeSubdirectories = true };
         fileSystemWatcher.Changed += FileSystemWatcher_Changed;
         fileSystemWatcher.EnableRaisingEvents = true;
+        fileRetryTimer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
+        monitor.Log($"[Hot Reload] Watching {helper.DirectoryPath}...", LogLevel.Debug);
     }
 
     /// <inheritdoc cref="IViewEngine.RegisterSprites(string, string)" />
@@ -110,10 +116,17 @@ internal class AssetRegistry
             {
                 key = key[..^5];
             }
-            textureCache.Remove(key);
-            spriteCache.Remove(key);
+            if (textureCache.Remove(key))
+            {
+                monitor.Log($"Evicted texture from cache: {assetName.Name}", LogLevel.Debug);
+            }
+            if (spriteCache.Remove(key))
+            {
+                monitor.Log($"Evicted sprite data from cache: {assetName.Name}", LogLevel.Debug);
+            }
             if (spriteSheetCache.Remove(key))
             {
+                monitor.Log($"Evicted sprite sheet data from cache: {assetName.Name}", LogLevel.Debug);
                 // Invalidating an entire sprite sheet means we should also invalidate all of its sprites.
                 // Here we make the same assumptions as TryLoadSprite, namely that sprite assets are of the form
                 // "Path/To/Spritesheet:SpriteName".
@@ -135,36 +148,24 @@ internal class AssetRegistry
         }
     }
 
+    private void FileRetryTimerCallback(object? _)
+    {
+        var changedFiles = this.changedFiles;
+        this.changedFiles = [];
+        foreach (var (physicalPath, assetName) in changedFiles)
+        {
+            if (!TryInvalidateFile(physicalPath, assetName))
+            {
+                this.changedFiles.TryAdd(physicalPath, assetName);
+            }
+        }
+    }
+
     private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
     {
-        // Tweak: Don't invalidate the asset until we know we can read from it, otherwise we can get an access exception
-        // when trying to load it on the next frame.
-        //
-        // This handles the typical case when FSW might fire a couple of events, the first one or two while the file is
-        // still locked; it might behave badly for pathological cases like copying a gigabyte-long file over hundreds of
-        // frames.
-        //
-        // Also, it helps to do this on the FSW thread instead of checking it in the Update loop, as this way we won't
-        // block the update loop.
-        try
+        if (!TryInvalidateFile(e.FullPath, e.Name ?? ""))
         {
-            using var _ = File.OpenRead(e.FullPath);
-        }
-        catch (IOException)
-        {
-            return;
-        }
-        switch (Path.GetExtension(e.Name))
-        {
-            case ".sml":
-                InvalidateFile(viewDirectories, e.Name!);
-                break;
-            case ".json":
-                InvalidateFile(spriteDirectories, e.Name!, "@data");
-                break;
-            case ".png":
-                InvalidateFile(spriteDirectories, e.Name!);
-                break;
+            changedFiles.TryAdd(e.FullPath, e.Name!);
         }
     }
 
@@ -225,6 +226,7 @@ internal class AssetRegistry
         string assetSuffix = ""
     )
     {
+        monitor.Log($"File '{relativePath}' was changed; invalidating asset.", LogLevel.Debug);
         var isMainThread = Game1.IsOnMainThread();
         relativePath = PathUtilities.NormalizePath(Path.ChangeExtension(relativePath, null));
         foreach (var (assetPrefix, modDirectory) in directories)
@@ -256,6 +258,41 @@ internal class AssetRegistry
         {
             helper.GameContent.InvalidateCache(assetName);
         }
+    }
+
+    private bool TryInvalidateFile(string physicalPath, string assetName)
+    {
+        // Tweak: Don't invalidate the asset until we know we can read from it, otherwise we can get an access exception
+        // when trying to load it on the next frame.
+        //
+        // This handles the typical case when FSW might fire a couple of events, the first one or two while the file is
+        // still locked; it might behave badly for pathological cases like copying a gigabyte-long file over hundreds of
+        // frames.
+        //
+        // Also, it helps to do this on the FSW thread or a background thread (e.g. timer) instead of checking it in the
+        // Update loop, as this way we won't block the update loop. The subsequent load always happens on main thread,
+        // but we can do the lock checking and invalidation scheduling in the background.
+        try
+        {
+            using var _ = File.OpenRead(physicalPath);
+        }
+        catch (IOException)
+        {
+            return false;
+        }
+        switch (Path.GetExtension(assetName))
+        {
+            case ".sml":
+                InvalidateFile(viewDirectories, assetName);
+                break;
+            case ".json":
+                InvalidateFile(spriteDirectories, assetName, "@data");
+                break;
+            case ".png":
+                InvalidateFile(spriteDirectories, assetName);
+                break;
+        }
+        return true;
     }
 
     private static bool TryLoadAsset<T>(

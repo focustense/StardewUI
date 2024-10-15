@@ -53,7 +53,7 @@ public class AssetValueSource<T>(IAssetCache cache, string name) : IValueSource<
     /// <see cref="Value"/> was still current.</returns>
     public bool Update()
     {
-        if (cacheEntry is null || cacheEntry.IsExpired)
+        if (cacheEntry is null || !cacheEntry.IsValid)
         {
             cacheEntry = cache.Get<T>(name);
             return true;
