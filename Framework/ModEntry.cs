@@ -24,7 +24,7 @@ internal sealed class ModEntry : Mod
 
         try
         {
-            Patcher.Patch(ModManifest.UniqueID, Monitor);
+            Patcher.Patch(ModManifest.UniqueID);
         }
         catch (Exception ex)
         {
@@ -52,7 +52,7 @@ internal sealed class ModEntry : Mod
             );
             return null;
         }
-        return new ViewEngine(assetCache, mod.Helper, viewNodeFactory, Monitor);
+        return new ViewEngine(assetCache, mod.Helper, viewNodeFactory);
     }
 
     private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)
@@ -66,7 +66,7 @@ internal sealed class ModEntry : Mod
     private IViewNodeFactory CreateViewNodeFactory()
     {
         var viewFactory = new ViewFactory();
-        assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content, Monitor);
+        assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
         var valueSourceFactory = new ValueSourceFactory(assetCache);
         var valueConverterFactory = new ValueConverterFactory();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);

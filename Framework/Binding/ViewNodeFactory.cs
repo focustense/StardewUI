@@ -71,7 +71,7 @@ public class ViewNodeFactory(
             );
             if (assetNameAttribute is null)
             {
-                throw new BindingException("<include> node is missing a 'name' attribute.");
+                throw new BindingException("<include> node is missing a 'name' attribute.", node);
             }
             return new IncludedViewNode(
                 valueSourceFactory,
@@ -94,7 +94,8 @@ public class ViewNodeFactory(
                 if (switchContext is null)
                 {
                     throw new BindingException(
-                        $"Cannot bind *case attribute (value: '{caseAttr.Value}') without a prior *switch."
+                        $"Cannot bind *case attribute (value: '{caseAttr.Value}') without a prior *switch.",
+                        node
                     );
                 }
                 var condition = new BinaryCondition(

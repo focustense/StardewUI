@@ -24,12 +24,11 @@ public class ViewEngine : IViewEngine
     /// <param name="assetCache">Cache for obtaining document assets. Used for asset-based views.</param>
     /// <param name="helper">SMAPI mod helper for the API consumer mod (not for StardewUI).</param>
     /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
-    /// <param name="monitor">Monitor for logging events.</param>
-    public ViewEngine(IAssetCache assetCache, IModHelper helper, IViewNodeFactory viewNodeFactory, IMonitor monitor)
+    public ViewEngine(IAssetCache assetCache, IModHelper helper, IViewNodeFactory viewNodeFactory)
     {
         this.assetCache = assetCache;
         this.viewNodeFactory = viewNodeFactory;
-        assetRegistry = new(helper, monitor);
+        assetRegistry = new(helper);
 
         helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
     }

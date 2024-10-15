@@ -11,11 +11,8 @@ internal static class Patcher
     /// Applies all patches.
     /// </summary>
     /// <param name="harmonyId">Unique ID for the harmony instance; generally the mod ID.</param>
-    /// <param name="monitor">Logger for the mod.</param>
-    public static void Patch(string harmonyId, IMonitor monitor)
+    public static void Patch(string harmonyId)
     {
-        ModContentManagerPatches.Monitor = monitor;
-
         var harmony = new Harmony(harmonyId);
         var smapiAssembly = typeof(IMod).Assembly;
         var modContentManagerType = smapiAssembly.GetType(

@@ -40,18 +40,15 @@ public class AssetCache : IAssetCache
     private readonly BackoffTracker<string> backoff = new(BackoffRule.Default);
     private readonly IGameContentHelper content;
     private readonly Dictionary<string, InternalEntry> entries = [];
-    private readonly IMonitor monitor;
 
     /// <summary>
     /// Initializes a new instance of <see cref="AssetCache"/>.
     /// </summary>
     /// <param name="content">SMAPI content helper, used to load the assets.</param>
     /// <param name="events">SMAPI content events, used to detect invalidation.</param>
-    /// <param name="monitor">Mod monitor for logging changes and errors.</param>
-    public AssetCache(IGameContentHelper content, IContentEvents events, IMonitor monitor)
+    public AssetCache(IGameContentHelper content, IContentEvents events)
     {
         this.content = content;
-        this.monitor = monitor;
         events.AssetsInvalidated += Content_AssetsInvalidated;
     }
 
@@ -97,13 +94,13 @@ public class AssetCache : IAssetCache
             bool success = backoff.TryRun(name, () => content.Load<T>(name), out result);
             if (success)
             {
-                monitor.Log($"Asset loaded: {name}", LogLevel.Debug);
+                Logger.Log($"Asset loaded: {name}", LogLevel.Debug);
             }
             return success;
         }
         catch (Exception ex)
         {
-            monitor.Log($"Failed loading asset '{name}': {ex}", LogLevel.Error);
+            Logger.Log($"Failed loading asset '{name}': {ex}", LogLevel.Error);
             result = default;
             return false;
         }

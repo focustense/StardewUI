@@ -10,11 +10,6 @@ namespace StardewUI.Framework.Patches;
 /// </summary>
 internal static class ModContentManagerPatches
 {
-    /// <summary>
-    /// Logger for the mod instance.
-    /// </summary>
-    internal static IMonitor Monitor { get; set; } = null!; // Set in ModEntry
-
     public static bool HandleUnknownFileType_Prefix(
         IAssetName assetName,
         FileInfo file,
@@ -126,6 +121,6 @@ internal static class ModContentManagerPatches
             // Never fail in an error logger; log whatever we're able to.
         }
         sb.Append(ex);
-        Monitor.Log(sb.ToString(), LogLevel.Error);
+        Logger.Log(sb.ToString(), LogLevel.Error);
     }
 }

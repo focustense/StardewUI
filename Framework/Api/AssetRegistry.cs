@@ -22,7 +22,6 @@ internal class AssetRegistry
     record SpriteCacheEntry(string TextureAssetName, Func<Texture2D, Sprite> Selector);
 
     private readonly IModHelper helper;
-    private readonly IMonitor monitor;
     private readonly List<DirectoryMapping> spriteDirectories = [];
     private readonly List<DirectoryMapping> viewDirectories = [];
 
@@ -45,10 +44,9 @@ internal class AssetRegistry
     private readonly Timer fileRetryTimer;
     private FileSystemWatcher? fileSystemWatcher;
 
-    public AssetRegistry(IModHelper helper, IMonitor monitor)
+    public AssetRegistry(IModHelper helper)
     {
         this.helper = helper;
-        this.monitor = monitor;
 
         fileRetryTimer = new(FileRetryTimerCallback);
 
@@ -71,7 +69,7 @@ internal class AssetRegistry
         fileSystemWatcher.Changed += FileSystemWatcher_Changed;
         fileSystemWatcher.EnableRaisingEvents = true;
         fileRetryTimer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
-        monitor.Log($"[Hot Reload] Watching {helper.DirectoryPath}...", LogLevel.Debug);
+        Logger.Log($"[Hot Reload] Watching {helper.DirectoryPath}...", LogLevel.Debug);
     }
 
     /// <inheritdoc cref="IViewEngine.RegisterSprites(string, string)" />
@@ -118,15 +116,15 @@ internal class AssetRegistry
             }
             if (textureCache.Remove(key))
             {
-                monitor.Log($"Evicted texture from cache: {assetName.Name}", LogLevel.Debug);
+                Logger.Log($"Evicted texture from cache: {assetName.Name}", LogLevel.Debug);
             }
             if (spriteCache.Remove(key))
             {
-                monitor.Log($"Evicted sprite data from cache: {assetName.Name}", LogLevel.Debug);
+                Logger.Log($"Evicted sprite data from cache: {assetName.Name}", LogLevel.Debug);
             }
             if (spriteSheetCache.Remove(key))
             {
-                monitor.Log($"Evicted sprite sheet data from cache: {assetName.Name}", LogLevel.Debug);
+                Logger.Log($"Evicted sprite sheet data from cache: {assetName.Name}", LogLevel.Debug);
                 // Invalidating an entire sprite sheet means we should also invalidate all of its sprites.
                 // Here we make the same assumptions as TryLoadSprite, namely that sprite assets are of the form
                 // "Path/To/Spritesheet:SpriteName".
@@ -189,7 +187,7 @@ internal class AssetRegistry
             }
             catch (Exception ex)
             {
-                monitor.Log($"Error loading sprite sheet data for '{assetName}': {ex}", LogLevel.Error);
+                Logger.Log($"Error loading sprite sheet data for '{assetName}': {ex}", LogLevel.Error);
                 throw;
             }
             spriteSheetCache.Add(assetName, data);
@@ -213,7 +211,7 @@ internal class AssetRegistry
         }
         catch (Exception ex)
         {
-            monitor.Log($"Error loading texture for '{assetName}': {ex}", LogLevel.Error);
+            Logger.Log($"Error loading texture for '{assetName}': {ex}", LogLevel.Error);
             throw;
         }
         textureCache[assetName] = new(texture);
@@ -226,7 +224,7 @@ internal class AssetRegistry
         string assetSuffix = ""
     )
     {
-        monitor.Log($"File '{relativePath}' was changed; invalidating asset.", LogLevel.Debug);
+        Logger.Log($"File '{relativePath}' was changed; invalidating asset.", LogLevel.Debug);
         var isMainThread = Game1.IsOnMainThread();
         relativePath = PathUtilities.NormalizePath(Path.ChangeExtension(relativePath, null));
         foreach (var (assetPrefix, modDirectory) in directories)

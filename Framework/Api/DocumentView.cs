@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Text;
+using System.Threading;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -17,6 +19,8 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
     : IView,
         IDisposable
 {
+    private static readonly BackoffRule backoffRule = BackoffRule.Default;
+
     public Bounds ActualBounds => rootView?.ActualBounds ?? Bounds.Empty;
 
     public Bounds ContentBounds => rootView?.ContentBounds ?? Bounds.Empty;
@@ -96,6 +100,7 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
     public event EventHandler<ClickEventArgs>? RightClick;
     public event EventHandler<WheelEventArgs>? Wheel;
 
+    private BackoffState? backoffState;
     private BindingContext? context;
     private LayoutParameters layout = new();
     private string name = "";
@@ -197,13 +202,22 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
 
     public void OnUpdate(TimeSpan elapsed)
     {
+        if (backoffState is not null)
+        {
+            backoffState.Elapsed += elapsed;
+        }
         if (documentSource.Update())
         {
-            CreateViewNode();
+            rootNode?.Dispose();
+            rootNode = null;
         }
         if (rootNode is null)
         {
-            return;
+            CreateViewNode();
+            if (rootNode is null)
+            {
+                return;
+            }
         }
         if (rootNode.Update(elapsed))
         {
@@ -259,13 +273,49 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
 
     private void CreateViewNode()
     {
-        rootNode?.Dispose();
         if (documentSource.Value is null)
         {
             return;
         }
-        rootNode = viewNodeFactory.CreateNode(documentSource.Value.Root);
-        rootNode.Context = Context;
+        if (backoffState is not null && backoffState.Elapsed < backoffState.Duration)
+        {
+            return;
+        }
+        try
+        {
+            rootNode = viewNodeFactory.CreateNode(documentSource.Value.Root);
+            rootNode.Context = Context;
+            backoffState = null;
+        }
+        catch (Exception ex)
+        {
+            if (backoffState is not null)
+            {
+                backoffState.Duration = backoffRule.GetNextDuration(backoffState.Duration);
+                backoffState.Elapsed = TimeSpan.Zero;
+            }
+            else
+            {
+                backoffState = new(backoffRule.InitialDuration);
+            }
+            var messageBuilder = new StringBuilder().AppendLine("Failed to create root node.").AppendLine();
+            if (ex is BindingException b && b.Node is SNode node)
+            {
+                messageBuilder.AppendLine("The error occurred at:");
+                messageBuilder.Append("  ");
+                IElement element = node.Element;
+                bool hasChildNodes = node.ChildNodes.Count > 0;
+                element.Print(messageBuilder, !hasChildNodes);
+                if (hasChildNodes)
+                {
+                    messageBuilder.Append("...");
+                    element.PrintClosingTag(messageBuilder);
+                }
+                messageBuilder.AppendLine();
+            }
+            messageBuilder.AppendLine().Append(ex);
+            Logger.Log(messageBuilder.ToString(), LogLevel.Error);
+        }
     }
 
     private void DetachHandlers()
