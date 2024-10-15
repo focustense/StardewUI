@@ -7,8 +7,7 @@ namespace StardewUI.Framework.Binding;
 /// </summary>
 /// <param name="node">The owned node.</param>
 /// <param name="backoffRule">Configures the backoff duration and scaling when an update fails.</param>
-/// <param name="monitor">Monitor for logging events.</param>
-public class BackoffNodeDecorator(IViewNode node, BackoffRule backoffRule, IMonitor? monitor) : IViewNode
+public class BackoffNodeDecorator(IViewNode node, BackoffRule backoffRule) : IViewNode
 {
     private BackoffState? backoffState;
 
@@ -71,7 +70,7 @@ public class BackoffNodeDecorator(IViewNode node, BackoffRule backoffRule, IMoni
             }
             var nodeFlatContent = new StringBuilder();
             node.Print(nodeFlatContent, false);
-            monitor?.Log($"Failed to update node:\n\n  {nodeFlatContent}\n\n{ex}", LogLevel.Error);
+            Logger.Log($"Failed to update node:\n\n  {nodeFlatContent}\n\n{ex}", LogLevel.Error);
             return false;
         }
     }

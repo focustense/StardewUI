@@ -4,8 +4,8 @@ using StardewUI.Framework.Descriptors;
 namespace StardewUI.Framework.Binding;
 
 /// <summary>
-/// Helper for creating generic <see cref="EventBinding{TEventArgs}"/> instances efficiently using types known only at
-/// runtime.
+/// Helper for creating generic <see cref="EventBinding{TEventArgs, TResult}"/> instances efficiently using types known
+/// only at runtime.
 /// </summary>
 internal static class EventBinding
 {
@@ -17,7 +17,7 @@ internal static class EventBinding
         IArgumentSource[] argumentSources
     );
 
-    private static readonly Dictionary<Type, Factory> cache = [];
+    private static readonly Dictionary<(Type, Type), Factory> cache = [];
     private static readonly MethodInfo createInternalMethod = typeof(EventBinding).GetMethod(
         nameof(CreateInternal),
         BindingFlags.Static | BindingFlags.NonPublic
@@ -43,15 +43,21 @@ internal static class EventBinding
     )
     {
         var argsType = eventDescriptor.ArgsTypeDescriptor?.TargetType ?? typeof(object);
-        if (!cache.TryGetValue(argsType, out var factory))
+        var returnType = destinationMethod.ReturnType;
+        if (returnType == typeof(void))
         {
-            factory = createInternalMethod.MakeGenericMethod(argsType).CreateDelegate<Factory>();
-            cache.Add(argsType, factory);
+            returnType = typeof(object);
+        }
+        var key = (argsType, returnType);
+        if (!cache.TryGetValue(key, out var factory))
+        {
+            factory = createInternalMethod.MakeGenericMethod(argsType, returnType).CreateDelegate<Factory>();
+            cache.Add(key, factory);
         }
         return factory(eventTarget, eventDescriptor, destinationContext, destinationMethod, argumentSources);
     }
 
-    private static IEventBinding CreateInternal<TEventArgs>(
+    private static IEventBinding CreateInternal<TEventArgs, TResult>(
         object eventTarget,
         IEventDescriptor eventDescriptor,
         object destinationContext,
@@ -59,11 +65,11 @@ internal static class EventBinding
         IArgumentSource[] argumentSources
     )
     {
-        return new EventBinding<TEventArgs>(
+        return new EventBinding<TEventArgs, TResult>(
             eventTarget,
             eventDescriptor,
             destinationContext,
-            (IMethodDescriptor<object>)destinationMethod,
+            (IMethodDescriptor<TResult>)destinationMethod,
             argumentSources
         );
     }
@@ -72,11 +78,11 @@ internal static class EventBinding
 /// <summary>
 /// Internal, transient state of an event binding created by the <see cref="EventBindingFactory"/>.
 /// </summary>
-internal class EventBinding<TEventArgs> : IEventBinding
+internal class EventBinding<TEventArgs, TResult> : IEventBinding
 {
     private readonly IArgumentSource[] argumentSources;
     private readonly object destinationContext;
-    private readonly IMethodDescriptor<object> destinationMethod;
+    private readonly IMethodDescriptor<TResult> destinationMethod;
     private readonly IEventDescriptor eventDescriptor;
     private readonly object eventTarget;
     private readonly Delegate handlerDelegate;
@@ -85,7 +91,7 @@ internal class EventBinding<TEventArgs> : IEventBinding
         object eventTarget,
         IEventDescriptor eventDescriptor,
         object destinationContext,
-        IMethodDescriptor<object> destinationMethod,
+        IMethodDescriptor<TResult> destinationMethod,
         IArgumentSource[] argumentSources
     )
     {
@@ -146,6 +152,10 @@ internal class EventBinding<TEventArgs> : IEventBinding
     private void InvokeDestinationMethod(TEventArgs? eventArgs)
     {
         var methodArgs = CreateMethodArguments(eventArgs);
-        destinationMethod.Invoke(destinationContext, methodArgs);
+        var result = destinationMethod.Invoke(destinationContext, methodArgs);
+        if (eventArgs is BubbleEventArgs bubbleArgs && result is bool handled && handled)
+        {
+            bubbleArgs.Handled = true;
+        }
     }
 }

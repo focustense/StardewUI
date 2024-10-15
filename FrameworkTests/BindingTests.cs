@@ -10,6 +10,7 @@ using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
+using StardewUI.Framework.Tests;
 using Xunit.Abstractions;
 
 namespace StarML.Tests;
@@ -72,6 +73,7 @@ public partial class BindingTests
     public BindingTests(ITestOutputHelper output)
     {
         this.output = output;
+        Logger.Monitor = new TestMonitor(output);
         viewFactory = new ViewFactory();
         assetCache = new FakeAssetCache();
         valueSourceFactory = new ValueSourceFactory(assetCache);
@@ -262,8 +264,7 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache,
-            null
+            assetCache
         );
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
@@ -1502,6 +1503,73 @@ public partial class BindingTests
         Assert.Equal("This is the third page.", label.Text);
     }
 
+    class BubbleTestModel
+    {
+        public int Counter { get; private set; }
+
+        public void HandleVoid()
+        {
+            Counter++;
+        }
+
+        public bool HandleWithResult(bool result)
+        {
+            Counter++;
+            return result;
+        }
+    }
+
+    [Fact]
+    public void WhenEventHandlerReturnsVoid_AllowsBubbling()
+    {
+        string markup =
+            @"<frame click=|HandleVoid()|>
+                <button layout=""10px 10px"" click=|HandleVoid()| />
+            </frame>";
+        var model = new BubbleTestModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var root = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        root.Measure(new(100, 100)); // Otherwise event won't dispatch to children.
+        root.OnClick(new(new(5, 5), SButton.ControllerA));
+
+        Assert.Equal(2, model.Counter);
+    }
+
+    [Fact]
+    public void WhenEventHandlerReturnsFalse_AllowsBubbling()
+    {
+        string markup =
+            @"<frame click=|HandleVoid()|>
+                <button layout=""10px 10px"" click=|HandleWithResult(""false"")| />
+            </frame>";
+        var model = new BubbleTestModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var root = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        root.Measure(new(100, 100));
+        root.OnClick(new(new(5, 5), SButton.ControllerA));
+
+        Assert.Equal(2, model.Counter);
+    }
+
+    [Fact]
+    public void WhenEventHandlerReturnsTrue_PreventsBubbling()
+    {
+        string markup =
+            @"<frame click=|HandleVoid()|>
+                <button layout=""10px 10px"" click=|HandleWithResult(""true"")| />
+            </frame>";
+        var model = new BubbleTestModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var root = Assert.IsType<Frame>(tree.Views.SingleOrDefault());
+        root.Measure(new(100, 100));
+        root.OnClick(new(new(5, 5), SButton.ControllerA));
+
+        Assert.Equal(1, model.Counter);
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
         var viewNodeFactory = new ViewNodeFactory(
@@ -1509,8 +1577,7 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache,
-            null
+            assetCache
         );
         var document = Document.Parse(markup);
         var tree = viewNodeFactory.CreateNode(document.Root);
