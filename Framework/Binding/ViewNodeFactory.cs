@@ -37,8 +37,8 @@ public class ViewNodeFactory(
 
     private IViewNode CreateNode(SNode node, SwitchContext? switchContext)
     {
-        var innerNdoe = CreateNodeWithoutBackoff(node, switchContext);
-        return new BackoffNodeDecorator(innerNdoe, BackoffRule.Default, monitor);
+        var innerNode = CreateNodeWithoutBackoff(node, switchContext);
+        return new BackoffNodeDecorator(innerNode, BackoffRule.Default, monitor);
     }
 
     private IViewNode CreateNodeWithoutBackoff(SNode node, SwitchContext? switchContext)
