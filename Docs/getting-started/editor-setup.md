@@ -17,6 +17,6 @@ When using one of these editors with the corresponding extension installed, `.sm
 
 If you cannot use any of the recommended editors, then the following have been tested to have **partial/incomplete** highlighting:
 
-- [Notepad++](https://notepad-plus-plus.org/) in XML mode (select "XML" from the "Language" menu after opening a `.sml` file).
+- [Notepad++](https://notepad-plus-plus.org/) using the [StarML User Defined Language](https://raw.githubusercontent.com/focustense/StardewUI/refs/heads/dev/Tools/NotepadPlusPlus/StarML_by_focustense.xml) (see also: [Import a UDL](https://npp-user-manual.org/docs/user-defined-language-system/#import-a-udl))
 
 These options produce sane results that highlight the basic structure of the document correctly, but may struggle with certain aspects; for example, [binding modifiers](../framework/starml.md#binding-modifiers) may be interpreted as tags or otherwise break the attribute highlighting.
