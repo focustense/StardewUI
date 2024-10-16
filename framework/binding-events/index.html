@@ -22,7 +22,7 @@
     
     
       
-        <title>Binding events - StardewUI Documentation</title>
+        <title>Binding Events - StardewUI Documentation</title>
       
     
     
@@ -61,7 +61,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Binding events - StardewUI Documentation" >
+        <meta  property="og:title"  content="Binding Events - StardewUI Documentation" >
       
         <meta  property="og:description"  content="None" >
       
@@ -77,7 +77,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Binding events - StardewUI Documentation" >
+        <meta  name="twitter:title"  content="Binding Events - StardewUI Documentation" >
       
         <meta  name="twitter:description"  content="None" >
       
@@ -102,6 +102,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#binding-events" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -132,7 +137,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Binding events
+              Binding Events
             
           </span>
         </div>
@@ -630,16 +635,66 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Binding Events
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Binding events
+    Binding Events
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#event-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Attributes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#return-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Return Values
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -845,6 +900,34 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#event-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Attributes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#return-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Return Values
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -862,9 +945,156 @@
   
 
 
-  <h1>Binding events</h1>
-
-
+<h1 id="binding-events">Binding Events</h1>
+<p>All views in StardewUI emit <a href="../starml/#events">events</a>, especially pointer events such as clicks, hovers, drags, etc. These tend to the form the basis of user interaction in most UI.</p>
+<p>In the <a href="../../library/">core library</a>, events are literally <a href="https://learn.microsoft.com/en-us/dotnet/standard/Events/">.NET events</a>. When using the <a href="../">framework</a> to write <a href="../starml/">StarML</a>, however, there are many problems with consuming events directly, mostly owing to the design of SMAPI's mod integration:</p>
+<ul>
+<li>Neither the specific view type nor even an <code>IView</code> instance is available on which to add an event handler;</li>
+<li>Even if the view were available, the event handler type, like <code>PointerEventArgs</code>, can't be sent over SMAPI's integration framework (<a href="https://github.com/Nanoray-pl/Pintail">Pintail</a>);</li>
+<li>Even if the arguments could be sent, actual <code>View</code> instances can often be destroyed, recreated, etc., e.g. when using <code>*repeat</code>, <code>*if</code>, or other <a href="../starml/#structural-attributes">structural attributes</a>.</li>
+</ul>
+<p>Conventional event listeners are effectively a dead-end, but there is a solution. <a href="../starml/">StarML</a> supports event bindings as a <em>micro-grammar</em> or <em>micro-syntax</em>, i.e. a "syntax within another syntax".</p>
+<h2 id="event-attributes">Event Attributes</h2>
+<p>The quickest way to explain the micro-syntax used for event bindings is to jump right in and dissect a live one:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="starml" name="__tabbed_1" type="radio" /><input id="c" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="starml">StarML</label><label for="c">C#</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">button</span> <span class="na">click</span><span class="o">=</span><span class="s">|~ShopViewModel.Buy(&quot;Cheese&quot;,</span> <span class="err">^</span><span class="na">Quantity</span><span class="err">,</span> <span class="err">$</span><span class="na">Button</span><span class="err">)|</span> <span class="p">/&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ShopViewModel</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Buy</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">quantity</span><span class="p">,</span><span class="w"> </span><span class="n">SButton</span><span class="w"> </span><span class="n">button</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="c1">// Implementation intentionally omitted.</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<p>The individual parts of this are as follows:</p>
+<div class="no-code-break">
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;button ... /&gt;</code></td>
+<td>The element/view that the event is being attached to, in this case a <a href="../reference/stardewui/button.md">Button</a>.</td>
+</tr>
+<tr>
+<td><code>click=|...|</code></td>
+<td>The name of the view's <a href="https://learn.microsoft.com/en-us/dotnet/standard/Events/">event</a> property or field, in <a href="https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case">kebab-case</a>; in this example, it is the <a href="../reference/stardewui/iview.md#click"><code>Click</code></a> event available on every view.<p>To be recognized as an event binding, the value <strong>must be enclosed in pipe characters</strong>, i.e. <code>event=|...|</code> but not <code>event="..."</code> or <code>event={...}</code>.</td>
+</tr>
+<tr>
+<td><code>~ShopViewModel.Buy</code></td>
+<td>The name of the event handler (method) to run when the event is raised. <a href="../binding-context/#redirects">Context redirects</a> are supported here—although not required. In this example, we want to run the method named <code>Buy</code> on the class <code>ShopViewModel</code>.</td>
+</tr>
+<tr>
+<td><code>(...)</code></td>
+<td>The arguments to provide to the above method. Note that even if the method takes no arguments, it still must be given an empty argument list <code>()</code>, as would be the case for any C# method call.</td>
+</tr>
+<tr>
+<td><code>"Cheese"</code></td>
+<td>A <em>literal</em> argument value. The exact value is read as a literal string, and <a href="../starml/#type-conversions">converted</a> as necessary to the required argument value; e.g. if the method takes an <code>int</code> then we can write <code>"42"</code>.</td>
+</tr>
+<tr>
+<td><code>^Quantity</code></td>
+<td>A <em>context property</em> value. This has the exact same behavior as a <a href="../starml/#attribute-flavors">property data binding</a>, but <strong>without</strong> the enclosing braces. <a href="../binding-context/#redirects">Redirects</a> are supported with individual arguments of this kind, and are unrelated to the event handler's target.</td>
+</tr>
+<tr>
+<td><code>$Button</code></td>
+<td>An <em>event property</em> value. The <code>$</code> token is <strong>only</strong> valid for event arguments, and refers to the same-named property on the real <code>EventArgs</code> object. Specifically, we want the <a href="../reference/stardewui/clickeventargs.md#button"><code>Button</code></a> property of <code>ClickEventArgs</code>—for example, we might use this to implement different behavior for left-click vs. right-click.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This example covers all possible argument types: literals, context properties, and event properties. Other types of bindings, such as assets (<code>@path</code>) are <strong>not</strong> supported in event arguments.</p>
+<h2 id="return-values">Return Values</h2>
+<p>Event handler methods, such as the hypothetical <code>Buy</code> method above, will generally be <code>void</code>, but there is one special case: a handler may return <code>bool</code> in order to control the <a href="../reference/stardewui/bubbleeventargs.md#handled"><code>Handled</code></a> property of the event and prevent it from bubbling up.</p>
+<p>"Event bubbling" is the process by which an event not considered "handled" by a child view is given another chance to run at the parent. Consider the following two scenarios:</p>
+<ol>
+<li>A list or table in which the currently-hovered item or row is highlighted, and within that row is a button with its own special highlighting or hover animation.</li>
+<li>A large frame that can be clicked to perform some action (e.g. buy an item), with a smaller inner button that performs a different action (e.g. displaying additional info).</li>
+</ol>
+<p>In case (1), if the user hovers on the button, then we want both actions to run – the list item <em>and</em> the button should both be highlighted. However, in case (2), we do not want the "outer" action (buy) to run when the user clicks on the "inner" (info) button.</p>
+<p>These two cases might very well be part of the <em>same</em> user interface, so let's invent one:</p>
+<div class="admonition failure">
+<p class="admonition-title">Partially Broken</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="c_1" name="__tabbed_2" type="radio" /><input id="starml_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="c_1">C#</label><label for="starml_1">StarML</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ListItemViewModel</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INotifyPropertyChanged</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">Color</span><span class="w"> </span><span class="n">BackgroundTint</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">Color</span><span class="w"> </span><span class="n">InfoButtonTint</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">ExtraInfo</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Extra item info&quot;</span><span class="p">;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Item Text&quot;</span><span class="p">;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Buy</span><span class="p">()</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span><span class="n">Game1</span><span class="p">.</span><span class="n">addHUDMessage</span><span class="p">(</span><span class="k">new</span><span class="p">(</span><span class="s">$&quot;You bought {Text}&quot;</span><span class="p">));</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">DisplayExtraInfo</span><span class="p">()</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">        </span><span class="n">Game1</span><span class="p">.</span><span class="n">addHUDMessage</span><span class="p">(</span><span class="k">new</span><span class="p">(</span><span class="n">ExtraInfo</span><span class="p">));</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">SetBackgroundHover</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">hover</span><span class="p">)</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">        </span><span class="n">BackgroundTint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hover</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">Color</span><span class="p">.</span><span class="n">Yellow</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">;</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">SetInfoButtonHover</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">hover</span><span class="p">)</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">        </span><span class="n">InfoButtonTint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hover</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">Color</span><span class="p">.</span><span class="n">Blue</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">;</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">click</span><span class="o">=</span><span class="s">|Buy()|</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>       <span class="na">pointer-enter</span><span class="o">=</span><span class="s">|SetBackgroundHover(&quot;true&quot;)|</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>       <span class="na">pointer-leave</span><span class="o">=</span><span class="s">|SetBackgroundHover(&quot;false&quot;)|</span><span class="p">&gt;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;400px 80px&quot;</span> <span class="na">vertical-content-alignment</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{Text}</span> <span class="p">/&gt;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="p">&lt;</span><span class="nt">image</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;32px&quot;</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>               <span class="na">sprite</span><span class="o">=</span><span class="s">{@Mods/MyMod/Sprites/Info}</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>               <span class="na">click</span><span class="o">=</span><span class="s">|DisplayExtraInfo()|</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>               <span class="na">pointer-enter</span><span class="o">=</span><span class="s">|SetInfoButtonHover(&quot;true&quot;)|</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>               <span class="na">pointer-leave</span><span class="o">=</span><span class="s">|SetInfoButtonHover(&quot;false&quot;)|</span> <span class="p">/&gt;</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>In this example, hovers should work as described above, but clicks will not. If you click on the info button (image), you will see <strong>both</strong> HUD messages, because the clicked position is inside the <code>&lt;image&gt;</code> <em>and also</em> inside the <code>&lt;frame&gt;</code>.</p>
+<p>Resolving this is very simple; all we need to do is instruct StardewUI not to bubble the click event from the info button.</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ListItemViewModel</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INotifyPropertyChanged</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="c1">// Unchanged properties/methods omitted</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">DisplayExtraInfo</span><span class="p">()</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="n">Game1</span><span class="p">.</span><span class="n">addHUDMessage</span><span class="p">(</span><span class="k">new</span><span class="p">(</span><span class="n">ExtraInfo</span><span class="p">));</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">true</span><span class="p">;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<p>StardewUI automatically recognizes that <code>DisplayExtraInfo</code> now returns a <code>bool</code>, and since we return <code>true</code>, it sets the event's <code>Handled</code> property to <code>true</code>, preventing <code>Buy()</code> from being triggered at the same time.</p>
+<p>This leaves us with the behavior we wanted originally: clicking the info button (<code>&lt;image&gt;</code>) <em>only</em> shows info, while clicking anywhere else within the list item (<code>&lt;frame&gt;</code>) runs the "buy" logic.</p>
 
 
 

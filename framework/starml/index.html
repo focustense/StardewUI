@@ -808,7 +808,7 @@
         
   
   <span class="md-ellipsis">
-    Binding events
+    Binding Events
   </span>
   
 
@@ -1654,6 +1654,11 @@
 <td><code>&lt;</code></td>
 <td><code>{&lt;Prop}</code></td>
 <td>Specifies an input binding, where the view receives its value from the model but does not write back. This is the default behavior when no modifier is used, and can generally be omitted.</td>
+</tr>
+<tr>
+<td><code>:</code> or <code>&lt;:</code></td>
+<td><code>{:Prop}</code></td>
+<td>Specifies a one-time input binding, which is the same as an ordinary input binding except that subsequent changes to the value will be ignored.</td>
 </tr>
 <tr>
 <td><code>&gt;</code></td>

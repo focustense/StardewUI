@@ -724,7 +724,7 @@
         
   
   <span class="md-ellipsis">
-    Binding events
+    Binding Events
   </span>
   
 
@@ -1133,14 +1133,14 @@ columns 2
 </li>
 </ul>
 <p>Using the first library (<code>PropertyChanged.SourceGenerator</code>), we can quickly convert the non-working example above to one that does work:</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="c_1" name="__tabbed_3" type="radio" /><input id="starml_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="c_1">C#</label><label for="starml_2">StarML</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">using</span><span class="w"> </span><span class="nn">PropertyChanged.SourceGenerator</span><span class="p">;</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CounterViewModel</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">public</span><span class="w"> </span><span class="k">partial</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CounterViewModel</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">{</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
@@ -1163,6 +1163,7 @@ columns 2
 </div>
 <p>Note that the markup has not changed at all. All we had to do for the C# code was:</p>
 <ul>
+<li>Add the <code>partial</code> keyword to the <code>CounterViewModel</code> class (required for code generation)</li>
 <li>Change the <code>Count</code> auto-property to be a field</li>
 <li>Make it lowerCamelCase, so it doesn't conflict with the auto-generated property</li>
 <li>Add a <code>[Notify]</code> attribute.</li>
@@ -1175,7 +1176,7 @@ columns 2
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="c_2" name="__tabbed_4" type="radio" /><input id="starml_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="c_2">C#</label><label for="starml_3">StarML</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TodoViewModel</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">partial</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TodoViewModel</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Items</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
@@ -1220,12 +1221,12 @@ columns 2
 <p>All performance is relative, and these workarounds might be perfectly acceptable for our toy example above. However, if there are hundreds of items in the list, and each item has many views within—for example, an image, quality icon, quantity text, etc.—then making this type of change very often is still likely to cause jank.</p>
 <p>StardewUI has a better solution: <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.specialized.inotifycollectionchanged?view=net-8.0"><code>INotifyCollectionChanged</code></a>, which is the collection-based counterpart to INPC. While "INCC" is also difficult to implement, you don't have to, because there is already an <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-8.0"><code>ObservableCollection</code></a> type to do it for you.</p>
 <p>Using <code>ObservableCollection</code>, the revised and working code then becomes:</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="c_3" name="__tabbed_5" type="radio" /><input id="starml_4" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="c_3">C#</label><label for="starml_4">StarML</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TodoViewModel</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">partial</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TodoViewModel</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">{</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">ObservableCollection</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Items</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
@@ -1499,13 +1500,13 @@ columns 5
         
         
           
-          <a href="../binding-events/" class="md-footer__link md-footer__link--next" aria-label="Next: Binding events">
+          <a href="../binding-events/" class="md-footer__link md-footer__link--next" aria-label="Next: Binding Events">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Binding events
+                Binding Events
               </div>
             </div>
             <div class="md-footer__button md-icon">
