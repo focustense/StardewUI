@@ -71,7 +71,7 @@ It is rare for any UI to be completely static, with content that never changes. 
 !!! failure "Broken"
 
     === "C#"
-
+    
         ```cs
         public class CounterViewModel
         {
@@ -83,9 +83,9 @@ It is rare for any UI to be completely static, with content that never changes. 
             }
         }
         ```
-
+    
     === "StarML"
-
+    
         ```html
         <lane>
             <button click=|Increment()| text="Add One" />
@@ -124,14 +124,14 @@ The author(s) of this guide and of StardewUI have no affiliation with any of the
 
 Using the first library (`PropertyChanged.SourceGenerator`), we can quickly convert the non-working example above to one that does work:
 
-!!! example
+!!! success
 
     === "C#"
-
+    
         ```cs
         using PropertyChanged.SourceGenerator;
-
-        public class CounterViewModel
+    
+        public partial class CounterViewModel
         {
             [Notify] private int count;
             
@@ -141,9 +141,9 @@ Using the first library (`PropertyChanged.SourceGenerator`), we can quickly conv
             }
         }
         ```
-
+    
     === "StarML"
-
+    
         ```html
         <lane>
             <button click=|Increment()| text="Add One" />
@@ -153,6 +153,7 @@ Using the first library (`PropertyChanged.SourceGenerator`), we can quickly conv
 
 Note that the markup has not changed at all. All we had to do for the C# code was:
 
+- Add the `partial` keyword to the `CounterViewModel` class (required for code generation)
 - Change the `Count` auto-property to be a field
 - Make it lowerCamelCase, so it doesn't conflict with the auto-generated property
 - Add a `[Notify]` attribute.
@@ -166,14 +167,14 @@ A special case of updates is collections. Consider the case of a UI that adds it
 !!! failure "Broken"
 
     === "C#"
-
+    
         ```cs
-        public class TodoViewModel
+        public partial class TodoViewModel
         {
             public List<string> Items { get; } = [];
-
+    
             [Notify] private string currentItem = "";
-
+    
             public void AddCurrentItem()
             {
                 if (!string.IsNullOrWhitespace(CurrentItem))
@@ -184,9 +185,9 @@ A special case of updates is collections. Consider the case of a UI that adds it
             }
         }
         ```
-
+    
     === "StarML"
-
+    
         ```html
         <lane layout="500px content" orientation="vertical">
             <lane>
@@ -215,17 +216,17 @@ StardewUI has a better solution: [`INotifyCollectionChanged`](https://learn.micr
 
 Using `ObservableCollection`, the revised and working code then becomes:
 
-!!! example
+!!! success
 
     === "C#"
-
+    
         ```cs
-        public class TodoViewModel
+        public partial class TodoViewModel
         {
             public ObservableCollection<string> Items { get; } = [];
-
+    
             [Notify] private string currentItem = "";
-
+    
             public void AddCurrentItem()
             {
                 if (!string.IsNullOrWhitespace(CurrentItem))
@@ -236,9 +237,9 @@ Using `ObservableCollection`, the revised and working code then becomes:
             }
         }
         ```
-
+    
     === "StarML"
-
+    
         ```html
         <lane layout="500px content" orientation="vertical">
             <lane>
@@ -280,7 +281,7 @@ The following example will walk through the different redirects in more detail.
     }
     
     record ItemViewModel(string Name);
-
+    
     void ShowMenu()
     {
         var context = new InventoryViewModel()
@@ -369,7 +370,7 @@ Resolving `~InventoryViewModel.OwnerName` follows a very similar process, but in
 !!! info "Summary"
 
     The most important lesson to take away from this is that **context redirects follow the document structure, not the data (model/view-model) structure.**
-
+    
     In an MV* design, document structure is itself usually based on the model, so you can _often_ treat redirects as going to the "parent object", but may eventually run into scenarios where this doesn't work as expected.
     
     Remember that context lives _outside_ your data.
