@@ -654,6 +654,48 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#context-vs-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context vs Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementing-inotifypropertychanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing INotifyPropertyChanged
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collection Updates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#redirects" class="md-nav__link">
     <span class="md-ellipsis">
       Redirects
@@ -901,6 +943,48 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#context-vs-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context vs Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementing-inotifypropertychanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing INotifyPropertyChanged
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collection-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Collection Updates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#redirects" class="md-nav__link">
     <span class="md-ellipsis">
       Redirects
@@ -928,7 +1012,444 @@
 
 
 <h1 id="binding-context">Binding Context</h1>
+<p>StardewUI's framework API is based on <a href="../../concepts/#data-binding">data binding</a>. While the UI state or "widget tree" is retained, you don't interact it with it directly; instead, in order to provide interactivity and/or dynamic content to views, you define a <a href="https://en.wikipedia.org/wiki/Data_model">data model</a>, which becomes the <em>context</em>.</p>
+<p>Context is simply a <a href="https://en.wikipedia.org/wiki/Tree_(abstract_data_type)">tree node</a> which contains the particular model/data for a specific view or position in the hierarchy. It provides access to the model itself, as well as <a href="#redirects">redirects</a>, which are important for building more complex UI. Other frameworks use similar names, such as <a href="https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkelement.datacontext?view=windowsdesktop-8.0">DataContext</a> in WPF.</p>
+<h2 id="context-vs-data">Context vs Data</h2>
+<p>As an example, consider a simple list of selectable items:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="model-diagram" name="__tabbed_1" type="radio" /><input id="ui-mockup" name="__tabbed_1" type="radio" /><input id="starml" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="model-diagram">Model Diagram</label><label for="ui-mockup">UI Mockup</label><label for="starml">StarML</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<pre class="mermaid"><code>classDiagram
+direction LR
+    class MenuViewModel {
+        string Title
+        List~MenuItem~ Items
+        SelectItem(id)
+    }
+    class MenuItem {
+        string Id
+        string Text
+        int Price
+    }
+    MenuViewModel *-- MenuItem</code></pre>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>block-beta
+columns 2
+    A["Joey Jo-Jo Junior Shabadoo's Shop"]:2
+    space:2
+    B["Bread"] C["500"]
+    D["Peanut Butter"] E["1200"]
+    F["Strawberry Jam"] G["800"]</code></pre>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;500px content&quot;</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">font</span><span class="o">=</span><span class="s">&quot;dialogue&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{Title}</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Items}</span> <span class="na">click</span><span class="o">=</span><span class="s">|^SelectItem(Id)|</span><span class="p">&gt;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">margin</span><span class="o">=</span><span class="s">&quot;0, 0, 0, 32&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{Text}</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{Price}</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+<p>The specific layout or exact appearance in game isn't important to this example; what we're focused on here are the <a href="../starml/#attribute-flavors">binding attributes</a> and <a href="../binding-events/">events</a>. Specifically, we have:</p>
+<ul>
+<li><code>text={Title}</code>, which is clearly referring to <code>MenuViewModel.Title</code></li>
+<li><code>click=|^SelectItem(Id)|</code>, which refers to the same-named method on <code>MenuViewModel</code></li>
+<li><code>text={Text}</code> and <code>text={Price}</code> which are referring, <em>not</em> to the <code>MenuViewModel</code> anymore, but to properties on the <code>MenuItem</code>.</li>
+</ul>
+<p>What happened? Although we only actually provided a single "model" (the <code>MenuViewModel</code>), the <em>context</em> changed as soon as <code>*repeat</code> was encountered. Repeaters replace the original binding context (<code>MenuViewModel</code>) with a context referring to the specific item in the collection (<code>MenuItem</code>). As far as those inner <code>&lt;label&gt;</code> elements are concerned, the "model" or "data" is actually <code>MenuViewModel</code>.</p>
+<p>This behavior isn't necessarily limited to repeaters; for example, another way to narrow or drill down the context would be the <a href="../starml/#structural-attributes"><code>*context</code> attribute</a>.</p>
+<p>But note the <code>click</code> event in particular: <code>^SelectItem(Id)</code>. The <code>Id</code> is a property on the <code>MenuItem</code>, as we would expect since it is attached to the repeating element; however, <code>SelectItem</code> is referring back to the <code>MenuViewModel</code>. It does this using the <code>^</code> <a href="#redirects">redirect</a>, which instructs StardewUI to look at the <em>parent</em> or <em>previous</em> context to find the <code>SelectItem</code> method.</p>
+<p>The <em>model</em> or <em>data</em> refers to the specific object attached, or "bound", to any given node; the outer <code>&lt;lane&gt;</code> is bound to a <code>MenuViewModel</code> and each inner <code>&lt;lane&gt;</code> is bound to a <code>MenuItem</code>. The <em>context</em> has an awareness of the overall structure, and is able to backtrack to a previous level at any time.</p>
+<h2 id="updates">Updates</h2>
+<p>It is rare for any UI to be completely static, with content that never changes. Most UI needs to respond not only to user input, but to changes in the underlying data or state. More generally, it should always show the <em>most current</em> data, however one chooses to define it.</p>
+<div class="admonition failure">
+<p class="admonition-title">Broken</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="c" name="__tabbed_2" type="radio" /><input id="starml_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="c">C#</label><label for="starml_1">StarML</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CounterViewModel</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Count</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Increment</span><span class="p">()</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="n">Count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">click</span><span class="o">=</span><span class="s">|Increment()|</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Add One&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{Count}</span> <span class="p">/&gt;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>If you run this example, and click the button, you'll see that <strong>nothing happens</strong>. Our <code>Count</code> does get incremented, but the UI never updates. That is because StardewUI's data binding depends on having an implementation of <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged?view=net-8.0">INotifyPropertyChanged</a> (hereafter: "INPC") in order to detect changes. Without INPC, every binding is a "one-time" binding, meaning it is only read when the view is first created.</p>
+<h3 id="implementing-inotifypropertychanged">Implementing <code>INotifyPropertyChanged</code></h3>
+<p>INPC can be extremely tedious to implement for many models and properties, as it requires intercepting every property setter, comparing the values, raising an event, etc. Fortunately, the .NET ecosystem has many tools to automate the process, and using one is <strong>strongly</strong> recommended over a "manual" implementation.</p>
+<p>The recommended options for INPC include:</p>
+<table>
+<thead>
+<tr>
+<th>Library</th>
+<th>Package</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PropertyChanged.SourceGenerator</td>
+<td><a href="https://www.nuget.org/packages/PropertyChanged.SourceGenerator"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1.998.342a1.997 1.997 0 1 0 0 3.995 1.997 1.997 0 0 0 0-3.995m9.18 4.34a6.156 6.156 0 0 0-6.153 6.155v6.667c0 3.4 2.756 6.154 6.154 6.154h6.667c3.4 0 6.154-2.755 6.154-6.154v-6.667a6.154 6.154 0 0 0-6.154-6.155zm-1.477 2.8a2.496 2.496 0 1 1 0 4.993 2.496 2.496 0 0 1 0-4.993m7.968 6.16a3.996 3.996 0 1 1-.002 7.992 3.996 3.996 0 0 1 .002-7.992"/></svg></span> NuGet</a></td>
+<td><a href="https://github.com/canton7/PropertyChanged.SourceGenerator"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</a></td>
+</tr>
+<tr>
+<td>PropertyChanged.Fody</td>
+<td><a href="https://www.nuget.org/packages/PropertyChanged.Fody/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M1.998.342a1.997 1.997 0 1 0 0 3.995 1.997 1.997 0 0 0 0-3.995m9.18 4.34a6.156 6.156 0 0 0-6.153 6.155v6.667c0 3.4 2.756 6.154 6.154 6.154h6.667c3.4 0 6.154-2.755 6.154-6.154v-6.667a6.154 6.154 0 0 0-6.154-6.155zm-1.477 2.8a2.496 2.496 0 1 1 0 4.993 2.496 2.496 0 0 1 0-4.993m7.968 6.16a3.996 3.996 0 1 1-.002 7.992 3.996 3.996 0 0 1 .002-7.992"/></svg></span> NuGet</a></td>
+<td><a href="https://github.com/Fody/PropertyChanged"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span> GitHub</a></td>
+</tr>
+</tbody>
+</table>
+<p>The author(s) of this guide and of StardewUI have no affiliation with any of the above projects; they are recommended on the basis of:</p>
+<ul>
+<li>
+<p><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2705.svg" title=":white_check_mark:" /> Leaving <strong>no footprint</strong>.</p>
+<p>Although they are installed as packages, they do not add any new assemblies to your build output, meaning your INPC-enhanced mod can continue to be a single DLL;</p>
+</li>
+<li>
+<p><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2705.svg" title=":white_check_mark:" /> Handling <strong>dependent properties</strong> automatically.</p>
+<p>For example, <code>public string FullName =&gt; $"{FirstName} {LastName}"</code> will raise notifications for changes to either <code>FirstName</code> or <code>LastName</code>.</p>
+</li>
+<li>
+<p><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/2705.svg" title=":white_check_mark:" /> Being <strong>free and open source</strong>, with a permissive license (MIT, Apache, etc.).<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<p>In other words, their license imposes no requirements on <em>your</em> license, your ability to opt into Nexus Donation Points, etc.</p>
+</li>
+</ul>
+<p>Using the first library (<code>PropertyChanged.SourceGenerator</code>), we can quickly convert the non-working example above to one that does work:</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="c_1" name="__tabbed_3" type="radio" /><input id="starml_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="c_1">C#</label><label for="starml_2">StarML</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">using</span><span class="w"> </span><span class="nn">PropertyChanged.SourceGenerator</span><span class="p">;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">CounterViewModel</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Increment</span><span class="p">()</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="n">Count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">click</span><span class="o">=</span><span class="s">|Increment()|</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Add One&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{Count}</span> <span class="p">/&gt;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>Note that the markup has not changed at all. All we had to do for the C# code was:</p>
+<ul>
+<li>Change the <code>Count</code> auto-property to be a field</li>
+<li>Make it lowerCamelCase, so it doesn't conflict with the auto-generated property</li>
+<li>Add a <code>[Notify]</code> attribute.</li>
+</ul>
+<p>You don't need to <code>[Notify]</code> every single property, only the ones that might change. The mixed approach is demonstrated in several <a href="../../examples/bestiary/#monsterviewmodelcs">examples</a>.</p>
+<h3 id="collection-updates">Collection Updates</h3>
+<p>A special case of updates is collections. Consider the case of a UI that adds items to a list:</p>
+<div class="admonition failure">
+<p class="admonition-title">Broken</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="c_2" name="__tabbed_4" type="radio" /><input id="starml_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="c_2">C#</label><label for="starml_3">StarML</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TodoViewModel</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Items</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">currentItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">AddCurrentItem</span><span class="p">()</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhitespace</span><span class="p">(</span><span class="n">CurrentItem</span><span class="p">))</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">            </span><span class="n">Items</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">CurrentItem</span><span class="p">);</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">            </span><span class="n">CurrentItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;500px content&quot;</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        <span class="p">&lt;</span><span class="nt">textinput</span> <span class="na">text</span><span class="o">=</span><span class="s">{CurrentItem}</span> <span class="p">/&gt;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Add&quot;</span> <span class="na">click</span><span class="o">=</span><span class="s">|AddCurrentItem()|</span> <span class="p">/&gt;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Items}</span> <span class="na">text</span><span class="o">=</span><span class="s">{this}</span> <span class="p">/&gt;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>If you run this, you'll observe that the text box is cleared when clicking "Add", but the item does not appear to be added to the list. Moreover, converting <code>Items</code> to a <code>[Notify]</code> will not help in this case, because the <em>field itself</em> has not changed. <code>Items</code> always points to the same <em>list</em>.</p>
+<p>Before explaining the solution, it is worth noting the workarounds that should <strong>not</strong> be used, even if they appear to be effective at first:</p>
+<ul>
+<li>
+<p><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/274c.svg" title=":x:" /> Converting the <code>Items</code> list to <code>[Notify]</code> (or equivalent INPC) and replacing the entire list with a new list, e.g. <code>Items = Items.Append(CurrentItem).ToList()</code>.</p>
+<p>This has quadratic or <a href="https://www.joelonsoftware.com/2001/12/11/back-to-basics/">Schlemiel the Painter</a> performance, in both time and memory.</p>
+</li>
+<li>
+<p><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@15.0.3/assets/svg/274c.svg" title=":x:" /> Leaving the list alone, but calling an <code>OnPropertyChanged</code> or <code>PropertyChanged?.Invoke</code> after adding an item, to force an INPC change notification.</p>
+<p>While not as serious an offense as the previous version, it still forces StardewUI to rebuild the entire view tree for the <code>*repeat</code>. Even if only one item changed, it must recreate the views for all of them.</p>
+</li>
+</ul>
+<p>All performance is relative, and these workarounds might be perfectly acceptable for our toy example above. However, if there are hundreds of items in the list, and each item has many views within—for example, an image, quality icon, quantity text, etc.—then making this type of change very often is still likely to cause jank.</p>
+<p>StardewUI has a better solution: <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.specialized.inotifycollectionchanged?view=net-8.0"><code>INotifyCollectionChanged</code></a>, which is the collection-based counterpart to INPC. While "INCC" is also difficult to implement, you don't have to, because there is already an <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1?view=net-8.0"><code>ObservableCollection</code></a> type to do it for you.</p>
+<p>Using <code>ObservableCollection</code>, the revised and working code then becomes:</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="c_3" name="__tabbed_5" type="radio" /><input id="starml_4" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="c_3">C#</label><label for="starml_4">StarML</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TodoViewModel</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">ObservableCollection</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Items</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">currentItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">AddCurrentItem</span><span class="p">()</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhitespace</span><span class="p">(</span><span class="n">CurrentItem</span><span class="p">))</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">            </span><span class="n">Items</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">CurrentItem</span><span class="p">);</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">            </span><span class="n">CurrentItem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;500px content&quot;</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>        <span class="p">&lt;</span><span class="nt">textinput</span> <span class="na">text</span><span class="o">=</span><span class="s">{CurrentItem}</span> <span class="p">/&gt;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Add&quot;</span> <span class="na">click</span><span class="o">=</span><span class="s">|AddCurrentItem()|</span> <span class="p">/&gt;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Items}</span> <span class="na">text</span><span class="o">=</span><span class="s">{this}</span> <span class="p">/&gt;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>We changed only one line here: <code>List&lt;string&gt;</code> became <code>ObservableCollection&lt;string&gt;</code>.</p>
 <h2 id="redirects">Redirects</h2>
+<p>Any binding that references context data, including properties or <a href="../binding-events/">event handlers</a> or arguments, can use a redirect operator.</p>
+<p>The types of redirects are:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Syntax</th>
+<th>Example</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Parent</td>
+<td><code>^</code></td>
+<td><code>^Prop</code></td>
+<td>Goes back to the previous, or "parent" context.<br/><strong>Can be repeated.</strong></td>
+</tr>
+<tr>
+<td>Ancestor</td>
+<td><code>~Type</code></td>
+<td><code>~Foo.Prop</code></td>
+<td>Backtracks to the nearest ancestor of the specified type.<br/><strong>Cannot be repeated.</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The following example will walk through the different redirects in more detail.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="c_4" name="__tabbed_6" type="radio" /><input id="starml_5" name="__tabbed_6" type="radio" /><input id="output" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="c_4">C#</label><label for="starml_5">StarML</label><label for="output">Output</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">InventoryViewModel</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p">{</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">OwnerName</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">PageViewModel</span><span class="w"> </span><span class="n">ActivePage</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">}</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">PageViewModel</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">{</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Category</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">ItemViewModel</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Items</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="p">}</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="n">record</span><span class="w"> </span><span class="nf">ItemViewModel</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="p">);</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="k">void</span><span class="w"> </span><span class="nf">ShowMenu</span><span class="p">()</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="p">{</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InventoryViewModel</span><span class="p">()</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">        </span><span class="n">OwnerName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Timmy&quot;</span><span class="p">,</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">        </span><span class="n">ActivePage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">()</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">            </span><span class="n">Category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Tools&quot;</span><span class="p">,</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">            </span><span class="n">Items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="k">new</span><span class="p">(</span><span class="s">&quot;Axe&quot;</span><span class="p">),</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="s">&quot;Hoe&quot;</span><span class="p">)]</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">        </span><span class="p">},</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="w">    </span><span class="p">};</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="w">    </span><span class="n">Game1</span><span class="p">.</span><span class="n">activeClickableMenu</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="w">        </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateMenuFromAsset</span><span class="p">(</span><span class="s">&quot;Mods/Xyz/Views/Inventory&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span> <span class="err">*</span><span class="na">context</span><span class="o">=</span><span class="s">{ActivePage}</span><span class="p">&gt;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{^OwnerName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{~InventoryViewModel.OwnerName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Items}</span><span class="p">&gt;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{Name}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{^Category}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{~PageViewModel.Category}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{^^OwnerName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{~InventoryViewModel.OwnerName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<pre class="mermaid"><code>block-beta
+columns 5
+    A["Timmy"]:5
+    B["Timmy"]:5
+    C1["Axe"]
+    C2["Tools"]
+    C3["Tools"]
+    C4["Timmy"]
+    C5["Timmy"]
+    D1["Hoe"]
+    D2["Tools"]
+    D3["Tools"]
+    D4["Timmy"]
+    D5["Timmy"]</code></pre>
+</div>
+</div>
+</div>
+<p>The above is not intended to represent any kind of realistic UI scenario, only to demonstrate what the different redirects do. It is important to realize that redirects do <strong>not</strong> navigate the actual model data; there is nothing in StardewUI, or anywhere else, that knows how to get from a <code>PageViewModel</code> back to its "parent" <code>InventoryViewModel</code>, and such a relationship may not exist or be meaningful at all.</p>
+<p>Instead, we assign a context to each node:</p>
+<div class="span-table-wrapper">
+<table class="span-table dense">
+<tr>
+<td colspan="3">Node/Element</td>
+<td>Has Context</td>
+</tr>
+<tr>
+<td colspan="3"><code>&lt;lane orientation​=​"vertical"...&gt;</code></td>
+<td><code>InventoryViewModel</code> ("Timmy")</td>
+</tr>
+<tr>
+<td></td>
+<td colspan="2"><code>&lt;label text={^OwnerName} /&gt;</code></td>
+<td rowspan="3"><code>PageViewModel</code> ("Tools")</td>
+</tr>
+<tr>
+<td></td>
+<td colspan="3"><code>&lt;label text={~PageViewModel.OwnerName} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td colspan="2"><code>&lt;lane *repeat={Items}&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[1] &lt;label text={Name} /&gt;</code></td>
+<td rowspan="5"><code>ItemViewModel</code> ("Axe")</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[1] &lt;label text={^Category} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[1] &lt;label text={~PageViewModel.Category} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[1] &lt;label text={^^OwnerName} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[1] &lt;label text={~InventoryViewModel.OwnerName} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[2] &lt;label text={Name} /&gt;</code></td>
+<td rowspan="5"><code>ItemViewModel</code> ("Hoe")</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[2] &lt;label text={^Category} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[2] &lt;label text={~PageViewModel.Category} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[2] &lt;label text={^^OwnerName} /&gt;</code></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><code>[2] &lt;label text={~InventoryViewModel.OwnerName} /&gt;</code></td>
+</tr>
+</table>
+</div>
+<p>To resolve the <code>^^OwnerName</code> near the end of the above table:</p>
+<ol>
+<li>Walk up the parent <em>elements</em> until we find one that changed the context. Since <code>*repeat</code> has a context effect, the first parent is the <code>&lt;lane *repeat={Items}&gt;</code> element.</li>
+<li>Repeat the process from that position, since there is a second <code>^</code>. Since the <code>&lt;lane orientation="vertical"&gt;</code> element has a <code>*context</code> modifier, it is chosen next.</li>
+<li>Take the context data <em>linked to</em> the element we ended up at; the root <code>&lt;lane&gt;</code> is associated with the <code>InventoryViewModel</code>.</li>
+<li>Read the property from the data we just found, i.e. <code>InventoryViewModel.OwnerName</code>.</li>
+</ol>
+<p>Resolving <code>~InventoryViewModel.OwnerName</code> follows a very similar process, but instead of going "up" a specific number of times (twice, for <code>^^</code>, or once, for a single <code>^</code>), it repeats the traversal step as many times as necessary until it reaches an element that has an <code>InventoryViewModel</code> as its context.</p>
+<div class="admonition info">
+<p class="admonition-title">Summary</p>
+<p>The most important lesson to take away from this is that <strong>context redirects follow the document structure, not the data (model/view-model) structure.</strong></p>
+<p>In an MV* design, document structure is itself usually based on the model, so you can <em>often</em> treat redirects as going to the "parent object", but may eventually run into scenarios where this doesn't work as expected.</p>
+<p>Remember that context lives <em>outside</em> your data.</p>
+</div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Fody is <a href="https://github.com/Fody/Home/blob/master/pages/licensing-patron-faq.md#but-it-is-mit-cant-i-use-it-for-free">"legally free, morally paid"</a>, but the advantages of this clearly show in its maintenance statistics; <code>PropertyChanged</code> is over 12 years old, still being updated, and has the most frictionless syntax, in addition to the Fody master project being a much larger collection of also useful tools.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
