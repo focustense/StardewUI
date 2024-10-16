@@ -225,6 +225,7 @@ These modifiers work **only** with context property and event bindings; they can
 | `^` | `{^Prop}` | Binds to the [parent context](binding-context.md#redirects) instead of the current context. Multiple `^` characters can be appended to go farther up, e.g. `^^^Prop`.
 | `~` | `{~Foo.Prop}` | Binds to the [typed ancestor](binding-context.md#redirects) instead of the current context. |
 | `<` | `{<Prop}` | Specifies an input binding, where the view receives its value from the model but does not write back. This is the default behavior when no modifier is used, and can generally be omitted. |
+| `:` or `<:` | `{:Prop}` | Specifies a one-time input binding, which is the same as an ordinary input binding except that subsequent changes to the value will be ignored. |
 | `>` | `{>Prop}` | Specifies an output binding, where the view writes its value to the model but does not read back. |
 | `<>` | `{<>Prop}` | Specifies an in/out binding, where the view both receives its value from the model _and_ writes back to the model. |
 

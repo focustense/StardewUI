@@ -323,6 +323,8 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['~', ..] => new(TokenType.ContextAncestor, 1),
                 ['.', ..] => new(TokenType.NameSeparator, 1),
                 ['<', '>', ..] => new(TokenType.BindingModifier, 2),
+                ['<', ':', ..] => new(TokenType.BindingModifier, 2),
+                [':', ..] => new(TokenType.BindingModifier, 1),
                 ['<', ..] => new(TokenType.BindingModifier, 1),
                 ['>', ..] => new(TokenType.BindingModifier, 1),
                 ['@', ..] => new(TokenType.BindingModifier, 1),

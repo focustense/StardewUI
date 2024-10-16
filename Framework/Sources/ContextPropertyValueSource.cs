@@ -68,12 +68,14 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
     /// <param name="context">Context used for the data binding.</param>
     /// <param name="propertyName">Property to read on the <see cref="BindingContext.Data"/> of the supplied
     /// <paramref name="context"/> when updating.</param>
-    public ContextPropertyValueSource(BindingContext? context, string propertyName)
+    /// <param name="allowUpdates">Whether or not to allow <see cref="Update"/> to read a new value. <c>false</c>
+    /// prevents all updates and makes the source read only one time.</param>
+    public ContextPropertyValueSource(BindingContext? context, string propertyName, bool allowUpdates = true)
     {
         data = context?.Data;
         property = context?.Descriptor.GetProperty(propertyName) as IPropertyDescriptor<T>;
         this.propertyName = propertyName;
-        if (data is INotifyPropertyChanged npc)
+        if (allowUpdates && data is INotifyPropertyChanged npc)
         {
             npc.PropertyChanged += Context_PropertyChanged;
         }

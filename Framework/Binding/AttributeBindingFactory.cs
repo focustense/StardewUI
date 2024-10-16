@@ -4,6 +4,7 @@ using System.Text;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
+using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework.Binding;
@@ -217,6 +218,19 @@ public class AttributeBindingFactory(
         var outputConverter = direction.IsOut()
             ? valueConverterFactory.GetRequiredConverter<TDest, TSource>()
             : InvalidConverter<TDest, TSource>.Instance;
+        if (
+            !context.Descriptor.SupportsChangeNotifications
+            && direction.IsIn()
+            && attribute.ValueType.IsContextBinding()
+            && attribute.ValueType != AttributeValueType.OneTimeBinding
+        )
+        {
+            Logger.LogOnce(
+                $"Binding to '{context.Descriptor.TargetType.Name}.{attribute.Value}' will not receive updates because "
+                    + "the type does not implement INotifyPropertyChanged.",
+                LogLevel.Warn
+            );
+        }
         return new AttributeBinding<TSource, TDest>(source, inputConverter, outputConverter, property, direction);
     }
 
@@ -224,8 +238,8 @@ public class AttributeBindingFactory(
     {
         return attribute.ValueType switch
         {
-            Grammar.AttributeValueType.OutputBinding => BindingDirection.Out,
-            Grammar.AttributeValueType.TwoWayBinding => BindingDirection.InOut,
+            AttributeValueType.OutputBinding => BindingDirection.Out,
+            AttributeValueType.TwoWayBinding => BindingDirection.InOut,
             _ => BindingDirection.In,
         };
     }

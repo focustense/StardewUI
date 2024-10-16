@@ -305,6 +305,31 @@ public partial class BindingTests
         Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
     }
 
+    [Fact]
+    public void WhenOneTimeBinding_UpdatesFirstTimeOnly()
+    {
+        string markup =
+            @"<lane>
+                <label text={Name} />
+                <label text={<:Name} />
+            </lane>";
+        var model = new ModelWithNotify() { Name = "First" };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var lane = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        var label1 = Assert.IsType<Label>(lane.Children[0]);
+        var label2 = Assert.IsType<Label>(lane.Children[1]);
+
+        Assert.Equal("First", label1.Text);
+        Assert.Equal("First", label2.Text);
+
+        model.Name = "Second";
+        tree.Update();
+
+        Assert.Equal("Second", label1.Text);
+        Assert.Equal("First", label2.Text);
+    }
+
     class FieldBindingTestModel
     {
         public string Name = "";

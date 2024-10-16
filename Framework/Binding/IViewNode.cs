@@ -19,7 +19,8 @@ public interface IViewNode : IDisposable
 
     /// <summary>
     /// The currently-bound context data, used as the source for any <see cref="AttributeValueType.InputBinding"/>,
-    /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/> attributes.
+    /// <see cref="AttributeValueType.OneTimeBinding"/>, <see cref="AttributeValueType.OutputBinding"/> or
+    /// <see cref="AttributeValueType.TwoWayBinding"/> attributes.
     /// </summary>
     BindingContext? Context { get; set; }
 

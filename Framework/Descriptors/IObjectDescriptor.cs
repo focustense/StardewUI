@@ -12,6 +12,12 @@ namespace StardewUI.Framework.Descriptors;
 public interface IObjectDescriptor
 {
     /// <summary>
+    /// Whether or not objects of this type can notify about data changes; that is, if the type implements
+    /// <see cref="System.ComponentModel.INotifyPropertyChanged"/>.
+    /// </summary>
+    bool SupportsChangeNotifications { get; }
+
+    /// <summary>
     /// The type being described, which owns or inherits each of the available members.
     /// </summary>
     Type TargetType { get; }

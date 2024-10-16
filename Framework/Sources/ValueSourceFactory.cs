@@ -39,8 +39,8 @@ public interface IValueSourceFactory
     /// <see cref="GetValueType(IArgument, BindingContext?)"/>.</typeparam>
     /// <param name="argument">The parsed markup argument containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OutputBinding"/> or
-    /// <see cref="AttributeValueType.TwoWayBinding"/>).</param>
+    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OneTimeBinding"/>,
+    /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/>).</param>
     IValueSource<T> GetValueSource<T>(IArgument argument, BindingContext? context)
         where T : notnull;
 
@@ -51,8 +51,8 @@ public interface IValueSourceFactory
     /// <see cref="GetValueType(IAttribute, IPropertyDescriptor?, BindingContext?)"/>.</typeparam>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OutputBinding"/> or
-    /// <see cref="AttributeValueType.TwoWayBinding"/>).</param>
+    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OneTimeBinding"/>,
+    /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/>).</param>
     IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context)
         where T : notnull;
 
@@ -79,8 +79,8 @@ public interface IValueSourceFactory
     /// <param name="property">Binding metadata for the destination property; used when the source does not encode any
     /// independent type information. If not specified, some attribute values may be unsupported.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
-    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OutputBinding"/> or
-    /// <see cref="AttributeValueType.TwoWayBinding"/>).</param>
+    /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OneTimeBinding"/>,
+    /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/>).</param>
     Type? GetValueType(IAttribute attribute, IPropertyDescriptor? property, BindingContext? context);
 }
 
@@ -154,8 +154,14 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         {
             AttributeValueType.Literal => (IValueSource<T>)new ConstantValueSource<string>(attribute.Value),
             AttributeValueType.AssetBinding => new AssetValueSource<T>(assetCache, attribute.Value),
-            AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
-                new ContextPropertyValueSource<T>(context?.Redirect(attribute.ContextRedirect), attribute.Value),
+            AttributeValueType.InputBinding
+            or AttributeValueType.OneTimeBinding
+            or AttributeValueType.OutputBinding
+            or AttributeValueType.TwoWayBinding => new ContextPropertyValueSource<T>(
+                context?.Redirect(attribute.ContextRedirect),
+                attribute.Value,
+                attribute.ValueType != AttributeValueType.OneTimeBinding
+            ),
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }
@@ -184,8 +190,13 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         {
             AttributeValueType.Literal => typeof(string),
             AttributeValueType.AssetBinding => property?.ValueType,
-            AttributeValueType.InputBinding or AttributeValueType.OutputBinding or AttributeValueType.TwoWayBinding =>
-                context?.Redirect(attribute.ContextRedirect)?.Descriptor.GetProperty(attribute.Value).ValueType,
+            AttributeValueType.InputBinding
+            or AttributeValueType.OneTimeBinding
+            or AttributeValueType.OutputBinding
+            or AttributeValueType.TwoWayBinding => context
+                ?.Redirect(attribute.ContextRedirect)
+                ?.Descriptor.GetProperty(attribute.Value)
+                .ValueType,
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
     }

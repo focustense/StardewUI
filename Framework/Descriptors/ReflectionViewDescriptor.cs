@@ -9,6 +9,9 @@ namespace StardewUI.Framework.Descriptors;
 public class ReflectionViewDescriptor : IViewDescriptor
 {
     /// <inheritdoc />
+    public bool SupportsChangeNotifications => innerDescriptor.SupportsChangeNotifications;
+
+    /// <inheritdoc />
     public Type TargetType => innerDescriptor.TargetType;
 
     private static readonly Dictionary<Type, ReflectionViewDescriptor> cache = [];

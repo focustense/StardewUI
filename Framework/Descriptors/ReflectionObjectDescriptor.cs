@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
@@ -8,6 +9,9 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 public class ReflectionObjectDescriptor : IObjectDescriptor
 {
+    /// <inheritdoc />
+    public bool SupportsChangeNotifications { get; }
+
     /// <inheritdoc />
     public Type TargetType { get; }
 
@@ -36,6 +40,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
 
     private static ReflectionObjectDescriptor CreateDescriptor(Type type)
     {
+        var interfaces = type.GetInterfaces();
         var allMembers = type.GetMembers(BindingFlags.Instance | BindingFlags.Public);
         var fieldsByName = allMembers.OfType<FieldInfo>().ToLazyDictionary(LazyExpressionFieldDescriptor.FromFieldInfo);
         var propertiesByName = allMembers
@@ -51,19 +56,21 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
             .OfType<EventInfo>()
             .Where(ev => ev.EventHandlerType is not null)
             .ToLazyDictionary(ReflectionEventDescriptor.FromEventInfo);
-        return new(type, fieldsByName, propertiesByName, methodsByName, eventsByName);
+        return new(type, interfaces, fieldsByName, propertiesByName, methodsByName, eventsByName);
     }
 
     /// <summary>
     /// Initializes a new <see cref="ReflectionObjectDescriptor"/> with the given target type and members.
     /// </summary>
     /// <param name="type">The <see cref="TargetType"/>.</param>
+    /// <param name="interfaces">All interfaces implemented by the <see cref="TargetType"/>.</param>
     /// <param name="fieldsByName">Dictionary of field names to the corresponding field descriptors.</param>
     /// <param name="propertiesByName">Dictionary of property names to the corresponding property descriptors.</param>
     /// <param name="methodsByName">Dictionary of method names to the corresponding method descriptors.</param>
     /// <param name="eventsByName">Dictionary of event names to the corresponding event descriptors.</param>
     protected ReflectionObjectDescriptor(
         Type type,
+        IReadOnlyList<Type> interfaces,
         IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> fieldsByName,
         IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> propertiesByName,
         IReadOnlyDictionary<string, Lazy<IMethodDescriptor>> methodsByName,
@@ -76,6 +83,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
         this.methodsByName = methodsByName;
         this.eventsByName = eventsByName;
         thisDescriptor = new(() => ThisPropertyDescriptor.ForTypeUncached(type));
+        SupportsChangeNotifications = interfaces.Any(t => t == typeof(INotifyPropertyChanged));
     }
 
     /// <inheritdoc />

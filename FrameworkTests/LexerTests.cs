@@ -1,3 +1,4 @@
+using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 
 namespace StarML.Tests;
@@ -143,6 +144,23 @@ public class LexerTests
                 ]
             },
             {
+                @"<label text={{<:^^Name}} />",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{{"),
+                    new(TokenType.BindingModifier, "<:"),
+                    new(TokenType.ContextParent, "^"),
+                    new(TokenType.ContextParent, "^"),
+                    new(TokenType.Literal, "Name"),
+                    new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
                 @"<checkbox is-checked={>~Foo.Enabled} />",
 
                 [
@@ -152,6 +170,24 @@ public class LexerTests
                     new(TokenType.Assignment, "="),
                     new(TokenType.BindingStart, "{"),
                     new(TokenType.BindingModifier, ">"),
+                    new(TokenType.ContextAncestor, "~"),
+                    new(TokenType.Literal, "Foo"),
+                    new(TokenType.NameSeparator, "."),
+                    new(TokenType.Literal, "Enabled"),
+                    new(TokenType.BindingEnd, "}"),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
+                @"<checkbox is-checked={:~Foo.Enabled} />",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "checkbox"),
+                    new(TokenType.Name, "is-checked"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{"),
+                    new(TokenType.BindingModifier, ":"),
                     new(TokenType.ContextAncestor, "~"),
                     new(TokenType.Literal, "Foo"),
                     new(TokenType.NameSeparator, "."),

@@ -269,6 +269,7 @@ public ref struct DocumentReader(Lexer lexer)
         return token switch
         {
             "<>" => AttributeValueType.TwoWayBinding,
+            "<:" or ":" => AttributeValueType.OneTimeBinding,
             "<" => AttributeValueType.InputBinding,
             ">" => AttributeValueType.OutputBinding,
             "@" => AttributeValueType.AssetBinding,

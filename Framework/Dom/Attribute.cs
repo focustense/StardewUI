@@ -59,6 +59,7 @@ public interface IAttribute
         {
             AttributeValueType.Literal => ("\"", "\""),
             AttributeValueType.InputBinding => ("{<", "}"),
+            AttributeValueType.OneTimeBinding => ("{<:", "}"),
             AttributeValueType.OutputBinding => ("{>", "}"),
             AttributeValueType.TwoWayBinding => ("{<>", "}"),
             AttributeValueType.AssetBinding => ("{@", "}"),

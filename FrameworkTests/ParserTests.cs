@@ -95,6 +95,23 @@ public class ParserTests
                 ]
             },
             {
+                @"<label text={{<:^^Name}} />",
+
+                [
+                    new(
+                        "label",
+                        [
+                            new(
+                                "text",
+                                "Name",
+                                ValueType: AttributeValueType.OneTimeBinding,
+                                ContextRedirect: new ContextRedirect.Distance(2)
+                            ),
+                        ]
+                    ),
+                ]
+            },
+            {
                 @"<checkbox is-checked={>~Foo.Enabled} />",
 
                 [
@@ -105,6 +122,23 @@ public class ParserTests
                                 "is-checked",
                                 "Enabled",
                                 ValueType: AttributeValueType.OutputBinding,
+                                ContextRedirect: new ContextRedirect.Type("Foo")
+                            ),
+                        ]
+                    ),
+                ]
+            },
+            {
+                @"<checkbox is-checked={:~Foo.Enabled} />",
+
+                [
+                    new(
+                        "checkbox",
+                        [
+                            new(
+                                "is-checked",
+                                "Enabled",
+                                ValueType: AttributeValueType.OneTimeBinding,
                                 ContextRedirect: new ContextRedirect.Type("Foo")
                             ),
                         ]

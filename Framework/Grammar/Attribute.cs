@@ -97,6 +97,12 @@ public enum AttributeValueType
     InputBinding,
 
     /// <summary>
+    /// A special type of <see cref="InputBinding"/> that only reads the value a single time, and does not update
+    /// subsequently afterward.
+    /// </summary>
+    OneTimeBinding,
+
+    /// <summary>
     /// A one-way data binding which obtains the value from the view and assigns it to the context data.
     /// </summary>
     OutputBinding,
@@ -123,6 +129,7 @@ public static class AttributeValueTypeExtensions
     public static bool IsContextBinding(this AttributeValueType valueType)
     {
         return valueType == AttributeValueType.InputBinding
+            || valueType == AttributeValueType.OneTimeBinding
             || valueType == AttributeValueType.OutputBinding
             || valueType == AttributeValueType.TwoWayBinding;
     }
