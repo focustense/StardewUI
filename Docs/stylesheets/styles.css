@@ -17,6 +17,7 @@ table .md-tooltip {
     font-weight: inherit;
 }
 
+.span-table.dense td,
 .type-conversions td {
     border: 0.05rem solid var(--md-typeset-table-color);
     padding: 0.25rem 0.5rem;
