@@ -10,7 +10,7 @@ namespace StardewUI;
 /// <param name="thumbSprite">Sprite for the thumb/button, if not using the default.</param>
 /// <param name="thumbSize">Override for the thumb/button size, recommended when using a custom
 /// <paramref name="thumbSprite"/> sprite.</param>
-public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vector2? thumbSize = null) : WrapperView
+public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vector2? thumbSize = null) : ComponentView
 {
     private const int DEFAULT_TRACK_WIDTH = 120;
     private const int TRACK_HEIGHT = 24;
@@ -91,10 +91,9 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     /// </summary>
     public float TrackWidth
     {
-        get => sliderPanel?.Layout.Width.Value ?? 0;
+        get => sliderPanel.Layout.Width.Value;
         set
         {
-            var sliderPanel = RequireView(() => this.sliderPanel);
             if (sliderPanel.Layout.Width.Type != LengthType.Px || sliderPanel.Layout.Width.Value != value)
             {
                 sliderPanel.Layout = LayoutParameters.FixedSize(value, TRACK_HEIGHT);
@@ -129,10 +128,9 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     /// </summary>
     public Color? ValueColor
     {
-        get => valueLabel?.Color;
+        get => valueLabel.Color;
         set
         {
-            var valueLabel = RequireView(() => this.valueLabel);
             var color = value ?? Game1.textColor;
             if (color != valueLabel.Color)
             {

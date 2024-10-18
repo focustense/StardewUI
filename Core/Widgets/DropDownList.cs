@@ -7,7 +7,7 @@ namespace StardewUI;
 /// Button/text field with a drop-down menu.
 /// </summary>
 /// <typeparam name="T">The type of list item that can be chosen.</typeparam>
-public class DropDownList<T> : WrapperView
+public class DropDownList<T> : ComponentView
     where T : notnull
 {
     /// <summary>
@@ -40,12 +40,12 @@ public class DropDownList<T> : WrapperView
     /// </remarks>
     public float OptionMinWidth
     {
-        get => selectionFrame?.Layout.MinWidth ?? 0;
+        get => selectionFrame.Layout.MinWidth ?? 0;
         set
         {
-            if (value != (selectionFrame?.Layout.MinWidth ?? 0))
+            if (value != (selectionFrame.Layout.MinWidth ?? 0))
             {
-                RequireView(() => selectionFrame!).Layout = new()
+                selectionFrame.Layout = new()
                 {
                     Width = Length.Content(),
                     Height = Length.Content(),
@@ -257,7 +257,7 @@ public class DropDownList<T> : WrapperView
         selectedOptionLabel.Text = SelectedOption is not null ? optionFormat(SelectedOption) : "";
     }
 
-    class DropDownOptionView(T value, string text) : WrapperView<Frame>
+    class DropDownOptionView(T value, string text) : ComponentView<Frame>
     {
         public event EventHandler<EventArgs>? Select;
 
@@ -271,7 +271,7 @@ public class DropDownList<T> : WrapperView
                     return;
                 }
                 isSelected = value;
-                Root.BackgroundTint = GetBackgroundTint();
+                View.BackgroundTint = GetBackgroundTint();
             }
         }
 
@@ -307,7 +307,7 @@ public class DropDownList<T> : WrapperView
         }
     }
 
-    class DropDownOverlayView(DropDownList<T> owner) : WrapperView
+    class DropDownOverlayView(DropDownList<T> owner) : ComponentView
     {
         public override ViewChild? GetDefaultFocusChild()
         {

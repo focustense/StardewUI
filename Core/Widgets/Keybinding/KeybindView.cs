@@ -9,8 +9,7 @@ namespace StardewUI.Widgets.Keybinding;
 /// <summary>
 /// Display widget for a single <see cref="Keybind"/> showing all required keys.
 /// </summary>
-/// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
+public class KeybindView : ComponentView<Lane>
 {
     /// <summary>
     /// Default setting for <see cref="ButtonHeight"/>.
@@ -67,7 +66,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
                 return;
             }
             emptyText = value;
-            if (IsViewCreated && Root.Children.Count == 1 && Root.Children[0] is Label label)
+            if (View?.Children.Count == 1 && View.Children[0] is Label label)
             {
                 label.Text = value;
             }
@@ -119,8 +118,8 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
     /// <inheritdoc cref="View.Margin" />
     public Edges Margin
     {
-        get => IsViewCreated ? Root.Margin : Edges.NONE;
-        set => Root.Margin = value;
+        get => View.Margin;
+        set => View.Margin = value;
     }
 
     /// <summary>
@@ -142,6 +141,11 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
     }
 
     /// <summary>
+    /// Map of bindable buttons to sprite representations.
+    /// </summary>
+    public ISpriteMap<SButton>? SpriteMap { get; set; }
+
+    /// <summary>
     /// Text color for the button text inside any placeholder sprites.
     /// </summary>
     public Color TextColor
@@ -154,7 +158,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
                 return;
             }
             textColor = value;
-            if (IsViewCreated && Root.Children.Count == 1 && Root.Children[0] is Label label)
+            if (View?.Children.Count == 1 && View.Children[0] is Label label)
             {
                 label.Color = value;
             }
@@ -199,7 +203,8 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
 
     private IView CreateButtonImage(SButton button)
     {
-        var sprite = spriteMap.Get(button, out var isPlaceholder);
+        bool isPlaceholder = false;
+        var sprite = SpriteMap?.Get(button, out isPlaceholder);
         var image = new Image()
         {
             Layout = new()
@@ -236,7 +241,7 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
 
     private void UpdateContent(Lane? lane = null)
     {
-        lane ??= Root;
+        lane ??= View;
         lane.Children = keybind.IsBound
             ? keybind
                 .Buttons.SelectMany(button => new IView[] { Label.Simple("+", font), CreateButtonImage(button) })
@@ -248,9 +253,9 @@ public class KeybindView(ISpriteMap<SButton> spriteMap) : WrapperView<Lane>
 
     private void UpdateTint()
     {
-        if (IsViewCreated)
+        if (View is not null)
         {
-            UpdateTint(Root);
+            UpdateTint(View);
         }
     }
 

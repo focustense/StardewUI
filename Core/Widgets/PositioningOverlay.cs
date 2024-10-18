@@ -227,7 +227,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
         }
     }
 
-    class PositioningView(PositioningOverlay owner, ActionState<PositioningAction> actionState) : WrapperView<Panel>
+    class PositioningView(PositioningOverlay owner, ActionState<PositioningAction> actionState) : ComponentView<Panel>
     {
         private static readonly Color KeyTint = new(0.5f, 0.5f, 0.5f, 0.5f);
         private static readonly Color MouseTint = new(0.5f, 0.5f, 0.5f, 0.5f);
@@ -453,7 +453,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
 
         private IView CreateButtonPrompt(Keybind keybind, Edges? margin = null, bool visible = true)
         {
-            return new KeybindView(owner.buttonSpriteMap)
+            return new KeybindView
             {
                 Layout = new()
                 {
@@ -465,6 +465,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                 ButtonHeight = 100,
                 ButtonMinWidth = 100,
                 Font = Game1.dialogueFont,
+                SpriteMap = owner.buttonSpriteMap,
                 TextColor = Color.Gray,
                 TintColor = KeyTint,
                 Keybind = keybind,

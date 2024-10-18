@@ -8,7 +8,7 @@ namespace StardewUI;
 /// </summary>
 /// <param name="uncheckedSprite">Sprite to display when the box is unchecked, if not using the default.</param>
 /// <param name="checkedSprite">Sprite to display when the box is checked, if not using the default.</param>
-public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = null) : WrapperView<Lane>
+public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = null) : ComponentView<Lane>
 {
     /// <summary>
     /// Event raised when the checked state changes.
@@ -39,12 +39,12 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
     /// </summary>
     public Color LabelColor
     {
-        get => label?.Color ?? Color.White;
+        get => label.Color;
         set
         {
-            if (value != (label?.Color ?? Color.White))
+            if (value != label.Color)
             {
-                RequireView(() => label!).Color = value;
+                label.Color = value;
                 OnPropertyChanged(nameof(LabelColor));
             }
         }
@@ -58,14 +58,13 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
     /// </remarks>
     public string LabelText
     {
-        get => label?.Text ?? "";
+        get => label.Text;
         set
         {
-            var label = RequireView(() => this.label);
             if (value != label.Text)
             {
                 label.Text = value;
-                Root.Children = !string.IsNullOrEmpty(value) ? [checkImage, label] : [checkImage];
+                View.Children = !string.IsNullOrEmpty(value) ? [checkImage, label] : [checkImage];
                 OnPropertyChanged(nameof(LabelText));
             }
         }

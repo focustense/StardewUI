@@ -214,7 +214,7 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
     /// <inheritdoc />
     protected override IView CreateView()
     {
-        currentKeybindView = new(spriteMap);
+        currentKeybindView = new() { SpriteMap = spriteMap };
         addButton = CreateAddButton();
         var currentKeybindLane = new Lane()
         {
@@ -270,11 +270,12 @@ public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
 
     private void AddKeybindRow(Keybind keybind)
     {
-        var keybindView = new KeybindView(spriteMap)
+        var keybindView = new KeybindView
         {
             Layout = LayoutParameters.AutoRow(),
             Margin = keybindsLane.Children.Count > 0 ? new(Top: 16) : Edges.NONE,
             Keybind = keybind,
+            SpriteMap = spriteMap,
         };
         var deleteButton = new Image()
         {

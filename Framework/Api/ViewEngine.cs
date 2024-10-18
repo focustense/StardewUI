@@ -1,5 +1,4 @@
-﻿using StardewModdingAPI;
-using StardewModdingAPI.Events;
+﻿using StardewModdingAPI.Events;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;

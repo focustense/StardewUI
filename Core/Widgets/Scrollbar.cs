@@ -14,7 +14,7 @@ public class Scrollbar(
     Sprite? downSprite = null,
     Sprite? trackSprite = null,
     Sprite? thumbSprite = null
-) : WrapperView<Lane>
+) : ComponentView<Lane>
 {
     /// <summary>
     /// The scroll container that this <see cref="Scrollbar"/> controls.
@@ -123,7 +123,7 @@ public class Scrollbar(
     private void Container_ScrollChanged(object? sender, EventArgs e)
     {
         SyncPosition();
-        SyncVisibility(Root);
+        SyncVisibility(View);
     }
 
     private void DownButton_LeftClick(object? sender, ClickEventArgs e)
@@ -235,9 +235,9 @@ public class Scrollbar(
 
     private void LazyUpdate()
     {
-        if (IsViewCreated)
+        if (View is not null)
         {
-            Update(Root);
+            Update(View);
         }
     }
 

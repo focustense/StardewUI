@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;

@@ -4,7 +4,7 @@ using StardewValley;
 
 namespace StardewUITest;
 
-internal class TestView : WrapperView
+internal class TestView : ComponentView
 {
     protected override IView CreateView()
     {

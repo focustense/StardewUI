@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using System.Reflection.Metadata;
-using static StardewValley.Minigames.TargetGame;
 
 namespace StardewUI.Framework.Descriptors;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace StardewUI.Framework.Grammar;
+﻿namespace StardewUI.Framework.Grammar;
 
 /// <summary>
 /// Information about a parsed tag in StarML.

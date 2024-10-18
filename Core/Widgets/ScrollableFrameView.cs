@@ -11,17 +11,16 @@ namespace StardewUI;
 /// navigation) available to decorate the view. Many if not most menus can be fully represented with
 /// this layout, as long as they do not have built-in subnavigation such as top-level tabs.
 /// </remarks>
-public class ScrollableFrameView : WrapperView
+public class ScrollableFrameView : ComponentView
 {
     /// <summary>
     /// The primary content, which displays inside the menu frame and is clipped/scrollable.
     /// </summary>
     public IView? Content
     {
-        get => contentContainer?.Content;
+        get => contentContainer.Content;
         set
         {
-            var contentContainer = RequireView(() => this.contentContainer);
             if (value != contentContainer.Content)
             {
                 contentContainer.Content = value;
@@ -39,10 +38,9 @@ public class ScrollableFrameView : WrapperView
     /// </remarks>
     public LayoutParameters ContentLayout
     {
-        get => contentContainer?.Layout ?? default;
+        get => contentContainer.Layout;
         set
         {
-            var contentContainer = RequireView(() => this.contentContainer);
             if (value != contentContainer.Layout)
             {
                 contentContainer.Layout = value;
@@ -60,10 +58,9 @@ public class ScrollableFrameView : WrapperView
     /// </remarks>
     public IView? Footer
     {
-        get => footerContainer?.Children.FirstOrDefault();
+        get => footerContainer.Children.FirstOrDefault();
         set
         {
-            var footerContainer = RequireView(() => this.footerContainer);
             if (value != footerContainer.Children.FirstOrDefault())
             {
                 footerContainer.Children = value is not null ? [value] : [];
@@ -82,10 +79,9 @@ public class ScrollableFrameView : WrapperView
     /// </remarks>
     public LayoutParameters FrameLayout
     {
-        get => contentFrame?.Layout ?? default;
+        get => contentFrame.Layout;
         set
         {
-            var contentFrame = RequireView(() => this.contentFrame);
             if (value != contentFrame.Layout)
             {
                 contentFrame.Layout = value;
@@ -103,10 +99,9 @@ public class ScrollableFrameView : WrapperView
     /// </remarks>
     public IView? Sidebar
     {
-        get => sidebarContainer?.Children[0];
+        get => sidebarContainer.Children[0];
         set
         {
-            var sidebarContainer = RequireView(() => this.sidebarContainer);
             if (value != sidebarContainer.Children.FirstOrDefault())
             {
                 sidebarContainer.Children = value is not null ? [value] : [];
@@ -134,7 +129,7 @@ public class ScrollableFrameView : WrapperView
                 return;
             }
             sidebarWidth = value;
-            if (IsViewCreated)
+            if (View is not null)
             {
                 sidebarContainer.Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Content() };
                 scrollbar.Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Stretch() };
@@ -151,10 +146,9 @@ public class ScrollableFrameView : WrapperView
     /// </remarks>
     public string? Title
     {
-        get => banner?.Text;
+        get => banner.Text;
         set
         {
-            var banner = RequireView(() => this.banner);
             var text = value ?? "";
             if (text != banner.Text)
             {
@@ -251,8 +245,8 @@ public class ScrollableFrameView : WrapperView
             Name = "ContentPageScroll",
             Layout = new() { Width = Length.Px(sidebarWidth), Height = Length.Stretch() },
             Margin = new(Top: 10, Bottom: 20),
+            Container = contentContainer,
         };
-        scrollbar.Container = contentContainer;
         scrollingLayout = new Lane()
         {
             Name = "ScrollableFrameScrollingLayout",

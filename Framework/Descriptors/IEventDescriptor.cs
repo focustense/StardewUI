@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace StardewUI.Framework.Descriptors;
+﻿namespace StardewUI.Framework.Descriptors;
 
 /// <summary>
 /// Describes a single event on some type.

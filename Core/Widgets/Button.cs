@@ -8,19 +8,19 @@ namespace StardewUI;
 /// </summary>
 /// <param name="defaultBackgroundSprite">The default background to show for the button's idle state.</param>
 /// <param name="hoverBackgroundSprite">Alternate background sprite when the button has cursor focus.</param>
-public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgroundSprite = null) : WrapperView<View>
+public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgroundSprite = null) : ComponentView<View>
 {
     /// <summary>
     /// Content view to display inside the button frame.
     /// </summary>
     public IView? Content
     {
-        get => contentFrame?.Content;
+        get => contentFrame.Content;
         set
         {
-            if (value != contentFrame?.Content)
+            if (value != contentFrame.Content)
             {
-                RequireView(() => contentFrame!).Content = value;
+                contentFrame.Content = value;
                 OnPropertyChanged(nameof(Content));
             }
         }
@@ -43,7 +43,7 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
                 return;
             }
             font = value;
-            if (contentFrame?.Content is Label label)
+            if (contentFrame.Content is Label label)
             {
                 label.Font = font;
             }
@@ -56,8 +56,8 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
     /// </summary>
     public Edges Margin
     {
-        get => Root.Margin;
-        set => Root.Margin = value;
+        get => View.Margin;
+        set => View.Margin = value;
     }
 
     /// <summary>
@@ -65,12 +65,12 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
     /// </summary>
     public bool ShadowVisible
     {
-        get => backgroundImage?.ShadowAlpha > 0;
+        get => backgroundImage.ShadowAlpha > 0;
         set
         {
-            if (value != backgroundImage?.ShadowAlpha > 0)
+            if (value != backgroundImage.ShadowAlpha > 0)
             {
-                RequireView(() => backgroundImage!).ShadowAlpha = value ? 0.5f : 0f;
+                backgroundImage.ShadowAlpha = value ? 0.5f : 0f;
                 OnPropertyChanged(nameof(ShadowVisible));
             }
         }
@@ -86,10 +86,9 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
     /// </remarks>
     public string? Text
     {
-        get => contentFrame?.Content is Label label ? label.Text : null;
+        get => contentFrame.Content is Label label ? label.Text : null;
         set
         {
-            var contentFrame = RequireView(() => this.contentFrame);
             if (contentFrame.Content is Label label)
             {
                 if ((value ?? "") != label.Text)

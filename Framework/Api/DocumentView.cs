@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Text;
+﻿using System.Text;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -15,14 +14,10 @@ namespace StardewUI.Framework.Api;
 /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
 /// <param name="documentSource">Source providing the StarML document describing the view.</param>
 internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Document> documentSource)
-    : IView,
+    : DecoratorView,
         IDisposable
 {
     private static readonly BackoffRule backoffRule = BackoffRule.Default;
-
-    public Bounds ActualBounds => rootView?.ActualBounds ?? Bounds.Empty;
-
-    public Bounds ContentBounds => rootView?.ContentBounds ?? Bounds.Empty;
 
     /// <summary>
     /// The data context (model) to provide to the root node.
@@ -43,83 +38,13 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
         }
     }
 
-    public bool IsFocusable => rootView?.IsFocusable ?? false;
-
-    public LayoutParameters Layout
-    {
-        get => layout;
-        set => SetOnRootView(ref layout, value, view => view.Layout = value);
-    }
-
-    public string Name
-    {
-        get => name;
-        set => SetOnRootView(ref name, value, view => view.Name = value);
-    }
-
-    public Vector2 OuterSize => rootView?.OuterSize ?? Vector2.Zero;
-
-    public bool PointerEventsEnabled
-    {
-        get => pointerEventsEnabled;
-        set => SetOnRootView(ref pointerEventsEnabled, value, view => view.PointerEventsEnabled = value);
-    }
-    public Orientation? ScrollWithChildren
-    {
-        get => scrollWithChildren;
-        set => SetOnRootView(ref scrollWithChildren, value, view => view.ScrollWithChildren = value);
-    }
-
-    public Tags Tags => rootView?.Tags ?? Tags.Empty;
-
-    public string Tooltip
-    {
-        get => tooltip;
-        set => SetOnRootView(ref tooltip, value, view => view.Tooltip = value);
-    }
-    public Visibility Visibility
-    {
-        get => visibility;
-        set => SetOnRootView(ref visibility, value, view => view.Visibility = value);
-    }
-    public int ZIndex
-    {
-        get => zIndex;
-        set => SetOnRootView(ref zIndex, value, view => view.ZIndex = value);
-    }
-
-    public event EventHandler<ClickEventArgs>? Click;
-    public event EventHandler<PointerEventArgs>? Drag;
-    public event EventHandler<PointerEventArgs>? DragEnd;
-    public event EventHandler<PointerEventArgs>? DragStart;
-    public event EventHandler<ClickEventArgs>? LeftClick;
-    public event EventHandler<PointerEventArgs>? PointerEnter;
-    public event EventHandler<PointerEventArgs>? PointerLeave;
-    public event PropertyChangedEventHandler? PropertyChanged;
-    public event EventHandler<ClickEventArgs>? RightClick;
-    public event EventHandler<WheelEventArgs>? Wheel;
-
     private BackoffState? backoffState;
     private BindingContext? context;
-    private LayoutParameters layout = new();
-    private string name = "";
-    private bool pointerEventsEnabled;
     private IViewNode? rootNode;
-    private IView? rootView;
-    private Orientation? scrollWithChildren;
-    private string tooltip = "";
-    private Visibility visibility;
-    private int zIndex;
 
-    public bool ContainsPoint(Vector2 point)
+    public override void Dispose()
     {
-        return rootView?.ContainsPoint(point) ?? false;
-    }
-
-    public void Dispose()
-    {
-        DetachHandlers();
-        rootView = null;
+        base.Dispose();
         rootNode?.Dispose();
         rootNode = null;
         if (documentSource is IDisposable sourceDisposable)
@@ -129,77 +54,7 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
         GC.SuppressFinalize(this);
     }
 
-    public void Draw(ISpriteBatch b)
-    {
-        rootView?.Draw(b);
-    }
-
-    public FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
-    {
-        return rootView?.FocusSearch(position, direction);
-    }
-
-    public ViewChild? GetChildAt(Vector2 position)
-    {
-        return rootView?.GetChildAt(position);
-    }
-
-    public Vector2? GetChildPosition(IView childView)
-    {
-        return rootView?.GetChildPosition(childView);
-    }
-
-    public IEnumerable<ViewChild> GetChildren()
-    {
-        return rootView?.GetChildren() ?? [];
-    }
-
-    public IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
-    {
-        return rootView?.GetChildrenAt(position) ?? [];
-    }
-
-    public ViewChild? GetDefaultFocusChild()
-    {
-        return rootView?.GetDefaultFocusChild();
-    }
-
-    public bool HasOutOfBoundsContent()
-    {
-        return rootView?.HasOutOfBoundsContent() ?? false;
-    }
-
-    public bool IsDirty()
-    {
-        return rootView?.IsDirty() ?? false;
-    }
-
-    public bool Measure(Vector2 availableSize)
-    {
-        return rootView?.Measure(availableSize) ?? false;
-    }
-
-    public void OnClick(ClickEventArgs e)
-    {
-        rootView?.OnClick(e);
-    }
-
-    public void OnDrag(PointerEventArgs e)
-    {
-        rootView?.OnDrag(e);
-    }
-
-    public void OnDrop(PointerEventArgs e)
-    {
-        rootView?.OnDrop(e);
-    }
-
-    public void OnPointerMove(PointerMoveEventArgs e)
-    {
-        rootView?.OnPointerMove(e);
-    }
-
-    public void OnUpdate(TimeSpan elapsed)
+    public override void OnUpdate(TimeSpan elapsed)
     {
         if (backoffState is not null)
         {
@@ -220,54 +75,9 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
         }
         if (rootNode.Update(elapsed))
         {
-            var nextRootView = rootNode.Views.FirstOrDefault();
-            if (nextRootView != rootView)
-            {
-                DetachHandlers();
-                rootView = nextRootView;
-                if (rootView is not null)
-                {
-                    rootView.Layout = Layout;
-                    rootView.Name = Name;
-                    rootView.PointerEventsEnabled = PointerEventsEnabled;
-                    rootView.ScrollWithChildren = ScrollWithChildren;
-                    rootView.Tooltip = Tooltip;
-                    rootView.Visibility = Visibility;
-                    rootView.ZIndex = ZIndex;
-                }
-                AttachHandlers();
-            }
+            View = rootNode.Views.FirstOrDefault();
         }
-        rootView?.OnUpdate(elapsed);
-    }
-
-    public void OnWheel(WheelEventArgs e)
-    {
-        rootView?.OnWheel(e);
-    }
-
-    public bool ScrollIntoView(IEnumerable<ViewChild> path, out Vector2 distance)
-    {
-        distance = default;
-        return rootView?.ScrollIntoView(path, out distance) ?? false;
-    }
-
-    private void AttachHandlers()
-    {
-        if (rootView is null)
-        {
-            return;
-        }
-        rootView.Click += RootView_Click;
-        rootView.Drag += RootView_Drag;
-        rootView.DragEnd += RootView_DragEnd;
-        rootView.DragStart += RootView_DragStart;
-        rootView.LeftClick += RootView_LeftClick;
-        rootView.PointerEnter += RootView_PointerEnter;
-        rootView.PointerLeave += RootView_PointerLeave;
-        rootView.PropertyChanged += RootView_PropertyChanged;
-        rootView.RightClick += RootView_RightClick;
-        rootView.Wheel += RootView_Wheel;
+        base.OnUpdate(elapsed);
     }
 
     private void CreateViewNode()
@@ -314,59 +124,6 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
             }
             messageBuilder.AppendLine().Append(ex);
             Logger.Log(messageBuilder.ToString(), LogLevel.Error);
-        }
-    }
-
-    private void DetachHandlers()
-    {
-        if (rootView is null)
-        {
-            return;
-        }
-        rootView.Click -= RootView_Click;
-        rootView.Drag -= RootView_Drag;
-        rootView.DragEnd -= RootView_DragEnd;
-        rootView.DragStart -= RootView_DragStart;
-        rootView.LeftClick -= RootView_LeftClick;
-        rootView.PointerEnter -= RootView_PointerEnter;
-        rootView.PointerLeave -= RootView_PointerLeave;
-        rootView.PropertyChanged -= RootView_PropertyChanged;
-        rootView.RightClick -= RootView_RightClick;
-        rootView.Wheel -= RootView_Wheel;
-    }
-
-    private void RootView_Click(object? _, ClickEventArgs e) => Click?.Invoke(this, e);
-
-    private void RootView_Drag(object? _, PointerEventArgs e) => Drag?.Invoke(this, e);
-
-    private void RootView_DragEnd(object? _, PointerEventArgs e) => DragEnd?.Invoke(this, e);
-
-    private void RootView_DragStart(object? _, PointerEventArgs e) => DragStart?.Invoke(this, e);
-
-    private void RootView_LeftClick(object? _, ClickEventArgs e) => LeftClick?.Invoke(this, e);
-
-    private void RootView_PointerEnter(object? _, PointerEventArgs e) => PointerEnter?.Invoke(this, e);
-
-    private void RootView_PointerLeave(object? _, PointerEventArgs e) => PointerLeave?.Invoke(this, e);
-
-    private void RootView_PropertyChanged(object? _, PropertyChangedEventArgs e) => PropertyChanged?.Invoke(this, e);
-
-    private void RootView_RightClick(object? _, ClickEventArgs e) => RightClick?.Invoke(this, e);
-
-    private void RootView_Wheel(object? _, WheelEventArgs e) => Wheel?.Invoke(this, e);
-
-    // N.B. In theory Action<IView> for setValue should take a T param as well, but in practice this is only ever called
-    // from property setters that already have the property value, so the extra param is just clutter.
-    private void SetOnRootView<T>(ref T thisValue, T newValue, Action<IView> setValue)
-    {
-        if (EqualityComparer<T>.Default.Equals(thisValue, newValue))
-        {
-            return;
-        }
-        thisValue = newValue;
-        if (rootView is not null)
-        {
-            setValue(rootView);
         }
     }
 }

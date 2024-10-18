@@ -14,7 +14,7 @@ namespace StardewUI.Widgets.Keybinding;
 /// <see cref="KeybindOverlay"/> to edit the keybinds when clicked.
 /// </remarks>
 /// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
+public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : ComponentView
 {
     /// <summary>
     /// The <see cref="KeybindOverlay.AddButtonText"/> to display for adding new bindings.
@@ -136,7 +136,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
     public bool Focusable
     {
         get => rootLane.Focusable;
-        set => RequireView(() => rootLane).Focusable = true;
+        set => rootLane.Focusable = value;
     }
 
     /// <summary>
@@ -284,11 +284,12 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : WrapperView
                         Margin = index > 0 ? new Edges(Left: 16) : Edges.NONE,
                         Background = UiSprites.MenuSlotTransparent,
                         Padding = UiSprites.MenuSlotTransparent.FixedEdges! + new Edges(4),
-                        Content = new KeybindView(spriteMap)
+                        Content = new KeybindView
                         {
                             ButtonHeight = buttonHeight,
                             Font = font,
                             Keybind = kb,
+                            SpriteMap = spriteMap,
                         },
                     }
             )

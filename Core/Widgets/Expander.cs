@@ -5,7 +5,7 @@ namespace StardewUI;
 /// <summary>
 /// A widget that can be clicked to expand/collapse with additional content.
 /// </summary>
-public class Expander : WrapperView
+public class Expander : ComponentView
 {
     /// <summary>
     /// Event that fires when the <see cref="IsExpanded"/> property is changed, either externally
@@ -18,10 +18,9 @@ public class Expander : WrapperView
     /// </summary>
     public IView? Content
     {
-        get => contentFrame?.Content;
+        get => contentFrame.Content;
         set
         {
-            var contentFrame = RequireView(() => this.contentFrame);
             if (value != contentFrame.Content)
             {
                 contentFrame.Content = value;
@@ -72,12 +71,12 @@ public class Expander : WrapperView
     /// </summary>
     public IView? Header
     {
-        get => headerLane?.Children.ElementAtOrDefault(1);
+        get => headerLane.Children.ElementAtOrDefault(1);
         set
         {
-            if (value != headerLane?.Children.ElementAtOrDefault(1))
+            if (value != headerLane.Children.ElementAtOrDefault(1))
             {
-                RequireView(() => headerLane!).Children = value is not null ? [indicator, value] : [indicator];
+                headerLane.Children = value is not null ? [indicator, value] : [indicator];
                 OnPropertyChanged(nameof(Header));
             }
         }
@@ -88,12 +87,12 @@ public class Expander : WrapperView
     /// </summary>
     public Sprite? HeaderBackground
     {
-        get => headerFrame?.Background;
+        get => headerFrame.Background;
         set
         {
-            if (value != headerFrame?.Background)
+            if (value != headerFrame.Background)
             {
-                RequireView(() => headerFrame!).Background = value;
+                headerFrame.Background = value;
                 OnPropertyChanged(nameof(HeaderBackground));
             }
         }
@@ -104,12 +103,12 @@ public class Expander : WrapperView
     /// </summary>
     public Color HeaderBackgroundTint
     {
-        get => headerFrame?.BackgroundTint ?? Color.White;
+        get => headerFrame.BackgroundTint;
         set
         {
-            if (value != (headerFrame?.BackgroundTint ?? Color.White))
+            if (value != headerFrame.BackgroundTint)
             {
-                RequireView(() => headerFrame!).BackgroundTint = value;
+                headerFrame.BackgroundTint = value;
                 OnPropertyChanged(nameof(HeaderBackgroundTint));
             }
         }
@@ -121,12 +120,12 @@ public class Expander : WrapperView
     /// </summary>
     public LayoutParameters HeaderLayout
     {
-        get => headerFrame?.Layout ?? LayoutParameters.AutoRow();
+        get => headerFrame.Layout;
         set
         {
-            if (value != (headerFrame?.Layout ?? LayoutParameters.AutoRow()))
+            if (value != headerFrame.Layout)
             {
-                RequireView(() => headerFrame!).Layout = value;
+                headerFrame.Layout = value;
                 OnPropertyChanged(nameof(HeaderLayout));
             }
         }
@@ -137,12 +136,12 @@ public class Expander : WrapperView
     /// </summary>
     public Edges HeaderPadding
     {
-        get => headerFrame?.Padding ?? Edges.NONE;
+        get => headerFrame.Padding;
         set
         {
-            if (value != (headerFrame?.Padding ?? Edges.NONE))
+            if (value != headerFrame.Padding)
             {
-                RequireView(() => headerFrame!).Padding = value;
+                headerFrame.Padding = value;
                 OnPropertyChanged(nameof(HeaderPadding));
             }
         }
@@ -173,9 +172,9 @@ public class Expander : WrapperView
     /// </summary>
     public Edges Margin
     {
-        get => layout?.Margin ?? Edges.NONE;
+        get => layout.Margin;
         // "layout" is the root view so no OnPropertyChanged is required here.
-        set => RequireView(() => layout).Margin = value;
+        set => layout.Margin = value;
     }
 
     private Sprite? collapsedSprite = UiSprites.CaretRight;
