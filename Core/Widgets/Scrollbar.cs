@@ -9,12 +9,7 @@ namespace StardewUI;
 /// Must be associated with a <see cref="ScrollContainer"/> in order to work; will not draw if the container is not set
 /// or if its <see cref="ScrollContainer.ScrollSize"/> is zero.
 /// </remarks>
-public class Scrollbar(
-    Sprite? upSprite = null,
-    Sprite? downSprite = null,
-    Sprite? trackSprite = null,
-    Sprite? thumbSprite = null
-) : ComponentView<Lane>
+public class Scrollbar : ComponentView<Lane>
 {
     /// <summary>
     /// The scroll container that this <see cref="Scrollbar"/> controls.
@@ -23,6 +18,15 @@ public class Scrollbar(
     {
         get => container;
         set => SetContainer(value);
+    }
+
+    /// <summary>
+    /// Sprite to draw for the down arrow, or right arrow in horizontal orientation.
+    /// </summary>
+    public Sprite? DownSprite
+    {
+        get => downButton.Sprite;
+        set => downButton.Sprite = value;
     }
 
     /// <summary>
@@ -38,6 +42,34 @@ public class Scrollbar(
             margin = value;
             LazyUpdate();
         }
+    }
+
+    /// <summary>
+    /// Sprite to draw for the thumb, which moves within the track and indicates the current scroll position and can be
+    /// dragged to scroll.
+    /// </summary>
+    public Sprite? ThumbSprite
+    {
+        get => thumb.Sprite;
+        set => thumb.Sprite = value;
+    }
+
+    /// <summary>
+    /// Sprite to draw for the track area, within which the thumb can move.
+    /// </summary>
+    public Sprite? TrackSprite
+    {
+        get => track.Background;
+        set => track.Background = value;
+    }
+
+    /// <summary>
+    /// Sprite to draw for the up arrow, or left arrow in horizontal orientation.
+    /// </summary>
+    public Sprite? UpSprite
+    {
+        get => upButton.Sprite;
+        set => upButton.Sprite = value;
     }
 
     private ScrollContainer? container;
@@ -85,9 +117,9 @@ public class Scrollbar(
     /// <inheritdoc />
     protected override Lane CreateView()
     {
-        upButton = CreateButton("ScrollBackButton", upSprite ?? UiSprites.SmallUpArrow, 48, 48);
+        upButton = CreateButton("ScrollBackButton", UiSprites.SmallUpArrow, 48, 48);
         upButton.LeftClick += UpButton_LeftClick;
-        downButton = CreateButton("ScrollForwardButton", downSprite ?? UiSprites.SmallDownArrow, 48, 48);
+        downButton = CreateButton("ScrollForwardButton", UiSprites.SmallDownArrow, 48, 48);
         downButton.LeftClick += DownButton_LeftClick;
         thumb = new()
         {
@@ -95,7 +127,7 @@ public class Scrollbar(
             Layout = LayoutParameters.FitContent(),
             HorizontalAlignment = Alignment.Middle,
             VerticalAlignment = Alignment.Middle,
-            Sprite = thumbSprite ?? UiSprites.VerticalScrollThumb,
+            Sprite = UiSprites.VerticalScrollThumb,
             Draggable = true,
         };
         thumb.DragStart += Thumb_DragStart;
@@ -106,7 +138,7 @@ public class Scrollbar(
         {
             Name = "ScrollbarTrack",
             Margin = new(Left: 2, Top: 2, Bottom: 8),
-            Background = trackSprite ?? UiSprites.ScrollBarTrack,
+            Background = UiSprites.ScrollBarTrack,
             Content = thumb,
             ShadowAlpha = 0.4f,
             ShadowCount = 2,

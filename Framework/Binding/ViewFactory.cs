@@ -1,4 +1,7 @@
-﻿namespace StardewUI.Framework.Binding;
+﻿using StardewUI.Widgets;
+using StardewUI.Widgets.Keybinding;
+
+namespace StardewUI.Framework.Binding;
 
 /// <summary>
 /// Factory for creating views from tags.
@@ -38,9 +41,12 @@ public class ViewFactory : IViewFactory
             "frame" => new Frame(),
             "grid" => new Grid(),
             "image" => new Image(),
+            "keybind" => new KeybindView(),
+            "keybind-editor" => new KeybindListEditor(),
             "label" => new Label(),
             "lane" => new Lane(),
             "marquee" => new Marquee(),
+            "nine-grid-editor" => new NineGridPlacementEditor(),
             "panel" => new Panel(),
             "scrollable" => new ScrollableView(),
             "slider" => new Slider(),

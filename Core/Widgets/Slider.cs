@@ -6,11 +6,7 @@ namespace StardewUI;
 /// <summary>
 /// A horizontal track with draggable thumb (button) for choosing a numeric value in a range.
 /// </summary>
-/// <param name="background">Background or track sprite, if not using the default.</param>
-/// <param name="thumbSprite">Sprite for the thumb/button, if not using the default.</param>
-/// <param name="thumbSize">Override for the thumb/button size, recommended when using a custom
-/// <paramref name="thumbSprite"/> sprite.</param>
-public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vector2? thumbSize = null) : ComponentView
+public class Slider : ComponentView
 {
     private const int DEFAULT_TRACK_WIDTH = 120;
     private const int TRACK_HEIGHT = 24;
@@ -19,6 +15,24 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     /// Event raised when the <see cref="Value"/> changes.
     /// </summary>
     public event EventHandler<EventArgs>? ValueChange;
+
+    /// <summary>
+    /// Background or track sprite, if not using the default.
+    /// </summary>
+    public Sprite? BackgroundSprite
+    {
+        get => backgroundImage.Sprite;
+        set => backgroundImage.Sprite = value;
+    }
+
+    /// <summary>
+    /// Sprite for the thumb/button, if not using the default.
+    /// </summary>
+    public Sprite? ThumbSprite
+    {
+        get => thumbImage.Sprite;
+        set => thumbImage.Sprite = value;
+    }
 
     /// <summary>
     /// The interval of which <see cref="Value"/> should be a multiple. Affects which values will be hit while dragging.
@@ -83,6 +97,24 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
             {
                 Value = min;
             }
+        }
+    }
+
+    /// <summary>
+    /// Override for the thumb/button size, recommended when using a custom <see cref="ThumbSprite"/>.
+    /// </summary>
+    public Vector2? ThumbSize
+    {
+        get => thumbSize;
+        set
+        {
+            if (value != thumbSize)
+            {
+                return;
+            }
+            thumbSize = value;
+            thumbImage.Layout = GetThumbImageLayout(value);
+            OnPropertyChanged(nameof(ThumbSize));
         }
     }
 
@@ -168,6 +200,7 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     private float interval = 0.01f;
     private float max = 1;
     private float min = 0;
+    private Vector2? thumbSize;
     private float value = 0;
     private Func<float, string> valueFormat = v => v.ToString();
 
@@ -188,15 +221,13 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
         backgroundImage = new()
         {
             Layout = LayoutParameters.Fill(),
-            Sprite = background ?? UiSprites.SliderBackground,
+            Sprite = UiSprites.SliderBackground,
             Fit = ImageFit.Stretch,
         };
         thumbImage = new()
         {
-            Layout = thumbSize.HasValue
-                ? LayoutParameters.FixedSize(thumbSize.Value.X, thumbSize.Value.Y)
-                : LayoutParameters.FitContent(),
-            Sprite = thumbSprite ?? UiSprites.SliderButton,
+            Layout = GetThumbImageLayout(thumbSize),
+            Sprite = UiSprites.SliderButton,
             Fit = ImageFit.Stretch,
             Focusable = true,
             Draggable = true,
@@ -227,6 +258,13 @@ public class Slider(Sprite? background = null, Sprite? thumbSprite = null, Vecto
     protected override void OnLayout()
     {
         UpdatePosition();
+    }
+
+    private static LayoutParameters GetThumbImageLayout(Vector2? thumbSize)
+    {
+        return thumbSize.HasValue
+            ? LayoutParameters.FixedSize(thumbSize.Value.X, thumbSize.Value.Y)
+            : LayoutParameters.FitContent();
     }
 
     private void SetValueFromProgress(float progress)

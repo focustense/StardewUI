@@ -13,8 +13,7 @@ namespace StardewUI.Widgets.Keybinding;
 /// Displays all the configured keybinds in one row, and (<see cref="EditableType"/> is not <c>null</c>) opens up a
 /// <see cref="KeybindOverlay"/> to edit the keybinds when clicked.
 /// </remarks>
-/// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : ComponentView
+public class KeybindListEditor : ComponentView
 {
     /// <summary>
     /// The <see cref="KeybindOverlay.AddButtonText"/> to display for adding new bindings.
@@ -186,6 +185,27 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : ComponentView
         }
     }
 
+    /// <summary>
+    /// Map of bindable buttons to sprite representations.
+    /// </summary>
+    public ISpriteMap<SButton>? SpriteMap
+    {
+        get => spriteMap;
+        set
+        {
+            if (value == spriteMap)
+            {
+                return;
+            }
+            spriteMap = value;
+            foreach (var keybindView in KeybindViews)
+            {
+                keybindView.SpriteMap = value;
+            }
+            OnPropertyChanged(nameof(SpriteMap));
+        }
+    }
+
     private IEnumerable<KeybindView> KeybindViews =>
         rootLane.Children.OfType<Frame>().Select(frame => frame.Content).OfType<KeybindView>();
 
@@ -199,6 +219,7 @@ public class KeybindListEditor(ISpriteMap<SButton> spriteMap) : ComponentView
     private Color emptyTextColor = Game1.textColor;
     private SpriteFont font = Game1.smallFont;
     private KeybindList keybindList = new();
+    private ISpriteMap<SButton>? spriteMap;
 
     /// <inheritdoc />
     protected override IView CreateView()

@@ -6,9 +6,7 @@ namespace StardewUI;
 /// <summary>
 /// Simple button with optional hover background.
 /// </summary>
-/// <param name="defaultBackgroundSprite">The default background to show for the button's idle state.</param>
-/// <param name="hoverBackgroundSprite">Alternate background sprite when the button has cursor focus.</param>
-public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgroundSprite = null) : ComponentView<View>
+public class Button : ComponentView<View>
 {
     /// <summary>
     /// Content view to display inside the button frame.
@@ -23,6 +21,24 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
                 contentFrame.Content = value;
                 OnPropertyChanged(nameof(Content));
             }
+        }
+    }
+
+    /// <summary>
+    /// The default background to show for the button's idle state.
+    /// </summary>
+    public Sprite? DefaultBackground
+    {
+        get => defaultBackgroundSprite;
+        set
+        {
+            if (value == defaultBackgroundSprite)
+            {
+                return;
+            }
+            defaultBackgroundSprite = value;
+            UpdateBackgroundImage();
+            OnPropertyChanged(nameof(DefaultBackground));
         }
     }
 
@@ -48,6 +64,24 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
                 label.Font = font;
             }
             OnPropertyChanged(nameof(Font));
+        }
+    }
+
+    /// <summary>
+    /// Alternate background sprite when the button has cursor focus.
+    /// </summary>
+    public Sprite? HoverBackground
+    {
+        get => hoverBackgroundSprite;
+        set
+        {
+            if (value == hoverBackgroundSprite)
+            {
+                return;
+            }
+            hoverBackgroundSprite = value;
+            UpdateBackgroundImage();
+            OnPropertyChanged(nameof(HoverBackground));
         }
     }
 
@@ -105,7 +139,10 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
         }
     }
 
+    private Sprite? defaultBackgroundSprite;
     private SpriteFont font = Game1.smallFont;
+    private Sprite? hoverBackgroundSprite;
+    private bool lastHoverState;
 
     // Initialized in CreateView
     private Image backgroundImage = null!;
@@ -151,14 +188,22 @@ public class Button(Sprite? defaultBackgroundSprite = null, Sprite? hoverBackgro
         UpdateBackgroundImage(false);
     }
 
-    private void UpdateBackgroundImage(bool hover)
+    private void UpdateBackgroundImage(bool? hover = null)
     {
+        if (hover.HasValue)
+        {
+            lastHoverState = hover.Value;
+        }
+        else
+        {
+            hover = lastHoverState;
+        }
         if (backgroundImage is null)
         {
             return;
         }
-        backgroundImage.Sprite = hover
-            ? hoverBackgroundSprite ?? defaultBackgroundSprite ?? UiSprites.ButtonDark
-            : defaultBackgroundSprite ?? UiSprites.ButtonDark;
+        backgroundImage.Sprite = hover.Value
+            ? HoverBackground ?? DefaultBackground ?? UiSprites.ButtonDark
+            : DefaultBackground ?? UiSprites.ButtonDark;
     }
 }

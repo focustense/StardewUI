@@ -10,18 +10,37 @@ namespace StardewUI;
 /// Corresponds to <see cref="StardewValley.Utility.drawTinyDigits"/>.
 /// </para>
 /// <para>
-/// For this widget type, <paramref name="baseScale"/> and <see cref="Scale"/> <b>do</b> affect layout, and the size of
-/// the rendered text is entirely based on the <paramref name="digitSprites"/> and cumulative scale which is effectively
-/// treated like a font size. If the view's <see cref="View.Layout"/> uses any non-content-based dimensions, it will
-/// affect the box size as expected but will not change the rendered text; the text is not scaled to the layout bounds.
+/// For this widget type, <see cref="Scale"/> <b>does</b> affect layout, and the size of the rendered text is entirely
+/// based on the <see cref="DigitSprites"/> and cumulative scale which is effectively treated like a font size. If the
+/// view's <see cref="View.Layout"/> uses any non-content-based dimensions, it will affect the box size as expected but
+/// will not change the rendered text; the text is not scaled to the layout bounds.
 /// </para>
 /// </remarks>
-/// <param name="digitSprites">The sprites for each individual digit, with the index corresponding to the digit itself
-/// (element 0 for digit '0', element 4 for digit '4', etc.). This must have exactly 10 elements.</param>
-/// <param name="baseScale">Scale to apply to the base dimensions of the <paramref name="digitSprites"/> before any
-/// extra <see cref="Scale"/>.</param>
-public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float baseScale = 2.0f) : View
+public class TinyNumberLabel : View
 {
+    /// <summary>
+    /// The sprites for each individual digit, with the index corresponding to the digit itself (element 0 for digit
+    /// '0', element 4 for digit '4', etc.). This must have exactly 10 elements.
+    /// </summary>
+    public IReadOnlyList<Sprite> DigitSprites
+    {
+        get => digitSprites.Value;
+        set
+        {
+            if (value.Count != 10)
+            {
+                throw new ArgumentException(
+                    $"Digit sprite list has the wrong number of sprites (expected 10, got {value.Count}).",
+                    nameof(value)
+                );
+            }
+            if (digitSprites.SetIfChanged(value))
+            {
+                OnPropertyChanged(nameof(DigitSprites));
+            }
+        }
+    }
+
     /// <summary>
     /// The number to display.
     /// </summary>
@@ -39,12 +58,8 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
     }
 
     /// <summary>
-    /// Custom scale amount, cumulative with the <c>baseScale</c> that the label was constructed with.
+    /// Scale to draw the digits, relative to their original pixel size.
     /// </summary>
-    /// <remarks>
-    /// For example, a <c>baseScale</c> of <c>5.0f</c> (default) and a <see cref="Scale"/> of <c>2.0f</c> would yield a
-    /// layout/drawing scale of <c>10.0f</c>, which would render a 5x7 sprite (the vanilla digit sprite size) as 50x70.
-    /// </remarks>
     public float Scale
     {
         get => scale.Value;
@@ -57,17 +72,9 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
         }
     }
 
-    private readonly float baseScale = baseScale;
-    private readonly IReadOnlyList<Sprite> digitSprites = digitSprites is not null
-        ? digitSprites.Count == 10
-            ? digitSprites
-            : throw new ArgumentException(
-                $"Digit sprite list has the wrong number of sprites (expected 10, got {digitSprites.Count}).",
-                nameof(digitSprites)
-            )
-        : UiSprites.Digits;
+    private readonly DirtyTracker<IReadOnlyList<Sprite>> digitSprites = new(UiSprites.Digits);
     private readonly DirtyTracker<int> number = new(0);
-    private readonly DirtyTracker<float> scale = new(1.0f);
+    private readonly DirtyTracker<float> scale = new(2.0f);
 
     private Rectangle[] digitRects = [];
     private int[] digits = [];
@@ -75,12 +82,13 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
     /// <inheritdoc />
     protected override bool IsContentDirty()
     {
-        return number.IsDirty || scale.IsDirty;
+        return digitSprites.IsDirty || number.IsDirty || scale.IsDirty;
     }
 
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
+        var digitSprites = this.digitSprites.Value;
         for (int i = 0; i < digits.Length; i++)
         {
             var digitSprite = digitSprites[digits[i]];
@@ -92,6 +100,7 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
     /// <inheritdoc />
     protected override void OnMeasure(Vector2 availableSize)
     {
+        var digitSprites = this.digitSprites.Value;
         int totalWidth = 0;
         int maxHeight = 0;
         digitRects = new Rectangle[digits.Length];
@@ -99,8 +108,8 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
         {
             var digitSprite = digitSprites[digits[i]];
             var size = digitSprite.SourceRect?.Size ?? digitSprite.Texture.Bounds.Size;
-            int digitWidth = (int)(size.X * baseScale * Scale);
-            int digitHeight = (int)(size.Y * baseScale * Scale);
+            int digitWidth = (int)(size.X * Scale);
+            int digitHeight = (int)(size.Y * Scale);
             digitRects[i] = new(totalWidth, 0, digitWidth, digitHeight);
             totalWidth += digitWidth;
             maxHeight = Math.Max(maxHeight, digitHeight);
@@ -111,6 +120,7 @@ public class TinyNumberLabel(IReadOnlyList<Sprite>? digitSprites = null, float b
     /// <inheritdoc />
     protected override void ResetDirty()
     {
+        digitSprites.ResetDirty();
         number.ResetDirty();
         scale.ResetDirty();
     }

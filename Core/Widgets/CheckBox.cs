@@ -6,14 +6,30 @@ namespace StardewUI;
 /// <summary>
 /// A togglable checkbox.
 /// </summary>
-/// <param name="uncheckedSprite">Sprite to display when the box is unchecked, if not using the default.</param>
-/// <param name="checkedSprite">Sprite to display when the box is checked, if not using the default.</param>
-public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = null) : ComponentView<Lane>
+public class CheckBox : ComponentView<Lane>
 {
     /// <summary>
     /// Event raised when the checked state changes.
     /// </summary>
     public event EventHandler<EventArgs>? Change;
+
+    /// <summary>
+    /// Sprite to display when the box is checked, if not using the default.
+    /// </summary>
+    public Sprite? CheckedSprite
+    {
+        get => checkedSprite;
+        set
+        {
+            if (value == checkedSprite)
+            {
+                return;
+            }
+            checkedSprite = value;
+            UpdateCheckImage();
+            OnPropertyChanged(nameof(CheckedSprite));
+        }
+    }
 
     /// <summary>
     /// Whether or not the box is checked.
@@ -70,7 +86,27 @@ public class CheckBox(Sprite? uncheckedSprite = null, Sprite? checkedSprite = nu
         }
     }
 
+    /// <summary>
+    /// Sprite to display when the box is unchecked, if not using the default.
+    /// </summary>
+    public Sprite? UncheckedSprite
+    {
+        get => uncheckedSprite;
+        set
+        {
+            if (value == uncheckedSprite)
+            {
+                return;
+            }
+            uncheckedSprite = value;
+            UpdateCheckImage();
+            OnPropertyChanged(nameof(UncheckedSprite));
+        }
+    }
+
+    private Sprite? checkedSprite;
     private bool isChecked;
+    private Sprite? uncheckedSprite;
 
     // Initialized in CreateView
     private Image checkImage = null!;

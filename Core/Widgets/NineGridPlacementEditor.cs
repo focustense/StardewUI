@@ -12,11 +12,13 @@ namespace StardewUI.Widgets;
 /// different background color. The grid is uniform and the size of each cell is determined by the widget's actual size
 /// (by way of its <see cref="IView.Layout"/>) and the current <see cref="LineWidth"/>.
 /// </remarks>
-/// <param name="buttonSpriteMap">Map of buttons to button prompt sprites.</param>
-/// <param name="directionSpriteMap">Map of directions to directional arrow sprites; used to indicate dragging.</param>
-public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<Direction> directionSpriteMap)
-    : View
+public class NineGridPlacementEditor : View
 {
+    /// <summary>
+    /// Map of buttons to button prompt sprites.
+    /// </summary>
+    public ISpriteMap<SButton>? ButtonSpriteMap { get; set; }
+
     /// <summary>
     /// The default color to draw grid cells (inside the gridlines).
     /// </summary>
@@ -48,6 +50,11 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
             }
         }
     }
+
+    /// <summary>
+    /// Map of directions to directional arrow sprites; used to indicate dragging.
+    /// </summary>
+    public ISpriteMap<Direction>? DirectionSpriteMap { get; set; }
 
     /// <summary>
     /// The color to draw gridlines.
@@ -147,7 +154,7 @@ public class NineGridPlacementEditor(ISpriteMap<SButton> buttonSpriteMap, ISprit
         if (e.IsPrimaryButton())
         {
             Game1.playSound("bigSelect");
-            overlay = new PositioningOverlay(buttonSpriteMap, directionSpriteMap)
+            overlay = new PositioningOverlay(ButtonSpriteMap, DirectionSpriteMap)
             {
                 Content = Content,
                 ContentPlacement = Placement,

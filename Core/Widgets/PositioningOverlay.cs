@@ -17,7 +17,7 @@ namespace StardewUI.Widgets;
 /// </remarks>
 /// <param name="buttonSpriteMap">Map of buttons to button prompt sprites.</param>
 /// <param name="directionSpriteMap">Map of directions to directional arrow sprites; used to indicate dragging.</param>
-public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<Direction> directionSpriteMap)
+public class PositioningOverlay(ISpriteMap<SButton>? buttonSpriteMap, ISpriteMap<Direction>? directionSpriteMap)
     : FullScreenOverlay
 {
     /// <summary>
@@ -153,8 +153,8 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             FineUp = [SButton.W, SButton.Up],
         };
 
-    private readonly ISpriteMap<SButton> buttonSpriteMap = buttonSpriteMap;
-    private readonly ISpriteMap<Direction> directionSpriteMap = directionSpriteMap;
+    private readonly ISpriteMap<SButton>? buttonSpriteMap = buttonSpriteMap;
+    private readonly ISpriteMap<Direction>? directionSpriteMap = directionSpriteMap;
 
     /// <inheritdoc />
     protected override IView CreateView()
@@ -252,19 +252,19 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
                     new Image()
                     {
                         Layout = LayoutParameters.FixedSize(64, 64),
-                        Sprite = owner.directionSpriteMap.Get(Direction.West, out _),
+                        Sprite = owner.directionSpriteMap?.Get(Direction.West, out _),
                         Tint = MouseTint,
                     },
                     new Image()
                     {
                         Layout = LayoutParameters.FixedSize(100, 100),
-                        Sprite = owner.buttonSpriteMap.Get(SButton.MouseLeft, out _),
+                        Sprite = owner.buttonSpriteMap?.Get(SButton.MouseLeft, out _),
                         Tint = MouseTint,
                     },
                     new Image()
                     {
                         Layout = LayoutParameters.FixedSize(64, 64),
-                        Sprite = owner.directionSpriteMap.Get(Direction.East, out _),
+                        Sprite = owner.directionSpriteMap?.Get(Direction.East, out _),
                         Tint = MouseTint,
                     },
                 ],
@@ -311,16 +311,18 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             dpadImage = new() { Layout = LayoutParameters.FixedSize(100, 100), Tint = KeyTint };
             dpadAnimator = new(dpadImage)
             {
-                Frames =
-                [
-                    // Sleep is used as substitute for (non-existing) "d-pad no press" button.
-                    owner.buttonSpriteMap.Get(SButton.Sleep, out _),
-                    owner.buttonSpriteMap.Get(SButton.DPadUp, out _),
-                    owner.buttonSpriteMap.Get(SButton.DPadRight, out _),
-                    owner.buttonSpriteMap.Get(SButton.DPadDown, out _),
-                    owner.buttonSpriteMap.Get(SButton.DPadLeft, out _),
-                    owner.buttonSpriteMap.Get(SButton.DPadUp, out _),
-                ],
+                Frames = owner.buttonSpriteMap is not null
+                    ?
+                    [
+                        // Sleep is used as substitute for (non-existing) "d-pad no press" button.
+                        owner.buttonSpriteMap.Get(SButton.Sleep, out _),
+                        owner.buttonSpriteMap.Get(SButton.DPadUp, out _),
+                        owner.buttonSpriteMap.Get(SButton.DPadRight, out _),
+                        owner.buttonSpriteMap.Get(SButton.DPadDown, out _),
+                        owner.buttonSpriteMap.Get(SButton.DPadLeft, out _),
+                        owner.buttonSpriteMap.Get(SButton.DPadUp, out _),
+                    ]
+                    : [],
                 FrameDuration = TimeSpan.FromMilliseconds(250),
                 StartDelay = TimeSpan.FromSeconds(4),
             };
@@ -328,7 +330,7 @@ public class PositioningOverlay(ISpriteMap<SButton> buttonSpriteMap, ISpriteMap<
             {
                 Layout = LayoutParameters.FixedSize(100, 100),
                 Margin = new(Right: 64),
-                Sprite = owner.buttonSpriteMap.Get(SButton.LeftThumbstickUp, out _),
+                Sprite = owner.buttonSpriteMap?.Get(SButton.LeftThumbstickUp, out _),
                 Tint = KeyTint,
             };
             controllerMovementPromptsLane = new Lane()

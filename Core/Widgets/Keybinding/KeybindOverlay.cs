@@ -10,7 +10,7 @@ namespace StardewUI.Widgets.Keybinding;
 /// Overlay control for editing a keybinding, or list of bindings.
 /// </summary>
 /// <param name="spriteMap">Map of bindable buttons to sprite representations.</param>
-public class KeybindOverlay(ISpriteMap<SButton> spriteMap) : FullScreenOverlay
+public class KeybindOverlay(ISpriteMap<SButton>? spriteMap) : FullScreenOverlay
 {
     /// <summary>
     /// Text to display on the button used to add a new binding.

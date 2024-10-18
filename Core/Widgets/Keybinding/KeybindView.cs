@@ -143,7 +143,19 @@ public class KeybindView : ComponentView<Lane>
     /// <summary>
     /// Map of bindable buttons to sprite representations.
     /// </summary>
-    public ISpriteMap<SButton>? SpriteMap { get; set; }
+    public ISpriteMap<SButton>? SpriteMap
+    {
+        get => spriteMap;
+        set
+        {
+            if (value == spriteMap)
+            {
+                return;
+            }
+            spriteMap = value;
+            OnPropertyChanged(nameof(SpriteMap));
+        }
+    }
 
     /// <summary>
     /// Text color for the button text inside any placeholder sprites.
@@ -190,6 +202,7 @@ public class KeybindView : ComponentView<Lane>
     private SpriteFont font = Game1.smallFont;
     private Keybind keybind = new();
     private float spacing;
+    private ISpriteMap<SButton>? spriteMap;
     private Color textColor = Game1.textColor;
     private Color tintColor = Color.White;
 
