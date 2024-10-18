@@ -173,7 +173,7 @@ public class AttributeBindingFactory(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
         string propertyName,
-        BindingContext context
+        BindingContext? context
     )
         where TSource : notnull
     {
@@ -219,7 +219,8 @@ public class AttributeBindingFactory(
             ? valueConverterFactory.GetRequiredConverter<TDest, TSource>()
             : InvalidConverter<TDest, TSource>.Instance;
         if (
-            !context.Descriptor.SupportsChangeNotifications
+            context is not null
+            && !context.Descriptor.SupportsChangeNotifications
             && direction.IsIn()
             && attribute.ValueType.IsContextBinding()
             && attribute.ValueType != AttributeValueType.OneTimeBinding
