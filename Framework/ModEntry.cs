@@ -1,9 +1,11 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI.Events;
+using StardewUI.Diagnostics;
 using StardewUI.Framework.Api;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
+using StardewUI.Framework.Diagnostics;
 using StardewUI.Framework.Patches;
 using StardewUI.Framework.Sources;
 
@@ -21,6 +23,7 @@ internal sealed class ModEntry : Mod
         I18n.Init(helper.Translation);
         UI.Initialize(helper, Monitor);
         config = helper.ReadConfig<ModConfig>();
+        Trace.Writer = new TraceWriter(ModManifest, () => config.Tracing);
 
         try
         {
@@ -38,6 +41,7 @@ internal sealed class ModEntry : Mod
 
         helper.Events.Content.AssetRequested += Content_AssetRequested;
         helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+        helper.Events.Input.ButtonsChanged += Input_ButtonsChanged;
     }
 
     public override object? GetApi(IModInfo modInfo)
@@ -78,5 +82,14 @@ internal sealed class ModEntry : Mod
     private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
         assetCache.Update(Game1.currentGameTime.ElapsedGameTime);
+    }
+
+    private void Input_ButtonsChanged(object? sender, ButtonsChangedEventArgs e)
+    {
+        if (config.Tracing.ToggleHotkeys.JustPressed())
+        {
+            Trace.IsTracing = !Trace.IsTracing;
+            Helper.Input.SuppressActiveKeybinds(config.Tracing.ToggleHotkeys);
+        }
     }
 }

@@ -43,6 +43,7 @@
       <Using Alias="Color" Include="Microsoft.Xna.Framework.Color" />
       <Using Alias="Rectangle" Include="Microsoft.Xna.Framework.Rectangle" />
       <Using Alias="Vector2" Include="Microsoft.Xna.Framework.Vector2" />
+      <Using Alias="Trace" Include="StardewUI.Diagnostics.Trace" />
       <InternalsVisibleTo Include="StardewUI.Framework.Tests" />
   </ItemGroup>
 
