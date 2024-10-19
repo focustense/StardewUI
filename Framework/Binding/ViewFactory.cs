@@ -1,4 +1,5 @@
-﻿using StardewUI.Widgets;
+﻿using StardewUI.Framework.Views;
+using StardewUI.Widgets;
 using StardewUI.Widgets.Keybinding;
 
 namespace StardewUI.Framework.Binding;
@@ -36,7 +37,7 @@ public class ViewFactory : IViewFactory
             "button" => new Button(),
             "checkbox" => new CheckBox(),
             "digits" => new TinyNumberLabel(),
-            "dropdown" => new DropDownList<object>(),
+            "dropdown" => new DynamicDropDownList(),
             "expander" => new Expander(),
             "frame" => new Frame(),
             "grid" => new Grid(),

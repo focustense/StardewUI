@@ -260,12 +260,7 @@ public class RepeaterNode(
             if (!factoryCache.TryGetValue(collectionSource.ValueType, out var factory))
             {
                 var elementType =
-                    GetEnumerableElementType(collectionSource.ValueType)
-                    ?? collectionSource
-                        .ValueType.GetInterfaces()
-                        .Select(GetEnumerableElementType)
-                        .Where(e => e is not null)
-                        .FirstOrDefault()
+                    collectionSource.ValueType.GetEnumerableElementType()
                     ?? throw new BindingException(
                         $"Repeater node cannot bind to non-enumerable type {collectionSource.ValueType.Name}."
                     );
@@ -281,13 +276,6 @@ public class RepeaterNode(
             where TCollection : IEnumerable<TElement>
         {
             return new CollectionWatcher<TCollection, TElement>((IValueSource<TCollection>)collectionSource);
-        }
-
-        private static Type? GetEnumerableElementType(Type t)
-        {
-            return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>)
-                ? t.GetGenericArguments()[0]
-                : null;
         }
     }
 

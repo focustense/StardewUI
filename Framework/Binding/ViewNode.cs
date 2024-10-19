@@ -235,12 +235,7 @@ public class ViewNode(
 
         private static IChildrenBinder CreateBinder(Type viewType, IPropertyDescriptor childrenProperty)
         {
-            var enumerableChildType = childrenProperty
-                .ValueType.GetInterfaces()
-                .Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                .Select(t => t.GetGenericArguments()[0])
-                .Where(t => typeof(IView).IsAssignableFrom(t))
-                .FirstOrDefault();
+            var enumerableChildType = childrenProperty.ValueType.GetEnumerableElementType();
             var factoryMethod = enumerableChildType is not null
                 ? multipleMethod.MakeGenericMethod([viewType, enumerableChildType, childrenProperty.ValueType])
                 : singleMethod.MakeGenericMethod([viewType, childrenProperty.ValueType]);

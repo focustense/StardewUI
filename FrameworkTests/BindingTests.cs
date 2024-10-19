@@ -11,6 +11,7 @@ using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 using StardewUI.Framework.Tests;
+using StardewUI.Framework.Views;
 using Xunit.Abstractions;
 
 namespace StarML.Tests;
@@ -367,7 +368,7 @@ public partial class BindingTests
         var model = new DropDownTestModel { Items = [3, 7, 15] };
         var tree = BuildTreeFromMarkup(markup, model);
 
-        var dropdown = Assert.IsType<DropDownList<object>>(tree.Views.SingleOrDefault());
+        var dropdown = Assert.IsType<DynamicDropDownList>(tree.Views.SingleOrDefault());
         dropdown.SelectedIndex = 1;
         tree.Update();
 
@@ -1593,6 +1594,81 @@ public partial class BindingTests
         root.OnClick(new(new(5, 5), SButton.ControllerA));
 
         Assert.Equal(1, model.Counter);
+    }
+
+    enum DropdownTestEnum
+    {
+        Foo,
+        Bar,
+        Baz,
+        Qux,
+    }
+
+    partial class TypedDropdownTestModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private List<DropdownTestEnum> items = [];
+
+        [Notify]
+        private Func<DropdownTestEnum, string>? itemFormat;
+
+        [Notify]
+        private int selectedIndex;
+
+        [Notify]
+        private DropdownTestEnum selectedItem;
+    }
+
+    [Fact]
+    public void WhenDynamicDropdownTypesAreConsistent_BindsAndUpdates()
+    {
+        string markup =
+            @"<dropdown options={Items}
+                        selected-index={<>SelectedIndex}
+                        selected-option={<>SelectedItem}
+                        option-format={ItemFormat}
+            />";
+        var model = new TypedDropdownTestModel()
+        {
+            Items = [DropdownTestEnum.Foo, DropdownTestEnum.Bar, DropdownTestEnum.Baz],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var dropdown = Assert.IsType<DynamicDropDownList>(tree.Views.SingleOrDefault());
+        Assert.Equal(0, dropdown.SelectedIndex);
+        Assert.Equal(0, model.SelectedIndex);
+        Assert.Equal(DropdownTestEnum.Foo, dropdown.SelectedOption?.Value);
+        Assert.Equal(DropdownTestEnum.Foo, model.SelectedItem);
+        Assert.Equal("Foo", dropdown.SelectedOptionText);
+
+        model.SelectedIndex = 1;
+        tree.Update();
+
+        Assert.Equal(1, dropdown.SelectedIndex);
+        Assert.Equal(1, model.SelectedIndex);
+        Assert.Equal(DropdownTestEnum.Bar, dropdown.SelectedOption?.Value);
+        Assert.Equal(DropdownTestEnum.Bar, model.SelectedItem);
+        Assert.Equal("Bar", dropdown.SelectedOptionText);
+
+        model.SelectedItem = DropdownTestEnum.Baz;
+        tree.Update();
+
+        Assert.Equal(2, dropdown.SelectedIndex);
+        Assert.Equal(2, model.SelectedIndex);
+        Assert.Equal(DropdownTestEnum.Baz, dropdown.SelectedOption?.Value);
+        Assert.Equal(DropdownTestEnum.Baz, model.SelectedItem);
+        Assert.Equal("Baz", dropdown.SelectedOptionText);
+
+        model.ItemFormat = v => new string(v.ToString().ToLower().Reverse().ToArray());
+        model.SelectedItem = DropdownTestEnum.Qux;
+        model.Items = [DropdownTestEnum.Baz, DropdownTestEnum.Qux, DropdownTestEnum.Foo];
+        tree.Update();
+
+        Assert.Equal(1, dropdown.SelectedIndex);
+        Assert.Equal(1, model.SelectedIndex);
+        Assert.Equal(DropdownTestEnum.Qux, dropdown.SelectedOption?.Value);
+        Assert.Equal(DropdownTestEnum.Qux, model.SelectedItem);
+        Assert.Equal("xuq", dropdown.SelectedOptionText);
     }
 
     private IViewNode BuildTreeFromMarkup(string markup, object model)

@@ -125,6 +125,7 @@ public class ValueConverterFactory : IValueConverterFactory
 
         // If source and destination are the same, use a pass-through converter.
         Register(new IdentityValueConverterFactory());
+        Register(new AnyCastConverterFactory());
         Register(new CastingValueConverterFactory());
 
         // Anything can generally be converted to a string using the default converter.

@@ -84,6 +84,9 @@ internal class ViewBinding : IViewBinding
             {
                 anyChanged |= binding.UpdateView(view);
             }
+        }
+        foreach (var binding in attributeBindings)
+        {
             if (binding.Direction.IsOut() && viewPropertiesChanged.Contains(binding.DestinationPropertyName))
             {
                 binding.UpdateSource(view);

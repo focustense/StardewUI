@@ -18,15 +18,16 @@ public class DropDownList<T> : ComponentView
     /// <summary>
     /// Specifies how to format the <see cref="SelectedOption"/> in the label text.
     /// </summary>
-    public Func<T, string> OptionFormat
+    public Func<T, string>? OptionFormat
     {
         get => optionFormat;
         set
         {
             if (value != optionFormat)
             {
-                optionFormat = value;
+                optionFormat = value ?? defaultOptionFormat;
                 UpdateOptions();
+                UpdateSelectedOption();
                 OnPropertyChanged(nameof(OptionFormat));
             }
         }
@@ -89,6 +90,7 @@ public class DropDownList<T> : ComponentView
             Select?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged(nameof(SelectedIndex));
             OnPropertyChanged(nameof(SelectedOption));
+            OnPropertyChanged(nameof(SelectedOptionText));
         }
     }
 
@@ -101,10 +103,20 @@ public class DropDownList<T> : ComponentView
         set => SelectedIndex = value is not null ? options.IndexOf(value) : -1;
     }
 
+    /// <summary>
+    /// The text of the currently-selected option.
+    /// </summary>
+    public string SelectedOptionText
+    {
+        get => selectedOptionLabel.Text;
+    }
+
+    private static readonly Func<T, string> defaultOptionFormat = v => v.ToString() ?? "";
+
     private readonly DirtyTrackingList<T> options = [];
 
     private IOverlay? overlay;
-    private Func<T, string> optionFormat = v => v.ToString() ?? "";
+    private Func<T, string> optionFormat = defaultOptionFormat;
     private int selectedIndex = -1;
 
     // Initialized in CreateView
