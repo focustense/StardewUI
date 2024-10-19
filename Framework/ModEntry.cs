@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI.Events;
-using StardewUI.Diagnostics;
 using StardewUI.Framework.Api;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;

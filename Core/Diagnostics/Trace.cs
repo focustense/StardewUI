@@ -22,7 +22,8 @@ public static class Trace
                 if (Writer is null)
                 {
                     throw new InvalidOperationException(
-                        $"Cannot start tracing before the {nameof(Writer)} has been set.");
+                        $"Cannot start tracing before the {nameof(Writer)} has been set."
+                    );
                 }
                 Writer.BeginTrace();
             }
@@ -93,8 +94,6 @@ public static class Trace
         {
             return null;
         }
-        return caller is string name
-            ? Begin(() => name, memberName)
-            : Begin(() => caller.GetType().Name, memberName);
+        return caller is string name ? Begin(() => name, memberName) : Begin(() => caller.GetType().Name, memberName);
     }
 }
