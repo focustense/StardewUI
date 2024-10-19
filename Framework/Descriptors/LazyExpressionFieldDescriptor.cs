@@ -23,6 +23,7 @@ public static class LazyExpressionFieldDescriptor
     /// </returns>
     public static IPropertyDescriptor FromFieldInfo(FieldInfo fieldInfo)
     {
+        using var _ = Trace.Begin(nameof(LazyExpressionFieldDescriptor), nameof(FromFieldInfo));
         if (!descriptorCache.TryGetValue(fieldInfo, out var descriptor))
         {
             if (fieldInfo.DeclaringType is null)

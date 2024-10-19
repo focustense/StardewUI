@@ -60,6 +60,7 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
     /// <inheritdoc />
     public bool Update(TimeSpan elapsed)
     {
+        using var _ = Trace.Begin(this, nameof(Update));
         condition.Update();
         bool conditionChanged = condition.Passed != wasMatched;
         wasMatched = condition.Passed;

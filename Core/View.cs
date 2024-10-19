@@ -378,6 +378,7 @@ public abstract class View : IView
     /// </remarks>
     public void Draw(ISpriteBatch b)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(Draw));
         if (Visibility != Visibility.Visible)
         {
             return;
@@ -406,6 +407,7 @@ public abstract class View : IView
     /// </remarks>
     public FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(FocusSearch));
         if (Visibility != Visibility.Visible)
         {
             return null;
@@ -476,6 +478,7 @@ public abstract class View : IView
     /// <inheritdoc />
     public Vector2? GetChildPosition(IView childView)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(GetChildPosition));
         return GetChildren()
             .Concat(FloatingElements.Select(fe => fe.AsViewChild()))
             .Where(child => child.View == childView)
@@ -495,6 +498,7 @@ public abstract class View : IView
     /// <inheritdoc />
     public IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(GetChildrenAt));
         var offset = GetContentOffset();
         var directChildren = GetLocalChildrenAt(position - offset)
             .Where(child => child.View.Visibility == Visibility.Visible);
@@ -515,6 +519,7 @@ public abstract class View : IView
     /// <inheritdoc />
     public virtual ViewChild? GetDefaultFocusChild()
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(GetDefaultFocusChild));
         if (Focusable)
         {
             return new(this, Vector2.Zero);
@@ -538,6 +543,7 @@ public abstract class View : IView
     /// <inheritdoc />
     public bool Measure(Vector2 availableSize)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(Measure));
         if (!IsDirty() && availableSize == LastAvailableSize)
         {
             foreach (var floatingElement in FloatingElements)
@@ -564,6 +570,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnClick(ClickEventArgs e)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnClick));
         if (Visibility != Visibility.Visible)
         {
             return;
@@ -586,6 +593,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnDrag(PointerEventArgs e)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnDrag));
         if (Visibility != Visibility.Visible)
         {
             return;
@@ -622,6 +630,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnDrop(PointerEventArgs e)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnDrop));
         if (Visibility != Visibility.Visible)
         {
             return;
@@ -643,6 +652,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnPointerMove(PointerMoveEventArgs e)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnPointerMove));
         if (Visibility != Visibility.Visible)
         {
             return;
@@ -686,6 +696,7 @@ public abstract class View : IView
     /// </remarks>
     public virtual void OnUpdate(TimeSpan elapsed)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnUpdate));
         foreach (var child in GetChildren())
         {
             child.View.OnUpdate(elapsed);
@@ -695,6 +706,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public virtual void OnWheel(WheelEventArgs e)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnWheel));
         if (Visibility != Visibility.Visible)
         {
             return;
@@ -713,6 +725,7 @@ public abstract class View : IView
     /// </remarks>
     public virtual bool ScrollIntoView(IEnumerable<ViewChild> path, out Vector2 distance)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(ScrollIntoView));
         distance = Vector2.Zero;
         var (parent, children) = path.SplitFirst();
         if (parent?.View == this)

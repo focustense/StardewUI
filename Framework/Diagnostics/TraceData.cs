@@ -35,6 +35,8 @@ public class TraceFile
     /// </summary>
     public string Exporter { get; init; } = "";
 
+    private readonly Dictionary<string, int> frameCache = [];
+
     /// <summary>
     /// Appends an event that closes a frame previously opened with <see cref="OpenFrame(string)"/>.
     /// </summary>
@@ -54,8 +56,14 @@ public class TraceFile
     public int OpenFrame(string name)
     {
         var time = DateTime.UtcNow.Ticks / 10;
-        int frameIndex = Shared.Frames.Count;
-        Shared.Frames.Add(new(name));
+        // Reusing frames will definitely slow down the tracing itself, but also massively cuts down on the trace size
+        // when accumulating identical method calls over thousands of frames.
+        if (!frameCache.TryGetValue(name, out var frameIndex))
+        {
+            frameIndex = Shared.Frames.Count;
+            Shared.Frames.Add(new(name));
+            frameCache.Add(name, frameIndex);
+        }
         Profiles[0].Events.Add(new('O', time, frameIndex));
         return frameIndex;
     }

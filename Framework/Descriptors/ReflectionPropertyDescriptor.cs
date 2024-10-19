@@ -20,6 +20,7 @@ public static class ReflectionPropertyDescriptor
     /// </returns>
     public static IPropertyDescriptor FromPropertyInfo(PropertyInfo propertyInfo)
     {
+        using var _ = Trace.Begin(nameof(ReflectionPropertyDescriptor), nameof(FromPropertyInfo));
         if (!cache.TryGetValue(propertyInfo, out var descriptor))
         {
             var genericType = reflectionPropertyType.MakeGenericType(
@@ -68,6 +69,7 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
     /// <typeparamref name="T"/> or <typeparamref name="TValue"/>.</exception>
     public ReflectionPropertyDescriptor(PropertyInfo propertyInfo)
     {
+        using var _ = Trace.Begin(this, "ctor");
         if (propertyInfo.DeclaringType != typeof(T))
         {
             throw new ArgumentException(

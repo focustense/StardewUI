@@ -61,6 +61,7 @@ public class UnaryCondition(
     /// <inheritdoc />
     public void Update()
     {
+        using var _ = Trace.Begin(this, nameof(Update));
         if (wasContextChanged)
         {
             var originalValueType = valueSourceFactory.GetValueType(attribute, null, context);

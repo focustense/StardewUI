@@ -23,6 +23,7 @@ public static class ReflectionMethodDescriptor
     /// <returns>The descriptor for the specified <paramref name="method"/>.</returns>
     public static IMethodDescriptor FromMethodInfo(MethodInfo method)
     {
+        using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(FromMethodInfo));
         if (!descriptorCache.TryGetValue(method, out var descriptor))
         {
             var descriptorFactory = GetDescriptorFactory(method.ReturnType);
@@ -34,6 +35,7 @@ public static class ReflectionMethodDescriptor
 
     private static IMethodDescriptor CreateDescriptorFactory<TResult>(MethodInfo method)
     {
+        using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(CreateDescriptorFactory));
         GetArgumentAndResultTypes(
             method,
             out var argumentAndResultTypes,
@@ -94,6 +96,7 @@ public static class ReflectionMethodDescriptor
 
     private static DescriptorFactory GetDescriptorFactory(Type returnType)
     {
+        using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(GetDescriptorFactory));
         if (returnType == typeof(void))
         {
             returnType = typeof(object);
@@ -173,6 +176,7 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
 
     public virtual TResult Invoke(object? target, object?[] args)
     {
+        using var _ = Trace.Begin(this, nameof(Invoke));
         if (!invoker.SupportsMissingArguments && args.Length > 0 && args[^1] == Type.Missing)
         {
             for (int i = args.Length - 1; i >= 0; i--)
@@ -194,6 +198,7 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
 
     private IInvoker<TResult> CreateInvoker(Type[] argumentTypes)
     {
+        using var _ = Trace.Begin(this, nameof(CreateInvoker));
         var invokerType = argumentTypes.Length switch
         {
             1 => typeof(Invoker<>).MakeGenericType(argumentTypes),

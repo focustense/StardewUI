@@ -59,6 +59,7 @@ internal static class EventArgumentSource
         IValueConverterFactory converterFactory
     )
     {
+        using var _ = Trace.Begin(nameof(IArgumentSource), nameof(Create));
         var key = (eventArgsType, propertyDescriptor.ValueType, destinationType);
         if (!cache.TryGetValue(key, out var source))
         {

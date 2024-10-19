@@ -48,7 +48,7 @@ public static class Trace
     /// <param name="name">The name that should appear in the trace log/visualization.</param>
     /// <returns>A disposable instance which, when disposed, stops tracking this operation and records the duration it
     /// took, for subsequent writing to the trace file.</returns>
-    public static IDisposable? BeginSlice(string name)
+    public static IDisposable? Begin(string name)
     {
         return Writer?.IsTracing == true ? Writer.BeginSlice(name) : null;
     }
@@ -65,13 +65,13 @@ public static class Trace
     /// <param name="memberName">Name of the member (method or property) about to begin execution.</param>
     /// <returns>A disposable instance which, when disposed, stops tracking this operation and records the duration it
     /// took, for subsequent writing to the trace file.</returns>
-    public static IDisposable? BeginSlice(string callerName, string memberName)
+    public static IDisposable? Begin(Func<string> callerName, string memberName)
     {
         if (Writer?.IsTracing != true)
         {
             return null;
         }
-        var sliceName = $"{callerName}.{memberName}";
+        var sliceName = $"{callerName()}.{memberName}";
         return Writer.BeginSlice(sliceName);
     }
 
@@ -86,14 +86,15 @@ public static class Trace
     /// <param name="memberName">Name of the member (method or property) about to begin execution.</param>
     /// <returns>A disposable instance which, when disposed, stops tracking this operation and records the duration it
     /// took, for subsequent writing to the trace file.</returns>
-    public static IDisposable? BeginSlice(object caller, string memberName)
+    public static IDisposable? Begin(object caller, string memberName)
     {
+        // The check is technically redundant, but can avoid unnecessary repeated allocations from the closure.
         if (Writer?.IsTracing != true)
         {
             return null;
         }
-        var typeName = caller.GetType().Name;
-        var sliceName = $"{typeName}.{memberName}";
-        return Writer.BeginSlice(sliceName);
+        return caller is string name
+            ? Begin(() => name, memberName)
+            : Begin(() => caller.GetType().Name, memberName);
     }
 }

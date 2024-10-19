@@ -56,6 +56,7 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
 
     public override void OnUpdate(TimeSpan elapsed)
     {
+        using var _ = Trace.Begin(this, nameof(OnUpdate));
         if (backoffState is not null)
         {
             backoffState.Elapsed += elapsed;
@@ -82,6 +83,7 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
 
     private void CreateViewNode()
     {
+        using var _ = Trace.Begin(this, nameof(CreateViewNode));
         if (documentSource.Value is null)
         {
             return;

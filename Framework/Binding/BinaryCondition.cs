@@ -131,6 +131,7 @@ public class BinaryCondition(
     /// <inheritdoc />
     public void Update()
     {
+        using var _ = Trace.Begin(this, nameof(Update));
         bool anyContextChanged = false;
         if (LeftContextSelector is not null)
         {
@@ -196,6 +197,7 @@ public class BinaryCondition(
             IValueConverterFactory converterFactory
         )
         {
+            using var _ = Trace.Begin(() => $"{nameof(BinaryCondition)}.{nameof(Comparison)}", nameof(Create));
             var delegateKey = (left.ValueType, right.ValueType);
             if (!factoryDelegates.TryGetValue(delegateKey, out var factory))
             {

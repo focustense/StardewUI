@@ -20,6 +20,7 @@ public static class ReflectionEventDescriptor
     /// <returns>The descriptor for the specified <paramref name="eventInfo"/>.</returns>
     public static IEventDescriptor FromEventInfo(EventInfo eventInfo)
     {
+        using var _ = Trace.Begin(nameof(ReflectionEventDescriptor), nameof(FromEventInfo));
         if (!cache.TryGetValue(eventInfo, out var descriptor))
         {
             descriptor = CreateDescriptor(eventInfo);
@@ -30,6 +31,7 @@ public static class ReflectionEventDescriptor
 
     private static IEventDescriptor CreateDescriptor(EventInfo eventInfo)
     {
+        using var _ = Trace.Begin(nameof(ReflectionEventDescriptor), nameof(CreateDescriptor));
         if (eventInfo.DeclaringType is null)
         {
             throw new TargetException($"Event {eventInfo.Name} is missing a declaring type.");
@@ -61,6 +63,7 @@ public static class ReflectionEventDescriptor
     private static IEventDescriptor CreateTypedDescriptor<TTarget, THandler>(EventInfo eventInfo)
         where THandler : Delegate
     {
+        using var _ = Trace.Begin(nameof(ReflectionEventDescriptor), nameof(CreateTypedDescriptor));
         // Creating explicit delegates for adding/removing means that we have to know, and cache with, the event's
         // declaring type, which is more information than what is needed for EventInfo.AddEventHandler and
         // EventInfo.RemoveHandler (whose signatures accept any target and delegate combination). However, once the

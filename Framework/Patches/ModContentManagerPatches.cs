@@ -35,6 +35,7 @@ internal static class ModContentManagerPatches
 
     private static Document LoadDocument(FileInfo file)
     {
+        using var _ = Trace.Begin(typeof(ModContentManagerPatches), nameof(LoadDocument));
         string markup = File.ReadAllText(file.FullName);
         try
         {

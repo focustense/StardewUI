@@ -40,7 +40,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
 
     private static ReflectionObjectDescriptor CreateDescriptor(Type type)
     {
-        using var _ = Trace.BeginSlice(nameof(ReflectionObjectDescriptor), nameof(CreateDescriptor));
+        using var _ = Trace.Begin(nameof(ReflectionObjectDescriptor), nameof(CreateDescriptor));
         var interfaces = type.GetInterfaces();
         var allMembers = type.GetMembers(BindingFlags.Instance | BindingFlags.Public);
         var fieldsByName = allMembers.OfType<FieldInfo>().ToLazyDictionary(LazyExpressionFieldDescriptor.FromFieldInfo);

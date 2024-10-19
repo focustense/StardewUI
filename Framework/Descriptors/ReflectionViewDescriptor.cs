@@ -28,6 +28,7 @@ public class ReflectionViewDescriptor : IViewDescriptor
     /// <see cref="IView"/>.</exception>
     public static ReflectionViewDescriptor ForViewType(Type viewType)
     {
+        using var _ = Trace.Begin(nameof(ReflectionViewDescriptor), nameof(ForViewType));
         if (!cache.TryGetValue(viewType, out var descriptor))
         {
             if (!typeof(IView).IsAssignableFrom(viewType))

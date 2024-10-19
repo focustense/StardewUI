@@ -112,6 +112,7 @@ public class ViewNode(
     /// <inheritdoc />
     public bool Update(TimeSpan elapsed)
     {
+        using var _ = Trace.Begin(this, nameof(Update));
         bool wasChanged = false;
         if (view is null)
         {
@@ -181,6 +182,7 @@ public class ViewNode(
 
     private void UpdateViewChildren()
     {
+        using var _ = Trace.Begin(this, nameof(UpdateViewChildren));
         if (view is null)
         {
             return;
@@ -218,6 +220,7 @@ public class ViewNode(
 
         public static IChildrenBinder? FromViewDescriptor(IViewDescriptor viewDescriptor)
         {
+            using var _ = Trace.Begin(nameof(ReflectionChildrenBinder), nameof(FromViewDescriptor));
             if (!cache.TryGetValue(viewDescriptor.TargetType, out var childrenDescriptor))
             {
                 if (viewDescriptor.TryGetChildrenProperty(out var childrenProperty))
@@ -235,6 +238,7 @@ public class ViewNode(
 
         private static IChildrenBinder CreateBinder(Type viewType, IPropertyDescriptor childrenProperty)
         {
+            using var _ = Trace.Begin(nameof(ReflectionChildrenBinder), nameof(CreateBinder));
             var enumerableChildType = childrenProperty.ValueType.GetEnumerableElementType();
             var factoryMethod = enumerableChildType is not null
                 ? multipleMethod.MakeGenericMethod([viewType, enumerableChildType, childrenProperty.ValueType])
@@ -267,6 +271,7 @@ public class ViewNode(
     {
         public void SetChildren(IView view, List<IView> children)
         {
+            using var _ = Trace.Begin(this, nameof(SetChildren));
             if (allowsMultiple)
             {
                 setChildren((TView)view, (TChildren)(object)children);

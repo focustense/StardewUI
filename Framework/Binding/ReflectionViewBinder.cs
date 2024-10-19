@@ -19,6 +19,7 @@ public class ReflectionViewBinder(
     /// <inheritdoc />
     public IViewBinding Bind(IView view, IElement element, BindingContext? context)
     {
+        using var _ = Trace.Begin(this, nameof(Bind));
         var viewDescriptor = GetDescriptor(view);
         var attributeBindings = element
             // Only property attributes are bound to the view; others affect the outer hierarchy.

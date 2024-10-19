@@ -16,6 +16,7 @@ public record Document(SNode Root)
     /// <exception cref="ParserException">Thrown when any invalid markup is encountered.</exception>
     public static Document Parse(ReadOnlySpan<char> text)
     {
+        using var _ = Trace.Begin(nameof(Document), nameof(Parse));
         var reader = new DocumentReader(text);
         var root = SNode.Parse(ref reader);
         if (!reader.Eof)

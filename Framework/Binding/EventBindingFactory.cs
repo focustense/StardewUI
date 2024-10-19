@@ -57,6 +57,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         BindingContext? context
     )
     {
+        using var _ = Trace.Begin(this, nameof(TryCreateBinding));
         var eventDescriptor = viewDescriptor.GetEvent(@event.Name.AsSpan().ToUpperCamelCase());
         var handlerContext = context?.Redirect(@event.ContextRedirect);
         if (handlerContext is null)
@@ -75,13 +76,13 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         if (!cache.TryGetValue(cacheKey, out var localFactory))
         {
             localFactory = (view, viewContext, handlerContext) =>
-                TryCreateBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext);
+                TryCreateHandlerBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext);
             cache.Add(cacheKey, localFactory);
         }
         return localFactory(view, context, handlerContext);
     }
 
-    private IEventBinding? TryCreateBinding(
+    private IEventBinding? TryCreateHandlerBinding(
         IView view,
         IEventDescriptor eventDescriptor,
         IMethodDescriptor handlerMethod,
@@ -90,6 +91,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         BindingContext handlerContext
     )
     {
+        using var _ = Trace.Begin(this, nameof(TryCreateHandlerBinding));
         int requiredArgumentCount = handlerMethod.ArgumentTypes.Length - handlerMethod.OptionalArgumentCount;
         if (@event.Arguments.Count < requiredArgumentCount)
         {

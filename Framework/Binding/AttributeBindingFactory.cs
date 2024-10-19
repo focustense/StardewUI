@@ -72,6 +72,7 @@ public class AttributeBindingFactory(
 
         public void UpdateSource(IView target)
         {
+            using var _ = Trace.Begin(this, nameof(UpdateSource));
             if (!Destination.CanRead)
             {
                 throw new BindingException(
@@ -99,6 +100,7 @@ public class AttributeBindingFactory(
 
         public bool UpdateView(IView target, bool force)
         {
+            using var _ = Trace.Begin(this, nameof(UpdateView));
             if (!Source.CanRead)
             {
                 throw new BindingException($"Cannot read a value from non-readable source {Source.DisplayName}.");
@@ -137,6 +139,7 @@ public class AttributeBindingFactory(
         BindingContext? context
     )
     {
+        using var _ = Trace.Begin(this, nameof(TryCreateBinding));
         var propertyName = attribute.Name.AsSpan().ToUpperCamelCase();
         var property = viewDescriptor.GetProperty(propertyName);
         // For literal attributes and asset bindings, the source type will always be the same - either a string, or the
@@ -175,6 +178,7 @@ public class AttributeBindingFactory(
     )
         where TSource : notnull
     {
+        using var _ = Trace.Begin(this, nameof(CreateTypedBinding));
         var property = (IPropertyDescriptor<TDest>)viewDescriptor.GetProperty(propertyName);
         var source = valueSourceFactory.GetValueSource<TSource>(attribute, context);
         var direction = GetBindingDirection(attribute);

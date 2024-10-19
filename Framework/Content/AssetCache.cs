@@ -56,6 +56,7 @@ public class AssetCache : IAssetCache
     public IAssetCacheEntry<T> Get<T>(string name)
         where T : notnull
     {
+        using var _ = Trace.Begin(this, nameof(Get));
         if (!entries.TryGetValue(name, out var entry) || !entry.IsValid)
         {
             var isValid = TryLoad<T>(name, out var asset);
@@ -89,6 +90,7 @@ public class AssetCache : IAssetCache
     private bool TryLoad<T>(string name, out T? result)
         where T : notnull
     {
+        using var _ = Trace.Begin(this, nameof(TryLoad));
         try
         {
             bool success = backoff.TryRun(name, () => content.Load<T>(name), out result);

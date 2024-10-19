@@ -69,6 +69,7 @@ internal class ViewBinding : IViewBinding
 
     public bool Update()
     {
+        using var _ = Trace.Begin(this, nameof(Update));
         if (isDisposed)
         {
             throw new ObjectDisposedException(nameof(ViewBinding));

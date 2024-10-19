@@ -35,6 +35,7 @@ public class ViewNodeFactory(
 
     private IViewNode CreateNode(SNode node, SwitchContext? switchContext)
     {
+        using var _ = Trace.Begin(this, nameof(CreateNode));
         var innerNode = CreateNodeWithoutBackoff(node, switchContext);
         return new BackoffNodeDecorator(innerNode, BackoffRule.Default);
     }

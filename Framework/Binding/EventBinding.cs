@@ -42,6 +42,7 @@ internal static class EventBinding
         IArgumentSource[] argumentSources
     )
     {
+        using var _ = Trace.Begin(nameof(EventBinding), nameof(Create));
         var argsType = eventDescriptor.ArgsTypeDescriptor?.TargetType ?? typeof(object);
         var returnType = destinationMethod.ReturnType;
         if (returnType == typeof(void))
@@ -95,6 +96,8 @@ internal class EventBinding<TEventArgs, TResult> : IEventBinding
         IArgumentSource[] argumentSources
     )
     {
+        using var _ = Trace.Begin(this, "ctor");
+
         this.eventTarget = eventTarget;
         this.eventDescriptor = eventDescriptor;
         this.destinationContext = destinationContext;
@@ -151,6 +154,7 @@ internal class EventBinding<TEventArgs, TResult> : IEventBinding
 
     private void InvokeDestinationMethod(TEventArgs? eventArgs)
     {
+        using var _ = Trace.Begin(this, nameof(InvokeDestinationMethod));
         var methodArgs = CreateMethodArguments(eventArgs);
         var result = destinationMethod.Invoke(destinationContext, methodArgs);
         if (eventArgs is BubbleEventArgs bubbleArgs && result is bool handled && handled)

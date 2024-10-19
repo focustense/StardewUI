@@ -97,6 +97,7 @@ public class IncludedViewNode(
     /// <inheritdoc />
     public bool Update(TimeSpan elapsed)
     {
+        using var _ = Trace.Begin(this, nameof(Update));
         if (wasContextChanged)
         {
             assetNameSource = TryCreateAssetNameSource();
@@ -130,6 +131,7 @@ public class IncludedViewNode(
 
     private IValueSource<string>? TryCreateAssetNameSource()
     {
+        using var _ = Trace.Begin(this, nameof(TryCreateAssetNameSource));
         var assetValueType = valueSourceFactory.GetValueType(assetNameAttribute, null, context);
         if (assetValueType is null)
         {
@@ -145,6 +147,7 @@ public class IncludedViewNode(
         {
             return null;
         }
+        using var _ = Trace.Begin(this, nameof(TryCreateChildContextSource));
         var childContextType = valueSourceFactory.GetValueType(contextAttribute, null, context);
         return childContextType is not null
             ? valueSourceFactory.GetValueSource(contextAttribute, context, childContextType)
@@ -157,6 +160,7 @@ public class IncludedViewNode(
         {
             return null;
         }
+        using var _ = Trace.Begin(this, nameof(TryCreateChildNode));
         assetCacheEntry = assetCache.Get<Document>(assetName);
         return nodeCreator(assetCacheEntry.Asset);
     }

@@ -149,6 +149,7 @@ public class ValueConverterFactory : IValueConverterFactory
         [MaybeNullWhen(false)] out IValueConverter<TSource, TDestination> converter
     )
     {
+        using var _ = Trace.Begin(this, nameof(TryGetConverter));
         var key = (typeof(TSource), typeof(TDestination));
         if (converters.TryGetValue(key, out var cached))
         {

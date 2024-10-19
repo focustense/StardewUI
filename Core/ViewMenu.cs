@@ -69,6 +69,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// menu was triggered by keyboard/mouse.</param>
     public ViewMenu(Edges? gutter = null, bool forceDefaultFocus = false)
     {
+        using var _ = Diagnostics.Trace.Begin(this, "ctor");
+
         Game1.playSound("bigSelect");
 
         this.gutter = gutter;
@@ -106,6 +108,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// or 3 (left).</param>
     public override void applyMovementKey(int directionValue)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(applyMovementKey));
         using var _ = OverlayContext.PushContext(overlayContext);
         var direction = (Direction)directionValue;
         var mousePosition = Game1.input.GetMouseState().Position;
@@ -155,6 +158,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="b">The target batch.</param>
     public override void draw(SpriteBatch b)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(draw));
+
         var viewportBounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
         if (!Game1.options.showClearBackgrounds)
         {
@@ -212,6 +217,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="y">The mouse's current Y position on screen.</param>
     public override void leftClickHeld(int x, int y)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(leftClickHeld));
+
         if (Game1.options.gamepadControls || IsInputCaptured())
         {
             // No dragging with gamepad.
@@ -238,6 +245,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="y">The mouse's current Y position on screen.</param>
     public override void performHoverAction(int x, int y)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(performHoverAction));
         if (previousHoverPosition.X == x && previousHoverPosition.Y == y)
         {
             return;
@@ -262,6 +270,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="b">The button that was pressed.</param>
     public override void receiveGamePadButton(Buttons b)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(receiveGamePadButton));
+
         // We don't actually dispatch the button to any capturing overlay, just prevent it from affecting the menu.
         //
         // This is because a capturing overlay doesn't necessarily just need to know about the button "press", it cares
@@ -310,6 +320,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="key">The key that was pressed.</param>
     public override void receiveKeyPress(Keys key)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(receiveKeyPress));
         var realButton = ButtonResolver.GetPressedButton(key.ToSButton());
         // See comments on receiveGamePadButton for why we don't dispatch the key itself.
         if (IsInputCaptured() || UI.InputHelper.IsSuppressed(realButton))
@@ -349,6 +360,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="playSound">Currently not used.</param>
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(receiveLeftClick));
         if (IsInputCaptured())
         {
             return;
@@ -370,6 +382,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="playSound">Currently not used.</param>
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(receiveRightClick));
         if (IsInputCaptured())
         {
             return;
@@ -390,6 +403,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// and positive values indicate "up".</param>
     public override void receiveScrollWheelAction(int value)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(receiveScrollWheelAction));
         if (IsInputCaptured())
         {
             return;
@@ -408,6 +422,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="y">The mouse's current Y position on screen.</param>
     public override void releaseLeftClick(int x, int y)
     {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(releaseLeftClick));
         if (IsInputCaptured())
         {
             return;
@@ -425,6 +440,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// be closed if already open; if <c>true</c>, it will be opened if not already open.</param>
     public void SetActive(bool active)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(SetActive));
         if (Game1.activeClickableMenu is TitleMenu)
         {
             if (active)
@@ -457,6 +473,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="time">The current <see cref="GameTime"/> including the time elapsed since last update tick.</param>
     public override void update(GameTime time)
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(update));
         View.OnUpdate(time.ElapsedGameTime);
         foreach (var overlay in overlayContext.FrontToBack())
         {
@@ -585,6 +602,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void MeasureAndCenterView()
     {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(MeasureAndCenterView));
         var viewportSize = UiViewport.GetMaxSize();
         var currentGutter = gutter ?? DefaultGutter;
         var availableMenuSize = viewportSize.ToVector2() - currentGutter.Total;
@@ -727,6 +745,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         Direction searchDirection
     )
     {
+        using var _ = Diagnostics.Trace.Begin(nameof(ViewMenu<T>), nameof(Refocus));
         if (!Game1.options.gamepadControls)
         {
             return;
@@ -807,6 +826,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         public static OverlayLayoutData FromOverlay(IView rootView, Vector2 rootPosition, IOverlay overlay)
         {
+            using var _ = Diagnostics.Trace.Begin(nameof(OverlayLayoutData), nameof(FromOverlay));
             var data = new OverlayLayoutData(new(rootView, rootPosition));
             data.Update(overlay);
             return data;
@@ -814,6 +834,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         public void Update(IOverlay overlay)
         {
+            using var _ = Diagnostics.Trace.Begin(this, nameof(Update));
             var immediateParent = GetImmediateParent();
             if (overlay.Parent != immediateParent?.View)
             {

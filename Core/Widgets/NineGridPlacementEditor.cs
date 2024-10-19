@@ -171,6 +171,7 @@ public class NineGridPlacementEditor : View
     public override void OnPointerMove(PointerMoveEventArgs e)
     {
         isHovering = ContainsPoint(e.Position);
+        base.OnPointerMove(e);
     }
 
     /// <inheritdoc />

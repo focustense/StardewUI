@@ -105,6 +105,7 @@ public class RepeaterNode(
     /// <inheritdoc />
     public bool Update(TimeSpan elapsed)
     {
+        using var _ = Trace.Begin(this, nameof(Update));
         if (wasContextChanged)
         {
             var collectionType = valueSourceFactory.GetValueType(repeatAttribute, null, context);
@@ -138,6 +139,7 @@ public class RepeaterNode(
 
     private void AddChildNodes(int fromIndex, IList? items)
     {
+        using var _ = Trace.Begin(this, nameof(AddChildNodes));
         if (items is null)
         {
             return;
@@ -156,6 +158,7 @@ public class RepeaterNode(
 
     private void MoveChildNodes(int fromIndex, int toIndex, int count)
     {
+        using var _ = Trace.Begin(this, nameof(MoveChildNodes));
         var oldItems = childNodes.GetRange(fromIndex, count);
         childNodes.RemoveRange(fromIndex, count);
         childNodes.InsertRange(toIndex, oldItems);
@@ -163,6 +166,7 @@ public class RepeaterNode(
 
     private void ReplaceChildNodes(int fromIndex, IList? oldItems, IList? newItems)
     {
+        using var _ = Trace.Begin(this, nameof(ReplaceChildNodes));
         var count = oldItems?.Count ?? newItems?.Count ?? 0;
         if (count == 0)
         {
@@ -177,6 +181,7 @@ public class RepeaterNode(
 
     private bool UpdateChildBindings()
     {
+        using var _ = Trace.Begin(this, nameof(UpdateChildBindings));
         // Node was already unbound (or couldn't be resolved), and is still unbound, so nothing to do here.
         if (collectionWatcher is null)
         {
@@ -257,6 +262,7 @@ public class RepeaterNode(
 
         public static ICollectionWatcher Create(IValueSource collectionSource)
         {
+            using var _ = Trace.Begin(() => $"{nameof(RepeaterNode)}.{nameof(CollectionWatcher)}", nameof(Create));
             if (!factoryCache.TryGetValue(collectionSource.ValueType, out var factory))
             {
                 var elementType =
@@ -328,6 +334,7 @@ public class RepeaterNode(
 
         public void Update()
         {
+            using var _ = Trace.Begin(this, nameof(Update));
             var previousValue = collectionSource.Value;
             if (collectionSource.Update())
             {
