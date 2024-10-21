@@ -78,3 +78,8 @@ table .md-tooltip {
     border-radius: 0.4rem;
     text-align: center;
 }
+
+.screenshot-tabs .tabbed-content {
+    background-color: var(--md-default-fg-color--lightest);
+    padding: 0 0.5rem;
+}
