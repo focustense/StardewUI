@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Graphics;
 
 /// <summary>
 /// Provides a single method to obtain a sprite for some key, such as <see cref="SButton"/>.

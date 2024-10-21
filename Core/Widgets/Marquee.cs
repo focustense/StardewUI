@@ -1,6 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Animation;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// A scrolling marquee supporting any inner content.

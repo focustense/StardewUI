@@ -1,9 +1,11 @@
 ﻿using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewUI.Graphics;
+using StardewUI.Layout;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// A view that renders a read-only text string.

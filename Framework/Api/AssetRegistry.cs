@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewUI.Framework.Dom;
+using StardewUI.Graphics;
 
 namespace StardewUI.Framework.Api;
 

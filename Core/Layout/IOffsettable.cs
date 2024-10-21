@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
 /// Provides a method to clone the current instance with an offset applied.

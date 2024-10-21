@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.Xna.Framework;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
 /// Model for content placement along a nine-segment grid, i.e. all possible combinations of horizontal and vertical
@@ -84,10 +84,11 @@ public record NineGridPlacement(Alignment HorizontalAlignment, Alignment Vertica
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Based on the model of a <see cref="Panel"/> or <see cref="Frame"/> whose layout is set to
+    /// Based on the model of a <see cref="Widgets.Panel"/> or <see cref="Widgets.Frame"/> whose layout is set to
     /// <see cref="LayoutParameters.Fill"/> its container and who will adopt the <see cref="HorizontalAlignment"/> and
-    /// <see cref="VerticalAlignment"/> of this placement as its own <see cref="Panel.HorizontalContentAlignment"/> and
-    /// <see cref="Panel.VerticalContentAlignment"/> (or equivalent for other view types).
+    /// <see cref="VerticalAlignment"/> of this placement as its own
+    /// <see cref="Widgets.Panel.HorizontalContentAlignment"/> and <see cref="Widgets.Panel.VerticalContentAlignment"/>
+    /// (or equivalent for other view types).
     /// </para>
     /// <para>
     /// Depending on the particular alignments, this can apply either positive or negative margin to either the start

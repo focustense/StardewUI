@@ -1,7 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Input;
 
 /// <summary>
 /// The actions that a given button can trigger in a UI context. For details see <see cref="ButtonResolver"/>.

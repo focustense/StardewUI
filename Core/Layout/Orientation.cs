@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
-/// Available orientation directions for views such as <see cref="Lane"/>.
+/// Available orientation directions for views such as <see cref="Widgets.Lane"/>.
 /// </summary>
 public enum Orientation
 {

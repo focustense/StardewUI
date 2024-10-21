@@ -1,7 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// Definition for a scalable sprite.

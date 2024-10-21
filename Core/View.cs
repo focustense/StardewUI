@@ -3,6 +3,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
 namespace StardewUI;
 

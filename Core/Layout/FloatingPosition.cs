@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
 /// Describes the position of a <see cref="FloatingElement"/>.

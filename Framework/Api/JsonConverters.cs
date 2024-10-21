@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StardewUI.Framework.Converters;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Api;
 

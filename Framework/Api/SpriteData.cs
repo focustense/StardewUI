@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using StardewUI.Graphics;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Api;
 
@@ -55,10 +57,10 @@ internal class SpriteData
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Sprites drawn as part of an <see cref="Image"/> are always scaled according to the layout dimensions and fit
-    /// settings; specifying a non-unity scale here will also cause any <see cref="FixedEdges"/> to be scaled. This is
-    /// meant for nine-slice sprites that need to scale borders up by a fixed amount (most often 4, sometimes 2) and the
-    /// center slice by an arbitrary amount.
+    /// Sprites drawn as part of an <see cref="Widgets.Image"/> are always scaled according to the layout dimensions and
+    /// fit settings; specifying a non-unity scale here will also cause any <see cref="FixedEdges"/> to be scaled. This
+    /// is meant for nine-slice sprites that need to scale borders up by a fixed amount (most often 4, sometimes 2) and
+    /// the center slice by an arbitrary amount.
     /// </para>
     /// <para>
     /// This setting is shorthand for <see cref="SliceSettings.Scale"/> since it is the most commonly used slice

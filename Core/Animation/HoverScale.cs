@@ -1,4 +1,7 @@
-﻿namespace StardewUI;
+﻿using StardewUI.Events;
+using StardewUI.Widgets;
+
+namespace StardewUI.Animation;
 
 /// <summary>
 /// Standalone scaling behavior that can be attached to any <see cref="Image"/>, causing it to scale up to a specified

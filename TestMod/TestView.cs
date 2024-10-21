@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewUI;
+using StardewUI.Graphics;
+using StardewUI.Layout;
+using StardewUI.Widgets;
 using StardewValley;
 
 namespace StardewUITest;

@@ -1,4 +1,7 @@
-﻿namespace StardewUI;
+﻿using StardewUI.Graphics;
+using StardewUI.Widgets;
+
+namespace StardewUI.Animation;
 
 /// <summary>
 /// Animates the sprite of an <see cref="Image"/>, using equal duration for all frames in a list.

@@ -1,4 +1,6 @@
-﻿namespace StardewUI;
+﻿using StardewUI.Layout;
+
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Fluent builder style API for creating form-like tables within a view.

@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using StardewUI.Layout;
+using StardewUI.Widgets;
 
 namespace StardewUI.Framework.Views;
 

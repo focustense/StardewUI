@@ -1,7 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
-namespace StardewUI;
+namespace StardewUI.Input;
 
 /// <summary>
 /// Translates raw input to semantic actions.

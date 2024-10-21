@@ -1,4 +1,4 @@
-namespace StardewUI;
+namespace StardewUI.Animation;
 
 /// <summary>
 /// Performs linear interpolation between two values.

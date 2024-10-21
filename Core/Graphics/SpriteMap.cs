@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// General implementation of an <see cref="ISpriteMap{T}"/> that can be prepared in a variety of ways.

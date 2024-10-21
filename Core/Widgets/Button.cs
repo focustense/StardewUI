@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Layout;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Simple button with optional hover background.

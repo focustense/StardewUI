@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// A uniform grid containing other views.

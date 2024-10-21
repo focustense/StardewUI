@@ -1,7 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// A horizontal track with draggable thumb (button) for choosing a numeric value in a range.

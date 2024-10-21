@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Layout;
 
 /// <summary>
 /// Specifies an alignment (horizontal or vertical) for text or other layout.

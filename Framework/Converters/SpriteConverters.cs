@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using StardewUI.Graphics;
 using StardewValley.ItemTypeDefinitions;
 
 namespace StardewUI.Framework.Converters;

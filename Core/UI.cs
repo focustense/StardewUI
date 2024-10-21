@@ -1,5 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewUI.Animation;
 using StardewValley;
 
 namespace StardewUI;

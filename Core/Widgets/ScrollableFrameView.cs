@@ -1,7 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Layout;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Layout widget for a sectioned menu including a scrollable content area.

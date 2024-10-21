@@ -1,7 +1,7 @@
-﻿namespace StardewUI;
-
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
+
+namespace StardewUI.Layout;
 
 /// <summary>
 /// Layout parameters for an <see cref="IView"/>.

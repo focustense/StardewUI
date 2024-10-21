@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace StardewUI;
+namespace StardewUI.Input;
 
 /// <summary>
 /// The result of a <see cref="IView.FocusSearch"/>. Identifies the specific view/position found, as well as the path

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Overlays;
 
 /// <summary>
 /// Definition of an overlay - i.e. a UI element that displays over all other UI.

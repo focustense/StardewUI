@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
 /// Provides independent layout for an <see cref="IView"/> relative to its parent.
@@ -14,12 +15,13 @@ namespace StardewUI;
 /// <para>
 /// This is primarily useful for annotations, callouts, or elements that are intentionally drawn outside their logical
 /// container such as scrollbars or sidebars. Floating views <b>can</b> receive focus and clicks, but do not actually
-/// capture the cursor like an <see cref="Overlay"/> would, and therefore shouldn't be used for modal UI.
+/// capture the cursor like an <see cref="Overlays.Overlay"/> would, and therefore shouldn't be used for modal UI.
 /// </para>
 /// <para>
-/// In general it is preferred to use standard layout controls like <see cref="Lane"/> over floating elements, but there
-/// are specific cases that justify floats, such as the aforementioned scrollbar which should display "outside" the
-/// container regardless of how nested the container itself is - i.e. the float must "break out" of the normal flow.
+/// In general it is preferred to use standard layout controls like <see cref="Widgets.Lane"/> over floating elements,
+/// but there are specific cases that justify floats, such as the aforementioned scrollbar which should display
+/// "outside" the container regardless of how nested the container itself is - i.e. the float must "break out" of the
+/// normal flow.
 /// </para>
 /// </remarks>
 /// <param name="view">The floating view to display/interact with.</param>

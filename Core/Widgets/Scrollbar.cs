@@ -1,6 +1,10 @@
-﻿using StardewValley;
+﻿using StardewUI.Animation;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Layout;
+using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Controls the scrolling of a <see cref="ScrollContainer"/>.

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Simple unidirectional layout that draws multiple child views in a row or column arrangement.

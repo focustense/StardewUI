@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Renders a single-line numeric label using custom digit sprites.

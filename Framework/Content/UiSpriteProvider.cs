@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using StardewUI.Graphics;
 
 namespace StardewUI.Framework.Content;
 

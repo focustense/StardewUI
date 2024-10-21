@@ -1,4 +1,6 @@
-﻿namespace StardewUI.Framework.Converters;
+﻿using StardewUI.Widgets;
+
+namespace StardewUI.Framework.Converters;
 
 /// <summary>
 /// String converter for a <see cref="GridItemLayout"/>.

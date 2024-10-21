@@ -1,4 +1,6 @@
-﻿namespace StardewUI.Framework.Converters;
+﻿using StardewUI.Layout;
+
+namespace StardewUI.Framework.Converters;
 
 /// <summary>
 /// String converter for the <see cref="LayoutParameters"/> type.

@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 using StardewValley;
 
 namespace StardewUI.Widgets.Keybinding;

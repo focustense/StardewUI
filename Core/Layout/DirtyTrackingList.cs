@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
 /// List wrapper that tracks whether changes have been made.

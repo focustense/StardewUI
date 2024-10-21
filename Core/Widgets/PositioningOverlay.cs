@@ -1,6 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using StardewUI.Animation;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
+using StardewUI.Overlays;
 using StardewUI.Widgets.Keybinding;
 using StardewValley;
 

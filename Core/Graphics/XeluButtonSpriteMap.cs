@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/

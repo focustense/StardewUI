@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Widgets;
 
 /// <inheritdoc cref="ComponentView{T}"/>
 public abstract class ComponentView : ComponentView<IView> { }

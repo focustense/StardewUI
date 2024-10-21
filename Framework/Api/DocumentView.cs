@@ -2,6 +2,7 @@
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
+using StardewUI.Widgets;
 
 namespace StardewUI.Framework.Api;
 

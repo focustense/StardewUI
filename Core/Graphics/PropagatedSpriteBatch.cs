@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// Sprite batch wrapper with transform propagation.

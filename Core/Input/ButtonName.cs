@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 
-namespace StardewUI;
+namespace StardewUI.Input;
 
 /// <summary>
 /// A simple utility classes to get a printable name for a button or key.

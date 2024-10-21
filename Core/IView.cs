@@ -1,5 +1,9 @@
 ﻿using System.ComponentModel;
 using Microsoft.Xna.Framework;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
 namespace StardewUI;
 
@@ -349,7 +353,7 @@ public interface IView : INotifyPropertyChanged
     /// <para>
     /// <b>Override this at your own extreme peril.</b> Frequently performing any layout-affecting logic in this
     /// function can negate the performance benefits of a retained-mode UI and cause the UI to become sluggish or even
-    /// completely unresponsive.  Do not use it for animation; use <see cref="Animator"/> instead.
+    /// completely unresponsive.  Do not use it for animation; use <see cref="Animation.Animator"/> instead.
     /// </para>
     /// </remarks>
     /// <param name="elapsed">Time elapsed since last game tick.</param>

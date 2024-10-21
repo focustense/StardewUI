@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// Abstraction for the <see cref="SpriteBatch"/> providing sprite-drawing methods.

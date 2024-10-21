@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Events;
 
 /// <summary>
 /// Base class for any event involving the cursor/pointer, e.g. clicks.

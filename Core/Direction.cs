@@ -1,4 +1,6 @@
-﻿namespace StardewUI;
+﻿using StardewUI.Layout;
+
+namespace StardewUI;
 
 /// <summary>
 /// Cardinal directions used in UI, matching gamepad stick/button directions for navigation.

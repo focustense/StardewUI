@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Layout;
 
 /// <summary>
 /// Signals that an <see cref="IView"/> implements paging controls.

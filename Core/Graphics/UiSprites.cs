@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Layout;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// Included game sprites that are required for many UI/menu widgets.

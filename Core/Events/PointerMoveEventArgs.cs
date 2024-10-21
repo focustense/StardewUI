@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Events;
 
 /// <summary>
 /// Event arguments for pointer movement relative to some view.

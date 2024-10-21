@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Layout;
+using StardewUI.Widgets;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Overlays;
 
 /// <summary>
 /// Base class for an overlay meant to take up the full screen.

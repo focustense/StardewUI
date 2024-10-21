@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Overlays;
 
 /// <summary>
 /// The context of an overlay, e.g. the active overlays for a particular menu or other non-overlay UI.

@@ -1,7 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
 /// Describes a set of edge dimensions, e.g. for margin or padding.

@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Layout;
 
 /// <summary>
 /// Controls the visibility of an <see cref="IView"/>.

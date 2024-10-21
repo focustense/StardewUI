@@ -1,4 +1,4 @@
-namespace StardewUI;
+namespace StardewUI.Animation;
 
 /// <summary>
 /// Defines a single animation.

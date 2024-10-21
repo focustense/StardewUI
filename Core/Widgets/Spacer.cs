@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// An empty view whose sole purpose is to separate other elements.
 /// </summary>
 /// <remarks>
 /// The size of the view is entirely controlled by its <see cref="View.Layout"/>; that is, it is considered to have no
-/// content and setting both dimensions to <see cref="Length.Content"/> will cause it to disappear.
+/// content and setting both dimensions to <see cref="Layout.Length.Content"/> will cause it to disappear.
 /// </remarks>
 public class Spacer : View
 {

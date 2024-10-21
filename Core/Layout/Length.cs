@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Layout;
 
 /// <summary>
 /// Specifies how to calculate the length of a single dimension (width or height).

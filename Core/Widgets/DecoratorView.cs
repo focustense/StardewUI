@@ -1,8 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// A view that owns and delegates to an inner view.

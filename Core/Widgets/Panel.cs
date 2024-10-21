@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// A layout view whose children all overlap the same boundaries.

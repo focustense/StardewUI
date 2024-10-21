@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Events;
 
 /// <summary>
 /// Base class for events that can bubble up to parents from descendant views.

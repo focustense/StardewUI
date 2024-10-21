@@ -1,4 +1,4 @@
-﻿namespace StardewUI;
+﻿namespace StardewUI.Layout;
 
 /// <summary>
 /// Convenience class for tracking properties that have changed, i.e. for layout dirty checking.

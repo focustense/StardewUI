@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using StardewUI.Input;
+using StardewUI.Layout;
 
 namespace StardewUI;
 

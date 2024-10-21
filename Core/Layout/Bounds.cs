@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace StardewUI;
+namespace StardewUI.Layout;
 
 /// <summary>
 /// A bounding rectangle using floating-point dimensions.

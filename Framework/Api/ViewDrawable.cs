@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Framework.Binding;
+using StardewUI.Graphics;
 
 namespace StardewUI.Framework.Api;
 

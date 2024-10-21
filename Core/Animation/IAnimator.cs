@@ -1,4 +1,4 @@
-namespace StardewUI;
+namespace StardewUI.Animation;
 
 /// <summary>
 /// Internal animator abstraction used for driving animations; does not need to know the target or value types, only to

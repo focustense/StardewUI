@@ -1,7 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Events;
+using StardewUI.Graphics;
+using StardewUI.Layout;
+using StardewUI.Overlays;
 using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Button/text field with a drop-down menu.

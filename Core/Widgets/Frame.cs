@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewUI.Layout;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// A view that holds another view, typically for the purpose of adding a border or background, or in some cases

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
+using StardewUI.Layout;
 using StardewValley.BellsAndWhistles;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Draws banner-style text with an optional background.

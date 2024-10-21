@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// Base class for a <see cref="ISpriteMap{T}"/> for controller/keyboard bindings.

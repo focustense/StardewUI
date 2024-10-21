@@ -1,4 +1,4 @@
-namespace StardewUI;
+namespace StardewUI.Animation;
 
 /// <summary>
 /// Central registry for view animations, meant to be driven from the game loop.

@@ -1,6 +1,8 @@
-﻿using StardewValley;
+﻿using StardewUI.Events;
+using StardewUI.Layout;
+using StardewValley;
 
-namespace StardewUI;
+namespace StardewUI.Widgets;
 
 /// <summary>
 /// Provides a content container and accompanying scrollbar.

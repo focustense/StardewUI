@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace StardewUI;
+namespace StardewUI.Animation;
 
 /// <summary>
 /// Helpers for creating typed <see cref="Animator{T, V}"/> instances.
