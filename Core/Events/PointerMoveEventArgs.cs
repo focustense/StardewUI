@@ -3,7 +3,7 @@
 namespace StardewUI;
 
 /// <summary>
-/// Event raised when a pointer moves relative to some view.
+/// Event arguments for pointer movement relative to some view.
 /// </summary>
 /// <param name="previousPosition">The previously-tracked position of the pointer.</param>
 /// <param name="position">The new pointer position.</param>

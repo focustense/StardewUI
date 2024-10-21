@@ -181,6 +181,7 @@ To experienced C# programmers, this may look like an ordinary method call, but i
 
 | Event | Arguments&nbsp;Type&nbsp;(1) | Condition |
 | --------- | -------- | ----------- |
+| `button-press` | `ButtonEventArgs` | Any keyboard/gamepad button pressed. |
 | `click` | `ClickEventArgs` | Any mouse/gamepad button clicked. |
 | `drag` | `PointerEventArgs` | Ongoing drag operation; mouse was moved while button is still held. |
 | `drag-end` | `PointerEventArgs` | End of a drag operation, mouse button was released. |

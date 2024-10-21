@@ -296,7 +296,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         // gamepad controls then we'd have to reimplement the repeating-click logic.
 
         using var _ = OverlayContext.PushContext(overlayContext);
-
+        InitiateButtonPress(button);
         switch (button)
         {
             case SButton.LeftTrigger:
@@ -331,6 +331,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         if (action == ButtonAction.Cancel && overlayContext.Pop() is not null)
         {
             return;
+        }
+        // receiveGamePadButton also initiates this, so ignore it if it appears to be from a controller source.
+        if (!realButton.TryGetController(out var _) && !Game1.isAnyGamePadButtonBeingHeld())
+        {
+            InitiateButtonPress(realButton);
         }
         // The choices we have for actually "capturing" the captured input aren't awesome. Since it's a *keyboard*
         // input, we really don't want to let keyboard events through, like having the "e" key dismiss the menu while
@@ -531,6 +536,28 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             }
         }
         return null;
+    }
+
+    private void InitiateButtonPress(SButton button)
+    {
+        var mousePosition = Game1.input.GetMouseState().Position;
+        OnViewOrOverlay(
+            (view, origin) =>
+            {
+                var localPosition = mousePosition.ToVector2() - origin;
+                if (!view.ContainsPoint(origin))
+                {
+                    return;
+                }
+                var pathBeforeScroll = view.GetPathToPosition(localPosition).ToList();
+                var args = new ButtonEventArgs(localPosition, button);
+                view.OnButtonPress(args);
+                if (!args.Handled)
+                {
+                    return;
+                }
+            }
+        );
     }
 
     private void InitiateClick(SButton button, Point screenPoint)

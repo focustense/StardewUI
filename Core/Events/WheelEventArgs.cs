@@ -3,7 +3,7 @@
 namespace StardewUI;
 
 /// <summary>
-/// Event raised when the mouse wheel/scroll wheel is activated.
+/// Event arguments for mouse wheel/scroll wheel actions.
 /// </summary>
 /// <inheritdoc cref="PointerEventArgs(Vector2)" path="/param[@name='position']"/>
 /// <param name="direction">Direction of the wheel movement.</param>

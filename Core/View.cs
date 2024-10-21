@@ -16,6 +16,14 @@ namespace StardewUI;
 public abstract class View : IView
 {
     /// <summary>
+    /// Event raised when any button on any input device is pressed.
+    /// </summary>
+    /// <remarks>
+    /// Only the views in the current focus path should receive these events.
+    /// </remarks>
+    public event EventHandler<ButtonEventArgs>? ButtonPress;
+
+    /// <summary>
     /// Event raised when the view receives a click.
     /// </summary>
     public event EventHandler<ClickEventArgs>? Click;
@@ -565,6 +573,21 @@ public abstract class View : IView
             floatingElement.MeasureAndPosition(this, wasParentDirty: true);
         }
         return true;
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnButtonPress(ButtonEventArgs e)
+    {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnButtonPress));
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
+        DispatchPointerEvent(e, (view, args) => view.OnButtonPress(args));
+        if (!e.Handled)
+        {
+            ButtonPress?.Invoke(this, e);
+        }
     }
 
     /// <inheritdoc/>

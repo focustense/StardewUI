@@ -14,8 +14,8 @@ internal class BackoffTracker<T>(BackoffRule rule)
     private readonly Dictionary<T, BackoffState> entries = [];
 
     /// <summary>
-    /// Advances the timer on any pending keys, allowing them to be used again on the next
-    /// <see cref="TryRun{TResult}(T, Func{TResult}, out TResult)"/> if they have waited long enough.
+    /// Advances the timer on any pending keys, allowing them to be used again on the next <see cref="TryRun"/> if they
+    /// have waited long enough.
     /// </summary>
     /// <param name="elapsed">Time elapsed since last tick.</param>
     public void Tick(TimeSpan elapsed)

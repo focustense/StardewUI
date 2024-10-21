@@ -204,6 +204,9 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public event EventHandler<ButtonEventArgs>? ButtonPress;
+
+    /// <inheritdoc />
     public event EventHandler<ClickEventArgs>? Click;
 
     /// <inheritdoc />
@@ -355,6 +358,12 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public virtual void OnButtonPress(ButtonEventArgs e)
+    {
+        view?.OnButtonPress(e);
+    }
+
+    /// <inheritdoc />
     public virtual void OnClick(ClickEventArgs e)
     {
         view?.OnClick(e);
@@ -441,6 +450,7 @@ public class DecoratorView<T> : IView, IDisposable
         {
             return;
         }
+        view.ButtonPress += View_ButtonPress;
         view.Click += View_Click;
         view.Drag += View_Drag;
         view.DragEnd += View_DragEnd;
@@ -459,6 +469,7 @@ public class DecoratorView<T> : IView, IDisposable
         {
             return;
         }
+        view.ButtonPress -= View_ButtonPress;
         view.Click -= View_Click;
         view.Drag -= View_Drag;
         view.DragEnd -= View_DragEnd;
@@ -485,6 +496,8 @@ public class DecoratorView<T> : IView, IDisposable
         }
         AttachHandlers();
     }
+
+    private void View_ButtonPress(object? _, ButtonEventArgs e) => ButtonPress?.Invoke(this, e);
 
     private void View_Click(object? _, ClickEventArgs e) => Click?.Invoke(this, e);
 

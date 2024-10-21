@@ -9,6 +9,14 @@ namespace StardewUI;
 public interface IView : INotifyPropertyChanged
 {
     /// <summary>
+    /// Event raised when any button on any input device is pressed.
+    /// </summary>
+    /// <remarks>
+    /// Only the views in the current focus path should receive these events.
+    /// </remarks>
+    event EventHandler<ButtonEventArgs> ButtonPress;
+
+    /// <summary>
     /// Event raised when the view receives a click initiated from any button.
     /// </summary>
     event EventHandler<ClickEventArgs> Click;
@@ -295,6 +303,12 @@ public interface IView : INotifyPropertyChanged
     /// <returns>Whether or not any layout was performed as a result of this pass. Callers may use this to propagate
     /// layout back up the tree, or perform expensive follow-up actions.</returns>
     bool Measure(Vector2 availableSize);
+
+    /// <summary>
+    /// Called when a button press is received while this view is in the focus path.
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    void OnButtonPress(ButtonEventArgs e);
 
     /// <summary>
     /// Called when a click is received within this view's bounds.

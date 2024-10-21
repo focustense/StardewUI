@@ -4,7 +4,7 @@ using StardewModdingAPI;
 namespace StardewUI;
 
 /// <summary>
-/// Event raised when a UI element is clicked by any source (mouse, gamepad, etc.).
+/// Event arguments for a controller or mouse click.
 /// </summary>
 /// <inheritdoc cref="PointerEventArgs(Vector2)" path="/param[@name='position']"/>
 /// <param name="button">The specific button that triggered the click.</param>
