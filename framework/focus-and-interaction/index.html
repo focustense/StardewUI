@@ -22,7 +22,7 @@
     
     
       
-        <title>Focus and interaction - StardewUI Documentation</title>
+        <title>Focus and Interaction - StardewUI Documentation</title>
       
     
     
@@ -61,7 +61,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Focus and interaction - StardewUI Documentation" >
+        <meta  property="og:title"  content="Focus and Interaction - StardewUI Documentation" >
       
         <meta  property="og:description"  content="None" >
       
@@ -77,7 +77,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Focus and interaction - StardewUI Documentation" >
+        <meta  name="twitter:title"  content="Focus and Interaction - StardewUI Documentation" >
       
         <meta  name="twitter:description"  content="None" >
       
@@ -102,6 +102,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#focus-and-interaction" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -132,7 +137,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Focus and interaction
+              Focus and Interaction
             
           </span>
         </div>
@@ -672,16 +677,108 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Focus and Interaction
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Focus and interaction
+    Focus and Interaction
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#focusability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Focusability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pointer-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pointer Events
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tooltips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tooltips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scrolling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scrolling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#peeking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Peeking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabbing-and-paging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tabbing and Paging
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -845,6 +942,76 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#focusability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Focusability
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pointer-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pointer Events
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tooltips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tooltips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scrolling
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scrolling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#peeking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Peeking
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tabbing-and-paging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tabbing and Paging
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -862,9 +1029,212 @@
   
 
 
-  <h1>Focus and interaction</h1>
-
-
+<h1 id="focus-and-interaction">Focus and Interaction</h1>
+<p>Most UI and frontend frameworks have some concept of input focus—which element on screen the user is currently interacting with. MonoGame, being the barebones framework that it is, does not have such a concept, and Stardew Valley does not really add one; instead, it introduces a setting named "controller-style menus" (internally, "snappy menus") with these characteristics:</p>
+<ul>
+<li>The cursor is drawn as a hand, instead of an arrow, when using a controller;</li>
+<li>Pressing the left stick in any direction "snaps" the cursor—in theory—to the next element in that direction, instead of moving it freeform;</li>
+<li>Pressing any directional button has equivalent behavior to the left stick, instead of doing nothing.</li>
+</ul>
+<p>As controller navigation in the vanilla game is nearly unusable without this setting—at the time of writing, turning it off results in both the arrow <em>and</em> hand cursor being drawn on top of each other, so it is not even consistently tested—the rest of this page assumes controller input using controller-style menus.</p>
+<p>Focus in Stardew Valley does not really exist, but a reasonable approximation is simply "whichever element contains the cursor", with focus order or "tab order" being equivalent to the "snap order" used in game. The question then becomes which elements are actually "snappable", or <em>focusable</em>.</p>
+<h2 id="focusability">Focusability</h2>
+<p>If you've worked with vanilla UI in Stardew—i.e. manual implementations of <code>IClickableMenu</code>—then you know that focus, or snapping, is entirely based on a menu's clickable component list; literally, a <code>List&lt;ClickableComponent&gt;</code> whose elements define neighbor IDs in each direction as well as several other metadata fields (visibility, name, tooltip, etc.), all of which ironically have no behavior at all unless the menu using them chooses to implement it.</p>
+<p>Controller support is famously neglected in mods because setting it up is a messy process of assigning IDs to every single element, predefining or at least pre-generating the neighbor lists for each and every one of those elements, and either hoping that they don't have variable locations or adding hooks to keep the IDs and lists constantly up to date.</p>
+<p>StardewUI does away with this system completely, and in fact is intentionally not compatible with it. There is <strong>one</strong> relevant property, named <a href="../reference/stardewui/view.md#focusable"><code>Focusable</code></a> (or in <a href="../starml/#common-attributes">StarML</a>, the <code>focusable</code> attribute), which specifies whether or not that view should be able to independently receive focus.</p>
+<p>Some elements are assumed to want focus and automatically enable it (e.g. <a href="../../library/standard-views/#button">Buttons</a> and <a href="../../library/standard-views/#slider">Sliders</a>), but the <code>focusable</code> property/attribute can also be added directly to any other type of view such as an <a href="../../library/standard-views/#image">Image</a>.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Cancel&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="p">&lt;</span><span class="nt">image</span> <span class="na">focusable</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="na">sprite</span><span class="o">=</span><span class="s">{@Mods/MyMod/Sprites/UI:ConfirmButton}</span> <span class="p">/&gt;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>Buttons are implicitly focusable; on the <code>&lt;image&gt;</code>, we simply add <code>focusable="true"</code>.</p>
+</div>
+<p>When a view is focusable, it becomes a candidate for the <em>focus search</em> that runs on every left stick movement or d-pad button press, and if StardewUI decides that it is the user's intended next target – e.g. if it is directly adjacent to the previously-focused view and in the requested direction – then the on-screen cursor will be moved (snapped) to its exact center, and it is then considered to have focus.</p>
+<h2 id="pointer-events">Pointer Events</h2>
+<p>The most common purpose of element focus is for it to be able to receive clicks or other <a href="../starml/#events">pointer events</a> such as enter/leave (AKA mouseover/mouseout). Focus implies interactivity and therefore some interaction (event) is likely to be defined.</p>
+<p>Using clicks as an example: in vanilla Stardew menu code, clicks are simply dispatched to the <code>IClickableMenu</code> which then has to iterate through all the clickable components and apply ad-hoc ordering logic to figure out which element the click really landed on. In StardewUI, this is all handled for you, and the behavior is largely identical to any other popular UI framework:</p>
+<ul>
+<li>First, the focused element – the <em>deepest</em> element that contains the cursor – gets a chance to handle the event.</li>
+<li>If that element either does not handle the click, or allows it to "bubble", then the element's parent also gets a chance at it.</li>
+<li>And so on until either the event is marked as <a href="../reference/stardewui/bubbleeventargs.md#handled">Handled</a> or the top-level view is reached.</li>
+</ul>
+<p>You never have to write code to figure out which element was clicked, hovered, etc. Simply add events to the elements you want, similar to the <a href="#focusability">focusable</a> attribute.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It is not uncommon for the focusable element to be different from the element that handles pointer events. A great example of this is the drop-down list:</p>
+<p><img alt="Drop-down list" src="../../images/screenshot-dropdown.png" /></p>
+<p>Recall that in a focus search, the cursor is moved to the <em>center</em> of the <em>focusable</em> element. The <a href="https://www.interaction-design.org/literature/topics/affordances">affordance</a> of a drop-down list is its downward-pointing arrow, and that is where we want the cursor to land; it is the part that is "focusable". However, the entire widget is technically "clickable"; a mouse user can click on the text, beside the text, or anywhere else in the widget's boundaries, and still open the menu.</p>
+</div>
+<p>It may help to think of <em>focusability</em> as "where the cursor should snap to", as compared to the "clickable area" that handles tooltips and other pointer events. Sometimes they are the same, e.g. with a button, but not always.</p>
+<p>This distinction is very particular to Stardew because of the "snappy menu" system; in conventional desktop and web UI, the location of the mouse pointer is irrelevant to and independent from keyboard or input focus, whereas in Stardew Valley, the pointer location is the <em>only</em> relevant information.</p>
+<h2 id="tooltips">Tooltips</h2>
+<p>Similar to <a href="#focusability">focusability</a>, tooltips require only a single <a href="../starml/#common-attributes">attribute</a>, aptly named <code>tooltip</code>. No code is needed.</p>
+<p>To assign a tooltip, simply set this attribute to either a literal string or <a href="../starml/#attribute-flavors">data binding</a>. If you are supporting localization (<a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation">translations</a>)—and you should be—then most of the time it will be a data binding, with the model doing the work of invoking <code>ITranslationHelper</code> or the <code>I18n</code> wrapper.</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">tooltip</span><span class="o">=</span><span class="s">&quot;Actions&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="p">&lt;</span><span class="nt">image</span> <span class="na">tooltip</span><span class="o">=</span><span class="s">&quot;I&#39;m clickable!&quot;</span> <span class="na">click</span><span class="o">=</span><span class="s">|...|</span> <span class="p">/&gt;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="p">&lt;</span><span class="nt">image</span> <span class="na">tooltip</span><span class="o">=</span><span class="s">{Description}</span> <span class="na">click</span><span class="o">=</span><span class="s">|...|</span> <span class="p">/&gt;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>Tooltips are hierarchical in a way that is similar to <a href="#pointer-events">pointer events</a> but without bubbling; the deepest element that (a) currently contains the cursor and (b) has a non-empty tooltip will determine the tooltip that is displayed at any given instant.</p>
+<p>In the example above, we've given both the outer <code>&lt;lane&gt;</code> and its inner <code>&lt;images&gt;</code> tooltips. So:</p>
+<ul>
+<li>If the cursor is over the first image, the tooltip displayed will be "I'm clickable!"</li>
+<li>If the cursor is over the second image, the tooltip will be the value of <code>Description</code>.</li>
+<li>If the cursor is somewhere inside the lane, but <strong>not</strong> within either of the images—e.g. in some empty space between or around the images—then the tooltip will be "Actions".</li>
+</ul>
+<p>Tooltips don't have to be on <code>focusable</code> elements; see the note in <a href="#pointer-events">pointer events</a> for why you might do this on purpose. Tooltips also do not have to be on <em>clickable</em> elements; they could be informational only, as is the case in the <a href="../../examples/scrolling-item-grid/">scrolling item grid</a> example.</p>
+<details class="note">
+<summary>Customization</summary>
+<p>While not common, it is possible to further customize the tooltip when using the <a href="../../library/">Core Library</a> directly, via the <a href="../reference/stardewui/viewmenu.md#formattooltip">FormatTooltip</a> method. The <a href="https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15">Garbage In Garbage Can</a> mod does this in order to add button prompts to the tooltip.</p>
+<p>Note, however, that (a) this code was written before the <a href="../">framework</a> and StarML existed, and (b) it is completely possible to achieve using standard tooltips, and was only written this way to make it slightly easier to adapt the tooltip's exact wording based on whether the <em>current</em> input is mouse vs. controller. Most tooltips are not going to require this degree of control.</p>
+</details>
+<h2 id="scrolling">Scrolling</h2>
+<p>When using the UI framework, scrolling is generally achieved with the <code>&lt;scrollable&gt;</code> element (<a href="../../library/standard-views/#scrollable-view">ScrollableView</a>). This widget automatically takes care of showing/hiding a scroll bar depending on the length of content, and handles all the interactions with the scrollbar itself.</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">scrollable</span> <span class="na">peeking</span><span class="o">=</span><span class="s">&quot;128&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="p">&lt;</span><span class="nt">frame</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{LotsOfItems}</span><span class="p">&gt;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>            ...
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">&lt;/</span><span class="nt">scrollable</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>While it is mostly straightforward, there are a few interesting things to note here:</p>
+<ul>
+<li>When using a controller, the right stick is <em>always</em> used to manually scroll; the scrollbar and up/down buttons are not themselves focusable or otherwise reachable via controller. This is done intentionally to preserve consistency with standard Stardew game menus.</li>
+<li>When using the left-stick or d-pad to navigate a long list or grid, StardewUI will scroll automatically to keep the <a href="#focusability">focused</a> element fully visible. However, on its own, this isn't always the ideal user experience; you'll usually want to apply <a href="#peeking">peeking</a> (see below).</li>
+<li>
+<p>If a row is irregular, e.g. if the individual columns a row have controls of drastically different sizes such as a label, a checkbox, small buttons, large buttons, etc., then you can use <code>ScrollWithChildren</code> to force them all to scroll together:</p>
+<details class="example">
+<summary>ScrollWithChildren Example</summary>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">scrollable</span> <span class="na">peeking</span><span class="o">=</span><span class="s">&quot;128&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        <span class="p">&lt;</span><span class="nt">frame</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{LotsOfItems}</span><span class="p">&gt;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>            <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">vertical-content-alignment</span><span class="o">=</span><span class="s">&quot;middle&quot;</span> <span class="na">scroll-with-children</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>                <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Row Heading&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>                <span class="p">&lt;</span><span class="nt">image</span> <span class="na">focusable</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;64px 64px&quot;</span> <span class="na">sprite</span><span class="o">=</span><span class="s">{ItemSprite}</span> <span class="p">/&gt;</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>                <span class="p">&lt;</span><span class="nt">image</span> <span class="na">focusable</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;20px 20px&quot;</span> <span class="na">sprite</span><span class="o">=</span><span class="s">{DeleteIcon}</span> <span class="p">/&gt;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>            <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">&lt;/</span><span class="nt">scrollable</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>Here we have many rows, each with two focusable controls (images), the first being the size of a normal item/object sprite and the second as a very small "x" or trash can to remove it from the list. By specifying <code>scroll-with-children="vertical"</code> on the lane, we guarantee that if the user is navigating down the 2nd column (delete icon), it is not <em>just</em> the delete icon that is made visible, but the entire row including the item sprite which extends farther below.</p>
+<p>Note that <code>peeking</code> applies after this forced scrolling, so this will display up to 128px below the bottom of the row, not just the bottom of the delete icon or item sprite.</p>
+</details>
+</li>
+</ul>
+<h3 id="peeking">Peeking</h3>
+<p>Peeking<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> improves the <a href="https://www.interaction-design.org/literature/topics/discoverability">discoverability</a> of a scrolling UI by displaying content beyond the edge of the focused area. Observe the difference below between the vanilla social UI and the settings of <a href="https://www.nexusmods.com/stardewvalley/mods/27665">A Fishing Sea</a>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="social-menu---still" name="__tabbed_1" type="radio" /><input id="social-menu---video" name="__tabbed_1" type="radio" /><input id="afs-settings" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="social-menu---still">Social Menu - Still</label><label for="social-menu---video">Social Menu - Video</label><label for="afs-settings">AFS Settings</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><figure markdown="span">
+    <img alt="Social tab last row" src="../../images/screenshot-social-scroll.png" />
+    <figcaption>End of the list... or is it?</figcaption>
+</figure></p>
+</div>
+<div class="tabbed-block">
+<p><video controls>
+  <source src="../../videos/social-scroll-bottom.mp4" type="video/mp4">
+</video></p>
+</div>
+<div class="tabbed-block">
+<p><video controls>
+  <source src="../../videos/afs-settings-scroll-bottom.mp4" type="video/mp4">
+</video></p>
+</div>
+</div>
+</div>
+<p>In the still frame, we are picking on what is obviously a bug in the vanilla menu/scrollbar; there is no outward sign at all that there is a row below Alex, and the only way to find out is to keep trying to scroll until nothing happens. However, even if the scroll bar were working, this isn't a UI that is friendly to directional pads.</p>
+<p>By contrast, in the AFS video, you always know what the next item will be, and can ignore the scrollbar completely and still know when you are reaching the end, because the scrolling first "decelerates" (scrolls less) and then stops completely. The scrollbar still helps, but it is complementary, not necessary.</p>
+<div class="admonition info">
+<p class="admonition-title">TL;DR</p>
+<p><strong>Always set your <code>peeking</code>.</strong> When possible, set it to 2-3x of the distance of a typical scroll; if rows are 80px high, a good peeking value is anywhere from 160px to 240px.</p>
+</div>
+<h2 id="tabbing-and-paging">Tabbing and Paging</h2>
+<p>Two types of UI in Stardew generally receive special input treatment:</p>
+<ol>
+<li>
+<p>Tab controls, such as the main menu's top tabs, which have individually focusable and clickable buttons to switch the current tab but are also supposed to respond to the controller's trigger buttons—generally, L2 and R2—to switch to the previous or next tab.</p>
+</li>
+<li>
+<p>Pagination or pageable sections, which can either be used as "big scrolls" or to replace the current page completely. This is usually controlled by shoulder buttons—L1 and R1—and is sometimes also used to navigate between items in a single-item detail view, such as the selected character in the social profile.</p>
+</li>
+</ol>
+<p>There isn't a single consistent scheme used throughout the game, and especially not in mods, but in general any paged and/or tabbed UI will support some combination of the above. Some examples include:</p>
+<div class="screenshot-tabs">
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="build-menu-vanilla" name="__tabbed_2" type="radio" /><input id="social-detail-vanilla" name="__tabbed_2" type="radio" /><input id="better-crafting-mod" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="build-menu-vanilla">Build Menu (Vanilla)</label><label for="social-detail-vanilla">Social Detail (Vanilla)</label><label for="better-crafting-mod">Better Crafting (Mod)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><img alt="Build Menu" src="../../images/screenshot-build-selection.png" /></p>
+<p><em>Uses triggers (L2/R2) to switch between buildings.</em></p>
+</div>
+<div class="tabbed-block">
+<p><img alt="Social Detail" src="../../images/screenshot-social-detail.png" /></p>
+<p><em>Uses shoulders (L1/R1) to select character, triggers (L2/R2) to select category.</em></p>
+</div>
+<div class="tabbed-block">
+<p><img alt="Better Crafting" src="../../images/screenshot-better-crafting.png" /></p>
+<p><em>Uses triggers (L2/R2) to select horizontal tab, shoulders (L1/R1) to select vertical tab.</em></p>
+</div>
+</div>
+</div>
+</div>
+<p>StardewUI has <a href="../reference/stardewui/itabbable.md"><code>ITabbable</code></a> and <a href="../reference/stardewui/ipageable.md"><code>IPageable</code></a> interfaces that can be implemented on a view in order to hook the trigger and shoulder buttons, respectively. However, because there is so much variability in terms of design decisions, the Framework chooses to leave this up to you, and instead provides a general purpose event to handle button presses.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="tabbedviewmodelcs" name="__tabbed_3" type="radio" /><input id="tabbedviewsml" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="tabbedviewmodelcs">TabbedViewModel.cs</label><label for="tabbedviewsml">TabbedView.sml</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TabbedViewModel</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INotifyPropertyChanged</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">TabPage</span><span class="w"> </span><span class="n">CurrentPage</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">Pages</span><span class="p">[</span><span class="n">CurrentPageIndex</span><span class="p">];</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">CurrentPageIndex</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">TabPage</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Pages</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">HandleButtonPress</span><span class="p">(</span><span class="n">SButton</span><span class="w"> </span><span class="n">button</span><span class="p">)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">pageOffset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">button</span><span class="w"> </span><span class="k">switch</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">            </span><span class="n">SButton</span><span class="p">.</span><span class="n">LeftTrigger</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="o">-</span><span class="m">1</span><span class="p">,</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">            </span><span class="n">SButton</span><span class="p">.</span><span class="n">RightTrigger</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="m">1</span><span class="p">,</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">            </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="m">0</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="p">};</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="c1">// Arithmetic here is a one-liner for wrapping at both beginning and end.</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">        </span><span class="n">CurrentPageIndex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">CurrentPageIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">pageOffset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">Pages</span><span class="p">.</span><span class="n">Count</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">Pages</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">true</span><span class="p">;</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Implementation of <code>INotifyPropertyChanged</code> is omitted for brevity; see <a href="../binding-context/#implementing-inotifypropertychanged">binding context</a> for details on INPC.</p>
+<p>It is useful for most button-press handlers to return <code>true</code> so that the event does not <a href="../binding-events/#return-values">bubble</a> to a different element looking for the same button.</p>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span> <span class="na">button-press</span><span class="o">=</span><span class="s">|HandleButtonPress($Button)|</span><span class="p">&gt;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        <span class="p">&lt;</span><span class="nt">frame</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Pages}</span><span class="p">&gt;</span> ...tab button... <span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="p">&lt;</span><span class="nt">frame</span> <span class="err">*</span><span class="na">context</span><span class="o">=</span><span class="s">{CurrentPage}</span><span class="p">&gt;</span> ...tab content... <span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>Full markup for tab button and tab content are intentionally omitted. The important feature here is the <code>button-press</code> assignment, which passes in the specific button so it can be converted to a tab movement (or not).</p>
+<p>Because button presses bubble up the entire focus path, the handler will run whenever focus is anywhere within the top-level <code>&lt;lane&gt;</code>—that is, anywhere within the tab list or the tab content.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Implementations such as the above are optional, but they significantly improve navigability with a controller and are usually very quick to write, so it is recommended to include one whenever content is organized into many discrete sections, or simply when there is a large amount of content to navigate.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Sometimes spelled as "peaking".&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
