@@ -13,7 +13,7 @@ public interface ITraceWriter
     /// </summary>
     bool IsTracing { get; }
 
-    /// <inheritdoc cref="Trace.BeginSlice(string)" />
+    /// <inheritdoc cref="Trace.Begin(string)" />
     /// <exception cref="InvalidOperationException">Thrown if no trace is currently active.</exception>
     IDisposable BeginSlice(string name);
 

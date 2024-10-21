@@ -9,7 +9,7 @@ public static class Trace
     /// Gets or sets whether tracing is active.
     /// </summary>
     /// <remarks>
-    /// While inactive, all calls to any of the <see cref="BeginSlice"/> overloads are ignored and return <c>null</c>.
+    /// While inactive, all calls to any of the <see cref="Begin"/> overloads are ignored and return <c>null</c>.
     /// If tracing is active, then setting this to <c>false</c> will cause the trace file to be written automatically.
     /// </remarks>
     public static bool IsTracing
