@@ -83,3 +83,25 @@ table .md-tooltip {
     background-color: var(--md-default-fg-color--lightest);
     padding: 0 0.5rem;
 }
+
+.md-typeset .api-reference p {
+    font-size: 0.7rem;
+}
+
+.md-typeset .api-reference code {
+    font-size: 0.6rem;
+    white-space: pre-wrap;
+}
+
+.md-typeset .api-definition {
+    color: #666;
+}
+
+.md-typeset .api-definition p {
+    font-size: 0.6rem;
+}
+
+.md-typeset .api-reference .muted {
+    color: var(--md-default-fg-color--light);
+    font-style: italic;
+}

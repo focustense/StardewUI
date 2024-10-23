@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.Framework", "Fram
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewUI.VisualStudio", "Tools\VisualStudioExtension\StardewUI.VisualStudio.csproj", "{96690DD3-FA50-4807-951D-01DE0427449C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewUI.DocGenerator", "DocGenerator\StardewUI.DocGenerator.csproj", "{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,18 @@ Global
 		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|arm64.Build.0 = Release|arm64
 		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|x86.ActiveCfg = Release|x86
 		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|x86.Build.0 = Release|x86
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|arm64.Build.0 = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|arm64.ActiveCfg = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|arm64.Build.0 = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

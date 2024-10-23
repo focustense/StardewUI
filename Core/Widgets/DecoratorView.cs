@@ -8,6 +8,9 @@ using StardewUI.Layout;
 
 namespace StardewUI.Widgets;
 
+/// <inheritdoc cref="DecoratorView{T}"/>
+public abstract class DecoratorView : DecoratorView<IView> { }
+
 /// <summary>
 /// A view that owns and delegates to an inner view.
 /// </summary>
@@ -23,9 +26,6 @@ namespace StardewUI.Widgets;
 /// be disposed along with the decorator.
 /// </para>
 /// </remarks>
-public abstract class DecoratorView : DecoratorView<IView> { }
-
-/// <inheritdoc cref="DecoratorView"/>
 /// <typeparam name="T">The specific type of view that the decorator owns.</typeparam>
 public class DecoratorView<T> : IView, IDisposable
     where T : class, IView
