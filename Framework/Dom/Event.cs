@@ -57,7 +57,7 @@ public interface IEvent
 }
 
 /// <summary>
-///
+/// An event attribute in a StarML document.
 /// </summary>
 /// <param name="Name">The event name, i.e. name of the <c>event</c> field on the target <see cref="IView"/>.</param>
 /// <param name="HandlerName">The name of the event handler (method) to run on the bound or redirected context.</param>

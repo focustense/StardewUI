@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Publicize Include="DocXml:LoxSmoke.DocXml.DocXmlReader.assemblyNavigators" />
     <Publicize Include="DocXml:LoxSmoke.DocXml.DocXmlReader.GetComments" />
     <Publicize Include="DocXml:LoxSmoke.DocXml.DocXmlReader.GetXmlMemberNode" />
   </ItemGroup>
