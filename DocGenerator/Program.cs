@@ -20,14 +20,16 @@ var documentableTypes = uiAssembly
     .Where(t => t.IsPublic || t.IsNestedPublic || t.IsNestedFamily || t.IsNestedFamORAssem)
     .Where(t => !t.IsSpecialName)
     .ToArray();
-await Parallel.ForEachAsync(
-    documentableTypes,
-    async (typeToDocument, _) =>
-    {
-        var comments = reader.GetTypeComments(typeToDocument);
-        await WriteTypeFile(typeToDocument);
-    }
-);
+await Parallel.ForEachAsync(documentableTypes, async (typeToDocument, _) => await WriteTypeFile(typeToDocument));
+(string kind, string title)[] namespaceSections =
+[
+    ("Class", "Classes"),
+    ("Struct", "Structs"),
+    ("Interface", "Interfaces"),
+    ("Enum", "Enums"),
+];
+var typesByNamespace = documentableTypes.Where(t => !string.IsNullOrEmpty(t.Namespace)).ToLookup(t => t.Namespace!);
+await Parallel.ForEachAsync(typesByNamespace, async (nsGroup, _) => await WriteNamespaceToFile(nsGroup.Key, nsGroup));
 
 void AppendMemberRemarks(StringBuilder sb, MemberInfo member)
 {
@@ -604,6 +606,18 @@ TResult? GetMemberComment<TResult, TComments>(MemberInfo member, Func<TComments,
 static string GetMethodAnchor(MethodBase method)
 {
     string methodName = method is ConstructorInfo ? method.ReflectedType!.Name : method.Name;
+    int genericStartPos = methodName.IndexOf('`');
+    if (genericStartPos >= 0)
+    {
+        string baseName = methodName[0..genericStartPos];
+        var genericArgs =
+            method is ConstructorInfo ? method.ReflectedType!.GetGenericArguments() : method.GetGenericArguments();
+        methodName =
+            baseName
+            + "<"
+            + string.Join(", ", genericArgs.Select(t => FormatGenericTypeName(t, collapsePrimitives: true)))
+            + ">";
+    }
     var argumentTypeNames = method
         .GetParameters()
         .Select(p => FormatGenericTypeName(p.ParameterType, escaped: false, collapsePrimitives: true));
@@ -916,6 +930,10 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     sb.AppendLine("```cs");
     foreach (var attribute in type.GetCustomAttributes(false))
     {
+        if (attribute.GetType().Namespace?.StartsWith("System.Runtime.CompilerServices") == true)
+        {
+            continue;
+        }
         sb.Append('[');
         var attributeName = FormatGenericTypeName(attribute.GetType(), fullPath: true, escaped: false);
         if (attributeName.EndsWith("Attribute"))
@@ -924,7 +942,7 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
         }
         sb.Append(attributeName);
         // TODO: Add attribute fields/props
-        sb.Append(']');
+        sb.AppendLine("]");
     }
     int lengthBeforeDeclaration = sb.Length;
     sb.Append(FormatTypeVisibility(type));
@@ -1206,17 +1224,14 @@ void WriteFieldTable(StringBuilder sb, Type type, EnumComments? enumComments = n
     sb.AppendLine();
 }
 
-static void WriteFrontMatter(StringBuilder sb, Type type, TypeComments? typeComments)
+static void WriteFrontMatter(StringBuilder sb, string title, string? description)
 {
     sb.AppendLine("---");
-    sb.AppendLine($"title: {EscapeYaml(FormatGenericTypeName(type))}");
-    if (typeComments is not null)
+    sb.AppendLine($"title: {EscapeYaml(title)}");
+    description = EscapeYaml(description ?? "");
+    if (!string.IsNullOrWhiteSpace(description))
     {
-        var textDescription = EscapeYaml(ReplaceTags(typeComments.Summary, FormatSimpleText));
-        if (!string.IsNullOrWhiteSpace(textDescription))
-        {
-            sb.AppendLine($"description: {textDescription}");
-        }
+        sb.AppendLine($"description: {description}");
     }
     sb.AppendLine("---");
     sb.AppendLine();
@@ -1407,6 +1422,44 @@ void WriteMethodTable(StringBuilder sb, Type type)
     sb.AppendLine();
 }
 
+async Task WriteNamespaceToFile(string ns, IEnumerable<Type> types)
+{
+    var typesByKind = types.ToLookup(t => FormatTypeKind(t));
+    var fileName = Path.Combine(outputDirectory, GetNamespaceFilePath(ns));
+    var sb = new StringBuilder();
+    WriteFrontMatter(sb, ns, null);
+    sb.AppendLine(@"<link rel=""stylesheet"" href=""/StardewUI/stylesheets/reference.css"" />");
+    sb.AppendLine();
+    sb.AppendLine("/// html | div.api-reference");
+    sb.AppendLine();
+    sb.AppendLine($"# {ns} Namespace");
+    sb.AppendLine();
+    foreach (var (kind, title) in namespaceSections)
+    {
+        var typesInSection = typesByKind[kind].OrderBy(t => t.Name).ToList();
+        if (typesInSection.Count == 0)
+        {
+            continue;
+        }
+        sb.Append("## ");
+        sb.AppendLine(title);
+        sb.AppendLine();
+        sb.AppendLine("| Name | Description |");
+        sb.AppendLine("| --- | --- |");
+        foreach (var type in typesInSection)
+        {
+            var summary = GetTypeComment(type, c => !string.IsNullOrWhiteSpace(c.Summary) ? c.Summary : null);
+            sb.Append("| ");
+            sb.Append(FormatTypeLink(type, ns));
+            sb.Append(" | ");
+            sb.Append(ReplaceTags(summary ?? "", e => FormatParagraphText(e, ns)));
+            sb.AppendLine(" |");
+        }
+        sb.AppendLine();
+    }
+    await File.WriteAllTextAsync(fileName, sb.ToString());
+}
+
 void WritePropertyDetail(StringBuilder sb, PropertyInfo property)
 {
     string ns = property.DeclaringType!.Namespace!;
@@ -1548,7 +1601,7 @@ async Task WriteTypeFile(Type type)
     var typeComments = reader.GetTypeComments(type);
     var fileName = Path.Combine(outputDirectory, GetTypeFilePath(type, true));
     var sb = new StringBuilder();
-    WriteFrontMatter(sb, type, typeComments);
+    WriteTypeFrontMatter(sb, type, typeComments);
     sb.AppendLine(@"<link rel=""stylesheet"" href=""/StardewUI/stylesheets/reference.css"" />");
     sb.AppendLine();
     sb.AppendLine("/// html | div.api-reference");
@@ -1580,6 +1633,13 @@ async Task WriteTypeFile(Type type)
     }
     Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);
     await File.WriteAllTextAsync(fileName, sb.ToString());
+}
+
+static void WriteTypeFrontMatter(StringBuilder sb, Type type, TypeComments? typeComments)
+{
+    var title = FormatGenericTypeName(type);
+    var description = typeComments is not null ? ReplaceTags(typeComments.Summary, FormatSimpleText) : null;
+    WriteFrontMatter(sb, title, description);
 }
 
 class FixedUnindentXmlReader
