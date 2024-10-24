@@ -914,6 +914,18 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
         sb.AppendLine();
     }
     sb.AppendLine("```cs");
+    foreach (var attribute in type.GetCustomAttributes(false))
+    {
+        sb.Append('[');
+        var attributeName = FormatGenericTypeName(attribute.GetType(), fullPath: true, escaped: false);
+        if (attributeName.EndsWith("Attribute"))
+        {
+            attributeName = attributeName[0..^9];
+        }
+        sb.Append(attributeName);
+        // TODO: Add attribute fields/props
+        sb.Append(']');
+    }
     int lengthBeforeDeclaration = sb.Length;
     sb.Append(FormatTypeVisibility(type));
     sb.Append(' ');
@@ -1153,22 +1165,40 @@ void WriteFieldDetails(StringBuilder sb, Type type)
 
 void WriteFieldRow(StringBuilder sb, FieldInfo field)
 {
-    WriteMemberRow(sb, field);
+    if (field.DeclaringType?.IsEnum == true)
+    {
+        if (field.IsSpecialName || !field.IsStatic)
+        {
+            return;
+        }
+        var summary = GetFormattedSummary(field);
+        sb.Append("| ");
+        sb.Append(field.Name);
+        sb.Append(" | ");
+        sb.Append(field.GetRawConstantValue());
+        sb.Append(" | ");
+        sb.Append(summary);
+        sb.AppendLine(" | ");
+    }
+    else
+    {
+        WriteMemberRow(sb, field);
+    }
 }
 
-void WriteFieldTable(StringBuilder sb, Type type)
+void WriteFieldTable(StringBuilder sb, Type type, EnumComments? enumComments = null)
 {
     var fields = type.GetFields(visibleBindingFlags)
         .Where(f => (f.IsPublic || f.IsFamily || f.IsFamilyOrAssembly) && !f.IsCompilerGenerated())
-        .OrderBy(f => f.Name)
+        .OrderBy(f => type.IsEnum ? (f.IsStatic && !f.IsSpecialName ? f.GetRawConstantValue() : -1) : f.Name)
         .ToArray();
     if (fields.Length == 0)
     {
         return;
     }
-    sb.AppendLine("### Fields");
+    sb.AppendLine(enumComments is not null ? "## Fields" : "### Fields");
     sb.AppendLine();
-    WriteMemberTableHeader(sb);
+    WriteMemberTableHeader(sb, enumComments is not null);
     foreach (var field in fields)
     {
         WriteFieldRow(sb, field);
@@ -1206,9 +1236,18 @@ void WriteMemberRow(StringBuilder sb, MemberInfo member, string? name = null, Fu
     sb.AppendLine(" | ");
 }
 
-static void WriteMemberTableHeader(StringBuilder sb)
+static void WriteMemberTableHeader(StringBuilder sb, bool includeValueColumn = false)
 {
-    sb.AppendLine("| Name | Description |");
+    sb.Append(" | Name | ");
+    if (includeValueColumn)
+    {
+        sb.Append("Value | ");
+    }
+    sb.AppendLine("Description |");
+    if (includeValueColumn)
+    {
+        sb.Append("| --- ");
+    }
     sb.AppendLine("| --- | --- |");
 }
 
@@ -1517,20 +1556,28 @@ async Task WriteTypeFile(Type type)
     WriteTitle(sb, type);
     WriteDefinition(sb, type, typeComments);
     WriteRemarks(sb, type);
-    sb.AppendLine("## Members");
-    sb.AppendLine();
-    WriteConstructorTable(sb, type);
-    WriteFieldTable(sb, type);
-    WritePropertyTable(sb, type);
-    WriteMethodTable(sb, type);
-    WriteEventTable(sb, type);
-    sb.AppendLine("## Details");
-    sb.AppendLine();
-    WriteConstructorDetails(sb, type);
-    WriteFieldDetails(sb, type);
-    WritePropertyDetails(sb, type);
-    WriteMethodDetails(sb, type);
-    WriteEventDetails(sb, type);
+    if (type.IsEnum)
+    {
+        var enumComments = reader.GetEnumComments(type);
+        WriteFieldTable(sb, type, enumComments);
+    }
+    else
+    {
+        sb.AppendLine("## Members");
+        sb.AppendLine();
+        WriteConstructorTable(sb, type);
+        WriteFieldTable(sb, type);
+        WritePropertyTable(sb, type);
+        WriteMethodTable(sb, type);
+        WriteEventTable(sb, type);
+        sb.AppendLine("## Details");
+        sb.AppendLine();
+        WriteConstructorDetails(sb, type);
+        WriteFieldDetails(sb, type);
+        WritePropertyDetails(sb, type);
+        WriteMethodDetails(sb, type);
+        WriteEventDetails(sb, type);
+    }
     Directory.CreateDirectory(Path.GetDirectoryName(fileName)!);
     await File.WriteAllTextAsync(fileName, sb.ToString());
 }
@@ -1551,6 +1598,17 @@ class FixedUnindentXmlReader
             comments = reader.GetComments(methodInfo, comments, xmlMemberNode);
         }
         FixMethodComments(comments);
+        return comments;
+    }
+
+    public EnumComments GetEnumComments(Type type)
+    {
+        EnumComments comments;
+        lock (reader)
+        {
+            comments = reader.GetEnumComments(type);
+        }
+        FixEnumComments(comments);
         return comments;
     }
 
