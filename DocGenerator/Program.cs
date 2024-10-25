@@ -1435,7 +1435,12 @@ void WriteMemberRow(StringBuilder sb, MemberInfo member, string? name = null, Fu
     var link =
         member.ReflectedType == member.DeclaringType
             ? FormatLink(name ?? member.Name, "#" + (getAnchor?.Invoke() ?? member.Name.ToLowerInvariant()))
-            : FormatMemberLink(member, member.ReflectedType!.Namespace!);
+        : member.DeclaringTypeOrDefinition() is Type declaringType
+            ? FormatMemberLink(
+                declaringType.GetMemberWithSameMetadataDefinitionAs(member),
+                member.ReflectedType!.Namespace!
+            )
+        : FormatMemberLink(member, member.ReflectedType!.Namespace!);
     sb.Append("| ");
     sb.Append(link);
     sb.Append(" | ");
