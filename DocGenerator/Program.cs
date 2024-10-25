@@ -15,7 +15,10 @@ string outputDirectory = Path.GetFullPath("../../../../../docs/reference", Assem
 
 var reader = new FixedUnindentXmlReader();
 var uiAssembly = typeof(UI).Assembly;
-var documentableTypes = uiAssembly.GetTypes().Where(IsTypeDocumentable).ToArray();
+var documentableTypes = uiAssembly
+    .GetTypes()
+    .Where(t => t.IsVisibleForDocumentation() && t.Namespace?.StartsWith(typeof(UI).Namespace!) == true)
+    .ToArray();
 await Parallel.ForEachAsync(documentableTypes, async (typeToDocument, _) => await WriteTypeFile(typeToDocument));
 (string kind, string title)[] namespaceSections =
 [
@@ -380,13 +383,18 @@ static string FormatLink(string name, string url)
 
 static string FormatMemberLink(MemberInfo memberInfo, string referringNamespace)
 {
+    bool canLink = memberInfo.IsVisibleForDocumentation();
     string rootNamespace = typeof(UI).Namespace!;
     string linkName = memberInfo switch
     {
-        MethodInfo method => FormatGenericMethodName(method),
-        PropertyInfo property => FormatPropertyName(property),
+        MethodInfo method => FormatGenericMethodName(method, escaped: canLink),
+        PropertyInfo property => FormatPropertyName(property, escaped: canLink),
         _ => memberInfo.Name,
     };
+    if (!canLink)
+    {
+        return QuoteCode(linkName);
+    }
     var declaringType = memberInfo.DeclaringTypeOrDefinition()!;
     if (!declaringType.Namespace!.StartsWith(rootNamespace))
     {
@@ -527,7 +535,7 @@ static string FormatTypeLink(Type type, string referringNamespace, string nameSu
     {
         return FormatTypeLink(type.GetElementType()!, referringNamespace, "[]");
     }
-    else if (!IsTypeDocumentableOrExternal(type))
+    else if (!type.IsVisibleForDocumentation())
     {
         return QuoteCode(FormatGenericTypeName(type, fullPath: true, escaped: false));
     }
@@ -601,22 +609,50 @@ static string FormatTypeVisibility(Type type)
     );
 }
 
-static MemberInfo? GetBaseMember(MemberInfo member)
+static IEnumerable<MemberInfo> GetBaseMembers(MemberInfo member)
 {
-    var searchTypes = member
-        .DeclaringType!.GetInterfaces()
-        .Prepend(GetBaseTypeOrDefinition(member.DeclaringType!))
-        .Where(type => type is not null)
-        .Cast<Type>();
-    return searchTypes
-        .SelectMany(type => type.GetMember(member.Name, visibleBindingFlags))
-        .Where(m => m.ToString() == member.ToString())
-        .FirstOrDefault();
+    var type = member.ReflectedType ?? member.DeclaringType!;
+    var baseTypeMembers =
+        GetBaseTypeOrDefinition(type)
+            ?.GetMember(member.Name, visibleBindingFlags)
+            .Where(m => m.ToString() == member.ToString()) ?? [];
+    foreach (var m in baseTypeMembers)
+    {
+        yield return m;
+    }
+    foreach (var interfaceType in type.GetInterfaces())
+    {
+        var interfaceMap = type.GetInterfaceMap(interfaceType);
+        var methodIndex = Array.IndexOf(interfaceMap.TargetMethods, member);
+        if (methodIndex >= 0)
+        {
+            var interfaceMethod = interfaceMap.InterfaceMethods[methodIndex];
+            var interfaceMethodDefinition = interfaceType
+                .RevertGenerics()
+                .GetMemberWithSameMetadataDefinitionAs(interfaceMethod);
+            if (interfaceMethodDefinition is not null)
+            {
+                yield return interfaceMethodDefinition;
+            }
+        }
+    }
 }
 
 static Type? GetBaseTypeOrDefinition(Type type)
 {
     return type.BaseType?.RevertGenerics();
+}
+
+static IEnumerable<Type> GetBaseTypesAndInterfaces(Type type)
+{
+    if (GetBaseTypeOrDefinition(type) is Type baseType)
+    {
+        yield return type;
+    }
+    foreach (var interfaceType in type.GetInterfaces())
+    {
+        yield return interfaceType.RevertGenerics();
+    }
 }
 
 static string GetDirectoryClimbPath(int depth)
@@ -636,16 +672,7 @@ static string GetDirectoryClimbPath(int depth)
 MethodInfo[] GetDocumentableMethods(Type type, Predicate<MethodInfo>? extraPredicate = null)
 {
     return type.GetMethods(visibleBindingFlags)
-        .Where(m =>
-            (m.IsPublic || m.IsFamily || m.IsFamilyOrAssembly)
-            && !m.IsSpecialName
-            && !m.IsCompilerGenerated()
-            && (
-                m.DeclaringType != typeof(object)
-                && m.DeclaringType != typeof(Enum)
-                && extraPredicate?.Invoke(m) != false
-            )
-        )
+        .Where(m => m.IsVisibleForDocumentation() && extraPredicate?.Invoke(m) != false)
         .OrderBy(m => m.Name)
         .ToArray();
 }
@@ -676,7 +703,7 @@ string GetFormattedSummary(MemberInfo member)
 TResult? GetMaybeInherited<T, TComments, TResult>(
     T? memberOrType,
     Func<T, TComments?> getComments,
-    Func<T, T?> getDefaultBase,
+    Func<T, IEnumerable<T>> getDefaultBases,
     Func<TComments, TResult?> selector
 )
     where T : MemberInfo
@@ -697,14 +724,17 @@ TResult? GetMaybeInherited<T, TComments, TResult>(
         return result;
     }
     var cref = comments.Inheritdoc?.Cref ?? "";
-    T? inheritedMemberOrType;
+    IEnumerable<T> searchMembersOrTypes = [];
     if (string.IsNullOrEmpty(cref))
     {
-        inheritedMemberOrType = getDefaultBase(memberOrType);
+        searchMembersOrTypes = getDefaultBases(memberOrType);
     }
     else if (cref.StartsWith("T:"))
     {
-        inheritedMemberOrType = GetType(cref[2..]) as T;
+        if (GetType(cref[2..]) is T referenced)
+        {
+            searchMembersOrTypes = [referenced];
+        }
     }
     else
     {
@@ -712,9 +742,11 @@ TResult? GetMaybeInherited<T, TComments, TResult>(
         int memberStartIndex = cref.LastIndexOf('.', argumentsPos >= 0 ? argumentsPos : cref.Length - 1);
         var type = GetType(cref[2..memberStartIndex]);
         var members = type?.GetMember(cref[(memberStartIndex + 1)..], visibleBindingFlags);
-        inheritedMemberOrType = members?.Length > 0 ? members[0] as T : null;
+        searchMembersOrTypes = members?.OfType<T>() ?? [];
     }
-    return GetMaybeInherited(inheritedMemberOrType, getComments, getDefaultBase, selector);
+    return searchMembersOrTypes
+        .Select(m => GetMaybeInherited(m, getComments, getDefaultBases, selector))
+        .FirstOrDefault();
 }
 
 TResult? GetMemberComment<TResult, TComments>(MemberInfo member, Func<TComments, TResult?> selector)
@@ -723,7 +755,7 @@ TResult? GetMemberComment<TResult, TComments>(MemberInfo member, Func<TComments,
     return GetMaybeInherited<MemberInfo, TComments, TResult>(
         member,
         m => GetMemberCommentsPatched(m) as TComments,
-        GetBaseMember,
+        GetBaseMembers,
         selector
     );
 }
@@ -851,34 +883,13 @@ static Type? GetType(string typeName)
 
 TResult? GetTypeComment<TResult>(Type type, Func<TypeComments, TResult?> selector)
 {
-    return GetMaybeInherited(type, reader.GetTypeComments, GetBaseTypeOrDefinition, selector);
+    return GetMaybeInherited(type, reader.GetTypeComments, GetBaseTypesAndInterfaces, selector);
 }
 
 static string GetTypeFilePath(Type type, bool fullName = false)
 {
     string baseName = fullName ? type.RevertGenerics().FullName!.Replace('.', '/').Replace('+', '.') : type.Name;
     return SluggifyName(baseName) + ".md";
-}
-
-static bool IsTypeDocumentable(Type type)
-{
-    if (
-        type.IsSpecialName
-        || (!type.IsPublic && !type.IsNestedPublic && !type.IsNestedFamily && !type.IsNestedFamORAssem)
-    )
-    {
-        return false;
-    }
-    if (type.DeclaringType is Type outerType)
-    {
-        return IsTypeDocumentable(outerType);
-    }
-    return true;
-}
-
-static bool IsTypeDocumentableOrExternal(Type type)
-{
-    return IsTypeDocumentable(type) || type.Namespace?.StartsWith(typeof(UI).Namespace!) != true;
 }
 
 static string MakeRelativeUrl(string pathRelativeToRoot, string referringNamespace)
@@ -1058,9 +1069,7 @@ void WriteConstructorDetail(StringBuilder sb, ConstructorInfo ctor)
 
 void WriteConstructorDetails(StringBuilder sb, Type type)
 {
-    var constructors = type.GetConstructors(visibleBindingFlags)
-        .Where(c => (c.IsPublic || c.IsFamily || c.IsFamilyOrAssembly) && !c.IsCompilerGenerated())
-        .ToArray();
+    var constructors = type.GetConstructors(visibleBindingFlags).Where(c => c.IsVisibleForDocumentation()).ToArray();
     if (constructors.Length == 0)
     {
         return;
@@ -1077,9 +1086,7 @@ void WriteConstructorDetails(StringBuilder sb, Type type)
 
 void WriteConstructorTable(StringBuilder sb, Type type)
 {
-    var constructors = type.GetConstructors(visibleBindingFlags)
-        .Where(c => (c.IsPublic || c.IsFamily || c.IsFamilyOrAssembly) && !c.IsCompilerGenerated())
-        .ToArray();
+    var constructors = type.GetConstructors(visibleBindingFlags).Where(c => c.IsVisibleForDocumentation()).ToArray();
     if (constructors.Length == 0)
     {
         return;
@@ -1152,7 +1159,7 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     var baseType = GetBaseTypeOrDefinition(type);
     var baseInterfaces = baseType?.GetInterfaces().ToHashSet() ?? [];
     var declaredInterfaces = type.GetInterfaces()
-        .Where(t => IsTypeDocumentableOrExternal(t) && !baseInterfaces.Contains(t))
+        .Where(t => t.IsVisibleForDocumentation() && !baseInterfaces.Contains(t))
         .ToArray();
     var hasNonDefaultBase =
         baseType is not null && baseType != typeof(object) && baseType != typeof(Enum) && baseType != typeof(ValueType);
@@ -1212,7 +1219,7 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     inheritanceElements.Push(FormatGenericTypeName(type, false));
     for (var super = GetBaseTypeOrDefinition(type); super is not null; super = GetBaseTypeOrDefinition(super))
     {
-        if (!IsTypeDocumentableOrExternal(super))
+        if (!super.IsVisibleForDocumentation())
         {
             continue;
         }
@@ -1352,11 +1359,7 @@ void WriteFieldDetail(StringBuilder sb, FieldInfo field)
 void WriteFieldDetails(StringBuilder sb, Type type)
 {
     var fields = type.GetFields(visibleBindingFlags)
-        .Where(f =>
-            (f.IsPublic || f.IsFamily || f.IsFamilyOrAssembly)
-            && f.ReflectedType == f.DeclaringType
-            && !f.IsCompilerGenerated()
-        )
+        .Where(f => f.ReflectedType == f.DeclaringType && f.IsVisibleForDocumentation())
         .OrderBy(f => f.Name)
         .ToArray();
     if (fields.Length == 0)
@@ -1399,7 +1402,7 @@ void WriteFieldRow(StringBuilder sb, FieldInfo field)
 void WriteFieldTable(StringBuilder sb, Type type, EnumComments? enumComments = null)
 {
     var fields = type.GetFields(visibleBindingFlags)
-        .Where(f => (f.IsPublic || f.IsFamily || f.IsFamilyOrAssembly) && !f.IsCompilerGenerated())
+        .Where(f => f.IsVisibleForDocumentation())
         .OrderBy(f => type.IsEnum ? (f.IsStatic && !f.IsSpecialName ? f.GetRawConstantValue() : -1) : f.Name)
         .ToArray();
     if (fields.Length == 0)
@@ -1724,7 +1727,7 @@ void WritePropertyDetail(StringBuilder sb, PropertyInfo property)
 void WritePropertyDetails(StringBuilder sb, Type type)
 {
     var properties = type.GetProperties(visibleBindingFlags)
-        .Where(p => p.ReflectedType == p.DeclaringType && p.GetGetMethod()?.IsPublic == true)
+        .Where(p => p.ReflectedType == p.DeclaringType && p.IsVisibleForDocumentation())
         .OrderBy(p => p.Name)
         .ToArray();
     if (properties.Length == 0)
@@ -1750,7 +1753,7 @@ void WritePropertyRow(StringBuilder sb, PropertyInfo property)
 void WritePropertyTable(StringBuilder sb, Type type)
 {
     var properties = type.GetProperties(visibleBindingFlags)
-        .Where(p => p.GetGetMethod()?.IsPublic == true)
+        .Where(p => p.IsVisibleForDocumentation())
         .OrderBy(p => p.Name)
         .ToArray();
     if (properties.Length == 0)
@@ -2005,6 +2008,85 @@ static class ReflectionExtensions
     public static bool IsCompilerGenerated(this MemberInfo member)
     {
         return member.GetCustomAttribute<CompilerGeneratedAttribute>() is not null;
+    }
+
+    public static bool IsShadowed(this MethodInfo method)
+    {
+        if (!method.IsHideBySig || method.ReflectedType is null)
+        {
+            return false;
+        }
+        var flags = method.IsPublic ? BindingFlags.Public : BindingFlags.NonPublic;
+        flags |= method.IsStatic ? BindingFlags.Static : BindingFlags.Instance;
+        var paramTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
+        var foundMethod = method.ReflectedType.GetMethod(method.Name, flags, null, paramTypes, null);
+        return foundMethod is not null
+            && foundMethod != method
+            && foundMethod.Attributes.HasFlag(MethodAttributes.NewSlot);
+    }
+
+    public static bool IsVisibleForDocumentation(this EventInfo evt)
+    {
+        return evt.AddMethod?.IsVisibleForDocumentation() == true
+            || evt.RemoveMethod?.IsVisibleForDocumentation() == true;
+    }
+
+    public static bool IsVisibleForDocumentation(this FieldInfo field)
+    {
+        return (field.IsPublic || field.IsFamily || field.IsFamilyOrAssembly)
+            && !field.IsCompilerGenerated()
+            && field.ReflectedType?.RevertGenerics().IsVisibleForDocumentation() == true;
+    }
+
+    public static bool IsVisibleForDocumentation(this MemberInfo member)
+    {
+        return member switch
+        {
+            EventInfo evt => evt.IsVisibleForDocumentation(),
+            FieldInfo field => field.IsVisibleForDocumentation(),
+            MethodInfo method => method.IsVisibleForDocumentation(),
+            PropertyInfo property => property.IsVisibleForDocumentation(),
+            TypeInfo type => type.IsVisibleForDocumentation(),
+            _ => member.ReflectedType?.IsVisibleForDocumentation() == true,
+        };
+    }
+
+    public static bool IsVisibleForDocumentation(this MethodInfo method, bool asAccessor = false)
+    {
+        return (method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly)
+            && (asAccessor || (!method.IsSpecialName && !method.IsCompilerGenerated()))
+            && (method.DeclaringType != typeof(object) && method.DeclaringType != typeof(Enum))
+            && method.ReflectedType?.RevertGenerics().IsVisibleForDocumentation() == true
+            && (asAccessor || !method.IsShadowed());
+    }
+
+    public static bool IsVisibleForDocumentation(this PropertyInfo property)
+    {
+        return property.GetMethod?.IsVisibleForDocumentation(true) == true
+            || property.SetMethod?.IsVisibleForDocumentation(true) == true;
+    }
+
+    public static bool IsVisibleForDocumentation(this Type type)
+    {
+        if (
+            type.Namespace?.StartsWith("System") == true
+            || type.Namespace?.StartsWith("Microsoft.Xna.Framework") == true
+        )
+        {
+            return true;
+        }
+        if (
+            type.IsSpecialName
+            || (!type.IsPublic && !type.IsNestedPublic && !type.IsNestedFamily && !type.IsNestedFamORAssem)
+        )
+        {
+            return false;
+        }
+        if (type.DeclaringType is Type outerType)
+        {
+            return outerType.IsVisibleForDocumentation();
+        }
+        return true;
     }
 
     public static MemberInfo? OriginalDefinition(this MemberInfo member)
