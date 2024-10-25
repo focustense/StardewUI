@@ -41,7 +41,7 @@ Using clicks as an example: in vanilla Stardew menu code, clicks are simply disp
 
 - First, the focused element – the _deepest_ element that contains the cursor – gets a chance to handle the event.
 - If that element either does not handle the click, or allows it to "bubble", then the element's parent also gets a chance at it.
-- And so on until either the event is marked as [Handled](../reference/stardewui/bubbleeventargs.md#handled) or the top-level view is reached.
+- And so on until either the event is marked as [Handled](../reference/stardewui/events/bubbleeventargs.md#handled) or the top-level view is reached.
 
 You never have to write code to figure out which element was clicked, hovered, etc. Simply add events to the elements you want, similar to the [focusable](#focusability) attribute.
 
@@ -82,7 +82,7 @@ Tooltips don't have to be on `focusable` elements; see the note in [pointer even
 
 ??? note "Customization"
 
-    While not common, it is possible to further customize the tooltip when using the [Core Library](../library/index.md) directly, via the [FormatTooltip](../reference/stardewui/viewmenu.md#formattooltip) method. The [Garbage In Garbage Can](https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15) mod does this in order to add button prompts to the tooltip.
+    While not common, it is possible to further customize the tooltip when using the [Core Library](../library/index.md) directly, via the [FormatTooltip](../reference/stardewui/viewmenu-1.md#formattooltipienumerableviewchild) method. The [Garbage In Garbage Can](https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15) mod does this in order to add button prompts to the tooltip.
     
     Note, however, that (a) this code was written before the [framework](index.md) and StarML existed, and (b) it is completely possible to achieve using standard tooltips, and was only written this way to make it slightly easier to adapt the tooltip's exact wording based on whether the _current_ input is mouse vs. controller. Most tooltips are not going to require this degree of control.
 
@@ -174,7 +174,7 @@ There isn't a single consistent scheme used throughout the game, and especially 
 === "Build Menu (Vanilla)"
 
     ![Build Menu](../images/screenshot-build-selection.png)
-
+    
     _Uses triggers (L2/R2) to switch between buildings._
 
 === "Social Detail (Vanilla)"
@@ -191,7 +191,7 @@ There isn't a single consistent scheme used throughout the game, and especially 
 
 ///
 
-StardewUI has [`ITabbable`](../reference/stardewui/itabbable.md) and [`IPageable`](../reference/stardewui/ipageable.md) interfaces that can be implemented on a view in order to hook the trigger and shoulder buttons, respectively. However, because there is so much variability in terms of design decisions, the Framework chooses to leave this up to you, and instead provides a general purpose event to handle button presses.
+StardewUI has [`ITabbable`](../reference/stardewui/layout/itabbable.md) and [`IPageable`](../reference/stardewui/layout/ipageable.md) interfaces that can be implemented on a view in order to hook the trigger and shoulder buttons, respectively. However, because there is so much variability in terms of design decisions, the Framework chooses to leave this up to you, and instead provides a general purpose event to handle button presses.
 
 !!! example
 

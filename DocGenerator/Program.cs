@@ -188,7 +188,16 @@ static string EscapeYaml(string value)
 string FixMethodId(string methodId, MethodBase method)
 {
     var genericArgs = method.IsGenericMethod
-        ? method.GetParameters().SelectMany(p => p.ParameterType.RevertGenerics().GetGenericArguments()).ToArray()
+        ? method
+            .RevertGenerics()
+            .GetParameters()
+            .SelectMany(p =>
+            {
+                var realArgs = p.ParameterType.GetGenericArguments();
+                var definitionArgs = p.ParameterType.RevertGenerics().GetGenericArguments();
+                return realArgs.Zip(definitionArgs, (r, d) => r.IsGenericMethodParameter ? r : d);
+            })
+            .ToArray()
         : [];
     if (genericArgs.Length == 0)
     {
@@ -202,7 +211,7 @@ string FixMethodId(string methodId, MethodBase method)
         var qualifier = genericArg.IsGenericMethodParameter ? "``" : "`";
         var index = genericArg.GenericParameterPosition;
         var genericRef = string.Concat("{", qualifier, index, "}");
-        var nextMatch = genericArgRegex.Match(argsString);
+        var nextMatch = genericArgRegex.Match(argsString, startPos);
         if (!nextMatch.Success)
         {
             break;
@@ -542,6 +551,10 @@ static string FormatTypeLink(Type type, string referringNamespace, string nameSu
     if (type.IsArray)
     {
         return FormatTypeLink(type.GetElementType()!, referringNamespace, "[]");
+    }
+    else if (!IsTypeDocumentableOrExternal(type))
+    {
+        return QuoteCode(FormatGenericTypeName(type, fullPath: true, escaped: false));
     }
     else if (!type.IsGenericType || type.ContainsGenericParameters)
     {
@@ -888,6 +901,11 @@ static bool IsTypeDocumentable(Type type)
     return true;
 }
 
+static bool IsTypeDocumentableOrExternal(Type type)
+{
+    return IsTypeDocumentable(type) || type.Namespace?.StartsWith(typeof(UI).Namespace!) != true;
+}
+
 static string MakeRelativeUrl(string pathRelativeToRoot, string referringNamespace)
 {
     var parts = pathRelativeToRoot.Split('/');
@@ -1183,6 +1201,10 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     inheritanceElements.Push(FormatGenericTypeName(type, false));
     for (var super = GetBaseTypeOrDefinition(type); super is not null; super = GetBaseTypeOrDefinition(super))
     {
+        if (!IsTypeDocumentableOrExternal(super))
+        {
+            continue;
+        }
         inheritanceElements.Push(" ⇦ ");
         inheritanceElements.Push(FormatTypeLink(super, ns));
     }
@@ -1196,10 +1218,11 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
         sb.AppendLine();
         sb.AppendLine();
     }
-    if (declaredInterfaces.Length > 0)
+    var documentableInterfaces = declaredInterfaces.Where(IsTypeDocumentableOrExternal);
+    if (documentableInterfaces.Any())
     {
         sb.AppendLine("**Implements**  ");
-        sb.AppendLine(string.Join(", ", declaredInterfaces.Select(t => FormatTypeLink(t, ns))));
+        sb.AppendLine(string.Join(", ", documentableInterfaces.Select(t => FormatTypeLink(t, ns))));
         sb.AppendLine();
     }
 }

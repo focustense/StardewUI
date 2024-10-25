@@ -37,20 +37,20 @@ The individual parts of this are as follows:
 /// html | div.no-code-break
 | Syntax | Explanation |
 | ---- | ---- |
-| `<button ... />` | The element/view that the event is being attached to, in this case a [Button](../reference/stardewui/button.md). |
+| `<button ... />` | The element/view that the event is being attached to, in this case a [Button](../reference/stardewui/widgets/button.md). |
 | `click=|...|` | The name of the view's [event](https://learn.microsoft.com/en-us/dotnet/standard/Events/) property or field, in [kebab-case](https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case); in this example, it is the [`Click`](../reference/stardewui/iview.md#click) event available on every view.<p>To be recognized as an event binding, the value **must be enclosed in pipe characters**, i.e. `event=|...|` but not `event="..."` or `event={...}`. |
 | `~ShopViewModel.Buy` | The name of the event handler (method) to run when the event is raised. [Context redirects](binding-context.md#redirects) are supported here—although not required. In this example, we want to run the method named `Buy` on the class `ShopViewModel`. |
 | `(...)` | The arguments to provide to the above method. Note that even if the method takes no arguments, it still must be given an empty argument list `()`, as would be the case for any C# method call. |
 | `"Cheese"` | A _literal_ argument value. The exact value is read as a literal string, and [converted](starml.md#type-conversions) as necessary to the required argument value; e.g. if the method takes an `int` then we can write `"42"`. |
 | `^Quantity` | A _context property_ value. This has the exact same behavior as a [property data binding](starml.md#attribute-flavors), but **without** the enclosing braces. [Redirects](binding-context.md#redirects) are supported with individual arguments of this kind, and are unrelated to the event handler's target. |
-| `$Button` | An _event property_ value. The `$` token is **only** valid for event arguments, and refers to the same-named property on the real `EventArgs` object. Specifically, we want the [`Button`](../reference/stardewui/clickeventargs.md#button) property of `ClickEventArgs`—for example, we might use this to implement different behavior for left-click vs. right-click. |
-///
+| `$Button` | An _event property_ value. The `$` token is **only** valid for event arguments, and refers to the same-named property on the real `EventArgs` object. Specifically, we want the [`Button`](../reference/stardewui/events/clickeventargs.md#button) property of `ClickEventArgs`—for example, we might use this to implement different behavior for left-click vs. right-click. |
+|///||
 
 This example covers all possible argument types: literals, context properties, and event properties. Other types of bindings, such as assets (`@path`) are **not** supported in event arguments.
 
 ## Return Values
 
-Event handler methods, such as the hypothetical `Buy` method above, will generally be `void`, but there is one special case: a handler may return `bool` in order to control the [`Handled`](../reference/stardewui/bubbleeventargs.md#handled) property of the event and prevent it from bubbling up.
+Event handler methods, such as the hypothetical `Buy` method above, will generally be `void`, but there is one special case: a handler may return `bool` in order to control the [`Handled`](../reference/stardewui/events/bubbleeventargs.md#handled) property of the event and prevent it from bubbling up.
 
 "Event bubbling" is the process by which an event not considered "handled" by a child view is given another chance to run at the parent. Consider the following two scenarios:
 
@@ -64,7 +64,7 @@ These two cases might very well be part of the _same_ user interface, so let's i
 !!! failure "Partially Broken"
 
     === "C#"
-
+    
         ```cs
         public class ListItemViewModel : INotifyPropertyChanged
         {
@@ -82,21 +82,21 @@ These two cases might very well be part of the _same_ user interface, so let's i
             {
                 Game1.addHUDMessage(new(ExtraInfo));
             }
-
+    
             public void SetBackgroundHover(bool hover)
             {
                 BackgroundTint = hover ? Color.Yellow : Color.White;
             }
-
+    
             public void SetInfoButtonHover(bool hover)
             {
                 InfoButtonTint = hover ? Color.Blue : Color.White;
             }
         }
         ```
-
+    
     === "StarML"
-
+    
         ```html
         <frame click=|Buy()|
                pointer-enter=|SetBackgroundHover("true")|
