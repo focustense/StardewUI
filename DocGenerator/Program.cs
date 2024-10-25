@@ -1115,7 +1115,9 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     sb.Append(FormatGenericTypeName(type, escaped: false, includeOuterClasses: true));
     var baseType = GetBaseTypeOrDefinition(type);
     var baseInterfaces = baseType?.GetInterfaces().ToHashSet() ?? [];
-    var declaredInterfaces = type.GetInterfaces().Where(t => !baseInterfaces.Contains(t)).ToArray();
+    var declaredInterfaces = type.GetInterfaces()
+        .Where(t => IsTypeDocumentableOrExternal(t) && !baseInterfaces.Contains(t))
+        .ToArray();
     var hasNonDefaultBase =
         baseType is not null && baseType != typeof(object) && baseType != typeof(Enum) && baseType != typeof(ValueType);
     if (declaredInterfaces.Length > 0 || hasNonDefaultBase)
@@ -1191,11 +1193,10 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
         sb.AppendLine();
         sb.AppendLine();
     }
-    var documentableInterfaces = declaredInterfaces.Where(IsTypeDocumentableOrExternal);
-    if (documentableInterfaces.Any())
+    if (declaredInterfaces.Length > 0)
     {
         sb.AppendLine("**Implements**  ");
-        sb.AppendLine(string.Join(", ", documentableInterfaces.Select(t => FormatTypeLink(t, ns))));
+        sb.AppendLine(string.Join(", ", declaredInterfaces.Select(t => FormatTypeLink(t, ns))));
         sb.AppendLine();
     }
 }
