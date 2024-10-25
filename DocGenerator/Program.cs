@@ -15,11 +15,7 @@ string outputDirectory = Path.GetFullPath("../../../../../docs/reference", Assem
 
 var reader = new FixedUnindentXmlReader();
 var uiAssembly = typeof(UI).Assembly;
-var documentableTypes = uiAssembly
-    .GetTypes()
-    .Where(t => t.IsPublic || t.IsNestedPublic || t.IsNestedFamily || t.IsNestedFamORAssem)
-    .Where(t => !t.IsSpecialName)
-    .ToArray();
+var documentableTypes = uiAssembly.GetTypes().Where(IsTypeDocumentable).ToArray();
 await Parallel.ForEachAsync(documentableTypes, async (typeToDocument, _) => await WriteTypeFile(typeToDocument));
 (string kind, string title)[] namespaceSections =
 [
@@ -47,13 +43,53 @@ void AppendMemberRemarks(StringBuilder sb, MemberInfo member)
     sb.AppendLine();
 }
 
+static void AppendParameterList(
+    StringBuilder sb,
+    IReadOnlyList<ParameterInfo> parameters,
+    bool fullPath = false,
+    string? fullPathIgnorePrefix = null,
+    bool escaped = true,
+    bool collapsePrimitives = false,
+    bool includeModifiers = false
+)
+{
+    var argumentTypes = parameters.Select(p => p.ParameterType).ToArray();
+    AppendTypeList(
+        sb,
+        argumentTypes,
+        fullPath,
+        escaped: escaped,
+        collapsePrimitives: collapsePrimitives,
+        prefixSelector: (_, i) => GetPrefix(i)
+    );
+
+    string? GetPrefix(int index)
+    {
+        if (!includeModifiers)
+        {
+            return null;
+        }
+        var param = parameters[index];
+        if (param.IsOut)
+        {
+            return param.IsIn ? "ref" : "out";
+        }
+        else if (param.IsIn)
+        {
+            return "in";
+        }
+        return null;
+    }
+}
+
 static void AppendTypeList(
     StringBuilder sb,
     IReadOnlyList<Type> types,
     bool fullPath = false,
     string? fullPathIgnorePrefix = null,
     bool escaped = true,
-    bool collapsePrimitives = false
+    bool collapsePrimitives = false,
+    Func<Type, int, string?>? prefixSelector = null
 )
 {
     for (int i = 0; i < types.Count; i++)
@@ -61,6 +97,11 @@ static void AppendTypeList(
         if (i > 0)
         {
             sb.Append(", ");
+        }
+        if (prefixSelector?.Invoke(types[i], i) is string prefix && prefix.Length > 0)
+        {
+            sb.Append(prefix);
+            sb.Append(' ');
         }
         sb.Append(
             FormatGenericTypeName(
@@ -74,20 +115,37 @@ static void AppendTypeList(
     }
 }
 
-static void AppendWithInheritance(StringBuilder sb, string text, Type? declaringType, Type referringType)
+static void AppendWithInheritance(
+    StringBuilder sb,
+    string text,
+    Type? declaringType,
+    MemberInfo? originalMember,
+    Type referringType
+)
 {
     sb.Append(text);
-    if (declaringType is null || referringType == declaringType)
+    if (declaringType is not null && referringType != declaringType)
     {
-        return;
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            sb.Append("<br>");
+        }
+        sb.Append(@"<span class=""muted"" markdown>(Inherited from ");
+        sb.Append(FormatTypeLink(declaringType, referringType.Namespace!));
+        sb.Append(")</span>");
     }
-    if (!string.IsNullOrWhiteSpace(text))
+    else if (originalMember?.DeclaringTypeOrDefinition() is Type originalType && referringType != originalType)
     {
-        sb.Append("<br>");
+        if (!string.IsNullOrWhiteSpace(text))
+        {
+            sb.Append("<br>");
+        }
+        sb.Append(@"<span class=""muted"" markdown>(Overrides ");
+        sb.Append(FormatTypeLink(originalType, referringType.Namespace ?? ""));
+        sb.Append('.');
+        sb.Append(FormatMemberLink(originalMember, referringType.Namespace ?? ""));
+        sb.Append(")</span>");
     }
-    sb.Append(@"<span class=""muted"" markdown>(Inherited from ");
-    sb.Append(FormatTypeLink(declaringType, referringType.Namespace!));
-    sb.Append(")</span>");
 }
 
 static void AppendWithTypeArguments(
@@ -127,6 +185,34 @@ static string EscapeYaml(string value)
     return value.Replace("<", "&lt;").Replace(">", "&gt;");
 }
 
+string FixMethodId(string methodId, MethodBase method)
+{
+    var genericArgs = method.IsGenericMethod
+        ? method.GetParameters().SelectMany(p => p.ParameterType.RevertGenerics().GetGenericArguments()).ToArray()
+        : [];
+    if (genericArgs.Length == 0)
+    {
+        return methodId;
+    }
+    var argStartPos = methodId.IndexOf('(') + 1;
+    string argsString = methodId[argStartPos..];
+    int startPos = 0;
+    foreach (var genericArg in genericArgs)
+    {
+        var qualifier = genericArg.IsGenericMethodParameter ? "``" : "`";
+        var index = genericArg.GenericParameterPosition;
+        var genericRef = string.Concat("{", qualifier, index, "}");
+        var nextMatch = genericArgRegex.Match(argsString);
+        if (!nextMatch.Success)
+        {
+            break;
+        }
+        argsString = genericArgRegex.Replace(argsString, genericRef, 1, startPos);
+        startPos = nextMatch.Index + 3;
+    }
+    return methodId[..argStartPos] + argsString;
+}
+
 static string FormatConstructorName(
     ConstructorInfo ctor,
     bool fullPath = false,
@@ -145,8 +231,7 @@ static string FormatConstructorName(
         sb.Append(ctor.ReflectedType!.Name);
     }
     sb.Append('(');
-    var argumentTypes = ctor.GetParameters().Select(p => p.ParameterType).ToArray();
-    AppendTypeList(sb, argumentTypes, fullPath, escaped: escaped, collapsePrimitives: collapsePrimitives);
+    AppendParameterList(sb, ctor.GetParameters(), fullPath, escaped: escaped, collapsePrimitives: collapsePrimitives);
     sb.Append(')');
     return sb.ToString();
 }
@@ -173,14 +258,20 @@ static string FormatGenericMethodName(
     MethodBase method,
     bool fullPath = false,
     bool escaped = true,
-    bool collapsePrimitives = false
+    bool collapsePrimitives = false,
+    bool includeParameterModifiers = false
 )
 {
     if (method.IsGenericMethod && !method.IsGenericMethodDefinition && method is MethodInfo methodInfo)
     {
-        return FormatGenericMethodName(methodInfo.GetGenericMethodDefinition(), fullPath, escaped, collapsePrimitives);
+        return FormatGenericMethodName(
+            methodInfo.GetGenericMethodDefinition(),
+            fullPath,
+            escaped,
+            collapsePrimitives,
+            includeParameterModifiers
+        );
     }
-
     var sb = new StringBuilder();
     if (method.IsGenericMethodDefinition)
     {
@@ -192,8 +283,15 @@ static string FormatGenericMethodName(
         sb.Append(method.Name);
     }
     sb.Append('(');
-    var argumentTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-    AppendTypeList(sb, argumentTypes, fullPath, method.ReflectedType!.FullName, escaped, collapsePrimitives);
+    AppendParameterList(
+        sb,
+        method.GetParameters(),
+        fullPath,
+        method.ReflectedType!.FullName,
+        escaped,
+        collapsePrimitives,
+        includeParameterModifiers
+    );
     sb.Append(')');
     return sb.ToString();
 }
@@ -204,32 +302,56 @@ static string FormatGenericTypeName(
     string? fullPathIgnorePrefix = null,
     bool escaped = true,
     bool baseNameOnly = false,
-    bool collapsePrimitives = false
+    bool collapsePrimitives = false,
+    bool includeOuterClasses = false
 )
 {
     if (collapsePrimitives && type.IsPrimitive || type == typeof(string))
     {
         return GetPrimitiveTypeName(type);
     }
-    if (type.IsGenericType)
+    if (type.IsArray)
+    {
+        return FormatGenericTypeName(
+            type.GetElementType()!,
+            fullPath,
+            fullPathIgnorePrefix,
+            escaped,
+            baseNameOnly,
+            collapsePrimitives,
+            includeOuterClasses
+        );
+    }
+    if (type.IsGenericParameter)
+    {
+        return type.Name;
+    }
+    if (type.IsGenericType || type.ContainsGenericParameters)
     {
         if (!type.ContainsGenericParameters && type.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
             var valueType = type.GetGenericArguments()[0];
-            return FormatGenericTypeName(valueType, fullPath, fullPathIgnorePrefix, escaped, baseNameOnly) + '?';
+            return FormatGenericTypeName(
+                    valueType,
+                    fullPath,
+                    fullPathIgnorePrefix,
+                    escaped,
+                    baseNameOnly,
+                    includeOuterClasses
+                ) + '?';
         }
         var args = type.GetGenericArguments();
         var baseName =
-            (type.ContainsGenericParameters && !type.IsGenericTypeDefinition)
+            (type.IsGenericType && type.ContainsGenericParameters && !type.IsGenericTypeDefinition)
                 ? type.GetGenericTypeDefinition().FullName!
-                : type.FullName!;
+                : type.FullName ?? type.Name;
         if (!fullPath || (fullPathIgnorePrefix is not null && baseName.StartsWith(fullPathIgnorePrefix + '+')))
         {
             var nestedTypeStartIndex = baseName.LastIndexOf('+');
             baseName =
-                nestedTypeStartIndex >= 0
-                    ? baseName[(nestedTypeStartIndex + 1)..]
-                    : baseName[(type.Namespace!.Length + 1)..];
+                nestedTypeStartIndex >= 0 ? baseName[(nestedTypeStartIndex + 1)..]
+                : baseName.StartsWith(type.Namespace!) ? baseName[(type.Namespace!.Length + 1)..]
+                : baseName;
         }
         else if (type.Namespace == "System" && baseName.StartsWith("System."))
         {
@@ -244,7 +366,22 @@ static string FormatGenericTypeName(
         AppendWithTypeArguments(sb, baseName, args, fullPath, escaped);
         return sb.ToString();
     }
-    var result = fullPath ? type.FullName ?? type.Name : type.Name;
+    var result =
+        fullPath ? type.FullName ?? type.Name
+        : (includeOuterClasses && type.DeclaringType is Type outerType)
+            ? FormatGenericTypeName(
+                outerType,
+                fullPath,
+                fullPathIgnorePrefix,
+                escaped,
+                baseNameOnly,
+                collapsePrimitives,
+                includeOuterClasses
+            )
+                + '.'
+                + type.Name
+        : type.Name;
+    result = result.Replace('+', '.');
     if (result.EndsWith('&'))
     {
         result = result[..^1];
@@ -554,7 +691,7 @@ TResult? GetMaybeInherited<T, TComments, TResult>(
     Func<T, T?> getDefaultBase,
     Func<TComments, TResult?> selector
 )
-    where T : class
+    where T : MemberInfo
     where TComments : CommonComments
 {
     if (memberOrType is null)
@@ -567,7 +704,7 @@ TResult? GetMaybeInherited<T, TComments, TResult>(
         return default;
     }
     var result = selector(comments);
-    if (result is not null && !(result is string s && string.IsNullOrWhiteSpace(s)))
+    if ((result is not null && !(result is string s && string.IsNullOrWhiteSpace(s))) || comments.Inheritdoc is null)
     {
         return result;
     }
@@ -607,6 +744,10 @@ static string GetMethodAnchor(MethodBase method)
 {
     string methodName = method is ConstructorInfo ? method.ReflectedType!.Name : method.Name;
     int genericStartPos = methodName.IndexOf('`');
+    if (method.ContainsGenericParameters && genericStartPos < 0)
+    {
+        genericStartPos = methodName.Length;
+    }
     if (genericStartPos >= 0)
     {
         string baseName = methodName[0..genericStartPos];
@@ -633,30 +774,12 @@ MethodComments GetMethodCommentsPatched(MethodBase methodInfo)
 {
     methodInfo = methodInfo.RevertGenerics();
     var methodId = methodInfo.MethodId();
-    var genericArgs = methodInfo.IsGenericMethod
-        ? methodInfo.GetParameters().SelectMany(p => p.ParameterType.RevertGenerics().GetGenericArguments()).ToArray()
-        : [];
-    if (genericArgs.Length > 0)
-    {
-        var argStartPos = methodId.IndexOf('(') + 1;
-        string argsString = methodId[argStartPos..];
-        int startPos = 0;
-        foreach (var genericArg in genericArgs)
-        {
-            var qualifier = genericArg.IsGenericMethodParameter ? "``" : "`";
-            var index = genericArg.GenericParameterPosition;
-            var genericRef = string.Concat("{", qualifier, index, "}");
-            var nextMatch = genericArgRegex.Match(argsString);
-            if (!nextMatch.Success)
-            {
-                break;
-            }
-            argsString = genericArgRegex.Replace(argsString, genericRef, 1, startPos);
-            startPos = nextMatch.Index + 3;
-        }
-        methodId = methodId[..argStartPos] + argsString;
-    }
     var xmlMemberNode = reader.GetXmlMemberNode(methodId, methodInfo.ReflectedType);
+    if (xmlMemberNode is null)
+    {
+        methodId = FixMethodId(methodId, methodInfo);
+        xmlMemberNode = reader.GetXmlMemberNode(methodId, methodInfo.ReflectedType);
+    }
     var comments = new MethodComments();
     return reader.GetComments(methodInfo, comments, xmlMemberNode);
 }
@@ -686,6 +809,28 @@ static string GetPrimitiveTypeName(Type type)
         "String" => "string",
         _ => type.FullName ?? type.Name,
     };
+}
+
+string GetPropertyAnchor(PropertyInfo property)
+{
+    var indexParams = property.GetIndexParameters();
+    if (indexParams.Length == 0)
+    {
+        return SluggifyName(property.Name);
+    }
+    var sb = new StringBuilder();
+    sb.Append(property.Name);
+    sb.Append('[');
+    for (int i = 0; i < indexParams.Length; i++)
+    {
+        if (i > 0)
+        {
+            sb.Append(", ");
+        }
+        sb.Append(FormatGenericTypeName(indexParams[i].ParameterType, escaped: false, collapsePrimitives: true));
+    }
+    sb.Append(']');
+    return SluggifyName(sb.ToString());
 }
 
 static Type? GetType(string typeName)
@@ -723,8 +868,24 @@ TResult? GetTypeComment<TResult>(Type type, Func<TypeComments, TResult?> selecto
 
 static string GetTypeFilePath(Type type, bool fullName = false)
 {
-    string baseName = fullName ? type.RevertGenerics().FullName!.Replace('.', '/') : type.Name;
+    string baseName = fullName ? type.RevertGenerics().FullName!.Replace('.', '/').Replace('+', '.') : type.Name;
     return SluggifyName(baseName) + ".md";
+}
+
+static bool IsTypeDocumentable(Type type)
+{
+    if (
+        type.IsSpecialName
+        || (!type.IsPublic && !type.IsNestedPublic && !type.IsNestedFamily && !type.IsNestedFamORAssem)
+    )
+    {
+        return false;
+    }
+    if (type.DeclaringType is Type outerType)
+    {
+        return IsTypeDocumentable(outerType);
+    }
+    return true;
 }
 
 static string MakeRelativeUrl(string pathRelativeToRoot, string referringNamespace)
@@ -844,7 +1005,7 @@ static string ResolveCref(
 
 static string SluggifyName(string name, bool preserveCase = false)
 {
-    const string ignoreChars = "()<>,&@";
+    const string ignoreChars = "()[]<>,&@?";
     var sb = new StringBuilder();
     foreach (char c in name)
     {
@@ -930,7 +1091,10 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     sb.AppendLine("```cs");
     foreach (var attribute in type.GetCustomAttributes(false))
     {
-        if (attribute.GetType().Namespace?.StartsWith("System.Runtime.CompilerServices") == true)
+        if (
+            attribute.GetType().Namespace?.StartsWith("System.Runtime.CompilerServices") == true
+            || attribute.GetType().Namespace?.StartsWith("System.Reflection") == true
+        )
         {
             continue;
         }
@@ -957,7 +1121,7 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     }
     sb.Append(FormatTypeKind(type, true).ToLowerInvariant());
     sb.Append(' ');
-    sb.Append(FormatGenericTypeName(type, escaped: false));
+    sb.Append(FormatGenericTypeName(type, escaped: false, includeOuterClasses: true));
     var baseType = GetBaseTypeOrDefinition(type);
     var baseInterfaces = baseType?.GetInterfaces().ToHashSet() ?? [];
     var declaredInterfaces = type.GetInterfaces().Where(t => !baseInterfaces.Contains(t)).ToArray();
@@ -1015,7 +1179,6 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
         }
         sb.AppendLine();
     }
-    sb.AppendLine("**Inheritance**  ");
     var inheritanceElements = new Stack<string>();
     inheritanceElements.Push(FormatGenericTypeName(type, false));
     for (var super = GetBaseTypeOrDefinition(type); super is not null; super = GetBaseTypeOrDefinition(super))
@@ -1023,12 +1186,16 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
         inheritanceElements.Push(" ⇦ ");
         inheritanceElements.Push(FormatTypeLink(super, ns));
     }
-    foreach (var element in inheritanceElements)
+    if (inheritanceElements.Count > 1)
     {
-        sb.Append(element);
+        sb.AppendLine("**Inheritance**  ");
+        foreach (var element in inheritanceElements)
+        {
+            sb.Append(element);
+        }
+        sb.AppendLine();
+        sb.AppendLine();
     }
-    sb.AppendLine();
-    sb.AppendLine();
     if (declaredInterfaces.Length > 0)
     {
         sb.AppendLine("**Implements**  ");
@@ -1191,7 +1358,7 @@ void WriteFieldRow(StringBuilder sb, FieldInfo field)
         }
         var summary = GetFormattedSummary(field);
         sb.Append("| ");
-        sb.Append(field.Name);
+        sb.Append(@$"<a id=""{field.Name.ToLowerInvariant()}"">{field.Name}</a>");
         sb.Append(" | ");
         sb.Append(field.GetRawConstantValue());
         sb.Append(" | ");
@@ -1247,7 +1414,13 @@ void WriteMemberRow(StringBuilder sb, MemberInfo member, string? name = null, Fu
     sb.Append("| ");
     sb.Append(link);
     sb.Append(" | ");
-    AppendWithInheritance(sb, summary, member.DeclaringTypeOrDefinition(), member.ReflectedType!);
+    AppendWithInheritance(
+        sb,
+        summary,
+        member.DeclaringTypeOrDefinition(),
+        member.OriginalDefinition(),
+        member.ReflectedType!
+    );
     sb.AppendLine(" | ");
 }
 
@@ -1378,7 +1551,13 @@ void WriteMethodDetail(StringBuilder sb, MethodBase method)
     {
         return method is ConstructorInfo ctor
             ? FormatConstructorName(ctor, fullPath: asCode, escaped: !asCode, collapsePrimitives: true)
-            : FormatGenericMethodName(method, fullPath: asCode, escaped: !asCode, collapsePrimitives: true);
+            : FormatGenericMethodName(
+                method,
+                fullPath: asCode,
+                escaped: !asCode,
+                collapsePrimitives: true,
+                includeParameterModifiers: asCode
+            );
     }
 }
 
@@ -1551,7 +1730,7 @@ void WritePropertyDetails(StringBuilder sb, Type type)
 void WritePropertyRow(StringBuilder sb, PropertyInfo property)
 {
     string name = FormatPropertyName(property, false, true, true);
-    WriteMemberRow(sb, property, name);
+    WriteMemberRow(sb, property, name, () => GetPropertyAnchor(property));
 }
 
 void WritePropertyTable(StringBuilder sb, Type type)
@@ -1592,7 +1771,7 @@ static void WriteTitle(StringBuilder sb, Type type)
     sb.Append("# ");
     sb.Append(FormatTypeKind(type));
     sb.Append(' ');
-    sb.AppendLine(FormatGenericTypeName(type));
+    sb.AppendLine(FormatGenericTypeName(type, includeOuterClasses: true));
     sb.AppendLine();
 }
 
@@ -1637,7 +1816,7 @@ async Task WriteTypeFile(Type type)
 
 static void WriteTypeFrontMatter(StringBuilder sb, Type type, TypeComments? typeComments)
 {
-    var title = FormatGenericTypeName(type);
+    var title = FormatGenericTypeName(type, includeOuterClasses: true);
     var description = typeComments is not null ? ReplaceTags(typeComments.Summary, FormatSimpleText) : null;
     WriteFrontMatter(sb, title, description);
 }
@@ -1812,6 +1991,17 @@ static class ReflectionExtensions
     public static bool IsCompilerGenerated(this MemberInfo member)
     {
         return member.GetCustomAttribute<CompilerGeneratedAttribute>() is not null;
+    }
+
+    public static MemberInfo? OriginalDefinition(this MemberInfo member)
+    {
+        return member switch
+        {
+            MethodInfo method => method.GetBaseDefinition(),
+            PropertyInfo property => (property.GetMethod ?? property.SetMethod)?.GetBaseDefinition(),
+            EventInfo evt => (evt.AddMethod ?? evt.RemoveMethod)?.GetBaseDefinition(),
+            _ => member,
+        };
     }
 
     public static MethodBase RevertGenerics(this MethodBase method)

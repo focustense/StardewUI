@@ -863,7 +863,13 @@ public abstract class View : IView
         return false;
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Outputs a debug log entry with the current view type, name and specified message.
+    /// </summary>
+    /// <remarks>
+    /// Used primarily for debugging focus searches and requires the <c>DEBUG_FOCUS_SEARCH</c> compiler flag.
+    /// </remarks>
+    /// <param name="message">The message to log in addition to the view type and name.</param>
     [Conditional("DEBUG_FOCUS_SEARCH")]
     protected void LogFocusSearch(string message)
     {
