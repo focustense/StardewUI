@@ -967,7 +967,7 @@ static string ResolveCref(
         {
             argIndex = crefValue.Length;
         }
-        var memberName = crefValue[(memberPos + 1)..argIndex];
+        var memberName = StripOuterTypeRefs(crefValue[(memberPos + 1)..argIndex]);
         return prefix switch
         {
             'F' => type.GetField(memberName, visibleBindingFlags),
@@ -1013,6 +1013,40 @@ static string SluggifyName(string name, bool preserveCase = false)
                 _ => preserveCase ? c : char.ToLowerInvariant(c),
             }
         );
+    }
+    return sb.ToString();
+}
+
+static string StripOuterTypeRefs(string memberName)
+{
+    var sb = new StringBuilder();
+    int genericDepth = 0;
+    foreach (char c in memberName)
+    {
+        if (c == '`')
+        {
+            genericDepth++;
+        }
+        else if (genericDepth > 0 && char.IsDigit(c))
+        {
+            if (genericDepth == 1)
+            {
+                // It's an argument to the member itself, emit this.
+                sb.Append('`');
+                sb.Append(c);
+                // Allow subsequent digits to be emitted naturally.
+                // Generics shouldn't really have more than 10 args, but you never know...
+                genericDepth = 0;
+            }
+            // More than 1 level deep means the argument refers to an outer type.
+            // Don't emit these, just ignore them. Don't reset generic depth either, so that subsequent digits will also
+            // be skipped until we reach a non-digit.
+        }
+        else
+        {
+            sb.Append(c);
+            genericDepth = 0;
+        }
     }
     return sb.ToString();
 }
