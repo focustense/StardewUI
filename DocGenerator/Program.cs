@@ -15,11 +15,16 @@ string outputDirectory = Path.GetFullPath("../../../../../docs/reference", Assem
 
 var reader = new FixedUnindentXmlReader();
 var uiAssembly = typeof(UI).Assembly;
+var parallelOptions = new ParallelOptions();
 var documentableTypes = uiAssembly
     .GetTypes()
     .Where(t => t.IsVisibleForDocumentation() && t.Namespace?.StartsWith(typeof(UI).Namespace!) == true)
     .ToArray();
-await Parallel.ForEachAsync(documentableTypes, async (typeToDocument, _) => await WriteTypeFile(typeToDocument));
+await Parallel.ForEachAsync(
+    documentableTypes,
+    parallelOptions,
+    async (typeToDocument, _) => await WriteTypeFile(typeToDocument)
+);
 (string kind, string title)[] namespaceSections =
 [
     ("Class", "Classes"),
@@ -28,7 +33,11 @@ await Parallel.ForEachAsync(documentableTypes, async (typeToDocument, _) => awai
     ("Enum", "Enums"),
 ];
 var typesByNamespace = documentableTypes.Where(t => !string.IsNullOrEmpty(t.Namespace)).ToLookup(t => t.Namespace!);
-await Parallel.ForEachAsync(typesByNamespace, async (nsGroup, _) => await WriteNamespaceToFile(nsGroup.Key, nsGroup));
+await Parallel.ForEachAsync(
+    typesByNamespace,
+    parallelOptions,
+    async (nsGroup, _) => await WriteNamespaceToFile(nsGroup.Key, nsGroup)
+);
 
 void AppendMemberRemarks(StringBuilder sb, MemberInfo member)
 {
@@ -622,19 +631,30 @@ static IEnumerable<MemberInfo> GetBaseMembers(MemberInfo member)
     }
     foreach (var interfaceType in type.GetInterfaces())
     {
+        var interfaceMember = member switch
+        {
+            EventInfo evt => interfaceType.GetEvent(member.Name, visibleBindingFlags),
+            FieldInfo field => interfaceType.GetField(member.Name, visibleBindingFlags),
+            MethodInfo method => GetInterfaceMethodDefinition(interfaceType),
+            PropertyInfo property => interfaceType.GetProperty(member.Name, visibleBindingFlags),
+            _ => member,
+        };
+        if (interfaceMember is not null)
+        {
+            yield return interfaceMember;
+        }
+    }
+
+    MemberInfo? GetInterfaceMethodDefinition(Type interfaceType)
+    {
         var interfaceMap = type.GetInterfaceMap(interfaceType);
         var methodIndex = Array.IndexOf(interfaceMap.TargetMethods, member);
         if (methodIndex >= 0)
         {
             var interfaceMethod = interfaceMap.InterfaceMethods[methodIndex];
-            var interfaceMethodDefinition = interfaceType
-                .RevertGenerics()
-                .GetMemberWithSameMetadataDefinitionAs(interfaceMethod);
-            if (interfaceMethodDefinition is not null)
-            {
-                yield return interfaceMethodDefinition;
-            }
+            return interfaceType.RevertGenerics().GetMemberWithSameMetadataDefinitionAs(interfaceMethod);
         }
+        return null;
     }
 }
 
@@ -863,22 +883,29 @@ static Type? GetType(string typeName)
     {
         return typeof(Microsoft.Xna.Framework.Vector2).Assembly.GetType(typeName);
     }
-    var uiAssembly = typeof(UI).Assembly;
-    while (true)
+    if (typeName.StartsWith(typeof(UI).Namespace!))
     {
-        var uiType = uiAssembly.GetType(typeName);
-        if (uiType is not null)
+        var uiAssembly = typeof(UI).Assembly;
+        while (true)
         {
-            return uiType;
+            var uiType = uiAssembly.GetType(typeName);
+            if (uiType is not null)
+            {
+                return uiType;
+            }
+            int lastSeparatorIndex = typeName.LastIndexOf('.');
+            if (lastSeparatorIndex < 0)
+            {
+                break;
+            }
+            typeName = typeName[..lastSeparatorIndex] + '+' + typeName[(lastSeparatorIndex + 1)..];
         }
-        int lastSeparatorIndex = typeName.LastIndexOf('.');
-        if (lastSeparatorIndex < 0)
-        {
-            break;
-        }
-        typeName = typeName[..lastSeparatorIndex] + '+' + typeName[(lastSeparatorIndex + 1)..];
     }
-    return null;
+    return AppDomain
+        .CurrentDomain.GetAssemblies()
+        .Select(a => a.GetType(typeName))
+        .Where(t => t is not null)
+        .FirstOrDefault();
 }
 
 TResult? GetTypeComment<TResult>(Type type, Func<TypeComments, TResult?> selector)
@@ -2010,7 +2037,7 @@ static class ReflectionExtensions
         return member.GetCustomAttribute<CompilerGeneratedAttribute>() is not null;
     }
 
-    public static bool IsShadowed(this MethodInfo method)
+    public static bool IsShadowed(this MethodBase method)
     {
         if (!method.IsHideBySig || method.ReflectedType is null)
         {
@@ -2027,8 +2054,8 @@ static class ReflectionExtensions
 
     public static bool IsVisibleForDocumentation(this EventInfo evt)
     {
-        return evt.AddMethod?.IsVisibleForDocumentation() == true
-            || evt.RemoveMethod?.IsVisibleForDocumentation() == true;
+        return evt.AddMethod?.IsVisibleForDocumentation(true) == true
+            || evt.RemoveMethod?.IsVisibleForDocumentation(true) == true;
     }
 
     public static bool IsVisibleForDocumentation(this FieldInfo field)
@@ -2044,17 +2071,17 @@ static class ReflectionExtensions
         {
             EventInfo evt => evt.IsVisibleForDocumentation(),
             FieldInfo field => field.IsVisibleForDocumentation(),
-            MethodInfo method => method.IsVisibleForDocumentation(),
+            MethodBase method => method.IsVisibleForDocumentation(),
             PropertyInfo property => property.IsVisibleForDocumentation(),
             TypeInfo type => type.IsVisibleForDocumentation(),
             _ => member.ReflectedType?.IsVisibleForDocumentation() == true,
         };
     }
 
-    public static bool IsVisibleForDocumentation(this MethodInfo method, bool asAccessor = false)
+    public static bool IsVisibleForDocumentation(this MethodBase method, bool asAccessor = false)
     {
         return (method.IsPublic || method.IsFamily || method.IsFamilyOrAssembly)
-            && (asAccessor || (!method.IsSpecialName && !method.IsCompilerGenerated()))
+            && (asAccessor || ((!method.IsSpecialName || method.IsConstructor) && !method.IsCompilerGenerated()))
             && (method.DeclaringType != typeof(object) && method.DeclaringType != typeof(Enum))
             && method.ReflectedType?.RevertGenerics().IsVisibleForDocumentation() == true
             && (asAccessor || !method.IsShadowed());

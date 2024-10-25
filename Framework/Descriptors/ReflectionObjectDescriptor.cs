@@ -96,14 +96,6 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     }
 
     /// <inheritdoc />
-    public bool TryGetField(string name, [MaybeNullWhen(false)] out IPropertyDescriptor field)
-    {
-        bool exists = fieldsByName.TryGetValue(name, out var lazyField);
-        field = lazyField?.Value;
-        return exists;
-    }
-
-    /// <inheritdoc />
     public bool TryGetMethod(string name, [MaybeNullWhen(false)] out IMethodDescriptor method)
     {
         bool exists = methodsByName.TryGetValue(name, out var lazyMethod);
