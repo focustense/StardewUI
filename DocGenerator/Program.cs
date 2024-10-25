@@ -47,7 +47,6 @@ static void AppendParameterList(
     StringBuilder sb,
     IReadOnlyList<ParameterInfo> parameters,
     bool fullPath = false,
-    string? fullPathIgnorePrefix = null,
     bool escaped = true,
     bool collapsePrimitives = false,
     bool includeModifiers = false
@@ -86,7 +85,6 @@ static void AppendTypeList(
     StringBuilder sb,
     IReadOnlyList<Type> types,
     bool fullPath = false,
-    string? fullPathIgnorePrefix = null,
     bool escaped = true,
     bool collapsePrimitives = false,
     Func<Type, int, string?>? prefixSelector = null
@@ -103,15 +101,7 @@ static void AppendTypeList(
             sb.Append(prefix);
             sb.Append(' ');
         }
-        sb.Append(
-            FormatGenericTypeName(
-                types[i],
-                fullPath,
-                fullPathIgnorePrefix,
-                escaped,
-                collapsePrimitives: collapsePrimitives
-            )
-        );
+        sb.Append(FormatGenericTypeName(types[i], fullPath, escaped, collapsePrimitives: collapsePrimitives));
     }
 }
 
@@ -292,15 +282,7 @@ static string FormatGenericMethodName(
         sb.Append(method.Name);
     }
     sb.Append('(');
-    AppendParameterList(
-        sb,
-        method.GetParameters(),
-        fullPath,
-        method.ReflectedType!.FullName,
-        escaped,
-        collapsePrimitives,
-        includeParameterModifiers
-    );
+    AppendParameterList(sb, method.GetParameters(), fullPath, escaped, collapsePrimitives, includeParameterModifiers);
     sb.Append(')');
     return sb.ToString();
 }
@@ -308,7 +290,6 @@ static string FormatGenericMethodName(
 static string FormatGenericTypeName(
     Type type,
     bool fullPath = false,
-    string? fullPathIgnorePrefix = null,
     bool escaped = true,
     bool baseNameOnly = false,
     bool collapsePrimitives = false,
@@ -324,7 +305,6 @@ static string FormatGenericTypeName(
         return FormatGenericTypeName(
             type.GetElementType()!,
             fullPath,
-            fullPathIgnorePrefix,
             escaped,
             baseNameOnly,
             collapsePrimitives,
@@ -335,32 +315,40 @@ static string FormatGenericTypeName(
     {
         return type.Name;
     }
+    var outerTypePrefix =
+        ((fullPath || includeOuterClasses) && type.DeclaringType is Type outerType)
+            ? FormatGenericTypeName(outerType, fullPath, escaped, baseNameOnly, collapsePrimitives, includeOuterClasses)
+                + '.'
+            : "";
     if (type.IsGenericType || type.ContainsGenericParameters)
     {
         if (!type.ContainsGenericParameters && type.GetGenericTypeDefinition() == typeof(Nullable<>))
         {
             var valueType = type.GetGenericArguments()[0];
-            return FormatGenericTypeName(
+            return outerTypePrefix
+                + FormatGenericTypeName(
                     valueType,
                     fullPath,
-                    fullPathIgnorePrefix,
                     escaped,
                     baseNameOnly,
+                    collapsePrimitives,
                     includeOuterClasses
-                ) + '?';
+                )
+                + '?';
         }
         var args = type.GetGenericArguments();
         var baseName =
             (type.IsGenericType && type.ContainsGenericParameters && !type.IsGenericTypeDefinition)
                 ? type.GetGenericTypeDefinition().FullName!
                 : type.FullName ?? type.Name;
-        if (!fullPath || (fullPathIgnorePrefix is not null && baseName.StartsWith(fullPathIgnorePrefix + '+')))
+        var nestedTypeStartIndex = baseName.LastIndexOf('+');
+        if (nestedTypeStartIndex >= 0)
         {
-            var nestedTypeStartIndex = baseName.LastIndexOf('+');
-            baseName =
-                nestedTypeStartIndex >= 0 ? baseName[(nestedTypeStartIndex + 1)..]
-                : baseName.StartsWith(type.Namespace!) ? baseName[(type.Namespace!.Length + 1)..]
-                : baseName;
+            baseName = baseName[(nestedTypeStartIndex + 1)..];
+        }
+        if (!fullPath && baseName.StartsWith(type.Namespace!))
+        {
+            baseName = baseName[(type.Namespace!.Length + 1)..];
         }
         else if (type.Namespace == "System" && baseName.StartsWith("System."))
         {
@@ -372,24 +360,11 @@ static string FormatGenericTypeName(
             return genericStartPos >= 0 ? baseName[0..genericStartPos] : baseName;
         }
         var sb = new StringBuilder();
+        sb.Append(outerTypePrefix);
         AppendWithTypeArguments(sb, baseName, args, fullPath, escaped);
         return sb.ToString();
     }
-    var result =
-        fullPath ? type.FullName ?? type.Name
-        : (includeOuterClasses && type.DeclaringType is Type outerType)
-            ? FormatGenericTypeName(
-                outerType,
-                fullPath,
-                fullPathIgnorePrefix,
-                escaped,
-                baseNameOnly,
-                collapsePrimitives,
-                includeOuterClasses
-            )
-                + '.'
-                + type.Name
-        : type.Name;
+    var result = fullPath ? type.FullName ?? type.Name : outerTypePrefix + type.Name;
     result = result.Replace('+', '.');
     if (result.EndsWith('&'))
     {
@@ -520,9 +495,7 @@ static string FormatPropertyName(
         {
             sb.Append(", ");
         }
-        sb.Append(
-            FormatGenericTypeName(parameters[i].ParameterType, fullPath, null, escaped, true, collapsePrimitives)
-        );
+        sb.Append(FormatGenericTypeName(parameters[i].ParameterType, fullPath, escaped, true, collapsePrimitives));
     }
     sb.Append(']');
     return sb.ToString();
@@ -1244,15 +1217,7 @@ void WriteEventDetail(StringBuilder sb, EventInfo evt)
         sb.Append(' ');
     }
     sb.Append("event ");
-    sb.Append(
-        FormatGenericTypeName(
-            evt.EventHandlerType!,
-            fullPath: true,
-            evt.ReflectedType!.FullName,
-            escaped: false,
-            collapsePrimitives: true
-        )
-    );
+    sb.Append(FormatGenericTypeName(evt.EventHandlerType!, fullPath: true, escaped: false, collapsePrimitives: true));
     sb.Append("? ");
     sb.Append(evt.Name);
     sb.AppendLine(";");
@@ -1509,15 +1474,7 @@ void WriteMethodDetail(StringBuilder sb, MethodBase method)
     }
     else if (returnType is not null)
     {
-        sb.Append(
-            FormatGenericTypeName(
-                returnType,
-                fullPath: true,
-                fullPathIgnorePrefix: method.ReflectedType!.FullName,
-                escaped: false,
-                collapsePrimitives: true
-            )
-        );
+        sb.Append(FormatGenericTypeName(returnType, fullPath: true, escaped: false, collapsePrimitives: true));
         sb.Append(' ');
     }
     sb.Append(FormatName(true));
@@ -1685,15 +1642,7 @@ void WritePropertyDetail(StringBuilder sb, PropertyInfo property)
     {
         sb.Append("static ");
     }
-    sb.Append(
-        FormatGenericTypeName(
-            property.PropertyType,
-            fullPath: true,
-            property.ReflectedType!.FullName,
-            escaped: false,
-            collapsePrimitives: true
-        )
-    );
+    sb.Append(FormatGenericTypeName(property.PropertyType, fullPath: true, escaped: false, collapsePrimitives: true));
     sb.Append(' ');
     sb.Append(FormatPropertyName(property, fullPath: true, escaped: false, collapsePrimitives: true));
     sb.Append(" { ");
