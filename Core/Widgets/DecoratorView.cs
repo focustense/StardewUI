@@ -40,7 +40,7 @@ public class DecoratorView<T> : IView, IDisposable
     /// Helper for propagating a single property to and from the inner view.
     /// </summary>
     /// <remarks>
-    /// Decorated properties must <b>be</b> initialized in the decorator's constructor by calling
+    /// Decorated properties must be initialized in the decorator's constructor by calling
     /// <see cref="DecoratorView{T}.RegisterDecoratedProperty{TValue}"/>, and have the following behavior:
     /// <list type="number">
     /// <item>The current value is tracked independently of the inner view;</item>

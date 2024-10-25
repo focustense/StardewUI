@@ -470,6 +470,8 @@ static string FormatParagraphText(XElement element, string referringNamespace)
         "para" => ReplaceElements(element, e => FormatParagraphText(e, referringNamespace))
             + Environment.NewLine
             + Environment.NewLine,
+        "b" or "strong" => "**" + ReplaceElements(element, e => FormatParagraphText(e, referringNamespace)) + "**",
+        "i" or "em" => "_" + ReplaceElements(element, e => FormatParagraphText(e, referringNamespace)) + "_",
         _ => "",
     };
 }
