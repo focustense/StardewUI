@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2655,8 +2657,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-dirtytrackert">Class DirtyTracker&lt;T&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-dirtytrackert">Class DirtyTracker&lt;T&gt;<a class="headerlink" href="#class-dirtytrackert" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Layout</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2664,15 +2666,15 @@ Assembly: StardewUI.dll  </p>
 <p>Convenience class for tracking properties that have changed, i.e. for layout dirty checking.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">DirtyTracker</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>T</code></strong><br />
 Type of value held by the tracker.</p>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ DirtyTracker&lt;T&gt;</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Will not flag changes as dirty unless the changed value is different from previous. Requires a correct <code>Equals(Object)</code> implementation for this to work, typically meaning strings, primitives and records.</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2687,7 +2689,7 @@ Type of value held by the tracker.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2706,7 +2708,7 @@ Type of value held by the tracker.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2725,50 +2727,50 @@ Type of value held by the tracker.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="dirtytrackertt">DirtyTracker&lt;T&gt;(T)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="dirtytrackertt">DirtyTracker&lt;T&gt;(T)<a class="headerlink" href="#dirtytrackertt" title="Permanent link"></a></h4>
 <p>Convenience class for tracking properties that have changed, i.e. for layout dirty checking.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="n">DirtyTracker</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">initialValue</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>initialValue</code></strong> &nbsp; T<br />
 Value to initialize with.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Will not flag changes as dirty unless the changed value is different from previous. Requires a correct <code>Equals(Object)</code> implementation for this to work, typically meaning strings, primitives and records.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="isdirty">IsDirty</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="isdirty">IsDirty<a class="headerlink" href="#isdirty" title="Permanent link"></a></h4>
 <p>Whether or not the value is dirty, i.e. has changed since the last call to <a href="./#resetdirty">ResetDirty()</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsDirty</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h4 id="value">Value</h4>
+<h4 id="value">Value<a class="headerlink" href="#value" title="Permanent link"></a></h4>
 <p>The currently-held value.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><code>T</code></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="resetdirty">ResetDirty()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="resetdirty">ResetDirty()<a class="headerlink" href="#resetdirty" title="Permanent link"></a></h4>
 <p>Resets the dirty flag, so that <a href="./#isdirty">IsDirty</a> returns <code>false</code> until the <a href="./#value">Value</a> is changed again.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ResetDirty</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h4 id="setifchangedt">SetIfChanged(T)</h4>
+<h4 id="setifchangedt">SetIfChanged(T)<a class="headerlink" href="#setifchangedt" title="Permanent link"></a></h4>
 <p>Updates the tracker with a new value, if it has changed since the last seen value.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">SetIfChanged</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>value</code></strong> &nbsp; T<br />
 The new value.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the <code>value</code> was different from the previous <a href="./#value">Value</a>, otherwise <code>false</code>.</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>If this method returns <code>true</code>, then <a href="./#isdirty">IsDirty</a> will always also be <code>true</code> afterward. However, if it returns <code>false</code> then the dirty state simply remains unchanged, and will only be <code>false</code> if the value was not already dirty from a previous change.</p>
 <hr />
 </div>

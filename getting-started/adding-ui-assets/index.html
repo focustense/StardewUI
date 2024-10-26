@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1099,9 +1101,9 @@
   
 
 
-<h1 id="adding-ui-assets">Adding UI Assets</h1>
+<h1 id="adding-ui-assets">Adding UI Assets<a class="headerlink" href="#adding-ui-assets" title="Permanent link"></a></h1>
 <p>StardewUI has its own asset system based on SMAPI's own <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content">content APIs</a> but providing some additional features: <a href="#conventions">convention-based registration</a> and <a href="../hot-reload/">hot reload</a>.</p>
-<h2 id="conventions">Conventions</h2>
+<h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Permanent link"></a></h2>
 <p>Assets are registered by <em>convention</em> in StardewUI. You only need to specify where your assets are located, and it handles the translation between file names and asset names for you.</p>
 <p>Suppose your mod looks as follows:</p>
 <div class="file-tree">
@@ -1122,7 +1124,7 @@
 <li><code>Mods/author.ModName/Views/Gifts</code></li>
 </ul>
 <p>That is, without the <code>assets/views</code> path and without the <code>.sml</code> extension.</p>
-<h2 id="adding-views">Adding Views</h2>
+<h2 id="adding-views">Adding Views<a class="headerlink" href="#adding-views" title="Permanent link"></a></h2>
 <p>The actual "UI" in StardewUI is based on <a href="../../concepts/#views">Views</a>. When using the <a href="../../framework/">framework</a>—which this part of the guide is based on—your views will be in the form of <code>.sml</code> (<a href="../../framework/starml/">StarML</a>) files.</p>
 <p>To create a view, simply create the <code>.sml</code> file in your desired location, such as the <code>assets/views/config.sml</code> used above. Refer to the <a href="../../framework/starml/">StarML guide</a> or <a href="../../examples/">examples</a> for more info on authoring views, i.e. what the actual contents of the file should be.</p>
 <div class="admonition tip">
@@ -1150,7 +1152,7 @@
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">viewEngine</span><span class="p">.</span><span class="n">RegisterViews</span><span class="p">(</span><span class="s">&quot;Mods/author.ModName/Views&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;assets/views&quot;</span><span class="p">);</span>
 </span></code></pre></div>
 <p>That's it—just a single line!</p>
-<h2 id="adding-sprites">Adding Sprites</h2>
+<h2 id="adding-sprites">Adding Sprites<a class="headerlink" href="#adding-sprites" title="Permanent link"></a></h2>
 <p>Stardew Valley's visuals, like those of most 2D games, are based around <a href="https://docs.monogame.net/articles/getting_to_know/whatis/graphics/WhatIs_Sprite.html">sprites</a>. All of Stardew's image assets and most mod assets are in the form of "sprite sheets", more formally known as a <a href="https://en.wikipedia.org/wiki/Texture_atlas">texture atlas</a>, in which a single image (i.e. <code>.png</code> file) contains <em>many</em> individual "objects", each occupying its own rectangular region.</p>
 <p>Neither Stardew nor SMAPI have an explicit concept of a <em>sprite</em>. Since StardewUI needs to deal quite heavily with sprites, it defines its own <a href="../../reference/stardewui/graphics/sprite/">Sprite</a> type, which includes not only the source image and rectangular region but also information pertaining to <a href="https://en.wikipedia.org/wiki/9-slice_scaling">9-slice scaling</a>, which is how it is able to display elements such as frame borders and menu backgrounds without having them appear awkwardly stretched.</p>
 <p>A variety of useful UI sprites are already included in the <a href="../../reference/stardewui/graphics/uisprites/">UiSprites</a> class, and each of these sprites is available to StarML via an <a href="../../framework/starml/#attribute-flavors">asset binding</a> of the form <code>@Mods/StardewUI/Sprites/{Name}</code>; for example, <code>@Mods/StardewUI/Sprites/CaretRight</code>. However, Stardew Valley has thousands of individual sprites, and if you want to use anything that's not in <code>UiSprites</code>, or any sprite that you've produced yourself, then you need to register it as an asset.</p>
@@ -1160,7 +1162,7 @@
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">viewEngine</span><span class="p">.</span><span class="n">RegisterSprites</span><span class="p">(</span><span class="s">$&quot;Mods/author.ModName/Sprites&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;assets/sprites&quot;</span><span class="p">);</span>
 </span></code></pre></div>
 <p>Continue reading for an explanation of what goes in <code>assets/sprites</code>.</p>
-<h3 id="vanilla-sprites">Vanilla Sprites</h3>
+<h3 id="vanilla-sprites">Vanilla Sprites<a class="headerlink" href="#vanilla-sprites" title="Permanent link"></a></h3>
 <p>If you intend to take many images from a single texture atlas ("sprite sheet") then it is convenient to declare them all in one place. StardewUI provides a simple JSON structure for doing so. Suppose we are interested in the icons of various <a href="https://stardewvalleywiki.com/Buffs">buffs</a>:</p>
 <div class="language-json highlight"><span class="filename">assets/sprites/buffs.json</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nt">&quot;Texture&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;LooseSprites/BuffsIcons&quot;</span><span class="p">,</span>
@@ -1178,7 +1180,7 @@
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>This instructs StardewUI to use the <code>LooseSprites/BuffsIcons</code> <em>texture</em> as the source, and provides the rectangular regions (in the form <code>"left, top, width, height"</code>) of the individual sprites we want. It just so happens that these are all 16x16, but that will not necessarily always be the case; <code>LooseSprites/Cursors</code>, for example, is notorious for both its enormous size and its total irregularity.</p>
-<h4 id="nine-slicing">Nine-Slicing</h4>
+<h4 id="nine-slicing">Nine-Slicing<a class="headerlink" href="#nine-slicing" title="Permanent link"></a></h4>
 <p>Another advantage of the JSON format is that you can specify <a href="https://en.wikipedia.org/wiki/9-slice_scaling">9-slice scaling</a> options. Suppose we want to use this image as a background <em>(note: all images in this section have been scaled up 8x for clarity)</em>:</p>
 <p><img alt="Inset Background" src="../../images/sprite-inset-scaled.png" /></p>
 <p>The Cursors sheet doesn't have this exact size; what it has instead is:</p>
@@ -1254,7 +1256,7 @@
 </table>
 <p>The unscaled version might look better in a web browser, but it will look strange in the game, appearing far too "HD" compared to the content around it and clashing with other UI.</p>
 <p>Apply scaling according to the <em>reference size</em> vs. <em>actual screen size</em>. If you are using sprites from <code>Maps/MenuTiles</code>, those are already designed for a 64x64 tile size and should not be scaled (no <code>Scale</code> field), only sliced (<code>FixedEdges</code> field).</p>
-<h3 id="custommodded-sprites">Custom/Modded Sprites</h3>
+<h3 id="custommodded-sprites">Custom/Modded Sprites<a class="headerlink" href="#custommodded-sprites" title="Permanent link"></a></h3>
 <p>If the sprites you want to use are your own sprites, designed specifically for your mod (i.e. <em>not</em> simply replacing a vanilla asset, in which case you should configure StardewUI with the <a href="#vanilla-sprites">vanilla sprite</a> instead), then the configuration requires only a few small tweaks from vanilla:</p>
 <ol>
 <li>Place your <code>.png</code> and <code>.json</code> files in the same directory, and give them the same name, e.g. <code>assets/sprites/ui.png</code> and <code>assets/sprites/ui.json</code>.</li>
@@ -1274,7 +1276,7 @@
 </li>
 </ol>
 <p>Aside from the addition of the <code>.png</code> file and the removal of the <code>Texture</code> field, it is exactly the same as a vanilla sprite.</p>
-<h3 id="referencing-sprites">Referencing Sprites</h3>
+<h3 id="referencing-sprites">Referencing Sprites<a class="headerlink" href="#referencing-sprites" title="Permanent link"></a></h3>
 <p>When using JSON configuration, the primary asset is the Texture and JSON data itself. To reference an individual sprite, use the form: <code>{AssetPrefix}/{SpriteSheetName}:{SpriteName}</code>.</p>
 <p>For example, using the previous example of <a href="#vanilla-sprites">buff sprites</a>, along with the <a href="#custommodded-sprites">modded sprites</a>, we might end up with the following template:</p>
 <div class="language-html highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">background</span><span class="o">=</span><span class="s">{@Mods/author.ModName/Sprites/Cursors:SpecialBorder}</span><span class="p">&gt;</span>

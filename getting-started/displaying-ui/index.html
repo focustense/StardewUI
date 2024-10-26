@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1051,7 +1053,7 @@
   
 
 
-<h1 id="displaying-ui">Displaying UI</h1>
+<h1 id="displaying-ui">Displaying UI<a class="headerlink" href="#displaying-ui" title="Permanent link"></a></h1>
 <p>Before you can display any UI, you'll need to have:</p>
 <ol>
 <li><a href="../#adding-the-api">Initialized the Framework API</a>;</li>
@@ -1059,7 +1061,7 @@
 <li><a href="../adding-ui-assets/#adding-views">Registered the asset path</a> of your view(s).</li>
 </ol>
 <p>Once all those steps are completed, it's time to bring that UI to life.</p>
-<h2 id="menus">Menus</h2>
+<h2 id="menus">Menus<a class="headerlink" href="#menus" title="Permanent link"></a></h2>
 <p>To create a menu from a StardewUI view, use the <code>CreateMenu</code> methods:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="menu-from-asset" name="__tabbed_1" type="radio" /><input id="menu-from-markup" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="menu-from-asset">Menu From Asset</label><label for="menu-from-markup">Menu From Markup</label></div>
 <div class="tabbed-content">
@@ -1100,9 +1102,9 @@
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="s">&quot;Mods/focustense.StardewUITest/Views/TestView&quot;</span><span class="p">,</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">context</span><span class="p">);</span>
 </span></code></pre></div>
-<h2 id="hud">HUD</h2>
+<h2 id="hud">HUD<a class="headerlink" href="#hud" title="Permanent link"></a></h2>
 <p>The game's HUD – Heads Up Display – refers to the persistent UI that is drawn over top of the game world, such as the date/time widget, health/energy bars, and so on.</p>
-<h3 id="using-the-api">Using the API</h3>
+<h3 id="using-the-api">Using the API<a class="headerlink" href="#using-the-api" title="Permanent link"></a></h3>
 <p>The recommended way to display HUD-style UI is to create a Drawable from StarML. The API for this is very similar to the <a href="#menus">menu</a> API:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="drawable-from-asset" name="__tabbed_2" type="radio" /><input id="drawable-from-markup" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="drawable-from-asset">Drawable From Asset</label><label for="drawable-from-markup">Drawable From Markup</label></div>
 <div class="tabbed-content">
@@ -1150,7 +1152,7 @@
 </span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="p">}</span>
 </span></code></pre></div>
-<h3 id="using-views-directly">Using Views Directly</h3>
+<h3 id="using-views-directly">Using Views Directly<a class="headerlink" href="#using-views-directly" title="Permanent link"></a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Advanced usage warning</p>
 <p>This section is provided for disambiguation, since there are more differences between the Core Library and Framework usage for HUD-style UI than there are for menus. If you aren't already using the Core Library to handle specialized scenarios or <a href="../../framework/extensions/">extend the framework</a>, ignore this section and use the <a href="#using-the-api">drawable API</a> instead.</p>
@@ -1192,7 +1194,7 @@
 <p class="admonition-title">Important</p>
 <p>Unless the view is completely static (that is, neither its content nor its position ever changes), you must call <code>Measure</code> on every frame. This method is responsible for layout, and changes to a view's properties, such as the text of a label, will not be reflected until the next layout. Do not be concerned about frame performance; StardewUI is very careful to <a href="../../concepts/#dirty-checking">limit work to the parts that changed</a>.</p>
 </div>
-<h2 id="other-scenarios">Other Scenarios</h2>
+<h2 id="other-scenarios">Other Scenarios<a class="headerlink" href="#other-scenarios" title="Permanent link"></a></h2>
 <p>These are considered advanced usage and not recommended for StardewUI beginners; to learn more, head to the respective page:</p>
 <ul>
 <li><a href="../../library/overlays/">Overlays</a></li>

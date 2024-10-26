@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Configures the mapping of buttons to positioning actions in a PositioningOverlay. Includes the generic ControlScheme settings as well as grid-movement settings specific to gamepads.">
+        <meta name="description" content="Configures the mapping of buttons to positioning actions in a PositioningOverlay. Includes the generic PositioningOverlay.ControlScheme settings as well as grid-movement settings specific to gamepads.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="PositioningOverlay.GamepadControlScheme - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="Configures the mapping of buttons to positioning actions in a PositioningOverlay. Includes the generic ControlScheme settings as well as grid-movement settings specific to gamepads." >
+        <meta  property="og:description"  content="Configures the mapping of buttons to positioning actions in a PositioningOverlay. Includes the generic PositioningOverlay.ControlScheme settings as well as grid-movement settings specific to gamepads." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/widgets/positioningoverlay.gamepadcontrolscheme.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="PositioningOverlay.GamepadControlScheme - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="Configures the mapping of buttons to positioning actions in a PositioningOverlay. Includes the generic ControlScheme settings as well as grid-movement settings specific to gamepads." >
+        <meta  name="twitter:description"  content="Configures the mapping of buttons to positioning actions in a PositioningOverlay. Includes the generic PositioningOverlay.ControlScheme settings as well as grid-movement settings specific to gamepads." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/widgets/positioningoverlay.gamepadcontrolscheme.png" >
       
@@ -2951,8 +2953,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-positioningoverlaygamepadcontrolscheme">Class PositioningOverlay.GamepadControlScheme</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-positioningoverlaygamepadcontrolscheme">Class PositioningOverlay.GamepadControlScheme<a class="headerlink" href="#class-positioningoverlaygamepadcontrolscheme" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Widgets</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2963,8 +2965,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="../positioningoverlay.controlscheme/">ControlScheme</a> ⇦ GamepadControlScheme</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2979,7 +2981,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3026,48 +3028,48 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="gamepadcontrolscheme">GamepadControlScheme()</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="gamepadcontrolscheme">GamepadControlScheme()<a class="headerlink" href="#gamepadcontrolscheme" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">GamepadControlScheme</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="griddown">GridDown</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="griddown">GridDown<a class="headerlink" href="#griddown" title="Permanent link"></a></h4>
 <p>Buttons to shift the content down by one grid cell by changing the <a href="../../layout/ninegridplacement/#verticalalignment">VerticalAlignment</a> of the <a href="../positioningoverlay/#contentplacement">ContentPlacement</a>. <a href="../../layout/alignment/#start">Start</a> becomes <a href="../../layout/alignment/#middle">Middle</a> and <a href="../../layout/alignment/#middle">Middle</a> becomes <a href="../../layout/alignment/#end">End</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GridDown</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a><SButton></p>
 <hr />
-<h4 id="gridleft">GridLeft</h4>
+<h4 id="gridleft">GridLeft<a class="headerlink" href="#gridleft" title="Permanent link"></a></h4>
 <p>Buttons to shift the content left by one grid cell by changing the <a href="../../layout/ninegridplacement/#horizontalalignment">HorizontalAlignment</a> of the <a href="../positioningoverlay/#contentplacement">ContentPlacement</a>. <a href="../../layout/alignment/#end">End</a> becomes <a href="../../layout/alignment/#middle">Middle</a> and <a href="../../layout/alignment/#middle">Middle</a> becomes <a href="../../layout/alignment/#start">Start</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GridLeft</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a><SButton></p>
 <hr />
-<h4 id="gridright">GridRight</h4>
+<h4 id="gridright">GridRight<a class="headerlink" href="#gridright" title="Permanent link"></a></h4>
 <p>Buttons to shift the content right by one grid cell by changing the <a href="../../layout/ninegridplacement/#horizontalalignment">HorizontalAlignment</a> of the <a href="../positioningoverlay/#contentplacement">ContentPlacement</a>. <a href="../../layout/alignment/#start">Start</a> becomes <a href="../../layout/alignment/#middle">Middle</a> and <a href="../../layout/alignment/#middle">Middle</a> becomes <a href="../../layout/alignment/#end">End</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GridRight</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a><SButton></p>
 <hr />
-<h4 id="gridup">GridUp</h4>
+<h4 id="gridup">GridUp<a class="headerlink" href="#gridup" title="Permanent link"></a></h4>
 <p>Buttons to shift the content up by one grid cell by changing the <a href="../../layout/ninegridplacement/#verticalalignment">VerticalAlignment</a> of the <a href="../positioningoverlay/#contentplacement">ContentPlacement</a>. <a href="../../layout/alignment/#end">End</a> becomes <a href="../../layout/alignment/#middle">Middle</a> and <a href="../../layout/alignment/#middle">Middle</a> becomes <a href="../../layout/alignment/#start">Start</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GridUp</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a><SButton></p>
 <hr />
-<h4 id="modifier">Modifier</h4>
+<h4 id="modifier">Modifier<a class="headerlink" href="#modifier" title="Permanent link"></a></h4>
 <p>Modifier key to switch between grid- and fine-positioning modes.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="w"> </span><span class="n">Modifier</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p>SButton</p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>If specified, the default motion will be fine, and the modifier key must be held in order to move accross the grid.</p>
 <hr />
 </div>

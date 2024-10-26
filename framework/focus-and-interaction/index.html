@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1111,7 +1113,7 @@
   
 
 
-<h1 id="focus-and-interaction">Focus and Interaction</h1>
+<h1 id="focus-and-interaction">Focus and Interaction<a class="headerlink" href="#focus-and-interaction" title="Permanent link"></a></h1>
 <p>Most UI and frontend frameworks have some concept of input focus—which element on screen the user is currently interacting with. MonoGame, being the barebones framework that it is, does not have such a concept, and Stardew Valley does not really add one; instead, it introduces a setting named "controller-style menus" (internally, "snappy menus") with these characteristics:</p>
 <ul>
 <li>The cursor is drawn as a hand, instead of an arrow, when using a controller;</li>
@@ -1120,7 +1122,7 @@
 </ul>
 <p>As controller navigation in the vanilla game is nearly unusable without this setting—at the time of writing, turning it off results in both the arrow <em>and</em> hand cursor being drawn on top of each other, so it is not even consistently tested—the rest of this page assumes controller input using controller-style menus.</p>
 <p>Focus in Stardew Valley does not really exist, but a reasonable approximation is simply "whichever element contains the cursor", with focus order or "tab order" being equivalent to the "snap order" used in game. The question then becomes which elements are actually "snappable", or <em>focusable</em>.</p>
-<h2 id="focusability">Focusability</h2>
+<h2 id="focusability">Focusability<a class="headerlink" href="#focusability" title="Permanent link"></a></h2>
 <p>If you've worked with vanilla UI in Stardew—i.e. manual implementations of <code>IClickableMenu</code>—then you know that focus, or snapping, is entirely based on a menu's clickable component list; literally, a <code>List&lt;ClickableComponent&gt;</code> whose elements define neighbor IDs in each direction as well as several other metadata fields (visibility, name, tooltip, etc.), all of which ironically have no behavior at all unless the menu using them chooses to implement it.</p>
 <p>Controller support is famously neglected in mods because setting it up is a messy process of assigning IDs to every single element, predefining or at least pre-generating the neighbor lists for each and every one of those elements, and either hoping that they don't have variable locations or adding hooks to keep the IDs and lists constantly up to date.</p>
 <p>StardewUI does away with this system completely, and in fact is intentionally not compatible with it. There is <strong>one</strong> relevant property, named <a href="../../reference/stardewui/view/#focusable"><code>Focusable</code></a> (or in <a href="../starml/#common-attributes">StarML</a>, the <code>focusable</code> attribute), which specifies whether or not that view should be able to independently receive focus.</p>
@@ -1135,7 +1137,7 @@
 <p>Buttons are implicitly focusable; on the <code>&lt;image&gt;</code>, we simply add <code>focusable="true"</code>.</p>
 </div>
 <p>When a view is focusable, it becomes a candidate for the <em>focus search</em> that runs on every left stick movement or d-pad button press, and if StardewUI decides that it is the user's intended next target – e.g. if it is directly adjacent to the previously-focused view and in the requested direction – then the on-screen cursor will be moved (snapped) to its exact center, and it is then considered to have focus.</p>
-<h2 id="pointer-events">Pointer Events</h2>
+<h2 id="pointer-events">Pointer Events<a class="headerlink" href="#pointer-events" title="Permanent link"></a></h2>
 <p>The most common purpose of element focus is for it to be able to receive clicks or other <a href="../starml/#events">pointer events</a> such as enter/leave (AKA mouseover/mouseout). Focus implies interactivity and therefore some interaction (event) is likely to be defined.</p>
 <p>Using clicks as an example: in vanilla Stardew menu code, clicks are simply dispatched to the <code>IClickableMenu</code> which then has to iterate through all the clickable components and apply ad-hoc ordering logic to figure out which element the click really landed on. In StardewUI, this is all handled for you, and the behavior is largely identical to any other popular UI framework:</p>
 <ul>
@@ -1152,7 +1154,7 @@
 </div>
 <p>It may help to think of <em>focusability</em> as "where the cursor should snap to", as compared to the "clickable area" that handles tooltips and other pointer events. Sometimes they are the same, e.g. with a button, but not always.</p>
 <p>This distinction is very particular to Stardew because of the "snappy menu" system; in conventional desktop and web UI, the location of the mouse pointer is irrelevant to and independent from keyboard or input focus, whereas in Stardew Valley, the pointer location is the <em>only</em> relevant information.</p>
-<h2 id="tooltips">Tooltips</h2>
+<h2 id="tooltips">Tooltips<a class="headerlink" href="#tooltips" title="Permanent link"></a></h2>
 <p>Similar to <a href="#focusability">focusability</a>, tooltips require only a single <a href="../starml/#common-attributes">attribute</a>, aptly named <code>tooltip</code>. No code is needed.</p>
 <p>To assign a tooltip, simply set this attribute to either a literal string or <a href="../starml/#attribute-flavors">data binding</a>. If you are supporting localization (<a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation">translations</a>)—and you should be—then most of the time it will be a data binding, with the model doing the work of invoking <code>ITranslationHelper</code> or the <code>I18n</code> wrapper.</p>
 <div class="language-html highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">tooltip</span><span class="o">=</span><span class="s">&quot;Actions&quot;</span><span class="p">&gt;</span>
@@ -1173,7 +1175,7 @@
 <p>While not common, it is possible to further customize the tooltip when using the <a href="../../library/">Core Library</a> directly, via the <a href="../../reference/stardewui/viewmenu-1/#formattooltipienumerableviewchild">FormatTooltip</a> method. The <a href="https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15">Garbage In Garbage Can</a> mod does this in order to add button prompts to the tooltip.</p>
 <p>Note, however, that (a) this code was written before the <a href="../">framework</a> and StarML existed, and (b) it is completely possible to achieve using standard tooltips, and was only written this way to make it slightly easier to adapt the tooltip's exact wording based on whether the <em>current</em> input is mouse vs. controller. Most tooltips are not going to require this degree of control.</p>
 </details>
-<h2 id="scrolling">Scrolling</h2>
+<h2 id="scrolling">Scrolling<a class="headerlink" href="#scrolling" title="Permanent link"></a></h2>
 <p>When using the UI framework, scrolling is generally achieved with the <code>&lt;scrollable&gt;</code> element (<a href="../../library/standard-views/#scrollable-view">ScrollableView</a>). This widget automatically takes care of showing/hiding a scroll bar depending on the length of content, and handles all the interactions with the scrollbar itself.</p>
 <div class="language-html highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">scrollable</span> <span class="na">peeking</span><span class="o">=</span><span class="s">&quot;128&quot;</span><span class="p">&gt;</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
@@ -1208,7 +1210,7 @@
 </details>
 </li>
 </ul>
-<h3 id="peeking">Peeking</h3>
+<h3 id="peeking">Peeking<a class="headerlink" href="#peeking" title="Permanent link"></a></h3>
 <p>Peeking<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> improves the <a href="https://www.interaction-design.org/literature/topics/discoverability">discoverability</a> of a scrolling UI by displaying content beyond the edge of the focused area. Observe the difference below between the vanilla social UI and the settings of <a href="https://www.nexusmods.com/stardewvalley/mods/27665">A Fishing Sea</a>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="social-menu---still" name="__tabbed_1" type="radio" /><input id="social-menu---video" name="__tabbed_1" type="radio" /><input id="afs-settings" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="social-menu---still">Social Menu - Still</label><label for="social-menu---video">Social Menu - Video</label><label for="afs-settings">AFS Settings</label></div>
 <div class="tabbed-content">
@@ -1236,7 +1238,7 @@
 <p class="admonition-title">TL;DR</p>
 <p><strong>Always set your <code>peeking</code>.</strong> When possible, set it to 2-3x of the distance of a typical scroll; if rows are 80px high, a good peeking value is anywhere from 160px to 240px.</p>
 </div>
-<h2 id="tabbing-and-paging">Tabbing and Paging</h2>
+<h2 id="tabbing-and-paging">Tabbing and Paging<a class="headerlink" href="#tabbing-and-paging" title="Permanent link"></a></h2>
 <p>Two types of UI in Stardew generally receive special input treatment:</p>
 <ol>
 <li>

@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3299,8 +3301,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-snode">Class SNode</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-snode">Class SNode<a class="headerlink" href="#class-snode" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Dom</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3312,10 +3314,10 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ SNode</p>
 <p><strong>Implements</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a href="./">SNode</a>&gt;</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>This is also the root of a <a href="../document/">Document</a> and the visible result of a parser. While there is some memory and performance cost associated with this intermediate representation before assembling the <a href="../../binding/viewnode/">ViewNode</a>, it allows for document assets to be edited (patched) prior to binding.</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3330,7 +3332,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3361,53 +3363,53 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="snodeselement-ireadonlylistsnode">SNode(SElement, IReadOnlyList&lt;SNode&gt;)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="snodeselement-ireadonlylistsnode">SNode(SElement, IReadOnlyList&lt;SNode&gt;)<a class="headerlink" href="#snodeselement-ireadonlylistsnode" title="Permanent link"></a></h4>
 <p>A node in a StarML document, encapsulating the tag, its attributes, and all child nodes.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">SNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SElement</span><span class="w"> </span><span class="n">Element</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ChildNodes</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>Element</code></strong> &nbsp; <a href="../selement/">SElement</a><br />
 The element data for this node.</p>
 <p><strong><code>ChildNodes</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="./">SNode</a>&gt;<br />
 The children of this node.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>This is also the root of a <a href="../document/">Document</a> and the visible result of a parser. While there is some memory and performance cost associated with this intermediate representation before assembling the <a href="../../binding/viewnode/">ViewNode</a>, it allows for document assets to be edited (patched) prior to binding.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="attributes">Attributes</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="attributes">Attributes<a class="headerlink" href="#attributes" title="Permanent link"></a></h4>
 <p>Gets the attributes of the associated <a href="./#element">Element</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SAttribute</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Attributes</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="../sattribute/">SAttribute</a>&gt;</p>
 <hr />
-<h4 id="childnodes">ChildNodes</h4>
+<h4 id="childnodes">ChildNodes<a class="headerlink" href="#childnodes" title="Permanent link"></a></h4>
 <p>The children of this node.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ChildNodes</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="./">SNode</a>&gt;</p>
 <hr />
-<h4 id="element">Element</h4>
+<h4 id="element">Element<a class="headerlink" href="#element" title="Permanent link"></a></h4>
 <p>The element data for this node.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SElement</span><span class="w"> </span><span class="n">Element</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="../selement/">SElement</a></p>
 <hr />
-<h4 id="equalitycontract">EqualityContract</h4>
+<h4 id="equalitycontract">EqualityContract<a class="headerlink" href="#equalitycontract" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">EqualityContract</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h4 id="tag">Tag</h4>
+<h4 id="tag">Tag<a class="headerlink" href="#tag" title="Permanent link"></a></h4>
 <p>Gets the tag of the associated <a href="./#element">Element</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Tag</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
 </div>

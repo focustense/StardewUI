@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3620,8 +3622,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-bindingcontext">Class BindingContext</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-bindingcontext">Class BindingContext<a class="headerlink" href="#class-bindingcontext" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Binding</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3634,8 +3636,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ BindingContext</p>
 <p><strong>Implements</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a href="./">BindingContext</a>&gt;</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3650,7 +3652,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3677,7 +3679,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3696,13 +3698,13 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="bindingcontextiobjectdescriptor-object-bindingcontext">BindingContext(IObjectDescriptor, Object, BindingContext)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="bindingcontextiobjectdescriptor-object-bindingcontext">BindingContext(IObjectDescriptor, Object, BindingContext)<a class="headerlink" href="#bindingcontextiobjectdescriptor-object-bindingcontext" title="Permanent link"></a></h4>
 <p>Context, or scope, of a bound view, providing the backing data and tools for accessing its properties.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">BindingContext</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IObjectDescriptor</span><span class="w"> </span><span class="n">Descriptor</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">Data</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">Parent</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>Descriptor</code></strong> &nbsp; <a href="../../descriptors/iobjectdescriptor/">IObjectDescriptor</a><br />
 Descriptor of the <a href="./#data">Data</a> type, used to read current values.</p>
 <p><strong><code>Data</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />
@@ -3710,56 +3712,56 @@ The bound data.</p>
 <p><strong><code>Parent</code></strong> &nbsp; <a href="./">BindingContext</a><br />
 The parent context from which this context was derived, if any.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="data">Data</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="data">Data<a class="headerlink" href="#data" title="Permanent link"></a></h4>
 <p>The bound data.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">Data</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a></p>
 <hr />
-<h4 id="descriptor">Descriptor</h4>
+<h4 id="descriptor">Descriptor<a class="headerlink" href="#descriptor" title="Permanent link"></a></h4>
 <p>Descriptor of the <a href="./#data">Data</a> type, used to read current values.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IObjectDescriptor</span><span class="w"> </span><span class="n">Descriptor</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../../descriptors/iobjectdescriptor/">IObjectDescriptor</a></p>
 <hr />
-<h4 id="equalitycontract">EqualityContract</h4>
+<h4 id="equalitycontract">EqualityContract<a class="headerlink" href="#equalitycontract" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">EqualityContract</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h4 id="parent">Parent</h4>
+<h4 id="parent">Parent<a class="headerlink" href="#parent" title="Permanent link"></a></h4>
 <p>The parent context from which this context was derived, if any.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">Parent</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="./">BindingContext</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="createobject-bindingcontext">Create(Object, BindingContext)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="createobject-bindingcontext">Create(Object, BindingContext)<a class="headerlink" href="#createobject-bindingcontext" title="Permanent link"></a></h4>
 <p>Creates a <a href="./">BindingContext</a> from the specified data, automatically building a new descriptor if the data type has not been previously seen.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">Create</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">parent</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>data</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />
 The bound data.</p>
 <p><strong><code>parent</code></strong> &nbsp; <a href="./">BindingContext</a><br />
 The parent context from which this context was derived, if any.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="./">BindingContext</a></p>
 <p>A new <a href="./">BindingContext</a> whose <a href="./#data">Data</a> is the specified <code>data</code> and whose <a href="./#descriptor">Descriptor</a> is the descriptor of <code>data</code>'s runtime type.</p>
 <hr />
-<h4 id="redirectcontextredirect">Redirect(ContextRedirect)</h4>
+<h4 id="redirectcontextredirect">Redirect(ContextRedirect)<a class="headerlink" href="#redirectcontextredirect" title="Permanent link"></a></h4>
 <p>Resolves a redirected context, using this context as the starting point.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">Redirect</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">ContextRedirect</span><span class="w"> </span><span class="n">redirect</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>redirect</code></strong> &nbsp; <a href="../../dom/contextredirect/">ContextRedirect</a><br />
 The redirect data.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="./">BindingContext</a></p>
 <p>The resolved <a href="./">BindingContext</a>, or <code>null</code> if the <code>redirect</code> does not resolve to a valid context.</p>
 <hr />

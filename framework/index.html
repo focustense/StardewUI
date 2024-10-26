@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../stylesheets/styles.css">
@@ -927,6 +929,32 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#using-the-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Framework
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-content-packs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison with Content Packs
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -943,7 +971,23 @@
   
 
 
-<h1 id="ui-framework">UI Framework</h1>
+<h1 id="ui-framework">UI Framework<a class="headerlink" href="#ui-framework" title="Permanent link"></a></h1>
+<p>The recommended, and fastest way to <a href="../getting-started/">start building UI</a> with StardewUI is via the Framework API. This is a standalone mod, which on mod sites is simply named <a href="https://www.nexusmods.com/stardewvalley/mods/28870">StardewUI</a>.</p>
+<h2 id="using-the-framework">Using the Framework<a class="headerlink" href="#using-the-framework" title="Permanent link"></a></h2>
+<p>If you're new to the framework, <strong>please check out the <a href="../getting-started/">Getting Started guide</a></strong>. It includes everything needed to spawn a menu or HUD using just a few lines of code along with a <a href="starml/">StarML</a> file.</p>
+<p>Summary of the steps in that guide:</p>
+<ol>
+<li><a href="../getting-started/#adding-the-api">Import the API</a></li>
+<li><a href="../getting-started/adding-ui-assets/">Register asset paths</a></li>
+<li><a href="starml/">Create a view</a> (some <a href="../examples/">examples</a> are provided)</li>
+<li>Make sure your view is <a href="../getting-started/#next-steps">deployed with your project</a></li>
+<li><a href="../getting-started/displaying-ui/">Display the menu or HUD</a></li>
+</ol>
+<p>The above steps are intentionally very specific; aside from creating the view, each "step" is usually only 1-2 clicks or lines of code.</p>
+<h2 id="comparison-with-content-packs">Comparison with Content Packs<a class="headerlink" href="#comparison-with-content-packs" title="Permanent link"></a></h2>
+<p>The "framework" label is an analogy to other UI frameworks such as Angular and WPF, and should not be confused with <a href="https://stardewvalleywiki.com/Modding:Content_pack_frameworks">"Content Pack" frameworks</a> providing add-ons for completely codeless mods. While StarML and Spritesheet JSON are definitely "content" for StardewUI, the crucial element that cannot be fully specified in a content pack is the <em>model</em> – what the UI does, as opposed to how it looks.</p>
+<p>A menu or other UI normally exists to provide some <em>function</em>; it's a way to navigate the features of your mod, which are up to you. It would be impractical to try to anticipate every possible reason for a UI to exist, which is an almost infinite space: mod configuration, inventory, shops, NPC interactions, quests, minigames and more. StardewUI requires very little code to use, but it is still a C# framework.</p>
+<p>If you're interested in making, contributing to, or helping to define a more limited, content-pack friendly version, possibly based on <a href="https://stardewvalleywiki.com/Modding:Game_state_queries">Game State Queries</a>, <a href="https://stardewvalleywiki.com/Modding:Trigger_actions">Trigger Actions</a> and similar features, please consider either creating your own <a href="extensions/">extension mod</a> or starting/participating in a <a href="https://github.com/focustense/StardewUI/discussions">discussion on GitHub</a>.</p>
 
 
 

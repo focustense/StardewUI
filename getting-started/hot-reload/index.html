@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1015,9 +1017,9 @@
   
 
 
-<h1 id="hot-reload">Hot Reload</h1>
+<h1 id="hot-reload">Hot Reload<a class="headerlink" href="#hot-reload" title="Permanent link"></a></h1>
 <p>When using the recommended <a href="../adding-ui-assets/#adding-views">asset registration</a> for views and sprites, StardewUI can watch for changes to asset files (<a href="../../framework/starml/"><code>.sml</code></a>, <code>.png</code> and <code>json</code>) and update them immediately, even while the game is running and while the specific UI (menu, HUD, etc.) is open. This can be very useful for troubleshooting layout issues, making small tweaks toward a pixel-perfect UI, or simply using a playground for experimentation.</p>
-<h2 id="enabling-hot-reload">Enabling Hot Reload</h2>
+<h2 id="enabling-hot-reload">Enabling Hot Reload<a class="headerlink" href="#enabling-hot-reload" title="Permanent link"></a></h2>
 <p>Once you have a <a href="../#adding-the-api">reference to the API</a>, turning on hot reload is a single method call:</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">viewEngine</span><span class="p">.</span><span class="n">EnableHotReload</span><span class="p">();</span>
 </span></code></pre></div>
@@ -1025,13 +1027,13 @@
 <p>For best results, it is recommended to turn <strong>off</strong> the game setting labeled "Pause When Game Window Is Inactive":</p>
 <p><img alt="Pause when inactive setting" src="../../images/screenshot-pause-inactive-off.png" /></p>
 <p>Disabling this setting forces the game to process update ticks even while you are working in a separate window—such as your <a href="../editor-setup/">code editor</a>. This gives you truly <em>instant</em> hot reload, without having to switch back to the game window.</p>
-<h3 id="file-locations">File Locations</h3>
+<h3 id="file-locations">File Locations<a class="headerlink" href="#file-locations" title="Permanent link"></a></h3>
 <p>Hot reload works on the <strong>mod assets</strong>; it does not know the original source of those assets.</p>
 <div class="admonition tip">
 <p class="admonition-title">Important</p>
 <p>In order for hot reloading to work, make sure you are directly editing or copying your edits to the <strong>deployed</strong> files; that is, the file inside your <code>Stardew Valley\Mods\&lt;ModName&gt;</code> folder.</p>
 </div>
-<h2 id="performance">Performance</h2>
+<h2 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link"></a></h2>
 <p class="annotate">When hot-reload is enabled, StardewUI must monitor your mod directory. While the overhead of doing so is generally low, having many mods do this at the same time(1) could cause lag/jank or other performance problems in game. To be polite to other modders, and players, it is recommended to turn off hot reload in the <em>released</em> version of your mod, since players will not be using the feature themselves.</p>
 <ol>
 <li>The Framework API is partially scoped to each mod using it, and Hot Reload is a per-mod setting.</li>

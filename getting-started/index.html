@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../stylesheets/styles.css">
@@ -936,16 +938,16 @@
   
 
 
-<h1 id="getting-started">Getting Started</h1>
+<h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link"></a></h1>
 <p>If you've made a Stardew mod before, then setting up StardewUI should be a snap; it's the same as any other <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations">SMAPI integration</a>.</p>
-<h2 id="installing-the-framework">Installing the Framework</h2>
+<h2 id="installing-the-framework">Installing the Framework<a class="headerlink" href="#installing-the-framework" title="Permanent link"></a></h2>
 <p>StardewUI is prerelease, so it isn't published on Nexus Mods or any other mod site yet.</p>
 <ol>
 <li>Download the <a href="https://github.com/focustense/StardewUI/releases">latest release</a>. Make sure you download the <code>StardewUI x.y.z.zip</code> file, <strong>not</strong> the source code.</li>
 <li>Open the .zip file and extract the <code>StardewUI</code> folder into your <code>Stardew Valley\Mods</code> folder.</li>
 </ol>
 <p>The framework is now ready to use from your own mods.</p>
-<h2 id="adding-the-api">Adding the API</h2>
+<h2 id="adding-the-api">Adding the API<a class="headerlink" href="#adding-the-api" title="Permanent link"></a></h2>
 <p>If this is your first time working with a framework mod, have a look at SMAPI's guide to <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations#Using_an_API">using an API</a>. The abridged version is:</p>
 <ol>
 <li>Download the entire <a href="https://raw.githubusercontent.com/focustense/StardewUI/refs/heads/dev/Framework/IViewEngine.cs"><code>IViewEngine.cs</code></a> to somewhere in your mod's source directory. (You can right-click, "Save link as..." from this page.)</li>
@@ -959,7 +961,7 @@
     <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">viewEngine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Helper</span><span class="p">.</span><span class="n">ModRegistry</span><span class="p">.</span><span class="n">GetApi</span><span class="o">&lt;</span><span class="n">IViewEngine</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;focustense.StardewUI&quot;</span><span class="p">);</span>
 </span></code></pre></div></li>
 </ol>
-<h2 id="next-steps">Next Steps</h2>
+<h2 id="next-steps">Next Steps<a class="headerlink" href="#next-steps" title="Permanent link"></a></h2>
 <p>At this point, you don't have any views or other assets; in order to get an actual UI up and running, you'll need to:</p>
 <div class="annotate">
 <ol>

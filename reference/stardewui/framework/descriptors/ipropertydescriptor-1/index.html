@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3398,8 +3400,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-ipropertydescriptort">Interface IPropertyDescriptor&lt;T&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-ipropertydescriptort">Interface IPropertyDescriptor&lt;T&gt;<a class="headerlink" href="#interface-ipropertydescriptort" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Descriptors</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3409,15 +3411,15 @@ Assembly: StardewUI.dll  </p>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="p">,</span><span class="w"> </span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IMemberDescriptor</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>T</code></strong><br />
 The property type.</p>
 <p><strong>Implements</strong><br />
 <a href="../ipropertydescriptor/">IPropertyDescriptor</a>, <a href="../imemberdescriptor/">IMemberDescriptor</a></p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>The read and write methods take <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> as a receiver because they are intended to be invoked from a non-generic context.</p>
-<h2 id="members">Members</h2>
-<h3 id="methods">Methods</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3436,24 +3438,24 @@ The property type.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="methods_1">Methods</h3>
-<h4 id="getvalueobject">GetValue(Object)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="getvalueobject">GetValue(Object)<a class="headerlink" href="#getvalueobject" title="Permanent link"></a></h4>
 <p>Reads the current property value.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">T</span><span class="w"> </span><span class="nf">GetValue</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">source</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>source</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />
 An instance of the property's <a href="../imemberdescriptor/#declaringtype">DeclaringType</a>.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><code>T</code></p>
 <p>The current property value.</p>
 <hr />
-<h4 id="setvalueobject-t">SetValue(Object, T)</h4>
+<h4 id="setvalueobject-t">SetValue(Object, T)<a class="headerlink" href="#setvalueobject-t" title="Permanent link"></a></h4>
 <p>Writes a new property value.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">SetValue</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>target</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />
 An instance of the property's <a href="../imemberdescriptor/#declaringtype">DeclaringType</a>.</p>
 <p><strong><code>value</code></strong> &nbsp; T<br />

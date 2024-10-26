@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Helpers for creating typed Animator`2 instances.">
+        <meta name="description" content="Helpers for creating typed Animator&lt;T, V&gt; instances.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="Animator - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="Helpers for creating typed Animator`2 instances." >
+        <meta  property="og:description"  content="Helpers for creating typed Animator&lt;T, V&gt; instances." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/animation/animator.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="Animator - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="Helpers for creating typed Animator`2 instances." >
+        <meta  name="twitter:description"  content="Helpers for creating typed Animator&lt;T, V&gt; instances." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/animation/animator.png" >
       
@@ -2163,8 +2165,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-animator">Class Animator</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-animator">Class Animator<a class="headerlink" href="#class-animator" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Animation</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2174,8 +2176,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ Animator</p>
-<h2 id="members">Members</h2>
-<h3 id="methods">Methods</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2194,13 +2196,13 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="methods_1">Methods</h3>
-<h4 id="ont-vt-funct-v-lerpv-actiont-v">On&lt;T, V&gt;(T, Func&lt;T, V&gt;, Lerp&lt;V&gt;, Action&lt;T, V&gt;)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="ont-vt-funct-v-lerpv-actiont-v">On&lt;T, V&gt;(T, Func&lt;T, V&gt;, Lerp&lt;V&gt;, Action&lt;T, V&gt;)<a class="headerlink" href="#ont-vt-funct-v-lerpv-actiont-v" title="Permanent link"></a></h4>
 <p>Creates a new <a href="../animator-2/">Animator&lt;T, V&gt;</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Animation</span><span class="p">.</span><span class="n">Animator</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="o">&gt;</span><span class="w"> </span><span class="n">On</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="o">&gt;</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getValue</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Animation</span><span class="p">.</span><span class="n">Lerp</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lerpValue</span><span class="p">,</span><span class="w"> </span><span class="n">Action</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">V</span><span class="o">&gt;</span><span class="w"> </span><span class="n">setValue</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>target</code></strong> &nbsp; T<br />
 The object whose property will be animated.</p>
 <p><strong><code>getValue</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-2">Func&lt;T, V&gt;</a><br />
@@ -2209,25 +2211,25 @@ Function to get the current value. Used for animations that don't explicit speci
 Function to linearly interpolate between the start and end values.</p>
 <p><strong><code>setValue</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.action-2">Action&lt;T, V&gt;</a><br />
 Delegate to set the value on the <code>target</code>.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../animator-2/">Animator&lt;T, V&gt;</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Calling this is the same as calling the constructor, but typically does not require explicit type arguments.</p>
 <hr />
-<h4 id="ontt-funct-single-actiont-single">On&lt;T&gt;(T, Func&lt;T, Single&gt;, Action&lt;T, Single&gt;)</h4>
+<h4 id="ontt-funct-single-actiont-single">On&lt;T&gt;(T, Func&lt;T, Single&gt;, Action&lt;T, Single&gt;)<a class="headerlink" href="#ontt-funct-single-actiont-single" title="Permanent link"></a></h4>
 <p>Creates a new <a href="../animator-2/">Animator&lt;T, V&gt;</a> that animates a standard <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a> property.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Animation</span><span class="p">.</span><span class="n">Animator</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="o">&gt;</span><span class="w"> </span><span class="n">On</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getValue</span><span class="p">,</span><span class="w"> </span><span class="n">Action</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="o">&gt;</span><span class="w"> </span><span class="n">setValue</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>target</code></strong> &nbsp; T<br />
 The object whose property will be animated.</p>
 <p><strong><code>getValue</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-2">Func&lt;T, Single&gt;</a><br />
 Function to get the current value. Used for animations that don't explicit specify a start value, e.g. when using the <a href="../animator-2/#startanimationv">Start(Animation&lt;V&gt;)</a> overload.</p>
 <p><strong><code>setValue</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.action-2">Action&lt;T, Single&gt;</a><br />
 Delegate to set the value on the <code>target</code>.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../animator-2/">Animator&lt;T, Single&gt;</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Calling this is the same as calling the constructor, but typically does not require explicit type arguments.</p>
 <hr />
 </div>

@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3482,8 +3484,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-viewnodefactory">Class ViewNodeFactory</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-viewnodefactory">Class ViewNodeFactory<a class="headerlink" href="#class-viewnodefactory" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Binding</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3495,8 +3497,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ViewNodeFactory</p>
 <p><strong>Implements</strong><br />
 <a href="../iviewnodefactory/">IViewNodeFactory</a></p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3511,7 +3513,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3526,13 +3528,13 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache">ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache">ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)<a class="headerlink" href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache" title="Permanent link"></a></h4>
 <p>Default in-game view engine.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewNodeFactory</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewBinder</span><span class="w"> </span><span class="n">viewBinder</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCache</span><span class="w"> </span><span class="n">assetCache</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>viewFactory</code></strong> &nbsp; <a href="../iviewfactory/">IViewFactory</a><br />
 Factory for creating views, based on their tag names.</p>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a><br />
@@ -3544,15 +3546,15 @@ Binding service used to create <a href="../iviewbinding/">IViewBinding</a> insta
 <p><strong><code>assetCache</code></strong> &nbsp; <a href="../../content/iassetcache/">IAssetCache</a><br />
 Cache for obtaining document assets. Used for included views.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="createnodesnode">CreateNode(SNode)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="createnodesnode">CreateNode(SNode)<a class="headerlink" href="#createnodesnode" title="Permanent link"></a></h4>
 <p>Creates a bound view node, and all descendants, from parsed node data.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SNode</span><span class="w"> </span><span class="n">node</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>node</code></strong> &nbsp; <a href="../../dom/snode/">SNode</a><br />
 The node data.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../iviewnode/">IViewNode</a></p>
 <p>An <a href="../iviewnode/">IViewNode</a> providing the <a href="../../../iview/">IView</a> bound with the node's attributes and children, which automatically applies changes on each <a href="../iviewnode/#updatetimespan">Update(TimeSpan)</a>.</p>
 <hr />

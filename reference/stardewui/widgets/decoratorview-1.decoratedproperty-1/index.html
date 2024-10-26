@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2963,8 +2965,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-decoratorviewtdecoratedpropertyt-tvalue">Class DecoratorView&lt;T&gt;.DecoratedProperty&lt;T, TValue&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-decoratorviewtdecoratedpropertyt-tvalue">Class DecoratorView&lt;T&gt;.DecoratedProperty&lt;T, TValue&gt;<a class="headerlink" href="#class-decoratorviewtdecoratedpropertyt-tvalue" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Widgets</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2972,16 +2974,16 @@ Assembly: StardewUI.dll  </p>
 <p>Helper for propagating a single property to and from the inner view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">DecoratorView</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">.</span><span class="n">DecoratedProperty</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">TValue</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>T</code></strong>  </p>
 <p><strong><code>TValue</code></strong><br />
 The type of value tracked.</p>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ DecoratedProperty&lt;T, TValue&gt;</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Decorated properties must be initialized in the decorator's constructor by calling <a href="../decoratorview-1/#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue">RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)</a>, and have the following behavior:</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2996,7 +2998,7 @@ The type of value tracked.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3019,46 +3021,46 @@ The type of value tracked.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="decoratedpropertyt-tvaluefunct-tvalue-actiont-tvalue-tvalue">DecoratedProperty&lt;T, TValue&gt;(Func&lt;T, TValue&gt;, Action&lt;T, TValue&gt;, TValue)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="decoratedpropertyt-tvaluefunct-tvalue-actiont-tvalue-tvalue">DecoratedProperty&lt;T, TValue&gt;(Func&lt;T, TValue&gt;, Action&lt;T, TValue&gt;, TValue)<a class="headerlink" href="#decoratedpropertyt-tvaluefunct-tvalue-actiont-tvalue-tvalue" title="Permanent link"></a></h4>
 <p>Helper for propagating a single property to and from the inner view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="n">DecoratedProperty</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">TValue</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Func</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">TValue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getValue</span><span class="p">,</span><span class="w"> </span><span class="n">Action</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">TValue</span><span class="o">&gt;</span><span class="w"> </span><span class="n">setValue</span><span class="p">,</span><span class="w"> </span><span class="n">TValue</span><span class="w"> </span><span class="n">defaultValue</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>getValue</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-2">Func&lt;T, TValue&gt;</a><br />
 Function to retrieve the current value from the inner view.</p>
 <p><strong><code>setValue</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.action-2">Action&lt;T, TValue&gt;</a><br />
 Delegate to change the current value on the inner view.</p>
 <p><strong><code>defaultValue</code></strong> &nbsp; TValue<br />
 The initial value to return from <a href="./#get">Get()</a> if no view exists and the value has not been changed. This is never written to the view, it is only used by <a href="./#get">Get()</a> and is effectively a hack to allow <a href="./">DecoratedProperty&lt;T, TValue&gt;</a> to deal with value (struct) types.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Decorated properties must be initialized in the decorator's constructor by calling <a href="../decoratorview-1/#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue">RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)</a>, and have the following behavior:</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="get">Get()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="get">Get()<a class="headerlink" href="#get" title="Permanent link"></a></h4>
 <p>Gets the current value from the inner view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">TValue</span><span class="w"> </span><span class="nf">Get</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><code>TValue</code></p>
 <p>The value from the current view, if the view is non-null; otherwise, the default value configured for this property.</p>
 <hr />
-<h4 id="settvalue">Set(TValue)</h4>
+<h4 id="settvalue">Set(TValue)<a class="headerlink" href="#settvalue" title="Permanent link"></a></h4>
 <p>Updates the property value, also updating the inner view if one exists.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Set</span><span class="p">(</span><span class="n">TValue</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>value</code></strong> &nbsp; TValue<br />
 The new value.</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>If the inner view has not been created yet, then its corresponding property will be updated as soon as it is assigned to the <a href="../decoratorview-1/#view">View</a>.</p>
 <hr />
-<h4 id="update">Update()</h4>
+<h4 id="update">Update()<a class="headerlink" href="#update" title="Permanent link"></a></h4>
 <p>Updates the inner view's property to the most recent value, if one has been set on the decorated property.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="remarks_3">Remarks</h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>If there have been no calls to <a href="./#settvalue">Set(TValue)</a>, then the view is left untouched, to preserve any non-default settings on the inner view.</p>
 <hr />
 </div>

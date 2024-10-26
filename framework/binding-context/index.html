@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1093,10 +1095,10 @@
   
 
 
-<h1 id="binding-context">Binding Context</h1>
+<h1 id="binding-context">Binding Context<a class="headerlink" href="#binding-context" title="Permanent link"></a></h1>
 <p>StardewUI's framework API is based on <a href="../../concepts/#data-binding">data binding</a>. While the UI state or "widget tree" is retained, you don't interact it with it directly; instead, in order to provide interactivity and/or dynamic content to views, you define a <a href="https://en.wikipedia.org/wiki/Data_model">data model</a>, which becomes the <em>context</em>.</p>
 <p>Context is simply a <a href="https://en.wikipedia.org/wiki/Tree_(abstract_data_type)">tree node</a> which contains the particular model/data for a specific view or position in the hierarchy. It provides access to the model itself, as well as <a href="#redirects">redirects</a>, which are important for building more complex UI. Other frameworks use similar names, such as <a href="https://learn.microsoft.com/en-us/dotnet/api/system.windows.frameworkelement.datacontext?view=windowsdesktop-8.0">DataContext</a> in WPF.</p>
-<h2 id="context-vs-data">Context vs Data</h2>
+<h2 id="context-vs-data">Context vs Data<a class="headerlink" href="#context-vs-data" title="Permanent link"></a></h2>
 <p>As an example, consider a simple list of selectable items:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="model-diagram" name="__tabbed_1" type="radio" /><input id="ui-mockup" name="__tabbed_1" type="radio" /><input id="starml" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="model-diagram">Model Diagram</label><label for="ui-mockup">UI Mockup</label><label for="starml">StarML</label></div>
 <div class="tabbed-content">
@@ -1146,7 +1148,7 @@ columns 2
 <p>This behavior isn't necessarily limited to repeaters; for example, another way to narrow or drill down the context would be the <a href="../starml/#structural-attributes"><code>*context</code> attribute</a>.</p>
 <p>But note the <code>click</code> event in particular: <code>^SelectItem(Id)</code>. The <code>Id</code> is a property on the <code>MenuItem</code>, as we would expect since it is attached to the repeating element; however, <code>SelectItem</code> is referring back to the <code>MenuViewModel</code>. It does this using the <code>^</code> <a href="#redirects">redirect</a>, which instructs StardewUI to look at the <em>parent</em> or <em>previous</em> context to find the <code>SelectItem</code> method.</p>
 <p>The <em>model</em> or <em>data</em> refers to the specific object attached, or "bound", to any given node; the outer <code>&lt;lane&gt;</code> is bound to a <code>MenuViewModel</code> and each inner <code>&lt;lane&gt;</code> is bound to a <code>MenuItem</code>. The <em>context</em> has an awareness of the overall structure, and is able to backtrack to a previous level at any time.</p>
-<h2 id="updates">Updates</h2>
+<h2 id="updates">Updates<a class="headerlink" href="#updates" title="Permanent link"></a></h2>
 <p>It is rare for any UI to be completely static, with content that never changes. Most UI needs to respond not only to user input, but to changes in the underlying data or state. More generally, it should always show the <em>most current</em> data, however one chooses to define it.</p>
 <div class="admonition failure">
 <p class="admonition-title">Broken</p>
@@ -1175,7 +1177,7 @@ columns 2
 </div>
 </div>
 <p>If you run this example, and click the button, you'll see that <strong>nothing happens</strong>. Our <code>Count</code> does get incremented, but the UI never updates. That is because StardewUI's data binding depends on having an implementation of <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged?view=net-8.0">INotifyPropertyChanged</a> (hereafter: "INPC") in order to detect changes. Without INPC, every binding is a "one-time" binding, meaning it is only read when the view is first created.</p>
-<h3 id="implementing-inotifypropertychanged">Implementing <code>INotifyPropertyChanged</code></h3>
+<h3 id="implementing-inotifypropertychanged">Implementing <code>INotifyPropertyChanged</code><a class="headerlink" href="#implementing-inotifypropertychanged" title="Permanent link"></a></h3>
 <p>INPC can be extremely tedious to implement for many models and properties, as it requires intercepting every property setter, comparing the values, raising an event, etc. Fortunately, the .NET ecosystem has many tools to automate the process, and using one is <strong>strongly</strong> recommended over a "manual" implementation.</p>
 <p>The recommended options for INPC include:</p>
 <table>
@@ -1251,7 +1253,7 @@ columns 2
 <li>Add a <code>[Notify]</code> attribute.</li>
 </ul>
 <p>You don't need to <code>[Notify]</code> every single property, only the ones that might change. The mixed approach is demonstrated in several <a href="../../examples/bestiary/#monsterviewmodelcs">examples</a>.</p>
-<h3 id="collection-updates">Collection Updates</h3>
+<h3 id="collection-updates">Collection Updates<a class="headerlink" href="#collection-updates" title="Permanent link"></a></h3>
 <p>A special case of updates is collections. Consider the case of a UI that adds items to a list:</p>
 <div class="admonition failure">
 <p class="admonition-title">Broken</p>
@@ -1339,7 +1341,7 @@ columns 2
 </div>
 </div>
 <p>We changed only one line here: <code>List&lt;string&gt;</code> became <code>ObservableCollection&lt;string&gt;</code>.</p>
-<h2 id="redirects">Redirects</h2>
+<h2 id="redirects">Redirects<a class="headerlink" href="#redirects" title="Permanent link"></a></h2>
 <p>Any binding that references context data, including properties or <a href="../binding-events/">event handlers</a> or arguments, can use a redirect operator.</p>
 <p>The types of redirects are:</p>
 <table>

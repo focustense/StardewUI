@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2475,8 +2477,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-ipageable">Interface IPageable</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-ipageable">Interface IPageable<a class="headerlink" href="#interface-ipageable" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Layout</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2484,10 +2486,10 @@ Assembly: StardewUI.dll  </p>
 <p>Signals that an <a href="../../iview/">IView</a> implements paging controls.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">IPageable</span>
 </span></code></pre></div>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Paging controls are a gamepad function. While next/previous arrows are usually clickable and have their own navigation logic, controller users generally should be able to use the shoulder buttons to navigate pages, which this interface enables.</p>
-<h2 id="members">Members</h2>
-<h3 id="methods">Methods</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2506,21 +2508,21 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="methods_1">Methods</h3>
-<h4 id="nextpage">NextPage()</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="nextpage">NextPage()<a class="headerlink" href="#nextpage" title="Permanent link"></a></h4>
 <p>Advance to the next page, within the current tab.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">NextPage</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if any navigation was performed; <code>false</code> if there are no more pages.</p>
 <hr />
-<h4 id="previouspage">PreviousPage()</h4>
+<h4 id="previouspage">PreviousPage()<a class="headerlink" href="#previouspage" title="Permanent link"></a></h4>
 <p>Advance to the previous page, within the current tab.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">PreviousPage</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if any navigation was performed; <code>false</code> if there are no more pages.</p>
 <hr />

@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2199,8 +2201,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-buttonresolver">Class ButtonResolver</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-buttonresolver">Class ButtonResolver<a class="headerlink" href="#class-buttonresolver" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Input</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2210,11 +2212,11 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ButtonResolver</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Stardew's menu system is quite obnoxious about trying to "simplify" button handling and doesn't provide a lot of escape hatches. In addition, the buttons it considers to be the same are not equivalent to the way normal gameplay operates; for example, gamepad controls use A as the action button which is the same as a right-click when interacting with the game world; however, in menus A is the same as a left-click while X is right click. </p>
 <p>Going through this class can help identify the correct "function" of a button in a UI context as well as identify which real button was actually pressed, the better to work with input suppressions and similar concerns.</p>
-<h2 id="members">Members</h2>
-<h3 id="methods">Methods</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2237,38 +2239,38 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="methods_1">Methods</h3>
-<h4 id="getactionbuttonsbuttonaction">GetActionButtons(ButtonAction)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="getactionbuttonsbuttonaction">GetActionButtons(ButtonAction)<a class="headerlink" href="#getactionbuttonsbuttonaction" title="Permanent link"></a></h4>
 <p>Gets all buttons that can be resolved to a specific action.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetActionButtons</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ButtonAction</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>action</code></strong> &nbsp; <a href="../buttonaction/">ButtonAction</a><br />
 The UI action.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a><SButton></p>
 <p>A sequence of SButton elements each of which is considered to perform the specified <code>action</code>.</p>
 <hr />
-<h4 id="getbuttonactionsbutton">GetButtonAction(SButton)</h4>
+<h4 id="getbuttonactionsbutton">GetButtonAction(SButton)<a class="headerlink" href="#getbuttonactionsbutton" title="Permanent link"></a></h4>
 <p>Determines the action that should be performed by a button.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ButtonAction</span><span class="w"> </span><span class="n">GetButtonAction</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="w"> </span><span class="n">button</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>button</code></strong> &nbsp; SButton<br />
 The action button.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../buttonaction/">ButtonAction</a></p>
 <p>The action for the specified <code>button</code>.</p>
 <hr />
-<h4 id="getpressedbuttonsbutton">GetPressedButton(SButton)</h4>
+<h4 id="getpressedbuttonsbutton">GetPressedButton(SButton)<a class="headerlink" href="#getpressedbuttonsbutton" title="Permanent link"></a></h4>
 <p>Attempts to determine the actual physically pressed key for a "representative" or logical button reported by the underlying menu system that may not actually be down.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="w"> </span><span class="n">GetPressedButton</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="w"> </span><span class="n">logicalButton</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>logicalButton</code></strong> &nbsp; SButton<br />
 The button that was reported.</p>
-<h5 id="returns_2">Returns</h5>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p>SButton</p>
 <p>A button that performs the same action as <code>logicalButton</code> and is currently pressed; or the original <code>logicalButton</code> if no match can be found.</p>
 <hr />

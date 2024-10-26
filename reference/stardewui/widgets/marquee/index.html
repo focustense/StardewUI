@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -3107,8 +3109,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-marquee">Class Marquee</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-marquee">Class Marquee<a class="headerlink" href="#class-marquee" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Widgets</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3118,10 +3120,10 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="../../view/">View</a> ⇦ Marquee</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Works by doubling and shifting the drawing the portion and applying a clipping rectangle, and therefore should be used only for non-interactive content; clicks and focus searches will not be correct inside the content area.</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3136,7 +3138,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3243,7 +3245,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3382,7 +3384,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="events">Events</h3>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3437,98 +3439,98 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="marquee">Marquee()</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="marquee">Marquee()<a class="headerlink" href="#marquee" title="Permanent link"></a></h4>
 <p>Initializes a new instance of <a href="./">Marquee</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">Marquee</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="content">Content</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="content">Content<a class="headerlink" href="#content" title="Permanent link"></a></h4>
 <p>Content to scroll inside the marquee.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">Content</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="../../iview/">IView</a></p>
 <hr />
-<h4 id="extradistance">ExtraDistance</h4>
+<h4 id="extradistance">ExtraDistance<a class="headerlink" href="#extradistance" title="Permanent link"></a></h4>
 <p>Distance in pixels between the copy of the content being scrolled "out" of the marquee, and the second copy of the content being scrolled "in".</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ExtraDistance</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>For example, a marquee scrolling the text "Hello World" might at any given moment look like:</p>
 <hr />
-<h4 id="speed">Speed</h4>
+<h4 id="speed">Speed<a class="headerlink" href="#speed" title="Permanent link"></a></h4>
 <p>Scrolling speed, in pixels per second.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Speed</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="findfocusabledescendantvector2-direction">FindFocusableDescendant(Vector2, Direction)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="findfocusabledescendantvector2-direction">FindFocusableDescendant(Vector2, Direction)<a class="headerlink" href="#findfocusabledescendantvector2-direction" title="Permanent link"></a></h4>
 <p>Searches for a focusable child within this view that is reachable in the specified <code>direction</code>, and returns a result containing the view and search path if found.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FindFocusableDescendant</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>contentPosition</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The search position, relative to where this view's content starts (after applying margin, borders and padding).</p>
 <p><strong><code>direction</code></strong> &nbsp; <a href="../../direction/">Direction</a><br />
 The search direction.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../input/focussearchresult/">FocusSearchResult</a></p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>This is the same as <a href="../../view/#focussearchvector2-direction">FocusSearch(Vector2, Direction)</a> but in pre-transformed content coordinates, and does not require checking for "self-focus" as <a href="../../view/#focussearchvector2-direction">FocusSearch(Vector2, Direction)</a> already does this. The default implementation simply returns <code>null</code> as most views do not have children; subclasses with children must override this.</p>
 <hr />
-<h4 id="getlocalchildren">GetLocalChildren()</h4>
+<h4 id="getlocalchildren">GetLocalChildren()<a class="headerlink" href="#getlocalchildren" title="Permanent link"></a></h4>
 <p>Gets the view's children with positions relative to the content area.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildren</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../../viewchild/">ViewChild</a>&gt;</p>
-<h5 id="remarks_3">Remarks</h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>This has the same signature as <a href="../../view/#getchildren">GetChildren()</a> but assumes that coordinates are in the same space as those used in <a href="../../view/#ondrawcontentispritebatch">OnDrawContent(ISpriteBatch)</a>, i.e. not accounting for margin/border/padding. These coordinates are automatically adjusted in the <a href="../../view/#getchildren">GetChildren()</a> to be relative to the entire view. </p>
 <p>The default implementation returns an empty sequence. Composite views must override this method in order for user interactions to behave correctly.</p>
 <hr />
-<h4 id="iscontentdirty">IsContentDirty()</h4>
+<h4 id="iscontentdirty">IsContentDirty()<a class="headerlink" href="#iscontentdirty" title="Permanent link"></a></h4>
 <p>Checks whether or not the internal content/layout has changed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsContentDirty</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_2">Returns</h5>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if content has changed; otherwise <code>false</code>.</p>
-<h5 id="remarks_4">Remarks</h5>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
 <p>The base implementation of <a href="../../view/#isdirty">IsDirty()</a> only checks if the base layout attributes have changed, i.e. <a href="../../view/#layout">Layout</a>, <a href="../../view/#margin">Margin</a>, <a href="../../view/#padding">Padding</a>, etc. It does not know about content/data in any subclasses; those that accept content parameters (like text) will typically use <a href="../../layout/dirtytracker-1/">DirtyTracker&lt;T&gt;</a> to hold that content and should implement this method to check their <a href="../../layout/dirtytracker-1/#isdirty">IsDirty</a> states.</p>
 <hr />
-<h4 id="ondrawcontentispritebatch">OnDrawContent(ISpriteBatch)</h4>
+<h4 id="ondrawcontentispritebatch">OnDrawContent(ISpriteBatch)<a class="headerlink" href="#ondrawcontentispritebatch" title="Permanent link"></a></h4>
 <p>Draws the inner content of this view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnDrawContent</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>b</code></strong> &nbsp; <a href="../../graphics/ispritebatch/">ISpriteBatch</a><br />
 Sprite batch to hold the drawing output.</p>
-<h5 id="remarks_5">Remarks</h5>
+<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
 <p>This is called from <a href="../../view/#drawispritebatch">Draw(ISpriteBatch)</a> after applying both <a href="../../view/#margin">Margin</a> and <a href="../../view/#padding">Padding</a>.</p>
 <hr />
-<h4 id="onmeasurevector2">OnMeasure(Vector2)</h4>
+<h4 id="onmeasurevector2">OnMeasure(Vector2)<a class="headerlink" href="#onmeasurevector2" title="Permanent link"></a></h4>
 <p>Performs the internal layout.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnMeasure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>availableSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 Size available in the container, after applying padding, margin and borders.</p>
-<h5 id="remarks_6">Remarks</h5>
+<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
 <p>This is called from <a href="../../view/#measurevector2">Measure(Vector2)</a> only when the layout is dirty (layout parameters or content changed) and a new layout is actually required. Subclasses must implement this and set <a href="../../view/#contentsize">ContentSize</a> once layout is complete. Typically, <a href="../../layout/layoutparameters/#resolvevector2-funcvector2">Resolve(Vector2, Func&lt;Vector2&gt;)</a> should be used in order to ensure that the original <a href="../../layout/layoutparameters/">LayoutParameters</a> are respected (e.g. if the actual content size is smaller than the configured size). </p>
 <p>The <code>availableSize</code> provided to the method is pre-adjusted for <a href="../../view/#margin">Margin</a>, <a href="../../view/#padding">Padding</a>, and any border determined by <a href="../../view/#getborderthickness">GetBorderThickness()</a>.</p>
 <hr />
-<h4 id="resetdirty">ResetDirty()</h4>
+<h4 id="resetdirty">ResetDirty()<a class="headerlink" href="#resetdirty" title="Permanent link"></a></h4>
 <p>Resets any dirty state associated with this view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ResetDirty</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="remarks_7">Remarks</h5>
+<h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
 <p>This is called at the end of <a href="../../view/#measurevector2">Measure(Vector2)</a>, so that on the next pass, all state appears clean unless it was marked dirty after the last pass completed. The default implementation is a no-op; subclasses should use it to clear any private dirty state, e.g. via <a href="../../layout/dirtytracker-1/#resetdirty">ResetDirty()</a>.</p>
 <hr />
 </div>

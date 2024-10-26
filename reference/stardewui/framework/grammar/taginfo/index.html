@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3287,8 +3289,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="struct-taginfo">Struct TagInfo</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="struct-taginfo">Struct TagInfo<a class="headerlink" href="#struct-taginfo" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Grammar</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3299,8 +3301,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="https://learn.microsoft.com/en-us/dotnet/api/system.valuetype">ValueType</a> ⇦ TagInfo</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3315,7 +3317,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3334,7 +3336,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3357,31 +3359,31 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="taginforeadonlyspanchar-bool">TagInfo(ReadOnlySpan&lt;Char&gt;, bool)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="taginforeadonlyspanchar-bool">TagInfo(ReadOnlySpan&lt;Char&gt;, bool)<a class="headerlink" href="#taginforeadonlyspanchar-bool" title="Permanent link"></a></h4>
 <p>Information about a parsed tag in StarML.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">TagInfo</span><span class="p">(</span><span class="n">ReadOnlySpan</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Char</span><span class="o">&gt;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">isClosingTag</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.char">Char</a>&gt;<br />
 The tag name.</p>
 <p><strong><code>isClosingTag</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 Whether or not the tag is a closing tag, either in regular <code>&lt;/tag&gt;</code> form or the end of a self-closing tag (<code>/&gt;</code>) after the tag attributes.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="isclosingtag">IsClosingTag</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="isclosingtag">IsClosingTag<a class="headerlink" href="#isclosingtag" title="Permanent link"></a></h4>
 <p>Whether or not the tag is a closing tag, either in regular <code>&lt;/tag&gt;</code> form or the end of a self-closing tag (<code>/&gt;</code>) after the tag attributes.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsClosingTag</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h4 id="name">Name</h4>
+<h4 id="name">Name<a class="headerlink" href="#name" title="Permanent link"></a></h4>
 <p>The tag name.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">ReadOnlySpan</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Char</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.char">Char</a>&gt;</p>
 <hr />
 </div>

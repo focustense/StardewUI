@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Base class for a ISpriteMap`1 for controller/keyboard bindings.">
+        <meta name="description" content="Base class for a ISpriteMap&lt;T&gt; for controller/keyboard bindings.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="ButtonSpriteMap - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="Base class for a ISpriteMap`1 for controller/keyboard bindings." >
+        <meta  property="og:description"  content="Base class for a ISpriteMap&lt;T&gt; for controller/keyboard bindings." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/graphics/buttonspritemap.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="ButtonSpriteMap - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="Base class for a ISpriteMap`1 for controller/keyboard bindings." >
+        <meta  name="twitter:description"  content="Base class for a ISpriteMap&lt;T&gt; for controller/keyboard bindings." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/graphics/buttonspritemap.png" >
       
@@ -1904,7 +1906,7 @@
         
   
   <span class="md-ellipsis">
-    Xelubuttonspritemap
+    XeluButtonSpriteMap
   </span>
   
 
@@ -2577,8 +2579,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-buttonspritemap">Class ButtonSpriteMap</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-buttonspritemap">Class ButtonSpriteMap<a class="headerlink" href="#class-buttonspritemap" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Graphics</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2591,8 +2593,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ButtonSpriteMap</p>
 <p><strong>Implements</strong><br />
 <a href="../ispritemap-1/">ISpriteMap</a><SButton></p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2607,7 +2609,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2638,7 +2640,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2657,73 +2659,73 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="buttonspritemap">ButtonSpriteMap()</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="buttonspritemap">ButtonSpriteMap()<a class="headerlink" href="#buttonspritemap" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">protected</span><span class="w"> </span><span class="nf">ButtonSpriteMap</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="controllerblank">ControllerBlank</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="controllerblank">ControllerBlank<a class="headerlink" href="#controllerblank" title="Permanent link"></a></h4>
 <p>A blank controller button upon which the specific button label can be drawn.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">ControllerBlank</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="../sprite/">Sprite</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>If the sprite specifies non-zero <a href="../sprite/#fixededges">FixedEdges</a> then they will be added to the label's margin.</p>
 <hr />
-<h4 id="keyboardblank">KeyboardBlank</h4>
+<h4 id="keyboardblank">KeyboardBlank<a class="headerlink" href="#keyboardblank" title="Permanent link"></a></h4>
 <p>A blank keyboard key upon which the specific key name can be drawn.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">KeyboardBlank</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../sprite/">Sprite</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>If the sprite specifies non-zero <a href="../sprite/#fixededges">FixedEdges</a> then they will be added to the label's margin.</p>
 <hr />
-<h4 id="mouseleft">MouseLeft</h4>
+<h4 id="mouseleft">MouseLeft<a class="headerlink" href="#mouseleft" title="Permanent link"></a></h4>
 <p>The mouse with left button pressed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">MouseLeft</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="../sprite/">Sprite</a></p>
 <hr />
-<h4 id="mousemiddle">MouseMiddle</h4>
+<h4 id="mousemiddle">MouseMiddle<a class="headerlink" href="#mousemiddle" title="Permanent link"></a></h4>
 <p>The mouse with middle button pressed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">MouseMiddle</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../sprite/">Sprite</a></p>
 <hr />
-<h4 id="mouseright">MouseRight</h4>
+<h4 id="mouseright">MouseRight<a class="headerlink" href="#mouseright" title="Permanent link"></a></h4>
 <p>The mouse with right button pressed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">MouseRight</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="../sprite/">Sprite</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="getsbutton-boolean">Get(SButton, Boolean)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="getsbutton-boolean">Get(SButton, Boolean)<a class="headerlink" href="#getsbutton-boolean" title="Permanent link"></a></h4>
 <p>Gets the sprite corresponding to a particular key.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">Get</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Boolean</span><span class="w"> </span><span class="n">isPlaceholder</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>key</code></strong> &nbsp; SButton<br />
 The key to retrieve.</p>
 <p><strong><code>isPlaceholder</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 <code>true</code> if the returned <a href="../sprite/">Sprite</a> is not specific to the <code>key</code>, but is instead a placeholder (border/background) in which some substitute, typically normal text, must be drawn. <code>false</code> if the <a href="../sprite/">Sprite</a> is a complete self-contained representation of the <code>key</code>.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../sprite/">Sprite</a></p>
 <hr />
-<h4 id="getsbutton">Get(SButton)</h4>
+<h4 id="getsbutton">Get(SButton)<a class="headerlink" href="#getsbutton" title="Permanent link"></a></h4>
 <p>Gets the specific sprite for a particular button.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">Get</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="w"> </span><span class="n">button</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>button</code></strong> &nbsp; SButton<br />
 The button for which to retrieve a sprite.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../sprite/">Sprite</a></p>
 <p>The precise <a href="../sprite/">Sprite</a> representing the given <code>button</code>, or <code>null</code> if the button does not have a special sprite and could/should use a generic background + text.</p>
 <hr />

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Builder interface for a SpriteMap`1 using a single texture source.">
+        <meta name="description" content="Builder interface for a SpriteMap&lt;T&gt; using a single texture source.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="SpriteMapBuilder&lt;T&gt; - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="Builder interface for a SpriteMap`1 using a single texture source." >
+        <meta  property="og:description"  content="Builder interface for a SpriteMap&lt;T&gt; using a single texture source." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/graphics/spritemapbuilder-1.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="SpriteMapBuilder&lt;T&gt; - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="Builder interface for a SpriteMap`1 using a single texture source." >
+        <meta  name="twitter:description"  content="Builder interface for a SpriteMap&lt;T&gt; using a single texture source." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/graphics/spritemapbuilder-1.png" >
       
@@ -1976,7 +1978,7 @@
         
   
   <span class="md-ellipsis">
-    Xelubuttonspritemap
+    XeluButtonSpriteMap
   </span>
   
 
@@ -2721,8 +2723,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-spritemapbuildert">Class SpriteMapBuilder&lt;T&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-spritemapbuildert">Class SpriteMapBuilder&lt;T&gt;<a class="headerlink" href="#class-spritemapbuildert" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Graphics</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2730,15 +2732,15 @@ Assembly: StardewUI.dll  </p>
 <p>Builder interface for a <a href="../spritemap-1/">SpriteMap&lt;T&gt;</a> using a single texture source.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>T</code></strong><br />
 Type of key for which to obtain sprites.</p>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ SpriteMapBuilder&lt;T&gt;</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Works by maintaining a virtual "cursor" which can be moved to capture the next sprite, and adding either one sprite at a time with a specific size, or several with the same size, wrapping around when necessary.</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2753,7 +2755,7 @@ Type of key for which to obtain sprites.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2824,209 +2826,209 @@ Type of key for which to obtain sprites.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="spritemapbuilderttexture2d">SpriteMapBuilder&lt;T&gt;(Texture2D)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="spritemapbuilderttexture2d">SpriteMapBuilder&lt;T&gt;(Texture2D)<a class="headerlink" href="#spritemapbuilderttexture2d" title="Permanent link"></a></h4>
 <p>Builder interface for a <a href="../spritemap-1/">SpriteMap&lt;T&gt;</a> using a single texture source.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Texture2D</span><span class="w"> </span><span class="n">texture</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>texture</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html">Texture2D</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Works by maintaining a virtual "cursor" which can be moved to capture the next sprite, and adding either one sprite at a time with a specific size, or several with the same size, wrapping around when necessary.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="addt-int-int">Add(T, int?, int?)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="addt-int-int">Add(T, int?, int?)<a class="headerlink" href="#addt-int-int" title="Permanent link"></a></h4>
 <p>Adds a single sprite.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Add</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int?</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int?</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>key</code></strong> &nbsp; T<br />
 The key for the sprite.</p>
 <p><strong><code>width</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a>&gt;<br />
 Optional override width, otherwise the most recent <a href="./#sizeint-int">Size(Int32, Int32)</a> will be used. Custom widths only apply to this sprite and will <strong>not</strong> affect the size of any subsequent additions.</p>
 <p><strong><code>height</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a>&gt;<br />
 Optional override height, otherwise the most recent <a href="./#sizeint-int">Size(Int32, Int32)</a> will be used. Custom heights only apply to this sprite and will <strong>not</strong> affect the size of any subsequent additions.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
 <hr />
-<h4 id="addt-rectangle">Add(T, Rectangle)</h4>
+<h4 id="addt-rectangle">Add(T, Rectangle)<a class="headerlink" href="#addt-rectangle" title="Permanent link"></a></h4>
 <p>Adds a sprite using its specific position and size in the texture.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Add</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="w"> </span><span class="n">sourceRect</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>key</code></strong> &nbsp; T<br />
 The key for the sprite.</p>
 <p><strong><code>sourceRect</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a><br />
 The exact position and size of the sprite.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>After adding, moves the cursor to the top-right of the <code>sourceRect</code>, unless it would be horizontally out of bounds, in which case it wraps to the beginning (X = 0) of the next row.</p>
 <hr />
-<h4 id="addienumerablet">Add(IEnumerable&lt;T&gt;)</h4>
+<h4 id="addienumerablet">Add(IEnumerable&lt;T&gt;)<a class="headerlink" href="#addienumerablet" title="Permanent link"></a></h4>
 <p>Adds a sequence of sprites, starting from the current cursor position and using the most recently configured <a href="./#sizeint-int">Size(Int32, Int32)</a> and <a href="./#paddingint-int">Padding(Int32, Int32)</a> to advance the cursor after each element.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Add</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">keys</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_3">Parameters</h5>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>keys</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a><br />
 The keys for the sprites to add, in the same left-to-right order that they appear in the source texture.</p>
-<h5 id="returns_2">Returns</h5>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_3">Remarks</h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>Wraps to the beginning of the next row (X = 0) when the end of a row is reached.</p>
 <hr />
-<h4 id="addt">Add(T)</h4>
+<h4 id="addt">Add(T)<a class="headerlink" href="#addt" title="Permanent link"></a></h4>
 <p>Adds a sequence of sprites, starting from the current cursor position and using the most recently configured <a href="./#sizeint-int">Size(Int32, Int32)</a> and <a href="./#paddingint-int">Padding(Int32, Int32)</a> to advance the cursor after each element.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Add</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">keys</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_4">Parameters</h5>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>keys</code></strong> &nbsp; <code>T</code><br />
 The keys for the sprites to add, in the same left-to-right order that they appear in the source texture.</p>
-<h5 id="returns_3">Returns</h5>
+<h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_4">Remarks</h5>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
 <p>Wraps to the beginning of the next row (X = 0) when the end of a row is reached.</p>
 <hr />
-<h4 id="build">Build()</h4>
+<h4 id="build">Build()<a class="headerlink" href="#build" title="Permanent link"></a></h4>
 <p>Builds a new <a href="../spritemap-1/">SpriteMap&lt;T&gt;</a> from the registered sprites.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMap</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Build</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_4">Returns</h5>
+<h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="../spritemap-1/">SpriteMap&lt;T&gt;</a></p>
 <hr />
-<h4 id="defaultt">Default(T)</h4>
+<h4 id="defaultt">Default(T)<a class="headerlink" href="#defaultt" title="Permanent link"></a></h4>
 <p>Configures the default sprite for unknown keys to use an existing sprite that has already been registered.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Default</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_5">Parameters</h5>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>key</code></strong> &nbsp; T<br />
 Key of the previously-added sprite to use as default.</p>
-<h5 id="returns_5">Returns</h5>
+<h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
 <hr />
-<h4 id="defaultsprite">Default(Sprite)</h4>
+<h4 id="defaultsprite">Default(Sprite)<a class="headerlink" href="#defaultsprite" title="Permanent link"></a></h4>
 <p>Configures the default sprite for unknown keys to use a custom sprite.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Default</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">sprite</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_6">Parameters</h5>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>sprite</code></strong> &nbsp; <a href="../sprite/">Sprite</a><br />
 The sprite to use as default.</p>
-<h5 id="returns_6">Returns</h5>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
 <hr />
-<h4 id="movebyint-int">MoveBy(int, int)</h4>
+<h4 id="movebyint-int">MoveBy(int, int)<a class="headerlink" href="#movebyint-int" title="Permanent link"></a></h4>
 <p>Moves the current cursor position by a specified offset.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MoveBy</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_7">Parameters</h5>
+<h5 id="parameters_7">Parameters<a class="headerlink" href="#parameters_7" title="Permanent link"></a></h5>
 <p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 Horizontal offset from current position.</p>
 <p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 Vertical offset from current position.</p>
-<h5 id="returns_7">Returns</h5>
+<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
 <hr />
-<h4 id="movebypoint">MoveBy(Point)</h4>
+<h4 id="movebypoint">MoveBy(Point)<a class="headerlink" href="#movebypoint" title="Permanent link"></a></h4>
 <p>Moves the current cursor position by a specified offset.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MoveBy</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_8">Parameters</h5>
+<h5 id="parameters_8">Parameters<a class="headerlink" href="#parameters_8" title="Permanent link"></a></h5>
 <p><strong><code>p</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a><br />
 The horizontal (X) and vertical (Y) offsets from the current position.</p>
-<h5 id="returns_8">Returns</h5>
+<h5 id="returns_8">Returns<a class="headerlink" href="#returns_8" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
 <hr />
-<h4 id="movetoint-int">MoveTo(int, int)</h4>
+<h4 id="movetoint-int">MoveTo(int, int)<a class="headerlink" href="#movetoint-int" title="Permanent link"></a></h4>
 <p>Moves the cursor to a specific coordinate.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MoveTo</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_9">Parameters</h5>
+<h5 id="parameters_9">Parameters<a class="headerlink" href="#parameters_9" title="Permanent link"></a></h5>
 <p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 The new X coordinate of the cursor.</p>
 <p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 The new Y coordinate of the cursor.</p>
-<h5 id="returns_9">Returns</h5>
+<h5 id="returns_9">Returns<a class="headerlink" href="#returns_9" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_5">Remarks</h5>
+<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
 <p>Generally used when dealing with semi-regular spritesheets having distinct areas that are individually uniform but different from each other, e.g. a row of 10x10 placed in an empty area of a 32x32 sheet.</p>
 <hr />
-<h4 id="movetopoint">MoveTo(Point)</h4>
+<h4 id="movetopoint">MoveTo(Point)<a class="headerlink" href="#movetopoint" title="Permanent link"></a></h4>
 <p>Moves the cursor to a specific coordinate.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MoveTo</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_10">Parameters</h5>
+<h5 id="parameters_10">Parameters<a class="headerlink" href="#parameters_10" title="Permanent link"></a></h5>
 <p><strong><code>p</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a><br />
 The horizontal (X) and vertical (Y) coordinates for the cursor.</p>
-<h5 id="returns_10">Returns</h5>
+<h5 id="returns_10">Returns<a class="headerlink" href="#returns_10" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_6">Remarks</h5>
+<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
 <p>Generally used when dealing with semi-regular spritesheets having distinct areas that are individually uniform but different from each other, e.g. a row of 10x10 placed in an empty area of a 32x32 sheet.</p>
 <hr />
-<h4 id="paddingint-int">Padding(int, int)</h4>
+<h4 id="paddingint-int">Padding(int, int)<a class="headerlink" href="#paddingint-int" title="Permanent link"></a></h4>
 <p>Configures the padding between sprites.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Padding</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_11">Parameters</h5>
+<h5 id="parameters_11">Parameters<a class="headerlink" href="#parameters_11" title="Permanent link"></a></h5>
 <p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 Horizontal padding from the right edge of one sprite to the left edge of the next. Added whenever advancing from left to right.</p>
 <p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 Vertical padding from the bottom edge of one sprite to the top edge of the next. Added whenever wrapping from the end of a row to the beginning of the next row.</p>
-<h5 id="returns_11">Returns</h5>
+<h5 id="returns_11">Returns<a class="headerlink" href="#returns_11" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_7">Remarks</h5>
+<h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
 <p>Applies only to new sprites added afterward; will not affect sprites previously added.</p>
 <hr />
-<h4 id="paddingpoint">Padding(Point)</h4>
+<h4 id="paddingpoint">Padding(Point)<a class="headerlink" href="#paddingpoint" title="Permanent link"></a></h4>
 <p>Configures the padding between sprites.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Padding</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_12">Parameters</h5>
+<h5 id="parameters_12">Parameters<a class="headerlink" href="#parameters_12" title="Permanent link"></a></h5>
 <p><strong><code>p</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a><br />
 A point containing the horizontal (X) and vertical (Y) padding values. See <a href="./#paddingint-int">Padding(Int32, Int32)</a>.</p>
-<h5 id="returns_12">Returns</h5>
+<h5 id="returns_12">Returns<a class="headerlink" href="#returns_12" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_8">Remarks</h5>
+<h5 id="remarks_8">Remarks<a class="headerlink" href="#remarks_8" title="Permanent link"></a></h5>
 <p>Applies only to new sprites added afterward; will not affect sprites previously added.</p>
 <hr />
-<h4 id="sizeint-int">Size(int, int)</h4>
+<h4 id="sizeint-int">Size(int, int)<a class="headerlink" href="#sizeint-int" title="Permanent link"></a></h4>
 <p>Configures the pixel size per sprite.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Size</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_13">Parameters</h5>
+<h5 id="parameters_13">Parameters<a class="headerlink" href="#parameters_13" title="Permanent link"></a></h5>
 <p><strong><code>width</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 The pixel width for newly-added sprites.</p>
 <p><strong><code>height</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
 The pixel height for newly-added sprites.</p>
-<h5 id="returns_13">Returns</h5>
+<h5 id="returns_13">Returns<a class="headerlink" href="#returns_13" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_9">Remarks</h5>
+<h5 id="remarks_9">Remarks<a class="headerlink" href="#remarks_9" title="Permanent link"></a></h5>
 <p>Applies only to new sprites added afterward; will not affect sprites previously added.</p>
 <hr />
-<h4 id="sizepoint">Size(Point)</h4>
+<h4 id="sizepoint">Size(Point)<a class="headerlink" href="#sizepoint" title="Permanent link"></a></h4>
 <p>Configures the pixel size per sprite.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteMapBuilder</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Size</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_14">Parameters</h5>
+<h5 id="parameters_14">Parameters<a class="headerlink" href="#parameters_14" title="Permanent link"></a></h5>
 <p><strong><code>p</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a><br />
 A point containing the width (X) and height (Y) for newly-added sprites.</p>
-<h5 id="returns_14">Returns</h5>
+<h5 id="returns_14">Returns<a class="headerlink" href="#returns_14" title="Permanent link"></a></h5>
 <p><a href="./">SpriteMapBuilder&lt;T&gt;</a></p>
 <p>The current builder instance.</p>
-<h5 id="remarks_10">Remarks</h5>
+<h5 id="remarks_10">Remarks<a class="headerlink" href="#remarks_10" title="Permanent link"></a></h5>
 <p>Applies only to new sprites added afterward; will not affect sprites previously added.</p>
 <hr />
 </div>

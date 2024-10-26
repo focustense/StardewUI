@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3170,8 +3172,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-traceprofile">Class TraceProfile</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-traceprofile">Class TraceProfile<a class="headerlink" href="#class-traceprofile" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Diagnostics</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3181,10 +3183,10 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ TraceProfile</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>For speedscope purposes, this is always an "EventedProfile". StardewUI does not use sampled profiles.</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3199,7 +3201,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3234,57 +3236,57 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="traceprofile">TraceProfile()</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="traceprofile">TraceProfile()<a class="headerlink" href="#traceprofile" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">TraceProfile</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="endvalue">EndValue</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="endvalue">EndValue<a class="headerlink" href="#endvalue" title="Permanent link"></a></h4>
 <p>The timestamp when tracing ended, in the specified <a href="./#unit">Unit</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">EndValue</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.int64">Int64</a></p>
 <hr />
-<h4 id="events">Events</h4>
+<h4 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h4>
 <p>The events recorded for this profile.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">List</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Diagnostics</span><span class="p">.</span><span class="n">TraceEvent</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Events</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a href="../traceevent/">TraceEvent</a>&gt;</p>
 <hr />
-<h4 id="name">Name</h4>
+<h4 id="name">Name<a class="headerlink" href="#name" title="Permanent link"></a></h4>
 <p>Name of the profile.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>This is an arbitrary string often used to indicate the name of the profile "file" that was used to configure the trace. Since StardewUI only uses a single, hardcoded "profile", this is the literal string <code>StardewUI</code>.</p>
 <hr />
-<h4 id="startvalue">StartValue</h4>
+<h4 id="startvalue">StartValue<a class="headerlink" href="#startvalue" title="Permanent link"></a></h4>
 <p>The timestamp when tracing was started, in the specified <a href="./#unit">Unit</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">StartValue</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.int64">Int64</a></p>
 <hr />
-<h4 id="type">Type</h4>
+<h4 id="type">Type<a class="headerlink" href="#type" title="Permanent link"></a></h4>
 <p>Discriminator for the profile type. In StardewUI, this is always <code>evented</code>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
-<h4 id="unit">Unit</h4>
+<h4 id="unit">Unit<a class="headerlink" href="#unit" title="Permanent link"></a></h4>
 <p>Unit of measurement for all time values.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Unit</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_5">Property Value</h5>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>StardewUI's traces are always measured in <code>microseconds</code>.</p>
 <hr />
 </div>

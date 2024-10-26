@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2879,8 +2881,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-griditemlayout">Class GridItemLayout</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-griditemlayout">Class GridItemLayout<a class="headerlink" href="#class-griditemlayout" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Widgets</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2892,8 +2894,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ GridItemLayout</p>
 <p><strong>Implements</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a href="./">GridItemLayout</a>&gt;</p>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2908,7 +2910,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2923,25 +2925,25 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="equalitycontract">EqualityContract</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="equalitycontract">EqualityContract<a class="headerlink" href="#equalitycontract" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">EqualityContract</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="getitemcountandlengthfloat-float">GetItemCountAndLength(float, float)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="getitemcountandlengthfloat-float">GetItemCountAndLength(float, float)<a class="headerlink" href="#getitemcountandlengthfloat-float" title="Permanent link"></a></h4>
 <p>Computes the length (along the grid's <a href="../grid/#primaryorientation">PrimaryOrientation</a> axis) of a single item, and the number of items that can fit before wrapping.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">ValueTuple</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Int32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetItemCountAndLength</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">available</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">spacing</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>available</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The length available along the same axis.</p>
 <p><strong><code>spacing</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 Spacing between items, to adjust count-based layouts.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple-2">ValueTuple</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a>, <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a>&gt;</p>
 <p>The length to apply to each item.</p>
 <hr />

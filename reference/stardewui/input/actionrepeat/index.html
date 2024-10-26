@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Configures the repeat rate of an action used in an ActionState`1.">
+        <meta name="description" content="Configures the repeat rate of an action used in an ActionState&lt;T&gt;.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="ActionRepeat - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="Configures the repeat rate of an action used in an ActionState`1." >
+        <meta  property="og:description"  content="Configures the repeat rate of an action used in an ActionState&lt;T&gt;." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/input/actionrepeat.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="ActionRepeat - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="Configures the repeat rate of an action used in an ActionState`1." >
+        <meta  name="twitter:description"  content="Configures the repeat rate of an action used in an ActionState&lt;T&gt;." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/input/actionrepeat.png" >
       
@@ -2349,8 +2351,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-actionrepeat">Class ActionRepeat</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-actionrepeat">Class ActionRepeat<a class="headerlink" href="#class-actionrepeat" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Input</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2362,8 +2364,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ActionRepeat</p>
 <p><strong>Implements</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a href="./">ActionRepeat</a>&gt;</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2378,7 +2380,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="fields">Fields</h3>
+<h3 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2401,7 +2403,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2424,61 +2426,61 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="actionrepeattimespan-timespan">ActionRepeat(TimeSpan, TimeSpan?)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="actionrepeattimespan-timespan">ActionRepeat(TimeSpan, TimeSpan?)<a class="headerlink" href="#actionrepeattimespan-timespan" title="Permanent link"></a></h4>
 <p>Configures the repeat rate of an action used in an <a href="../actionstate-1/">ActionState&lt;T&gt;</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ActionRepeat</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">RepeatInterval</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="o">?</span><span class="w"> </span><span class="n">InitialDelay</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>RepeatInterval</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
 The interval between repetitions of the action, while the key is held.</p>
 <p><strong><code>InitialDelay</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a>&gt;<br />
 Initial delay after the first press, before any repetitions are allowed.</p>
 <hr />
-<h3 id="fields_1">Fields</h3>
-<h4 id="continuous">Continuous</h4>
+<h3 id="fields_1">Fields<a class="headerlink" href="#fields_1" title="Permanent link"></a></h3>
+<h4 id="continuous">Continuous<a class="headerlink" href="#continuous" title="Permanent link"></a></h4>
 <p>Configures an action to repeat continuously, i.e. to run again on every frame as long as the trigger keys are still held.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">Continuous</span><span class="p">;</span>
 </span></code></pre></div>
-<h5 id="field-value">Field Value</h5>
+<h5 id="field-value">Field Value<a class="headerlink" href="#field-value" title="Permanent link"></a></h5>
 <p><a href="./">ActionRepeat</a></p>
 <hr />
-<h4 id="default">Default</h4>
+<h4 id="default">Default<a class="headerlink" href="#default" title="Permanent link"></a></h4>
 <p>Default repetition setting suitable for most UI scenarios.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">Default</span><span class="p">;</span>
 </span></code></pre></div>
-<h5 id="field-value_1">Field Value</h5>
+<h5 id="field-value_1">Field Value<a class="headerlink" href="#field-value_1" title="Permanent link"></a></h5>
 <p><a href="./">ActionRepeat</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Not perfectly consistent (nor intended to be consistent) with vanilla game settings, which are all over the place depending on which key/button is being considered.</p>
 <hr />
-<h4 id="none">None</h4>
+<h4 id="none">None<a class="headerlink" href="#none" title="Permanent link"></a></h4>
 <p>Configures an action to never repeat, no matter how long the trigger keys are held.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">None</span><span class="p">;</span>
 </span></code></pre></div>
-<h5 id="field-value_2">Field Value</h5>
+<h5 id="field-value_2">Field Value<a class="headerlink" href="#field-value_2" title="Permanent link"></a></h5>
 <p><a href="./">ActionRepeat</a></p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="equalitycontract">EqualityContract</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="equalitycontract">EqualityContract<a class="headerlink" href="#equalitycontract" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">EqualityContract</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h4 id="initialdelay">InitialDelay</h4>
+<h4 id="initialdelay">InitialDelay<a class="headerlink" href="#initialdelay" title="Permanent link"></a></h4>
 <p>Initial delay after the first press, before any repetitions are allowed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="o">?</span><span class="w"> </span><span class="n">InitialDelay</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a>&gt;</p>
 <hr />
-<h4 id="repeatinterval">RepeatInterval</h4>
+<h4 id="repeatinterval">RepeatInterval<a class="headerlink" href="#repeatinterval" title="Permanent link"></a></h4>
 <p>The interval between repetitions of the action, while the key is held.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">RepeatInterval</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a></p>
 <hr />
 </div>

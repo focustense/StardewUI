@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -2999,8 +3001,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-assetcache">Class AssetCache</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-assetcache">Class AssetCache<a class="headerlink" href="#class-assetcache" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Content</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3012,8 +3014,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ AssetCache</p>
 <p><strong>Implements</strong><br />
 <a href="../iassetcache/">IAssetCache</a></p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3028,7 +3030,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3043,30 +3045,30 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="assetcacheigamecontenthelper-icontentevents">AssetCache(IGameContentHelper, IContentEvents)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="assetcacheigamecontenthelper-icontentevents">AssetCache(IGameContentHelper, IContentEvents)<a class="headerlink" href="#assetcacheigamecontenthelper-icontentevents" title="Permanent link"></a></h4>
 <p>Initializes a new instance of <a href="./">AssetCache</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">AssetCache</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">IGameContentHelper</span><span class="w"> </span><span class="n">content</span><span class="p">,</span><span class="w"> </span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">IContentEvents</span><span class="w"> </span><span class="n">events</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>content</code></strong> &nbsp; IGameContentHelper<br />
 SMAPI content helper, used to load the assets.</p>
 <p><strong><code>events</code></strong> &nbsp; IContentEvents<br />
 SMAPI content events, used to detect invalidation.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="gettstring">Get&lt;T&gt;(string)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="gettstring">Get&lt;T&gt;(string)<a class="headerlink" href="#gettstring" title="Permanent link"></a></h4>
 <p>Retrieves the current entry for a given asset name.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCacheEntry</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Get</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 Name of the asset.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../iassetcacheentry-1/">IAssetCacheEntry&lt;T&gt;</a></p>
 <p>A cache entry object that contains the most current asset data, and an expired flag to detect if the asset is no longer valid in the future.</p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>If the asset was invalidated by SMAPI and has not yet been reloaded, then this will trigger a reload.</p>
 <hr />
 </div>

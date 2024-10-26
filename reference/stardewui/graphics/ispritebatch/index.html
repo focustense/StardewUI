@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -1883,7 +1885,7 @@
         
   
   <span class="md-ellipsis">
-    Xelubuttonspritemap
+    XeluButtonSpriteMap
   </span>
   
 
@@ -2535,8 +2537,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-ispritebatch">Interface ISpriteBatch</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-ispritebatch">Interface ISpriteBatch<a class="headerlink" href="#interface-ispritebatch" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Graphics</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2544,10 +2546,10 @@ Assembly: StardewUI.dll  </p>
 <p>Abstraction for the <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a> providing sprite-drawing methods.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">ISpriteBatch</span>
 </span></code></pre></div>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Importantly, this interface represents a "local" sprite batch with inherited transforms, so that views using it do not need to be given explicit information about global coordinates.</p>
-<h2 id="members">Members</h2>
-<h3 id="methods">Methods</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2598,45 +2600,45 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="methods_1">Methods</h3>
-<h4 id="blendblendstate">Blend(BlendState)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="blendblendstate">Blend(BlendState)<a class="headerlink" href="#blendblendstate" title="Permanent link"></a></h4>
 <p>Sets up subsequent draw calls to use the designated blending settings.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span><span class="w"> </span><span class="n">Blend</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">BlendState</span><span class="w"> </span><span class="n">blendState</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>blendState</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.BlendState.html">BlendState</a><br />
 Blend state determining the color/alpha blend behavior.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
 <p>A disposable instance which, when disposed, will revert to the previous blending state.</p>
 <hr />
-<h4 id="cliprectangle">Clip(Rectangle)</h4>
+<h4 id="cliprectangle">Clip(Rectangle)<a class="headerlink" href="#cliprectangle" title="Permanent link"></a></h4>
 <p>Sets up subsequent draw calls to clip contents within the specified bounds.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span><span class="w"> </span><span class="n">Clip</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="w"> </span><span class="n">clipRect</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>clipRect</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a><br />
 The clipping bounds in local coordinates.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
 <p>A disposable instance which, when disposed, will revert to the previous clipping state.</p>
 <hr />
-<h4 id="delegatedrawactionspritebatch-vector2">DelegateDraw(Action&lt;SpriteBatch, Vector2&gt;)</h4>
+<h4 id="delegatedrawactionspritebatch-vector2">DelegateDraw(Action&lt;SpriteBatch, Vector2&gt;)<a class="headerlink" href="#delegatedrawactionspritebatch-vector2" title="Permanent link"></a></h4>
 <p>Draws using a delegate action on a concrete <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">DelegateDraw</span><span class="p">(</span><span class="n">Action</span><span class="o">&lt;</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteBatch</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">draw</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>draw</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.action-2">Action</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a>, <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a>&gt;<br />
 A function that accepts an underlying <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a> as well as the transformed (global/screen) position and draws using that position as the origin (top left).</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Delegation is provided as a fallback for game-specific "utilities" that require a <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a> and are not trivial to reimplement; the method acts as a bridge between the abstract <a href="./">ISpriteBatch</a> and the concrete-dependent logic. </p>
 <p>Most view types shouldn't use this; it is only needed for a few niche features like SpriteText.</p>
 <hr />
-<h4 id="drawtexture2d-vector2-rectangle-color-float-vector2-float-spriteeffects-float">Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, float, SpriteEffects, float)</h4>
+<h4 id="drawtexture2d-vector2-rectangle-color-float-vector2-float-spriteeffects-float">Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, float, SpriteEffects, float)<a class="headerlink" href="#drawtexture2d-vector2-rectangle-color-float-vector2-float-spriteeffects-float" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Draw</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Texture2D</span><span class="w"> </span><span class="n">texture</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="o">?</span><span class="w"> </span><span class="n">sourceRectangle</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Color</span><span class="o">?</span><span class="w"> </span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">rotation</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteEffects</span><span class="w"> </span><span class="n">effects</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">layerDepth</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_3">Parameters</h5>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>texture</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html">Texture2D</a></p>
 <p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
 <p><strong><code>sourceRectangle</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a>&gt;</p>
@@ -2647,10 +2649,10 @@ A function that accepts an underlying <a href="https://docs.monogame.net/api/Mic
 <p><strong><code>effects</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html">SpriteEffects</a></p>
 <p><strong><code>layerDepth</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
-<h4 id="drawtexture2d-vector2-rectangle-color-float-vector2-vector2-spriteeffects-float">Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, SpriteEffects, float)</h4>
+<h4 id="drawtexture2d-vector2-rectangle-color-float-vector2-vector2-spriteeffects-float">Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, SpriteEffects, float)<a class="headerlink" href="#drawtexture2d-vector2-rectangle-color-float-vector2-vector2-spriteeffects-float" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Draw</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Texture2D</span><span class="w"> </span><span class="n">texture</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="o">?</span><span class="w"> </span><span class="n">sourceRectangle</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Color</span><span class="o">?</span><span class="w"> </span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">rotation</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteEffects</span><span class="w"> </span><span class="n">effects</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">layerDepth</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_4">Parameters</h5>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>texture</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html">Texture2D</a></p>
 <p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
 <p><strong><code>sourceRectangle</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a>&gt;</p>
@@ -2661,10 +2663,10 @@ A function that accepts an underlying <a href="https://docs.monogame.net/api/Mic
 <p><strong><code>effects</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html">SpriteEffects</a></p>
 <p><strong><code>layerDepth</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
-<h4 id="drawtexture2d-rectangle-rectangle-color-float-vector2-spriteeffects-float">Draw(Texture2D, Rectangle, Rectangle?, Color?, float, Vector2?, SpriteEffects, float)</h4>
+<h4 id="drawtexture2d-rectangle-rectangle-color-float-vector2-spriteeffects-float">Draw(Texture2D, Rectangle, Rectangle?, Color?, float, Vector2?, SpriteEffects, float)<a class="headerlink" href="#drawtexture2d-rectangle-rectangle-color-float-vector2-spriteeffects-float" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Draw</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Texture2D</span><span class="w"> </span><span class="n">texture</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="w"> </span><span class="n">destinationRectangle</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="o">?</span><span class="w"> </span><span class="n">sourceRectangle</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Color</span><span class="o">?</span><span class="w"> </span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">rotation</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteEffects</span><span class="w"> </span><span class="n">effects</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">layerDepth</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_5">Parameters</h5>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>texture</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html">Texture2D</a></p>
 <p><strong><code>destinationRectangle</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a></p>
 <p><strong><code>sourceRectangle</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a>&gt;</p>
@@ -2674,10 +2676,10 @@ A function that accepts an underlying <a href="https://docs.monogame.net/api/Mic
 <p><strong><code>effects</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html">SpriteEffects</a></p>
 <p><strong><code>layerDepth</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
-<h4 id="drawstringspritefont-string-vector2-color-float-vector2-float-spriteeffects-float">DrawString(SpriteFont, string, Vector2, Color, float, Vector2?, float, SpriteEffects, float)</h4>
+<h4 id="drawstringspritefont-string-vector2-color-float-vector2-float-spriteeffects-float">DrawString(SpriteFont, string, Vector2, Color, float, Vector2?, float, SpriteEffects, float)<a class="headerlink" href="#drawstringspritefont-string-vector2-color-float-vector2-float-spriteeffects-float" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">DrawString</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteFont</span><span class="w"> </span><span class="n">spriteFont</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Color</span><span class="w"> </span><span class="n">color</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">rotation</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteEffects</span><span class="w"> </span><span class="n">effects</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">layerDepth</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_6">Parameters</h5>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>spriteFont</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteFont.html">SpriteFont</a></p>
 <p><strong><code>text</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
@@ -2688,29 +2690,29 @@ A function that accepts an underlying <a href="https://docs.monogame.net/api/Mic
 <p><strong><code>effects</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html">SpriteEffects</a></p>
 <p><strong><code>layerDepth</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
-<h4 id="savetransform">SaveTransform()</h4>
+<h4 id="savetransform">SaveTransform()<a class="headerlink" href="#savetransform" title="Permanent link"></a></h4>
 <p>Saves the current transform, so that it can later be restored to its current state.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span><span class="w"> </span><span class="n">SaveTransform</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_2">Returns</h5>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
 <p>A disposable instance which, when disposed, restores the transform of this <a href="./">ISpriteBatch</a> to the same state it was in before <code>SaveTransform</code> was called.</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>This is typically used in hierarchical layout; i.e. a view with children would apply a transform before handing the canvas or sprite batch down to any of those children, and then restore it after the child is done with it. This enables a single <a href="./">ISpriteBatch</a> instance to be used for the entire layout rather than having to create a tree.</p>
 <hr />
-<h4 id="translatevector2">Translate(Vector2)</h4>
+<h4 id="translatevector2">Translate(Vector2)<a class="headerlink" href="#translatevector2" title="Permanent link"></a></h4>
 <p>Applies a translation offset to subsequent operations.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Translate</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">translation</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_7">Parameters</h5>
+<h5 id="parameters_7">Parameters<a class="headerlink" href="#parameters_7" title="Permanent link"></a></h5>
 <p><strong><code>translation</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The translation vector.</p>
 <hr />
-<h4 id="translatefloat-float">Translate(float, float)</h4>
+<h4 id="translatefloat-float">Translate(float, float)<a class="headerlink" href="#translatefloat-float" title="Permanent link"></a></h4>
 <p>Applies a translation offset to subsequent operations.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Translate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_8">Parameters</h5>
+<h5 id="parameters_8">Parameters<a class="headerlink" href="#parameters_8" title="Permanent link"></a></h5>
 <p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The translation's X component.</p>
 <p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />

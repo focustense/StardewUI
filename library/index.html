@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../stylesheets/styles.css">
@@ -885,6 +887,65 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-modmanifestbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using ModManifestBuilder
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-modbuildconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using ModBuildConfig
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-submoduleshared-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Submodule/Shared Project
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -901,7 +962,114 @@
   
 
 
-<h1 id="core-library">Core Library</h1>
+<h1 id="core-library">Core Library<a class="headerlink" href="#core-library" title="Permanent link"></a></h1>
+<p>StardewUI's Core Library is all of the mundane, engine-room components and functionality running underneath the magic of the <a href="../framework/">framework</a>.</p>
+<p>When you <a href="../getting-started/displaying-ui/">display a view</a> written with <a href="../framework/starml/">StarML</a>, the framework does not translate that directly to pixels on the screen; instead, it is transformed into a <em><a href="../concepts/#layout-views-and-view-trees">view tree</a></em>—a hierarchy of layout views and content views, which handle everything that <em>isn't</em> related to <a href="../concepts/#data-binding">data binding</a>.</p>
+<p>StardewUI <a href="../concepts/#views">Views</a> are identical in concept to <a href="https://doc.qt.io/qt-6/qtwidgets-index.html">Qt widgets</a>, <a href="https://developer.android.com/reference/android/view/View">Android views</a> or <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element">HTML elements</a>; they are responsible for performing <a href="../concepts/#layout">layout</a>, handling <a href="../framework/focus-and-interaction/">user interaction</a> and ultimately drawing themselves to the screen, or <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a> as is used in Stardew Valley.</p>
+<h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link"></a></h2>
+<p>Core library features are loosely divided into the same categories as code namespaces:</p>
+<ul>
+<li><a href="../reference/stardewui/graphics/"><strong>Graphics</strong></a>: Abstractions for game sprites, the MonoGame <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a>, and everything else that deals directly with "pixels on the screen".</li>
+<li><a href="../reference/stardewui/input/"><strong>Input</strong></a>: A variety of useful tools for dealing with user input (text entry, button repeat/throttling, etc.) that Stardew Valley and SMAPI don't provide themselves, or hide behind implementation details.</li>
+<li><a href="../reference/stardewui/layout/"><strong>Layout</strong></a>: Essential types and tools for describing layouts: positions, alignments and other dimensions.</li>
+<li><a href="../reference/stardewui/widgets/"><strong>Widgets</strong></a>: All the <a href="standard-views/">standard views</a>.</li>
+<li><a href="../reference/stardewui/overlays/"><strong>Overlays</strong></a>: System for displaying views as either dismissable overlays, such as <a href="standard-views/#drop-down-list">dropdowns</a>, or full-screen ("modal dialog") style, such as the <a href="standard-views/#key-binding-editor">keybinding editor</a>.</li>
+<li><a href="../reference/stardewui/animation/"><strong>Animation</strong></a>: Animates properties of views. Includes the common <a href="../reference/stardewui/animation/hoverscale/">HoverScale</a> that can be attached to any image to make it zoom on mouseover.</li>
+<li><a href="../reference/stardewui/diagnostics/"><strong>Diagnostics</strong></a>: Primarily <a href="../performance.md">performance tracing</a>.</li>
+</ul>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
+<p>When you use the UI Framework, the Core Library is designed to work behind the scenes. However, there are some cases when you might need to use it directly, e.g. if you are writing <a href="../framework/extensions/">extensions</a>.</p>
+<p>Unless you are specifically opting out of all framework features, the correct way to reference the Core Library is via SMAPI's <a href="https://www.nuget.org/packages/Pathoschild.Stardew.ModBuildConfig">ModBuildConfig</a>, which most mods should normally already be using; the reference can be added either directly, or indirectly via <a href="https://www.nuget.org/packages/Leclair.Stardew.ModManifestBuilder">ModManifestBuilder</a>.</p>
+<h3 id="using-modmanifestbuilder">Using <code>ModManifestBuilder</code><a class="headerlink" href="#using-modmanifestbuilder" title="Permanent link"></a></h3>
+<p>Simply add the reference to your <code>.csproj</code> file using <a href="https://github.com/KhloeLeclair/Stardew-ModManifestBuilder?tab=readme-ov-file#smapidependency-"><code>SMAPIDependency</code></a>, and set the attribute <code>Reference="true"</code>.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&lt;ItemGroup&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nt">&lt;SMAPIDependency</span><span class="w"> </span><span class="na">Include=</span><span class="s">&quot;focustense.StardewUI&quot;</span><span class="w"> </span><span class="na">Version=</span><span class="s">&quot;0.2.0&quot;</span><span class="w"> </span><span class="na">Reference=</span><span class="s">&quot;true&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">&lt;/ItemGroup&gt;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">&lt;ItemGroup&gt;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">&quot;Pathoschild.Stardew.ModBuildConfig&quot;</span><span class="w"> </span><span class="na">Version=</span><span class="s">&quot;4.1.1&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">&quot;Leclair.Stardew.ModManifestBuilder&quot;</span><span class="w"> </span><span class="na">Version=</span><span class="s">&quot;2.3.1&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nt">&lt;/ItemGroup&gt;</span>
+</span></code></pre></div>
+</div>
+<h3 id="using-modbuildconfig">Using ModBuildConfig<a class="headerlink" href="#using-modbuildconfig" title="Permanent link"></a></h3>
+<p>SMAPI defines a <code>GameModsPath</code> variable which you can use to reference the StardewUI assembly relative to the game path, instead of a physical directory on your machine:</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">&lt;ItemGroup&gt;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="nt">&lt;Reference</span><span class="w"> </span><span class="na">Include=</span><span class="s">&quot;StardewUI&quot;</span><span class="nt">&gt;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="nt">&lt;HintPath&gt;</span>$(GameModsPath)\StardewUI\StardewUI.dll<span class="nt">&lt;/HintPath&gt;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="nt">&lt;Private&gt;</span>false<span class="nt">&lt;/Private&gt;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&lt;/Reference&gt;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nt">&lt;/ItemGroup&gt;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="nt">&lt;ItemGroup&gt;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">&lt;PackageReference</span><span class="w"> </span><span class="na">Include=</span><span class="s">&quot;Pathoschild.Stardew.ModBuildConfig&quot;</span><span class="w"> </span><span class="na">Version=</span><span class="s">&quot;4.1.1&quot;</span><span class="w"> </span><span class="nt">/&gt;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nt">&lt;/ItemGroup&gt;</span>
+</span></code></pre></div>
+</div>
+<p>Note that when you add a direct assembly reference—as opposed to the more common <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations#Using_an_API">API integration</a> method—it is <strong>extremely important</strong> to also add the mod as a <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest#Dependencies">required dependency</a> in your <code>manifest.json</code>, otherwise SMAPI may not load the mods in the correct order, resulting in your mod failing to load, and this failure may be intermittent or platform-specific, e.g. loads correctly on Windows but not Linux or vice versa.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nt">&quot;Name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ModName&quot;</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="c1">// Other fields omitted from example: Author, Version, Description, UniqueID, etc.</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nt">&quot;Dependencies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">       </span><span class="p">{</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">          </span><span class="nt">&quot;UniqueID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;focustense.StardewUI&quot;</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">          </span><span class="nt">&quot;MinimumVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0.2.0&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">       </span><span class="p">}</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<p>These instructions only apply to the <code>ModBuildConfig</code> method, because <code>ModManifestBuilder</code> does it automatically for you.</p>
+<p>Although <code>MinimumVersion</code> is optional for manifest dependencies, you should always include it for any StardewUI versions prior to 1.0. StardewUI follows <a href="https://semver.org/">semantic versioning</a> and any versions prior to 1.0 are considered development versions that may introduce breaking changes.</p>
+<h3 id="using-submoduleshared-project">Using Submodule/Shared Project<a class="headerlink" href="#using-submoduleshared-project" title="Permanent link"></a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Submodule/shared project imports are <strong>only</strong> for users who are not interested in <em>any</em> of the <a href="../framework.md">framework</a> features, and need a completely standalone solution for their project.</p>
+<p>Visual Studio Shared Projects are a 10-year-old technology that has never been clearly documented; the best resources available are a few <a href="https://learn.microsoft.com/en-us/previous-versions/xamarin/cross-platform/app-fundamentals/shared-projects?tabs=windows#what-is-a-shared-project">obsolete documentation pages</a> and <a href="https://dailydotnettips.com/using-shared-project-across-multiple-applications-in-visual-studio-2015/">blog posts</a>. They do work, and are fairly common to see in Stardew Modding <a href="https://en.wikipedia.org/wiki/Monorepo">Monorepos</a>, but have many quirks, tend to behave oddly and in frustrating ways within the IDE, and most importantly, are compiled as <em>your own</em> source code, meaning they generate <strong>new types</strong> inside your mod and are therefore <strong>not compatible</strong> with the types inside <code>StardewUI.dll</code>. If you try to use them together, you will run into cryptic errors like <code>No value converter registered for Edges -&gt; Edges</code>.</p>
+<p>Git submodules (AKA "sob modules") have many problems of their own and are <a href="https://diziet.dreamwidth.org/14666.html">widely hated</a> for many good reasons. An alternative is <a href="https://git-memo.readthedocs.io/en/latest/subtree.html">git subtree</a>, which solves some but not all of the problems of submodules, and solves <em>none</em> of the problems of Shared Projects.</p>
+<p>Consider carefully before choosing this option, because it may complicate your project maintenance and is effectively exclusive with the Framework; you can only use one or the other, and switching to the Framework later on may be difficult if there have been breaking changes, or if you depend on any internal types.</p>
+</div>
+<p>If you have elected to use the Core Library Shared Project (<em>please read the warnings above</em>) then use the following process for including it:</p>
+<ol>
+<li><code>cd</code> into your mod's <em>solution</em> directory.<br />
+    (This is the directory containing the <code>.sln</code> file, <em>not</em> the <code>.csproj</code>)</li>
+<li>Add the submodule: <code>git submodule add https://github.com/focustense/StardewUI.git</code></li>
+<li>Add the shared project to your solution. In Visual Studio, right-click on the Solution in the Solution Explorer, then <strong>Add</strong> -&gt; <strong>Existing Project...</strong>, find and select the <code>StardewUI.shproj</code> inside the <code>StardewUI\Core</code> folder created in step 1.</li>
+<li>Add a project reference to your mod. In Visual Studio, right-click on on your Project (<em>not</em> the solution, and <em>not</em> the StardewUI project; the project for <em>your mod</em>), then <strong>Add</strong> -&gt; <strong>Shared Project Reference</strong>, and tick <code>StardewUI</code>. If you don't see <code>StardewUI</code> in the list, then you made a mistake in one of the previous steps.</li>
+<li>Double-check; if you open your <code>.csproj</code> file in VS or a text editor, it should have the following line:
+   <code>&lt;Import Project="..\StardewUI\Core\StardewUI.projitems" Label="Shared" /&gt;</code></li>
+</ol>
+<p>Once imported, you can reference StardewUI's types directly, including <a href="../reference/stardewui/widgets/componentview-1/">ComponentView</a> and <a href="../reference/stardewui/viewmenu-1/">ViewMenu</a> which are the entry points for most user-defined views and menus, and what the Framework uses internally.</p>
+<p>A few other considerations and tips for shared project users:</p>
+<ul>
+<li>
+<p>Since you are depending on the source code, expect things to break if you update (pull).</p>
+<p>While there is still some risk of this even when using the other, recommended methods, breaking changes to the Framework/API should normally be reflected in the project's <a href="https://semver.org/">semantic versioning</a>, whereas potentially breaking changes to the source will not. If you fork or modify the shared project in any way or use any of its <code>internal</code> types or members, there is a good chance that your solution will no longer compile after an update.</p>
+</li>
+<li>
+<p>If you update/pull the shared project, and Visual Studio starts behaving strangely (not showing the correct files, producing compilation errors that make no sense, etc.), try closing Visual Studio, deleting the <code>.vs</code> folder inside your solution, and reopening it.</p>
+<p>The exact nature of this bug isn't clear, but sometimes Visual Studio, MSBuild, and even the <code>dotnet</code> tool can keep holding onto old state, even if you clean and rebuild. Deleting and re-importing the entire submodule will <em>not</em> fix the problem, but deleting <code>.vs</code> usually will.</p>
+</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Why use a submodule/shared project?</p>
+<p>With all the ominous warnings above, you might be wondering <em>"why would anyone use the submodule/shared project method?"</em> There are two reasons why this usage is still available and (somewhat) supported, despite being strongly recommended against:</p>
+<ol>
+<li>
+<p>You want to avoid <em>any</em> dependencies in your mod for personal or philosophical reasons. If you are offended by the idea of depending on GMCM, SpaceCore, etc., then you might not want to depend on StardewUI either.</p>
+</li>
+<li>
+<p>You don't plan on maintaining your mod long-term, and want to be immune from any future changes to StardewUI; i.e. you're willing to trade off the benefits of any new features, bug fixes, performance improvements, etc. for the guarantee of not being broken by outside changes.</p>
+</li>
+</ol>
+<p>While your users would undoubtedly prefer that you maintain your mods, and most users really do not mind adding one more shared dependency to their mod list, we recognize that this may not suit all authors, which is why the shared project is only "soft-deprecated" and not officially obsolete or removed.</p>
+</div>
 
 
 

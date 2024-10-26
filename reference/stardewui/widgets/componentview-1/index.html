@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -3011,8 +3013,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-componentviewt">Class ComponentView&lt;T&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-componentviewt">Class ComponentView&lt;T&gt;<a class="headerlink" href="#class-componentviewt" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Widgets</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3020,17 +3022,17 @@ Assembly: StardewUI.dll  </p>
 <p>Base class for custom widgets and "app views" with potentially complex hierarchy using a single root view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ComponentView</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Widgets</span><span class="p">.</span><span class="n">DecoratorView</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>T</code></strong><br />
 Type of view used for the root.</p>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a> ⇦ ComponentView&lt;T&gt;</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>This implements all the boilerplate of an <a href="../../iview/">IView</a> without having to actually implement a totally custom <a href="./#view">View</a>; instead, it delegates all functionality to the inner (root) <a href="../../iview/">IView</a>. </p>
 <p>The typical use case is for what is often called "Components", "Layouts", "User Controls", etc., in which a class defines both the view hierarchy and an API for interacting with the view and underlying data at the same time. The top-level layout is created in <a href="./#createview">CreateView()</a>, and child views can be added on creation or at any later time. More importantly, since the subclass decides what children to create, it can also store references to those children for the purposes of updating the UI, responding to events, etc. </p>
 <p>Component views can be composed like any other views, or used in a <a href="../../viewmenu-1/">ViewMenu&lt;T&gt;</a>.</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3045,7 +3047,7 @@ Type of view used for the root.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3108,7 +3110,7 @@ Type of view used for the root.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3219,7 +3221,7 @@ Type of view used for the root.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="events">Events</h3>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3274,27 +3276,27 @@ Type of view used for the root.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="componentviewt">ComponentView&lt;T&gt;()</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="componentviewt">ComponentView&lt;T&gt;()<a class="headerlink" href="#componentviewt" title="Permanent link"></a></h4>
 <p>Initializes a new instance of <a href="./">ComponentView&lt;T&gt;</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="n">ComponentView</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="view">View</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="view">View<a class="headerlink" href="#view" title="Permanent link"></a></h4>
 <p>The inner view that is decorated by this view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><code>T</code></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="createview">CreateView()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="createview">CreateView()<a class="headerlink" href="#createview" title="Permanent link"></a></h4>
 <p>Creates and returns the root view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">CreateView</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><code>T</code></p>
 <hr />
 </div>

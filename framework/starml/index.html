@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1261,7 +1263,7 @@
   
 
 
-<h1 id="stardew-markup-language-starml">Stardew Markup Language (StarML)</h1>
+<h1 id="stardew-markup-language-starml">Stardew Markup Language (StarML)<a class="headerlink" href="#stardew-markup-language-starml" title="Permanent link"></a></h1>
 <p>StarML is the markup language used by the <a href="../">UI Framework</a>. It is an HTML-like syntax based on a tree of <a href="#elements">elements</a>, each corresponding to a <a href="../../concepts/#views">view</a>.</p>
 <p>It shares many traits with <a href="https://angular.dev/guide/templates">Angular templates</a>, particularly an enhanced set of <a href="#attributes">attributes</a> that perform <a href="../../concepts/#data-binding">data binding</a> and other special functions.</p>
 <div class="admonition example">
@@ -1280,7 +1282,7 @@
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
 </span></code></pre></div>
 </div>
-<h2 id="elements">Elements</h2>
+<h2 id="elements">Elements<a class="headerlink" href="#elements" title="Permanent link"></a></h2>
 <p>As with most markup languages, StarML is built around elements. An element is:</p>
 <ul>
 <li>A single <a href="#tags">tag</a></li>
@@ -1305,7 +1307,7 @@
 </div>
 <p>There are no strict rules around the use of opening/closing vs. self-closing tags—any element can be written using either style. The difference is that self-closing tags cannot have any children; thus tend to be used for "simple" views such as <code>&lt;label /&gt;</code> and <code>&lt;image /&gt;</code>, while open tags are used for <em>layout</em> views like <code>&lt;frame&gt;</code>, <code>&lt;lane&gt;</code> and <code>&lt;panel&gt;</code>.</p>
 <p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 3h20v10h-4v8h-2v-8H8v8H6v-8H2zm16.97 8L20 9.97V7.15L16.15 11zm-5.65 0 6-6H16.5l-6 6zm-5.66 0 6-6h-2.83l-6 6zM5.18 5 4 6.18V9l4-4z"/></svg></span> Because the <a href="../">UI Framework</a> is an <a href="https://en.wikipedia.org/wiki/Abstraction_(computer_science)">abstraction</a> over regular Views, it will not enable you to do anything with a View that would be impossible or prohibited in the <a href="../../library/">Core Library</a>, such as add children to a non-layout view.</p>
-<h3 id="tags">Tags</h3>
+<h3 id="tags">Tags<a class="headerlink" href="#tags" title="Permanent link"></a></h3>
 <p>A tag is anything between a pair of angle brackets <code>&lt;  &gt;</code>, one of:</p>
 <ul>
 <li>An opening tag: <code>&lt;panel&gt;</code></li>
@@ -1420,11 +1422,11 @@
 </tr>
 </tbody>
 </table>
-<h2 id="attributes">Attributes</h2>
+<h2 id="attributes">Attributes<a class="headerlink" href="#attributes" title="Permanent link"></a></h2>
 <p>Tags define what view will be created; attributes define <em>how</em> it will look and behave, and specifically its <a href="#common-attributes">properties</a> and <a href="#events">events</a>.</p>
 <p>An attribute is any string appearing inside a tag that has the form <code>attr=value</code>, where <code>value</code> is one of the supported <a href="#attribute-flavors">flavors</a>, such as a quoted string like <code>text="Hello"</code> or data binding expression like <code>text={HelloMessage}</code>.</p>
 <p>There are also <a href="#structural-attributes">structural attributes</a> which are a separate topic.</p>
-<h3 id="common-attributes">Common Attributes</h3>
+<h3 id="common-attributes">Common Attributes<a class="headerlink" href="#common-attributes" title="Permanent link"></a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>These are the attributes common to <strong>all</strong> types of views (tags). Specific views usually have additional properties. Refer to the <a href="../../library/standard-views/">standard views</a> documentation for details.</p>
@@ -1563,7 +1565,7 @@
 <p>Note that some conversions may be <em>lossy</em>, i.e. if there is a difference in numeric precision.</p>
 </li>
 </ol>
-<h3 id="structural-attributes">Structural Attributes</h3>
+<h3 id="structural-attributes">Structural Attributes<a class="headerlink" href="#structural-attributes" title="Permanent link"></a></h3>
 <p>Structural attributes look like regular attributes, but with a <code>*</code> prefix. Instead of binding to properties or events, they control aspects of how the view tree is constructed.</p>
 <table>
 <thead>
@@ -1601,7 +1603,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="events">Events</h3>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
 <p>Event attributes look similar to property attributes, but deal specifically with .NET <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/event">events</a> raised by views. More generally, they are one of the two ways it is possible for the UI to communicate something <strong>back</strong> to your mod (the other being <a href="#binding-modifiers">output/two-way bindings</a>).</p>
 <p>While some UI might be purely informational (e.g. a tooltip or HUD), any <em>interactive</em> UI will probably involve one or more event bindings.</p>
 <p>Bindings for events use a specific <a href="#attribute-flavors">flavor</a>, where the handler and its arguments are enclosed in a pair of pipes (<code>|</code>):</p>
@@ -1679,7 +1681,7 @@
 <ol>
 <li>Provided here as a reference for looking up the properties in <a href="https://github.com/focustense/StardewUI/tree/dev/Core/Events">Events Source</a>. You don't consume these types directly in your event handlers; consult the <a href="../binding-events/">Event Docs</a> for details on how to set up handlers.</li>
 </ol>
-<h3 id="attribute-flavors">Attribute Flavors</h3>
+<h3 id="attribute-flavors">Attribute Flavors<a class="headerlink" href="#attribute-flavors" title="Permanent link"></a></h3>
 <p>Regular HTML uses quoted attributes; to support the more complex behaviors where the attribute value should not be interpreted <em>literally</em> (as in, the exact value inside the quotes), StarML uses different "flavors" of attributes using different punctuation.</p>
 <div class="admonition danger">
 <p class="admonition-title">Bindings are not tokens</p>
@@ -1715,7 +1717,7 @@
 <summary>Note</summary>
 <p>Double-braces (<code>{{</code> and <code>}}</code>) are allowed in place of single braces, for those heavily accustomed to Content Patcher syntax and JSON tokens in general, but are not recommended due to the inconsistency with other attributes and reduced readability.</p>
 </details>
-<h3 id="binding-modifiers">Binding Modifiers</h3>
+<h3 id="binding-modifiers">Binding Modifiers<a class="headerlink" href="#binding-modifiers" title="Permanent link"></a></h3>
 <p>In addition to the different <a href="#attribute-flavors">attribute flavors</a>,  context binding attributes—that is, those of the form <code>attr={PropertyName}</code>—can use modifier prefixes to either redirect to a different <a href="../binding-context/">context</a> or change the direction of synchronization between context and view.</p>
 <p>These modifiers work <strong>only</strong> with context property and event bindings; they cannot be used on literal attributes or assets.</p>
 <table>
@@ -1763,7 +1765,7 @@
 <p class="admonition-title">Tip</p>
 <p>Context modifiers can be combined with direction modifiers, but order matters; the direction must come first. You can write <code>{&lt;&gt;^^Prop}</code> or <code>{&gt;~Foo.Prop}</code>, but not <code>{^^&lt;&gt;Prop}</code> or <code>{~&gt;Foo.Prop}</code>.</p>
 </div>
-<h3 id="type-conversions">Type Conversions</h3>
+<h3 id="type-conversions">Type Conversions<a class="headerlink" href="#type-conversions" title="Permanent link"></a></h3>
 <p>In the <a href="https://smapi.io/">SMAPI</a> world, integrations between mods, including framework mods, are accomplished by <a href="https://en.wikipedia.org/wiki/Duck_typing">duck typing</a>, specifically through the <a href="https://github.com/Nanoray-pl/Pintail">Pintail</a> library. This is a highly effective system for backward-compatibility and in some cases forward-compatibility; however, it presents many challenges for a UI library that uses many complex types.</p>
 <p>Many <a href="#common-attributes">attribute types</a> like <code>Bounds</code> and <code>Edges</code> simply can't be transmitted across the API boundary, even if you copy their definitions. Interface types such as <code>IView</code> are far too complex to copy over. StardewUI doesn't want you to have to deal with these issues on a one-off basis. Instead, it has a highly integrated system of type conversions: regardless of the actual, <em>real</em> type of a view's property or event argument, it can be assigned or bound to any property with a <em>convertible</em> type.</p>
 <p>In the table below, the <em>String Format</em> is what you can put in a <a href="#attribute-flavors">literal attribute</a> or a <code>string</code> typed context property; <em>Converts From</em> can be used with <a href="#binding-modifiers">input bindings</a> and <em>Converts To</em> can be used with output bindings or <a href="#events">event arguments</a>. For two-way bindings, the type must either be <code>string</code> or be in both the "from" and "to" lists.</p>
@@ -1939,7 +1941,7 @@
 </ol>
 <p>If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from <code>string</code> to be used in literal attributes.</p>
 <p>Unfortunately, allowing mods to arbitrarily extend this list would be a chicken-egg problem: you need direct access to the destination type in order to implement a converter. However, if anything important is missing, feel free to make a <a href="https://github.com/focustense/StardewUI/issues">request</a> or a <a href="https://github.com/focustense/StardewUI/blob/dev/Framework/Converters/ValueConverterFactory.cs">contribution</a> (writing a converter is usually very simple, often a single line of code).</p>
-<h2 id="children">Children</h2>
+<h2 id="children">Children<a class="headerlink" href="#children" title="Permanent link"></a></h2>
 <p>In StarML—as in HTML or XML—an element's children are any tags appearing between the parent element's opening and closing tags:</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
@@ -1959,7 +1961,7 @@
 <p>In general, only <a href="../../library/standard-views/#layouts">layout views</a> can have children; attempting to add children to any other view type will cause an error.</p>
 <p class="no-code-break">Children can only be added to elements with separate opening and closing tags, e.g. <code>&lt;lane&gt;...&lt;/lane&gt;</code>. Any self-closing tag, <strong>even if</strong> it corresponds to a layout view, cannot contain children, because a self-closing tag cannot be paired with a regular closing tag; just as with HTML or XML, <code>&lt;lane/&gt;...&lt;/lane&gt;</code> is simply invalid StarML and will fail to parse.</p>
 <p>Because of these constraints, all documentation and examples on this site use opening/closing tags for layout views, and self-closing tags for other views. While this is not a requirement for valid StarML, it is recommended that you do the same in order to avoid confusion and lower the chances of creating invalid markup.</p>
-<h3 id="child-limits">Child Limits</h3>
+<h3 id="child-limits">Child Limits<a class="headerlink" href="#child-limits" title="Permanent link"></a></h3>
 <p>Some layout views can have only <strong>one</strong> child, for example <a href="../../library/standard-views/#frame">frames</a> and <a href="../../library/standard-views/#scrollable-view">scrollables</a>. That means the following is invalid markup:</p>
 <div class="admonition failure">
 <p class="admonition-title">Failure</p>
@@ -1990,7 +1992,7 @@
 </span></code></pre></div>
 </div>
 <p>This version <em>cannot</em> fail because <code>VisibleItem</code> cannot be both <code>Item1</code> and <code>Item2</code> at the same time. In other words, it is always OK to have multiple child nodes underneath a single-view layout, <strong>if</strong> all of those nodes have a distinct <code>*case</code>. Otherwise, there is the possibility of failure.</p>
-<h2 id="why-not-html">Why not HTML?</h2>
+<h2 id="why-not-html">Why not HTML?<a class="headerlink" href="#why-not-html" title="Permanent link"></a></h2>
 <p>Some web frameworks, like Vue, are a subset of HTML; their templates are syntactically valid HTML, constructed in such a way that any special behavior can be understood using special tags, attributes with unusual but valid prefixes like <code>:class</code>, and so on. So, why not simply pull in an HTML (or XHTML) parser and use that?</p>
 <p>This went through careful consideration but ultimately seemed to have more negatives than positives. The potential positives:</p>
 <ul>
@@ -2022,7 +2024,7 @@
 <p>This is not intended as a slight against XAML, which is actually a very powerful and mature tool for cross-platform development and far better than most of the available alternatives. However, it reflects a different use case: backing an <em>enormous</em> framework (WPF) that is difficult to update once released, needs to scale to almost any imaginable UI scenario, and can expect a very high level of expertise from dev-users.</p>
 <p>It is precisely because XML is so extensible that XML-based languages become convoluted over time; they encourage a way of thinking wherein new features are designed to fit into the XML structure somehow, even if the existing syntax is already confusing, verbose or requires some separately-interpreted micro-grammar, instead of the alternative of making a tiny change to the parser to support a relatively simple addition, like the <code>&lt;&gt;</code> or <code>^</code> modifiers above.</p>
 <p>StardewUI is a mod, which means it is easy to change the parser, easy to roll out said updates, and has fewer users and UI scenarios to cover, so more effort can go into making easy things easy, instead of making nearly-impossible things possible. For scenarios that StarML can't cover, the <a href="../../library/">Core Library</a> is the escape hatch.</p>
-<h2 id="why-not-json">Why not JSON?</h2>
+<h2 id="why-not-json">Why not JSON?<a class="headerlink" href="#why-not-json" title="Permanent link"></a></h2>
 <p>In many ways, JSON is the lingua franca of Stardew modding; it is the notation used by every content pack, not only for <a href="https://stardewvalleywiki.com/Modding:Content_Patcher">Content Patcher</a> but for every <a href="https://stardewvalleywiki.com/Modding:Content_pack_frameworks#Other_popular_frameworks">other framework</a> out there. Why should StardewUI be different?</p>
 <p>While sharing some of the same concerns as HTML, such as double-parsing and character-escaping, it does route around other issues such as third-party libraries (<a href="https://www.newtonsoft.com/json">Json.NET</a> is technically third-party, but is already available in every SMAPI environment).</p>
 <p>To understand why it's not a good fit, we can take a look at what kind of structure might be required for a very simple view. In this example, we display a frame border, a single header line, and the names of a list of NPCs.</p>

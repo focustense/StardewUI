@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3365,8 +3367,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-valueconvertertsource-tdestination">Class ValueConverter&lt;TSource, TDestination&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-valueconvertertsource-tdestination">Class ValueConverter&lt;TSource, TDestination&gt;<a class="headerlink" href="#class-valueconvertertsource-tdestination" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Converters</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3375,7 +3377,7 @@ Assembly: StardewUI.dll  </p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ValueConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>TSource</code></strong><br />
 The type of value to be converted.</p>
 <p><strong><code>TDestination</code></strong><br />
@@ -3384,8 +3386,8 @@ The converted value type.</p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ValueConverter&lt;TSource, TDestination&gt;</p>
 <p><strong>Implements</strong><br />
 <a href="../ivalueconverter-2/">IValueConverter&lt;TSource, TDestination&gt;</a></p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3400,7 +3402,7 @@ The converted value type.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3415,25 +3417,25 @@ The converted value type.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="valueconvertertsource-tdestinationfunctsource-tdestination">ValueConverter&lt;TSource, TDestination&gt;(Func&lt;TSource, TDestination&gt;)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="valueconvertertsource-tdestinationfunctsource-tdestination">ValueConverter&lt;TSource, TDestination&gt;(Func&lt;TSource, TDestination&gt;)<a class="headerlink" href="#valueconvertertsource-tdestinationfunctsource-tdestination" title="Permanent link"></a></h4>
 <p>Generic delegating converter, accepting a conversion function.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="n">ValueConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="p">(</span><span class="n">Func</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="w"> </span><span class="n">convert</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>convert</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-2">Func&lt;TSource, TDestination&gt;</a><br />
 Function to convert a <code>TSource</code> to a <code>TDestination</code>.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="converttsource">Convert(TSource)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="converttsource">Convert(TSource)<a class="headerlink" href="#converttsource" title="Permanent link"></a></h4>
 <p>Converts a value from the source type to the destination type.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">TDestination</span><span class="w"> </span><span class="nf">Convert</span><span class="p">(</span><span class="n">TSource</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>value</code></strong> &nbsp; TSource<br />
 The value to convert.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><code>TDestination</code></p>
 <hr />
 </div>

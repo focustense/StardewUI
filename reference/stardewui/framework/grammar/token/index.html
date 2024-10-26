@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3335,8 +3337,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="struct-token">Struct Token</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="struct-token">Struct Token<a class="headerlink" href="#struct-token" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Grammar</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3347,8 +3349,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="https://learn.microsoft.com/en-us/dotnet/api/system.valuetype">ValueType</a> ⇦ Token</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3363,7 +3365,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3382,7 +3384,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3405,38 +3407,38 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="tokentokentype-readonlyspanchar">Token(TokenType, ReadOnlySpan&lt;Char&gt;)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="tokentokentype-readonlyspanchar">Token(TokenType, ReadOnlySpan&lt;Char&gt;)<a class="headerlink" href="#tokentokentype-readonlyspanchar" title="Permanent link"></a></h4>
 <p>A token emitted by the StarML <a href="../lexer/">Lexer</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">Token</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">TokenType</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">ReadOnlySpan</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Char</span><span class="o">&gt;</span><span class="w"> </span><span class="n">text</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>type</code></strong> &nbsp; <a href="../tokentype/">TokenType</a><br />
 The token type.</p>
 <p><strong><code>text</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.char">Char</a>&gt;<br />
 The exact text of the token in the original markup.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="text">Text</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="text">Text<a class="headerlink" href="#text" title="Permanent link"></a></h4>
 <p>The token type.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">ReadOnlySpan</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Char</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.char">Char</a>&gt;</p>
 <hr />
-<h4 id="type">Type</h4>
+<h4 id="type">Type<a class="headerlink" href="#type" title="Permanent link"></a></h4>
 <p>The exact text of the token in the original markup.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">TokenType</span><span class="w"> </span><span class="n">Type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../tokentype/">TokenType</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="tostring">ToString()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="tostring">ToString()<a class="headerlink" href="#tostring" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">ToString</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
 </div>

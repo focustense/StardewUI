@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3065,8 +3067,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-viewengine">Class ViewEngine</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-viewengine">Class ViewEngine<a class="headerlink" href="#class-viewengine" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Api</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3078,8 +3080,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ViewEngine</p>
 <p><strong>Implements</strong><br />
 <a href="../../iviewengine/">IViewEngine</a></p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3094,7 +3096,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3133,13 +3135,13 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="viewengineiassetcache-imodhelper-iviewnodefactory">ViewEngine(IAssetCache, IModHelper, IViewNodeFactory)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="viewengineiassetcache-imodhelper-iviewnodefactory">ViewEngine(IAssetCache, IModHelper, IViewNodeFactory)<a class="headerlink" href="#viewengineiassetcache-imodhelper-iviewnodefactory" title="Permanent link"></a></h4>
 <p>Initializes a new <a href="./">ViewEngine</a> instance.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewEngine</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCache</span><span class="w"> </span><span class="n">assetCache</span><span class="p">,</span><span class="w"> </span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">IModHelper</span><span class="w"> </span><span class="n">helper</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNodeFactory</span><span class="w"> </span><span class="n">viewNodeFactory</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>assetCache</code></strong> &nbsp; <a href="../../content/iassetcache/">IAssetCache</a><br />
 Cache for obtaining document assets. Used for asset-based views.</p>
 <p><strong><code>helper</code></strong> &nbsp; IModHelper<br />
@@ -3147,86 +3149,86 @@ SMAPI mod helper for the API consumer mod (not for StardewUI).</p>
 <p><strong><code>viewNodeFactory</code></strong> &nbsp; <a href="../../binding/iviewnodefactory/">IViewNodeFactory</a><br />
 Factory for creating and binding <a href="../../binding/iviewnode/">IViewNode</a>s.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="createdrawablefromassetstring">CreateDrawableFromAsset(string)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="createdrawablefromassetstring">CreateDrawableFromAsset(string)<a class="headerlink" href="#createdrawablefromassetstring" title="Permanent link"></a></h4>
 <p>Creates an <a href="../../iviewdrawable/">IViewDrawable</a> from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">IViewDrawable</span><span class="w"> </span><span class="n">CreateDrawableFromAsset</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">assetName</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>assetName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The name of the StarML view asset in the content pipeline, e.g. <code>Mods/MyMod/Views/MyView</code>.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../iviewdrawable/">IViewDrawable</a></p>
 <p>An <a href="../../iviewdrawable/">IViewDrawable</a> for drawing directly to the <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a> of a rendering event or other draw handler.</p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>The <a href="../../iviewdrawable/#context">Context</a> and <a href="../../iviewdrawable/#maxsize">MaxSize</a> can be provided after creation.</p>
 <hr />
-<h4 id="createdrawablefrommarkupstring">CreateDrawableFromMarkup(string)</h4>
+<h4 id="createdrawablefrommarkupstring">CreateDrawableFromMarkup(string)<a class="headerlink" href="#createdrawablefrommarkupstring" title="Permanent link"></a></h4>
 <p>Creates an <a href="../../iviewdrawable/">IViewDrawable</a> from arbitrary markup.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">IViewDrawable</span><span class="w"> </span><span class="n">CreateDrawableFromMarkup</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">markup</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>markup</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The markup in StarML format.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../../iviewdrawable/">IViewDrawable</a></p>
 <p>An <a href="../../iviewdrawable/">IViewDrawable</a> for drawing directly to the <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a> of a rendering event or other draw handler.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>The <a href="../../iviewdrawable/#context">Context</a> and <a href="../../iviewdrawable/#maxsize">MaxSize</a> can be provided after creation. </p>
 <p><strong>Warning:</strong> Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not use this API except for testing/experimentation.</p>
 <hr />
-<h4 id="createmenufromassetstring-object">CreateMenuFromAsset(string, Object)</h4>
+<h4 id="createmenufromassetstring-object">CreateMenuFromAsset(string, Object)<a class="headerlink" href="#createmenufromassetstring-object" title="Permanent link"></a></h4>
 <p>Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewValley</span><span class="p">.</span><span class="n">Menus</span><span class="p">.</span><span class="n">IClickableMenu</span><span class="w"> </span><span class="n">CreateMenuFromAsset</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">assetName</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_3">Parameters</h5>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>assetName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The name of the StarML view asset in the content pipeline, e.g. <code>Mods/MyMod/Views/MyView</code>.</p>
 <p><strong><code>context</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />
 The context, or "model", for the menu's view, which holds any data-dependent values. <strong>Note:</strong> The type must implement <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a> in order for any changes to this data to be automatically reflected in the UI.</p>
-<h5 id="returns_2">Returns</h5>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p>IClickableMenu</p>
 <p>A menu object which can be shown using the game's standard menu APIs such as activeClickableMenu.</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>Does not make the menu active. To show it, use activeClickableMenu or equivalent.</p>
 <hr />
-<h4 id="createmenufrommarkupstring-object">CreateMenuFromMarkup(string, Object)</h4>
+<h4 id="createmenufrommarkupstring-object">CreateMenuFromMarkup(string, Object)<a class="headerlink" href="#createmenufrommarkupstring-object" title="Permanent link"></a></h4>
 <p>Creates a menu from arbitrary markup.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewValley</span><span class="p">.</span><span class="n">Menus</span><span class="p">.</span><span class="n">IClickableMenu</span><span class="w"> </span><span class="n">CreateMenuFromMarkup</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">markup</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_4">Parameters</h5>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>markup</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The markup in StarML format.</p>
 <p><strong><code>context</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />
 The context, or "model", for the menu's view, which holds any data-dependent values. <strong>Note:</strong> The type must implement <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a> in order for any changes to this data to be automatically reflected in the UI.</p>
-<h5 id="returns_3">Returns</h5>
+<h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p>IClickableMenu</p>
 <p>A menu object which can be shown using the game's standard menu APIs such as activeClickableMenu.</p>
-<h5 id="remarks_3">Remarks</h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p><strong>Warning:</strong> Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not use this API except for testing/experimentation.</p>
 <hr />
-<h4 id="enablehotreloading">EnableHotReloading()</h4>
+<h4 id="enablehotreloading">EnableHotReloading()<a class="headerlink" href="#enablehotreloading" title="Permanent link"></a></h4>
 <p>Starts monitoring this mod's directory for changes to assets managed by any of the <code>Register</code> methods, e.g. views and sprites.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">EnableHotReloading</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="remarks_4">Remarks</h5>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
 <p>May impact game performance and should normally only be used during development and/or in debug mode.</p>
 <hr />
-<h4 id="registerspritesstring-string">RegisterSprites(string, string)</h4>
+<h4 id="registerspritesstring-string">RegisterSprites(string, string)<a class="headerlink" href="#registerspritesstring-string" title="Permanent link"></a></h4>
 <p>Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">RegisterSprites</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">assetPrefix</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">modDirectory</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_5">Parameters</h5>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>assetPrefix</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The prefix for all asset names, e.g. <code>Mods/MyMod/Sprites</code>. This can be any value but the same prefix must be used in <code>@AssetName</code> view bindings.</p>
 <p><strong><code>modDirectory</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The physical directory where the asset files are located, relative to the mod directory. Typically a path such as <code>assets/sprites</code>.</p>
 <hr />
-<h4 id="registerviewsstring-string">RegisterViews(string, string)</h4>
+<h4 id="registerviewsstring-string">RegisterViews(string, string)<a class="headerlink" href="#registerviewsstring-string" title="Permanent link"></a></h4>
 <p>Registers a mod directory to be searched for view (StarML) assets. Uses the <code>.sml</code> extension.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">RegisterViews</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">assetPrefix</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">modDirectory</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_6">Parameters</h5>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>assetPrefix</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The prefix for all asset names, e.g. <code>Mods/MyMod/Views</code>. This can be any value but the same prefix must be used in <code>include</code> elements and in API calls to create views.</p>
 <p><strong><code>modDirectory</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />

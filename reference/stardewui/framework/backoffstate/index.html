@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="State of an exponential backoff, e.g. as used in a BackoffTracker`1.">
+        <meta name="description" content="State of an exponential backoff, e.g. as used in a BackoffTracker&lt;T&gt;.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="BackoffState - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="State of an exponential backoff, e.g. as used in a BackoffTracker`1." >
+        <meta  property="og:description"  content="State of an exponential backoff, e.g. as used in a BackoffTracker&lt;T&gt;." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/backoffstate.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="BackoffState - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="State of an exponential backoff, e.g. as used in a BackoffTracker`1." >
+        <meta  name="twitter:description"  content="State of an exponential backoff, e.g. as used in a BackoffTracker&lt;T&gt;." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/backoffstate.png" >
       
@@ -2937,8 +2939,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-backoffstate">Class BackoffState</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-backoffstate">Class BackoffState<a class="headerlink" href="#class-backoffstate" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2948,8 +2950,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ BackoffState</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2964,7 +2966,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2983,29 +2985,29 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="backoffstatetimespan">BackoffState(TimeSpan)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="backoffstatetimespan">BackoffState(TimeSpan)<a class="headerlink" href="#backoffstatetimespan" title="Permanent link"></a></h4>
 <p>State of an exponential backoff, e.g. as used in a <code>StardewUI.Framework.BackoffTracker&lt;T&gt;</code>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">BackoffState</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">initialDuration</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>initialDuration</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
 The initial duration to wait for a retry.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="duration">Duration</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="duration">Duration<a class="headerlink" href="#duration" title="Permanent link"></a></h4>
 <p>The most recent duration waited/waiting for a retry.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">Duration</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a></p>
 <hr />
-<h4 id="elapsed">Elapsed</h4>
+<h4 id="elapsed">Elapsed<a class="headerlink" href="#elapsed" title="Permanent link"></a></h4>
 <p>Time elapsed waiting for the current/next retry.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">Elapsed</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a></p>
 <hr />
 </div>

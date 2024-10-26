@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3154,8 +3156,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-keybindoverlay">Class KeybindOverlay</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-keybindoverlay">Class KeybindOverlay<a class="headerlink" href="#class-keybindoverlay" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Widgets.Keybinding</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3165,8 +3167,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="../../../overlays/fullscreenoverlay/">FullScreenOverlay</a> ⇦ KeybindOverlay</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3181,7 +3183,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3244,7 +3246,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3275,7 +3277,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="events">Events</h3>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3290,71 +3292,71 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="keybindoverlayispritemapsbutton">KeybindOverlay(ISpriteMap&lt;SButton&gt;)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="keybindoverlayispritemapsbutton">KeybindOverlay(ISpriteMap&lt;SButton&gt;)<a class="headerlink" href="#keybindoverlayispritemapsbutton" title="Permanent link"></a></h4>
 <p>Overlay control for editing a keybinding, or list of bindings.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">KeybindOverlay</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteMap</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">spriteMap</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>spriteMap</code></strong> &nbsp; <a href="../../../graphics/ispritemap-1/">ISpriteMap</a><SButton><br />
 Map of bindable buttons to sprite representations.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="addbuttontext">AddButtonText</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="addbuttontext">AddButtonText<a class="headerlink" href="#addbuttontext" title="Permanent link"></a></h4>
 <p>Text to display on the button used to add a new binding.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">AddButtonText</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>If not specified, the button will use a generic "+" image instead.</p>
 <hr />
-<h4 id="deletebuttontooltip">DeleteButtonTooltip</h4>
+<h4 id="deletebuttontooltip">DeleteButtonTooltip<a class="headerlink" href="#deletebuttontooltip" title="Permanent link"></a></h4>
 <p>Tooltip to display for the delete (trash can) button beside each existing binding.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">DeleteButtonTooltip</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>If not specified, the delete buttons will have no tooltips.</p>
 <hr />
-<h4 id="keybindlist">KeybindList</h4>
+<h4 id="keybindlist">KeybindList<a class="headerlink" href="#keybindlist" title="Permanent link"></a></h4>
 <p>The current keybinds to display in the list.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">Utilities</span><span class="p">.</span><span class="n">KeybindList</span><span class="w"> </span><span class="n">KeybindList</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p>KeybindList</p>
 <hr />
-<h4 id="keybindtype">KeybindType</h4>
+<h4 id="keybindtype">KeybindType<a class="headerlink" href="#keybindtype" title="Permanent link"></a></h4>
 <p>Specifies what kind of keybind is being edited.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Widgets</span><span class="p">.</span><span class="n">Keybinding</span><span class="p">.</span><span class="n">KeybindType</span><span class="w"> </span><span class="n">KeybindType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../keybindtype/">KeybindType</a></p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>This determines the behavior of the capturing as well as what happens after capture:  Typically when using single-bind or single-button modes, the caller should <a href="./#startcapturing">StartCapturing()</a> upon creation of the overlay in order to minimize redundant clicks.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="createview">CreateView()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="createview">CreateView()<a class="headerlink" href="#createview" title="Permanent link"></a></h4>
 <p>Creates the content view that will be displayed as an overlay.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">CreateView</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../../iview/">IView</a></p>
 <hr />
-<h4 id="startcapturing">StartCapturing()</h4>
+<h4 id="startcapturing">StartCapturing()<a class="headerlink" href="#startcapturing" title="Permanent link"></a></h4>
 <p>Starts capturing a new keybind.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">StartCapturing</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="remarks_3">Remarks</h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>This makes the capture area start flashing and hides the "Add" button; any buttons pressed in the capturing state are recorded and combined into a single keybind after the capture ends, when all buttons are released.</p>
 <hr />
-<h4 id="updatetimespan">Update(TimeSpan)</h4>
+<h4 id="updatetimespan">Update(TimeSpan)<a class="headerlink" href="#updatetimespan" title="Permanent link"></a></h4>
 <p>Runs on every game update tick.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>elapsed</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
 The amount of real time elapsed since the last tick.</p>
 <hr />

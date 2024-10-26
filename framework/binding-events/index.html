@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1027,7 +1029,7 @@
   
 
 
-<h1 id="binding-events">Binding Events</h1>
+<h1 id="binding-events">Binding Events<a class="headerlink" href="#binding-events" title="Permanent link"></a></h1>
 <p>All views in StardewUI emit <a href="../starml/#events">events</a>, especially pointer events such as clicks, hovers, drags, etc. These tend to the form the basis of user interaction in most UI.</p>
 <p>In the <a href="../../library/">core library</a>, events are literally <a href="https://learn.microsoft.com/en-us/dotnet/standard/Events/">.NET events</a>. When using the <a href="../">framework</a> to write <a href="../starml/">StarML</a>, however, there are many problems with consuming events directly, mostly owing to the design of SMAPI's mod integration:</p>
 <ul>
@@ -1036,7 +1038,7 @@
 <li>Even if the arguments could be sent, actual <code>View</code> instances can often be destroyed, recreated, etc., e.g. when using <code>*repeat</code>, <code>*if</code>, or other <a href="../starml/#structural-attributes">structural attributes</a>.</li>
 </ul>
 <p>Conventional event listeners are effectively a dead-end, but there is a solution. <a href="../starml/">StarML</a> supports event bindings as a <em>micro-grammar</em> or <em>micro-syntax</em>, i.e. a "syntax within another syntax".</p>
-<h2 id="event-attributes">Event Attributes</h2>
+<h2 id="event-attributes">Event Attributes<a class="headerlink" href="#event-attributes" title="Permanent link"></a></h2>
 <p>The quickest way to explain the micro-syntax used for event bindings is to jump right in and dissect a live one:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="starml" name="__tabbed_1" type="radio" /><input id="c" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="starml">StarML</label><label for="c">C#</label></div>
 <div class="tabbed-content">
@@ -1101,7 +1103,7 @@
 </tbody>
 </table>
 <p>This example covers all possible argument types: literals, context properties, and event properties. Other types of bindings, such as assets (<code>@path</code>) are <strong>not</strong> supported in event arguments.</p>
-<h2 id="return-values">Return Values</h2>
+<h2 id="return-values">Return Values<a class="headerlink" href="#return-values" title="Permanent link"></a></h2>
 <p>Event handler methods, such as the hypothetical <code>Buy</code> method above, will generally be <code>void</code>, but there is one special case: a handler may return <code>bool</code> in order to control the <a href="../../reference/stardewui/events/bubbleeventargs/#handled"><code>Handled</code></a> property of the event and prevent it from bubbling up.</p>
 <p>"Event bubbling" is the process by which an event not considered "handled" by a child view is given another chance to run at the parent. Consider the following two scenarios:</p>
 <ol>

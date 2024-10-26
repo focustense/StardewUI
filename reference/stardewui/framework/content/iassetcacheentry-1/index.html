@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -2981,8 +2983,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-iassetcacheentryt">Interface IAssetCacheEntry&lt;T&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-iassetcacheentryt">Interface IAssetCacheEntry&lt;T&gt;<a class="headerlink" href="#interface-iassetcacheentryt" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Content</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2990,11 +2992,11 @@ Assembly: StardewUI.dll  </p>
 <p>Entry retrieved from an <a href="../iassetcache/">IAssetCache</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">IAssetCacheEntry</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>T</code></strong><br />
 Type of cached asset.</p>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3013,22 +3015,22 @@ Type of cached asset.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="asset">Asset</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="asset">Asset<a class="headerlink" href="#asset" title="Permanent link"></a></h4>
 <p>The cached asset.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">T</span><span class="w"> </span><span class="n">Asset</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><code>T</code></p>
 <hr />
-<h4 id="isvalid">IsValid</h4>
+<h4 id="isvalid">IsValid<a class="headerlink" href="#isvalid" title="Permanent link"></a></h4>
 <p>Whether or not the <a href="./#asset">Asset</a> is valid and can be accessed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">IsValid</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Invalid assets either failed to load or have been invalidated at the source and may be disposed (if <a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a>) or otherwise unusable. Consumers of the cache entry <strong>must not</strong> attempt to read or use the <a href="./#asset">Asset</a> property of an invalid asset.</p>
 <hr />
 </div>

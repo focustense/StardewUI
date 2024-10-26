@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Holds the type-independent data of an IValueSource`1.">
+        <meta name="description" content="Holds the type-independent data of an IValueSource&lt;T&gt;.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="IValueSource - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="Holds the type-independent data of an IValueSource`1." >
+        <meta  property="og:description"  content="Holds the type-independent data of an IValueSource&lt;T&gt;." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/sources/ivaluesource.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="IValueSource - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="Holds the type-independent data of an IValueSource`1." >
+        <meta  name="twitter:description"  content="Holds the type-independent data of an IValueSource&lt;T&gt;." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/sources/ivaluesource.png" >
       
@@ -3215,8 +3217,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-ivaluesource">Interface IValueSource</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-ivaluesource">Interface IValueSource<a class="headerlink" href="#interface-ivaluesource" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Sources</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3224,10 +3226,10 @@ Assembly: StardewUI.dll  </p>
 <p>Holds the type-independent data of an <a href="../ivaluesource-1/">IValueSource&lt;T&gt;</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">IValueSource</span>
 </span></code></pre></div>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Instances of this type should always implement <a href="../ivaluesource-1/">IValueSource&lt;T&gt;</a> as well; the non-generic version is used when the type is unknown at compile time.</p>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3258,7 +3260,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3273,52 +3275,52 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="canread">CanRead</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="canread">CanRead<a class="headerlink" href="#canread" title="Permanent link"></a></h4>
 <p>Whether or not the source can be read from, i.e. if an attempt to <strong>get</strong> the <a href="./#value">Value</a> should succeed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">CanRead</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h4 id="canwrite">CanWrite</h4>
+<h4 id="canwrite">CanWrite<a class="headerlink" href="#canwrite" title="Permanent link"></a></h4>
 <p>Whether or not the source can be written back to, i.e. if an attempt to <strong>set</strong> the <a href="./#value">Value</a> should succeed.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">CanWrite</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h4 id="displayname">DisplayName</h4>
+<h4 id="displayname">DisplayName<a class="headerlink" href="#displayname" title="Permanent link"></a></h4>
 <p>Descriptive name for the property, used primarily for debug views and log/exception messages.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">DisplayName</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
-<h4 id="value">Value</h4>
+<h4 id="value">Value<a class="headerlink" href="#value" title="Permanent link"></a></h4>
 <p>Gets or sets the value as a boxed object. The type must be assignable to/from the type parameter of the <a href="../ivaluesource-1/">IValueSource&lt;T&gt;</a> that this instance implements.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">Value</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a></p>
 <hr />
-<h4 id="valuetype">ValueType</h4>
+<h4 id="valuetype">ValueType<a class="headerlink" href="#valuetype" title="Permanent link"></a></h4>
 <p>The compile-time type of the value tracked by this source; the type parameter for <a href="../ivaluesource-1/">IValueSource&lt;T&gt;</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">ValueType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="update">Update()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="update">Update()<a class="headerlink" href="#update" title="Permanent link"></a></h4>
 <p>Checks if the value needs updating, and if so, updates <a href="./#value">Value</a> to the latest.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">Update</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the <a href="./#value">Value</a> was updated; <code>false</code> if it already held the most recent value.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>This method is called every frame, for every binding, and providing a correct return value is essential in order to avoid slowdowns due to unnecessary rebinds.</p>
 <hr />
 </div>

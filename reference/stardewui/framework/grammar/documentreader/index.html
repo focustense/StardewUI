@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3461,8 +3463,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="struct-documentreader">Struct DocumentReader</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="struct-documentreader">Struct DocumentReader<a class="headerlink" href="#struct-documentreader" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Grammar</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3473,8 +3475,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="https://learn.microsoft.com/en-us/dotnet/api/system.valuetype">ValueType</a> ⇦ DocumentReader</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3493,7 +3495,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3528,7 +3530,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3563,91 +3565,91 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="documentreaderlexer">DocumentReader(Lexer)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="documentreaderlexer">DocumentReader(Lexer)<a class="headerlink" href="#documentreaderlexer" title="Permanent link"></a></h4>
 <p>Reads elements and associated attributes from a StarML document (content string).</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">DocumentReader</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">Lexer</span><span class="w"> </span><span class="n">lexer</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>lexer</code></strong> &nbsp; <a href="../lexer/">Lexer</a><br />
 The lexer that reads syntax tokens from the document.</p>
 <hr />
-<h4 id="documentreaderreadonlyspanchar">DocumentReader(ReadOnlySpan&lt;Char&gt;)</h4>
+<h4 id="documentreaderreadonlyspanchar">DocumentReader(ReadOnlySpan&lt;Char&gt;)<a class="headerlink" href="#documentreaderreadonlyspanchar" title="Permanent link"></a></h4>
 <p>Initializes a new <a href="./">DocumentReader</a> from the specified text, creating an implicit lexer.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">DocumentReader</span><span class="p">(</span><span class="n">ReadOnlySpan</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Char</span><span class="o">&gt;</span><span class="w"> </span><span class="n">text</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>text</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.char">Char</a>&gt;<br />
 The markup text.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="argument">Argument</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="argument">Argument<a class="headerlink" href="#argument" title="Permanent link"></a></h4>
 <p>The argument that was just read, if the previous <a href="./#nextargument">NextArgument()</a> returned <code>true</code>; otherwise, an empty argument.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">Argument</span><span class="w"> </span><span class="n">Argument</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="../argument/">Argument</a></p>
 <hr />
-<h4 id="attribute">Attribute</h4>
+<h4 id="attribute">Attribute<a class="headerlink" href="#attribute" title="Permanent link"></a></h4>
 <p>The attribute that was just read, if the previous <a href="./#nextmember">NextMember()</a> returned <a href="../tagmember/#attribute">Attribute</a>; otherwise, an empty attribute.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">Attribute</span><span class="w"> </span><span class="n">Attribute</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../attribute/">Attribute</a></p>
 <hr />
-<h4 id="eof">Eof</h4>
+<h4 id="eof">Eof<a class="headerlink" href="#eof" title="Permanent link"></a></h4>
 <p>Whether the end of the document has been reached.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">Eof</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h4 id="event">Event</h4>
+<h4 id="event">Event<a class="headerlink" href="#event" title="Permanent link"></a></h4>
 <p>The event that was just read, if the previous <a href="./#nextmember">NextMember()</a> returned <a href="../tagmember/#event">Event</a>; otherwise, an empty event.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">Event</span><span class="w"> </span><span class="n">Event</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../event/">Event</a></p>
 <hr />
-<h4 id="position">Position</h4>
+<h4 id="position">Position<a class="headerlink" href="#position" title="Permanent link"></a></h4>
 <p>The current position in the document content.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">Position</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a></p>
 <hr />
-<h4 id="tag">Tag</h4>
+<h4 id="tag">Tag<a class="headerlink" href="#tag" title="Permanent link"></a></h4>
 <p>The tag that was just read, if the previous <a href="./#nexttag">NextTag()</a> returned <code>true</code>; otherwise, an empty tag.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">TagInfo</span><span class="w"> </span><span class="n">Tag</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_5">Property Value</h5>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="../taginfo/">TagInfo</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>The tag remains valid as attributes are read; i.e. <code>ReadNextAttribute(AttributeType, ReadOnlySpan&lt;Char&gt;)</code> will never change this value.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="nextargument">NextArgument()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="nextargument">NextArgument()<a class="headerlink" href="#nextargument" title="Permanent link"></a></h4>
 <p>Reads the next <a href="./#argument">Argument</a>, if the current scope is within an argument list.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">NextArgument</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if an argument was read; <code>false</code> if there are no more arguments in the list or if the current position was not within an argument list.</p>
 <hr />
-<h4 id="nextmember">NextMember()</h4>
+<h4 id="nextmember">NextMember()<a class="headerlink" href="#nextmember" title="Permanent link"></a></h4>
 <p>Reads the next <a href="./#attribute">Attribute</a>. Only valid in a tag scope, i.e. after a call to <a href="./#nexttag">NextTag()</a> returns <code>true</code>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">TagMember</span><span class="w"> </span><span class="n">NextMember</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../tagmember/">TagMember</a></p>
 <p><code>true</code> if an attribute was read; <code>false</code> if there are no more attributes to read for the current element.</p>
 <hr />
-<h4 id="nexttag">NextTag()</h4>
+<h4 id="nexttag">NextTag()<a class="headerlink" href="#nexttag" title="Permanent link"></a></h4>
 <p>Reads the next <a href="./#tag">Tag</a>, discarding any remaining attributes for the current tag.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">NextTag</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_2">Returns</h5>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if an attribute was read; <code>false</code> if the end of the document was reached.</p>
 <hr />

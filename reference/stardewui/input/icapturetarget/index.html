@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2229,8 +2231,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-icapturetarget">Interface ICaptureTarget</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-icapturetarget">Interface ICaptureTarget<a class="headerlink" href="#interface-icapturetarget" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Input</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2238,10 +2240,10 @@ Assembly: StardewUI.dll  </p>
 <p>Denotes a view or other UI element that can be the active IKeyboardSubscriber. Allows view hosts to provide deterministic release, e.g. when the mouse is clicked outside the target.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">ICaptureTarget</span>
 </span></code></pre></div>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>This is primarily intended to work by checking if the Subscriber implements this interface, and if it's <a href="./#capturingview">CapturingView</a> belongs to the current click/focus tree. To work correctly, both of these conditions must be met.</p>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2256,7 +2258,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2271,17 +2273,17 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="capturingview">CapturingView</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="capturingview">CapturingView<a class="headerlink" href="#capturingview" title="Permanent link"></a></h4>
 <p>The view that initiated the capturing. May be the same object as the <a href="./">ICaptureTarget</a>, or may be the "owner" of a hidden TextBox or other IKeyboardSubscriber.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">CapturingView</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="../../iview/">IView</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="releasecapture">ReleaseCapture()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="releasecapture">ReleaseCapture()<a class="headerlink" href="#releasecapture" title="Permanent link"></a></h4>
 <p>Stops input capturing from this target.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">ReleaseCapture</span><span class="p">();</span>
 </span></code></pre></div>

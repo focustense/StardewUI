@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2367,8 +2369,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-actionstatet">Class ActionState&lt;T&gt;</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-actionstatet">Class ActionState&lt;T&gt;<a class="headerlink" href="#class-actionstatet" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Input</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2376,13 +2378,13 @@ Assembly: StardewUI.dll  </p>
 <p>Translates raw input to semantic actions.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ActionState</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span>
 </span></code></pre></div>
-<h3 id="type-parameters">Type Parameters</h3>
+<h3 id="type-parameters">Type Parameters<a class="headerlink" href="#type-parameters" title="Permanent link"></a></h3>
 <p><strong><code>T</code></strong><br />
 The semantic action type.</p>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ActionState&lt;T&gt;</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2397,7 +2399,7 @@ The semantic action type.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2440,24 +2442,24 @@ The semantic action type.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="actionstatetactionrepeat-bool">ActionState&lt;T&gt;(ActionRepeat, bool)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="actionstatetactionrepeat-bool">ActionState&lt;T&gt;(ActionRepeat, bool)<a class="headerlink" href="#actionstatetactionrepeat-bool" title="Permanent link"></a></h4>
 <p>Translates raw input to semantic actions.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="n">ActionState</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">defaultRepeat</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">defaultSuppress</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>defaultRepeat</code></strong> &nbsp; <a href="../actionrepeat/">ActionRepeat</a><br />
 Default repetition settings for registered actions that do not specify one.</p>
 <p><strong><code>defaultSuppress</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 Whether registered actions should, by default, suppress the normal game behavior for any buttons in their active keybinds. Individual registrations can override this setting.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="bindsbutton-t-actionrepeat-bool">Bind(SButton, T, ActionRepeat, bool?)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="bindsbutton-t-actionrepeat-bool">Bind(SButton, T, ActionRepeat, bool?)<a class="headerlink" href="#bindsbutton-t-actionrepeat-bool" title="Permanent link"></a></h4>
 <p>Binds an action to a single button.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionState</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Bind</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="w"> </span><span class="n">button</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">repeat</span><span class="p">,</span><span class="w"> </span><span class="kt">bool?</span><span class="w"> </span><span class="n">suppress</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>button</code></strong> &nbsp; SButton<br />
 The bound button.</p>
 <p><strong><code>action</code></strong> &nbsp; T<br />
@@ -2466,15 +2468,15 @@ The action to activate.</p>
 Repeat behavior for this binding, if not using the default setting.</p>
 <p><strong><code>suppress</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a>&gt;<br />
 Input suppression behavior for this binding, if not using the default setting.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="./">ActionState&lt;T&gt;</a></p>
 <p>The current instance.</p>
 <hr />
-<h4 id="bindireadonlylistsbutton-t-actionrepeat-bool">Bind(IReadOnlyList&lt;SButton&gt;, T, ActionRepeat, bool)</h4>
+<h4 id="bindireadonlylistsbutton-t-actionrepeat-bool">Bind(IReadOnlyList&lt;SButton&gt;, T, ActionRepeat, bool)<a class="headerlink" href="#bindireadonlylistsbutton-t-actionrepeat-bool" title="Permanent link"></a></h4>
 <p>Binds an action to several individual buttons.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionState</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Bind</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">buttons</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">repeat</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">suppress</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>buttons</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a><SButton><br />
 List of buttons which will each trigger the associated <code>action</code>.</p>
 <p><strong><code>action</code></strong> &nbsp; T<br />
@@ -2483,17 +2485,17 @@ The action to activate.</p>
 Repeat behavior for this binding, if not using the default setting.</p>
 <p><strong><code>suppress</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 Input suppression behavior for this binding, if not using the default setting.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="./">ActionState&lt;T&gt;</a></p>
 <p>The current instance.</p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>The <code>buttons</code> are not treated as a single keybind; each individual SButton will independently trigger the <code>action</code>.</p>
 <hr />
-<h4 id="bindkeybind-t-actionrepeat-bool">Bind(Keybind, T, ActionRepeat, bool?)</h4>
+<h4 id="bindkeybind-t-actionrepeat-bool">Bind(Keybind, T, ActionRepeat, bool?)<a class="headerlink" href="#bindkeybind-t-actionrepeat-bool" title="Permanent link"></a></h4>
 <p>Binds an action to a button combination.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionState</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Bind</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">Utilities</span><span class="p">.</span><span class="n">Keybind</span><span class="w"> </span><span class="n">keybind</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">repeat</span><span class="p">,</span><span class="w"> </span><span class="kt">bool?</span><span class="w"> </span><span class="n">suppress</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_3">Parameters</h5>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>keybind</code></strong> &nbsp; Keybind<br />
 Keybind containing buttons that must be simultaneously pressed.</p>
 <p><strong><code>action</code></strong> &nbsp; T<br />
@@ -2502,15 +2504,15 @@ The action to activate.</p>
 Repeat behavior for this binding, if not using the default setting.</p>
 <p><strong><code>suppress</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a>&gt;<br />
 Input suppression behavior for this binding, if not using the default setting.</p>
-<h5 id="returns_2">Returns</h5>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="./">ActionState&lt;T&gt;</a></p>
 <p>The current instance.</p>
 <hr />
-<h4 id="bindireadonlylistkeybind-t-actionrepeat-bool">Bind(IReadOnlyList&lt;Keybind&gt;, T, ActionRepeat, bool?)</h4>
+<h4 id="bindireadonlylistkeybind-t-actionrepeat-bool">Bind(IReadOnlyList&lt;Keybind&gt;, T, ActionRepeat, bool?)<a class="headerlink" href="#bindireadonlylistkeybind-t-actionrepeat-bool" title="Permanent link"></a></h4>
 <p>Binds an action to several button combinations.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionState</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Bind</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">Utilities</span><span class="p">.</span><span class="n">Keybind</span><span class="o">&gt;</span><span class="w"> </span><span class="n">keybinds</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">repeat</span><span class="p">,</span><span class="w"> </span><span class="kt">bool?</span><span class="w"> </span><span class="n">suppress</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_4">Parameters</h5>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>keybinds</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a><Keybind><br />
 List of keybinds each of whose button combinations will trigger the associated <code>action</code>.</p>
 <p><strong><code>action</code></strong> &nbsp; T<br />
@@ -2519,15 +2521,15 @@ The action to activate.</p>
 Repeat behavior for this binding, if not using the default setting.</p>
 <p><strong><code>suppress</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a>&gt;<br />
 Input suppression behavior for this binding, if not using the default setting.</p>
-<h5 id="returns_3">Returns</h5>
+<h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="./">ActionState&lt;T&gt;</a></p>
 <p>The current instance.</p>
 <hr />
-<h4 id="bindkeybindlist-t-actionrepeat-bool">Bind(KeybindList, T, ActionRepeat, bool?)</h4>
+<h4 id="bindkeybindlist-t-actionrepeat-bool">Bind(KeybindList, T, ActionRepeat, bool?)<a class="headerlink" href="#bindkeybindlist-t-actionrepeat-bool" title="Permanent link"></a></h4>
 <p>Binds an action to all keybinds in a KeybindList.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionState</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Bind</span><span class="p">(</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">Utilities</span><span class="p">.</span><span class="n">KeybindList</span><span class="w"> </span><span class="n">keybindList</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">action</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">ActionRepeat</span><span class="w"> </span><span class="n">repeat</span><span class="p">,</span><span class="w"> </span><span class="kt">bool?</span><span class="w"> </span><span class="n">suppress</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_5">Parameters</h5>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>keybindList</code></strong> &nbsp; KeybindList<br />
 List of all keybinds that should trigger the <code>action</code>.</p>
 <p><strong><code>action</code></strong> &nbsp; T<br />
@@ -2536,39 +2538,39 @@ The action to activate.</p>
 Repeat behavior for this binding, if not using the default setting.</p>
 <p><strong><code>suppress</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a>&gt;<br />
 Input suppression behavior for this binding, if not using the default setting.</p>
-<h5 id="returns_4">Returns</h5>
+<h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="./">ActionState&lt;T&gt;</a></p>
 <p>The current instance.</p>
 <hr />
-<h4 id="getcontrollerbindingst">GetControllerBindings(T)</h4>
+<h4 id="getcontrollerbindingst">GetControllerBindings(T)<a class="headerlink" href="#getcontrollerbindingst" title="Permanent link"></a></h4>
 <p>Gets all controller bindings associated with a given action.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">Utilities</span><span class="p">.</span><span class="n">Keybind</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetControllerBindings</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_6">Parameters</h5>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>action</code></strong> &nbsp; T<br />
 The action to look up.</p>
-<h5 id="returns_5">Returns</h5>
+<h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a><Keybind></p>
 <p>A sequence of Keybind elements that perform the specified <code>action</code> and use at least one controller button.</p>
 <hr />
-<h4 id="getcurrentactions">GetCurrentActions()</h4>
+<h4 id="getcurrentactions">GetCurrentActions()<a class="headerlink" href="#getcurrentactions" title="Permanent link"></a></h4>
 <p>Gets the actions that should be run right now, either because one of the triggering buttons/combinations was just pressed, or because it was held and is due to repeat.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetCurrentActions</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_6">Returns</h5>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a></p>
 <p>Sequence of actions that should be handled this frame.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Current actions reset on every frame regardless of whether the actions were "handled". Code that reads from <code>GetCurrentActions</code> should generally do so at the end of an update tick, e.g. in SMAPI's UpdateTicked event.</p>
 <hr />
-<h4 id="getkeyboardbindingst">GetKeyboardBindings(T)</h4>
+<h4 id="getkeyboardbindingst">GetKeyboardBindings(T)<a class="headerlink" href="#getkeyboardbindingst" title="Permanent link"></a></h4>
 <p>Gets all keyboard bindings associated with a given action.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">Utilities</span><span class="p">.</span><span class="n">Keybind</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetKeyboardBindings</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">action</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_7">Parameters</h5>
+<h5 id="parameters_7">Parameters<a class="headerlink" href="#parameters_7" title="Permanent link"></a></h5>
 <p><strong><code>action</code></strong> &nbsp; T<br />
 The action to look up.</p>
-<h5 id="returns_7">Returns</h5>
+<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a><Keybind></p>
 <p>A sequence of Keybind elements that perform the specified <code>action</code> and use at least one keyboard key.</p>
 <hr />

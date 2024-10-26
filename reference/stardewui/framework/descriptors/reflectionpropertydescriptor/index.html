@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Helper for creating ReflectionPropertyDescriptor`2 with types not known at compile time.">
+        <meta name="description" content="Helper for creating ReflectionPropertyDescriptor&lt;T, TValue&gt; with types not known at compile time.">
       
       
       
@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -65,7 +67,7 @@
       
         <meta  property="og:title"  content="ReflectionPropertyDescriptor - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="Helper for creating ReflectionPropertyDescriptor`2 with types not known at compile time." >
+        <meta  property="og:description"  content="Helper for creating ReflectionPropertyDescriptor&lt;T, TValue&gt; with types not known at compile time." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/descriptors/reflectionpropertydescriptor.png" >
       
@@ -81,7 +83,7 @@
       
         <meta  name="twitter:title"  content="ReflectionPropertyDescriptor - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="Helper for creating ReflectionPropertyDescriptor`2 with types not known at compile time." >
+        <meta  name="twitter:description"  content="Helper for creating ReflectionPropertyDescriptor&lt;T, TValue&gt; with types not known at compile time." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/descriptors/reflectionpropertydescriptor.png" >
       
@@ -3332,8 +3334,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-reflectionpropertydescriptor">Class ReflectionPropertyDescriptor</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-reflectionpropertydescriptor">Class ReflectionPropertyDescriptor<a class="headerlink" href="#class-reflectionpropertydescriptor" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Descriptors</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3343,8 +3345,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ ReflectionPropertyDescriptor</p>
-<h2 id="members">Members</h2>
-<h3 id="methods">Methods</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3359,16 +3361,16 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="methods_1">Methods</h3>
-<h4 id="frompropertyinfopropertyinfo">FromPropertyInfo(PropertyInfo)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="frompropertyinfopropertyinfo">FromPropertyInfo(PropertyInfo)<a class="headerlink" href="#frompropertyinfopropertyinfo" title="Permanent link"></a></h4>
 <p>Creates a binding property from reflected property.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">FromPropertyInfo</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Reflection</span><span class="p">.</span><span class="n">PropertyInfo</span><span class="w"> </span><span class="n">propertyInfo</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>propertyInfo</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.reflection.propertyinfo">PropertyInfo</a><br />
 The reflected property info.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../ipropertydescriptor/">IPropertyDescriptor</a></p>
 <p>A binding property of type <a href="../reflectionpropertydescriptor-2/">ReflectionPropertyDescriptor&lt;T, TValue&gt;</a>, whose generic arguments are the property's <a href="https://learn.microsoft.com/en-us/dotnet/api/system.reflection.memberinfo.declaringtype">DeclaringType</a> and <a href="https://learn.microsoft.com/en-us/dotnet/api/system.reflection.propertyinfo.propertytype">PropertyType</a>, respectively.</p>
 <hr />

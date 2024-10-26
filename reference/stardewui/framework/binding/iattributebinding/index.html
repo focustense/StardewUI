@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3536,8 +3538,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-iattributebinding">Interface IAttributeBinding</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-iattributebinding">Interface IAttributeBinding<a class="headerlink" href="#interface-iattributebinding" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Binding</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3547,11 +3549,11 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Implements</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Encapsulates the source of the value and provides a method to update the target view if the value has changed. </p>
 <p>This is primarily for internal use, as a way of tracking fine-grained changes to views instead of having to rebind the entire view when anything changes.</p>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3570,7 +3572,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3589,46 +3591,46 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="destinationpropertyname">DestinationPropertyName</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="destinationpropertyname">DestinationPropertyName<a class="headerlink" href="#destinationpropertyname" title="Permanent link"></a></h4>
 <p>The name of the bound property on the destination view.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">DestinationPropertyName</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
-<h4 id="direction">Direction</h4>
+<h4 id="direction">Direction<a class="headerlink" href="#direction" title="Permanent link"></a></h4>
 <p>The data flow direction for this binding.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingDirection</span><span class="w"> </span><span class="n">Direction</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../bindingdirection/">BindingDirection</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="updatesourceiview">UpdateSource(IView)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="updatesourceiview">UpdateSource(IView)<a class="headerlink" href="#updatesourceiview" title="Permanent link"></a></h4>
 <p>Updates the source to match the view's current value.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">UpdateSource</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>target</code></strong> &nbsp; <a href="../../../iview/">IView</a><br />
 The bound view.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Allowed when the <a href="./#direction">Direction</a> is either <a href="../bindingdirection/#out">Out</a> or <a href="../bindingdirection/#inout">InOut</a>.</p>
 <hr />
-<h4 id="updateviewiview-bool">UpdateView(IView, bool)</h4>
+<h4 id="updateviewiview-bool">UpdateView(IView, bool)<a class="headerlink" href="#updateviewiview-bool" title="Permanent link"></a></h4>
 <p>Updates a target view with the most recent source value.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">UpdateView</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">force</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>target</code></strong> &nbsp; <a href="../../../iview/">IView</a><br />
 The view to receive the update.</p>
 <p><strong><code>force</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 If <code>true</code>, always re-publishes the latest value to the view even if the source value has not changed. Typically used for initial updates immediately after creation.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the view was updated; <code>false</code> if the update was skipped because the source value had not changed.</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>Allowed when the <a href="./#direction">Direction</a> is either <a href="../bindingdirection/#in">In</a> or <a href="../bindingdirection/#inout">InOut</a>.</p>
 <hr />
 </div>

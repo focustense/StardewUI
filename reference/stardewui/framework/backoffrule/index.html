@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -3051,8 +3053,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-backoffrule">Class BackoffRule</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-backoffrule">Class BackoffRule<a class="headerlink" href="#class-backoffrule" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3062,8 +3064,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ BackoffRule</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3078,7 +3080,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="fields">Fields</h3>
+<h3 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3093,7 +3095,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3108,7 +3110,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3123,13 +3125,13 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="backoffruletimespan-timespan-float">BackoffRule(TimeSpan, TimeSpan, float)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="backoffruletimespan-timespan-float">BackoffRule(TimeSpan, TimeSpan, float)<a class="headerlink" href="#backoffruletimespan-timespan-float" title="Permanent link"></a></h4>
 <p>Defines the rules for exponential backoff.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">BackoffRule</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">initialDuration</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">maxDuration</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">multiplier</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>initialDuration</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
 Duration to wait before the first retry attempt.</p>
 <p><strong><code>maxDuration</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
@@ -3137,33 +3139,33 @@ Maximum duration to wait before any retry attempt; i.e. no matter how many retri
 <p><strong><code>multiplier</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 Amount to multiply the current duration on each subsequent retry, starting from <code>initialDuration</code> and going no higher than <code>maxDuration</code>.</p>
 <hr />
-<h3 id="fields_1">Fields</h3>
-<h4 id="default">Default</h4>
+<h3 id="fields_1">Fields<a class="headerlink" href="#fields_1" title="Permanent link"></a></h3>
+<h4 id="default">Default<a class="headerlink" href="#default" title="Permanent link"></a></h4>
 <p>Standard backoff rule deemed suitable for most types of UI retries.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">BackoffRule</span><span class="w"> </span><span class="n">Default</span><span class="p">;</span>
 </span></code></pre></div>
-<h5 id="field-value">Field Value</h5>
+<h5 id="field-value">Field Value<a class="headerlink" href="#field-value" title="Permanent link"></a></h5>
 <p><a href="./">BackoffRule</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Uses an initial delay of 50 ms, maximum delay of 5 s, and multiplier of 4.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="initialduration">InitialDuration</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="initialduration">InitialDuration<a class="headerlink" href="#initialduration" title="Permanent link"></a></h4>
 <p>Gets the duration to wait before the first retry attempt.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">InitialDuration</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="getnextdurationtimespan">GetNextDuration(TimeSpan)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="getnextdurationtimespan">GetNextDuration(TimeSpan)<a class="headerlink" href="#getnextdurationtimespan" title="Permanent link"></a></h4>
 <p>Gets the duration to wait before the next retry attempt.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">GetNextDuration</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">previousDuration</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>previousDuration</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
 The wait duration that was used on the previous attempt.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a></p>
 <hr />
 </div>

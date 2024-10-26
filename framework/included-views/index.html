@@ -48,6 +48,8 @@
       
     
     
+      <link rel="stylesheet" href="../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../stylesheets/styles.css">
@@ -1027,7 +1029,7 @@
   
 
 
-<h1 id="included-views">Included Views</h1>
+<h1 id="included-views">Included Views<a class="headerlink" href="#included-views" title="Permanent link"></a></h1>
 <p>StardewUI enables you to use any view within another view. This can be useful in a number of situations, for example:</p>
 <ul>
 <li>Creating reusable "building blocks" to use in multiple views;</li>
@@ -1036,7 +1038,7 @@
 <li>Enabling other mods to more easily or safely customize your own UI.</li>
 </ul>
 <p>All of these are supported by the <code>&lt;include&gt;</code> tag, which is a special kind of tag that does not have its own view; instead, it behaves similarly to a <a href="../starml/#structural-attributes">structural attribute</a>.</p>
-<h2 id="usage">Usage</h2>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
 <div class="language-html highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">&lt;</span><span class="nt">include</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;...&quot;</span> <span class="p">/&gt;</span>
 </span></code></pre></div>
 <p>Include tags are are written in <a href="../starml/">StarML</a> like any other tags, but don't use the <a href="../starml/#common-attributes">common attributes</a>. Instead, the attributes supported are:</p>
@@ -1079,7 +1081,7 @@
 </div>
 </div>
 </div>
-<h2 id="detailed-example">Detailed Example</h2>
+<h2 id="detailed-example">Detailed Example<a class="headerlink" href="#detailed-example" title="Permanent link"></a></h2>
 <p>Consider a UI similar to Stardew's main menu, with many different tabs that all perform entirely different functions. While this won't be a guide to patching the actual, vanilla main menu (StardewUI is indifferent to vanilla UI, and seamless integration is an explicit non-goal of the project), we will show that not only is it easy to build a similar UI, but it is easy to build it in such a way that it is <em>extensible</em>, with straightforward hooks for other mods to add their own pages.</p>
 <p>This example is aimed at demonstrating how to use includes, so it will intentionally omit many of the visual styles, borders, backgrounds, etc. that are associated with tabbed UI, but there are other <a href="../../examples/">examples</a> of how to create the visual look and feel. For conciseness, default values and other validation concerns are also omitted.</p>
 <p>Note: This uses <a href="https://github.com/canton7/PropertyChanged.SourceGenerator">PropertyChanged.SourceGenerator</a> to provide change notifications, as described in the <a href="../binding-context/">Binding Context</a> guide.</p>

@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -1871,7 +1873,7 @@
         
   
   <span class="md-ellipsis">
-    Xelubuttonspritemap
+    XeluButtonSpriteMap
   </span>
   
 
@@ -2511,8 +2513,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-sprite">Class Sprite</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-sprite">Class Sprite<a class="headerlink" href="#class-sprite" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Graphics</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2524,8 +2526,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ Sprite</p>
 <p><strong>Implements</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a href="./">Sprite</a>&gt;</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2540,7 +2542,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2555,7 +2557,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 <tr>
 <td><a href="#fixededges">FixedEdges</a></td>
-<td>The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See . for a detailed explanation.</td>
+<td>The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See <a href="https://en.wikipedia.org/wiki/9-slice_scaling">Nine-Slice Scaling</a> for a detailed explanation.</td>
 </tr>
 <tr>
 <td><a href="#size">Size</a></td>
@@ -2575,62 +2577,62 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="spritetexture2d-rectangle-edges-slicesettings">Sprite(Texture2D, Rectangle?, Edges, SliceSettings)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="spritetexture2d-rectangle-edges-slicesettings">Sprite(Texture2D, Rectangle?, Edges, SliceSettings)<a class="headerlink" href="#spritetexture2d-rectangle-edges-slicesettings" title="Permanent link"></a></h4>
 <p>Definition for a scalable sprite.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">Sprite</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Texture2D</span><span class="w"> </span><span class="n">Texture</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="o">?</span><span class="w"> </span><span class="n">SourceRect</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Edges</span><span class="w"> </span><span class="n">FixedEdges</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SliceSettings</span><span class="w"> </span><span class="n">SliceSettings</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>Texture</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html">Texture2D</a><br />
 The texture containing the sprite's pixel data.</p>
 <p><strong><code>SourceRect</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a>&gt;<br />
 The inner area of the <code>Texture</code> in which the specific image is located, or <code>null</code> to draw the entire texture.</p>
 <p><strong><code>FixedEdges</code></strong> &nbsp; <a href="../../layout/edges/">Edges</a><br />
-The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See . for a detailed explanation.</p>
+The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See <a href="https://en.wikipedia.org/wiki/9-slice_scaling">Nine-Slice Scaling</a> for a detailed explanation.</p>
 <p><strong><code>SliceSettings</code></strong> &nbsp; <a href="../slicesettings/">SliceSettings</a><br />
 Additional settings for the scaling and slicing behavior.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="equalitycontract">EqualityContract</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="equalitycontract">EqualityContract<a class="headerlink" href="#equalitycontract" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">EqualityContract</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h4 id="fixededges">FixedEdges</h4>
-<p>The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See . for a detailed explanation.</p>
+<h4 id="fixededges">FixedEdges<a class="headerlink" href="#fixededges" title="Permanent link"></a></h4>
+<p>The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See <a href="https://en.wikipedia.org/wiki/9-slice_scaling">Nine-Slice Scaling</a> for a detailed explanation.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Edges</span><span class="w"> </span><span class="n">FixedEdges</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../../layout/edges/">Edges</a></p>
 <hr />
-<h4 id="size">Size</h4>
+<h4 id="size">Size<a class="headerlink" href="#size" title="Permanent link"></a></h4>
 <p>The size (width/height) of the sprite, in pixels.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">Size</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a></p>
 <hr />
-<h4 id="slicesettings">SliceSettings</h4>
+<h4 id="slicesettings">SliceSettings<a class="headerlink" href="#slicesettings" title="Permanent link"></a></h4>
 <p>Additional settings for the scaling and slicing behavior.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SliceSettings</span><span class="w"> </span><span class="n">SliceSettings</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../slicesettings/">SliceSettings</a></p>
 <hr />
-<h4 id="sourcerect">SourceRect</h4>
+<h4 id="sourcerect">SourceRect<a class="headerlink" href="#sourcerect" title="Permanent link"></a></h4>
 <p>The inner area of the <code>Texture</code> in which the specific image is located, or <code>null</code> to draw the entire texture.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="o">?</span><span class="w"> </span><span class="n">SourceRect</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a>&gt;</p>
 <hr />
-<h4 id="texture">Texture</h4>
+<h4 id="texture">Texture<a class="headerlink" href="#texture" title="Permanent link"></a></h4>
 <p>The texture containing the sprite's pixel data.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Texture2D</span><span class="w"> </span><span class="n">Texture</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_5">Property Value</h5>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html">Texture2D</a></p>
 <hr />
 </div>

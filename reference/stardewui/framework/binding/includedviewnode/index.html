@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3656,8 +3658,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-includedviewnode">Class IncludedViewNode</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-includedviewnode">Class IncludedViewNode<a class="headerlink" href="#class-includedviewnode" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Binding</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3670,8 +3672,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ IncludedViewNode</p>
 <p><strong>Implements</strong><br />
 <a href="../iviewnode/">IViewNode</a>, <a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3686,7 +3688,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3709,7 +3711,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3740,13 +3742,13 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute">IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute">IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)<a class="headerlink" href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute" title="Permanent link"></a></h4>
 <p>Quasi-structural node that loads its content from a shared game asset.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">IncludedViewNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCache</span><span class="w"> </span><span class="n">assetCache</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">Document</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nodeCreator</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">assetNameAttribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">contextAttribute</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a></p>
 <p><strong><code>valueConverterFactory</code></strong> &nbsp; <a href="../../converters/ivalueconverterfactory/">IValueConverterFactory</a></p>
 <p><strong><code>assetCache</code></strong> &nbsp; <a href="../../content/iassetcache/">IAssetCache</a></p>
@@ -3754,67 +3756,67 @@ Assembly: StardewUI.dll  </p>
 <p><strong><code>assetNameAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a></p>
 <p><strong><code>contextAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a></p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="childnodes">ChildNodes</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="childnodes">ChildNodes<a class="headerlink" href="#childnodes" title="Permanent link"></a></h4>
 <p>The children of this node.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ChildNodes</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="../iviewnode/">IViewNode</a>&gt;</p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Node children represent views in potentia. Every DOM node maps to (at least) one <a href="../iviewnode/">IViewNode</a>, but views are created lazily and may not exist for nodes with conditional attributes or other rules.</p>
 <hr />
-<h4 id="context">Context</h4>
+<h4 id="context">Context<a class="headerlink" href="#context" title="Permanent link"></a></h4>
 <p>The currently-bound context data, used as the source for any <a href="../../grammar/attributevaluetype/#inputbinding">InputBinding</a>, <a href="../../grammar/attributevaluetype/#onetimebinding">OneTimeBinding</a>, <a href="../../grammar/attributevaluetype/#outputbinding">OutputBinding</a> or <a href="../../grammar/attributevaluetype/#twowaybinding">TwoWayBinding</a> attributes.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">Context</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../bindingcontext/">BindingContext</a></p>
 <hr />
-<h4 id="views">Views</h4>
+<h4 id="views">Views<a class="headerlink" href="#views" title="Permanent link"></a></h4>
 <p>The views for this node, if any have been created.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Views</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="../../../iview/">IView</a>&gt;</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="dispose">Dispose()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="dispose">Dispose()<a class="headerlink" href="#dispose" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Dispose</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h4 id="printstringbuilder-bool">Print(StringBuilder, bool)</h4>
+<h4 id="printstringbuilder-bool">Print(StringBuilder, bool)<a class="headerlink" href="#printstringbuilder-bool" title="Permanent link"></a></h4>
 <p>Prints the string representation of this node.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Print</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">StringBuilder</span><span class="w"> </span><span class="n">sb</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">includeChildren</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>sb</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.text.stringbuilder">StringBuilder</a><br />
 The output builder to receive to the node's text.</p>
 <p><strong><code>includeChildren</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 Whether or not to include the string representation of any/all child nodes between this node's opening and close tags. If this is <code>false</code> or there are no children, it will be formatted as a self-closing tag.</p>
 <hr />
-<h4 id="reset">Reset()</h4>
+<h4 id="reset">Reset()<a class="headerlink" href="#reset" title="Permanent link"></a></h4>
 <p>Clears any <a href="../iviewnode/#views">Views</a> associated with this node and resets it to the default state before it was bound.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Reset</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Propagates the request down to <a href="../iviewnode/#childnodes">ChildNodes</a>, but is not required to clear <a href="../iviewnode/#childnodes">ChildNodes</a> and does not affect the <a href="../iviewnode/#context">Context</a> assignment. </p>
 <p>This is used to "unbind" the target of a structural node like <a href="../conditionalnode/">ConditionalNode</a> and in some cases prepare it for subsequent reuse.</p>
 <hr />
-<h4 id="tostring">ToString()</h4>
+<h4 id="tostring">ToString()<a class="headerlink" href="#tostring" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">ToString</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
-<h4 id="updatetimespan">Update(TimeSpan)</h4>
+<h4 id="updatetimespan">Update(TimeSpan)<a class="headerlink" href="#updatetimespan" title="Permanent link"></a></h4>
 <p>Performs the regular per-frame update for this node.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters</h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>elapsed</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
 Time elapsed since last update.</p>
-<h5 id="returns_1">Returns</h5>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if any aspect of the view tree from this level downward was changed, i.e. as a result of a new <a href="../iviewnode/#context">Context</a>, changed context properties, invalidated assets, or the <a href="../../../view/">View</a> being created for the first time; <code>false</code> if no changes were made.</p>
 <hr />

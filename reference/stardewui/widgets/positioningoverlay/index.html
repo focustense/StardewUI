@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -3035,8 +3037,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-positioningoverlay">Class PositioningOverlay</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-positioningoverlay">Class PositioningOverlay<a class="headerlink" href="#class-positioningoverlay" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Widgets</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3046,10 +3048,10 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="../../overlays/fullscreenoverlay/">FullScreenOverlay</a> ⇦ PositioningOverlay</p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Note that the widget only provides a means to visually/interactively obtain a new position, similar to e.g. obtaining a text string from a modal input query. It is up to the caller to persist the resulting <a href="./#contentplacement">ContentPlacement</a> to configuration and determine how to actually position the content in its usual context (e.g. game HUD).</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3064,7 +3066,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3127,7 +3129,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3154,7 +3156,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="events">Events</h3>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3169,57 +3171,57 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="positioningoverlayispritemapsbutton-ispritemapdirection">PositioningOverlay(ISpriteMap&lt;SButton&gt;, ISpriteMap&lt;Direction&gt;)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="positioningoverlayispritemapsbutton-ispritemapdirection">PositioningOverlay(ISpriteMap&lt;SButton&gt;, ISpriteMap&lt;Direction&gt;)<a class="headerlink" href="#positioningoverlayispritemapsbutton-ispritemapdirection" title="Permanent link"></a></h4>
 <p>An overlay that can be used to edit the position of some arbitrary content.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">PositioningOverlay</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteMap</span><span class="o">&lt;</span><span class="n">StardewModdingAPI</span><span class="p">.</span><span class="n">SButton</span><span class="o">&gt;</span><span class="w"> </span><span class="n">buttonSpriteMap</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteMap</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="o">&gt;</span><span class="w"> </span><span class="n">directionSpriteMap</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>buttonSpriteMap</code></strong> &nbsp; <a href="../../graphics/ispritemap-1/">ISpriteMap</a><SButton><br />
 Map of buttons to button prompt sprites.</p>
 <p><strong><code>directionSpriteMap</code></strong> &nbsp; <a href="../../graphics/ispritemap-1/">ISpriteMap</a>&lt;<a href="../../direction/">Direction</a>&gt;<br />
 Map of directions to directional arrow sprites; used to indicate dragging.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Note that the widget only provides a means to visually/interactively obtain a new position, similar to e.g. obtaining a text string from a modal input query. It is up to the caller to persist the resulting <a href="./#contentplacement">ContentPlacement</a> to configuration and determine how to actually position the content in its usual context (e.g. game HUD).</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="content">Content</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="content">Content<a class="headerlink" href="#content" title="Permanent link"></a></h4>
 <p>The content that is being positioned.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">Content</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="../../iview/">IView</a></p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>This is normally a "representative" version of the real content, as the true HUD widget or other element may not exist or have its properties known at configuration time.</p>
 <hr />
-<h4 id="contentplacement">ContentPlacement</h4>
+<h4 id="contentplacement">ContentPlacement<a class="headerlink" href="#contentplacement" title="Permanent link"></a></h4>
 <p>Current placement of the <a href="./#content">Content</a> within the viewport.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">NineGridPlacement</span><span class="w"> </span><span class="n">ContentPlacement</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../../layout/ninegridplacement/">NineGridPlacement</a></p>
 <hr />
-<h4 id="gamepadcontrols">GamepadControls</h4>
+<h4 id="gamepadcontrols">GamepadControls<a class="headerlink" href="#gamepadcontrols" title="Permanent link"></a></h4>
 <p>The control scheme to use when positioning with a gamepad.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Widgets</span><span class="p">.</span><span class="n">PositioningOverlay</span><span class="p">.</span><span class="n">GamepadControlScheme</span><span class="w"> </span><span class="n">GamepadControls</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="../positioningoverlay.gamepadcontrolscheme/">GamepadControlScheme</a></p>
 <hr />
-<h4 id="keyboardcontrols">KeyboardControls</h4>
+<h4 id="keyboardcontrols">KeyboardControls<a class="headerlink" href="#keyboardcontrols" title="Permanent link"></a></h4>
 <p>The control scheme to use when positioning with keyboard/mouse.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Widgets</span><span class="p">.</span><span class="n">PositioningOverlay</span><span class="p">.</span><span class="n">ControlScheme</span><span class="w"> </span><span class="n">KeyboardControls</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../positioningoverlay.controlscheme/">ControlScheme</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="createview">CreateView()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="createview">CreateView()<a class="headerlink" href="#createview" title="Permanent link"></a></h4>
 <p>Creates the content view that will be displayed as an overlay.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">CreateView</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../iview/">IView</a></p>
 <hr />
 </div>

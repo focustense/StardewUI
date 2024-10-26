@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3482,8 +3484,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-eventbindingfactory">Class EventBindingFactory</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-eventbindingfactory">Class EventBindingFactory<a class="headerlink" href="#class-eventbindingfactory" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Binding</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3496,8 +3498,8 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ EventBindingFactory</p>
 <p><strong>Implements</strong><br />
 <a href="../ieventbindingfactory/">IEventBindingFactory</a></p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3512,7 +3514,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3527,22 +3529,22 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="eventbindingfactoryivaluesourcefactory-ivalueconverterfactory">EventBindingFactory(IValueSourceFactory, IValueConverterFactory)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="eventbindingfactoryivaluesourcefactory-ivalueconverterfactory">EventBindingFactory(IValueSourceFactory, IValueConverterFactory)<a class="headerlink" href="#eventbindingfactoryivaluesourcefactory-ivalueconverterfactory" title="Permanent link"></a></h4>
 <p>Reflection-based implementation of an <a href="../ieventbindingfactory/">IEventBindingFactory</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">EventBindingFactory</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a></p>
 <p><strong><code>valueConverterFactory</code></strong> &nbsp; <a href="../../converters/ivalueconverterfactory/">IValueConverterFactory</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="trycreatebindingiview-iviewdescriptor-ievent-bindingcontext">TryCreateBinding(IView, IViewDescriptor, IEvent, BindingContext)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="trycreatebindingiview-iviewdescriptor-ievent-bindingcontext">TryCreateBinding(IView, IViewDescriptor, IEvent, BindingContext)<a class="headerlink" href="#trycreatebindingiview-iviewdescriptor-ievent-bindingcontext" title="Permanent link"></a></h4>
 <p>Attempts to creates a new event binding.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IEventBinding</span><span class="w"> </span><span class="n">TryCreateBinding</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">view</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IViewDescriptor</span><span class="w"> </span><span class="n">viewDescriptor</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IEvent</span><span class="w"> </span><span class="k">event</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters</h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>view</code></strong> &nbsp; <a href="../../../iview/">IView</a><br />
 The view to bind to; the target that will raise the bound event.</p>
 <p><strong><code>viewDescriptor</code></strong> &nbsp; <a href="../../descriptors/iviewdescriptor/">IViewDescriptor</a><br />
@@ -3551,7 +3553,7 @@ Descriptor for the bound view, providing access to its events.</p>
 The event data.</p>
 <p><strong><code>context</code></strong> &nbsp; <a href="../bindingcontext/">BindingContext</a><br />
 The binding context, including the type descriptor and handler methods.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../ieventbinding/">IEventBinding</a></p>
 <p>The created binding, or <code>null</code> if the arguments do not support creating a binding, such as an <code>event</code> bound to a <code>null</code> value of <code>context</code>.</p>
 <hr />

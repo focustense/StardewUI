@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2181,8 +2183,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-itracewriter">Interface ITraceWriter</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-itracewriter">Interface ITraceWriter<a class="headerlink" href="#interface-itracewriter" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Diagnostics</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2190,10 +2192,10 @@ Assembly: StardewUI.dll  </p>
 <p>Abstract output writer for performance traces.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">ITraceWriter</span>
 </span></code></pre></div>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>This is an internal helper meant for use by the <a href="../trace/">Trace</a> utility and should not be used directly by mods.</p>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2208,7 +2210,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2231,35 +2233,35 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="istracing">IsTracing</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="istracing">IsTracing<a class="headerlink" href="#istracing" title="Permanent link"></a></h4>
 <p>Whether or not a trace has been started, and not yet ended.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">IsTracing</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="beginslicestring">BeginSlice(string)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="beginslicestring">BeginSlice(string)<a class="headerlink" href="#beginslicestring" title="Permanent link"></a></h4>
 <p>Begins tracking a new operation (slice).</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span><span class="w"> </span><span class="n">BeginSlice</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The name that should appear in the trace log/visualization.</p>
-<h5 id="returns">Returns</h5>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
 <p>A disposable instance which, when disposed, stops tracking this operation and records the duration it took, for subsequent writing to the trace file.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Slices must be disposed in the opposite order in which they are created, otherwise the final trace may be considered invalid.</p>
 <hr />
-<h4 id="begintrace">BeginTrace()</h4>
+<h4 id="begintrace">BeginTrace()<a class="headerlink" href="#begintrace" title="Permanent link"></a></h4>
 <p>Starts a new trace.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">BeginTrace</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h4 id="endtrace">EndTrace()</h4>
+<h4 id="endtrace">EndTrace()<a class="headerlink" href="#endtrace" title="Permanent link"></a></h4>
 <p>Ends the current trace and writes all recorded data to a new trace file in the output directory.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">EndTrace</span><span class="p">();</span>
 </span></code></pre></div>

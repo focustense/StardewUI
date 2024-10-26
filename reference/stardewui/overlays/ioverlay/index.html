@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2397,8 +2399,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-ioverlay">Interface IOverlay</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-ioverlay">Interface IOverlay<a class="headerlink" href="#interface-ioverlay" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Overlays</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2406,8 +2408,8 @@ Assembly: StardewUI.dll  </p>
 <p>Definition of an overlay - i.e. a UI element that displays over all other UI.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">IOverlay</span>
 </span></code></pre></div>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2454,7 +2456,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2473,7 +2475,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="events">Events</h3>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2488,103 +2490,103 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="capturinginput">CapturingInput</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="capturinginput">CapturingInput<a class="headerlink" href="#capturinginput" title="Permanent link"></a></h4>
 <p>Whether the overlay wants to capture all keyboard and gamepad inputs, i.e. prevent them from being dispatched to the parent menu.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">CapturingInput</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>This is not necessary to trap focus, which happens automatically; only to capture buttons/keys that would normally have a navigation function, like triggers/shoulders for paging, E/Esc/GamepadB for cancellation, etc. Overlays that enable capturing should provide their own way for the user to escape using keyboard/gamepad, although it is always possible to click the mouse outside the overlay to dismiss it (and implicitly stop the capturing).</p>
 <hr />
-<h4 id="dimmingamount">DimmingAmount</h4>
+<h4 id="dimmingamount">DimmingAmount<a class="headerlink" href="#dimmingamount" title="Permanent link"></a></h4>
 <p>Amount to dim whatever is underneath the overlay.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">float</span><span class="w"> </span><span class="n">DimmingAmount</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>This is an alpha value for a black overlay, so the higher value (between 0 and 1) the darker the content underneath the overlay. These apply individually to each overlay, so multiple stacked overlays will dim not only the underlying main view but also any previous overlays.</p>
 <hr />
-<h4 id="horizontalalignment">HorizontalAlignment</h4>
+<h4 id="horizontalalignment">HorizontalAlignment<a class="headerlink" href="#horizontalalignment" title="Permanent link"></a></h4>
 <p>Horizontal alignment of the overlay relative to the <a href="./#parent">Parent</a> edge.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">HorizontalAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="../../layout/alignment/">Alignment</a></p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>Specifies which edge of the overlay is used for positioning, regardless of which parent edge it is aligning to. For example, a <a href="./#horizontalalignment">HorizontalAlignment</a> of <a href="../../layout/alignment/#start">Start</a> and a <a href="./#horizontalparentalignment">HorizontalParentAlignment</a> of <a href="../../layout/alignment/#end">End</a> means that the overlay's left edge will be aligned to the parent's right edge; similarly, if both are set to <a href="../../layout/alignment/#start">Start</a>, then the overlay's left edge is aligned to the parent's <em>left</em> edge.</p>
 <hr />
-<h4 id="horizontalparentalignment">HorizontalParentAlignment</h4>
+<h4 id="horizontalparentalignment">HorizontalParentAlignment<a class="headerlink" href="#horizontalparentalignment" title="Permanent link"></a></h4>
 <p>Specifies which edge of the <a href="./#parent">Parent</a> (or screen, if no parent is specified) will be used to align the overlay edge denoted by its <a href="./#horizontalalignment">HorizontalAlignment</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">HorizontalParentAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../../layout/alignment/">Alignment</a></p>
-<h5 id="remarks_3">Remarks</h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>For example, a <a href="./#horizontalalignment">HorizontalAlignment</a> of <a href="../../layout/alignment/#start">Start</a> and a <a href="./#horizontalparentalignment">HorizontalParentAlignment</a> of <a href="../../layout/alignment/#end">End</a> means that the overlay's left edge will be aligned to the parent's right edge; similarly, if both are set to <a href="../../layout/alignment/#start">Start</a>, then the overlay's left edge is aligned to the parent's <em>left</em> edge.</p>
 <hr />
-<h4 id="parent">Parent</h4>
+<h4 id="parent">Parent<a class="headerlink" href="#parent" title="Permanent link"></a></h4>
 <p>The parent of this overlay, used for positioning. If not specified, then the overlay will be positioned relative to the entire UI viewport.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">Parent</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="../../iview/">IView</a></p>
 <hr />
-<h4 id="parentoffset">ParentOffset</h4>
+<h4 id="parentoffset">ParentOffset<a class="headerlink" href="#parentoffset" title="Permanent link"></a></h4>
 <p>Additional pixel offset to apply to the overlay's position, after alignments.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">ParentOffset</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_5">Property Value</h5>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
 <hr />
-<h4 id="verticalalignment">VerticalAlignment</h4>
+<h4 id="verticalalignment">VerticalAlignment<a class="headerlink" href="#verticalalignment" title="Permanent link"></a></h4>
 <p>Vertical alignment of the overlay relative to the <a href="./#parent">Parent</a> edge.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">VerticalAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_6">Property Value</h5>
+<h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
 <p><a href="../../layout/alignment/">Alignment</a></p>
-<h5 id="remarks_4">Remarks</h5>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
 <p>Specifies which edge of the overlay is used for positioning, regardless of which parent edge it is aligning to. For example, a <a href="./#verticalalignment">VerticalAlignment</a> of <a href="../../layout/alignment/#start">Start</a> and a <a href="./#verticalparentalignment">VerticalParentAlignment</a> of <a href="../../layout/alignment/#end">End</a> means that the overlay's top edge will be aligned to the parent's bottom edge; similarly, if both are set to <a href="../../layout/alignment/#start">Start</a>, then the overlay's top edge is aligned to the parent's <em>top</em> edge.</p>
 <hr />
-<h4 id="verticalparentalignment">VerticalParentAlignment</h4>
+<h4 id="verticalparentalignment">VerticalParentAlignment<a class="headerlink" href="#verticalparentalignment" title="Permanent link"></a></h4>
 <p>Specifies which edge of the <a href="./#parent">Parent</a> (or screen, if no parent is specified) will be used to align the overlay edge denoted by its <a href="./#verticalalignment">VerticalAlignment</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">VerticalParentAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_7">Property Value</h5>
+<h5 id="property-value_7">Property Value<a class="headerlink" href="#property-value_7" title="Permanent link"></a></h5>
 <p><a href="../../layout/alignment/">Alignment</a></p>
-<h5 id="remarks_5">Remarks</h5>
+<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
 <p>For example, a <a href="./#verticalalignment">VerticalAlignment</a> of <a href="../../layout/alignment/#start">Start</a> and a <a href="./#verticalparentalignment">VerticalParentAlignment</a> of <a href="../../layout/alignment/#end">End</a> means that the overlay's top edge will be aligned to the parent's bottom edge; similarly, if both are set to <a href="../../layout/alignment/#start">Start</a>, then the overlay's top edge is aligned to the parent's <em>top</em> edge.</p>
 <hr />
-<h4 id="view">View</h4>
+<h4 id="view">View<a class="headerlink" href="#view" title="Permanent link"></a></h4>
 <p>The view to be displayed/interacted with as an overlay.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_8">Property Value</h5>
+<h5 id="property-value_8">Property Value<a class="headerlink" href="#property-value_8" title="Permanent link"></a></h5>
 <p><a href="../../iview/">IView</a></p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="onclose">OnClose()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="onclose">OnClose()<a class="headerlink" href="#onclose" title="Permanent link"></a></h4>
 <p>Runs when the overlay is removed from the active stack.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnClose</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h4 id="updatetimespan">Update(TimeSpan)</h4>
+<h4 id="updatetimespan">Update(TimeSpan)<a class="headerlink" href="#updatetimespan" title="Permanent link"></a></h4>
 <p>Runs on every game update tick.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>elapsed</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
 The amount of real time elapsed since the last tick.</p>
 <hr />
-<h3 id="events_1">Events</h3>
-<h4 id="close">Close</h4>
+<h3 id="events_1">Events<a class="headerlink" href="#events_1" title="Permanent link"></a></h3>
+<h4 id="close">Close<a class="headerlink" href="#close" title="Permanent link"></a></h4>
 <p>Event raised when the overlay is closed - i.e. removed from the current context stack.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">EventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Close</span><span class="p">;</span>
 </span></code></pre></div>
-<h5 id="event-type">Event Type</h5>
+<h5 id="event-type">Event Type<a class="headerlink" href="#event-type" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventargs">EventArgs</a>&gt;</p>
 <hr />
 </div>

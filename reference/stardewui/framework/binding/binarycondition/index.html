@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../../stylesheets/styles.css">
@@ -3656,8 +3658,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="class-binarycondition">Class BinaryCondition</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="class-binarycondition">Class BinaryCondition<a class="headerlink" href="#class-binarycondition" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework.Binding</a><br />
 Assembly: StardewUI.dll  </p>
@@ -3670,11 +3672,11 @@ Assembly: StardewUI.dll  </p>
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ BinaryCondition</p>
 <p><strong>Implements</strong><br />
 <a href="../icondition/">ICondition</a>, <a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
-<h2 id="remarks">Remarks</h2>
+<h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>Passes whenever both values are equal. Used for <code>*switch</code> and <code>*case</code> attributes. </p>
 <p>Any type may be used for either operand, but a conversion must be available from one of the types to the other type in order for the condition to ever pass. If the two types are different, and conversion both ways is possible, then priority will be given to the type implementing <a href="https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1">IEquatable&lt;T&gt;</a> on itself; if the best type is still ambiguous, then left-&gt;right conversion will be chosen over right-&gt;left.</p>
-<h2 id="members">Members</h2>
-<h3 id="constructors">Constructors</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3689,7 +3691,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="properties">Properties</h3>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3720,7 +3722,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3739,13 +3741,13 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="constructors_1">Constructors</h3>
-<h4 id="binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute">BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute">BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)<a class="headerlink" href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute" title="Permanent link"></a></h4>
 <p>A condition based on the comparison of two values.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">BinaryCondition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">leftAttribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">rightAttribute</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a><br />
 The factory responsible for creating <a href="../../sources/ivaluesource-1/">IValueSource&lt;T&gt;</a> instances from attribute data.</p>
 <p><strong><code>valueConverterFactory</code></strong> &nbsp; <a href="../../converters/ivalueconverterfactory/">IValueConverterFactory</a><br />
@@ -3754,56 +3756,56 @@ The factory responsible for creating <a href="../../converters/ivalueconverter-2
 The attribute containing the expression for the LHS operand.</p>
 <p><strong><code>rightAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 The attribute containing the expression for the RHS operand.</p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Passes whenever both values are equal. Used for <code>*switch</code> and <code>*case</code> attributes. </p>
 <p>Any type may be used for either operand, but a conversion must be available from one of the types to the other type in order for the condition to ever pass. If the two types are different, and conversion both ways is possible, then priority will be given to the type implementing <a href="https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1">IEquatable&lt;T&gt;</a> on itself; if the best type is still ambiguous, then left-&gt;right conversion will be chosen over right-&gt;left.</p>
 <hr />
-<h3 id="properties_1">Properties</h3>
-<h4 id="leftcontext">LeftContext</h4>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="leftcontext">LeftContext<a class="headerlink" href="#leftcontext" title="Permanent link"></a></h4>
 <p>The context used to derive the LHS value, if the left attribute is a context binding.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">LeftContext</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="../bindingcontext/">BindingContext</a></p>
 <hr />
-<h4 id="leftcontextselector">LeftContextSelector</h4>
+<h4 id="leftcontextselector">LeftContextSelector<a class="headerlink" href="#leftcontextselector" title="Permanent link"></a></h4>
 <p>Optional source for automatically updating the <a href="./#leftcontext">LeftContext</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="o">&gt;</span><span class="w"> </span><span class="n">LeftContextSelector</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-1">Func</a>&lt;<a href="../bindingcontext/">BindingContext</a>&gt;</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>If specified, then this selector will be automatically run on every <a href="./#update">Update()</a> and assigned to the <a href="./#leftcontext">LeftContext</a>; otherwise, the <a href="./#leftcontext">LeftContext</a> must be set explicitly in order to change the evaluation context for the left-hand value.</p>
 <hr />
-<h4 id="passed">Passed</h4>
+<h4 id="passed">Passed<a class="headerlink" href="#passed" title="Permanent link"></a></h4>
 <p>Whether or not the condition was passing as of the last <a href="../icondition/#update">Update()</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">Passed</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h4 id="rightcontext">RightContext</h4>
+<h4 id="rightcontext">RightContext<a class="headerlink" href="#rightcontext" title="Permanent link"></a></h4>
 <p>The context used to derive the RHS value, if the right attribute is a context binding.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">RightContext</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value</h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../bindingcontext/">BindingContext</a></p>
 <hr />
-<h4 id="rightcontextselector">RightContextSelector</h4>
+<h4 id="rightcontextselector">RightContextSelector<a class="headerlink" href="#rightcontextselector" title="Permanent link"></a></h4>
 <p>Optional source for automatically updating the <a href="./#rightcontext">RightContext</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="o">&gt;</span><span class="w"> </span><span class="n">RightContextSelector</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value</h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-1">Func</a>&lt;<a href="../bindingcontext/">BindingContext</a>&gt;</p>
-<h5 id="remarks_3">Remarks</h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>If specified, then this selector will be automatically run on every <a href="./#update">Update()</a> and assigned to the <a href="./#rightcontext">RightContext</a>; otherwise, the <a href="./#rightcontext">RightContext</a> must be set explicitly in order to change the evaluation context for the right-hand value.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="dispose">Dispose()</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="dispose">Dispose()<a class="headerlink" href="#dispose" title="Permanent link"></a></h4>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Dispose</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h4 id="update">Update()</h4>
+<h4 id="update">Update()<a class="headerlink" href="#update" title="Permanent link"></a></h4>
 <p>Re-evaluates the condition and updates the <a href="../icondition/#passed">Passed</a> state.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">();</span>
 </span></code></pre></div>

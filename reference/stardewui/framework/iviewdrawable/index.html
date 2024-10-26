@@ -50,6 +50,8 @@
       
     
     
+      <link rel="stylesheet" href="../../../../stylesheets/github-permalink-style.css">
+    
       <link rel="stylesheet" href="../../../../stylesheets/neoteroi-mkdocs.css">
     
       <link rel="stylesheet" href="../../../../stylesheets/styles.css">
@@ -2955,8 +2957,8 @@
 
 <p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
 <div class="api-reference">
-<h1 id="interface-iviewdrawable">Interface IViewDrawable</h1>
-<h2 id="definition">Definition</h2>
+<h1 id="interface-iviewdrawable">Interface IViewDrawable<a class="headerlink" href="#interface-iviewdrawable" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
 <div class="api-definition">
 <p>Namespace: <a href="../">StardewUI.Framework</a><br />
 Assembly: StardewUI.dll  </p>
@@ -2966,8 +2968,8 @@ Assembly: StardewUI.dll  </p>
 </span></code></pre></div>
 <p><strong>Implements</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
-<h2 id="members">Members</h2>
-<h3 id="properties">Properties</h3>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -2990,7 +2992,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h3 id="methods">Methods</h3>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
 <tr>
@@ -3005,41 +3007,41 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
-<h2 id="details">Details</h2>
-<h3 id="properties_1">Properties</h3>
-<h4 id="actualsize">ActualSize</h4>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="actualsize">ActualSize<a class="headerlink" href="#actualsize" title="Permanent link"></a></h4>
 <p>The current size required for the content.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">ActualSize</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value">Property Value</h5>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
-<h5 id="remarks">Remarks</h5>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Use for calculating the correct position for a <a href="./#drawspritebatch-vector2">Draw(SpriteBatch, Vector2)</a>, especially for elements that should be aligned to the center or right edge of the viewport.</p>
 <hr />
-<h4 id="context">Context</h4>
+<h4 id="context">Context<a class="headerlink" href="#context" title="Permanent link"></a></h4>
 <p>The context, or "model", for the menu's view, which holds any data-dependent values.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">Context</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value</h5>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a></p>
-<h5 id="remarks_1">Remarks</h5>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>The type must implement <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a> in order for any changes to this data to be automatically reflected on the next <a href="./#drawspritebatch-vector2">Draw(SpriteBatch, Vector2)</a>.</p>
 <hr />
-<h4 id="maxsize">MaxSize</h4>
+<h4 id="maxsize">MaxSize<a class="headerlink" href="#maxsize" title="Permanent link"></a></h4>
 <p>The maximum size, in pixels, allowed for this content.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">MaxSize</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value</h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a>&gt;</p>
-<h5 id="remarks_2">Remarks</h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>If no value is specified, then the content is allowed to use the entire uiViewport.</p>
 <hr />
-<h3 id="methods_1">Methods</h3>
-<h4 id="drawspritebatch-vector2">Draw(SpriteBatch, Vector2)</h4>
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="drawspritebatch-vector2">Draw(SpriteBatch, Vector2)<a class="headerlink" href="#drawspritebatch-vector2" title="Permanent link"></a></h4>
 <p>Draws the current contents.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Draw</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters</h5>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>b</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a><br />
 Target sprite batch.</p>
 <p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
