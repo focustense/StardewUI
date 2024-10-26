@@ -32,6 +32,7 @@ theme:
         name: Switch to system preference
   logo: images/logo-alt.png
 extra_css:
+  - stylesheets/github-permalink-style.css
   - stylesheets/neoteroi-mkdocs.css
   - stylesheets/styles.css
 plugins:
@@ -67,6 +68,7 @@ markdown_extensions:
         kwds:
           case: lower
   - toc:
+      permalink: ''
       toc_depth: 4
 extra:
   social:
