@@ -10,7 +10,6 @@ using StardewUI;
 const BindingFlags visibleBindingFlags =
     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
 
-Regex genericArgRegex = new(@"`\d+", RegexOptions.Compiled);
 string outputDirectory = Path.GetFullPath("../../../../../docs/reference", Assembly.GetExecutingAssembly().Location);
 
 var reader = new FixedUnindentXmlReader();
@@ -31,6 +30,7 @@ await Parallel.ForEachAsync(
     ("Struct", "Structs"),
     ("Interface", "Interfaces"),
     ("Enum", "Enums"),
+    ("Delegate", "Delegates"),
 ];
 var typesByNamespace = documentableTypes.Where(t => !string.IsNullOrEmpty(t.Namespace)).ToLookup(t => t.Namespace!);
 await Parallel.ForEachAsync(
@@ -61,7 +61,8 @@ static void AppendParameterList(
     bool fullPath = false,
     bool escaped = true,
     bool collapsePrimitives = false,
-    bool includeModifiers = false
+    bool includeModifiers = false,
+    bool includeNames = false
 )
 {
     var argumentTypes = parameters.Select(p => p.ParameterType).ToArray();
@@ -71,7 +72,8 @@ static void AppendParameterList(
         fullPath,
         escaped: escaped,
         collapsePrimitives: collapsePrimitives,
-        prefixSelector: (_, i) => GetPrefix(i)
+        prefixSelector: (_, i) => GetPrefix(i),
+        suffixSelector: (_, i) => includeNames ? parameters[i].Name : null
     );
 
     string? GetPrefix(int index)
@@ -99,7 +101,8 @@ static void AppendTypeList(
     bool fullPath = false,
     bool escaped = true,
     bool collapsePrimitives = false,
-    Func<Type, int, string?>? prefixSelector = null
+    Func<Type, int, string?>? prefixSelector = null,
+    Func<Type, int, string?>? suffixSelector = null
 )
 {
     for (int i = 0; i < types.Count; i++)
@@ -114,6 +117,11 @@ static void AppendTypeList(
             sb.Append(' ');
         }
         sb.Append(FormatGenericTypeName(types[i], fullPath, escaped, collapsePrimitives: collapsePrimitives));
+        if (suffixSelector?.Invoke(types[i], i) is string suffix && suffix.Length > 0)
+        {
+            sb.Append(' ');
+            sb.Append(suffix);
+        }
     }
 }
 
@@ -187,48 +195,12 @@ static string EscapeYaml(string value)
     return value.Replace("<", "&lt;").Replace(">", "&gt;");
 }
 
-string FixMethodId(string methodId, MethodBase method)
-{
-    var genericArgs = method.IsGenericMethod
-        ? method
-            .RevertGenerics()
-            .GetParameters()
-            .SelectMany(p =>
-            {
-                var realArgs = p.ParameterType.GetGenericArguments();
-                var definitionArgs = p.ParameterType.RevertGenerics().GetGenericArguments();
-                return realArgs.Zip(definitionArgs, (r, d) => r.IsGenericMethodParameter ? r : d);
-            })
-            .ToArray()
-        : [];
-    if (genericArgs.Length == 0)
-    {
-        return methodId;
-    }
-    var argStartPos = methodId.IndexOf('(') + 1;
-    string argsString = methodId[argStartPos..];
-    int startPos = 0;
-    foreach (var genericArg in genericArgs)
-    {
-        var qualifier = genericArg.IsGenericMethodParameter ? "``" : "`";
-        var index = genericArg.GenericParameterPosition;
-        var genericRef = string.Concat("{", qualifier, index, "}");
-        var nextMatch = genericArgRegex.Match(argsString, startPos);
-        if (!nextMatch.Success)
-        {
-            break;
-        }
-        argsString = genericArgRegex.Replace(argsString, genericRef, 1, startPos);
-        startPos = nextMatch.Index + 3;
-    }
-    return methodId[..argStartPos] + argsString;
-}
-
 static string FormatConstructorName(
     ConstructorInfo ctor,
     bool fullPath = false,
     bool escaped = true,
-    bool collapsePrimitives = false
+    bool collapsePrimitives = false,
+    bool includeParameterNames = false
 )
 {
     var sb = new StringBuilder();
@@ -242,7 +214,14 @@ static string FormatConstructorName(
         sb.Append(ctor.ReflectedType!.Name);
     }
     sb.Append('(');
-    AppendParameterList(sb, ctor.GetParameters(), fullPath, escaped: escaped, collapsePrimitives: collapsePrimitives);
+    AppendParameterList(
+        sb,
+        ctor.GetParameters(),
+        fullPath,
+        escaped: escaped,
+        collapsePrimitives: collapsePrimitives,
+        includeNames: includeParameterNames
+    );
     sb.Append(')');
     return sb.ToString();
 }
@@ -270,7 +249,8 @@ static string FormatGenericMethodName(
     bool fullPath = false,
     bool escaped = true,
     bool collapsePrimitives = false,
-    bool includeParameterModifiers = false
+    bool includeParameterModifiers = false,
+    bool includeParameterNames = false
 )
 {
     if (method.IsGenericMethod && !method.IsGenericMethodDefinition && method is MethodInfo methodInfo)
@@ -294,7 +274,15 @@ static string FormatGenericMethodName(
         sb.Append(method.Name);
     }
     sb.Append('(');
-    AppendParameterList(sb, method.GetParameters(), fullPath, escaped, collapsePrimitives, includeParameterModifiers);
+    AppendParameterList(
+        sb,
+        method.GetParameters(),
+        fullPath,
+        escaped,
+        collapsePrimitives,
+        includeParameterModifiers,
+        includeParameterNames
+    );
     sb.Append(')');
     return sb.ToString();
 }
@@ -537,7 +525,12 @@ static string FormatSimpleText(XElement element)
     };
 }
 
-static string FormatTypeLink(Type type, string referringNamespace, string nameSuffix = "")
+static string FormatTypeLink(
+    Type type,
+    string referringNamespace,
+    string nameSuffix = "",
+    bool includeOuterClasses = false
+)
 {
     string rootNamespace = typeof(UI).Namespace!;
     if (type.IsArray)
@@ -548,13 +541,19 @@ static string FormatTypeLink(Type type, string referringNamespace, string nameSu
     {
         return QuoteCode(FormatGenericTypeName(type, fullPath: true, escaped: false));
     }
-    else if (!type.IsGenericType || type.ContainsGenericParameters)
+
+    var outerClassPrefix =
+        includeOuterClasses && type.DeclaringType is not null
+            ? FormatTypeLink(type.DeclaringType, referringNamespace, nameSuffix, includeOuterClasses) + '.'
+            : "";
+    if (!type.IsGenericType || type.ContainsGenericParameters)
     {
         string linkName = FormatGenericTypeName(type);
-        return FormatWithLinkName(type, linkName);
+        return outerClassPrefix + FormatWithLinkName(type, linkName);
     }
 
     var sb = new StringBuilder();
+    sb.Append(outerClassPrefix);
     var defType = type.GetGenericTypeDefinition();
     var defTypeName = FormatGenericTypeName(defType, baseNameOnly: true);
     var defLink = FormatWithLinkName(defType, defTypeName);
@@ -600,6 +599,10 @@ static string FormatTypeKind(Type type, bool detectRecords = false)
     if (type.IsValueType)
     {
         return "Struct";
+    }
+    if (type.IsAssignableTo(typeof(Delegate)))
+    {
+        return "Delegate";
     }
     // Simple record check that isn't exhaustive, i.e. won't work for struct records, but we don't really care, as it's
     // only for documentation.
@@ -774,7 +777,7 @@ TResult? GetMemberComment<TResult, TComments>(MemberInfo member, Func<TComments,
 {
     return GetMaybeInherited<MemberInfo, TComments, TResult>(
         member,
-        m => GetMemberCommentsPatched(m) as TComments,
+        m => reader.GetMemberComments(m) as TComments,
         GetBaseMembers,
         selector
     );
@@ -803,25 +806,6 @@ static string GetMethodAnchor(MethodBase method)
         .GetParameters()
         .Select(p => FormatGenericTypeName(p.ParameterType, escaped: false, collapsePrimitives: true));
     return SluggifyName(string.Concat(methodName, '(', string.Join(", ", argumentTypeNames), ')'));
-}
-
-CommonComments GetMemberCommentsPatched(MemberInfo member)
-{
-    return member is MethodBase method ? GetMethodCommentsPatched(method) : reader.GetMemberComments(member);
-}
-
-MethodComments GetMethodCommentsPatched(MethodBase methodInfo)
-{
-    methodInfo = methodInfo.RevertGenerics();
-    var methodId = methodInfo.MethodId();
-    var xmlMemberNode = reader.GetXmlMemberNode(methodId, methodInfo.ReflectedType);
-    if (xmlMemberNode is null)
-    {
-        methodId = FixMethodId(methodId, methodInfo);
-        xmlMemberNode = reader.GetXmlMemberNode(methodId, methodInfo.ReflectedType);
-    }
-    var comments = new MethodComments();
-    return reader.GetComments(methodInfo, comments, xmlMemberNode);
 }
 
 static string GetNamespaceFilePath(string ns)
@@ -1131,6 +1115,11 @@ void WriteConstructorTable(StringBuilder sb, Type type)
 void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
 {
     string ns = type.Namespace!;
+    var baseType = GetBaseTypeOrDefinition(type);
+    var baseInterfaces = baseType?.GetInterfaces().ToHashSet() ?? [];
+    var declaredInterfaces = type.GetInterfaces()
+        .Where(t => t.IsVisibleForDocumentation() && !baseInterfaces.Contains(t))
+        .ToArray();
     sb.AppendLine("## Definition");
     sb.AppendLine();
     sb.AppendLine(@"<div class=""api-definition"" markdown>");
@@ -1138,12 +1127,15 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     sb.Append("Namespace: ");
     sb.Append(FormatNamespaceLink(ns, ns));
     sb.AppendLine("  ");
-    sb.AppendLine("Assembly: StardewUI.dll  ");
+    sb.Append("Assembly: ");
+    sb.Append(Path.GetFileName(type.Assembly.Location));
+    sb.AppendLine("  ");
     // TODO: Use Mono.Cecil.Pdb to get source file, if we can figure out how to emit the PDB with SMAPI's builder.
     sb.AppendLine();
     sb.AppendLine("</div>");
     sb.AppendLine();
     var summary = GetTypeComment(type, c => !string.IsNullOrWhiteSpace(c.Summary) ? c.Summary : null);
+    var parameterComments = GetTypeComment(type, c => c.Parameters.Count > 0 ? c.Parameters : null);
     if (!string.IsNullOrWhiteSpace(summary))
     {
         sb.AppendLine(ReplaceTags(summary, e => FormatParagraphText(e, ns)));
@@ -1172,102 +1164,172 @@ void WriteDefinition(StringBuilder sb, Type type, TypeComments? typeComments)
     int lengthBeforeDeclaration = sb.Length;
     sb.Append(FormatTypeVisibility(type));
     sb.Append(' ');
-    if (type.GetCustomAttribute(typeof(IsReadOnlyAttribute)) is not null)
+    var invokeMethod = type.IsAssignableTo(typeof(Delegate)) ? type.GetMethod("Invoke") : null;
+    if (invokeMethod is not null)
     {
-        sb.Append("readonly ");
+        AppendDelegateSignature();
     }
-    if (type.IsByRefLike)
+    else
     {
-        sb.Append("ref ");
-    }
-    sb.Append(FormatTypeKind(type, true).ToLowerInvariant());
-    sb.Append(' ');
-    sb.Append(FormatGenericTypeName(type, escaped: false, includeOuterClasses: true));
-    var baseType = GetBaseTypeOrDefinition(type);
-    var baseInterfaces = baseType?.GetInterfaces().ToHashSet() ?? [];
-    var declaredInterfaces = type.GetInterfaces()
-        .Where(t => t.IsVisibleForDocumentation() && !baseInterfaces.Contains(t))
-        .ToArray();
-    var hasNonDefaultBase =
-        baseType is not null && baseType != typeof(object) && baseType != typeof(Enum) && baseType != typeof(ValueType);
-    if (declaredInterfaces.Length > 0 || hasNonDefaultBase)
-    {
-        sb.Append(" : ");
-        int lineLength = sb.Length - lengthBeforeDeclaration;
-        if (hasNonDefaultBase)
-        {
-            AppendWrapped(sb, FormatGenericTypeName(baseType!, fullPath: true, escaped: false), ref lineLength, 80, 4);
-            if (declaredInterfaces.Length > 0)
-            {
-                sb.Append(", ");
-                lineLength += 2;
-            }
-        }
-        for (int i = 0; i < declaredInterfaces.Length; i++)
-        {
-            if (i > 0)
-            {
-                sb.Append(", ");
-                lineLength += 2;
-            }
-            AppendWrapped(
-                sb,
-                FormatGenericTypeName(declaredInterfaces[i], fullPath: true, escaped: false),
-                ref lineLength,
-                80,
-                4
-            );
-        }
+        AppendTypeSignature();
     }
     sb.AppendLine();
     sb.AppendLine("```");
     sb.AppendLine();
-    var typeArgs = type.IsGenericType ? type.GetGenericArguments() : [];
-    if (typeArgs.Length > 0)
+    AppendGenericTypeArgs();
+    if (invokeMethod is not null)
     {
-        sb.AppendLine("### Type Parameters");
-        sb.AppendLine();
-        foreach (var argType in typeArgs)
+        AppendDelegateParameters();
+    }
+    else
+    {
+        AppendInheritance();
+    }
+
+    void AppendDelegateParameters()
+    {
+        WriteMethodParameters(sb, invokeMethod, ns, 3, parameterComments);
+    }
+
+    void AppendDelegateSignature()
+    {
+        if (invokeMethod.ReturnType == typeof(void))
         {
-            sb.AppendLine($"**`{argType.Name}`**  ");
-            var paramComment = GetTypeComment(
-                type,
-                c => c.TypeParameters?.Where(x => x.Name == argType.Name).Select(x => x.Text).FirstOrDefault()
+            sb.Append("void ");
+        }
+        else
+        {
+            sb.Append(
+                FormatGenericTypeName(invokeMethod.ReturnType, fullPath: true, escaped: false, collapsePrimitives: true)
             );
-            if (!string.IsNullOrEmpty(paramComment))
+            sb.Append(' ');
+        }
+        sb.Append(FormatGenericTypeName(type, escaped: false, includeOuterClasses: true));
+        sb.Append('(');
+        AppendParameterList(
+            sb,
+            invokeMethod.GetParameters(),
+            fullPath: true,
+            escaped: false,
+            collapsePrimitives: true,
+            includeModifiers: true,
+            includeNames: true
+        );
+        sb.Append(");");
+    }
+
+    void AppendGenericTypeArgs()
+    {
+        var typeArgs = type.IsGenericType ? type.GetGenericArguments() : [];
+        if (typeArgs.Length > 0)
+        {
+            sb.AppendLine("### Type Parameters");
+            sb.AppendLine();
+            foreach (var argType in typeArgs)
             {
-                sb.AppendLine(ReplaceTags(paramComment, e => FormatParagraphText(e, ns)));
+                sb.AppendLine($"**`{argType.Name}`**  ");
+                var paramComment = GetTypeComment(
+                    type,
+                    c => c.TypeParameters?.Where(x => x.Name == argType.Name).Select(x => x.Text).FirstOrDefault()
+                );
+                if (!string.IsNullOrEmpty(paramComment))
+                {
+                    sb.AppendLine(ReplaceTags(paramComment, e => FormatParagraphText(e, ns)));
+                }
+                sb.AppendLine();
             }
             sb.AppendLine();
         }
-        sb.AppendLine();
     }
-    var inheritanceElements = new Stack<string>();
-    inheritanceElements.Push(FormatGenericTypeName(type, false));
-    for (var super = GetBaseTypeOrDefinition(type); super is not null; super = GetBaseTypeOrDefinition(super))
+
+    void AppendInheritance()
     {
-        if (!super.IsVisibleForDocumentation())
+        var inheritanceElements = new Stack<string>();
+        inheritanceElements.Push(FormatGenericTypeName(type, false));
+        for (var super = GetBaseTypeOrDefinition(type); super is not null; super = GetBaseTypeOrDefinition(super))
         {
-            continue;
+            if (!super.IsVisibleForDocumentation())
+            {
+                continue;
+            }
+            inheritanceElements.Push(" ⇦ ");
+            inheritanceElements.Push(FormatTypeLink(super, ns));
         }
-        inheritanceElements.Push(" ⇦ ");
-        inheritanceElements.Push(FormatTypeLink(super, ns));
-    }
-    if (inheritanceElements.Count > 1)
-    {
-        sb.AppendLine("**Inheritance**  ");
-        foreach (var element in inheritanceElements)
+        if (inheritanceElements.Count > 1)
         {
-            sb.Append(element);
+            sb.AppendLine("**Inheritance**  ");
+            foreach (var element in inheritanceElements)
+            {
+                sb.Append(element);
+            }
+            sb.AppendLine();
+            sb.AppendLine();
         }
-        sb.AppendLine();
-        sb.AppendLine();
+        if (declaredInterfaces.Length > 0)
+        {
+            sb.AppendLine("**Implements**  ");
+            sb.AppendLine(string.Join(", ", declaredInterfaces.Select(t => FormatTypeLink(t, ns))));
+            sb.AppendLine();
+        }
     }
-    if (declaredInterfaces.Length > 0)
+
+    void AppendTypeSignature()
     {
-        sb.AppendLine("**Implements**  ");
-        sb.AppendLine(string.Join(", ", declaredInterfaces.Select(t => FormatTypeLink(t, ns))));
-        sb.AppendLine();
+        if (type.GetCustomAttribute(typeof(IsReadOnlyAttribute)) is not null)
+        {
+            sb.Append("readonly ");
+        }
+        if (type.IsAbstract && type.IsSealed)
+        {
+            sb.Append("static ");
+        }
+        if (type.IsByRefLike)
+        {
+            sb.Append("ref ");
+        }
+        sb.Append(FormatTypeKind(type, true).ToLowerInvariant());
+        sb.Append(' ');
+        sb.Append(FormatGenericTypeName(type, escaped: false, includeOuterClasses: true));
+        var hasNonDefaultBase =
+            baseType is not null
+            && baseType != typeof(object)
+            && baseType != typeof(Enum)
+            && baseType != typeof(ValueType);
+        if (declaredInterfaces.Length > 0 || hasNonDefaultBase)
+        {
+            sb.Append(" : ");
+            int lineLength = sb.Length - lengthBeforeDeclaration;
+            if (hasNonDefaultBase)
+            {
+                AppendWrapped(
+                    sb,
+                    FormatGenericTypeName(baseType!, fullPath: true, escaped: false),
+                    ref lineLength,
+                    80,
+                    4
+                );
+                if (declaredInterfaces.Length > 0)
+                {
+                    sb.Append(", ");
+                    lineLength += 2;
+                }
+            }
+            for (int i = 0; i < declaredInterfaces.Length; i++)
+            {
+                if (i > 0)
+                {
+                    sb.Append(", ");
+                    lineLength += 2;
+                }
+                AppendWrapped(
+                    sb,
+                    FormatGenericTypeName(declaredInterfaces[i], fullPath: true, escaped: false),
+                    ref lineLength,
+                    80,
+                    4
+                );
+            }
+        }
     }
 }
 
@@ -1505,7 +1567,7 @@ void WriteMethodDetail(StringBuilder sb, MethodBase method)
     var (returnType, baseDefinition) = method is MethodInfo methodInfo
         ? (methodInfo.ReturnType, methodInfo.GetBaseDefinition() as MethodBase)
         : (null, method);
-    var comments = GetMethodCommentsPatched(method);
+    var comments = reader.GetMethodComments(method);
     var isInterfaceMember = method.DeclaringType?.IsInterface == true;
     sb.Append("#### ");
     sb.AppendLine(FormatName(false));
@@ -1553,37 +1615,7 @@ void WriteMethodDetail(StringBuilder sb, MethodBase method)
     sb.AppendLine(";");
     sb.AppendLine("```");
     sb.AppendLine();
-    var parameters = method.GetParameters();
-    if (parameters.Length > 0)
-    {
-        sb.AppendLine("##### Parameters");
-        sb.AppendLine();
-        foreach (var param in parameters)
-        {
-            sb.Append("**`");
-            sb.Append(param.Name);
-            sb.Append("`** &nbsp; ");
-            sb.Append(
-                param.ParameterType.IsGenericParameter
-                    ? param.ParameterType.Name
-                    : FormatTypeLink(param.ParameterType, ns)
-            );
-            var description = comments
-                ?.Parameters.Where(p => p.Name == param.Name)
-                .Select(p => p.Text)
-                .FirstOrDefault();
-            if (!string.IsNullOrWhiteSpace(description))
-            {
-                sb.AppendLine("  ");
-                sb.AppendLine(ReplaceTags(description, e => FormatParagraphText(e, ns)));
-            }
-            else
-            {
-                sb.AppendLine();
-            }
-            sb.AppendLine();
-        }
-    }
+    WriteMethodParameters(sb, method, ns, 5);
     if (returnType is not null && returnType != typeof(void))
     {
         sb.AppendLine("##### Returns");
@@ -1602,13 +1634,20 @@ void WriteMethodDetail(StringBuilder sb, MethodBase method)
     string FormatName(bool asCode)
     {
         return method is ConstructorInfo ctor
-            ? FormatConstructorName(ctor, fullPath: asCode, escaped: !asCode, collapsePrimitives: true)
+            ? FormatConstructorName(
+                ctor,
+                fullPath: asCode,
+                escaped: !asCode,
+                collapsePrimitives: true,
+                includeParameterNames: asCode
+            )
             : FormatGenericMethodName(
                 method,
                 fullPath: asCode,
                 escaped: !asCode,
                 collapsePrimitives: true,
-                includeParameterModifiers: asCode
+                includeParameterModifiers: asCode,
+                includeParameterNames: asCode
             );
     }
 }
@@ -1627,6 +1666,65 @@ void WriteMethodDetails(StringBuilder sb, Type type)
         WriteMethodDetail(sb, method);
         sb.AppendLine("-----");
         sb.AppendLine();
+    }
+}
+
+void WriteMethodParameters(
+    StringBuilder sb,
+    MethodBase method,
+    string ns,
+    int level,
+    IReadOnlyList<(string Name, string Text)>? parameterComments = null
+)
+{
+    var parameters = method.GetParameters();
+    if (parameters.Length > 0)
+    {
+        sb.Append(new string('#', level));
+        sb.Append(' ');
+        sb.AppendLine("Parameters");
+        sb.AppendLine();
+        foreach (var param in parameters)
+        {
+            sb.Append("**`");
+            sb.Append(param.Name);
+            sb.Append("`** &nbsp; ");
+            sb.Append(
+                param.ParameterType.IsGenericParameter
+                    ? param.ParameterType.Name
+                    : FormatTypeLink(param.ParameterType, ns)
+            );
+            var description = parameterComments is not null
+                ? GetParameterDescription(parameterComments, param.Name)
+                : GetMaybeInherited(
+                    method,
+                    m => reader.GetMethodComments(m),
+                    m => GetBaseMembers(m).OfType<MethodBase>(),
+                    (MethodComments c) => GetParameterDescription(c.Parameters, param.Name)
+                );
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                sb.AppendLine("  ");
+                sb.AppendLine(ReplaceTags(description, e => FormatParagraphText(e, ns)));
+            }
+            else
+            {
+                sb.AppendLine();
+            }
+            sb.AppendLine();
+        }
+    }
+
+    static string? GetParameterDescription(
+        IReadOnlyList<(string Name, string Text)> parameterComments,
+        string? paramName
+    )
+    {
+        return parameterComments
+            .Where(p => p.Name == paramName)
+            .Select(p => p.Text)
+            .Where(s => !string.IsNullOrWhiteSpace(s))
+            .FirstOrDefault();
     }
 }
 
@@ -1667,7 +1765,7 @@ async Task WriteNamespaceToFile(string ns, IEnumerable<Type> types)
     sb.AppendLine();
     foreach (var (kind, title) in namespaceSections)
     {
-        var typesInSection = typesByKind[kind].OrderBy(t => t.Name).ToList();
+        var typesInSection = typesByKind[kind].OrderBy(t => t.FullName).ToList();
         if (typesInSection.Count == 0)
         {
             continue;
@@ -1681,7 +1779,7 @@ async Task WriteNamespaceToFile(string ns, IEnumerable<Type> types)
         {
             var summary = GetTypeComment(type, c => !string.IsNullOrWhiteSpace(c.Summary) ? c.Summary : null);
             sb.Append("| ");
-            sb.Append(FormatTypeLink(type, ns));
+            sb.Append(FormatTypeLink(type, ns, includeOuterClasses: true));
             sb.Append(" | ");
             sb.Append(ReplaceTags(summary ?? "", e => FormatParagraphText(e, ns)));
             sb.AppendLine(" |");
@@ -1741,7 +1839,7 @@ void WritePropertyDetail(StringBuilder sb, PropertyInfo property)
     sb.AppendLine();
     if (
         getMethod is not null
-        && GetMethodCommentsPatched(getMethod) is MethodComments getterComments
+        && reader.GetMethodComments(getMethod) is MethodComments getterComments
         && !string.IsNullOrWhiteSpace(getterComments.Returns)
     )
     {
@@ -1837,7 +1935,7 @@ async Task WriteTypeFile(Type type)
         var enumComments = reader.GetEnumComments(type);
         WriteFieldTable(sb, type, enumComments);
     }
-    else
+    else if (!type.IsAssignableTo(typeof(Delegate)))
     {
         sb.AppendLine("## Members");
         sb.AppendLine();
@@ -1867,7 +1965,8 @@ static void WriteTypeFrontMatter(StringBuilder sb, Type type, TypeComments? type
 
 class FixedUnindentXmlReader
 {
-    private static readonly XPathNavigator NullNavigator = new XPathDocument(
+    private static readonly Regex genericArgRegex = new(@"`\d+", RegexOptions.Compiled);
+    private static readonly XPathNavigator nullNavigator = new XPathDocument(
         new StringReader(@"<?xml version=""1.0""?><invalid />")
     ).CreateNavigator();
 
@@ -1897,6 +1996,10 @@ class FixedUnindentXmlReader
 
     public CommonComments GetMemberComments(MemberInfo member)
     {
+        if (member is MethodBase method)
+        {
+            return GetMethodComments(method);
+        }
         CommonComments comments;
         lock (reader)
         {
@@ -1911,6 +2014,24 @@ class FixedUnindentXmlReader
             FixCommonComments(comments);
         }
         return comments;
+    }
+
+    public MethodComments GetMethodComments(MethodBase method)
+    {
+        method = method.RevertGenerics();
+        var methodId = method.MethodId();
+        XPathNavigator xmlMemberNode;
+        lock (reader)
+        {
+            xmlMemberNode = GetXmlMemberNode(methodId, method.ReflectedType);
+            if (xmlMemberNode is null)
+            {
+                methodId = FixMethodId(methodId, method);
+                xmlMemberNode = GetXmlMemberNode(methodId, method.ReflectedType);
+            }
+        }
+        var comments = new MethodComments();
+        return GetComments(method, comments, xmlMemberNode);
     }
 
     public TypeComments GetTypeComments(Type type)
@@ -1937,7 +2058,7 @@ class FixedUnindentXmlReader
         {
             if (navigator is null)
             {
-                reader.assemblyNavigators[key] = NullNavigator;
+                reader.assemblyNavigators[key] = nullNavigator;
             }
         }
     }
@@ -2006,6 +2127,43 @@ class FixedUnindentXmlReader
         {
             comments.Exceptions[i] = (comments.Exceptions[i].Cref, FixComments(comments.Exceptions[i].Text));
         }
+    }
+
+    private static string FixMethodId(string methodId, MethodBase method)
+    {
+        var genericArgs = method.IsGenericMethod
+            ? method
+                .RevertGenerics()
+                .GetParameters()
+                .SelectMany(p =>
+                {
+                    var realArgs = p.ParameterType.GetGenericArguments();
+                    var definitionArgs = p.ParameterType.RevertGenerics().GetGenericArguments();
+                    return realArgs.Zip(definitionArgs, (r, d) => r.IsGenericMethodParameter ? r : d);
+                })
+                .ToArray()
+            : [];
+        if (genericArgs.Length == 0)
+        {
+            return methodId;
+        }
+        var argStartPos = methodId.IndexOf('(') + 1;
+        string argsString = methodId[argStartPos..];
+        int startPos = 0;
+        foreach (var genericArg in genericArgs)
+        {
+            var qualifier = genericArg.IsGenericMethodParameter ? "``" : "`";
+            var index = genericArg.GenericParameterPosition;
+            var genericRef = string.Concat("{", qualifier, index, "}");
+            var nextMatch = genericArgRegex.Match(argsString, startPos);
+            if (!nextMatch.Success)
+            {
+                break;
+            }
+            argsString = genericArgRegex.Replace(argsString, genericRef, 1, startPos);
+            startPos = nextMatch.Index + 3;
+        }
+        return methodId[..argStartPos] + argsString;
     }
 
     private static void FixTypeComments(TypeComments comments)

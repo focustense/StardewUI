@@ -7,26 +7,33 @@ namespace StardewUI.Animation;
 /// </summary>
 public static class Animator
 {
-    /// <inheritdoc cref="Animator{T, V}.Animator(T, Func{T, V}, Lerp{V}, Action{T, V})"/>.
     /// <summary>
     /// Creates a new <see cref="Animator{T, V}"/>.
     /// </summary>
     /// <remarks>
     /// Calling this is the same as calling the constructor, but typically does not require explicit type arguments.
     /// </remarks>
+    /// <param name="target">The object whose property will be animated.</param>
+    /// <param name="getValue">Function to get the current value. Used for animations that don't explicit specify a
+    /// start value, e.g. when using the <see cref="Animator{T, V}.Start(V, TimeSpan)"/> overload.</param>
+    /// <param name="lerpValue">Function to linearly interpolate between the start and end values.</param>
+    /// <param name="setValue">Delegate to set the value on the <paramref name="target"/>.</param>
     public static Animator<T, V> On<T, V>(T target, Func<T, V> getValue, Lerp<V> lerpValue, Action<T, V> setValue)
         where T : class
     {
         return new(target, getValue, lerpValue, setValue);
     }
 
-    /// <inheritdoc cref="Animator{T, V}.Animator(T, Func{T, V}, Lerp{V}, Action{T, V})"/>.
     /// <summary>
     /// Creates a new <see cref="Animator{T, V}"/> that animates a standard <see cref="float"/> property.
     /// </summary>
     /// <remarks>
     /// Calling this is the same as calling the constructor, but typically does not require explicit type arguments.
     /// </remarks>
+    /// <param name="target">The object whose property will be animated.</param>
+    /// <param name="getValue">Function to get the current value. Used for animations that don't explicit specify a
+    /// start value, e.g. when using the <see cref="Animator{T, V}.Start(V, TimeSpan)"/> overload.</param>
+    /// <param name="setValue">Delegate to set the value on the <paramref name="target"/>.</param>
     public static Animator<T, float> On<T>(T target, Func<T, float> getValue, Action<T, float> setValue)
         where T : class
     {
