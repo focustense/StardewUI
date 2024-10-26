@@ -85,7 +85,7 @@ Although `MinimumVersion` is optional for manifest dependencies, you should alwa
 
 !!! danger
 
-    Submodule/shared project imports are **only** for users who are not interested in _any_ of the [framework](../framework.md) features, and need a completely standalone solution for their project.
+    Submodule/shared project imports are **only** for users who are not interested in _any_ of the [framework](../framework/index.md) features, and need a completely standalone solution for their project.
     
     Visual Studio Shared Projects are a 10-year-old technology that has never been clearly documented; the best resources available are a few [obsolete documentation pages](https://learn.microsoft.com/en-us/previous-versions/xamarin/cross-platform/app-fundamentals/shared-projects?tabs=windows#what-is-a-shared-project) and [blog posts](https://dailydotnettips.com/using-shared-project-across-multiple-applications-in-visual-studio-2015/). They do work, and are fairly common to see in Stardew Modding [Monorepos](https://en.wikipedia.org/wiki/Monorepo), but have many quirks, tend to behave oddly and in frustrating ways within the IDE, and most importantly, are compiled as _your own_ source code, meaning they generate **new types** inside your mod and are therefore **not compatible** with the types inside `StardewUI.dll`. If you try to use them together, you will run into cryptic errors like `No value converter registered for Edges -> Edges`.
     
