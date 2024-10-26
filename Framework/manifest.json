@@ -6,5 +6,5 @@
   "UniqueID": "focustense.StardewUI",
   "EntryDll": "StardewUI.dll",
   "MinimumApiVersion": "4.0.5",
-  "UpdateKeys": [ "Nexus:0", "GitHub:focustense/StardewUI" ]
+  "UpdateKeys": [ "Nexus:28870", "GitHub:focustense/StardewUI" ]
 }
