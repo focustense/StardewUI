@@ -337,6 +337,35 @@
   
     
     
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/stardewui/" class="md-tabs__link">
+          
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../../examples/" class="md-tabs__link">
           
@@ -854,6 +883,59 @@
     
       
         
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../reference/stardewui/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
           
         
       
@@ -1070,8 +1152,8 @@
 <p>That's it—just a single line!</p>
 <h2 id="adding-sprites">Adding Sprites</h2>
 <p>Stardew Valley's visuals, like those of most 2D games, are based around <a href="https://docs.monogame.net/articles/getting_to_know/whatis/graphics/WhatIs_Sprite.html">sprites</a>. All of Stardew's image assets and most mod assets are in the form of "sprite sheets", more formally known as a <a href="https://en.wikipedia.org/wiki/Texture_atlas">texture atlas</a>, in which a single image (i.e. <code>.png</code> file) contains <em>many</em> individual "objects", each occupying its own rectangular region.</p>
-<p>Neither Stardew nor SMAPI have an explicit concept of a <em>sprite</em>. Since StardewUI needs to deal quite heavily with sprites, it defines its own <a href="../reference/stardewui/sprite.md">Sprite</a> type, which includes not only the source image and rectangular region but also information pertaining to <a href="https://en.wikipedia.org/wiki/9-slice_scaling">9-slice scaling</a>, which is how it is able to display elements such as frame borders and menu backgrounds without having them appear awkwardly stretched.</p>
-<p>A variety of useful UI sprites are already included in the <a href="../reference/stardewui/uisprites.md">UiSprites</a> class, and each of these sprites is available to StarML via an <a href="../../framework/starml/#attribute-flavors">asset binding</a> of the form <code>@Mods/StardewUI/Sprites/{Name}</code>; for example, <code>@Mods/StardewUI/Sprites/CaretRight</code>. However, Stardew Valley has thousands of individual sprites, and if you want to use anything that's not in <code>UiSprites</code>, or any sprite that you've produced yourself, then you need to register it as an asset.</p>
+<p>Neither Stardew nor SMAPI have an explicit concept of a <em>sprite</em>. Since StardewUI needs to deal quite heavily with sprites, it defines its own <a href="../../reference/stardewui/graphics/sprite/">Sprite</a> type, which includes not only the source image and rectangular region but also information pertaining to <a href="https://en.wikipedia.org/wiki/9-slice_scaling">9-slice scaling</a>, which is how it is able to display elements such as frame borders and menu backgrounds without having them appear awkwardly stretched.</p>
+<p>A variety of useful UI sprites are already included in the <a href="../../reference/stardewui/graphics/uisprites/">UiSprites</a> class, and each of these sprites is available to StarML via an <a href="../../framework/starml/#attribute-flavors">asset binding</a> of the form <code>@Mods/StardewUI/Sprites/{Name}</code>; for example, <code>@Mods/StardewUI/Sprites/CaretRight</code>. However, Stardew Valley has thousands of individual sprites, and if you want to use anything that's not in <code>UiSprites</code>, or any sprite that you've produced yourself, then you need to register it as an asset.</p>
 <p>You can accomplish this with <a href="../../concepts/#data-binding">model binding</a> by providing a <code>Texture2D</code> or <code>Tuple&lt;Texture2D, Rectangle&gt;</code> property, as described in <a href="../../framework/starml/#type-conversions">conversion reference</a>, but the <strong>recommended</strong> way to deal with sprites is to register them with StardewUI.</p>
 <p>In addition to allowing them to be used as asset bindings, like the <code>UiSprites</code>, StardewUI will also handle any cache management and hot reload for registered sprites, ensuring that (a) the UI will never crash because of an invalid (disposed) texture and (b) hot reload works correctly, and any changes to the game content, such as seasonal themes, are reflected immediately in the UI, even the UI is already on the screen.</p>
 <p>The process is almost the same whether you intend to use vanilla assets or provide custom images/sprites in your mod. Sprites are registered by convention, similar to views:</p>

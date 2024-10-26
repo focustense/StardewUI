@@ -1,0 +1,3521 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Represents some arbitrary UI element or layout.">
+      
+      
+      
+        <link rel="canonical" href="https://focustense.github.io/StardewUI/reference/stardewui/iview/">
+      
+      
+        <link rel="prev" href="../directionextensions/">
+      
+      
+        <link rel="next" href="../tags/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+    
+    
+      
+        <title>IView - StardewUI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/neoteroi-mkdocs.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/styles.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="IView - StardewUI Documentation" >
+      
+        <meta  property="og:description"  content="Represents some arbitrary UI element or layout." >
+      
+        <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/iview.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://focustense.github.io/StardewUI/reference/stardewui/iview/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="IView - StardewUI Documentation" >
+      
+        <meta  name="twitter:description"  content="Represents some arbitrary UI element or layout." >
+      
+        <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/iview.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#interface-iview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="StardewUI Documentation" class="md-header__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
+      
+  <img src="../../../images/logo-alt.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            StardewUI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              IView
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="orange"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/focustense/StardewUI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../.." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/" class="md-tabs__link">
+          
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../framework/" class="md-tabs__link">
+          
+  
+    
+  
+  Framework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../library/" class="md-tabs__link">
+          
+  
+    
+  
+  Library
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../examples/" class="md-tabs__link">
+          
+  
+    
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="StardewUI Documentation" class="md-nav__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
+      
+  <img src="../../../images/logo-alt.png" alt="logo">
+
+    </a>
+    StardewUI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/focustense/StardewUI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../.." class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../getting-started/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../framework/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Framework
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../library/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Library
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    StardewUI
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1" id="__nav_5_1_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            StardewUI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../direction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Direction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../directionextensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DirectionExtensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    IView
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    IView
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Members
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Members">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actualbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      ActualBounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contentbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      ContentBounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isfocusable" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsFocusable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outersize" class="md-nav__link">
+    <span class="md-ellipsis">
+      OuterSize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointereventsenabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      PointerEventsEnabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrollwithchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      ScrollWithChildren
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tooltip" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tooltip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zindex" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZIndex
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#containspointvector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ContainsPoint(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawispritebatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Draw(ISpriteBatch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#focussearchvector2-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      FocusSearch(Vector2, Direction)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildatvector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildAt(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildpositioniview" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildPosition(IView)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildren()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildrenatvector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildrenAt(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getdefaultfocuschild" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetDefaultFocusChild()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hasoutofboundscontent" class="md-nav__link">
+    <span class="md-ellipsis">
+      HasOutOfBoundsContent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isdirty" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsDirty()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#measurevector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measure(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onbuttonpressbuttoneventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnButtonPress(ButtonEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onclickclickeventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnClick(ClickEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ondragpointereventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnDrag(PointerEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ondroppointereventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnDrop(PointerEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onpointermovepointermoveeventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnPointerMove(PointerMoveEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onupdatetimespan" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnUpdate(TimeSpan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onwheelwheeleventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnWheel(WheelEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrollintoviewienumerableviewchild-vector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buttonpress" class="md-nav__link">
+    <span class="md-ellipsis">
+      ButtonPress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#click" class="md-nav__link">
+    <span class="md-ellipsis">
+      Click
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dragend" class="md-nav__link">
+    <span class="md-ellipsis">
+      DragEnd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dragstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      DragStart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leftclick" class="md-nav__link">
+    <span class="md-ellipsis">
+      LeftClick
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointerenter" class="md-nav__link">
+    <span class="md-ellipsis">
+      PointerEnter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointerleave" class="md-nav__link">
+    <span class="md-ellipsis">
+      PointerLeave
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rightclick" class="md-nav__link">
+    <span class="md-ellipsis">
+      RightClick
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wheel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wheel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tags/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tags
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    UI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uiviewport/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    UiViewport
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../view/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    View
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viewchild/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewChild
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viewextensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewExtensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viewmenu-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu&lt;T&gt;
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../animation/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Animation
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../diagnostics/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Diagnostics
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../events/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../framework/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Framework
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../graphics/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Graphics
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../input/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Input
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../layout/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Layout
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../overlays/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Overlays
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../widgets/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Widgets
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../examples/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Members
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Members">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actualbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      ActualBounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contentbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      ContentBounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isfocusable" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsFocusable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layout
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name" class="md-nav__link">
+    <span class="md-ellipsis">
+      Name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outersize" class="md-nav__link">
+    <span class="md-ellipsis">
+      OuterSize
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointereventsenabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      PointerEventsEnabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrollwithchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      ScrollWithChildren
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tooltip" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tooltip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zindex" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZIndex
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#containspointvector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ContainsPoint(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawispritebatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Draw(ISpriteBatch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#focussearchvector2-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      FocusSearch(Vector2, Direction)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildatvector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildAt(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildpositioniview" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildPosition(IView)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildren" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildren()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getchildrenatvector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetChildrenAt(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getdefaultfocuschild" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetDefaultFocusChild()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hasoutofboundscontent" class="md-nav__link">
+    <span class="md-ellipsis">
+      HasOutOfBoundsContent()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isdirty" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsDirty()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#measurevector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Measure(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onbuttonpressbuttoneventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnButtonPress(ButtonEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onclickclickeventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnClick(ClickEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ondragpointereventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnDrag(PointerEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ondroppointereventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnDrop(PointerEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onpointermovepointermoveeventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnPointerMove(PointerMoveEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onupdatetimespan" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnUpdate(TimeSpan)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onwheelwheeleventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnWheel(WheelEventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrollintoviewienumerableviewchild-vector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buttonpress" class="md-nav__link">
+    <span class="md-ellipsis">
+      ButtonPress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#click" class="md-nav__link">
+    <span class="md-ellipsis">
+      Click
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drag
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dragend" class="md-nav__link">
+    <span class="md-ellipsis">
+      DragEnd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dragstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      DragStart
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leftclick" class="md-nav__link">
+    <span class="md-ellipsis">
+      LeftClick
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointerenter" class="md-nav__link">
+    <span class="md-ellipsis">
+      PointerEnter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pointerleave" class="md-nav__link">
+    <span class="md-ellipsis">
+      PointerLeave
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rightclick" class="md-nav__link">
+    <span class="md-ellipsis">
+      RightClick
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wheel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Wheel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
+<div class="api-reference">
+<h1 id="interface-iview">Interface IView</h1>
+<h2 id="definition">Definition</h2>
+<div class="api-definition">
+<p>Namespace: <a href="../">StardewUI</a><br />
+Assembly: StardewUI.dll  </p>
+</div>
+<p>Represents some arbitrary UI element or layout.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">interface</span><span class="w"> </span><span class="n">IView</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">ComponentModel</span><span class="p">.</span><span class="n">INotifyPropertyChanged</span>
+</span></code></pre></div>
+<p><strong>Implements</strong><br />
+<a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a></p>
+<h2 id="members">Members</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#actualbounds">ActualBounds</a></td>
+<td>The bounds of this view relative to the origin (0, 0).</td>
+</tr>
+<tr>
+<td><a href="#contentbounds">ContentBounds</a></td>
+<td>The true bounds of this view's content; i.e. <a href="./#actualbounds">ActualBounds</a> excluding margins.</td>
+</tr>
+<tr>
+<td><a href="#isfocusable">IsFocusable</a></td>
+<td>Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.</td>
+</tr>
+<tr>
+<td><a href="#layout">Layout</a></td>
+<td>The current layout parameters, which determine how <a href="./#measurevector2">Measure(Vector2)</a> will behave.</td>
+</tr>
+<tr>
+<td><a href="#name">Name</a></td>
+<td>Simple name for this view, used in log/debug output; does not affect behavior.</td>
+</tr>
+<tr>
+<td><a href="#outersize">OuterSize</a></td>
+<td>The true computed layout size resulting from a single <a href="./#measurevector2">Measure(Vector2)</a> pass.</td>
+</tr>
+<tr>
+<td><a href="#pointereventsenabled">PointerEventsEnabled</a></td>
+<td>Whether this view should receive pointer events like <a href="./#click">Click</a> or <a href="./#drag">Drag</a>.</td>
+</tr>
+<tr>
+<td><a href="#scrollwithchildren">ScrollWithChildren</a></td>
+<td>If set to an axis, specifies that when any child of the view is scrolled into view (using <a href="./#scrollintoviewienumerableviewchild-vector2">ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)</a>), then this entire view should be scrolled along with it.</td>
+</tr>
+<tr>
+<td><a href="#tags">Tags</a></td>
+<td>The user-defined tags for this view.</td>
+</tr>
+<tr>
+<td><a href="#tooltip">Tooltip</a></td>
+<td>Localized tooltip to display on hover, if any.</td>
+</tr>
+<tr>
+<td><a href="#visibility">Visibility</a></td>
+<td>Drawing visibility for this view.</td>
+</tr>
+<tr>
+<td><a href="#zindex">ZIndex</a></td>
+<td>Z order for this view within its direct parent. Higher indices draw later (on top).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="methods">Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#containspointvector2">ContainsPoint(Vector2)</a></td>
+<td>Checks if a given point, relative to the view's origin, is within its bounds.</td>
+</tr>
+<tr>
+<td><a href="#drawispritebatch">Draw(ISpriteBatch)</a></td>
+<td>Draws the content for this view.</td>
+</tr>
+<tr>
+<td><a href="#focussearchvector2-direction">FocusSearch(Vector2, Direction)</a></td>
+<td>Finds the next focusable component in a given direction that does <em>not</em> overlap with a current position.</td>
+</tr>
+<tr>
+<td><a href="#getchildatvector2">GetChildAt(Vector2)</a></td>
+<td>Finds the child at a given position.</td>
+</tr>
+<tr>
+<td><a href="#getchildpositioniview">GetChildPosition(IView)</a></td>
+<td>Computes or retrieves the position of a given direct child.</td>
+</tr>
+<tr>
+<td><a href="#getchildren">GetChildren()</a></td>
+<td>Gets the current children of this view.</td>
+</tr>
+<tr>
+<td><a href="#getchildrenatvector2">GetChildrenAt(Vector2)</a></td>
+<td>Finds all children at a given position.</td>
+</tr>
+<tr>
+<td><a href="#getdefaultfocuschild">GetDefaultFocusChild()</a></td>
+<td>Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first opened.</td>
+</tr>
+<tr>
+<td><a href="#hasoutofboundscontent">HasOutOfBoundsContent()</a></td>
+<td>Checks if the view has content or elements that are all or partially outside the <a href="./#actualbounds">ActualBounds</a>.</td>
+</tr>
+<tr>
+<td><a href="#isdirty">IsDirty()</a></td>
+<td>Checks whether or not the view is dirty - i.e. requires a new layout with a full <a href="./#measurevector2">Measure(Vector2)</a>.</td>
+</tr>
+<tr>
+<td><a href="#measurevector2">Measure(Vector2)</a></td>
+<td>Performs layout on this view, updating its <a href="./#outersize">OuterSize</a>, <a href="./#actualbounds">ActualBounds</a> and <a href="./#contentbounds">ContentBounds</a>, and arranging any children in their respective positions.</td>
+</tr>
+<tr>
+<td><a href="#onbuttonpressbuttoneventargs">OnButtonPress(ButtonEventArgs)</a></td>
+<td>Called when a button press is received while this view is in the focus path.</td>
+</tr>
+<tr>
+<td><a href="#onclickclickeventargs">OnClick(ClickEventArgs)</a></td>
+<td>Called when a click is received within this view's bounds.</td>
+</tr>
+<tr>
+<td><a href="#ondragpointereventargs">OnDrag(PointerEventArgs)</a></td>
+<td>Called when the view is being dragged (mouse moved while left button held).</td>
+</tr>
+<tr>
+<td><a href="#ondroppointereventargs">OnDrop(PointerEventArgs)</a></td>
+<td>Called when the mouse button is released after at least one <a href="./#ondragpointereventargs">OnDrag(PointerEventArgs)</a>.</td>
+</tr>
+<tr>
+<td><a href="#onpointermovepointermoveeventargs">OnPointerMove(PointerMoveEventArgs)</a></td>
+<td>Called when a pointer movement related to this view occurs.</td>
+</tr>
+<tr>
+<td><a href="#onupdatetimespan">OnUpdate(TimeSpan)</a></td>
+<td>Runs on every update tick.</td>
+</tr>
+<tr>
+<td><a href="#onwheelwheeleventargs">OnWheel(WheelEventArgs)</a></td>
+<td>Called when a wheel event is received within this view's bounds.</td>
+</tr>
+<tr>
+<td><a href="#scrollintoviewienumerableviewchild-vector2">ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)</a></td>
+<td>Attempts to scroll the specified target into view, including all of its ancestors, if not fully in view.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events">Events</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#buttonpress">ButtonPress</a></td>
+<td>Event raised when any button on any input device is pressed.</td>
+</tr>
+<tr>
+<td><a href="#click">Click</a></td>
+<td>Event raised when the view receives a click initiated from any button.</td>
+</tr>
+<tr>
+<td><a href="#drag">Drag</a></td>
+<td>Event raised when the view is being dragged using the mouse.</td>
+</tr>
+<tr>
+<td><a href="#dragend">DragEnd</a></td>
+<td>Event raised when mouse dragging is stopped, i.e. when the button is released. Always raised after the last <a href="./#drag">Drag</a>, and only once per drag operation.</td>
+</tr>
+<tr>
+<td><a href="#dragstart">DragStart</a></td>
+<td>Event raised when mouse dragging is first activated. Always raised before the first <a href="./#drag">Drag</a>, and only once per drag operation.</td>
+</tr>
+<tr>
+<td><a href="#leftclick">LeftClick</a></td>
+<td>Event raised when the view receives a click initiated from the left mouse button, or the controller's action button (A).</td>
+</tr>
+<tr>
+<td><a href="#pointerenter">PointerEnter</a></td>
+<td>Event raised when the pointer enters the view.</td>
+</tr>
+<tr>
+<td><a href="#pointerleave">PointerLeave</a></td>
+<td>Event raised when the pointer exits the view.</td>
+</tr>
+<tr>
+<td><a href="#rightclick">RightClick</a></td>
+<td>Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use button (X).</td>
+</tr>
+<tr>
+<td><a href="#wheel">Wheel</a></td>
+<td>Event raised when the scroll wheel moves.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="details">Details</h2>
+<h3 id="properties_1">Properties</h3>
+<h4 id="actualbounds">ActualBounds</h4>
+<p>The bounds of this view relative to the origin (0, 0).</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">ActualBounds</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value">Property Value</h5>
+<p><a href="../layout/bounds/">Bounds</a></p>
+<h5 id="remarks">Remarks</h5>
+<p>Typically, a view's bounds is the rectangle from (0, 0) having size of <a href="./#outersize">OuterSize</a>, but there may be a difference especially in the case of negative margins. The various sizes affect layout flow and can even be negative - for example, in a left-to-right layout, a view with left margin -100, right margin 20 and inner width 30 (no padding) has an X size of -50, indicating that it actually (correctly) causes adjacent views to be pulled left along with it. However, <code>ActualBounds</code> always has a positive <a href="../layout/bounds/#size">Size</a>, and if an implicit content offset is being applied (e.g. because of negative margins) then it will be reflected in <a href="../layout/bounds/#position">Position</a> and not affect the <a href="../layout/bounds/#size">Size</a>; the previous example would have position X = -100 and size X = 50 (30 content + 20 right margin). </p>
+<p>In terms of usage, <a href="./#outersize">OuterSize</a> is generally used for the layout itself (<a href="./#measurevector2">Measure(Vector2)</a> and <a href="../view/#onmeasurevector2">OnMeasure(Vector2)</a> of parent views) whereas <a href="./#actualbounds">ActualBounds</a> is preferred for click and focus targeting.</p>
+<hr />
+<h4 id="contentbounds">ContentBounds</h4>
+<p>The true bounds of this view's content; i.e. <a href="./#actualbounds">ActualBounds</a> excluding margins.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">ContentBounds</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_1">Property Value</h5>
+<p><a href="../layout/bounds/">Bounds</a></p>
+<hr />
+<h4 id="isfocusable">IsFocusable</h4>
+<p>Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">IsFocusable</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_2">Property Value</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_1">Remarks</h5>
+<p>In other game UI code this is more typically referred to as "snap", since there is no true input focus. However, focus is the more general term and better explains what is happening with e.g. a text box.</p>
+<hr />
+<h4 id="layout">Layout</h4>
+<p>The current layout parameters, which determine how <a href="./#measurevector2">Measure(Vector2)</a> will behave.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">LayoutParameters</span><span class="w"> </span><span class="n">Layout</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_3">Property Value</h5>
+<p><a href="../layout/layoutparameters/">LayoutParameters</a></p>
+<hr />
+<h4 id="name">Name</h4>
+<p>Simple name for this view, used in log/debug output; does not affect behavior.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_4">Property Value</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
+<hr />
+<h4 id="outersize">OuterSize</h4>
+<p>The true computed layout size resulting from a single <a href="./#measurevector2">Measure(Vector2)</a> pass.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">OuterSize</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_5">Property Value</h5>
+<p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
+<hr />
+<h4 id="pointereventsenabled">PointerEventsEnabled</h4>
+<p>Whether this view should receive pointer events like <a href="./#click">Click</a> or <a href="./#drag">Drag</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">PointerEventsEnabled</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_6">Property Value</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_2">Remarks</h5>
+<p>By default, all views receive pointer events; this may be disabled for views that intentionally overlap other views but shouldn't block their input, such as local non-modal overlays.</p>
+<hr />
+<h4 id="scrollwithchildren">ScrollWithChildren</h4>
+<p>If set to an axis, specifies that when any child of the view is scrolled into view (using <a href="./#scrollintoviewienumerableviewchild-vector2">ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)</a>), then this entire view should be scrolled along with it.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Orientation</span><span class="o">?</span><span class="w"> </span><span class="n">ScrollWithChildren</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_7">Property Value</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="../layout/orientation/">Orientation</a>&gt;</p>
+<h5 id="remarks_3">Remarks</h5>
+<p>For example, if the view lays out children horizontally, and some children may occupy only a very small amount of space near the top while others are much taller vertically or positioned near the bottom, it might be desirable to configure this with <a href="../layout/orientation/#vertical">Vertical</a>, so that the entire "row" is positioned within the scrollable viewport. </p>
+<p>In other words, "if any part of me is made visible via scrolling, then all of me should be visible".</p>
+<hr />
+<h4 id="tags">Tags</h4>
+<p>The user-defined tags for this view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Tags</span><span class="w"> </span><span class="n">Tags</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_8">Property Value</h5>
+<p><a href="../tags/">Tags</a></p>
+<hr />
+<h4 id="tooltip">Tooltip</h4>
+<p>Localized tooltip to display on hover, if any.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">Tooltip</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_9">Property Value</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
+<hr />
+<h4 id="visibility">Visibility</h4>
+<p>Drawing visibility for this view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Visibility</span><span class="w"> </span><span class="n">Visibility</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_10">Property Value</h5>
+<p><a href="../layout/visibility/">Visibility</a></p>
+<hr />
+<h4 id="zindex">ZIndex</h4>
+<p>Z order for this view within its direct parent. Higher indices draw later (on top).</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">ZIndex</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_11">Property Value</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a></p>
+<hr />
+<h3 id="methods_1">Methods</h3>
+<h4 id="containspointvector2">ContainsPoint(Vector2)</h4>
+<p>Checks if a given point, relative to the view's origin, is within its bounds.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ContainsPoint</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">point</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters">Parameters</h5>
+<p><strong><code>point</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+The point to test.</p>
+<h5 id="returns">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p><code>true</code> if <code>point</code> is within the view bounds; otherwise <code>false</code>.</p>
+<hr />
+<h4 id="drawispritebatch">Draw(ISpriteBatch)</h4>
+<p>Draws the content for this view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Draw</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_1">Parameters</h5>
+<p><strong><code>b</code></strong> &nbsp; <a href="../graphics/ispritebatch/">ISpriteBatch</a><br />
+Sprite batch to hold the drawing output.</p>
+<h5 id="remarks_4">Remarks</h5>
+<p>No positional argument is included because <a href="../graphics/ispritebatch/">ISpriteBatch</a> handles its own transformations; the top-left coordinates of this view are always (0, 0).</p>
+<hr />
+<h4 id="focussearchvector2-direction">FocusSearch(Vector2, Direction)</h4>
+<p>Finds the next focusable component in a given direction that does <em>not</em> overlap with a current position.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FocusSearch</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_2">Parameters</h5>
+<p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+The current cursor position, relative to this view. May have dimensions that are negative or outside the view bounds, indicating that the cursor is not currently within the view.</p>
+<p><strong><code>direction</code></strong> &nbsp; <a href="../direction/">Direction</a><br />
+The direction of cursor movement.</p>
+<h5 id="returns_1">Returns</h5>
+<p><a href="../input/focussearchresult/">FocusSearchResult</a></p>
+<p>The next focusable view reached by moving in the specified <code>direction</code>, or <code>null</code> if there are no focusable descendants that are possible to reach in that direction.</p>
+<h5 id="remarks_5">Remarks</h5>
+<p>If <code>position</code> is out of bounds, it does not necessarily mean that the view should return <code>null</code>; the expected result depends on the <code>direction</code> also. The base case is when the focus position is already in bounds, and in this case a view should return whichever view can be reached by moving from the edge of that view along a straight line in the specified <code>direction</code>. However, focus search is recursive and the result should reflect the "best" candidate for focus if the cursor were to move <em>into</em> this view's bounds. For example, in a 1D horizontal layout the rules might be:  There are no strict rules for how a view performs focus search, but in general it is assumed that a view implementation understands its own layout and can accommodate accordingly; for example, a grid would follow essentially the same rules as our "list" example above, with additional considerations for navigating rows. "Ragged" 2D layouts might have complex rules requiring explicit neighbors, and therefore are typically easier to implement as nested lanes.</p>
+<hr />
+<h4 id="getchildatvector2">GetChildAt(Vector2)</h4>
+<p>Finds the child at a given position.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">GetChildAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_3">Parameters</h5>
+<p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+The search position, relative to the view's top-left coordinate.</p>
+<h5 id="returns_2">Returns</h5>
+<p><a href="../viewchild/">ViewChild</a></p>
+<p>The view at <code>position</code>, or <code>null</code> if there is no match.</p>
+<h5 id="remarks_6">Remarks</h5>
+<p>If multiple children overlap the same position, then this returns the topmost child.</p>
+<hr />
+<h4 id="getchildpositioniview">GetChildPosition(IView)</h4>
+<p>Computes or retrieves the position of a given direct child.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">GetChildPosition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">childView</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_4">Parameters</h5>
+<p><strong><code>childView</code></strong> &nbsp; <a href="./">IView</a><br />
+The child of this view.</p>
+<h5 id="returns_3">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a>&gt;</p>
+<p>The local coordinates of the <code>childView</code>, or <code>null</code> if the <code>childView</code> is not a current or direct child.</p>
+<h5 id="remarks_7">Remarks</h5>
+<p>Implementation of this may be O(N) and therefore it should not be called every frame; it is intended for use in directional movement and other user-initiated events.</p>
+<hr />
+<h4 id="getchildren">GetChildren()</h4>
+<p>Gets the current children of this view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetChildren</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_4">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
+<hr />
+<h4 id="getchildrenatvector2">GetChildrenAt(Vector2)</h4>
+<p>Finds all children at a given position.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetChildrenAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_5">Parameters</h5>
+<p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+The search position, relative to the view's top-left coordinate.</p>
+<h5 id="returns_5">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
+<p>A sequence of views at the specified <code>position</code>, in front-to-back (reverse <a href="./#zindex">ZIndex</a>) order.</p>
+<hr />
+<h4 id="getdefaultfocuschild">GetDefaultFocusChild()</h4>
+<p>Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first opened.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">GetDefaultFocusChild</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_6">Returns</h5>
+<p><a href="../viewchild/">ViewChild</a></p>
+<p>The child view and position where initial focus should be, either directly or indirectly as a result of a descendant receiving focus. If this <a href="./">IView</a> is itself <a href="./#isfocusable">IsFocusable</a>, then the result may be a <a href="../viewchild/">ViewChild</a> referencing this view.</p>
+<hr />
+<h4 id="hasoutofboundscontent">HasOutOfBoundsContent()</h4>
+<p>Checks if the view has content or elements that are all or partially outside the <a href="./#actualbounds">ActualBounds</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">HasOutOfBoundsContent</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_7">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_8">Remarks</h5>
+<p>This may be the case for e.g. floating elements, and covers not only the view's immediate content/children but also that of any descendants.</p>
+<hr />
+<h4 id="isdirty">IsDirty()</h4>
+<p>Checks whether or not the view is dirty - i.e. requires a new layout with a full <a href="./#measurevector2">Measure(Vector2)</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">IsDirty</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_8">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p><code>true</code> if the view must be measured again; otherwise <code>false</code>.</p>
+<h5 id="remarks_9">Remarks</h5>
+<p>Typically, a view will be considered dirty if and only if one of the following are true:  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.</p>
+<hr />
+<h4 id="measurevector2">Measure(Vector2)</h4>
+<p>Performs layout on this view, updating its <a href="./#outersize">OuterSize</a>, <a href="./#actualbounds">ActualBounds</a> and <a href="./#contentbounds">ContentBounds</a>, and arranging any children in their respective positions.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">Measure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_6">Parameters</h5>
+<p><strong><code>availableSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+The width/height that is still available in the container/parent.</p>
+<h5 id="returns_9">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p>Whether or not any layout was performed as a result of this pass. Callers may use this to propagate layout back up the tree, or perform expensive follow-up actions.</p>
+<h5 id="remarks_10">Remarks</h5>
+<p>Most views should save the value of <code>availableSize</code> for use in <a href="./#isdirty">IsDirty()</a> checks.</p>
+<hr />
+<h4 id="onbuttonpressbuttoneventargs">OnButtonPress(ButtonEventArgs)</h4>
+<p>Called when a button press is received while this view is in the focus path.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnButtonPress</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ButtonEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_7">Parameters</h5>
+<p><strong><code>e</code></strong> &nbsp; <a href="../events/buttoneventargs/">ButtonEventArgs</a><br />
+The event data.</p>
+<hr />
+<h4 id="onclickclickeventargs">OnClick(ClickEventArgs)</h4>
+<p>Called when a click is received within this view's bounds.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnClick</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_8">Parameters</h5>
+<p><strong><code>e</code></strong> &nbsp; <a href="../events/clickeventargs/">ClickEventArgs</a><br />
+The event data.</p>
+<hr />
+<h4 id="ondragpointereventargs">OnDrag(PointerEventArgs)</h4>
+<p>Called when the view is being dragged (mouse moved while left button held).</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnDrag</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_9">Parameters</h5>
+<p><strong><code>e</code></strong> &nbsp; <a href="../events/pointereventargs/">PointerEventArgs</a><br />
+The event data.</p>
+<hr />
+<h4 id="ondroppointereventargs">OnDrop(PointerEventArgs)</h4>
+<p>Called when the mouse button is released after at least one <a href="./#ondragpointereventargs">OnDrag(PointerEventArgs)</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnDrop</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_10">Parameters</h5>
+<p><strong><code>e</code></strong> &nbsp; <a href="../events/pointereventargs/">PointerEventArgs</a><br />
+The event data.</p>
+<hr />
+<h4 id="onpointermovepointermoveeventargs">OnPointerMove(PointerMoveEventArgs)</h4>
+<p>Called when a pointer movement related to this view occurs.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnPointerMove</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerMoveEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_11">Parameters</h5>
+<p><strong><code>e</code></strong> &nbsp; <a href="../events/pointermoveeventargs/">PointerMoveEventArgs</a><br />
+The event data.</p>
+<h5 id="remarks_11">Remarks</h5>
+<p>This can either be the pointer entering the view, leaving the view, or moving within the view. The method is used to trigger events such as <a href="../view/#pointerenter">PointerEnter</a> and <a href="../view/#pointerleave">PointerLeave</a>.</p>
+<hr />
+<h4 id="onupdatetimespan">OnUpdate(TimeSpan)</h4>
+<p>Runs on every update tick.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_12">Parameters</h5>
+<p><strong><code>elapsed</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
+Time elapsed since last game tick.</p>
+<h5 id="remarks_12">Remarks</h5>
+<p>Provided as an escape hatch for very unusual scenarios like responding to flips in the game's gamepadControls state. </p>
+<p><strong>Override this at your own extreme peril.</strong> Frequently performing any layout-affecting logic in this function can negate the performance benefits of a retained-mode UI and cause the UI to become sluggish or even completely unresponsive.  Do not use it for animation; use <a href="../animation/animator/">Animator</a> instead.</p>
+<hr />
+<h4 id="onwheelwheeleventargs">OnWheel(WheelEventArgs)</h4>
+<p>Called when a wheel event is received within this view's bounds.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnWheel</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">WheelEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_13">Parameters</h5>
+<p><strong><code>e</code></strong> &nbsp; <a href="../events/wheeleventargs/">WheelEventArgs</a><br />
+The event data.</p>
+<hr />
+<h4 id="scrollintoviewienumerableviewchild-vector2">ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)</h4>
+<p>Attempts to scroll the specified target into view, including all of its ancestors, if not fully in view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollIntoView</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_14">Parameters</h5>
+<p><strong><code>path</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;<br />
+The path to the view that should be visible, starting from (and not including) this view; each element has the local position within its own parent, so the algorithm can run recursively. This is a slice of the same path returned in a <a href="../input/focussearchresult/">FocusSearchResult</a>.</p>
+<p><strong><code>distance</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+The total distance that was scrolled, including distance scrolled by descendants.</p>
+<h5 id="returns_10">Returns</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p>Whether or not the scroll was successful; <code>false</code> prevents the request from bubbling.</p>
+<hr />
+<h3 id="events_1">Events</h3>
+<h4 id="buttonpress">ButtonPress</h4>
+<p>Event raised when any button on any input device is pressed.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ButtonEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">ButtonPress</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/buttoneventargs/">ButtonEventArgs</a>&gt;</p>
+<h5 id="remarks_13">Remarks</h5>
+<p>Only the views in the current focus path should receive these events.</p>
+<hr />
+<h4 id="click">Click</h4>
+<p>Event raised when the view receives a click initiated from any button.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Click</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_1">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/clickeventargs/">ClickEventArgs</a>&gt;</p>
+<hr />
+<h4 id="drag">Drag</h4>
+<p>Event raised when the view is being dragged using the mouse.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Drag</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_2">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
+<hr />
+<h4 id="dragend">DragEnd</h4>
+<p>Event raised when mouse dragging is stopped, i.e. when the button is released. Always raised after the last <a href="./#drag">Drag</a>, and only once per drag operation.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">DragEnd</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_3">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
+<hr />
+<h4 id="dragstart">DragStart</h4>
+<p>Event raised when mouse dragging is first activated. Always raised before the first <a href="./#drag">Drag</a>, and only once per drag operation.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">DragStart</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_4">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
+<hr />
+<h4 id="leftclick">LeftClick</h4>
+<p>Event raised when the view receives a click initiated from the left mouse button, or the controller's action button (A).</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">LeftClick</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_5">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/clickeventargs/">ClickEventArgs</a>&gt;</p>
+<h5 id="remarks_14">Remarks</h5>
+<p>Using this event is a shortcut for handling <a href="./#click">Click</a> and checking for <a href="../events/clickeventargs/#isprimarybutton">IsPrimaryButton()</a>.</p>
+<hr />
+<h4 id="pointerenter">PointerEnter</h4>
+<p>Event raised when the pointer enters the view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">PointerEnter</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_6">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
+<hr />
+<h4 id="pointerleave">PointerLeave</h4>
+<p>Event raised when the pointer exits the view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">PointerLeave</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_7">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
+<hr />
+<h4 id="rightclick">RightClick</h4>
+<p>Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use button (X).</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">RightClick</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_8">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/clickeventargs/">ClickEventArgs</a>&gt;</p>
+<h5 id="remarks_15">Remarks</h5>
+<p>Using this event is a shortcut for handling <a href="./#click">Click</a> and checking for <a href="../events/clickeventargs/#issecondarybutton">IsSecondaryButton()</a>.</p>
+<hr />
+<h4 id="wheel">Wheel</h4>
+<p>Event raised when the scroll wheel moves.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">WheelEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Wheel</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type_9">Event Type</h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/wheeleventargs/">WheelEventArgs</a>&gt;</p>
+<hr />
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../directionextensions/" class="md-footer__link md-footer__link--prev" aria-label="Previous: DirectionExtensions">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                DirectionExtensions
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../tags/" class="md-footer__link md-footer__link--next" aria-label="Next: Tags">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Tags
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/focustense" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://next.nexusmods.com/profile/focustense/mods?gameId=1303" target="_blank" rel="noopener" title="next.nexusmods.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.376 0c-.993 0-2.18.686-2.907 1.182-1.676-.36-4.036-.545-6.787.635-1.365-.513-2.425-.562-3.32-.488a2.16 2.16 0 0 0-1.27.429c-.33.22-2.788 2.69-3.069 4.652C-.15 7.508.68 8.932 1.218 9.718c-.44 1.76-.2 4.572.517 6.188-.353 1.041-.713 2.089-.664 3.205.01.584.061 1.188.398 1.684C1.72 21.19 4.528 24 6.545 24c.957 0 1.93-.428 3.07-1.24 2.16.383 4.402.348 6.448-.532 2.573 1.001 4.224.625 4.84.162.587-.457 2.826-2.915 3.07-4.622.1-.672-.023-1.638-1.226-3.397a11 11 0 0 0-.501-6.455c.396-1.069.673-2.188.59-3.337-.015-.68-.221-1.167-.487-1.507-.209-.335-2.415-2.39-4.028-2.91A3.1 3.1 0 0 0 17.376 0m-.03 2.082c.65.015 2.155 1.093 3.01 1.906l.355.34c-.959-.163-2.125.428-3.26 1.55a10.3 10.3 0 0 0-1.358 1.595c-.28.384-.517.768-.753 1.285l1.18.635-3.895 1.477-1.122-4.18 1.033.547c1.358-3.102 2.524-3.973 3.232-4.416h.015a5.1 5.1 0 0 1 1.49-.724zM12 3.065a9 9 0 0 1 2.22.279 8 8 0 0 0-.42.488 8.4 8.4 0 0 0-1.8-.196 8.34 8.34 0 0 0-5.897 2.432 8 8 0 0 1-.37-.433A8.9 8.9 0 0 1 12 3.065m-7.076.305c.71-.002 1.309.127 2.2.466a9.5 9.5 0 0 0-1.713 1.337c-.327-.542-.624-1.156-.488-1.803m-.606.042c-.162.96.428 2.126 1.55 3.264.457.487 1.003.945 1.594 1.358.383.281.767.517 1.283.754l.62-1.182 1.49 3.914-4.176 1.122.546-1.033c-3.099-1.36-3.969-2.526-4.412-3.235v-.015a5.1 5.1 0 0 1-.723-1.491l-.015-.074c.015-.65 1.092-2.156 1.904-3.013Zm16.035 1.483a1.3 1.3 0 0 1 .26.015l.14.023a5 5 0 0 1-.13 1.137v.015q-.152.574-.377 1.148a9.5 9.5 0 0 0-1.346-1.776c.547-.357 1.051-.546 1.453-.562M18.43 5.8a8.9 8.9 0 0 1 2.506 6.2 9 9 0 0 1-.27 2.183 8 8 0 0 0-.488-.425A8.4 8.4 0 0 0 20.364 12 8.33 8.33 0 0 0 18 6.173a8 8 0 0 1 .429-.373M3.315 9.905q.235.222.488.425A8.4 8.4 0 0 0 3.636 12c0 2.248.887 4.286 2.327 5.788a8 8 0 0 1-.426.376A8.9 8.9 0 0 1 3.065 12a9 9 0 0 1 .25-2.095m13.988 1.541-.546 1.034c3.098 1.359 3.969 2.526 4.412 3.235v.014c.34.488.575.99.723 1.492l.014.074c-.014.65-1.092 2.156-1.903 3.013l-.34.354c.163-.96-.427-2.127-1.549-3.264a10.3 10.3 0 0 0-1.594-1.359 7 7 0 0 0-1.283-.753l-.605 1.152-1.505-3.87zm-6.006 1.684 1.121 4.18-1.033-.547c-1.357 3.102-2.523 3.973-3.231 4.416h-.015c-.487.34-.989.576-1.49.724l-.074.015c-.65-.015-2.154-1.093-3.01-1.906l-.354-.34c.959.163 2.124-.428 3.26-1.55.488-.458.945-1.004 1.358-1.595.28-.384.517-.768.753-1.285l-1.166-.635ZM3.72 16.663A9.5 9.5 0 0 0 5.086 18.5c-.697.47-1.33.665-1.777.59l-.138-.024c0-.367.038-.748.128-1.137v-.015c.11-.417.254-.835.42-1.252m14.131 1.314q.194.21.372.43A8.9 8.9 0 0 1 12 20.936a9 9 0 0 1-2.282-.296 8 8 0 0 0 .417-.487 8.34 8.34 0 0 0 7.716-2.175m.696.889c.43.666.607 1.267.534 1.698l-.023.138a5 5 0 0 1-1.136-.128h-.014a11 11 0 0 1-1.114-.366 9.5 9.5 0 0 0 1.753-1.342"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.sections", "navigation.tabs"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>

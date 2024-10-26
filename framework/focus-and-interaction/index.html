@@ -337,6 +337,35 @@
   
     
     
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/stardewui/" class="md-tabs__link">
+          
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../../examples/" class="md-tabs__link">
           
@@ -881,6 +910,59 @@
     
       
         
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../reference/stardewui/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
           
         
       
@@ -1041,7 +1123,7 @@
 <h2 id="focusability">Focusability</h2>
 <p>If you've worked with vanilla UI in Stardew—i.e. manual implementations of <code>IClickableMenu</code>—then you know that focus, or snapping, is entirely based on a menu's clickable component list; literally, a <code>List&lt;ClickableComponent&gt;</code> whose elements define neighbor IDs in each direction as well as several other metadata fields (visibility, name, tooltip, etc.), all of which ironically have no behavior at all unless the menu using them chooses to implement it.</p>
 <p>Controller support is famously neglected in mods because setting it up is a messy process of assigning IDs to every single element, predefining or at least pre-generating the neighbor lists for each and every one of those elements, and either hoping that they don't have variable locations or adding hooks to keep the IDs and lists constantly up to date.</p>
-<p>StardewUI does away with this system completely, and in fact is intentionally not compatible with it. There is <strong>one</strong> relevant property, named <a href="../reference/stardewui/view.md#focusable"><code>Focusable</code></a> (or in <a href="../starml/#common-attributes">StarML</a>, the <code>focusable</code> attribute), which specifies whether or not that view should be able to independently receive focus.</p>
+<p>StardewUI does away with this system completely, and in fact is intentionally not compatible with it. There is <strong>one</strong> relevant property, named <a href="../../reference/stardewui/view/#focusable"><code>Focusable</code></a> (or in <a href="../starml/#common-attributes">StarML</a>, the <code>focusable</code> attribute), which specifies whether or not that view should be able to independently receive focus.</p>
 <p>Some elements are assumed to want focus and automatically enable it (e.g. <a href="../../library/standard-views/#button">Buttons</a> and <a href="../../library/standard-views/#slider">Sliders</a>), but the <code>focusable</code> property/attribute can also be added directly to any other type of view such as an <a href="../../library/standard-views/#image">Image</a>.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
@@ -1059,7 +1141,7 @@
 <ul>
 <li>First, the focused element – the <em>deepest</em> element that contains the cursor – gets a chance to handle the event.</li>
 <li>If that element either does not handle the click, or allows it to "bubble", then the element's parent also gets a chance at it.</li>
-<li>And so on until either the event is marked as <a href="../reference/stardewui/bubbleeventargs.md#handled">Handled</a> or the top-level view is reached.</li>
+<li>And so on until either the event is marked as <a href="../../reference/stardewui/events/bubbleeventargs/#handled">Handled</a> or the top-level view is reached.</li>
 </ul>
 <p>You never have to write code to figure out which element was clicked, hovered, etc. Simply add events to the elements you want, similar to the <a href="#focusability">focusable</a> attribute.</p>
 <div class="admonition tip">
@@ -1088,7 +1170,7 @@
 <p>Tooltips don't have to be on <code>focusable</code> elements; see the note in <a href="#pointer-events">pointer events</a> for why you might do this on purpose. Tooltips also do not have to be on <em>clickable</em> elements; they could be informational only, as is the case in the <a href="../../examples/scrolling-item-grid/">scrolling item grid</a> example.</p>
 <details class="note">
 <summary>Customization</summary>
-<p>While not common, it is possible to further customize the tooltip when using the <a href="../../library/">Core Library</a> directly, via the <a href="../reference/stardewui/viewmenu.md#formattooltip">FormatTooltip</a> method. The <a href="https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15">Garbage In Garbage Can</a> mod does this in order to add button prompts to the tooltip.</p>
+<p>While not common, it is possible to further customize the tooltip when using the <a href="../../library/">Core Library</a> directly, via the <a href="../../reference/stardewui/viewmenu-1/#formattooltipienumerableviewchild">FormatTooltip</a> method. The <a href="https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15">Garbage In Garbage Can</a> mod does this in order to add button prompts to the tooltip.</p>
 <p>Note, however, that (a) this code was written before the <a href="../">framework</a> and StarML existed, and (b) it is completely possible to achieve using standard tooltips, and was only written this way to make it slightly easier to adapt the tooltip's exact wording based on whether the <em>current</em> input is mouse vs. controller. Most tooltips are not going to require this degree of control.</p>
 </details>
 <h2 id="scrolling">Scrolling</h2>
@@ -1183,7 +1265,7 @@
 </div>
 </div>
 </div>
-<p>StardewUI has <a href="../reference/stardewui/itabbable.md"><code>ITabbable</code></a> and <a href="../reference/stardewui/ipageable.md"><code>IPageable</code></a> interfaces that can be implemented on a view in order to hook the trigger and shoulder buttons, respectively. However, because there is so much variability in terms of design decisions, the Framework chooses to leave this up to you, and instead provides a general purpose event to handle button presses.</p>
+<p>StardewUI has <a href="../../reference/stardewui/layout/itabbable/"><code>ITabbable</code></a> and <a href="../../reference/stardewui/layout/ipageable/"><code>IPageable</code></a> interfaces that can be implemented on a view in order to hook the trigger and shoulder buttons, respectively. However, because there is so much variability in terms of design decisions, the Framework chooses to leave this up to you, and instead provides a general purpose event to handle button presses.</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="tabbedviewmodelcs" name="__tabbed_3" type="radio" /><input id="tabbedviewsml" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="tabbedviewmodelcs">TabbedViewModel.cs</label><label for="tabbedviewsml">TabbedView.sml</label></div>

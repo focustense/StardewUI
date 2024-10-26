@@ -337,6 +337,35 @@
   
     
     
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/stardewui/" class="md-tabs__link">
+          
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
       <li class="md-tabs__item">
         <a href="../../examples/" class="md-tabs__link">
           
@@ -839,6 +868,59 @@
     
       
         
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    
+  
+  
+    <a href="../../reference/stardewui/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
           
         
       
@@ -986,11 +1068,11 @@
 <tbody>
 <tr>
 <td><code>&lt;button ... /&gt;</code></td>
-<td>The element/view that the event is being attached to, in this case a <a href="../reference/stardewui/button.md">Button</a>.</td>
+<td>The element/view that the event is being attached to, in this case a <a href="../../reference/stardewui/widgets/button/">Button</a>.</td>
 </tr>
 <tr>
 <td><code>click=|...|</code></td>
-<td>The name of the view's <a href="https://learn.microsoft.com/en-us/dotnet/standard/Events/">event</a> property or field, in <a href="https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case">kebab-case</a>; in this example, it is the <a href="../reference/stardewui/iview.md#click"><code>Click</code></a> event available on every view.<p>To be recognized as an event binding, the value <strong>must be enclosed in pipe characters</strong>, i.e. <code>event=|...|</code> but not <code>event="..."</code> or <code>event={...}</code>.</td>
+<td>The name of the view's <a href="https://learn.microsoft.com/en-us/dotnet/standard/Events/">event</a> property or field, in <a href="https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case">kebab-case</a>; in this example, it is the <a href="../../reference/stardewui/iview/#click"><code>Click</code></a> event available on every view.<p>To be recognized as an event binding, the value <strong>must be enclosed in pipe characters</strong>, i.e. <code>event=|...|</code> but not <code>event="..."</code> or <code>event={...}</code>.</td>
 </tr>
 <tr>
 <td><code>~ShopViewModel.Buy</code></td>
@@ -1010,14 +1092,17 @@
 </tr>
 <tr>
 <td><code>$Button</code></td>
-<td>An <em>event property</em> value. The <code>$</code> token is <strong>only</strong> valid for event arguments, and refers to the same-named property on the real <code>EventArgs</code> object. Specifically, we want the <a href="../reference/stardewui/clickeventargs.md#button"><code>Button</code></a> property of <code>ClickEventArgs</code>—for example, we might use this to implement different behavior for left-click vs. right-click.</td>
+<td>An <em>event property</em> value. The <code>$</code> token is <strong>only</strong> valid for event arguments, and refers to the same-named property on the real <code>EventArgs</code> object. Specifically, we want the <a href="../../reference/stardewui/events/clickeventargs/#button"><code>Button</code></a> property of <code>ClickEventArgs</code>—for example, we might use this to implement different behavior for left-click vs. right-click.</td>
+</tr>
+<tr>
+<td>///</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-</div>
 <p>This example covers all possible argument types: literals, context properties, and event properties. Other types of bindings, such as assets (<code>@path</code>) are <strong>not</strong> supported in event arguments.</p>
 <h2 id="return-values">Return Values</h2>
-<p>Event handler methods, such as the hypothetical <code>Buy</code> method above, will generally be <code>void</code>, but there is one special case: a handler may return <code>bool</code> in order to control the <a href="../reference/stardewui/bubbleeventargs.md#handled"><code>Handled</code></a> property of the event and prevent it from bubbling up.</p>
+<p>Event handler methods, such as the hypothetical <code>Buy</code> method above, will generally be <code>void</code>, but there is one special case: a handler may return <code>bool</code> in order to control the <a href="../../reference/stardewui/events/bubbleeventargs/#handled"><code>Handled</code></a> property of the event and prevent it from bubbling up.</p>
 <p>"Event bubbling" is the process by which an event not considered "handled" by a child view is given another chance to run at the parent. Consider the following two scenarios:</p>
 <ol>
 <li>A list or table in which the currently-hovered item or row is highlighted, and within that row is a button with its own special highlighting or hover animation.</li>
@@ -1095,6 +1180,7 @@
 </div>
 <p>StardewUI automatically recognizes that <code>DisplayExtraInfo</code> now returns a <code>bool</code>, and since we return <code>true</code>, it sets the event's <code>Handled</code> property to <code>true</code>, preventing <code>Buy()</code> from being triggered at the same time.</p>
 <p>This leaves us with the behavior we wanted originally: clicking the info button (<code>&lt;image&gt;</code>) <em>only</em> shows info, while clicking anywhere else within the list item (<code>&lt;frame&gt;</code>) runs the "buy" logic.</p>
+</div>
 
 
 
