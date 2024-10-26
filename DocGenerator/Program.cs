@@ -354,6 +354,11 @@ static string FormatGenericTypeName(
         {
             baseName = baseName[7..];
         }
+        var genericArgsStartIndex = baseName.IndexOf('[');
+        if (genericArgsStartIndex >= 0)
+        {
+            baseName = baseName[..genericArgsStartIndex];
+        }
         if (baseNameOnly)
         {
             int genericStartPos = baseName.IndexOf('`');
