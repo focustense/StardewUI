@@ -1,6 +1,6 @@
 ---
 title: ReflectionPropertyDescriptor
-description: Helper for creating ReflectionPropertyDescriptor`2 with types not known at compile time.
+description: Helper for creating ReflectionPropertyDescriptor&lt;T, TValue&gt; with types not known at compile time.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

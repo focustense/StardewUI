@@ -1,6 +1,6 @@
 ---
 title: Animator
-description: Helpers for creating typed Animator`2 instances.
+description: Helpers for creating typed Animator&lt;T, V&gt; instances.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

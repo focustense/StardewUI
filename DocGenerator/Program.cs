@@ -192,7 +192,13 @@ static void AppendWrapped(StringBuilder sb, string s, ref int currentLength, int
 
 static string EscapeYaml(string value)
 {
-    return value.Replace("<", "&lt;").Replace(">", "&gt;");
+    const string specialCharacters = "{}[]|:";
+    value = value.Replace("<", "&lt;").Replace(">", "&gt;");
+    if (value.IndexOfAny(specialCharacters.ToCharArray()) >= 0)
+    {
+        value = '"' + value + '"';
+    }
+    return value;
 }
 
 static string FormatConstructorName(
@@ -249,6 +255,7 @@ static string FormatGenericMethodName(
     bool fullPath = false,
     bool escaped = true,
     bool collapsePrimitives = false,
+    bool includeParameters = true,
     bool includeParameterModifiers = false,
     bool includeParameterNames = false
 )
@@ -260,7 +267,9 @@ static string FormatGenericMethodName(
             fullPath,
             escaped,
             collapsePrimitives,
-            includeParameterModifiers
+            includeParameters,
+            includeParameterModifiers,
+            includeParameterNames
         );
     }
     var sb = new StringBuilder();
@@ -273,17 +282,20 @@ static string FormatGenericMethodName(
     {
         sb.Append(method.Name);
     }
-    sb.Append('(');
-    AppendParameterList(
-        sb,
-        method.GetParameters(),
-        fullPath,
-        escaped,
-        collapsePrimitives,
-        includeParameterModifiers,
-        includeParameterNames
-    );
-    sb.Append(')');
+    if (includeParameters)
+    {
+        sb.Append('(');
+        AppendParameterList(
+            sb,
+            method.GetParameters(),
+            fullPath,
+            escaped,
+            collapsePrimitives,
+            includeParameterModifiers,
+            includeParameterNames
+        );
+        sb.Append(')');
+    }
     return sb.ToString();
 }
 
@@ -387,12 +399,7 @@ static string FormatMemberLink(MemberInfo memberInfo, string referringNamespace)
 {
     bool canLink = memberInfo.IsVisibleForDocumentation();
     string rootNamespace = typeof(UI).Namespace!;
-    string linkName = memberInfo switch
-    {
-        MethodInfo method => FormatGenericMethodName(method, escaped: canLink),
-        PropertyInfo property => FormatPropertyName(property, escaped: canLink),
-        _ => memberInfo.Name,
-    };
+    string linkName = FormatMemberName(memberInfo, canLink);
     if (!canLink)
     {
         return QuoteCode(linkName);
@@ -406,6 +413,20 @@ static string FormatMemberLink(MemberInfo memberInfo, string referringNamespace)
     string anchor = memberInfo is MethodInfo anchorMethod ? GetMethodAnchor(anchorMethod) : memberInfo.Name;
     anchor = SluggifyName(anchor);
     return FormatLink(linkName, $"{typeFilePath}#{anchor}");
+}
+
+static string FormatMemberName(MemberInfo memberInfo, bool escaped = false, bool includeMethodParameters = true)
+{
+    return memberInfo switch
+    {
+        MethodInfo method => FormatGenericMethodName(
+            method,
+            escaped: escaped,
+            includeParameters: includeMethodParameters
+        ),
+        PropertyInfo property => FormatPropertyName(property, escaped: escaped),
+        _ => memberInfo.Name,
+    };
 }
 
 static string FormatMemberVisibility<T>(

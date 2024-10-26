@@ -1,6 +1,6 @@
 ---
 title: IValueConverterFactory
-description: Factory for obtaining instance of IValueConverter`2.
+description: Factory for obtaining instance of IValueConverter&lt;TSource, TDestination&gt;.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

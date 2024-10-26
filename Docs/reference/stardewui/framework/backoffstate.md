@@ -1,6 +1,6 @@
 ---
 title: BackoffState
-description: State of an exponential backoff, e.g. as used in a BackoffTracker`1.
+description: State of an exponential backoff, e.g. as used in a BackoffTracker&lt;T&gt;.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

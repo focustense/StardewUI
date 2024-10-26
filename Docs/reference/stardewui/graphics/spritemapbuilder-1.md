@@ -1,6 +1,6 @@
 ---
 title: SpriteMapBuilder&lt;T&gt;
-description: Builder interface for a SpriteMap`1 using a single texture source.
+description: Builder interface for a SpriteMap&lt;T&gt; using a single texture source.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

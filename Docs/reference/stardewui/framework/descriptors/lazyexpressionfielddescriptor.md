@@ -1,6 +1,6 @@
 ---
 title: LazyExpressionFieldDescriptor
-description: Helper for creating LazyExpressionFieldDescriptor`1 with types not known at compile time.
+description: Helper for creating LazyExpressionFieldDescriptor&lt;TValue&gt; with types not known at compile time.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

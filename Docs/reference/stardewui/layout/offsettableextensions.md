@@ -1,6 +1,6 @@
 ---
 title: OffsettableExtensions
-description: Extensions for the IOffsettable`1 interface.
+description: Extensions for the IOffsettable&lt;T&gt; interface.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

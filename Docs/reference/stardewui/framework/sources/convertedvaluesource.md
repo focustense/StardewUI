@@ -1,6 +1,6 @@
 ---
 title: ConvertedValueSource
-description: Helpers for creating instances of the generic ConvertedValueSource`2 when some of the types are unknown at compile time.
+description: Helpers for creating instances of the generic ConvertedValueSource&lt;TSource, T&gt; when some of the types are unknown at compile time.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
