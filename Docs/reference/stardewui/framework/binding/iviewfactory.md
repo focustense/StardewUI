@@ -1,0 +1,63 @@
+---
+title: IViewFactory
+description: Factory for creating views from tags.
+---
+
+<link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
+
+/// html | div.api-reference
+
+# Interface IViewFactory
+
+## Definition
+
+<div class="api-definition" markdown>
+
+Namespace: [StardewUI.Framework.Binding](index.md)  
+Assembly: StardewUI.dll  
+
+</div>
+
+Factory for creating views from tags.
+
+```cs
+public interface IViewFactory
+```
+
+## Remarks
+
+This is a simple, low-level abstraction that simply maps tags to view types. It does not perform any reflection or participate in view binding.
+
+## Members
+
+### Methods
+
+ | Name | Description |
+| --- | --- |
+| [CreateView(string)](#createviewstring) | Creates a new view. | 
+
+## Details
+
+### Methods
+
+#### CreateView(string)
+
+Creates a new view.
+
+```cs
+StardewUI.IView CreateView(string tagName);
+```
+
+##### Parameters
+
+**`tagName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The markup tag that specifies the type of view.
+
+##### Returns
+
+[IView](../../iview.md)
+
+  A new view of a type corresponding to the `tagName`.
+
+-----
+

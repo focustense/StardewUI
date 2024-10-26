@@ -1,0 +1,202 @@
+---
+title: IViewEngine
+description: Public API for StardewUI, abstracting away all implementation details of views and trees.
+---
+
+<link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
+
+/// html | div.api-reference
+
+# Interface IViewEngine
+
+## Definition
+
+<div class="api-definition" markdown>
+
+Namespace: [StardewUI.Framework](index.md)  
+Assembly: StardewUI.dll  
+
+</div>
+
+Public API for StardewUI, abstracting away all implementation details of views and trees.
+
+```cs
+public interface IViewEngine
+```
+
+## Members
+
+### Methods
+
+ | Name | Description |
+| --- | --- |
+| [CreateDrawableFromAsset(string)](#createdrawablefromassetstring) | Creates an [IViewDrawable](iviewdrawable.md) from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher. | 
+| [CreateDrawableFromMarkup(string)](#createdrawablefrommarkupstring) | Creates an [IViewDrawable](iviewdrawable.md) from arbitrary markup. | 
+| [CreateMenuFromAsset(string, Object)](#createmenufromassetstring-object) | Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher. | 
+| [CreateMenuFromMarkup(string, Object)](#createmenufrommarkupstring-object) | Creates a menu from arbitrary markup. | 
+| [EnableHotReloading()](#enablehotreloading) | Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites. | 
+| [RegisterSprites(string, string)](#registerspritesstring-string) | Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets. | 
+| [RegisterViews(string, string)](#registerviewsstring-string) | Registers a mod directory to be searched for view (StarML) assets. Uses the `.sml` extension. | 
+
+## Details
+
+### Methods
+
+#### CreateDrawableFromAsset(string)
+
+Creates an [IViewDrawable](iviewdrawable.md) from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher.
+
+```cs
+StardewUI.Framework.IViewDrawable CreateDrawableFromAsset(string assetName);
+```
+
+##### Parameters
+
+**`assetName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The name of the StarML view asset in the content pipeline, e.g. `Mods/MyMod/Views/MyView`.
+
+##### Returns
+
+[IViewDrawable](iviewdrawable.md)
+
+  An [IViewDrawable](iviewdrawable.md) for drawing directly to the [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html) of a rendering event or other draw handler.
+
+##### Remarks
+
+The [Context](iviewdrawable.md#context) and [MaxSize](iviewdrawable.md#maxsize) can be provided after creation.
+
+-----
+
+#### CreateDrawableFromMarkup(string)
+
+Creates an [IViewDrawable](iviewdrawable.md) from arbitrary markup.
+
+```cs
+StardewUI.Framework.IViewDrawable CreateDrawableFromMarkup(string markup);
+```
+
+##### Parameters
+
+**`markup`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The markup in StarML format.
+
+##### Returns
+
+[IViewDrawable](iviewdrawable.md)
+
+  An [IViewDrawable](iviewdrawable.md) for drawing directly to the [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html) of a rendering event or other draw handler.
+
+##### Remarks
+
+The [Context](iviewdrawable.md#context) and [MaxSize](iviewdrawable.md#maxsize) can be provided after creation. 
+
+**Warning:** Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not use this API except for testing/experimentation.
+
+-----
+
+#### CreateMenuFromAsset(string, Object)
+
+Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher.
+
+```cs
+StardewValley.Menus.IClickableMenu CreateMenuFromAsset(string assetName, System.Object context);
+```
+
+##### Parameters
+
+**`assetName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The name of the StarML view asset in the content pipeline, e.g. `Mods/MyMod/Views/MyView`.
+
+**`context`** &nbsp; [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)  
+The context, or "model", for the menu's view, which holds any data-dependent values. **Note:** The type must implement [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged) in order for any changes to this data to be automatically reflected in the UI.
+
+##### Returns
+
+IClickableMenu
+
+  A menu object which can be shown using the game's standard menu APIs such as activeClickableMenu.
+
+##### Remarks
+
+Does not make the menu active. To show it, use activeClickableMenu or equivalent.
+
+-----
+
+#### CreateMenuFromMarkup(string, Object)
+
+Creates a menu from arbitrary markup.
+
+```cs
+StardewValley.Menus.IClickableMenu CreateMenuFromMarkup(string markup, System.Object context);
+```
+
+##### Parameters
+
+**`markup`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The markup in StarML format.
+
+**`context`** &nbsp; [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)  
+The context, or "model", for the menu's view, which holds any data-dependent values. **Note:** The type must implement [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged) in order for any changes to this data to be automatically reflected in the UI.
+
+##### Returns
+
+IClickableMenu
+
+  A menu object which can be shown using the game's standard menu APIs such as activeClickableMenu.
+
+##### Remarks
+
+**Warning:** Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not use this API except for testing/experimentation.
+
+-----
+
+#### EnableHotReloading()
+
+Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites.
+
+```cs
+void EnableHotReloading();
+```
+
+##### Remarks
+
+May impact game performance and should normally only be used during development and/or in debug mode.
+
+-----
+
+#### RegisterSprites(string, string)
+
+Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
+
+```cs
+void RegisterSprites(string assetPrefix, string modDirectory);
+```
+
+##### Parameters
+
+**`assetPrefix`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The prefix for all asset names, e.g. `Mods/MyMod/Sprites`. This can be any value but the same prefix must be used in `@AssetName` view bindings.
+
+**`modDirectory`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The physical directory where the asset files are located, relative to the mod directory. Typically a path such as `assets/sprites`.
+
+-----
+
+#### RegisterViews(string, string)
+
+Registers a mod directory to be searched for view (StarML) assets. Uses the `.sml` extension.
+
+```cs
+void RegisterViews(string assetPrefix, string modDirectory);
+```
+
+##### Parameters
+
+**`assetPrefix`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The prefix for all asset names, e.g. `Mods/MyMod/Views`. This can be any value but the same prefix must be used in `include` elements and in API calls to create views.
+
+**`modDirectory`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The physical directory where the asset files are located, relative to the mod directory. Typically a path such as `assets/views`.
+
+-----
+
