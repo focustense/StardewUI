@@ -18,7 +18,7 @@ Assembly: StardewUI.dll
 
 </div>
 
-Draws sprites according to a nine-slice scale.
+Draws sprites according to a [nine-slice scale](https://en.wikipedia.org/wiki/9-slice_scaling).
 
 ```cs
 public class NineSlice
@@ -27,17 +27,13 @@ public class NineSlice
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ NineSlice
 
-## Remarks
-
-See .
-
 ## Members
 
 ### Constructors
 
  | Name | Description |
 | --- | --- |
-| [NineSlice(Sprite)](#nineslicesprite) | Draws sprites according to a nine-slice scale. | 
+| [NineSlice(Sprite)](#nineslicesprite) | Draws sprites according to a [nine-slice scale](https://en.wikipedia.org/wiki/9-slice_scaling). | 
 
 ### Properties
 
@@ -58,7 +54,7 @@ See .
 
 #### NineSlice(Sprite)
 
-Draws sprites according to a nine-slice scale.
+Draws sprites according to a [nine-slice scale](https://en.wikipedia.org/wiki/9-slice_scaling).
 
 ```cs
 public NineSlice(StardewUI.Graphics.Sprite sprite);
@@ -68,10 +64,6 @@ public NineSlice(StardewUI.Graphics.Sprite sprite);
 
 **`sprite`** &nbsp; [Sprite](sprite.md)  
 The source sprite.
-
-##### Remarks
-
-See .
 
 -----
 

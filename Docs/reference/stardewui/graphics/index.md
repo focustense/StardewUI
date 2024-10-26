@@ -13,7 +13,7 @@ title: StardewUI.Graphics
 | Name | Description |
 | --- | --- |
 | [ButtonSpriteMap](buttonspritemap.md) | Base class for a [ISpriteMap&lt;T&gt;](ispritemap-1.md) for controller/keyboard bindings. |
-| [NineSlice](nineslice.md) | Draws sprites according to a nine-slice scale. |
+| [NineSlice](nineslice.md) | Draws sprites according to a [nine-slice scale](https://en.wikipedia.org/wiki/9-slice_scaling). |
 | [PropagatedSpriteBatch](propagatedspritebatch.md) | Sprite batch wrapper with transform propagation. |
 | [SimpleRotationExtensions](simplerotationextensions.md) | Helper extensions for the [SimpleRotation](simplerotation.md) type. |
 | [SliceSettings](slicesettings.md) | Additional nine-slice settings for dealing with certain "unique" structures. |
@@ -22,7 +22,7 @@ title: StardewUI.Graphics
 | [SpriteMapBuilder&lt;T&gt;](spritemapbuilder-1.md) | Builder interface for a [SpriteMap&lt;T&gt;](spritemap-1.md) using a single texture source. |
 | [Transform](transform.md) | Global transform applied to an [ISpriteBatch](ispritebatch.md). |
 | [UiSprites](uisprites.md) | Included game sprites that are required for many UI/menu widgets. |
-| [XeluButtonSpriteMap](xelubuttonspritemap.md) | Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/ |
+| [XeluButtonSpriteMap](xelubuttonspritemap.md) | Controller/keyboard sprite map based on [Xelu's CC0 pack](https://thoseawesomeguys.com/prompts/). |
 
 ## Interfaces
 

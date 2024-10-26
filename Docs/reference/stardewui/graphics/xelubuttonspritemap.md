@@ -1,6 +1,6 @@
 ---
 title: XeluButtonSpriteMap
-description: Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/
+description: Controller/keyboard sprite map based on Xelu's CC0 pack.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
@@ -18,7 +18,7 @@ Assembly: StardewUI.dll
 
 </div>
 
-Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/
+Controller/keyboard sprite map based on [Xelu's CC0 pack](https://thoseawesomeguys.com/prompts/).
 
 ```cs
 public class XeluButtonSpriteMap : StardewUI.Graphics.ButtonSpriteMap
@@ -37,7 +37,7 @@ Uses specific sprites (Xbox-based) per gamepad button, with a fallback for unkno
 
  | Name | Description |
 | --- | --- |
-| [XeluButtonSpriteMap(Texture2D, Texture2D, Texture2D)](#xelubuttonspritemaptexture2d-texture2d-texture2d) | Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/ | 
+| [XeluButtonSpriteMap(Texture2D, Texture2D, Texture2D)](#xelubuttonspritemaptexture2d-texture2d-texture2d) | Controller/keyboard sprite map based on [Xelu's CC0 pack](https://thoseawesomeguys.com/prompts/). | 
 
 ### Properties
 
@@ -65,7 +65,7 @@ Uses specific sprites (Xbox-based) per gamepad button, with a fallback for unkno
 
 #### XeluButtonSpriteMap(Texture2D, Texture2D, Texture2D)
 
-Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/
+Controller/keyboard sprite map based on [Xelu's CC0 pack](https://thoseawesomeguys.com/prompts/).
 
 ```cs
 public XeluButtonSpriteMap(Microsoft.Xna.Framework.Graphics.Texture2D gamepad, Microsoft.Xna.Framework.Graphics.Texture2D keyboard, Microsoft.Xna.Framework.Graphics.Texture2D mouse);

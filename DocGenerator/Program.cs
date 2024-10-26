@@ -468,13 +468,15 @@ static string FormatParagraphText(XElement element, string referringNamespace)
 {
     return element.Name.LocalName switch
     {
-        "see" or "seealso" => ResolveCref(
-            element.Attribute("cref")?.Value ?? "",
-            ns => FormatNamespaceLink(ns, referringNamespace),
-            type => FormatTypeLink(type, referringNamespace),
-            member => FormatMemberLink(member, referringNamespace),
-            cref => $"`{cref}`"
-        ),
+        "see" or "seealso" => element.Attribute("href")?.Value is string href
+            ? FormatLink(!string.IsNullOrEmpty(element.Value) ? element.Value : href, href)
+            : ResolveCref(
+                element.Attribute("cref")?.Value ?? "",
+                ns => FormatNamespaceLink(ns, referringNamespace),
+                type => FormatTypeLink(type, referringNamespace),
+                member => FormatMemberLink(member, referringNamespace),
+                cref => $"`{cref}`"
+            ),
         "paramref" or "typeparamref" => QuoteCode(element.Attribute("name")?.Value),
         "c" or "code" => QuoteCode(element.Value),
         "para" => ReplaceElements(element, e => FormatParagraphText(e, referringNamespace))
@@ -517,13 +519,20 @@ static string FormatSimpleText(XElement element)
 {
     return element.Name.LocalName switch
     {
-        "see" or "seealso" => ResolveCref(
-            element.Attribute("cref")?.Value ?? "",
-            ns => ns,
-            type => type.Name,
-            member => $"{member.DeclaringType!.Name}.{member.Name}",
-            null
-        ),
+        "see" or "seealso" => element.Attribute("href")?.Value is string href
+            ? !string.IsNullOrEmpty(element.Value)
+                ? element.Value
+                : href
+            : ResolveCref(
+                element.Attribute("cref")?.Value ?? "",
+                ns => ns,
+                type => FormatGenericTypeName(type, includeOuterClasses: true),
+                member =>
+                    FormatGenericTypeName(member.DeclaringType!, includeOuterClasses: true)
+                    + '.'
+                    + FormatMemberName(member, escaped: true, includeMethodParameters: false),
+                null
+            ),
         "paramref" or "typeparamref" => element.Attribute("name")?.Value ?? "",
         "c" or "code" => element.Value,
         _ => "",

@@ -4,11 +4,8 @@ using StardewUI.Layout;
 namespace StardewUI.Graphics;
 
 /// <summary>
-/// Draws sprites according to a nine-slice scale.
+/// Draws sprites according to a <see href="https://en.wikipedia.org/wiki/9-slice_scaling">nine-slice scale</see>.
 /// </summary>
-/// <remarks>
-/// See <see href="https://en.wikipedia.org/wiki/9-slice_scaling"/>.
-/// </remarks>
 /// <param name="sprite">The source sprite.</param>
 public class NineSlice(Sprite sprite)
 {

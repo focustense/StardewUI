@@ -6,7 +6,7 @@ using StardewUI.Layout;
 namespace StardewUI.Graphics;
 
 /// <summary>
-/// Controller/keyboard sprite map based on Xelu's CC0 pack: https://thoseawesomeguys.com/prompts/
+/// Controller/keyboard sprite map based on <see href="https://thoseawesomeguys.com/prompts/">Xelu's CC0 pack</see>.
 /// </summary>
 /// <remarks>
 /// Uses specific sprites (Xbox-based) per gamepad button, with a fallback for unknown buttons. All keyboard keys use

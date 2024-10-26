@@ -43,7 +43,7 @@ public record Sprite : IEquatable<StardewUI.Graphics.Sprite>
  | Name | Description |
 | --- | --- |
 | [EqualityContract](#equalitycontract) |  | 
-| [FixedEdges](#fixededges) | The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See . for a detailed explanation. | 
+| [FixedEdges](#fixededges) | The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See [Nine-Slice Scaling](https://en.wikipedia.org/wiki/9-slice_scaling) for a detailed explanation. | 
 | [Size](#size) | The size (width/height) of the sprite, in pixels. | 
 | [SliceSettings](#slicesettings) | Additional settings for the scaling and slicing behavior. | 
 | [SourceRect](#sourcerect) | The inner area of the `Texture` in which the specific image is located, or `null` to draw the entire texture. | 
@@ -70,7 +70,7 @@ The texture containing the sprite's pixel data.
 The inner area of the `Texture` in which the specific image is located, or `null` to draw the entire texture.
 
 **`FixedEdges`** &nbsp; [Edges](../layout/edges.md)  
-The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See . for a detailed explanation.
+The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See [Nine-Slice Scaling](https://en.wikipedia.org/wiki/9-slice_scaling) for a detailed explanation.
 
 **`SliceSettings`** &nbsp; [SliceSettings](slicesettings.md)  
 Additional settings for the scaling and slicing behavior.
@@ -95,7 +95,7 @@ protected System.Type EqualityContract { get; }
 
 #### FixedEdges
 
-The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See . for a detailed explanation.
+The thickness of each "fixed" edge to use with 9-patch/9-slice scaling. Specifying these values can prevent corner distortion for images that have been designed for such scaling. See [Nine-Slice Scaling](https://en.wikipedia.org/wiki/9-slice_scaling) for a detailed explanation.
 
 ```cs
 public StardewUI.Layout.Edges FixedEdges { get; set; }
