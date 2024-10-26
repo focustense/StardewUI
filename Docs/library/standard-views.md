@@ -26,6 +26,8 @@
 
 ### Image
 
+### Key Binding Editor
+
 ### Label
 
 ### Marquee

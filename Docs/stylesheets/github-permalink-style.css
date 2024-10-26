@@ -1,5 +1,5 @@
 .headerlink {
-	--permalink-size: 16px; /* for font-relative sizes, 0.6em is a good choice */
+	--permalink-size: calc(max(16px, 0.8em));
 	--permalink-spacing: 4px;
 
 	width: calc(var(--permalink-size) + var(--permalink-spacing));

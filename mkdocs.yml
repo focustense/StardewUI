@@ -37,6 +37,10 @@ extra_css:
   - stylesheets/styles.css
 plugins:
   - awesome-pages
+  - markdownextradata:
+      jinja_options:
+        variable_start_string: "{{{"
+        variable_end_string: "}}}"
   - search
   - social
 markdown_extensions:
@@ -71,6 +75,8 @@ markdown_extensions:
       permalink: ''
       toc_depth: 4
 extra:
+  release:
+      version: 0.2.0
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/focustense
