@@ -1562,6 +1562,8 @@
       
         
       
+        
+      
     
     
       
@@ -1992,6 +1994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../iviewnode.child/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IViewNode.Child
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../iviewnode/" class="md-nav__link">
         
   
@@ -2235,9 +2258,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-ienumerableiviewnode-iattribute" class="md-nav__link">
+  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IEnumerable&lt;IViewNode&gt;, IAttribute)
+      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)
     </span>
   </a>
   
@@ -2259,9 +2282,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#childnodes" class="md-nav__link">
+  <a href="#children" class="md-nav__link">
     <span class="md-ellipsis">
-      ChildNodes
+      Children
     </span>
   </a>
   
@@ -3313,6 +3336,8 @@
       
         
       
+        
+      
     
     
       
@@ -3518,9 +3543,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-ienumerableiviewnode-iattribute" class="md-nav__link">
+  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IEnumerable&lt;IViewNode&gt;, IAttribute)
+      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)
     </span>
   </a>
   
@@ -3542,9 +3567,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#childnodes" class="md-nav__link">
+  <a href="#children" class="md-nav__link">
     <span class="md-ellipsis">
-      ChildNodes
+      Children
     </span>
   </a>
   
@@ -3683,7 +3708,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-ienumerableiviewnode-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IEnumerable&lt;IViewNode&gt;, IAttribute)</a></td>
+<td><a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)</a></td>
 <td>Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.</td>
 </tr>
 </tbody>
@@ -3698,7 +3723,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#childnodes">ChildNodes</a></td>
+<td><a href="#children">Children</a></td>
 <td>The children of this node.</td>
 </tr>
 <tr>
@@ -3744,9 +3769,9 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-ienumerableiviewnode-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IEnumerable&lt;IViewNode&gt;, IAttribute)<a class="headerlink" href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-ienumerableiviewnode-iattribute" title="Permanent link"></a></h4>
+<h4 id="viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)<a class="headerlink" href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute" title="Permanent link"></a></h4>
 <p>Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewBinder</span><span class="w"> </span><span class="n">viewBinder</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SElement</span><span class="w"> </span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">childNodes</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">contextAttribute</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewBinder</span><span class="w"> </span><span class="n">viewBinder</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SElement</span><span class="w"> </span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">contextAttribute</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a><br />
@@ -3757,18 +3782,16 @@ Factory for creating views, based on their tag names.</p>
 Binding service used to create <a href="../iviewbinding/">IViewBinding</a> instances that detect changes to data or assets and propagate them to the bound <a href="../../../iview/">IView</a>.</p>
 <p><strong><code>element</code></strong> &nbsp; <a href="../../dom/selement/">SElement</a><br />
 Element data for this node.</p>
-<p><strong><code>childNodes</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../iviewnode/">IViewNode</a>&gt;<br />
-Initial children of this node.</p>
 <p><strong><code>contextAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 Optional attribute specifying how to resolve the context for child nodes based on this node's assigned <a href="./#context">Context</a>.</p>
 <hr />
 <h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
-<h4 id="childnodes">ChildNodes<a class="headerlink" href="#childnodes" title="Permanent link"></a></h4>
+<h4 id="children">Children<a class="headerlink" href="#children" title="Permanent link"></a></h4>
 <p>The children of this node.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ChildNodes</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">internal</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="p">.</span><span class="n">Child</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Children</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
-<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="../iviewnode/">IViewNode</a>&gt;</p>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="../iviewnode.child/">Child</a>&gt;</p>
 <h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Node children represent views in potentia. Every DOM node maps to (at least) one <a href="../iviewnode/">IViewNode</a>, but views are created lazily and may not exist for nodes with conditional attributes or other rules.</p>
 <hr />
@@ -3806,7 +3829,7 @@ Whether or not to include the string representation of any/all child nodes betwe
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Reset</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
-<p>Propagates the request down to <a href="../iviewnode/#childnodes">ChildNodes</a>, but is not required to clear <a href="../iviewnode/#childnodes">ChildNodes</a> and does not affect the <a href="../iviewnode/#context">Context</a> assignment. </p>
+<p>Propagates the request down to <a href="../iviewnode/#children">Children</a>, but is not required to clear <a href="../iviewnode/#children">Children</a> and does not affect the <a href="../iviewnode/#context">Context</a> assignment. </p>
 <p>This is used to "unbind" the target of a structural node like <a href="../conditionalnode/">ConditionalNode</a> and in some cases prepare it for subsequent reuse.</p>
 <hr />
 <h4 id="tostring">ToString()<a class="headerlink" href="#tostring" title="Permanent link"></a></h4>

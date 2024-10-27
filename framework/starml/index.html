@@ -775,6 +775,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#outlets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outlets
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1222,6 +1231,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#outlets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outlets
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1590,6 +1608,11 @@
 <td><code>*if</code></td>
 <td><code>bool</code></td>
 <td>Removes the element unless the specified condition is met.</td>
+</tr>
+<tr>
+<td><code>*outlet</code></td>
+<td><code>string</code></td>
+<td>Specifies which of the parent node's <a href="#outlets">outlets</a> will receive this node.<br><strong>Does not support bindings.</strong> The attribute value must be a quoted string.</td>
 </tr>
 <tr>
 <td><code>*repeat</code></td>
@@ -1992,6 +2015,48 @@
 </span></code></pre></div>
 </div>
 <p>This version <em>cannot</em> fail because <code>VisibleItem</code> cannot be both <code>Item1</code> and <code>Item2</code> at the same time. In other words, it is always OK to have multiple child nodes underneath a single-view layout, <strong>if</strong> all of those nodes have a distinct <code>*case</code>. Otherwise, there is the possibility of failure.</p>
+<h3 id="outlets">Outlets<a class="headerlink" href="#outlets" title="Permanent link"></a></h3>
+<p>Children are grouped into "outlets", which represent specific areas or subcomponents of a layout.</p>
+<p>Usually, this is invisible to you, as a layout view only performs one type of layout and therefore only has one child or collection of children. However, there are a few exceptions; one of them is the <a href="../../library/standard-views/#expander">Expander</a>, which allows specifying both a header view (the part that is always shown) and the content view (the part that can collapse).</p>
+<p>To solve for these problems, StarML supports the <code>*outlet</code> <a href="#structural-attributes">structural attribute</a>, which allows targeting a specific outlet with a specific element:</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">&lt;</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="p">&lt;</span><span class="nt">button</span> <span class="err">*</span><span class="na">outlet</span><span class="o">=</span><span class="s">&quot;header&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{ExpandCollapseText}</span> <span class="p">/&gt;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{LongContent}</span> <span class="p">/&gt;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">&lt;/</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span></code></pre></div>
+<p>Outlet names are determined by the view itself, via the <a href="../../reference/stardewui/widgets/outletattribute/">OutletAttribute</a> being applied to specific properties. In the case of <code>Expander</code>, there is one named outlet for the <a href="../../reference/stardewui/widgets/expander/#header">Header</a> property, named "header". <a href="../../library/custom-views/">Custom views</a> can create named outlets using the same attribute.</p>
+<p>If an <code>*outlet</code> is not specified in the markup, then the default (unnamed) outlet is assumed. When multiple outlets are available, the <a href="#child-limits">child limits</a> still apply per-outlet; if any given outlet, default or named, only allows a single view, then attempting to assign multiple views to that outlet would be invalid. For example, the following would <em>not</em> be allowed for an <code>&lt;expander&gt;</code> element:</p>
+<div class="admonition failure">
+<p class="admonition-title">Broken</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">&lt;</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">outlet</span><span class="o">=</span><span class="s">&quot;header&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Hello&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">outlet</span><span class="o">=</span><span class="s">&quot;header&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;World&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{LongContent}</span> <span class="p">/&gt;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">&lt;/</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<p>This is not allowed because the expander's <code>header</code> outlet requires a single content view. However, if this were to use an <code>*if*</code> condition then it would be valid again:</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">&lt;</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">outlet</span><span class="o">=</span><span class="s">&quot;header&quot;</span> <span class="err">*</span><span class="na">if</span><span class="o">=</span><span class="s">{IsCollapsed}</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Show help&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">outlet</span><span class="o">=</span><span class="s">&quot;header&quot;</span> <span class="err">*</span><span class="na">if</span><span class="o">=</span><span class="s">{IsExpanded}</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Hide help&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{LongContent}</span> <span class="p">/&gt;</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">&lt;/</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<p>If there is a real need to have multiple views in the outlet, then this can also be achieved using a single layout view to hold them:</p>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">&lt;</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="err">*</span><span class="na">outlet</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Hello&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;World&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{LongContent}</span> <span class="p">/&gt;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="p">&lt;/</span><span class="nt">expander</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
 <h2 id="why-not-html">Why not HTML?<a class="headerlink" href="#why-not-html" title="Permanent link"></a></h2>
 <p>Some web frameworks, like Vue, are a subset of HTML; their templates are syntactically valid HTML, constructed in such a way that any special behavior can be understood using special tags, attributes with unusual but valid prefixes like <code>:class</code>, and so on. So, why not simply pull in an HTML (or XHTML) parser and use that?</p>
 <p>This went through careful consideration but ultimately seemed to have more negatives than positives. The potential positives:</p>
@@ -2013,12 +2078,12 @@
 </div>
 <p><strong>What about XML?</strong></p>
 <p>An alternative would be something similar to XAML, but these have a way of getting out of control; consider, for example, a "simple" binding redirect in XAML:</p>
-<div class="language-xml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">&lt;Label</span><span class="w"> </span><span class="na">Content=</span><span class="s">&quot;{Binding Path=DisplayName, RelativeSource={RelativeSource Mode=FindAncestor AncestorLevel=1}}&quot;</span><span class="nt">/&gt;</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">&lt;Label</span><span class="w"> </span><span class="na">Content=</span><span class="s">&quot;{Binding Path=DisplayName, RelativeSource={RelativeSource Mode=FindAncestor AncestorType={x:Type Foo}}}&quot;</span><span class="nt">/&gt;</span>
+<div class="language-xml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">&lt;Label</span><span class="w"> </span><span class="na">Content=</span><span class="s">&quot;{Binding Path=DisplayName, RelativeSource={RelativeSource Mode=FindAncestor AncestorLevel=1}}&quot;</span><span class="nt">/&gt;</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">&lt;Label</span><span class="w"> </span><span class="na">Content=</span><span class="s">&quot;{Binding Path=DisplayName, RelativeSource={RelativeSource Mode=FindAncestor AncestorType={x:Type Foo}}}&quot;</span><span class="nt">/&gt;</span>
 </span></code></pre></div>
 <p>Compare to a StarML <a href="../binding-context/#redirects">context redirect</a>:</p>
-<div class="language-html highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{^DisplayName}</span> <span class="p">/&gt;</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{~Foo.DisplayName}</span> <span class="p">/&gt;</span>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{^DisplayName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{~Foo.DisplayName}</span> <span class="p">/&gt;</span>
 </span></code></pre></div>
 <p>And this is without any <a href="#binding-modifiers">binding modifiers</a> which add even more noise to XAML.</p>
 <p>This is not intended as a slight against XAML, which is actually a very powerful and mature tool for cross-platform development and far better than most of the available alternatives. However, it reflects a different use case: backing an <em>enormous</em> framework (WPF) that is difficult to update once released, needs to scale to almost any imaginable UI scenario, and can expect a very high level of expertise from dev-users.</p>
@@ -2031,40 +2096,40 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="starml" name="__tabbed_1" type="radio" /><input id="hypothetical-json" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="starml">StarML</label><label for="hypothetical-json">Hypothetical JSON</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-html highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;800px content&quot;</span><span class="p">&gt;</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">font</span><span class="o">=</span><span class="s">&quot;dialogue&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Header Text&quot;</span> <span class="p">/&gt;</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Npcs}</span> <span class="na">text</span><span class="o">=</span><span class="s">{DisplayName}</span> <span class="p">/&gt;</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;800px content&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">orientation</span><span class="o">=</span><span class="s">&quot;vertical&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">font</span><span class="o">=</span><span class="s">&quot;dialogue&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">&quot;Header Text&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Npcs}</span> <span class="na">text</span><span class="o">=</span><span class="s">{DisplayName}</span> <span class="p">/&gt;</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-json highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">&quot;Layout&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;800px content&quot;</span><span class="p">,</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nt">&quot;Children&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">        </span><span class="p">{</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">            </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lane&quot;</span><span class="p">,</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">            </span><span class="nt">&quot;Orientation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical&quot;</span><span class="p">,</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">            </span><span class="nt">&quot;Children&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">                </span><span class="p">{</span>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">                    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Label&quot;</span><span class="p">,</span>
-</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">                    </span><span class="nt">&quot;Font&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dialogue&quot;</span><span class="p">,</span>
-</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">                    </span><span class="nt">&quot;Text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Header Text&quot;</span>
-</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">                </span><span class="p">},</span>
-</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">                </span><span class="p">{</span>
-</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">                    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Repeat&quot;</span><span class="p">,</span>
-</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">                    </span><span class="nt">&quot;Collection&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{Npcs}}&quot;</span><span class="p">,</span>
-</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">                    </span><span class="nt">&quot;Content&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="w">                        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Label&quot;</span><span class="p">,</span>
-</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">                        </span><span class="nt">&quot;Text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{DisplayName}}&quot;</span>
-</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">                    </span><span class="p">}</span>
-</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w">                </span><span class="p">}</span>
-</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">            </span><span class="p">]</span>
-</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="w">    </span><span class="p">]</span>
-</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="p">}</span>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frame&quot;</span><span class="p">,</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nt">&quot;Layout&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;800px content&quot;</span><span class="p">,</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="nt">&quot;Children&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">            </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lane&quot;</span><span class="p">,</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">            </span><span class="nt">&quot;Orientation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vertical&quot;</span><span class="p">,</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">            </span><span class="nt">&quot;Children&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">                </span><span class="p">{</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">                    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Label&quot;</span><span class="p">,</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">                    </span><span class="nt">&quot;Font&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dialogue&quot;</span><span class="p">,</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">                    </span><span class="nt">&quot;Text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Header Text&quot;</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">                </span><span class="p">},</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">                </span><span class="p">{</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">                    </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Repeat&quot;</span><span class="p">,</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">                    </span><span class="nt">&quot;Collection&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{Npcs}}&quot;</span><span class="p">,</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">                    </span><span class="nt">&quot;Content&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">                        </span><span class="nt">&quot;Type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Label&quot;</span><span class="p">,</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">                        </span><span class="nt">&quot;Text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{{DisplayName}}&quot;</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">                    </span><span class="p">}</span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="w">                </span><span class="p">}</span>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">            </span><span class="p">]</span>
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">    </span><span class="p">]</span>
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 </div>

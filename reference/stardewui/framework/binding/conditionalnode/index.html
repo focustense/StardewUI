@@ -1562,6 +1562,8 @@
       
         
       
+        
+      
     
     
       
@@ -1902,9 +1904,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#childnodes" class="md-nav__link">
+  <a href="#children" class="md-nav__link">
     <span class="md-ellipsis">
-      ChildNodes
+      Children
     </span>
   </a>
   
@@ -2208,6 +2210,27 @@
   
   <span class="md-ellipsis">
     IViewFactory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iviewnode.child/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IViewNode.Child
   </span>
   
 
@@ -3313,6 +3336,8 @@
       
         
       
+        
+      
     
     
       
@@ -3542,9 +3567,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#childnodes" class="md-nav__link">
+  <a href="#children" class="md-nav__link">
     <span class="md-ellipsis">
-      ChildNodes
+      Children
     </span>
   </a>
   
@@ -3698,7 +3723,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#childnodes">ChildNodes</a></td>
+<td><a href="#children">Children</a></td>
 <td>The children of this node.</td>
 </tr>
 <tr>
@@ -3755,12 +3780,12 @@ The node to conditionally render.</p>
 The condition to evaluate.</p>
 <hr />
 <h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
-<h4 id="childnodes">ChildNodes<a class="headerlink" href="#childnodes" title="Permanent link"></a></h4>
+<h4 id="children">Children<a class="headerlink" href="#children" title="Permanent link"></a></h4>
 <p>The children of this node.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ChildNodes</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="p">.</span><span class="n">Child</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Children</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
-<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="../iviewnode/">IViewNode</a>&gt;</p>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a href="../iviewnode.child/">Child</a>&gt;</p>
 <h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>Node children represent views in potentia. Every DOM node maps to (at least) one <a href="../iviewnode/">IViewNode</a>, but views are created lazily and may not exist for nodes with conditional attributes or other rules.</p>
 <hr />
@@ -3798,7 +3823,7 @@ Whether or not to include the string representation of any/all child nodes betwe
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Reset</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
-<p>Propagates the request down to <a href="../iviewnode/#childnodes">ChildNodes</a>, but is not required to clear <a href="../iviewnode/#childnodes">ChildNodes</a> and does not affect the <a href="../iviewnode/#context">Context</a> assignment. </p>
+<p>Propagates the request down to <a href="../iviewnode/#children">Children</a>, but is not required to clear <a href="../iviewnode/#children">Children</a> and does not affect the <a href="../iviewnode/#context">Context</a> assignment. </p>
 <p>This is used to "unbind" the target of a structural node like <a href="./">ConditionalNode</a> and in some cases prepare it for subsequent reuse.</p>
 <hr />
 <h4 id="tostring">ToString()<a class="headerlink" href="#tostring" title="Permanent link"></a></h4>

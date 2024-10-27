@@ -1560,6 +1560,8 @@
       
         
       
+        
+      
     
     
       
@@ -2152,18 +2154,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#getchildrenproperty" class="md-nav__link">
+  <a href="#getchildrenpropertystring" class="md-nav__link">
     <span class="md-ellipsis">
-      GetChildrenProperty()
+      GetChildrenProperty(string)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#trygetchildrenpropertyipropertydescriptor" class="md-nav__link">
+  <a href="#trygetchildrenpropertystring-ipropertydescriptor" class="md-nav__link">
     <span class="md-ellipsis">
-      TryGetChildrenProperty(IPropertyDescriptor)
+      TryGetChildrenProperty(string, IPropertyDescriptor)
     </span>
   </a>
   
@@ -3127,6 +3129,8 @@
       
         
       
+        
+      
     
     
       
@@ -3323,18 +3327,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#getchildrenproperty" class="md-nav__link">
+  <a href="#getchildrenpropertystring" class="md-nav__link">
     <span class="md-ellipsis">
-      GetChildrenProperty()
+      GetChildrenProperty(string)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#trygetchildrenpropertyipropertydescriptor" class="md-nav__link">
+  <a href="#trygetchildrenpropertystring-ipropertydescriptor" class="md-nav__link">
     <span class="md-ellipsis">
-      TryGetChildrenProperty(IPropertyDescriptor)
+      TryGetChildrenProperty(string, IPropertyDescriptor)
     </span>
   </a>
   
@@ -3395,30 +3399,35 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#getchildrenproperty">GetChildrenProperty()</a></td>
+<td><a href="#getchildrenpropertystring">GetChildrenProperty(string)</a></td>
 <td>Retrieves the property of the <a href="../iobjectdescriptor/#targettype">TargetType</a> that holds the view's children/content.</td>
 </tr>
 <tr>
-<td><a href="#trygetchildrenpropertyipropertydescriptor">TryGetChildrenProperty(IPropertyDescriptor)</a></td>
+<td><a href="#trygetchildrenpropertystring-ipropertydescriptor">TryGetChildrenProperty(string, IPropertyDescriptor)</a></td>
 <td>Attempts to retrieve the property of the <a href="../iobjectdescriptor/#targettype">TargetType</a> that holds the view's children/content.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
-<h4 id="getchildrenproperty">GetChildrenProperty()<a class="headerlink" href="#getchildrenproperty" title="Permanent link"></a></h4>
+<h4 id="getchildrenpropertystring">GetChildrenProperty(string)<a class="headerlink" href="#getchildrenpropertystring" title="Permanent link"></a></h4>
 <p>Retrieves the property of the <a href="../iobjectdescriptor/#targettype">TargetType</a> that holds the view's children/content.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">GetChildrenProperty</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">GetChildrenProperty</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">outletName</span><span class="p">);</span>
 </span></code></pre></div>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
+<p><strong><code>outletName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The name of the specific outlet, if targeting a non-default outlet on a view with multiple outlets. Corresponds to <a href="../../../widgets/outletattribute/#name">Name</a>.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../ipropertydescriptor/">IPropertyDescriptor</a></p>
 <p>The view children property.</p>
 <hr />
-<h4 id="trygetchildrenpropertyipropertydescriptor">TryGetChildrenProperty(IPropertyDescriptor)<a class="headerlink" href="#trygetchildrenpropertyipropertydescriptor" title="Permanent link"></a></h4>
+<h4 id="trygetchildrenpropertystring-ipropertydescriptor">TryGetChildrenProperty(string, IPropertyDescriptor)<a class="headerlink" href="#trygetchildrenpropertystring-ipropertydescriptor" title="Permanent link"></a></h4>
 <p>Attempts to retrieve the property of the <a href="../iobjectdescriptor/#targettype">TargetType</a> that holds the view's children/content.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetChildrenProperty</span><span class="p">(</span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">property</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetChildrenProperty</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">outletName</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">property</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>outletName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The name of the specific outlet, if targeting a non-default outlet on a view with multiple outlets. Corresponds to <a href="../../../widgets/outletattribute/#name">Name</a>.</p>
 <p><strong><code>property</code></strong> &nbsp; <a href="../ipropertydescriptor/">IPropertyDescriptor</a><br />
 When this method returns, holds a reference to the <a href="../ipropertydescriptor/">IPropertyDescriptor</a> that holds the view's children/content, or <code>null</code> if no such property is available.</p>
 <h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
