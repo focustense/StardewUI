@@ -22,7 +22,7 @@ Represents an adjacent placement; the result of [GetNeighbors(Boolean)](ninegrid
 
 ```cs
 public record NineGridPlacement.Neighbor : 
-    Neighbor, StardewUI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null]]<StardewUI.Layout.NineGridPlacement.Neighbor>
+    IEquatable<StardewUI.Layout.NineGridPlacement.Neighbor>
 ```
 
 **Inheritance**  

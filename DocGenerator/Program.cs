@@ -353,6 +353,19 @@ static string FormatGenericTypeName(
             (type.IsGenericType && type.ContainsGenericParameters && !type.IsGenericTypeDefinition)
                 ? type.GetGenericTypeDefinition().FullName!
                 : type.FullName ?? type.Name;
+        // TODO: Relying on explicit "ordering" of closed generics and nested types is probably unreliable; shaving off
+        // the closed generic portion first might cut off something important if the closed generic is INSIDE (after)
+        // the nested type, rather than outside.
+        // //
+        // What should probably be done here instead is to stop using Type.FullName at all, and instead just combine
+        // the Type.Name with Type.Namespace; together, these two will exclude all the strange artifacts like closed
+        // generic params and assembly names and just give us the specific things we want, and there is already logic
+        // for adding back generic params and outer types afterward.
+        var genericArgsStartIndex = baseName.IndexOf('[');
+        if (genericArgsStartIndex >= 0)
+        {
+            baseName = baseName[..genericArgsStartIndex];
+        }
         var nestedTypeStartIndex = baseName.LastIndexOf('+');
         if (nestedTypeStartIndex >= 0)
         {
@@ -365,11 +378,6 @@ static string FormatGenericTypeName(
         else if (type.Namespace == "System" && baseName.StartsWith("System."))
         {
             baseName = baseName[7..];
-        }
-        var genericArgsStartIndex = baseName.IndexOf('[');
-        if (genericArgsStartIndex >= 0)
-        {
-            baseName = baseName[..genericArgsStartIndex];
         }
         if (baseNameOnly)
         {

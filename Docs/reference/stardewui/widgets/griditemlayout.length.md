@@ -22,7 +22,7 @@ A [GridItemLayout](griditemlayout.md) specifying that each item is to have the s
 
 ```cs
 public record GridItemLayout.Length : StardewUI.Widgets.GridItemLayout, 
-    Length, StardewUI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null]]<StardewUI.Widgets.GridItemLayout.Length>
+    IEquatable<StardewUI.Widgets.GridItemLayout.Length>
 ```
 
 **Inheritance**  

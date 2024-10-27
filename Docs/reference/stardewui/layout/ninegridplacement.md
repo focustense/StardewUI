@@ -245,7 +245,7 @@ Based on the model of a [Panel](../widgets/panel.md) or [Frame](../widgets/frame
 Gets the [NineGridPlacement](ninegridplacement.md)s that neighbor the current placement, i.e. are reachable in a single [Snap(Direction, Boolean)](ninegridplacement.md#snapdirection-bool).
 
 ```cs
-public Neighbor, StardewUI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null]]<StardewUI.Layout.NineGridPlacement.Neighbor> GetNeighbors(bool avoidMiddle);
+public System.Collections.Generic.IEnumerable<StardewUI.Layout.NineGridPlacement.Neighbor> GetNeighbors(bool avoidMiddle);
 ```
 
 ##### Parameters

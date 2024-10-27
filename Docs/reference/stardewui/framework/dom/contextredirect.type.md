@@ -22,7 +22,7 @@ Redirects to the nearest ancestor matching a specified type.
 
 ```cs
 public record ContextRedirect.Type : StardewUI.Framework.Dom.ContextRedirect, 
-    Type, StardewUI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null]]<StardewUI.Framework.Dom.ContextRedirect.Type>
+    IEquatable<StardewUI.Framework.Dom.ContextRedirect.Type>
 ```
 
 **Inheritance**  

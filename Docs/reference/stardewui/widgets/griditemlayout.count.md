@@ -22,7 +22,7 @@ A [GridItemLayout](griditemlayout.md) specifying the maximum divisions - rows or
 
 ```cs
 public record GridItemLayout.Count : StardewUI.Widgets.GridItemLayout, 
-    Count, StardewUI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null]]<StardewUI.Widgets.GridItemLayout.Count>
+    IEquatable<StardewUI.Widgets.GridItemLayout.Count>
 ```
 
 **Inheritance**  

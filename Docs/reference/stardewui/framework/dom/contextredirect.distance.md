@@ -22,7 +22,7 @@ Redirects to an ancestor context by walking up a specified number of levels.
 
 ```cs
 public record ContextRedirect.Distance : StardewUI.Framework.Dom.ContextRedirect, 
-    Distance, StardewUI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null]]<StardewUI.Framework.Dom.ContextRedirect.Distance>
+    IEquatable<StardewUI.Framework.Dom.ContextRedirect.Distance>
 ```
 
 **Inheritance**  
