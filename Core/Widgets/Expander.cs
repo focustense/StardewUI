@@ -72,6 +72,7 @@ public class Expander : ComponentView
     /// <summary>
     /// The primary content, which displays inside the menu frame and is clipped/scrollable.
     /// </summary>
+    [Outlet("Header")]
     public IView? Header
     {
         get => headerLane.Children.ElementAtOrDefault(1);

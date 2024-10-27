@@ -19,7 +19,7 @@ public class IncludedViewNode(
 ) : IViewNode
 {
     /// <inheritdoc />
-    public IReadOnlyList<IViewNode> ChildNodes => childNode is not null ? [childNode] : [];
+    public IReadOnlyList<IViewNode.Child> Children => child is not null ? [child] : [];
 
     /// <inheritdoc />
     public BindingContext? Context
@@ -36,13 +36,13 @@ public class IncludedViewNode(
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<IView> Views => childNode?.Views ?? [];
+    public IReadOnlyList<IView> Views => child?.Node.Views ?? [];
 
     private IAssetCacheEntry<Document>? assetCacheEntry;
     private string? assetName;
     private IValueSource<string>? assetNameSource;
+    private IViewNode.Child? child;
     private IValueSource? childContextSource;
-    private IViewNode? childNode;
     private BindingContext? context;
     private bool wasContextChanged;
 
@@ -80,8 +80,8 @@ public class IncludedViewNode(
     /// <inheritdoc />
     public void Reset()
     {
-        childNode?.Dispose();
-        childNode = null;
+        child?.Dispose();
+        child = null;
         assetCacheEntry = null;
         assetName = null;
     }
@@ -110,21 +110,22 @@ public class IncludedViewNode(
         {
             assetName = assetNameSource?.Value;
             var childNode = TryCreateChildNode();
-            if (this.childNode != childNode)
+            if (child?.Node != childNode)
             {
                 wasChanged = true;
-                this.childNode = childNode;
+                child?.Dispose();
+                child = childNode is not null ? new(childNode, null) : null;
             }
         }
         childContextSource?.Update();
-        if (childNode is not null)
+        if (child is not null)
         {
-            childNode.Context = contextAttribute is not null
+            child.Node.Context = contextAttribute is not null
                 ? childContextSource?.Value is not null
                     ? BindingContext.Create(childContextSource.Value, context)
                     : null
                 : context;
-            wasChanged |= childNode.Update(elapsed);
+            wasChanged |= child.Node.Update(elapsed);
         }
         return wasChanged;
     }

@@ -38,20 +38,25 @@ The binding target is independent of the actual [IView](../../iview.md) instance
 
  | Name | Description |
 | --- | --- |
-| [GetChildrenProperty()](#getchildrenproperty) | Retrieves the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content. | 
-| [TryGetChildrenProperty(IPropertyDescriptor)](#trygetchildrenpropertyipropertydescriptor) | Attempts to retrieve the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content. | 
+| [GetChildrenProperty(string)](#getchildrenpropertystring) | Retrieves the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content. | 
+| [TryGetChildrenProperty(string, IPropertyDescriptor)](#trygetchildrenpropertystring-ipropertydescriptor) | Attempts to retrieve the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content. | 
 
 ## Details
 
 ### Methods
 
-#### GetChildrenProperty()
+#### GetChildrenProperty(string)
 
 Retrieves the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content.
 
 ```cs
-StardewUI.Framework.Descriptors.IPropertyDescriptor GetChildrenProperty();
+StardewUI.Framework.Descriptors.IPropertyDescriptor GetChildrenProperty(string outletName);
 ```
+
+##### Parameters
+
+**`outletName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The name of the specific outlet, if targeting a non-default outlet on a view with multiple outlets. Corresponds to [Name](../../widgets/outletattribute.md#name).
 
 ##### Returns
 
@@ -61,15 +66,18 @@ StardewUI.Framework.Descriptors.IPropertyDescriptor GetChildrenProperty();
 
 -----
 
-#### TryGetChildrenProperty(IPropertyDescriptor)
+#### TryGetChildrenProperty(string, IPropertyDescriptor)
 
 Attempts to retrieve the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content.
 
 ```cs
-bool TryGetChildrenProperty(out StardewUI.Framework.Descriptors.IPropertyDescriptor property);
+bool TryGetChildrenProperty(string outletName, out StardewUI.Framework.Descriptors.IPropertyDescriptor property);
 ```
 
 ##### Parameters
+
+**`outletName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The name of the specific outlet, if targeting a non-default outlet on a view with multiple outlets. Corresponds to [Name](../../widgets/outletattribute.md#name).
 
 **`property`** &nbsp; [IPropertyDescriptor](ipropertydescriptor.md)  
 When this method returns, holds a reference to the [IPropertyDescriptor](ipropertydescriptor.md) that holds the view's children/content, or `null` if no such property is available.

@@ -28,28 +28,29 @@ public class ViewNodeFactory(
     /// <inheritdoc />
     public IViewNode CreateNode(SNode node)
     {
-        return CreateNode(node, null);
+        return CreateNodeChild(node, null).Node;
     }
 
     record SwitchContext(IViewNode Node, IAttribute Attribute);
 
-    private IViewNode CreateNode(SNode node, SwitchContext? switchContext)
+    private IViewNode.Child CreateNodeChild(SNode node, SwitchContext? switchContext)
     {
         using var _ = Trace.Begin(this, nameof(CreateNode));
-        var innerNode = CreateNodeWithoutBackoff(node, switchContext);
-        return new BackoffNodeDecorator(innerNode, BackoffRule.Default);
+        var (innerNode, outletName) = CreateNodeChildWithoutBackoff(node, switchContext);
+        var outerNode = new BackoffNodeDecorator(innerNode, BackoffRule.Default);
+        return new(outerNode, outletName);
     }
 
-    private IViewNode CreateNodeWithoutBackoff(SNode node, SwitchContext? switchContext)
+    private IViewNode.Child CreateNodeChildWithoutBackoff(SNode node, SwitchContext? switchContext)
     {
         var structuralAttributes = StructuralAttributes.Get(node.Attributes);
         if (structuralAttributes.Repeat is IAttribute repeatAttr)
         {
-            return new RepeaterNode(valueSourceFactory, CreateNonRepeatingNode, repeatAttr);
+            return new(new RepeaterNode(valueSourceFactory, CreateNonRepeatingNodeChild, repeatAttr));
         }
         else
         {
-            return CreateNonRepeatingNode();
+            return CreateNonRepeatingNodeChild();
         }
 
         IViewNode CreateDefaultViewNode()
@@ -76,13 +77,13 @@ public class ViewNodeFactory(
                 valueSourceFactory,
                 valueConverterFactory,
                 assetCache,
-                doc => CreateNode(doc.Root, switchContext),
+                doc => CreateNodeChild(doc.Root, switchContext).Node,
                 assetNameAttribute,
                 structuralAttributes.Context
             );
         }
 
-        IViewNode CreateNonRepeatingNode()
+        IViewNode.Child CreateNonRepeatingNodeChild()
         {
             var viewNode = node.Tag.Equals("include", StringComparison.OrdinalIgnoreCase)
                 ? CreateIncludedViewNode()
@@ -118,9 +119,9 @@ public class ViewNodeFactory(
                 : switchContext;
             if (viewNode is ViewNode defaultViewNode)
             {
-                defaultViewNode.ChildNodes = node.ChildNodes.Select(n => CreateNode(n, nextSwitchContext)).ToList();
+                defaultViewNode.Children = node.ChildNodes.Select(n => CreateNodeChild(n, nextSwitchContext)).ToList();
             }
-            return result;
+            return new(result, structuralAttributes.Outlet?.Value);
         }
     }
 
@@ -129,6 +130,7 @@ public class ViewNodeFactory(
         public IAttribute? Case { get; set; }
         public IAttribute? Context { get; set; }
         public IAttribute? If { get; set; }
+        public IAttribute? Outlet { get; set; }
         public IAttribute? Repeat { get; set; }
         public IAttribute? Switch { get; set; }
 
@@ -147,6 +149,9 @@ public class ViewNodeFactory(
                         break;
                     case "if":
                         result.If = attribute;
+                        break;
+                    case "outlet":
+                        result.Outlet = attribute;
                         break;
                     case "repeat":
                         result.Repeat = attribute;

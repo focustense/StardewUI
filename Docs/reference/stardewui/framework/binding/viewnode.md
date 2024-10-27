@@ -37,13 +37,13 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
  | Name | Description |
 | --- | --- |
-| [ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IEnumerable&lt;IViewNode&gt;, IAttribute)](#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-ienumerableiviewnode-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
+| [ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)](#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
 
 ### Properties
 
  | Name | Description |
 | --- | --- |
-| [ChildNodes](#childnodes) | The children of this node. | 
+| [Children](#children) | The children of this node. | 
 | [Context](#context) | The currently-bound context data, used as the source for any [InputBinding](../grammar/attributevaluetype.md#inputbinding), [OneTimeBinding](../grammar/attributevaluetype.md#onetimebinding), [OutputBinding](../grammar/attributevaluetype.md#outputbinding) or [TwoWayBinding](../grammar/attributevaluetype.md#twowaybinding) attributes. | 
 | [Views](#views) | The views for this node, if any have been created. | 
 
@@ -61,12 +61,12 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
 ### Constructors
 
-#### ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IEnumerable&lt;IViewNode&gt;, IAttribute)
+#### ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)
 
 Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.
 
 ```cs
-public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, System.Collections.Generic.IEnumerable<StardewUI.Framework.Binding.IViewNode> childNodes, StardewUI.Framework.Dom.IAttribute contextAttribute);
+public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, StardewUI.Framework.Dom.IAttribute contextAttribute);
 ```
 
 ##### Parameters
@@ -83,9 +83,6 @@ Binding service used to create [IViewBinding](iviewbinding.md) instances that de
 **`element`** &nbsp; [SElement](../dom/selement.md)  
 Element data for this node.
 
-**`childNodes`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[IViewNode](iviewnode.md)>  
-Initial children of this node.
-
 **`contextAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 Optional attribute specifying how to resolve the context for child nodes based on this node's assigned [Context](viewnode.md#context).
 
@@ -93,17 +90,17 @@ Optional attribute specifying how to resolve the context for child nodes based o
 
 ### Properties
 
-#### ChildNodes
+#### Children
 
 The children of this node.
 
 ```cs
-public System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Binding.IViewNode> ChildNodes { get; internal set; }
+public System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Binding.IViewNode.Child> Children { get; set; }
 ```
 
 ##### Property Value
 
-[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[IViewNode](iviewnode.md)>
+[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[Child](iviewnode.child.md)>
 
 ##### Remarks
 
@@ -179,7 +176,7 @@ public void Reset();
 
 ##### Remarks
 
-Propagates the request down to [ChildNodes](iviewnode.md#childnodes), but is not required to clear [ChildNodes](iviewnode.md#childnodes) and does not affect the [Context](iviewnode.md#context) assignment. 
+Propagates the request down to [Children](iviewnode.md#children), but is not required to clear [Children](iviewnode.md#children) and does not affect the [Context](iviewnode.md#context) assignment. 
 
  This is used to "unbind" the target of a structural node like [ConditionalNode](conditionalnode.md) and in some cases prepare it for subsequent reuse.
 

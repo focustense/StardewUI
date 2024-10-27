@@ -10,7 +10,7 @@ namespace StardewUI.Framework.Binding;
 public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewNode
 {
     /// <inheritdoc />
-    public IReadOnlyList<IViewNode> ChildNodes => innerNode.ChildNodes;
+    public IReadOnlyList<IViewNode.Child> Children => innerNode.Children;
 
     /// <inheritdoc />
     public BindingContext? Context

@@ -33,7 +33,7 @@ public interface IViewNode : System.IDisposable
 
  | Name | Description |
 | --- | --- |
-| [ChildNodes](#childnodes) | The children of this node. | 
+| [Children](#children) | The children of this node. | 
 | [Context](#context) | The currently-bound context data, used as the source for any [InputBinding](../grammar/attributevaluetype.md#inputbinding), [OneTimeBinding](../grammar/attributevaluetype.md#onetimebinding), [OutputBinding](../grammar/attributevaluetype.md#outputbinding) or [TwoWayBinding](../grammar/attributevaluetype.md#twowaybinding) attributes. | 
 | [Views](#views) | The views for this node, if any have been created. | 
 
@@ -49,17 +49,17 @@ public interface IViewNode : System.IDisposable
 
 ### Properties
 
-#### ChildNodes
+#### Children
 
 The children of this node.
 
 ```cs
-System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Binding.IViewNode> ChildNodes { get; }
+System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Binding.IViewNode.Child> Children { get; }
 ```
 
 ##### Property Value
 
-[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[IViewNode](iviewnode.md)>
+[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[Child](iviewnode.child.md)>
 
 ##### Remarks
 
@@ -125,7 +125,7 @@ void Reset();
 
 ##### Remarks
 
-Propagates the request down to [ChildNodes](iviewnode.md#childnodes), but is not required to clear [ChildNodes](iviewnode.md#childnodes) and does not affect the [Context](iviewnode.md#context) assignment. 
+Propagates the request down to [Children](iviewnode.md#children), but is not required to clear [Children](iviewnode.md#children) and does not affect the [Context](iviewnode.md#context) assignment. 
 
  This is used to "unbind" the target of a structural node like [ConditionalNode](conditionalnode.md) and in some cases prepare it for subsequent reuse.
 

@@ -37,13 +37,13 @@ public class RepeaterNode : StardewUI.Framework.Binding.IViewNode,
 
  | Name | Description |
 | --- | --- |
-| [RepeaterNode(IValueSourceFactory, Func&lt;IViewNode&gt;, IAttribute)](#repeaternodeivaluesourcefactory-funciviewnode-iattribute) | A structural node that accepts a collection ([IEnumerable&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection. | 
+| [RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)](#repeaternodeivaluesourcefactory-funcchild-iattribute) | A structural node that accepts a collection ([IEnumerable&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection. | 
 
 ### Properties
 
  | Name | Description |
 | --- | --- |
-| [ChildNodes](#childnodes) | The children of this node. | 
+| [Children](#children) | The children of this node. | 
 | [Context](#context) | The currently-bound context data, used as the source for any [InputBinding](../grammar/attributevaluetype.md#inputbinding), [OneTimeBinding](../grammar/attributevaluetype.md#onetimebinding), [OutputBinding](../grammar/attributevaluetype.md#outputbinding) or [TwoWayBinding](../grammar/attributevaluetype.md#twowaybinding) attributes. | 
 | [Views](#views) | The views for this node, if any have been created. | 
 
@@ -61,12 +61,12 @@ public class RepeaterNode : StardewUI.Framework.Binding.IViewNode,
 
 ### Constructors
 
-#### RepeaterNode(IValueSourceFactory, Func&lt;IViewNode&gt;, IAttribute)
+#### RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)
 
 A structural node that accepts a collection ([IEnumerable&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection.
 
 ```cs
-public RepeaterNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, Func<StardewUI.Framework.Binding.IViewNode> innerNodeCreator, StardewUI.Framework.Dom.IAttribute repeatAttribute);
+public RepeaterNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, Func<StardewUI.Framework.Binding.IViewNode.Child> childCreator, StardewUI.Framework.Dom.IAttribute repeatAttribute);
 ```
 
 ##### Parameters
@@ -74,7 +74,7 @@ public RepeaterNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceF
 **`valueSourceFactory`** &nbsp; [IValueSourceFactory](../sources/ivaluesourcefactory.md)  
 The factory responsible for creating [IValueSource&lt;T&gt;](../sources/ivaluesource-1.md) instances from attribute data.
 
-**`innerNodeCreator`** &nbsp; [Func](https://learn.microsoft.com/en-us/dotnet/api/system.func-1)<[IViewNode](iviewnode.md)>  
+**`childCreator`** &nbsp; [Func](https://learn.microsoft.com/en-us/dotnet/api/system.func-1)<[Child](iviewnode.child.md)>  
 Delegate for creating a new child node.
 
 **`repeatAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
@@ -84,17 +84,17 @@ The attribute containing the collection expression.
 
 ### Properties
 
-#### ChildNodes
+#### Children
 
 The children of this node.
 
 ```cs
-public System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Binding.IViewNode> ChildNodes { get; }
+public System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Binding.IViewNode.Child> Children { get; }
 ```
 
 ##### Property Value
 
-[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[IViewNode](iviewnode.md)>
+[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[Child](iviewnode.child.md)>
 
 ##### Remarks
 
@@ -170,7 +170,7 @@ public void Reset();
 
 ##### Remarks
 
-Propagates the request down to [ChildNodes](iviewnode.md#childnodes), but is not required to clear [ChildNodes](iviewnode.md#childnodes) and does not affect the [Context](iviewnode.md#context) assignment. 
+Propagates the request down to [Children](iviewnode.md#children), but is not required to clear [Children](iviewnode.md#children) and does not affect the [Context](iviewnode.md#context) assignment. 
 
  This is used to "unbind" the target of a structural node like [ConditionalNode](conditionalnode.md) and in some cases prepare it for subsequent reuse.
 

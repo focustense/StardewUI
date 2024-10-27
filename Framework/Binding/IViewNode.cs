@@ -9,13 +9,28 @@ namespace StardewUI.Framework.Binding;
 public interface IViewNode : IDisposable
 {
     /// <summary>
+    /// Child of an <see cref="IViewNode"/>, specifying the node data and the view outlet in which it should appear.
+    /// </summary>
+    /// <param name="Node">The child node.</param>
+    /// <param name="OutletName">The outlet in which the <paramref name="Node"/> should be inserted.</param>
+    public record Child(IViewNode Node, string? OutletName = null) : IDisposable
+    {
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Node.Dispose();
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    /// <summary>
     /// The children of this node.
     /// </summary>
     /// <remarks>
     /// Node children represent views in potentia. Every DOM node maps to (at least) one <see cref="IViewNode"/>, but
     /// views are created lazily and may not exist for nodes with conditional attributes or other rules.
     /// </remarks>
-    IReadOnlyList<IViewNode> ChildNodes { get; }
+    IReadOnlyList<Child> Children { get; }
 
     /// <summary>
     /// The currently-bound context data, used as the source for any <see cref="AttributeValueType.InputBinding"/>,
@@ -43,7 +58,7 @@ public interface IViewNode : IDisposable
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Propagates the request down to <see cref="ChildNodes"/>, but is not required to clear <see cref="ChildNodes"/>
+    /// Propagates the request down to <see cref="Children"/>, but is not required to clear <see cref="Children"/>
     /// and does not affect the <see cref="Context"/> assignment.
     /// </para>
     /// <para>

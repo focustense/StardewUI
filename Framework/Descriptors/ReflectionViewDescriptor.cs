@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using StardewUI.Widgets;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -16,7 +17,9 @@ public class ReflectionViewDescriptor : IViewDescriptor
 
     private static readonly Dictionary<Type, ReflectionViewDescriptor> cache = [];
 
-    private readonly IPropertyDescriptor? childrenProperty;
+    private readonly IPropertyDescriptor? defaultOutletProperty;
+    private readonly Dictionary<string, IPropertyDescriptor> namedOutletProperties =
+        new(StringComparer.InvariantCultureIgnoreCase);
     private readonly IObjectDescriptor innerDescriptor;
 
     /// <summary>
@@ -48,25 +51,56 @@ public class ReflectionViewDescriptor : IViewDescriptor
     private ReflectionViewDescriptor(Type viewType, IObjectDescriptor innerDescriptor)
     {
         this.innerDescriptor = innerDescriptor;
-        var childrenProperty = viewType
+        var childrenProperties = viewType
             .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-            .FirstOrDefault(prop =>
+            .Where(prop =>
                 prop.CanWrite
                 && (
                     typeof(IView).IsAssignableFrom(prop.PropertyType)
                     || typeof(IEnumerable<IView>).IsAssignableFrom(prop.PropertyType)
                 )
             );
-        this.childrenProperty = childrenProperty is not null
-            ? innerDescriptor.GetProperty(childrenProperty.Name)
-            : null;
+        foreach (var property in childrenProperties)
+        {
+            var descriptor = innerDescriptor.GetProperty(property.Name);
+            var outletName = property.GetCustomAttribute<OutletAttribute>()?.Name;
+            if (!string.IsNullOrEmpty(outletName))
+            {
+                if (namedOutletProperties.TryGetValue(outletName, out var previousDescriptor))
+                {
+                    throw new DescriptorException(
+                        $"Cannot add property '{property.Name}' as outlet '{outletName}' for type {viewType.Name}: "
+                            + $"another property ('{previousDescriptor.Name}') has already been assigned to this outlet."
+                    );
+                }
+                namedOutletProperties.Add(outletName, descriptor);
+            }
+            else
+            {
+                if (defaultOutletProperty is not null)
+                {
+                    throw new DescriptorException(
+                        $"Cannot add property '{property.Name}' as the default outlet for type {viewType.Name}: "
+                            + $"another property ('{defaultOutletProperty.Name}') has already been assigned to this outlet."
+                    );
+                }
+                defaultOutletProperty = descriptor;
+            }
+        }
     }
 
     /// <inheritdoc />
-    public bool TryGetChildrenProperty([MaybeNullWhen(false)] out IPropertyDescriptor property)
+    public bool TryGetChildrenProperty(string? outletName, [MaybeNullWhen(false)] out IPropertyDescriptor property)
     {
-        property = childrenProperty;
-        return childrenProperty is not null;
+        if (!string.IsNullOrEmpty(outletName))
+        {
+            namedOutletProperties.TryGetValue(outletName, out property);
+        }
+        else
+        {
+            property = defaultOutletProperty;
+        }
+        return property is not null;
     }
 
     /// <inheritdoc />

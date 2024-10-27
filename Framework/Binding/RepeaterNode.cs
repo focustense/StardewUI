@@ -13,16 +13,16 @@ namespace StardewUI.Framework.Binding;
 /// </summary>
 /// <param name="valueSourceFactory">The factory responsible for creating <see cref="IValueSource{T}"/> instances from
 /// attribute data.</param>
-/// <param name="innerNodeCreator">Delegate for creating a new child node.</param>
+/// <param name="childCreator">Delegate for creating a new child node.</param>
 /// <param name="repeatAttribute">The attribute containing the collection expression.</param>
 public class RepeaterNode(
     IValueSourceFactory valueSourceFactory,
-    Func<IViewNode> innerNodeCreator,
+    Func<IViewNode.Child> childCreator,
     IAttribute repeatAttribute
 ) : IViewNode
 {
     /// <inheritdoc />
-    public IReadOnlyList<IViewNode> ChildNodes => childNodes;
+    public IReadOnlyList<IViewNode.Child> Children => children;
 
     /// <inheritdoc />
     public BindingContext? Context
@@ -41,7 +41,7 @@ public class RepeaterNode(
     /// <inheritdoc />
     public IReadOnlyList<IView> Views { get; private set; } = [];
 
-    private List<IViewNode> childNodes = [];
+    private List<IViewNode.Child> children = [];
     private ICollectionWatcher? collectionWatcher;
     private BindingContext? context;
     private bool wasContextChanged;
@@ -58,16 +58,16 @@ public class RepeaterNode(
     /// <inheritdoc />
     public void Print(StringBuilder sb, bool includeChildren)
     {
-        if (childNodes.Count > 0)
+        if (children.Count > 0)
         {
-            childNodes[0].Print(sb, includeChildren);
+            children[0].Node.Print(sb, includeChildren);
         }
         else
         {
             try
             {
-                using var dummyNode = innerNodeCreator();
-                dummyNode.Print(sb, includeChildren);
+                using var dummyChild = childCreator();
+                dummyChild.Node.Print(sb, includeChildren);
             }
             catch
             {
@@ -79,11 +79,11 @@ public class RepeaterNode(
     /// <inheritdoc />
     public void Reset()
     {
-        foreach (var childNode in childNodes)
+        foreach (var childNode in children)
         {
             childNode.Dispose();
         }
-        childNodes = [];
+        children = [];
         collectionWatcher?.Dispose();
         collectionWatcher = null;
         // Ensure that if the node gets reused (Updated again) then we recreate the collection watcher etc., even if the
@@ -126,13 +126,13 @@ public class RepeaterNode(
         }
         bool result = UpdateChildBindings();
         // Even if the "tree" itself wasn't updated, we still have to pass the update down to existing child nodes.
-        foreach (var childNode in childNodes)
+        foreach (var childNode in children)
         {
-            result |= childNode.Update(elapsed);
+            result |= childNode.Node.Update(elapsed);
         }
         if (result)
         {
-            Views = childNodes.SelectMany(node => node.Views).ToList();
+            Views = children.SelectMany(child => child.Node.Views).ToList();
         }
         return result;
     }
@@ -144,24 +144,24 @@ public class RepeaterNode(
         {
             return;
         }
-        var newNodes = new List<IViewNode>(items.Count);
+        var newChildren = new List<IViewNode.Child>(items.Count);
         foreach (var item in items)
         {
-            var newNode = innerNodeCreator();
-            newNode.Context = item is not null ? BindingContext.Create(item, Context) : null;
+            var newChild = childCreator();
+            newChild.Node.Context = item is not null ? BindingContext.Create(item, Context) : null;
             // Operating on assumption that repeatedly appending to a temporary list and then inserting the whole list
             // is faster than inserting items one by one (and repeatedly shifting any subsequent items) into the middle.
-            newNodes.Add(newNode);
+            newChildren.Add(newChild);
         }
-        childNodes.InsertRange(fromIndex, newNodes);
+        children.InsertRange(fromIndex, newChildren);
     }
 
     private void MoveChildNodes(int fromIndex, int toIndex, int count)
     {
         using var _ = Trace.Begin(this, nameof(MoveChildNodes));
-        var oldItems = childNodes.GetRange(fromIndex, count);
-        childNodes.RemoveRange(fromIndex, count);
-        childNodes.InsertRange(toIndex, oldItems);
+        var oldItems = children.GetRange(fromIndex, count);
+        children.RemoveRange(fromIndex, count);
+        children.InsertRange(toIndex, oldItems);
     }
 
     private void ReplaceChildNodes(int fromIndex, IList? oldItems, IList? newItems)
@@ -175,7 +175,7 @@ public class RepeaterNode(
         for (int i = 0; i < count; i++)
         {
             var newItem = newItems?.Count > i ? newItems[i] : null;
-            childNodes[fromIndex + i].Context = newItem is not null ? BindingContext.Create(newItem, Context) : null;
+            children[fromIndex + i].Node.Context = newItem is not null ? BindingContext.Create(newItem, Context) : null;
         }
     }
 
@@ -200,20 +200,20 @@ public class RepeaterNode(
             int index = 0;
             foreach (var item in collectionWatcher.GetCurrentItems())
             {
-                IViewNode node;
-                if (index >= childNodes.Count)
+                IViewNode.Child child;
+                if (index >= children.Count)
                 {
-                    node = innerNodeCreator();
-                    childNodes.Add(node);
+                    child = childCreator();
+                    children.Add(child);
                 }
                 else
                 {
-                    node = childNodes[index];
+                    child = children[index];
                 }
-                node.Context = item is not null ? BindingContext.Create(item, Context) : null;
+                child.Node.Context = item is not null ? BindingContext.Create(item, Context) : null;
                 index++;
             }
-            childNodes.RemoveRange(index, childNodes.Count - index);
+            children.RemoveRange(index, children.Count - index);
             return true;
         }
         foreach (var change in changes)
@@ -227,7 +227,7 @@ public class RepeaterNode(
                     AddChildNodes(change.NewStartingIndex, change.NewItems);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    childNodes.RemoveRange(change.OldStartingIndex, change.OldItems?.Count ?? 0);
+                    children.RemoveRange(change.OldStartingIndex, change.OldItems?.Count ?? 0);
                     break;
                 case NotifyCollectionChangedAction.Move:
                     MoveChildNodes(change.OldStartingIndex, change.NewStartingIndex, change.OldItems?.Count ?? 0);

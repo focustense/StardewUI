@@ -17,18 +17,26 @@ namespace StardewUI.Framework.Binding;
 /// <param name="element">Element data for this node.</param>
 /// <param name="contextAttribute">Optional attribute specifying how to resolve the context for child nodes based on
 /// this node's assigned <see cref="Context"/>.</param>
-/// <param name="childNodes">Initial children of this node.</param>
 public class ViewNode(
     IValueSourceFactory valueSourceFactory,
     IViewFactory viewFactory,
     IViewBinder viewBinder,
     SElement element,
-    IEnumerable<IViewNode>? childNodes = null,
     IAttribute? contextAttribute = null
 ) : IViewNode
 {
     /// <inheritdoc />
-    public IReadOnlyList<IViewNode> ChildNodes { get; internal set; } = childNodes?.ToList() ?? [];
+    public IReadOnlyList<IViewNode.Child> Children
+    {
+        get => children;
+        set
+        {
+            children = value;
+            childNodesByOutlet = children
+                .GroupBy(c => c.OutletName ?? "", c => c.Node)
+                .ToDictionary(g => g.Key, g => g.ToList() as IReadOnlyList<IViewNode>);
+        }
+    }
 
     /// <inheritdoc />
     public BindingContext? Context
@@ -50,6 +58,8 @@ public class ViewNode(
 
     private IViewBinding? binding;
     private IValueSource? childContextSource;
+    private IReadOnlyList<IViewNode.Child> children = [];
+    private Dictionary<string, IReadOnlyList<IViewNode>> childNodesByOutlet = [];
     private IChildrenBinder? childrenBinder;
     private BindingContext? context;
     private IView? view;
@@ -72,12 +82,12 @@ public class ViewNode(
     public void Print(StringBuilder sb, bool includeChildren)
     {
         IElement printableElement = element;
-        if (includeChildren && ChildNodes.Count > 0)
+        if (includeChildren && Children.Count > 0)
         {
             printableElement.Print(sb);
-            foreach (var childNode in ChildNodes)
+            foreach (var child in Children)
             {
-                childNode.Print(sb, includeChildren);
+                child.Node.Print(sb, includeChildren);
             }
             printableElement.PrintClosingTag(sb);
         }
@@ -90,9 +100,9 @@ public class ViewNode(
     /// <inheritdoc />
     public void Reset()
     {
-        foreach (var childNode in ChildNodes)
+        foreach (var child in Children)
         {
-            childNode.Reset();
+            child.Node.Reset();
         }
         binding?.Dispose();
         binding = null;
@@ -155,7 +165,7 @@ public class ViewNode(
             wasChanged |= wasChildContextChanged;
         }
         bool wasChildViewChanged = false;
-        foreach (var childNode in ChildNodes)
+        foreach (var childNode in Children.Select(c => c.Node))
         {
             if (wasChildContextChanged)
             {
@@ -187,10 +197,21 @@ public class ViewNode(
         {
             return;
         }
-        var children = ChildNodes.SelectMany(node => node.Views).Where(view => view is not null).Cast<IView>().ToList();
+        var children = Children
+            .SelectMany(child => child.Node.Views)
+            .Where(view => view is not null)
+            .Cast<IView>()
+            .ToList();
         if (childrenBinder is not null)
         {
-            childrenBinder.SetChildren(view, children);
+            foreach (var (outletName, childNodes) in childNodesByOutlet)
+            {
+                var childViews = childNodes
+                    .SelectMany(node => node.Views)
+                    .Where(view => view is not null)
+                    .Cast<IView>();
+                childrenBinder.SetChildren(view, outletName, childViews);
+            }
         }
         else if (children.Count > 0)
         {
@@ -203,89 +224,133 @@ public class ViewNode(
 
     interface IChildrenBinder
     {
-        void SetChildren(IView view, List<IView> children);
+        void SetChildren(IView view, string? outletName, IEnumerable<IView> children);
     }
 
     static class ReflectionChildrenBinder
     {
         private static readonly Dictionary<Type, IChildrenBinder?> cache = [];
-        private static readonly MethodInfo multipleMethod = typeof(ReflectionChildrenBinder).GetMethod(
-            nameof(Multiple),
-            BindingFlags.Static | BindingFlags.NonPublic
-        )!;
-        private static readonly MethodInfo singleMethod = typeof(ReflectionChildrenBinder).GetMethod(
-            nameof(Single),
+        private static readonly MethodInfo factoryMethodDefinition = typeof(ReflectionChildrenBinder).GetMethod(
+            nameof(CreateChildrenBinder),
             BindingFlags.Static | BindingFlags.NonPublic
         )!;
 
         public static IChildrenBinder? FromViewDescriptor(IViewDescriptor viewDescriptor)
         {
             using var _ = Trace.Begin(nameof(ReflectionChildrenBinder), nameof(FromViewDescriptor));
-            if (!cache.TryGetValue(viewDescriptor.TargetType, out var childrenDescriptor))
+            if (!cache.TryGetValue(viewDescriptor.TargetType, out var childrenBinder))
             {
-                if (viewDescriptor.TryGetChildrenProperty(out var childrenProperty))
-                {
-                    var binder = CreateBinder(viewDescriptor.TargetType, childrenProperty);
-                    cache[viewDescriptor.TargetType] = childrenDescriptor = binder;
-                }
-                else
-                {
-                    cache[viewDescriptor.TargetType] = childrenDescriptor = null;
-                }
+                var factoryMethod = factoryMethodDefinition.MakeGenericMethod(viewDescriptor.TargetType);
+                childrenBinder = (IChildrenBinder)factoryMethod.Invoke(null, [viewDescriptor])!;
+                cache.Add(viewDescriptor.TargetType, childrenBinder);
             }
-            return childrenDescriptor;
+            return childrenBinder;
         }
 
-        private static IChildrenBinder CreateBinder(Type viewType, IPropertyDescriptor childrenProperty)
-        {
-            using var _ = Trace.Begin(nameof(ReflectionChildrenBinder), nameof(CreateBinder));
-            var enumerableChildType = childrenProperty.ValueType.GetEnumerableElementType();
-            var factoryMethod = enumerableChildType is not null
-                ? multipleMethod.MakeGenericMethod([viewType, enumerableChildType, childrenProperty.ValueType])
-                : singleMethod.MakeGenericMethod([viewType, childrenProperty.ValueType]);
-            return (IChildrenBinder)factoryMethod.Invoke(null, [childrenProperty])!;
-        }
-
-        private static ReflectionChildrenBinder<TView, TChildren> Multiple<TView, TChild, TChildren>(
-            IPropertyDescriptor<TChildren> property
-        )
-            where TChildren : IEnumerable<TChild>
+        private static IChildrenBinder CreateChildrenBinder<TView>(IViewDescriptor viewDescriptor)
             where TView : IView
         {
-            return new((view, children) => property.SetValue(view, children!), true);
-        }
-
-        private static ReflectionChildrenBinder<TView, TChild> Single<TView, TChild>(
-            IPropertyDescriptor<TChild?> property
-        )
-            where TView : IView
-            where TChild : notnull
-        {
-            return new((view, child) => property.SetValue(view, child), false);
+            return new ReflectionChildrenBinder<TView>(viewDescriptor);
         }
     }
 
-    class ReflectionChildrenBinder<TView, TChildren>(Action<TView, TChildren?> setChildren, bool allowsMultiple)
-        : IChildrenBinder
+    class ReflectionChildrenBinder<TView>(IViewDescriptor viewDescriptor) : IChildrenBinder
         where TView : IView
     {
-        public void SetChildren(IView view, List<IView> children)
+        private static readonly Dictionary<string, IOutletBinder?> outletCache =
+            new(StringComparer.InvariantCultureIgnoreCase);
+        private static readonly MethodInfo multipleMethod = typeof(ReflectionChildrenBinder<TView>).GetMethod(
+            nameof(Multiple),
+            BindingFlags.Static | BindingFlags.NonPublic
+        )!;
+        private static readonly MethodInfo singleMethod = typeof(ReflectionChildrenBinder<TView>).GetMethod(
+            nameof(Single),
+            BindingFlags.Static | BindingFlags.NonPublic
+        )!;
+
+        public void SetChildren(IView view, string? outletName, IEnumerable<IView> children)
+        {
+            if (!outletCache.TryGetValue(outletName ?? "", out var outletBinder))
+            {
+                var childrenProperty = viewDescriptor.GetChildrenProperty(outletName);
+                outletBinder = childrenProperty is not null
+                    ? CreateOutletBinder(
+                        !string.IsNullOrEmpty(outletName) ? outletName : defaultOutletName,
+                        childrenProperty
+                    )
+                    : null;
+                outletCache.Add(outletName ?? "", outletBinder);
+            }
+            if (outletBinder is not null)
+            {
+                outletBinder.SetChildren(view, children);
+            }
+            else
+            {
+                throw new BindingException(
+                    $"View type {viewDescriptor.TargetType.Name} does not have an outlet named '{outletName}."
+                );
+            }
+        }
+
+        private static IOutletBinder CreateOutletBinder(string outletName, IPropertyDescriptor childrenProperty)
+        {
+            using var _ = Trace.Begin(nameof(ReflectionChildrenBinder<TView>), nameof(CreateOutletBinder));
+            var enumerableChildType = childrenProperty.ValueType.GetEnumerableElementType();
+            var factoryMethod = enumerableChildType is not null
+                ? multipleMethod.MakeGenericMethod(enumerableChildType, childrenProperty.ValueType)
+                : singleMethod.MakeGenericMethod(childrenProperty.ValueType);
+            return (IOutletBinder)factoryMethod.Invoke(null, [outletName, childrenProperty])!;
+        }
+
+        private static readonly string defaultOutletName = "(default)";
+
+        private static OutletBinder<TView, TChildren> Multiple<TChild, TChildren>(
+            string outletName,
+            IPropertyDescriptor<TChildren> property
+        )
+            where TChildren : IEnumerable<TChild>
+        {
+            return new((view, children) => property.SetValue(view, children!), true, outletName);
+        }
+
+        private static OutletBinder<TView, TChild> Single<TChild>(
+            string outletName,
+            IPropertyDescriptor<TChild?> property
+        )
+            where TChild : notnull
+        {
+            return new((view, child) => property.SetValue(view, child), false, outletName);
+        }
+    }
+
+    interface IOutletBinder
+    {
+        void SetChildren(IView view, IEnumerable<IView> children);
+    }
+
+    class OutletBinder<TView, TChildren>(Action<TView, TChildren?> setChildren, bool allowsMultiple, string outletName)
+        : IOutletBinder
+        where TView : IView
+    {
+        public void SetChildren(IView view, IEnumerable<IView> children)
         {
             using var _ = Trace.Begin(this, nameof(SetChildren));
             if (allowsMultiple)
             {
-                setChildren((TView)view, (TChildren)(object)children);
+                setChildren((TView)view, (TChildren)(object)children.ToList());
             }
             else
             {
-                if (children.Count > 1)
+                var firstChildren = children.Take(2).ToArray();
+                if (firstChildren.Length > 1)
                 {
                     throw new BindingException(
-                        $"Cannot bind {children.Count} children to view type {typeof(TView).Name} because it only "
-                            + "supports a single child/content view."
+                        $"Cannot bind multiple children to outlet {outletName} of view type {typeof(TView).Name} "
+                            + "because it only supports a single child/content view."
                     );
                 }
-                var child = children.Count > 0 ? children[0] : null;
+                var child = firstChildren.Length > 0 ? firstChildren[0] : null;
                 setChildren((TView)view, (TChildren?)(object?)child);
             }
         }

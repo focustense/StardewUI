@@ -46,7 +46,7 @@ public class ReflectionViewDescriptor :
  | Name | Description |
 | --- | --- |
 | [ForViewType(Type)](#forviewtypetype) | Derives a view descriptor for a given view type. | 
-| [TryGetChildrenProperty(IPropertyDescriptor)](#trygetchildrenpropertyipropertydescriptor) | Attempts to retrieve the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content. | 
+| [TryGetChildrenProperty(string, IPropertyDescriptor)](#trygetchildrenpropertystring-ipropertydescriptor) | Attempts to retrieve the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content. | 
 | [TryGetEvent(string, IEventDescriptor)](#trygeteventstring-ieventdescriptor) | Attempts to retrieve a named event on the [TargetType](iobjectdescriptor.md#targettype). | 
 | [TryGetMethod(string, IMethodDescriptor)](#trygetmethodstring-imethoddescriptor) | Attempts to retrieve a named method of the [TargetType](iobjectdescriptor.md#targettype). | 
 | [TryGetProperty(string, IPropertyDescriptor)](#trygetpropertystring-ipropertydescriptor) | Attempts to retrieve a named property of the [TargetType](iobjectdescriptor.md#targettype). | 
@@ -106,15 +106,18 @@ The view type; must be a type implementing [IView](../../iview.md).
 
 -----
 
-#### TryGetChildrenProperty(IPropertyDescriptor)
+#### TryGetChildrenProperty(string, IPropertyDescriptor)
 
 Attempts to retrieve the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content.
 
 ```cs
-public bool TryGetChildrenProperty(out StardewUI.Framework.Descriptors.IPropertyDescriptor property);
+public bool TryGetChildrenProperty(string outletName, out StardewUI.Framework.Descriptors.IPropertyDescriptor property);
 ```
 
 ##### Parameters
+
+**`outletName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The name of the specific outlet, if targeting a non-default outlet on a view with multiple outlets. Corresponds to [Name](../../widgets/outletattribute.md#name).
 
 **`property`** &nbsp; [IPropertyDescriptor](ipropertydescriptor.md)  
 When this method returns, holds a reference to the [IPropertyDescriptor](ipropertydescriptor.md) that holds the view's children/content, or `null` if no such property is available.

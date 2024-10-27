@@ -34,6 +34,7 @@ title: StardewUI.Widgets
 | [Lane](lane.md) | Simple unidirectional layout that draws multiple child views in a row or column arrangement. |
 | [Marquee](marquee.md) | A scrolling marquee supporting any inner content. |
 | [NineGridPlacementEditor](ninegridplacementeditor.md) | Editor widget for a [NineGridPlacement](../layout/ninegridplacement.md), which brings up a [PositioningOverlay](positioningoverlay.md) on click. |
+| [OutletAttribute](outletattribute.md) | Marks a child/children property as a named outlet. |
 | [Panel](panel.md) | A layout view whose children all overlap the same boundaries. |
 | [PositioningOverlay](positioningoverlay.md) | An overlay that can be used to edit the position of some arbitrary content. |
 | [PositioningOverlay](positioningoverlay.md).[ControlScheme](positioningoverlay.controlscheme.md) | Configures the mapping of buttons to positioning actions in a [PositioningOverlay](positioningoverlay.md). |

@@ -12,7 +12,7 @@ public class BackoffNodeDecorator(IViewNode node, BackoffRule backoffRule) : IVi
     private BackoffState? backoffState;
 
     /// <inheritdoc />
-    public IReadOnlyList<IViewNode> ChildNodes => node.ChildNodes;
+    public IReadOnlyList<IViewNode.Child> Children => node.Children;
 
     /// <inheritdoc />
     public BindingContext? Context

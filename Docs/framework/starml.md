@@ -154,6 +154,7 @@ Structural attributes look like regular attributes, but with a `*` prefix. Inste
 | `*case`    | Any              | Removes the element unless the value is equal to the most recent `*switch`. The types of `*switch` and `*case` must either match exactly or be [convertible](#type-conversions). |
 | `*context` | Any              | Changes the [context](binding-context.md) that all child nodes bind to; used for heavily-nested data models. |
 | `*if`      | `bool`           | Removes the element unless the specified condition is met. |
+| `*outlet`  | `string`         | Specifies which of the parent node's [outlets](#outlets) will receive this node.<br>**Does not support bindings.** The attribute value must be a quoted string. |
 | `*repeat`  | `IEnumerable` | Repeats the element over a collection, creating a new view for every item and setting its [context](binding-context.md) to that item. Applies to both regular and structural attributes; e.g. if `*repeat` and `*if` are both specified, then `*repeat` applies first. |
 | `*switch`  | Any              | Sets the object that any subsequent `*case` attributes must match in order for their elements to show. |
 
@@ -376,6 +377,61 @@ A better way is to use `*switch`:
     ```
 
 This version _cannot_ fail because `VisibleItem` cannot be both `Item1` and `Item2` at the same time. In other words, it is always OK to have multiple child nodes underneath a single-view layout, **if** all of those nodes have a distinct `*case`. Otherwise, there is the possibility of failure.
+
+### Outlets
+
+Children are grouped into "outlets", which represent specific areas or subcomponents of a layout.
+
+Usually, this is invisible to you, as a layout view only performs one type of layout and therefore only has one child or collection of children. However, there are a few exceptions; one of them is the [Expander](../library/standard-views.md#expander), which allows specifying both a header view (the part that is always shown) and the content view (the part that can collapse).
+
+To solve for these problems, StarML supports the `*outlet` [structural attribute](#structural-attributes), which allows targeting a specific outlet with a specific element:
+
+```html
+<expander>
+    <button *outlet="header" text={ExpandCollapseText} />
+    <label layout="stretch content" text={LongContent} />
+</expander>
+```
+
+Outlet names are determined by the view itself, via the [OutletAttribute](../reference/stardewui/widgets/outletattribute.md) being applied to specific properties. In the case of `Expander`, there is one named outlet for the [Header](../reference/stardewui/widgets/expander.md#header) property, named "header". [Custom views](../library/custom-views.md) can create named outlets using the same attribute.
+
+If an `*outlet` is not specified in the markup, then the default (unnamed) outlet is assumed. When multiple outlets are available, the [child limits](#child-limits) still apply per-outlet; if any given outlet, default or named, only allows a single view, then attempting to assign multiple views to that outlet would be invalid. For example, the following would _not_ be allowed for an `<expander>` element:
+
+!!! failure "Broken"
+
+    ```html
+    <expander>
+        <label *outlet="header" text="Hello" />
+        <label *outlet="header" text="World" />
+        <label layout="stretch content" text={LongContent} />
+    </expander>
+    ```
+    
+This is not allowed because the expander's `header` outlet requires a single content view. However, if this were to use an `*if*` condition then it would be valid again:
+
+!!! success
+
+    ```html
+    <expander>
+        <label *outlet="header" *if={IsCollapsed} text="Show help" />
+        <label *outlet="header" *if={IsExpanded} text="Hide help" />
+        <label layout="stretch content" text={LongContent} />
+    </expander>
+    ```
+
+If there is a real need to have multiple views in the outlet, then this can also be achieved using a single layout view to hold them:
+
+!!! success
+
+    ```html
+    <expander>
+        <lane *outlet="header">
+            <label text="Hello" />
+            <label text="World" />
+        </lane>
+        <label layout="stretch content" text={LongContent} />
+    </expander>
+    ```
 
 ## Why not HTML?
 
