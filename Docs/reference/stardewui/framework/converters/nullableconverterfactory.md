@@ -1,13 +1,13 @@
 ---
-title: StringConverterFactory
-description: Provides conversions from any type to string.
+title: NullableConverterFactory
+description: Factory that implements automatic conversion between nullable and non-nullable types.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
 
 /// html | div.api-reference
 
-# Class StringConverterFactory
+# Class NullableConverterFactory
 
 ## Definition
 
@@ -18,15 +18,15 @@ Assembly: StardewUI.dll
 
 </div>
 
-Provides conversions from any type to [string](https://learn.microsoft.com/en-us/dotnet/api/system.string).
+Factory that implements automatic conversion between nullable and non-nullable types.
 
 ```cs
-public class StringConverterFactory : 
+public class NullableConverterFactory : 
     StardewUI.Framework.Converters.IValueConverterFactory
 ```
 
 **Inheritance**  
-[Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ StringConverterFactory
+[Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ NullableConverterFactory
 
 **Implements**  
 [IValueConverterFactory](ivalueconverterfactory.md)
@@ -37,7 +37,7 @@ public class StringConverterFactory :
 
  | Name | Description |
 | --- | --- |
-| [StringConverterFactory()](#stringconverterfactory) |  | 
+| [NullableConverterFactory(IValueConverterFactory)](#nullableconverterfactoryivalueconverterfactory) | Factory that implements automatic conversion between nullable and non-nullable types. | 
 
 ### Methods
 
@@ -49,13 +49,18 @@ public class StringConverterFactory :
 
 ### Constructors
 
-#### StringConverterFactory()
+#### NullableConverterFactory(IValueConverterFactory)
 
-
+Factory that implements automatic conversion between nullable and non-nullable types.
 
 ```cs
-public StringConverterFactory();
+public NullableConverterFactory(StardewUI.Framework.Converters.IValueConverterFactory innerFactory);
 ```
+
+##### Parameters
+
+**`innerFactory`** &nbsp; [IValueConverterFactory](ivalueconverterfactory.md)  
+The converter factory to handle conversion of the element type(s).
 
 -----
 

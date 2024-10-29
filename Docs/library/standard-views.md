@@ -2,56 +2,6 @@
 
 ## Layouts
 
-### Expander &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/expander.md)
-
-An expandable panel with built-in behavior to toggle expand/collapse on click. The header is always visible, while the content is only visible when expanded.
-
-Includes its own (customizable) caret sprite to show the current expanded state.
-
-=== "Demo"
-
-    ![Expander Example](../images/example-expander.webp)
-
-=== "Usage (StarML)"
-
-    ```html
-    <frame layout="420px 380px"
-           background={@Mods/StardewUI/Sprites/ControlBorder}
-           padding="32,16,32,24">
-        <lane layout="stretch content" orientation="vertical">
-            <expander layout="stretch content"
-                      margin="0,0,0,4"
-                      header-padding="0,12"
-                      header-background-tint="#99c"
-                      is-expanded={<>IsExpanded}>
-                <label *outlet="header" text={HeaderText} />
-                <image layout="stretch 300px"
-                       horizontal-alignment="middle"
-                       sprite={@Mods/focustense.StardewUITest/Sprites/Cursors:Balloon} />
-            </expander>
-            <label text="Additional content below expander" />
-        </lane>
-    </frame>
-    ```
-
-=== "Usage (C#)"
-
-    ```cs
-    partial class ExpanderTestViewModel : INotifyPropertyChanged
-    {
-        public string HeaderText => IsExpanded ? "Hide Details" : "Show Details";
-
-        [Notify] private bool isExpanded;
-    }
-
-    void ShowExpanderExample()
-    {
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
-            $"Mods/focustense.StardewUITest/Views/ExpanderTestView",
-            new ExpanderTestViewModel());
-    }
-    ```
-
 ### Frame &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/frame.md)
 
 Applies decorations and alignment to an inner view.
@@ -274,7 +224,7 @@ Scrollable views can be used to hold simple lists, grids, or an entire complex U
     }
     ```
 
-## Widgets
+## Content
 
 ### Banner &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/banner.md)
 
@@ -296,6 +246,116 @@ In addition to being used with backgrounds as menu titles, banners are also comm
             padding="12"
             text="Important Announcement" />
     ```
+
+### Image &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/image.md)
+
+Draws a [Sprite](../reference/stardewui/graphics/sprite.md). Functionally very similar to interacting with the [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html), but significantly more streamlined for use in UI layouts:
+
+- Built-in [9-slice scaling](https://en.wikipedia.org/wiki/9-slice_scaling); simply set the edge lengths on the input sprite.
+- Has multiple [fit](../reference/stardewui/widgets/image.md) options; choose whether the image should be scaled uniformly to fit inside the layout area ([letterboxing](https://en.wikipedia.org/wiki/Letterboxing_(filming)) or [pillarboxing](https://en.wikipedia.org/wiki/Pillarbox)), covering the layout area ([clipping](https://en.wikipedia.org/wiki/Clipping_(computer_graphics))) or stretched non-uniformly across the area.
+- Shadows, tint, alignment, uniform rotation and other quality-of-life features.
+
+Static images are usually bound to some [sprite asset](../getting-started/adding-ui-assets.md#adding-sprites), as shown in the example below. For dynamic images, several common [implicit conversions](../framework/starml.md#type-conversions) are available.
+
+=== "Demo"
+
+    ![Image Example](../images/screenshot-image.png)
+
+=== "Usage (StarML)"
+
+    ```html
+    <image layout="stretch content"
+           sprite={@Mods/focustense.StardewUITest/Sprites/Cursors:TrainFront} />
+    ```
+
+### Label &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/label.md)
+
+Draws text as a single line or paragraph.
+
+Existing newlines are preserved, and all measurements (e.g. breaking) are handled as part of the layout; the text can be limited in length using `max-lines`, or can be given unlimited length and placed inside a `content`-sized container or `scrollable`.
+
+The `font` will accept any `SpriteFont` if you have a custom font, otherwise the built-in game values are `small` (default), `dialogue` (large) and `tiny` (not actually tiny, but the game calls it `tinyFont`). MonoGame does not support font sizes per font, but this can be simulated via `scale`, which also applies to layout—i.e. will affect how much space is occupied by the label and/or how many lines can be displayed.
+
+Aside from [banners](#banner), the `label` element should be all that the majority of UIs ever need for text.
+
+=== "Demo"
+
+    ![Label Example](../images/screenshot-label.png)
+
+=== "Usage (StarML)"
+
+    ```html
+    <label max-lines="6" text={Text} />
+    ```
+
+=== "Usage (C#)"
+
+    ```cs
+    class LabelTestViewModel
+    {
+        public string Text { get; set; }
+    }
+
+    void ShowLabelExample()
+    {
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+            $"Mods/focustense.StardewUITest/Views/LabelTestView",
+            new LabelTestViewModel()
+            {
+                Text = "Out in the kitchen. That skillet good and greasy John Henry "
+                     + "has been the ruin of me, the buggies and the hacks all "
+                     + "formed in line steel driving crew weevil cold wind blows "
+                     + "constant sorrow, turkey in the straw, five dollars one arm "
+                     + "round my whiskey keg sun would never shine when I was a "
+                     + "little boy aces backed with eights, wheel hoss baby on her "
+                     + "knee handsome stranger Jack-a-Diamonds out in the kitchen."
+            });
+    }
+    ```
+    
+    _(Filler text generated from [Hillbilly Ipsum](https://hillbillyipsum.com))_
+
+### Spacer &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/spacer.md)
+
+Adds space between other elements. Has no visual appearance on its own.
+
+The most common usage of this is to align elements to opposite edges of a layout view such as a [Lane](#lane). For example, a title-bar-like control normally has title text and optional icon on the left side, and actions on the right side.
+
+Alignment cannot be specified on individual elements, since only layout views control layout. One way to handle separate alignments would be to use a [panel](#panel) with additional panels, lanes, etc. as children, each aligning to a different edge. However, for cases where overlap is not required or expected, it is simpler and quicker to add a spacer with one of its dimensions set to `stretch`.
+
+=== "Demo"
+
+    ![Spacer Example](../images/screenshot-spacer.png)
+
+=== "Usage (StarML)"
+
+    ```html
+    <lane layout="300px content">
+        <label text="Hello" />
+        <spacer layout="stretch 0px" />
+        <label text="World" />
+    </lane>
+    ```
+
+Spacers can also be fixed-width and/or fixed-height; there is no requirement for `stretch`, it is only the most common usage.
+
+### Tiny Number Label &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/tinynumberlabel.md)
+
+Called `<digits>` in [StarML](../framework/starml.md) for conciseness, but originally named after the utility function `drawTinyDigits` in Stardew Valley. Displays numbers, and _only_ numbers, using sprites that are much smaller than built-in [label](#label) fonts will generally allow. Typically shown on top of an item to indicate the quantity or stack size.
+
+=== "Demo"
+
+    ![Digits Example](../images/screenshot-digits.png)
+
+    (image enlarged for clarity)
+
+=== "Usage (StarML)"
+
+    ```html
+    <digits number="529" />
+    ```
+
+## Interactivity
 
 ### Button &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/button.md)
 
@@ -423,25 +483,54 @@ It is usually a good idea to set `option-min-width` so that the selection box do
 
     In order for this to work, **all option-related properties must use the same type.** These properties are the ones shown above: `options`, `option-format` and `selected-option`. Any type can be used for all three, as long as the entire view model is consistent.
 
-### Image &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/image.md)
+### Expander &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/expander.md)
 
-Draws a [Sprite](../reference/stardewui/graphics/sprite.md). Functionally very similar to interacting with the [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html), but significantly more streamlined for use in UI layouts:
+An expandable panel with built-in behavior to toggle expand/collapse on click. The header is always visible, while the content is only visible when expanded.
 
-- Built-in [9-slice scaling](https://en.wikipedia.org/wiki/9-slice_scaling); simply set the edge lengths on the input sprite.
-- Has multiple [fit](../reference/stardewui/widgets/image.md) options; choose whether the image should be scaled uniformly to fit inside the layout area ([letterboxing](https://en.wikipedia.org/wiki/Letterboxing_(filming)) or [pillarboxing](https://en.wikipedia.org/wiki/Pillarbox)), covering the layout area ([clipping](https://en.wikipedia.org/wiki/Clipping_(computer_graphics))) or stretched non-uniformly across the area.
-- Shadows, tint, alignment, uniform rotation and other quality-of-life features.
-
-Static images are usually bound to some [sprite asset](../getting-started/adding-ui-assets.md#adding-sprites), as shown in the example below. For dynamic images, several common [implicit conversions](../framework/starml.md#type-conversions) are available.
+Includes its own (customizable) caret sprite to show the current expanded state.
 
 === "Demo"
 
-    ![Image Example](../images/screenshot-image.png)
+    ![Expander Example](../images/example-expander.webp)
 
 === "Usage (StarML)"
 
     ```html
-    <image layout="stretch content"
-           sprite={@Mods/focustense.StardewUITest/Sprites/Cursors:TrainFront} />
+    <frame layout="420px 380px"
+           background={@Mods/StardewUI/Sprites/ControlBorder}
+           padding="32,16,32,24">
+        <lane layout="stretch content" orientation="vertical">
+            <expander layout="stretch content"
+                      margin="0,0,0,4"
+                      header-padding="0,12"
+                      header-background-tint="#99c"
+                      is-expanded={<>IsExpanded}>
+                <label *outlet="header" text={HeaderText} />
+                <image layout="stretch 300px"
+                       horizontal-alignment="middle"
+                       sprite={@Mods/focustense.StardewUITest/Sprites/Cursors:Balloon} />
+            </expander>
+            <label text="Additional content below expander" />
+        </lane>
+    </frame>
+    ```
+
+=== "Usage (C#)"
+
+    ```cs
+    partial class ExpanderTestViewModel : INotifyPropertyChanged
+    {
+        public string HeaderText => IsExpanded ? "Hide Details" : "Show Details";
+
+        [Notify] private bool isExpanded;
+    }
+
+    void ShowExpanderExample()
+    {
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+            $"Mods/focustense.StardewUITest/Views/ExpanderTestView",
+            new ExpanderTestViewModel());
+    }
     ```
 
 ### Keybind &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/keybinding/keybindview.md)
@@ -529,52 +618,88 @@ Although it is designed to work with multiple keybindings (SMAPI `KeybindList`),
     }
     ```
 
-### Label &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/label.md)
+### Slider &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/slider.md)
 
-Draws text as a single line or paragraph.
+A draggable thumb inside a fixed-width track, ideal for editing numeric values.
 
-Existing newlines are preserved, and all measurements (e.g. breaking) are handled as part of the layout; the text can be limited in length using `max-lines`, or can be given unlimited length and placed inside a `content`-sized container or `scrollable`.
+All sliders are `float` based, but can be given the visual appearance of an integer slider by setting `interval` to a whole number. Use the `min` and `max` attributes to control the range, and `value-format` to customize how the label next to the track/thumb appears.
 
-The `font` will accept any `SpriteFont` if you have a custom font, otherwise the built-in game values are `small` (default), `dialogue` (large) and `tiny` (not actually tiny, but the game calls it `tinyFont`). MonoGame does not support font sizes per font, but this can be simulated via `scale`, which also applies to layout—i.e. will affect how much space is occupied by the label and/or how many lines can be displayed.
-
-Aside from [banners](#banner), the `label` element should be all that the majority of UIs ever need for text.
+Controller-based editing simply requires pressing the d-pad or left stick while the slider is focused.
 
 === "Demo"
 
-    ![Label Example](../images/screenshot-label.png)
+    ![Slider Example](../images/example-slider.webp)
 
 === "Usage (StarML)"
 
     ```html
-    <label max-lines="6" text={Text} />
+    <slider track-width="200"
+            min="10"
+            max="100"
+            interval="5"
+            value-format={Format}
+            value={<>Money} />
     ```
 
 === "Usage (C#)"
 
     ```cs
-    class LabelTestViewModel
+    partial class SliderTestViewModel : INotifyPropertyChanged
     {
-        public string Text { get; set; }
+        public Func<float, string> Format { get; } =
+            value => $"{value} million dollars";
+
+        [Notify] private float money = 10;
     }
 
-    void ShowLabelExample()
+    void ShowSliderExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
-            $"Mods/focustense.StardewUITest/Views/LabelTestView",
-            new LabelTestViewModel()
+            $"Mods/focustense.StardewUITest/Views/SliderTestView",
+            new SliderTestViewModel());
+    }
+    ```
+
+### Text Input &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/textinput.md)
+
+An input box similar to the one where you enter your farm name, Favorite Thing, etc. Supports a movable caret (cursor) using the mouse, arrow keys, or home/end keys; also supports gamepad input using Stardew's on-screen keyboard.
+
+The appearance is highly customizable, with editable fonts, colors, background and caret images, shadows and more. Consult the API reference for details.
+
+=== "Demo"
+
+    ![Text Input Example](../images/example-textinput.webp)
+
+=== "Usage (StarML)"
+
+    ```html
+    <textinput layout="stretch 54px" text={<>Text} />
+    ```
+
+=== "Usage (C#)"
+
+    ```cs
+    partial class TextInputTestViewModel : INotifyPropertyChanged
+    {
+        [Notify] private string text = "";
+    }
+
+    void ShowTextInputExample()
+    {
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+            $"Mods/focustense.StardewUITest/Views/TextInputTestView",
+            new TextInputTestViewModel()
             {
-                Text = "Out in the kitchen. That skillet good and greasy John Henry "
-                     + "has been the ruin of me, the buggies and the hacks all "
-                     + "formed in line steel driving crew weevil cold wind blows "
-                     + "constant sorrow, turkey in the straw, five dollars one arm "
-                     + "round my whiskey keg sun would never shine when I was a "
-                     + "little boy aces backed with eights, wheel hoss baby on her "
-                     + "knee handsome stranger Jack-a-Diamonds out in the kitchen."
+                Text = "It was the best of times, it was the blurst of times."
             });
     }
     ```
-    
-    _(Filler text generated from [Hillbilly Ipsum](https://hillbillyipsum.com))_
+
+!!! tip
+
+    Set a fixed or `stretch` width and height for text input boxes; they don't do well with the default `content` layout since the content changes and may initially be empty.
+
+## Extras
 
 ### Marquee &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/marquee.md)
 
@@ -622,124 +747,3 @@ This was mostly done as a demonstration of what's possible in StardewUI, e.g. wi
 !!! tip
 
     Be sure to set a `layout` on the marquee element that does not depend on content size, otherwise the entire marquee will stretch out of bounds and potentially off-screen instead of clipping the content.
-
-### Slider &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/slider.md)
-
-A draggable thumb inside a fixed-width track, ideal for editing numeric values.
-
-All sliders are `float` based, but can be given the visual appearance of an integer slider by setting `interval` to a whole number. Use the `min` and `max` attributes to control the range, and `value-format` to customize how the label next to the track/thumb appears.
-
-Controller-based editing simply requires pressing the d-pad or left stick while the slider is focused.
-
-=== "Demo"
-
-    ![Slider Example](../images/example-slider.webp)
-
-=== "Usage (StarML)"
-
-    ```html
-    <slider track-width="200"
-            min="10"
-            max="100"
-            interval="5"
-            value-format={Format}
-            value={<>Money} />
-    ```
-
-=== "Usage (C#)"
-
-    ```cs
-    partial class SliderTestViewModel : INotifyPropertyChanged
-    {
-        public Func<float, string> Format { get; } =
-            value => $"{value} million dollars";
-
-        [Notify] private float money = 10;
-    }
-
-    void ShowSliderExample()
-    {
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
-            $"Mods/focustense.StardewUITest/Views/SliderTestView",
-            new SliderTestViewModel());
-    }
-    ```
-
-### Spacer &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/spacer.md)
-
-Adds space between other elements. Has no visual appearance on its own.
-
-The most common usage of this is to align elements to opposite edges of a layout view such as a [Lane](#lane). For example, a title-bar-like control normally has title text and optional icon on the left side, and actions on the right side.
-
-Alignment cannot be specified on individual elements, since only layout views control layout. One way to handle separate alignments would be to use a [panel](#panel) with additional panels, lanes, etc. as children, each aligning to a different edge. However, for cases where overlap is not required or expected, it is simpler and quicker to add a spacer with one of its dimensions set to `stretch`.
-
-=== "Demo"
-
-    ![Spacer Example](../images/screenshot-spacer.png)
-
-=== "Usage (StarML)"
-
-    ```html
-    <lane layout="300px content">
-        <label text="Hello" />
-        <spacer layout="stretch 0px" />
-        <label text="World" />
-    </lane>
-    ```
-
-Spacers can also be fixed-width and/or fixed-height; there is no requirement for `stretch`, it is only the most common usage.
-
-### Text Input &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/textinput.md)
-
-An input box similar to the one where you enter your farm name, Favorite Thing, etc. Supports a movable caret (cursor) using the mouse, arrow keys, or home/end keys; also supports gamepad input using Stardew's on-screen keyboard.
-
-The appearance is highly customizable, with editable fonts, colors, background and caret images, shadows and more. Consult the API reference for details.
-
-=== "Demo"
-
-    ![Text Input Example](../images/example-textinput.webp)
-
-=== "Usage (StarML)"
-
-    ```html
-    <textinput layout="stretch 54px" text={<>Text} />
-    ```
-
-=== "Usage (C#)"
-
-    ```cs
-    partial class TextInputTestViewModel : INotifyPropertyChanged
-    {
-        [Notify] private string text = "";
-    }
-
-    void ShowTextInputExample()
-    {
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
-            $"Mods/focustense.StardewUITest/Views/TextInputTestView",
-            new TextInputTestViewModel()
-            {
-                Text = "It was the best of times, it was the blurst of times."
-            });
-    }
-    ```
-
-!!! tip
-
-    Set a fixed or `stretch` width and height for text input boxes; they don't do well with the default `content` layout since the content changes and may initially be empty.
-
-### Tiny Number Label &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/tinynumberlabel.md)
-
-Called `<digits>` in [StarML](../framework/starml.md) for conciseness, but originally named after the utility function `drawTinyDigits` in Stardew Valley. Displays numbers, and _only_ numbers, using sprites that are much smaller than built-in [label](#label) fonts will generally allow. Typically shown on top of an item to indicate the quantity or stack size.
-
-=== "Demo"
-
-    ![Digits Example](../images/screenshot-digits.png)
-
-    (image enlarged for clarity)
-
-=== "Usage (StarML)"
-
-    ```html
-    <digits number="529" />
-    ```

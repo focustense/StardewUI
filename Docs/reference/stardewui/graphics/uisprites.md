@@ -62,6 +62,7 @@ public static class UiSprites
 | [SmallRightArrow](#smallrightarrow) | Small right arrow, typically used for top-level list navigation. | 
 | [SmallTrashCan](#smalltrashcan) | Small and tall trash can, larger than the [TinyTrashCan](uisprites.md#tinytrashcan) and more suitable for tall rows. | 
 | [SmallUpArrow](#smalluparrow) | Small up arrow, typically used for scroll bars. | 
+| [TextBox](#textbox) | Border/background for a text input box. | 
 | [TinyTrashCan](#tinytrashcan) | Very small trash can, e.g. to be used in lists/subforms as "remove" button. | 
 | [VerticalScrollThumb](#verticalscrollthumb) | Thumb sprite used for vertical scroll bars. | 
 
@@ -479,6 +480,20 @@ Small up arrow, typically used for scroll bars.
 
 ```cs
 public static StardewUI.Graphics.Sprite SmallUpArrow { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### TextBox
+
+Border/background for a text input box.
+
+```cs
+public static StardewUI.Graphics.Sprite TextBox { get; }
 ```
 
 ##### Property Value
