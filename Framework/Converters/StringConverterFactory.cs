@@ -3,7 +3,7 @@
 namespace StardewUI.Framework.Converters;
 
 /// <summary>
-/// Factory that provides
+/// Provides conversions from any type to <see cref="string"/>.
 /// </summary>
 public class StringConverterFactory : IValueConverterFactory
 {

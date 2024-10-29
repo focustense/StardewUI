@@ -128,6 +128,7 @@ public class ValueConverterFactory : IValueConverterFactory
         Register(new IdentityValueConverterFactory());
         Register(new AnyCastConverterFactory());
         Register(new CastingValueConverterFactory());
+        Register(new NullableConverterFactory(this));
 
         // Anything can generally be converted to a string using the default converter.
         Register(new StringConverterFactory());
