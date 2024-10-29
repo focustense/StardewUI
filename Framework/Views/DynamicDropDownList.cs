@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using StardewUI.Layout;
@@ -36,6 +37,13 @@ internal class DynamicDropDownList : DecoratorView
                 }
             }
         }
+    }
+
+    /// <inheritdoc cref="DropDownList{T}.OptionMinWidth" />
+    public float OptionMinWidth
+    {
+        get => adapter.OptionMinWidth;
+        set => adapter.OptionMinWidth = value;
     }
 
     /// <inheritdoc cref="DropDownList{T}.Options" />
@@ -136,6 +144,7 @@ internal class DynamicDropDownList : DecoratorView
             // was skipped due to being an invalid type, and is still invalid, then it will finally throw here.
             adapter.OptionFormat = OptionFormat;
             SetInitialAdapterIndex(adapter);
+            wasAdapterRecreated = false;
         }
         options.ResetDirty();
         optionFormat.ResetDirty();
@@ -203,6 +212,7 @@ internal class DynamicDropDownList : DecoratorView
         }
         this.adapter = adapter;
         adapter.Select += View_Select;
+        adapter.PropertyChanged += View_PropertyChanged;
         View = adapter.View;
         wasAdapterRecreated = true;
     }
@@ -220,16 +230,27 @@ internal class DynamicDropDownList : DecoratorView
         }
     }
 
+    private void View_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        OnPropertyChanged(e);
+    }
+
     private void View_Select(object? sender, EventArgs e)
     {
+        selectedIndex.Value = adapter.SelectedIndex;
+        selectedIndex.ResetDirty();
+        selectedOption.Value = new AnyCastValue(adapter.SelectedOption);
+        selectedOption.ResetDirty();
         Select?.Invoke(this, e);
     }
 
     interface IAdapter
     {
+        event PropertyChangedEventHandler PropertyChanged;
         event EventHandler<EventArgs> Select;
 
         Delegate? OptionFormat { get; set; }
+        float OptionMinWidth { get; set; }
         IEnumerable Options { get; set; }
         Type OptionType { get; }
         int SelectedIndex { get; set; }
@@ -244,6 +265,12 @@ internal class DynamicDropDownList : DecoratorView
     class Adapter<T> : IAdapter
         where T : notnull
     {
+        public event PropertyChangedEventHandler PropertyChanged
+        {
+            add => view.PropertyChanged += value;
+            remove => view.PropertyChanged -= value;
+        }
+
         public event EventHandler<EventArgs> Select
         {
             add => view.Select += value;
@@ -254,6 +281,12 @@ internal class DynamicDropDownList : DecoratorView
         {
             get => view.OptionFormat;
             set => view.OptionFormat = (Func<T, string>?)value;
+        }
+
+        public float OptionMinWidth
+        {
+            get => view.OptionMinWidth;
+            set => view.OptionMinWidth = value;
         }
 
         public IEnumerable Options
