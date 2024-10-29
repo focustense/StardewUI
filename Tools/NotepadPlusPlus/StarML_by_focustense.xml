@@ -24,7 +24,7 @@
             <Keywords name="Folders in comment, open"></Keywords>
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close"></Keywords>
-            <Keywords name="Keywords1">*context *if *switch *case *repeat</Keywords>
+            <Keywords name="Keywords1">*context *if *switch *case *outlet *repeat</Keywords>
             <Keywords name="Keywords2">banner button checkbox digits dropdown expander frame grid image include label lane marquee panel scrollable slider spacer textinput</Keywords>
             <Keywords name="Keywords3"></Keywords>
             <Keywords name="Keywords4"></Keywords>
