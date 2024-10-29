@@ -14,11 +14,32 @@
   
   <PropertyGroup>
     <ModFolderName>StardewUI</ModFolderName>
+    <IgnoreModFilePaths>assets/README.md</IgnoreModFilePaths>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="assets\KeyboardKeys.png" />
+      <None Remove="assets\MouseButtons.png" />
+      <None Remove="assets\PromptArrows.png" />
+      <None Remove="assets\README.md" />
+      <None Remove="assets\XboxButtons.png" />
       <None Remove="i18n\default.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="assets\KeyboardKeys.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\MouseButtons.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\PromptArrows.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\XboxButtons.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
