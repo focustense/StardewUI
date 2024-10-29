@@ -311,31 +311,32 @@ public class DecoratorView<T> : IView, IDisposable
     /// <inheritdoc />
     public virtual ViewChild? GetChildAt(Vector2 position)
     {
-        return view?.GetChildAt(position);
+        return view?.ContainsPoint(position) == true ? new(view, Vector2.Zero) : null;
     }
 
     /// <inheritdoc />
     public virtual Vector2? GetChildPosition(IView childView)
     {
-        return view?.GetChildPosition(childView);
+        return childView == view ? Vector2.Zero : null;
     }
 
     /// <inheritdoc />
     public virtual IEnumerable<ViewChild> GetChildren()
     {
-        return view?.GetChildren() ?? [];
+        return view is not null ? [new(view, Vector2.Zero)] : [];
     }
 
     /// <inheritdoc />
     public virtual IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
     {
-        return view?.GetChildrenAt(position) ?? [];
+        return view?.ContainsPoint(position) == true ? [new(view, Vector2.Zero)] : [];
     }
 
     /// <inheritdoc />
     public virtual ViewChild? GetDefaultFocusChild()
     {
-        return view?.GetDefaultFocusChild();
+        return view?.GetDefaultFocusChild()
+            ?? (view?.IsFocusable == true ? new(view, Vector2.Zero) : null);
     }
 
     /// <inheritdoc />
