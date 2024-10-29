@@ -238,9 +238,11 @@ public class TextInput : View
         caret = new Image()
         {
             Name = "TextInputCursor",
-            Layout = new() { Width = Length.Content(), Height = Length.Stretch() },
+            Layout = new() { Width = Length.Px(2), Height = Length.Stretch() },
             Margin = new(-2, 0),
             Fit = ImageFit.Stretch,
+            Sprite = new(Game1.staminaRect),
+            Tint = Game1.textColor,
             Visibility = Visibility.Hidden,
         };
         caretBlinkAnimator = Animator.On(
@@ -269,10 +271,12 @@ public class TextInput : View
             VerticalContentAlignment = Alignment.Middle,
             Children = [labelBeforeCursor, caret, labelAfterCursor],
         };
+        var textBoxSprite = UiSprites.TextBox;
         frame = new()
         {
             Layout = LayoutParameters.Fill(),
-            Padding = new(4),
+            Padding = textBoxSprite.FixedEdges ?? new(4),
+            Background = textBoxSprite,
             Content = textLane,
         };
         textBoxInterceptor = new(this);
@@ -423,10 +427,9 @@ public class TextInput : View
                 : (labelBeforeCursor.Text.Length, labelAfterCursor.Text, position.X - labelBeforeCursor.OuterSize.X);
         var searchStart = 0;
         var searchEnd = labelText.Length;
-        var searchMid = 0;
         while (searchStart < searchEnd)
         {
-            searchMid = (int)(MathF.Ceiling((searchStart + searchEnd) / 2.0f));
+            int searchMid = (int)(MathF.Ceiling((searchStart + searchEnd) / 2.0f));
             var searchText = labelText[0..searchMid];
             var textWidth = Font.MeasureString(searchText).X;
             if (labelOffset < textWidth)
@@ -438,7 +441,6 @@ public class TextInput : View
                 searchStart = Math.Max(searchStart + 1, searchMid);
             }
         }
-        var finalWidth = Font.MeasureString(labelText[0..searchMid]).X;
         var finalIndex = searchStart;
         CaretPosition = previousCharacterCount + finalIndex;
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Layout;
 using StardewValley;
 using StardewValley.Menus;
@@ -14,6 +15,7 @@ public static class UiSprites
         .Range(0, 10)
         .Select(i => new Rectangle(368 + 5 * i, 56, 5, 7))
         .ToList();
+    private static Texture2D textBoxTexture => Game1.content.Load<Texture2D>("LooseSprites/textBox");
 
     /// <summary>
     /// Background for the a banner or "scroll" style text, often used for menu/dialogue titles.
@@ -220,6 +222,11 @@ public static class UiSprites
     /// Small and tall trash can, larger than the <see cref="TinyTrashCan"/> and more suitable for tall rows.
     /// </summary>
     public static Sprite SmallTrashCan => new(Game1.mouseCursors2, SourceRect: new(22, 11, 15, 20));
+
+    /// <summary>
+    /// Border/background for a text input box.
+    /// </summary>
+    public static Sprite TextBox => new(textBoxTexture, FixedEdges: new(16, 12, 12, 12));
 
     /// <summary>
     /// Very small trash can, e.g. to be used in lists/subforms as "remove" button.
