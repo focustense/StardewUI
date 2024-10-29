@@ -349,12 +349,8 @@ public class Lane : View
                 continue;
             }
             measureChild(child, limits, false);
-            if (Orientation.Get(limits) <= 0)
-            {
-                break;
-            }
         }
-        if (deferredChildren.Count > 0 && Orientation.Get(limits) > 0)
+        if (deferredChildren.Count > 0)
         {
             var deferredLimits = limits;
             if (childrenSize != Vector2.Zero)
@@ -368,10 +364,6 @@ public class Lane : View
             {
                 Orientation.Set(ref deferredLimits, Orientation.Get(limits));
                 measureChild(child, deferredLimits, true);
-                if (Orientation.Get(deferredLimits) <= 0)
-                {
-                    break;
-                }
             }
         }
 
