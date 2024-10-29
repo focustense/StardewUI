@@ -87,14 +87,11 @@ public class AttributeBindingFactory(
             var destValue = Destination.GetValue(target);
             if (destValue is not null)
             {
-                if (destValue is not null)
-                {
-                    Source.Value = OutputConverter.Convert(destValue);
-                }
-                else
-                {
-                    Source.Value = default;
-                }
+                Source.Value = OutputConverter.Convert(destValue);
+            }
+            else
+            {
+                Source.Value = default;
             }
         }
 
