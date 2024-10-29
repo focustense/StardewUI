@@ -12,7 +12,7 @@ namespace StardewUI.Widgets;
 /// Corresponds to <see cref="StardewValley.Utility.drawTinyDigits"/>.
 /// </para>
 /// <para>
-/// For this widget type, <see cref="Scale"/> <b>does</b> affect layout, and the size of the rendered text is entirely
+/// For this widget type, <see cref="Scale"/> <b> does</b> affect layout, and the size of the rendered text is entirely
 /// based on the <see cref="DigitSprites"/> and cumulative scale which is effectively treated like a font size. If the
 /// view's <see cref="View.Layout"/> uses any non-content-based dimensions, it will affect the box size as expected but
 /// will not change the rendered text; the text is not scaled to the layout bounds.
