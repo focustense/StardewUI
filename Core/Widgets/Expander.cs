@@ -198,7 +198,7 @@ public class Expander : ComponentView
         indicator = new Image()
         {
             Name = "ExpanderIndicator",
-            Layout = new() { Width = Length.Content(), Height = Length.Stretch() },
+            Layout = new() { Width = Length.Content(), Height = Length.Content() },
             Margin = new(Left: 8, Right: 16),
             HorizontalAlignment = Alignment.Middle,
             VerticalAlignment = Alignment.Middle,
@@ -241,7 +241,7 @@ public class Expander : ComponentView
             return;
         }
         indicator.Sprite = isExpanded && ExpandedSprite is not null ? ExpandedSprite : CollapsedSprite;
-        indicator.Rotation = isExpanded && ExpandedSprite is null ? SimpleRotation.QuarterCounterclockwise : null;
+        indicator.Rotation = isExpanded && ExpandedSprite is null ? SimpleRotation.QuarterClockwise : null;
         layout.Children = isExpanded ? [headerFrame, contentFrame] : [headerFrame];
     }
 }
