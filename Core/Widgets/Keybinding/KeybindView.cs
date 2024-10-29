@@ -156,6 +156,7 @@ public class KeybindView : ComponentView<Lane>
                 return;
             }
             spriteMap = value;
+            UpdateContent();
             OnPropertyChanged(nameof(SpriteMap));
         }
     }
