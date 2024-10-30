@@ -149,19 +149,37 @@ public class Overlay(
         return OverlayContext.Current?.Pop();
     }
 
-    /// <inheritdoc cref="OverlayContext.Push(IOverlay)"/>
+    /// <summary>
+    /// Pushes an overlay to the front.
+    /// </summary>
     /// <remarks>
+    /// <para>
+    /// If the specified <paramref name="overlay"/> is already in the stack, then it will be moved from its previous
+    /// position to the front.
+    /// </para>
+    /// <para>
     /// Applies to the ambient <see cref="OverlayContext"/>, and is ignored if no context is available.
+    /// </para>
     /// </remarks>
     public static void Push(IOverlay overlay)
     {
         OverlayContext.Current?.Push(overlay);
     }
 
-    /// <inheritdoc cref="OverlayContext.Remove(IOverlay)"/>.
+    /// <summary>
+    /// Removes a specific overlay from the stack, regardless of its position.
+    /// </summary>
     /// <remarks>
+    /// <para>
+    /// This is most often invoked by an overlay needing to dismiss itself, e.g. an overlay with an "OK" or "Close"
+    /// button.
+    /// </para>
+    /// <para>
     /// Applies to the ambient <see cref="OverlayContext"/>, and is ignored if no context is available.
+    /// </para>
     /// </remarks>
+    /// <param name="overlay">The overlay to remove.</param>
+    /// <returns><c>true</c> if the <paramref name="overlay"/> was removed; <c>false</c> if it was not active.</returns>
     public static bool Remove(IOverlay overlay)
     {
         return OverlayContext.Current?.Remove(overlay) ?? false;

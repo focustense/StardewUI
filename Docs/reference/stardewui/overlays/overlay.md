@@ -57,8 +57,8 @@ public class Overlay : StardewUI.Overlays.IOverlay
 | [OnClose()](#onclose) | Runs when the overlay is removed from the active stack. | 
 | [OnClose(Action)](#oncloseaction) | Registers an action to be run when the overlay is closed. | 
 | [Pop()](#pop) | Removes the front-most overlay. | 
-| [Push(IOverlay)](#pushioverlay) |  | 
-| [Remove(IOverlay)](#removeioverlay) |  | 
+| [Push(IOverlay)](#pushioverlay) | Pushes an overlay to the front. | 
+| [Remove(IOverlay)](#removeioverlay) | Removes a specific overlay from the stack, regardless of its position. | 
 
 ### Events
 
@@ -276,7 +276,7 @@ Applies to the ambient [OverlayContext](overlaycontext.md), and is ignored if no
 
 #### Push(IOverlay)
 
-
+Pushes an overlay to the front.
 
 ```cs
 public static void Push(StardewUI.Overlays.IOverlay overlay);
@@ -288,13 +288,15 @@ public static void Push(StardewUI.Overlays.IOverlay overlay);
 
 ##### Remarks
 
-Applies to the ambient [OverlayContext](overlaycontext.md), and is ignored if no context is available.
+If the specified `overlay` is already in the stack, then it will be moved from its previous position to the front. 
+
+ Applies to the ambient [OverlayContext](overlaycontext.md), and is ignored if no context is available.
 
 -----
 
 #### Remove(IOverlay)
 
-
+Removes a specific overlay from the stack, regardless of its position.
 
 ```cs
 public static bool Remove(StardewUI.Overlays.IOverlay overlay);
@@ -302,15 +304,20 @@ public static bool Remove(StardewUI.Overlays.IOverlay overlay);
 
 ##### Parameters
 
-**`overlay`** &nbsp; [IOverlay](ioverlay.md)
+**`overlay`** &nbsp; [IOverlay](ioverlay.md)  
+The overlay to remove.
 
 ##### Returns
 
 [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
+  `true` if the `overlay` was removed; `false` if it was not active.
+
 ##### Remarks
 
-Applies to the ambient [OverlayContext](overlaycontext.md), and is ignored if no context is available.
+This is most often invoked by an overlay needing to dismiss itself, e.g. an overlay with an "OK" or "Close" button. 
+
+ Applies to the ambient [OverlayContext](overlaycontext.md), and is ignored if no context is available.
 
 -----
 
