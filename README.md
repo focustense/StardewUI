@@ -1,6 +1,6 @@
-![Logo](Docs/images/logo-text.png)
+# Stardew UI
 
-# Introduction
+![Logo](Docs/images/logo-text.png)
 
 A convenient, fast and scalable UI framework for [Stardew Valley](https://www.stardewvalley.net/) mods, dedicated to making UI development a breeze rather than a chore. Inspired in part by [Angular](https://angular.dev/) and [XAML](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/xaml/?view=netdesktop-8.0).
 
@@ -10,13 +10,13 @@ A convenient, fast and scalable UI framework for [Stardew Valley](https://www.st
 
 New to Stardew UI and wondering what this library is about? Check out the [examples](https://focustense.github.io/StardewUI/examples/) to see the kinds of UI you can build in 10 minutes or less!
 
-# Documentation
+## Documentation
 
 StardewUI has [official documentation](https://focustense.github.io/StardewUI). If you're looking to quickly get up and running, the [Getting Started](https://focustense.github.io/StardewUI/getting-started/) guide is a great place to begin.
 
 _Still have questions? Visit the [SV Discord](https://discord.com/invite/stardewvalley) and ping [@focustense](https://discordapp.com/users/831917573204738069)._
 
-# Example
+## Example
 
 The following is taken from the official [scrolling item grid](https://focustense.github.io/StardewUI/examples/scrolling-item-grid) example.
 
@@ -75,7 +75,7 @@ internal record EdiblesViewModel(string HeaderText, ParsedItemData[] Items)
 }
 ```
 
-# Contributions
+## Contributions
 
 StardewUI is a big, ambitious project, so contributions are always welcome.
 
@@ -84,6 +84,6 @@ StardewUI is a big, ambitious project, so contributions are always welcome.
 - If you're interested in a feature that's not planned, please start a [discussion](https://github.com/focustense/StardewUI/discussions) first, or ping/ask in Discord, in order to get a sense of whether or not a PR is likely to be accepted.
 - Please **do** start [issues](https://github.com/focustense/StardewUI/issues) for any confirmed bugs in the framework, as well as errors or missing sections in the [official documentation](https://focustense.github.io/StardewUI). (If it's something small, like a typo, it's better to ping instead). As with any project, an [SSCCE](https://www.sscce.org/) is strongly preferred when filing bugs.
 
-# For Users
+## For Users
 
 This space is primarily for mod authors and current/future contributors. If you got here because you have an issue with a mod that depends on StardewUI, **please turn around** and head to the [Modded Tech Support](https://discord.com/channels/137344473976799233/1272025932932055121) channel on the [SV Discord](https://discord.com/invite/stardewvalley) instead. The volunteers there can help to collect the necessary log files and determine where the issue actually originates, e.g. in StardewUI itself vs. the mod that is using it vs. an incompatibility between multiple mods.
