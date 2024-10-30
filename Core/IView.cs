@@ -105,6 +105,14 @@ public interface IView : INotifyPropertyChanged
     Bounds ContentBounds { get; }
 
     /// <summary>
+    /// Collection of bounds for this view, in this order:
+    /// 0: <see cref="ActualBounds"/>
+    /// 1+: Bounds of any floating elements not within <see cref="ActualBounds"/>, including those of children views
+    /// </summary>
+    /// <returns></returns>
+    IEnumerable<Bounds> AllInteractionBounds { get; }
+
+    /// <summary>
     /// Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this
     /// view. Not generally applicable for mouse controls.
     /// </summary>

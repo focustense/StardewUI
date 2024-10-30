@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -571,12 +572,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             var overlayData = GetOverlayLayoutData(overlay);
             var overlayLocalPosition = screenPoint.ToVector2() - overlayData.Position;
-            if (
-                overlayLocalPosition.X < 0
-                || overlayLocalPosition.Y < 0
-                || overlayLocalPosition.X >= overlay.View.OuterSize.X
-                || overlayLocalPosition.Y >= overlay.View.OuterSize.Y
-            )
+            // if (
+            //     overlayLocalPosition.X < 0
+            //     || overlayLocalPosition.Y < 0
+            //     || overlayLocalPosition.X >= overlay.View.OuterSize.X
+            //     || overlayLocalPosition.Y >= overlay.View.OuterSize.Y
+            // )
+            // if (!overlay.View.ContainsPoint(overlayLocalPosition))
+            if (!overlayData.TotalInteractionBounds.ContainsPoint(overlayLocalPosition)
+                || !overlayData.AllInteractionBounds.Any((bounds) => bounds.ContainsPoint(overlayLocalPosition)))
             {
                 overlayContext.Pop();
             }
@@ -853,6 +857,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     class OverlayLayoutData(ViewChild root)
     {
         public Bounds ParentBounds { get; set; } = Bounds.Empty;
+        public ImmutableList<Bounds> AllInteractionBounds { get; set; } = null!;
+        public Bounds TotalInteractionBounds { get; set; } = Bounds.Empty;
         public ViewChild[] ParentPath { get; set; } = [];
         public Vector2 Position { get; set; }
 
@@ -896,6 +902,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 overlay.View.OuterSize.Y
             );
             Position = new Vector2(x, y);
+
+            AllInteractionBounds = overlay.View.AllInteractionBounds.ToImmutableList();
+            TotalInteractionBounds = AllInteractionBounds.Aggregate(Bounds.Empty, (unioned, bounds) => unioned.Union(bounds));
         }
 
         private ViewChild? GetImmediateParent() => ParentPath.Length > 0 ? ParentPath[^1] : null;
@@ -934,6 +943,19 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 Alignment.End => anchor - childLength,
                 _ => throw new ArgumentException($"Invalid child alignment: {childAlignment}", nameof(childAlignment)),
             };
+        }
+
+        /// <summary>Check that the point is interactable</summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public bool ContainsInteractablePoint(Vector2 point)
+        {
+            return (
+                // check the unioned bounds first, to short circuit if definitely out of bounds
+                TotalInteractionBounds.ContainsPoint(point)
+                // check each component bounds
+                || AllInteractionBounds.Any((bounds) => bounds.ContainsPoint(point))
+            );
         }
     }
 }

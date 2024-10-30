@@ -90,6 +90,17 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     }
 
     /// <summary>
+    /// Returns a <see cref="Bounds"/> representing the parent-relative content bounds of this child.
+    /// </summary>
+    /// <remarks>
+    /// Equivalent to the <see cref="IView.ContentBounds"/> offset by this child's <see cref="Position"/>.
+    /// </remarks>
+    public IEnumerable<Bounds> GetInteractionBounds()
+    {
+        return View.AllInteractionBounds.Select((bounds) => bounds.Offset(Position));
+    }
+
+    /// <summary>
     /// Offsets the position by a given distance.
     /// </summary>
     /// <param name="distance">The offset distance.</param>

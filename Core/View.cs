@@ -85,6 +85,9 @@ public abstract class View : IView
     /// <inheritdoc/>
     public Bounds ContentBounds => GetContentBounds();
 
+    /// <inheritdoc/>
+    public IEnumerable<Bounds> AllInteractionBounds => GetInteractionBounds();
+
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
@@ -953,6 +956,7 @@ public abstract class View : IView
                 break;
             case nameof(ActualBounds):
                 OnPropertyChanged(nameof(ContentBounds));
+                OnPropertyChanged(nameof(AllInteractionBounds));
                 break;
             default:
                 break;
@@ -1042,6 +1046,32 @@ public abstract class View : IView
         var boundsWithMargin = GetActualBounds();
         var position = boundsWithMargin.Position + new Vector2(Math.Max(Margin.Left, 0), Math.Max(Margin.Top, 0));
         return new(position, ContentSize);
+    }
+
+    private IEnumerable<Bounds> GetInteractionBounds()
+    {
+        var actualBounds = GetActualBounds();
+        yield return actualBounds;
+        foreach (var floatingElement in FloatingElements)
+        {
+            foreach (var bounds in floatingElement.AsViewChild().GetInteractionBounds())
+            {
+                if (!actualBounds.ContainsBounds(bounds))
+                {
+                    yield return bounds;
+                }
+            }
+        }
+        foreach (var child in GetChildren())
+        {
+            foreach (var bounds in child.View.AllInteractionBounds)
+            {
+                if (!actualBounds.ContainsBounds(bounds))
+                {
+                    yield return bounds;
+                }
+            }
+        }
     }
 
     private Vector2 GetContentOffset()
