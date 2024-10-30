@@ -51,7 +51,7 @@ A convenient, fast and scalable UI framework for [Stardew Valley](https://www.st
 
     Pre-made widgets cover everything from simple text and images to drop-down lists, sliders, input boxes and scrollbars.
 
-    [:octicons-arrow-right-24: Standard views](library/standard-views.md#widgets)
+    [:octicons-arrow-right-24: Standard views](library/standard-views.md)
 
 
 -   :octicons-cpu-24:{ .lg .middle } __Made for modding__
@@ -78,13 +78,13 @@ In this introductory example, we'll be using the [Framework](framework/index.md)
     internal sealed class ModEntry : Mod
     {
         private IViewEngine viewEngine;
-
+    
         public override void Entry(IModHelper helper)
         {
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
         }
-
+    
         private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
         {
             viewEngine = Helper.ModRegistry.GetApi<IViewEngine>("focustense.StardewUI");

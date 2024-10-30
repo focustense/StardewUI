@@ -31,7 +31,7 @@ public class TinyNumberLabel : StardewUI.View
 
 Corresponds to drawTinyDigits(Int32, SpriteBatch, Vector2, Single, Single, Color). 
 
- For this widget type, [Scale](tinynumberlabel.md#scale)**does** affect layout, and the size of the rendered text is entirely based on the [DigitSprites](tinynumberlabel.md#digitsprites) and cumulative scale which is effectively treated like a font size. If the view's [Layout](../view.md#layout) uses any non-content-based dimensions, it will affect the box size as expected but will not change the rendered text; the text is not scaled to the layout bounds.
+ For this widget type, [Scale](tinynumberlabel.md#scale)** does** affect layout, and the size of the rendered text is entirely based on the [DigitSprites](tinynumberlabel.md#digitsprites) and cumulative scale which is effectively treated like a font size. If the view's [Layout](../view.md#layout) uses any non-content-based dimensions, it will affect the box size as expected but will not change the rendered text; the text is not scaled to the layout bounds.
 
 ## Members
 

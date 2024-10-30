@@ -1,6 +1,9 @@
 {
   "Texture": "LooseSprites/Cursors",
   "Sprites": {
+    "Balloon": {
+      "SourceRect": "0, 1183, 84, 179"
+    },
     "HudBorder": {
       "SourceRect": "293, 360, 24, 24",
       "FixedEdges": "5",

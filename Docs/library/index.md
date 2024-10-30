@@ -14,7 +14,7 @@ Core library features are loosely divided into the same categories as code names
 - [**Input**](../reference/stardewui/input/index.md): A variety of useful tools for dealing with user input (text entry, button repeat/throttling, etc.) that Stardew Valley and SMAPI don't provide themselves, or hide behind implementation details.
 - [**Layout**](../reference/stardewui/layout/index.md): Essential types and tools for describing layouts: positions, alignments and other dimensions.
 - [**Widgets**](../reference/stardewui/widgets/index.md): All the [standard views](standard-views.md).
-- [**Overlays**](../reference/stardewui/overlays/index.md): System for displaying views as either dismissable overlays, such as [dropdowns](standard-views.md#drop-down-list), or full-screen ("modal dialog") style, such as the [keybinding editor](standard-views.md#key-binding-editor).
+- [**Overlays**](../reference/stardewui/overlays/index.md): System for displaying views as either dismissable overlays, such as [dropdowns](standard-views.md#drop-down-list), or full-screen ("modal dialog") style, such as the [keybinding editor](standard-views.md#keybind-editor).
 - [**Animation**](../reference/stardewui/animation/index.md): Animates properties of views. Includes the common [HoverScale](../reference/stardewui/animation/hoverscale.md) that can be attached to any image to make it zoom on mouseover.
 - [**Diagnostics**](../reference/stardewui/diagnostics/index.md): Primarily [performance tracing](../performance.md).
 
@@ -34,7 +34,7 @@ Simply add the reference to your `.csproj` file using [`SMAPIDependency`](https:
     <ItemGroup>
         <SMAPIDependency Include="focustense.StardewUI" Version="{{{ release.version }}}" Reference="true" />
     </ItemGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
         <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.1" />
@@ -54,7 +54,7 @@ SMAPI defines a `GameModsPath` variable which you can use to reference the Stard
             <Private>false</Private>
         </Reference>
     </ItemGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     </ItemGroup>
@@ -118,9 +118,9 @@ A few other considerations and tips for shared project users:
 !!! info "Why use a submodule/shared project?"
 
     With all the ominous warnings above, you might be wondering _"why would anyone use the submodule/shared project method?"_ There are two reasons why this usage is still available and (somewhat) supported, despite being strongly recommended against:
-
+    
     1. You want to avoid _any_ dependencies in your mod for personal or philosophical reasons. If you are offended by the idea of depending on GMCM, SpaceCore, etc., then you might not want to depend on StardewUI either.
-
+    
     2. You don't plan on maintaining your mod long-term, and want to be immune from any future changes to StardewUI; i.e. you're willing to trade off the benefits of any new features, bug fixes, performance improvements, etc. for the guarantee of not being broken by outside changes.
-
+    
     While your users would undoubtedly prefer that you maintain your mods, and most users really do not mind adding one more shared dependency to their mod list, we recognize that this may not suit all authors, which is why the shared project is only "soft-deprecated" and not officially obsolete or removed.

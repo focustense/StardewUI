@@ -15,6 +15,7 @@ internal sealed class ModEntry : Mod
     // Initialized in Entry
     private AssetCache assetCache = null!;
     private ModConfig config = null!;
+    private SpriteMaps spriteMaps = null!;
     private IViewNodeFactory viewNodeFactory = null!;
 
     public override void Entry(IModHelper helper)
@@ -36,6 +37,7 @@ internal sealed class ModEntry : Mod
             );
         }
 
+        spriteMaps = new(helper);
         viewNodeFactory = CreateViewNodeFactory();
 
         helper.Events.Content.AssetRequested += Content_AssetRequested;
@@ -63,6 +65,43 @@ internal sealed class ModEntry : Mod
         if (e.NameWithoutLocale.StartsWith(UiSpriteProvider.AssetNamePrefix))
         {
             e.LoadFrom(() => UiSpriteProvider.GetSprite(e.Name.Name), AssetLoadPriority.Exclusive);
+        }
+        else if (e.NameWithoutLocale.StartsWith(SpriteMaps.AssetNamePrefix))
+        {
+            var spriteMapName = e.NameWithoutLocale.Name[(SpriteMaps.AssetNamePrefix.Length)..];
+            if (spriteMapName.StartsWith("buttons", StringComparison.OrdinalIgnoreCase))
+            {
+                var mapArgString = spriteMapName[7..];
+                if (!string.IsNullOrEmpty(mapArgString))
+                {
+                    if (mapArgString.StartsWith(':'))
+                    {
+                        mapArgString = mapArgString[1..];
+                    }
+                    else
+                    {
+                        Monitor.Log(
+                            $"Invalid button sprite map arguments '{mapArgString}'. "
+                                + "Must either be omitted or start with a ':' character.",
+                            LogLevel.Warn
+                        );
+                        // Invalid format.
+                        return;
+                    }
+                }
+                var mapArgs = !string.IsNullOrEmpty(mapArgString) ? mapArgString.Split('-') : [];
+                string? keyboardThemeName = mapArgs.Length > 0 ? mapArgs[0] : null;
+                string? mouseThemeName = mapArgs.Length > 1 ? mapArgs[1] : null;
+                float sliceScale = mapArgs.Length > 2 ? float.Parse(mapArgs[2]) : 1f;
+                e.LoadFrom(
+                    () => spriteMaps.GetButtonSpriteMap(keyboardThemeName, mouseThemeName, sliceScale),
+                    AssetLoadPriority.Exclusive
+                );
+            }
+            else if (spriteMapName.StartsWith("directions", StringComparison.OrdinalIgnoreCase))
+            {
+                e.LoadFrom(() => spriteMaps.GetDirectionSpriteMap(), AssetLoadPriority.Exclusive);
+            }
         }
     }
 

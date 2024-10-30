@@ -17,7 +17,7 @@
       "url": "https://github.com/focustense"
     }
   ],
-  "version": "0.1.0",
+  "version": "0.2.5",
   "engines": {
     "vscode": "^1.94.0"
   },
