@@ -75,6 +75,8 @@ internal record EdiblesViewModel(string HeaderText, ParsedItemData[] Items)
 }
 ```
 
+https://github.com/user-attachments/assets/f2c03e92-7ed7-4f94-9bc4-bd90128f3b40
+
 ## Contributions
 
 StardewUI is a big, ambitious project, so contributions are always welcome.
