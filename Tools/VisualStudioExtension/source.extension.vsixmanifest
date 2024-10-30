@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="StardewUI.VisualStudio.c86b7a70-31df-4d7d-92c3-f5c0ff1359a9" Version="1.1" Language="en-US" Publisher="focustense" />
+        <DisplayName>StardewUI</DisplayName>
+        <Description xml:space="preserve">StardewUI extension with StarML syntax highlighting.</Description>
+        <MoreInfo>https://github.com/focustense/StardewUI</MoreInfo>
+        <License>LICENSE.txt</License>
+        <Icon>Resources\Icon32x32.png</Icon>
+        <PreviewImage>Resources\Icon128x128.png</PreviewImage>
+        <Tags>textmate, bundle, starml, sml, stardew</Tags>
+    </Metadata>
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 17.0)" />
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+    </Installation>
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="File" Path="Grammars.pkgdef" />
+    </Assets>
+</PackageManifest>

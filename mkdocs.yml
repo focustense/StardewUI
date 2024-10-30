@@ -1,0 +1,84 @@
+site_name: StardewUI Documentation
+site_url: https://focustense.github.io/StardewUI
+repo_url: https://github.com/focustense/StardewUI
+theme:
+  name: material
+  features:
+    - content.tooltips
+    - navigation.footer
+    - navigation.indexes
+    - navigation.path
+    - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default 
+      primary: deep orange
+      accent: light blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  logo: images/logo-alt.png
+extra_css:
+  - stylesheets/github-permalink-style.css
+  - stylesheets/neoteroi-mkdocs.css
+  - stylesheets/styles.css
+plugins:
+  - awesome-pages
+  - markdownextradata:
+      jinja_options:
+        variable_start_string: "{{{"
+        variable_end_string: "}}}"
+  - search
+  - social
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - footnotes
+  - md_in_html
+  - neoteroi.spantable
+  - pymdownx.blocks.html
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - toc:
+      permalink: ''
+      toc_depth: 4
+extra:
+  release:
+      version: 0.2.0
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/focustense
+    - icon: simple/nexusmods
+      link: https://next.nexusmods.com/profile/focustense/mods?gameId=1303

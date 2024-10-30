@@ -1,0 +1,11 @@
+﻿; Registering the TextMate grammar
+[$RootKey$\TextMate\Repositories]
+"StardewUI.VisualStudio"="$PackageFolder$\Syntaxes"
+
+[$RootKey$\TextMate\LanguageConfiguration\GrammarMapping]
+"source.sml"="$PackageFolder$\language-configuration.json"
+"source.starml"="$PackageFolder$\language-configuration.json"
+
+; Match file extensions with icons. See full icon list at https://glyphlist.azurewebsites.net/knownmonikers/
+[$RootKey$\ShellFileAssociations\.sml]
+"DefaultIconMoniker"="KnownMonikers.MarkupTag"

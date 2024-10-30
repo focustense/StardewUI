@@ -1,0 +1,10 @@
+﻿{
+  "Texture": "Maps/MenuTiles",
+  "Sprites": {
+    "TabButton": {
+      "SourceRect": "0, 256, 44, 60",
+      "FixedEdges": "16, 16, 0, 16",
+      "Scale": 1
+    }
+  }
+}

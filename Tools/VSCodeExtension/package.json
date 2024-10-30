@@ -1,0 +1,50 @@
+{
+  "name": "vscode-starml",
+  "displayName": "Stardew Markup Language",
+  "description": "Syntax highlighting for StarML in Visual Studio Code",
+  "repository": {
+    "url": "https://github.com/focustense/StardewUI"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Mushymato",
+    "url": "https://github.com/Mushymato"
+  },
+  "publisher": "focustense",
+  "contributors": [
+    {
+      "name": "focustense",
+      "url": "https://github.com/focustense"
+    }
+  ],
+  "version": "0.2.5",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "sml",
+        "aliases": [
+          "StarML",
+          "sml"
+        ],
+        "extensions": [
+          ".sml",
+          ".starml"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "sml",
+        "scopeName": "source.sml",
+        "path": "./starml.tmLanguage.json"
+      }
+    ]
+  }
+}

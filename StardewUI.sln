@@ -1,0 +1,100 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.TestMod", "TestMod\StardewUI.TestMod.csproj", "{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "StardewUI", "Core\StardewUI.shproj", "{D3DBB38B-79AF-4B84-B425-1CFFDEFA7A86}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.Framework.Tests", "FrameworkTests\StardewUI.Framework.Tests.csproj", "{23318673-7067-4801-B8F6-0059E5ECB25A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.Framework", "Framework\StardewUI.Framework.csproj", "{91F57065-E3C0-4832-AD57-18BB271E9D56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewUI.VisualStudio", "Tools\VisualStudioExtension\StardewUI.VisualStudio.csproj", "{96690DD3-FA50-4807-951D-01DE0427449C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewUI.DocGenerator", "DocGenerator\StardewUI.DocGenerator.csproj", "{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|arm64 = Debug|arm64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|arm64 = Release|arm64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Debug|arm64.Build.0 = Debug|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Debug|x86.Build.0 = Debug|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Release|arm64.ActiveCfg = Release|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Release|arm64.Build.0 = Release|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Release|x86.ActiveCfg = Release|Any CPU
+		{431C8E71-0644-4FAA-81FB-D3CEEED6C89F}.Release|x86.Build.0 = Release|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Debug|arm64.Build.0 = Debug|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Debug|x86.Build.0 = Debug|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Release|arm64.ActiveCfg = Release|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Release|arm64.Build.0 = Release|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Release|x86.ActiveCfg = Release|Any CPU
+		{23318673-7067-4801-B8F6-0059E5ECB25A}.Release|x86.Build.0 = Release|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Debug|arm64.Build.0 = Debug|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Debug|x86.Build.0 = Debug|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Release|arm64.ActiveCfg = Release|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Release|arm64.Build.0 = Release|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Release|x86.ActiveCfg = Release|Any CPU
+		{91F57065-E3C0-4832-AD57-18BB271E9D56}.Release|x86.Build.0 = Release|Any CPU
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Debug|arm64.ActiveCfg = Debug|arm64
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Debug|arm64.Build.0 = Debug|arm64
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Debug|x86.ActiveCfg = Debug|x86
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Debug|x86.Build.0 = Debug|x86
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|arm64.ActiveCfg = Release|arm64
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|arm64.Build.0 = Release|arm64
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|x86.ActiveCfg = Release|x86
+		{96690DD3-FA50-4807-951D-01DE0427449C}.Release|x86.Build.0 = Release|x86
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|arm64.Build.0 = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Debug|x86.Build.0 = Debug|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|arm64.ActiveCfg = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|arm64.Build.0 = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|x86.ActiveCfg = Release|Any CPU
+		{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B07BEBA-5C2A-4BEF-8537-FB0B3B4A3169}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Core\StardewUI.projitems*{431c8e71-0644-4faa-81fb-d3ceeed6c89f}*SharedItemsImports = 5
+		Core\StardewUI.projitems*{91f57065-e3c0-4832-ad57-18bb271e9d56}*SharedItemsImports = 5
+		Core\StardewUI.projitems*{d3dbb38b-79af-4b84-b425-1cffdefa7a86}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "StardewUI",
+  "Author": "focustense",
+  "Version": "0.2.0",
+  "Description": "Declarative UI framework",
+  "UniqueID": "focustense.StardewUI",
+  "EntryDll": "StardewUI.dll",
+  "MinimumApiVersion": "4.0.5",
+  "UpdateKeys": [ "Nexus:28870", "GitHub:focustense/StardewUI" ]
+}

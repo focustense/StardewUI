@@ -1,0 +1,10 @@
+{
+	"Sprites": {
+		"Checked": {
+			"SourceRect": "0, 0, 9, 9",
+		},
+		"Unchecked": {
+			"SourceRect": "9, 0, 9, 9",
+		}
+	}
+}

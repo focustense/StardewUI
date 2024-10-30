@@ -1,0 +1,16 @@
+﻿{
+  "Name": "StardewUITest",
+  "Author": "focustense",
+  "Version": "0.1.0",
+  "Description": "Description of the mod",
+  "UniqueID": "focustense.StardewUITest",
+  "EntryDll": "StardewUITest.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ],
+  "MinimumApiVersion": "4.0.5",
+  "UpdateKeys": [ "Nexus:0", "GitHub:focustense/StardewUITest" ]
+}

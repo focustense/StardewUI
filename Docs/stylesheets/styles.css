@@ -1,0 +1,107 @@
+.md-grid {
+  
+}
+
+table .md-tooltip {
+    top: inherit;
+    left: inherit;
+    margin-left: 12px;
+    margin-top: 7px;
+}
+
+.attribute-table th:nth-child(1) { width: 180px; }
+
+.event-table th:nth-child(1) { width: 150px; }
+
+.span-table [colspan], .span-table [rowspan] {
+    font-weight: inherit;
+}
+
+.span-table.dense td,
+.type-conversions td {
+    border: 0.05rem solid var(--md-typeset-table-color);
+    padding: 0.25rem 0.5rem;
+}
+
+.tree-table table {
+    background: var(--md-primary-fg-color--light);
+    margin-bottom: 0;
+}
+
+.tree-table .span-table td {
+    padding: 0.25rem 0.5rem;
+}
+
+.table-stretch {
+    width: 100%;
+}
+
+.type-conversions tr:first-child td:nth-child(3) { width: 240px; }
+.type-conversions tr:first-child td:nth-child(4) { width: 240px; }
+.md-typeset .type-conversions code { word-break: normal; }
+
+.md-typeset .no-code-break code {
+    word-break: normal;
+    white-space: nowrap;
+}
+
+.width-lg {
+    width: 500px;
+}
+
+.file-tree p {
+    background-color: var(--md-code-bg-color);
+    font-feature-settings: "kern";
+    font-family: var(--md-code-font-family);
+    margin: 0;
+    padding: 0.5rem;
+    white-space: pre;
+}
+
+.example-header {
+    margin-top: -1em;
+}
+
+.md-typeset .grid.cards.dense {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+    margin-bottom: 2em;
+}
+
+.md-typeset .grid.cards.dense>ul>li {
+    background-color: var(--md-accent-fg-color--transparent);
+    border-radius: 0.25rem;
+    padding: 0.4rem 0.4rem 0.2rem 0.4rem;
+}
+
+.md-typeset .grid.cards.examples>ul>li {
+    background-color: #f8f8f8;
+    border-radius: 0.4rem;
+    text-align: center;
+}
+
+.screenshot-tabs .tabbed-content {
+    background-color: var(--md-default-fg-color--lightest);
+    padding: 0 0.5rem;
+}
+
+.md-typeset .api-reference p {
+    font-size: 0.7rem;
+}
+
+.md-typeset .api-reference code {
+    font-size: 0.6rem;
+    white-space: pre-wrap;
+}
+
+.md-typeset .api-definition {
+    color: #666;
+}
+
+.md-typeset .api-definition p {
+    font-size: 0.6rem;
+}
+
+.md-typeset .api-reference .muted {
+    color: var(--md-default-fg-color--light);
+    font-style: italic;
+}
