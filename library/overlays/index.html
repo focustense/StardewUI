@@ -727,6 +727,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Overlays
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -736,6 +747,61 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#floating-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Floating Overlays
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-screen-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full-Screen Overlays
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#displaying-and-removing-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Displaying and Removing Overlays
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overlay-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overlay Context
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -897,6 +963,50 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#floating-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Floating Overlays
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-screen-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full-Screen Overlays
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#displaying-and-removing-overlays" class="md-nav__link">
+    <span class="md-ellipsis">
+      Displaying and Removing Overlays
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overlay-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overlay Context
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -914,6 +1024,68 @@
 
 
 <h1 id="overlays">Overlays<a class="headerlink" href="#overlays" title="Permanent link"></a></h1>
+<p>An overlay is some piece of UI—most often a <a href="../custom-views/#reusable-widgets">component view</a>—that renders on top of other UI.</p>
+<p>What makes overlays distinct from overlapping layout views like <a href="../standard-views/#panel">panels</a> is that overlays "break out" of the layout of their parent <a href="../../reference/stardewui/viewmenu-1/">ViewMenu</a> and any views inside it. They can choose to display adjacent to some other view, such as the item list in an open <a href="../standard-views/#drop-down-list">drop-down list</a>, or act like a full-screen submenu, such as the overlay used for <a href="../standard-views/#keybind-editor">key bindings</a>.</p>
+<p>While this is achievable to some degree with <code>IClickableMenu.SetChildMenu</code> in vanilla Stardew Valley code, UI overlays have a number of advantages:</p>
+<ul>
+<li>They are much more lightweight in terms of both implementation and performance, requiring nothing more than an <code>IView</code>, and hooking into the event loop of whichever <code>ViewMenu&lt;T&gt;</code> spawned it.</li>
+<li>Cursor <a href="../../framework/focus-and-interaction/">focus</a> is automatically moved inside an overlay when it opens, and constrained to that overlay until it is closed.</li>
+<li>Mouse users can click anywhere outside an active overlay to dismiss it, much like any modern modal dialog. (The menu key, by default <kbd>Esc</kbd> or <kbd>E</kbd>, also still works here.)</li>
+<li>Menus <strong>remember</strong> the focus at the instant an overlay was opened, and can return the focus back to where it was when the overlay is closed.</li>
+<li>Overlays form a back-to-front stack, and any overlay can be removed even if it is not the topmost/innermost at the time.</li>
+</ul>
+<p>Any view can open an overlay, but the most common reason to use one is to provide a space-conserving "read-only" view that can be clicked on to enter a modal "edit mode", as is done for drop-downs and keybind editors. When done carefully, it is possible to create flows that are impossible with normal layout, but still appear completely ordinary to users who may not even realize that an overlay is open.</p>
+<p>Anything that implements <a href="../../reference/stardewui/overlays/ioverlay/"><code>IOverlay</code></a> can be an overlay, but most implementations will either use a floating overlay or a full-screen overlay.</p>
+<h2 id="floating-overlays">Floating Overlays<a class="headerlink" href="#floating-overlays" title="Permanent link"></a></h2>
+<p>An overlay with no background or dimming can be called a "floating" overlay, being literally meant to float on top of some other UI. It can be positioned anywhere on the screen, but because this type of overlay normally exists to provide a sense of continuity with the UI that triggered it, will most often be positioned relative to some other view.</p>
+<p>The <a href="../../reference/stardewui/overlays/overlay/">Overlay</a> class can turn any existing <code>View</code> into a floating overlay, and has several properties to help with the aforementioned alignment. Consider the case of a drop-down menu, presented as a mockup here:</p>
+<p><img alt="Dropdown Mock" src="../../images/example-dropdown-overlay.png" /></p>
+<p>The "overlay" here is the box with gray background; it is not part of the normal layout of a drop-down list, which simply shows the current name and dropdown arrow. We can note a few things about its size and position:</p>
+<ul>
+<li>Its size is independent from the main dropdown, and its actual width is much larger due to having an unusually long item.</li>
+<li>The overlay's right edge is aligned with the dropdown's right edge; its left edge is allowed to vary according to the list's width.</li>
+<li>The overlay's top edge is aligned with the dropdown's bottom edge; i.e. it displays directly below the dropdown control.</li>
+</ul>
+<p>The four <code>Alignment</code> properties are all necessary to fully specify this:</p>
+<ul>
+<li><code>HorizontalAlignment</code> and <code>HorizontalParentAlignment</code> are both <code>End</code>: align the overlay's right/end edge to the owner's right/end edge.</li>
+<li><code>VerticalAlignment</code> is <code>Start</code> and <code>VerticalParentAlignment</code> is <code>End</code>: align the overlay's top/start edge to the owner's bottom/end edge.</li>
+</ul>
+<p>The code for this is similar to:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">Overlay</span><span class="p">.</span><span class="n">Push</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="nf">Overlay</span><span class="p">(</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">        </span><span class="n">overlayView</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="c1">// Parent view; can specify &quot;this&quot; if triggered from a View.</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="n">horizontalAlignment</span><span class="p">:</span><span class="w"> </span><span class="n">Alignment</span><span class="p">.</span><span class="n">End</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="n">horizontalParentAlignment</span><span class="p">:</span><span class="w"> </span><span class="n">Alignment</span><span class="p">.</span><span class="n">End</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">        </span><span class="n">verticalAlignment</span><span class="p">:</span><span class="w"> </span><span class="n">Alignment</span><span class="p">.</span><span class="n">Start</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">        </span><span class="n">verticalParentAlignment</span><span class="p">:</span><span class="w"> </span><span class="n">Alignment</span><span class="p">.</span><span class="n">End</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="p">));</span>
+</span></code></pre></div>
+<p>If no <code>parent</code> is specified, then all alignments are interpreted relative to the screen; absolute positioning can be achieved by omitting the <code>parent</code> or setting it to <code>null</code>, and then setting <a href="../../reference/stardewui/overlays/overlay/#parentoffset">ParentOffset</a> to the desired top-left coordinate.</p>
+<h2 id="full-screen-overlays">Full-Screen Overlays<a class="headerlink" href="#full-screen-overlays" title="Permanent link"></a></h2>
+<p>If an overlay should behave like a <a href="https://en.wikipedia.org/wiki/Dialog_box">dialog box</a>—sometimes referred to as a <a href="https://getbootstrap.com/docs/4.0/components/modal/">modal</a>—then there is a <a href="../../reference/stardewui/overlays/fullscreenoverlay/">FullScreenOverlay</a> class to inherit from which makes this easier to achieve than the equivalent using a regular <code>Overlay</code>:</p>
+<ul>
+<li>Similar to a <a href="../../reference/stardewui/widgets/componentview-1/"><code>ComponentView</code></a>, it owns its own view; instead of passing one into the constructor, as is the case with <code>Overlay</code>, you implement the <a href="../../reference/stardewui/overlays/fullscreenoverlay/#createview"><code>CreateView</code></a> method, as you would for <code>ComponentView</code>.</li>
+<li>It automatically dims the entire screen underneath the overlay; the amount can be adjusted via the <a href="../../reference/stardewui/overlays/fullscreenoverlay/#dimmingamount"><code>DimmingAmount</code></a> property.</li>
+<li>Unlike <code>Overlay</code>, it has an overridable <code>Update</code> method in case it needs to do some extra work every frame.</li>
+<li>Although the alignment properties exist, because they are part of the <code>IView</code> interface, they normally don't need to be set, since the default alignment is to center the content and default behavior is to cover the whole screen.</li>
+</ul>
+<p>The difference between <code>Overlay</code> and <code>FullScreenOverlay</code> is not as stark as the difference between <a href="../custom-views/#reusable-widgets">component views</a> and <a href="../custom-views/#custom-layout-or-drawing">custom layouts</a>; <code>FullScreenOverlay</code> is simply a convenience class and can be swapped out for a more general <code>Overlay</code> at any point.</p>
+<p>The <a href="../standard-views/#keybind-editor">keybind editor</a> is an example of using a full-screen overlay; see the source of <a href="https://github.com/focustense/StardewUI/blob/dev/Core/Widgets/Keybinding/KeybindOverlay.cs">KeybindOverlay</a> for an example implementation.</p>
+<h2 id="displaying-and-removing-overlays">Displaying and Removing Overlays<a class="headerlink" href="#displaying-and-removing-overlays" title="Permanent link"></a></h2>
+<p>Overlays form a visual stack; not a literal <code>Stack&lt;T&gt;</code>, but a back-to-front order that is used for <a href="../../framework/focus-and-interaction/">focus capture</a>, event propagation, z-ordering/dimming, etc. The "front" overlay receives all input, but all visible overlays are shown and continue to receive updates.</p>
+<p>The most common operations will be <strong><a href="../../reference/stardewui/overlays/overlay/#pushioverlay">Pushing</a></strong> an overlay to the front:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Overlay</span><span class="p">.</span><span class="n">Push</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">MyOverlay</span><span class="p">(...));</span>
+</span></code></pre></div>
+<p>and <strong><a href="../../reference/stardewui/overlays/overlay/#removeioverlay">Removing</a></strong> an overlay from wherever it happens to be:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Overlay</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">myOverlay</span><span class="p">);</span>
+</span></code></pre></div>
+<p>There is also a <a href="../../reference/stardewui/overlays/overlay/#pop"><code>Pop</code></a> method, as the stack-like semantic implies, which removes the overlay currently at the front. However, this method is mainly used by the framework itself, e.g. to close an overlay when one of the cancel buttons is pressed or when the mouse is clicked outside the overlay. If you need to close your <em>own</em> overlay, then it is better to <code>Remove</code> it explicitly, in case it is not actually at the top of the stack.</p>
+<h2 id="overlay-context">Overlay Context<a class="headerlink" href="#overlay-context" title="Permanent link"></a></h2>
+<p>The static <code>Push</code>, <code>Pop</code> and <code>Remove</code> methods of the <a href="../../reference/stardewui/overlays/overlay/"><code>Overlay</code></a> class are all wrappers around <a href="../../reference/stardewui/overlays/overlaycontext/"><code>OverlayContext</code></a>. Context is actually instanced per <code>ViewMenu</code>, but since all UI is single-threaded, StardewUI applies some magic behind the scenes so that <a href="../../reference/stardewui/overlays/overlaycontext/#current"><code>OverlayContext.Current</code></a> is always pointing to the correct context from whichever call site uses it, similar to the way <code>Game1</code> always reflects the current player/viewport in split-screen mode.</p>
+<p>This type is public, so if for some reason you need to look at the entire stack, e.g. to determine if your overlay is at the front, then <code>OverlayContext</code> can provide it; simply obtain the context via <code>OverlayContext.Current</code>, and inspect its overlays in either <a href="../../reference/stardewui/overlays/overlaycontext/#backtofront">back-to-front</a> or <a href="../../reference/stardewui/overlays/overlaycontext/#fronttoback">front-to-back</a> order.</p>
+<p>Directly accessing or manipulating the context is rare, so only use it when there is a specific reason, e.g. if you are writing framework-level code.</p>
 
 
 

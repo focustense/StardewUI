@@ -2576,11 +2576,11 @@ Assembly: StardewUI.dll  </p>
 </tr>
 <tr>
 <td><a href="#pushioverlay">Push(IOverlay)</a></td>
-<td></td>
+<td>Pushes an overlay to the front.</td>
 </tr>
 <tr>
 <td><a href="#removeioverlay">Remove(IOverlay)</a></td>
-<td></td>
+<td>Removes a specific overlay from the stack, regardless of its position.</td>
 </tr>
 </tbody>
 </table>
@@ -2708,21 +2708,27 @@ The action to run on close.</p>
 <p>Applies to the ambient <a href="../overlaycontext/">OverlayContext</a>, and is ignored if no context is available.</p>
 <hr />
 <h4 id="pushioverlay">Push(IOverlay)<a class="headerlink" href="#pushioverlay" title="Permanent link"></a></h4>
+<p>Pushes an overlay to the front.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Push</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Overlays</span><span class="p">.</span><span class="n">IOverlay</span><span class="w"> </span><span class="n">overlay</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>overlay</code></strong> &nbsp; <a href="../ioverlay/">IOverlay</a></p>
 <h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
+<p>If the specified <code>overlay</code> is already in the stack, then it will be moved from its previous position to the front. </p>
 <p>Applies to the ambient <a href="../overlaycontext/">OverlayContext</a>, and is ignored if no context is available.</p>
 <hr />
 <h4 id="removeioverlay">Remove(IOverlay)<a class="headerlink" href="#removeioverlay" title="Permanent link"></a></h4>
+<p>Removes a specific overlay from the stack, regardless of its position.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Remove</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Overlays</span><span class="p">.</span><span class="n">IOverlay</span><span class="w"> </span><span class="n">overlay</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
-<p><strong><code>overlay</code></strong> &nbsp; <a href="../ioverlay/">IOverlay</a></p>
+<p><strong><code>overlay</code></strong> &nbsp; <a href="../ioverlay/">IOverlay</a><br />
+The overlay to remove.</p>
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p><code>true</code> if the <code>overlay</code> was removed; <code>false</code> if it was not active.</p>
 <h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
+<p>This is most often invoked by an overlay needing to dismiss itself, e.g. an overlay with an "OK" or "Close" button. </p>
 <p>Applies to the ambient <a href="../overlaycontext/">OverlayContext</a>, and is ignored if no context is available.</p>
 <hr />
 <h3 id="events_1">Events<a class="headerlink" href="#events_1" title="Permanent link"></a></h3>
