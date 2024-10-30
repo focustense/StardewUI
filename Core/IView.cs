@@ -106,8 +106,10 @@ public interface IView : INotifyPropertyChanged
 
     /// <summary>
     /// Collection of bounds for this view, in this order:
-    /// 0: <see cref="ActualBounds"/>
-    /// 1+: Bounds of any floating elements not within <see cref="ActualBounds"/>, including those of children views
+    /// <list type="bullet">
+    /// <item>0: <see cref="ActualBounds"/></item>
+    /// <item>1+: Bounds of any floating elements not within <see cref="ActualBounds"/>, including those of children views.</item>
+    /// </list>
     /// </summary>
     /// <returns></returns>
     IEnumerable<Bounds> AllInteractionBounds { get; }
