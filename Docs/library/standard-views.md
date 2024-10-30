@@ -49,7 +49,7 @@ Choose from either type of `item-layout`:
 !!! note
 
     Grids must have a size independent of their content in the direction of their orientation; i.e. a grid with horizontal orientation must have a width **other than** `content`, and a grid with vertical orientation must have a height other than `content`.
-
+    
     While it might seem logical to combine `item-layout="count: n"` with a fixed-size child layout such as `<image layout="64px 64px" />` in order to create a dynamically-sized grid, this isn't how it works in practice; the size of a grid cell can only be determined based on the grid's own properties, not the content inside it. If you expect to have a variable number of rows/columns _and_ a variable width/height, use nested [Lanes](#lane) instead.
 
 === "Demo"
@@ -77,7 +77,7 @@ Choose from either type of `item-layout`:
             EdiblesViewModel.LoadFromGameData());
     }
     ```
-
+    
     Note: For the source of `EdiblesViewModel`, see the [Scrolling Item Grid](../examples/scrolling-item-grid.md#ediblesviewmodelcs) example.
 
 ### Lane &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/lane.md)
@@ -110,7 +110,7 @@ Lanes are the bread and butter of content layout; almost any UI design can be re
         
         [Notify] private bool isSelected;
     }
-
+    
     class LaneTestViewModel()
     {
         public List<LaneTestItem> Items { get; set; } = [
@@ -120,7 +120,7 @@ Lanes are the bread and butter of content layout; almost any UI design can be re
             new("Item4"),
         ];
     }
-
+    
     void ShowLaneExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -153,23 +153,23 @@ All children are given the same bounding rectangle for layout, and can be "posit
         </lane>
     </panel>
     ```
-
+    
     !!! note
-
+    
         Binding the image's `sprite` to an `ItemQuality` enum requires a [custom converter](../framework/extensions.md#custom-converters).
 
 === "Usage (C#)"
 
     ```cs
     enum ItemQuality { Silver, Gold, Iridium }
-
+    
     class PanelTestViewModel
     {
         public ParsedItemData ItemData { get; set; }
         public ItemQuality Quality { get; set; }
         public int Count { get; set; }
     }
-
+    
     void ShowPanelExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -215,7 +215,7 @@ Scrollable views can be used to hold simple lists, grids, or an entire complex U
         public IReadOnlyList<string> Items { get; } =
             Enumerable.Range(0, count).Select(i => $"Item {i + 1}").ToArray();
     }
-
+    
     void ShowScrollableExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -252,7 +252,7 @@ In addition to being used with backgrounds as menu titles, banners are also comm
 Draws a [Sprite](../reference/stardewui/graphics/sprite.md). Functionally very similar to interacting with the [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html), but significantly more streamlined for use in UI layouts:
 
 - Built-in [9-slice scaling](https://en.wikipedia.org/wiki/9-slice_scaling); simply set the edge lengths on the input sprite.
-- Has multiple [fit](../reference/stardewui/widgets/image.md) options; choose whether the image should be scaled uniformly to fit inside the layout area ([letterboxing](https://en.wikipedia.org/wiki/Letterboxing_(filming)) or [pillarboxing](https://en.wikipedia.org/wiki/Pillarbox)), covering the layout area ([clipping](https://en.wikipedia.org/wiki/Clipping_(computer_graphics))) or stretched non-uniformly across the area.
+- Has multiple [fit](../reference/stardewui/widgets/image.md#fit) options; choose whether the image should be scaled uniformly to fit inside the layout area ([letterboxing](https://en.wikipedia.org/wiki/Letterboxing_(filming)) or [pillarboxing](https://en.wikipedia.org/wiki/Pillarbox)), covering the layout area ([clipping](https://en.wikipedia.org/wiki/Clipping_(computer_graphics))) or stretched non-uniformly across the area.
 - Shadows, tint, alignment, uniform rotation and other quality-of-life features.
 
 Static images are usually bound to some [sprite asset](../getting-started/adding-ui-assets.md#adding-sprites), as shown in the example below. For dynamic images, several common [implicit conversions](../framework/starml.md#type-conversions) are available.
@@ -295,7 +295,7 @@ Aside from [banners](#banner), the `label` element should be all that the majori
     {
         public string Text { get; set; }
     }
-
+    
     void ShowLabelExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -346,7 +346,7 @@ Called `<digits>` in [StarML](../framework/starml.md) for conciseness, but origi
 === "Demo"
 
     ![Digits Example](../images/screenshot-digits.png)
-
+    
     (image enlarged for clarity)
 
 === "Usage (StarML)"
@@ -372,13 +372,13 @@ Most buttons are text buttons, and can be set up easily with just the `text` att
 === "Usage (StarML)"
 
     **Text Only**
-
+    
     ```html
     <button text="Click Me" />
     ```
-
+    
     **Custom**
-
+    
     ```html
     <button>
         <lane padding="8" vertical-content-alignment="middle">
@@ -413,7 +413,7 @@ Includes a `label-text` property that adds text next to the image; importantly, 
     {
         [Notify] private bool enableKillerPumpkins;
     }
-
+    
     void ShowCheckboxExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -451,7 +451,7 @@ It is usually a good idea to set `option-min-width` so that the selection box do
 
     ```cs
     enum WeaponType { Sword, Club, Dagger, Slingshot, Special }
-
+    
     partial class DropDownTestViewModel : INotifyPropertyChanged
     {
         public Func<WeaponType, string> Format { get; } = wt => wt switch
@@ -462,13 +462,13 @@ It is usually a good idea to set `option-min-width` so that the selection box do
             WeaponType.Slingshot => "Stretchy",
             _ => "Banana"
         };
-
+    
         public IReadOnlyList<WeaponType> Weapons { get; } =
             Enum.GetValues<WeaponType>();
-
+    
         [Notify] private WeaponType selectedWeapon;
     }
-
+    
     void ShowDropDownExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -480,7 +480,7 @@ It is usually a good idea to set `option-min-width` so that the selection box do
 !!! info "Option Types"
 
     Drop-down lists in [StarML](../framework/starml.md) use a special, dynamically-typed wrapper over the generic [DropDownList](../reference/stardewui/widgets/dropdownlist-1.md) which enables it to adjust to any option type; the example above defines a completely new option named `WeaponType`.
-
+    
     In order for this to work, **all option-related properties must use the same type.** These properties are the ones shown above: `options`, `option-format` and `selected-option`. Any type can be used for all three, as long as the entire view model is consistent.
 
 ### Expander &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/expander.md)
@@ -521,10 +521,10 @@ Includes its own (customizable) caret sprite to show the current expanded state.
     partial class ExpanderTestViewModel : INotifyPropertyChanged
     {
         public string HeaderText => IsExpanded ? "Hide Details" : "Show Details";
-
+    
         [Notify] private bool isExpanded;
     }
-
+    
     void ShowExpanderExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -566,7 +566,7 @@ For `sliceScale`, smaller numbers make the border edges thinner; for a `button-h
         public Keybind Hotkey { get; set; } =
             new(SButton.LeftStick, SButton.ControllerA);
     }
-
+    
     void ShowKeybindExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -574,7 +574,7 @@ For `sliceScale`, smaller numbers make the border edges thinner; for a `button-h
             new KeybindTestViewModel());
     }
     ```
-
+    
     Note: The example image shows two appearances, one for keyboard bindings and one for controllers. The example code will only produce one, but both images are produced from the exact same view, populated with different keybind values.
 
 ### Keybind Editor &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/keybinding/keybindlisteditor.md)
@@ -609,7 +609,7 @@ Although it is designed to work with multiple keybindings (SMAPI `KeybindList`),
             new Keybind(SButton.LeftControl, SButton.F5),
             new Keybind(SButton.LeftStick, SButton.ControllerA));
     }
-
+    
     void ShowKeybindEditorExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -648,10 +648,10 @@ Controller-based editing simply requires pressing the d-pad or left stick while 
     {
         public Func<float, string> Format { get; } =
             value => $"{value} million dollars";
-
+    
         [Notify] private float money = 10;
     }
-
+    
     void ShowSliderExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -683,7 +683,7 @@ The appearance is highly customizable, with editable fonts, colors, background a
     {
         [Notify] private string text = "";
     }
-
+    
     void ShowTextInputExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -728,7 +728,7 @@ This was mostly done as a demonstration of what's possible in StardewUI, e.g. wi
     {
         public string Text { get; set; }
     }
-
+    
     void ShowMarqueeExample()
     {
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
@@ -741,7 +741,7 @@ This was mostly done as a demonstration of what's possible in StardewUI, e.g. wi
             });
     }
     ```
-
+    
     _(Filler text generated from [Hillbilly Ipsum](https://hillbillyipsum.com))_
 
 !!! tip
