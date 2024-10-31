@@ -1,3 +1,7 @@
+---
+title: Examples
+---
+
 # Examples [:material-file-code-outline:](https://github.com/focustense/StardewUI/blob/dev/TestMod/Examples/){ title="C# Source" } [:material-file-star-outline:](https://github.com/focustense/StardewUI/blob/dev/TestMod/assets/views/){ title="StarML Source" }
 
 Curated list of examples built with StardewUI to demonstrate the many features of the framework and how to use them.
