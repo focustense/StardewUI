@@ -116,7 +116,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         using var trace = Diagnostics.Trace.Begin(this, nameof(applyMovementKey));
         using var _ = OverlayContext.PushContext(overlayContext);
         var direction = (Direction)directionValue;
-        var mousePosition = Game1.input.GetMouseState().Position;
+        var mousePosition = Game1.getMousePosition(true);
         OnViewOrOverlay(
             (view, origin) =>
             {
@@ -545,7 +545,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void InitiateButtonPress(SButton button)
     {
-        var mousePosition = Game1.input.GetMouseState().Position;
+        var mousePosition = Game1.getMousePosition(true);
         OnViewOrOverlay(
             (view, origin) =>
             {
@@ -603,7 +603,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void InitiateWheel(Direction direction)
     {
-        var mousePosition = Game1.input.GetMouseState().Position;
+        var mousePosition = Game1.getMousePosition(true);
         OnViewOrOverlay(
             (view, origin) =>
             {
