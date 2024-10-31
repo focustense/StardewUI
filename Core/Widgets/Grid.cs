@@ -253,13 +253,13 @@ public class Grid : View
         var secondaryUsed = 0.0f;
         var position = Vector2.Zero;
         int currentCount = 0;
-        int totalCount = Children.Count;
         var maxSecondary = 0.0f;
         int laneStartIndex = 0;
         secondaryStartPositions.Clear();
         secondaryStartPositions.Add(0);
-        foreach (var child in Children)
+        for (int childIdx = 0; childIdx < Children.Count; childIdx++)
         {
+            var child = Children[childIdx];
             var childLimits = Vector2.Zero;
             PrimaryOrientation.Set(ref childLimits, itemLength);
             secondaryOrientation.Set(ref childLimits, secondaryAvailable);
@@ -267,7 +267,7 @@ public class Grid : View
             childPositions.Add(new(child, position));
             currentCount++;
             maxSecondary = MathF.Max(maxSecondary, secondaryOrientation.Get(child.OuterSize));
-            if ((currentCount > 0 && currentCount % countBeforeWrap == 0) || currentCount == totalCount)
+            if (currentCount >= countBeforeWrap || childIdx == Children.Count - 1)
             {
                 var cellBounds = childLimits;
                 // Limits will have the primary dimension be the actual length, but secondary dimension is the full
@@ -293,6 +293,7 @@ public class Grid : View
                 secondaryAvailable -= maxSecondary + secondarySpacing;
                 secondaryStartPositions.Add(secondaryUsed);
                 maxSecondary = 0;
+                currentCount = 0;
                 laneStartIndex = childPositions.Count;
             }
             else
