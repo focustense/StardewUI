@@ -20,4 +20,9 @@ The most current source for any example can usually be found in the `dev` branch
 
     [![Bestiary](../images/example-bestiary.png)](bestiary.md)
 
+-   [**Crop Calendar**](crop-calendar.md)  
+    _@mushymato_
+
+    [![Crop Calendar](../images/example-crop-calendar.png)](crop-calendar.md)
+
 </div>
