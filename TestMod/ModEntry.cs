@@ -20,6 +20,7 @@ internal sealed partial class ModEntry : Mod
 
     // Mod state
     private BestiaryViewModel? bestiary;
+    private CropsGridViewModel? cropsGrid;
     private IViewDrawable? hudWidget;
 
     public override void Entry(IModHelper helper)
@@ -31,6 +32,7 @@ internal sealed partial class ModEntry : Mod
 
         helper.Events.Display.RenderedHud += Display_RenderedHud;
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+        helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
         helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
     }
@@ -46,6 +48,11 @@ internal sealed partial class ModEntry : Mod
         viewEngine.RegisterSprites($"Mods/{ModManifest.UniqueID}/Sprites", "assets/sprites");
         viewEngine.RegisterViews(viewAssetPrefix, "assets/views");
         viewEngine.EnableHotReloading();
+    }
+
+    private void GameLoop_OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+    {
+        cropsGrid?.SelectedCrop.NextPhase();
     }
 
     private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -114,6 +121,12 @@ internal sealed partial class ModEntry : Mod
     {
         var context = new Example3Model();
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Form", context);
+    }
+
+    private void ShowCropsGridExample()
+    {
+        cropsGrid = new();
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-CropsGrid", cropsGrid);
     }
 
     private void ToggleHud()

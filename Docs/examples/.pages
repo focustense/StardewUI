@@ -2,4 +2,5 @@ nav:
     - index.md
     - Scrolling Item Grid: scrolling-item-grid.md
     - Bestiary: bestiary.md
+    - Crop Calendar: crop-calendar.md
     - ...
