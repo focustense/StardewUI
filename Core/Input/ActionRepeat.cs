@@ -5,6 +5,7 @@
 /// </summary>
 /// <param name="RepeatInterval">The interval between repetitions of the action, while the key is held.</param>
 /// <param name="InitialDelay">Initial delay after the first press, before any repetitions are allowed.</param>
+[DuckType]
 public record ActionRepeat(TimeSpan RepeatInterval, TimeSpan? InitialDelay = null)
 {
     /// <summary>

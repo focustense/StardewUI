@@ -15,6 +15,7 @@ namespace StardewUI.Graphics;
 /// <see href="https://en.wikipedia.org/wiki/9-slice_scaling">Nine-Slice Scaling</see> for a detailed
 /// explanation.</param>
 /// <param name="SliceSettings">Additional settings for the scaling and slicing behavior.</param>
+[DuckType]
 public record Sprite(
     Texture2D Texture,
     Rectangle? SourceRect = null,
@@ -43,6 +44,7 @@ public record Sprite(
 /// and a scale of 2 is used, then a 2x3 border slice would draw as 16x24 (normal 8x16, multiplied by 2).</param>
 /// <param name="EdgesOnly">If <c>true</c>, then only the outer 8 edge segments should be drawn, and the 9th
 /// (horizontal and vertical middle, i.e. "background") segment will be ignored.</param>
+[DuckType]
 public record SliceSettings(
     int? CenterX = null,
     SliceCenterPosition CenterXPosition = SliceCenterPosition.Start,

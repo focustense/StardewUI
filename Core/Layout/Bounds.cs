@@ -7,6 +7,7 @@ namespace StardewUI.Layout;
 /// </summary>
 /// <param name="Position">The top-left position.</param>
 /// <param name="Size">The width and height.</param>
+[DuckType]
 public record Bounds(Vector2 Position, Vector2 Size) : IOffsettable<Bounds>
 {
     /// <summary>

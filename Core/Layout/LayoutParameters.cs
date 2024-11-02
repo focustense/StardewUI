@@ -6,6 +6,7 @@ namespace StardewUI.Layout;
 /// <summary>
 /// Layout parameters for an <see cref="IView"/>.
 /// </summary>
+[DuckType]
 public readonly struct LayoutParameters : IEquatable<LayoutParameters>
 {
     /// <summary>

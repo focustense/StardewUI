@@ -11,6 +11,7 @@ namespace StardewUI.Layout;
 /// <param name="Top">The top edge.</param>
 /// <param name="Right">The right edge.</param>
 /// <param name="Bottom">The bottom edge.</param>
+[DuckType]
 public record Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)
 {
     /// <summary>

@@ -5,6 +5,7 @@
 /// </summary>
 /// <param name="Type">Specifies how to interpret the <see cref="Value"/>.</param>
 /// <param name="Value">The dimension value, with behavior determined by <see cref="Type"/>.</param>
+[DuckType]
 public readonly record struct Length(LengthType Type, float Value)
 {
     /// <summary>

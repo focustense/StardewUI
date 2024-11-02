@@ -7,6 +7,7 @@ namespace StardewUI.Layout;
 /// </summary>
 /// <param name="offsetSelector">Calculates the position offset (relative to the parent) of the floating view. Takes the
 /// measured floating view size, and then the parent size, as arguments.</param>
+[DuckType]
 public class FloatingPosition(Func<Vector2, Vector2, Vector2> offsetSelector)
 {
     /// <summary>

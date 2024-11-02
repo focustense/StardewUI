@@ -110,7 +110,7 @@ internal sealed class ModEntry : Mod
         var viewFactory = new ViewFactory();
         assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
         var valueSourceFactory = new ValueSourceFactory(assetCache);
-        var valueConverterFactory = new ValueConverterFactory();
+        var valueConverterFactory = RootValueConverterFactory.Default();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);

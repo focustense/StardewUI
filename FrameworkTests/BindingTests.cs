@@ -82,7 +82,7 @@ public partial class BindingTests
         viewFactory = new ViewFactory();
         assetCache = new FakeAssetCache();
         valueSourceFactory = new ValueSourceFactory(assetCache);
-        valueConverterFactory = new ValueConverterFactory();
+        valueConverterFactory = RootValueConverterFactory.Default();
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
