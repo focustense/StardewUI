@@ -1,4 +1,6 @@
-﻿namespace StardewUI.Framework.Addons;
+﻿using StardewUI.Framework.Converters;
+
+namespace StardewUI.Framework.Addons;
 
 /// <summary>
 /// Entry point for a UI add-on.
@@ -26,4 +28,16 @@ public interface IAddon
     /// A depends on B which depends on A again) then the addon will be prevented from loading.
     /// </remarks>
     IReadOnlyList<string> Dependencies => [];
+
+    /// <summary>
+    /// Provides user-defined type conversions in addition to the standard conversions.
+    /// </summary>
+    /// <remarks>
+    /// All user-defined converters have lower priority than the built-in converters, except for the duck-type
+    /// converters and <see cref="StringConverterFactory"/> which are always considered last. Within the set of
+    /// user-defined converters, the priority is based on inverted load order; the <em>last</em> add-on that registered
+    /// a converter able to handle a particular type conversion will be the one chosen, as long as none of the standard
+    /// conversions can apply.
+    /// </remarks>
+    IValueConverterFactory? ValueConverterFactory => null;
 }

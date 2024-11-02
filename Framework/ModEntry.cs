@@ -38,9 +38,9 @@ internal sealed class ModEntry : Mod
         }
 
         spriteMaps = new(helper);
-        viewNodeFactory = CreateViewNodeFactory();
 
         helper.Events.Content.AssetRequested += Content_AssetRequested;
+        helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
         helper.Events.Input.ButtonsChanged += Input_ButtonsChanged;
     }
@@ -107,14 +107,39 @@ internal sealed class ModEntry : Mod
 
     private IViewNodeFactory CreateViewNodeFactory()
     {
+        var loadOrder = UI.ResolveLoadOrder();
         var viewFactory = new ViewFactory();
         assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
         var valueSourceFactory = new ValueSourceFactory(assetCache);
-        var valueConverterFactory = RootValueConverterFactory.Default();
-        var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
-        var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
+        var addonValueConverterFactories = loadOrder
+            .Reverse()
+            .Select(addon => addon.ValueConverterFactory)
+            .Where(factory => factory is not null)
+            .Cast<IValueConverterFactory>();
+        var rootValueConverterFactory = RootValueConverterFactory.Default(addonValueConverterFactories);
+        var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, rootValueConverterFactory);
+        var eventBindingFactory = new EventBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
-        return new ViewNodeFactory(viewFactory, valueSourceFactory, valueConverterFactory, viewBinder, assetCache);
+        return new ViewNodeFactory(viewFactory, valueSourceFactory, rootValueConverterFactory, viewBinder, assetCache);
+    }
+
+    [EventPriority(EventPriority.Normal + 1)]
+    private void GameLoop_GameLaunched(object? sender, GameLaunchedEventArgs e)
+    {
+        // This is done in GameLaunched instead of Entry in order to give mods a chance to register add-ons from their
+        // own Entry methods.
+        //
+        // If add-on mods do the right thing and declare a SMAPI dependency on StardewUI, it guarantees that our Entry
+        // method will run before theirs, which is the opposite of what we want for add-ons; we need to run after they
+        // have completed their registrations.
+        //
+        // For the same reason, this handler should be kept at slightly below normal priority in case naive add-on mods
+        // decide to do their registrations in their own GameLaunched handler instead of in their Entry, and don't
+        // adjust their own priority.
+        //
+        // SMAPI promises to run this event before the first update tick, so it is still safe to do initialization here
+        // and not risk exceptions in the UpdateTicked handler.
+        viewNodeFactory = CreateViewNodeFactory();
     }
 
     private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -128,6 +153,17 @@ internal sealed class ModEntry : Mod
         {
             Trace.IsTracing = !Trace.IsTracing;
             Helper.Input.SuppressActiveKeybinds(config.Tracing.ToggleHotkeys);
+        }
+    }
+}
+
+file static class EnumerableExtensions
+{
+    public static IEnumerable<T> Reverse<T>(this IReadOnlyList<T> list)
+    {
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            yield return list[i];
         }
     }
 }

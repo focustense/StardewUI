@@ -13,10 +13,14 @@ public class RootValueConverterFactory : IValueConverterFactory
     /// Creates a <see cref="RootValueConverterFactory"/> with the default set of built-in framework converters already
     /// registered.
     /// </summary>
-    public static RootValueConverterFactory Default()
+    /// <param name="addonFactories">View factories registered by add-ons, in order of priority. All add-ons factories
+    /// are considered after the standard conversions, but before fallback conversions (duck-type, ToString).</param>
+    internal static RootValueConverterFactory Default(IEnumerable<IValueConverterFactory> addonFactories)
     {
         var factory = new RootValueConverterFactory();
         factory.RegisterDefaults();
+        factory.factories.AddRange(addonFactories);
+        factory.RegisterFallbackDefaults();
         return factory;
     }
 
@@ -115,6 +119,9 @@ public class RootValueConverterFactory : IValueConverterFactory
         return converters.TryAdd(key, converter);
     }
 
+    // High-priority defaults that take precedence over user-defined conversions. These are all documented, tested,
+    // etc., and users are likely to depend on their default behavior; therefore we register them first so that add-ons
+    // cannot override them.
     private void RegisterDefaults()
     {
         // Automatically register string to primitive conversions.
@@ -176,7 +183,12 @@ public class RootValueConverterFactory : IValueConverterFactory
         Register(new AnyCastConverterFactory());
         Register(new CastingValueConverterFactory());
         Register(new NullableConverterFactory(this));
+    }
 
+    // Converters that have lower priority than user-defined conversions; we only use these when there is definitely no
+    // better option available.
+    private void RegisterFallbackDefaults()
+    {
         // Anything can generally be converted to a string using the default converter.
         Register(new StringConverterFactory());
 
