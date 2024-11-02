@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>StardewUITestAddon</AssemblyName>
+    <RootNamespace>StardewUITestAddon</RootNamespace>
+    <Version>0.1.0</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ModFolderName>StardewUITestAddon</ModFolderName>
+    <Authors>focustense</Authors>
+    <Name>Stardew UI Test Addon</Name>
+    <Description>Example add-on mod for Stardew UI.</Description>
+    <MinimumApiVersion>4.0.5</MinimumApiVersion>
+    <MinimumGameVersion>1.6.8</MinimumGameVersion>
+    <UniqueId>$(Authors).$(AssemblyName)</UniqueId>
+    <EntryDll>$(AssemblyName).dll</EntryDll>
+    <UpdateKeys>GitHub:focustense/StardewUI</UpdateKeys>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="assets\views\FramedSprite.sml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\views\FramedSprite.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <SMAPIDependency Include="focustense.StardewUI" Version="0.2.5" Reference="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.3.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="PropertyChanged.SourceGenerator" Version="1.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
