@@ -56,7 +56,7 @@ The specific layout or exact appearance in game isn't important to this example;
 - `click=|^SelectItem(Id)|`, which refers to the same-named method on `MenuViewModel`
 - `text={Text}` and `text={Price}` which are referring, _not_ to the `MenuViewModel` anymore, but to properties on the `MenuItem`.
 
-What happened? Although we only actually provided a single "model" (the `MenuViewModel`), the _context_ changed as soon as `*repeat` was encountered. Repeaters replace the original binding context (`MenuViewModel`) with a context referring to the specific item in the collection (`MenuItem`). As far as those inner `<label>` elements are concerned, the "model" or "data" is actually `MenuViewModel`.
+What happened? Although we only actually provided a single "model" (the `MenuViewModel`), the _context_ changed as soon as `*repeat` was encountered. Repeaters replace the original binding context (`MenuViewModel`) with a context referring to the specific item in the collection (`MenuItem`). As far as those inner `<label>` elements are concerned, the "model" or "data" is actually `MenuItem`.
 
 This behavior isn't necessarily limited to repeaters; for example, another way to narrow or drill down the context would be the [`*context` attribute](starml.md#structural-attributes).
 
