@@ -28,7 +28,10 @@ public class DuckTypeEnumConverterFactory : IValueConverterFactory
         // It ends up being faster to only do this one time.
         var sourceFields = typeof(TSource).GetFields(BindingFlags.Public | BindingFlags.Static);
         var destinationFields = typeof(TDestination).GetFields(BindingFlags.Public | BindingFlags.Static);
-        converter = sourceFields.Select(f => f.Name).Intersect(destinationFields.Select(f => f.Name)).Any()
+        converter = sourceFields
+            .Select(f => f.Name)
+            .Intersect(destinationFields.Select(f => f.Name), StringComparer.OrdinalIgnoreCase)
+            .Any()
             ? new Converter<TSource, TDestination>(sourceFields, destinationFields)
             : null;
         return converter is not null;

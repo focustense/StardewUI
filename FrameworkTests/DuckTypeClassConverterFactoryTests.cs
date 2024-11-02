@@ -150,4 +150,67 @@ public class DuckTypeClassConverterFactoryTests
         Assert.Equal(new Edges(2, 4, 6, 8), destination.FixedEdges);
         Assert.Null(destination.SliceSettings);
     }
+
+    // Important to test with at least one struct - the required opcodes are different.
+    struct SymmetricalEdges
+    {
+        [DuckProperty("Horizontal")]
+        public int H { get; set; }
+
+        [DuckProperty("Vertical")]
+        public int V { get; set; }
+    }
+
+    [Fact]
+    public void WhenLowerRankedConstructorMatches_ConvertsWithBestConstructor()
+    {
+        var converter = rootFactory.GetRequiredConverter<SymmetricalEdges, Edges>();
+
+        var source = new SymmetricalEdges { H = 12, V = 5 };
+        var destination = converter.Convert(source);
+
+        Assert.Equal(12, destination.Left);
+        Assert.Equal(12, destination.Right);
+        Assert.Equal(5, destination.Top);
+        Assert.Equal(5, destination.Bottom);
+    }
+
+    class RectLikeEdges
+    {
+        [DuckProperty("Left")]
+        public int X;
+
+        [DuckProperty("Top")]
+        public int Y;
+
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        [DuckProperty("Right")]
+        public int X2 => X + Width;
+
+        [DuckProperty("Bottom")]
+        public int Y2 => Y + Height;
+    }
+
+    [Fact]
+    public void WhenSourceHasComputedProperties_ConvertsAsRegularProperties()
+    {
+        var converter = rootFactory.GetRequiredConverter<RectLikeEdges, Edges>();
+
+        var source = new RectLikeEdges
+        {
+            X = 50,
+            Y = 20,
+            Width = 16,
+            Height = 9,
+        };
+        var destination = converter.Convert(source);
+
+        Assert.Equal(50, destination.Left);
+        Assert.Equal(66, destination.Right);
+        Assert.Equal(20, destination.Top);
+        Assert.Equal(29, destination.Bottom);
+    }
 }

@@ -55,6 +55,4 @@ public class DuckPropertyAttribute(string targetPropertyName, string? targetType
 /// </para>
 /// </remarks>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = false)]
-public class DuckTypeAttribute : Attribute
-{
-}
+public class DuckTypeAttribute : Attribute { }

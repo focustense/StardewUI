@@ -308,7 +308,9 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 
 If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from `string` to be used in literal attributes.
 
-Unfortunately, allowing mods to arbitrarily extend this list would be a chicken-egg problem: you need direct access to the destination type in order to implement a converter. However, if anything important is missing, feel free to make a [request](https://github.com/focustense/StardewUI/issues) or a [contribution](https://github.com/focustense/StardewUI/blob/dev/Framework/Converters/ValueConverterFactory.cs) (writing a converter is usually very simple, often a single line of code).
+### Duck Typing :material-test-tube:{ title="Experimental" }
+
+If a particular type conversion is not in the table above, it may be available for automatic implicit conversion. See the page on [duck typing](duck-typing.md) for rules and additional information on when and how this occurs.
 
 ## Children
 
@@ -406,7 +408,7 @@ If an `*outlet` is not specified in the markup, then the default (unnamed) outle
         <label layout="stretch content" text={LongContent} />
     </expander>
     ```
-    
+
 This is not allowed because the expander's `header` outlet requires a single content view. However, if this were to use an `*if*` condition then it would be valid again:
 
 !!! success

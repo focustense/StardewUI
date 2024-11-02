@@ -335,8 +335,7 @@ public class DecoratorView<T> : IView, IDisposable
     /// <inheritdoc />
     public virtual ViewChild? GetDefaultFocusChild()
     {
-        return view?.GetDefaultFocusChild()
-            ?? (view?.IsFocusable == true ? new(view, Vector2.Zero) : null);
+        return view?.GetDefaultFocusChild() ?? (view?.IsFocusable == true ? new(view, Vector2.Zero) : null);
     }
 
     /// <inheritdoc />

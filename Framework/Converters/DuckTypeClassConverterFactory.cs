@@ -48,7 +48,7 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
         if (
             !IsClassOrStruct(typeof(TSource))
             || !IsClassOrStruct(typeof(TDestination))
-            || typeof(TDestination).GetCustomAttribute<DuckTypeAttribute>() is null
+            || !HasDuckTypeAttribute(typeof(TDestination))
         )
         {
             return false;
@@ -72,10 +72,12 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             // we can widen the search.
             var destinationConstructors = typeof(TDestination)
                 .GetConstructors()
-                .Select(ctor => (constructor: ctor, parameters: ctor.GetParameters()))
-                .OrderByDescending(x => x.parameters.Length)
+                .Select(ctor => MatchesAllParameters(ctor, sourceMembers, out var count) ? (ctor, count) : default)
+                .Where(x => x.ctor is not null)
+                .OrderByDescending(x => x.count)
+                .Select(x => x.ctor)
                 .ToArray();
-            foreach (var (ctor, parameters) in destinationConstructors)
+            foreach (var ctor in destinationConstructors)
             {
                 converter = TryCreateConverter<TSource, TDestination>(ctor, sourceMembers);
                 if (converter is not null)
@@ -115,9 +117,38 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
         };
     }
 
+    private static bool HasDuckTypeAttribute(Type type)
+    {
+        return type.GetCustomAttributes().Any(a => a.GetType()?.Name == nameof(DuckTypeAttribute));
+    }
+
     private static bool IsClassOrStruct(Type type)
     {
         return type.IsClass || (type.IsValueType && !type.IsPrimitive && !type.IsEnum);
+    }
+
+    private bool MatchesAllParameters(
+        ConstructorInfo ctor,
+        IReadOnlyDictionary<string, SourceMember> sourceMembers,
+        out int matchedParameterCount
+    )
+    {
+        matchedParameterCount = 0;
+        foreach (var parameter in ctor.GetParameters())
+        {
+            if (
+                sourceMembers.TryGetValue(parameter.Name ?? "", out var sourceMember)
+                && innerFactory.TryGetConverter(sourceMember.ValueType, parameter.ParameterType, out _)
+            )
+            {
+                matchedParameterCount++;
+            }
+            else if (!parameter.HasDefaultValue)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private IValueConverter<TSource, TDestination>? TryCreateConverter<TSource, TDestination>(
@@ -189,7 +220,7 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             il.Emit(OpCodes.Ldarg_1);
             il.EmitLdc(i);
             il.Emit(OpCodes.Ldelem_Ref);
-            il.Emit(OpCodes.Ldarg_0);
+            il.EmitLdarg(typeof(TSource), 0);
             il.EmitAccessor(sourceMember.Member);
             if (sourceMember.ValueType.IsValueType)
             {
@@ -223,7 +254,7 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             il.Emit(OpCodes.Ldarg_1);
             il.EmitLdc(localIndex);
             il.Emit(OpCodes.Ldelem_Ref);
-            il.Emit(OpCodes.Ldarg_0);
+            il.EmitLdarg(typeof(TSource), 0);
             il.EmitAccessor(sourceMember.Member);
             if (sourceMember.ValueType.IsValueType)
             {
@@ -282,6 +313,35 @@ file static class ILGeneratorExtensions
         else
         {
             il.Emit(OpCodes.Castclass, type);
+        }
+    }
+
+    public static void EmitLdarg(this ILGenerator il, Type type, int index)
+    {
+        if (type.IsValueType)
+        {
+            il.Emit((index >= 0 && index <= 255) ? OpCodes.Ldarga_S : OpCodes.Ldarga, index);
+        }
+        else if (index >= 0 && index < 4)
+        {
+            il.Emit(
+                index switch
+                {
+                    0 => OpCodes.Ldarg_0,
+                    1 => OpCodes.Ldarg_1,
+                    2 => OpCodes.Ldarg_2,
+                    3 => OpCodes.Ldarg_3,
+                    _ => throw new InvalidOperationException("Invalid argument index for Ldarg"),
+                }
+            );
+        }
+        else if (index >= 0 && index <= 255)
+        {
+            il.Emit(OpCodes.Ldarg_S, index);
+        }
+        else
+        {
+            il.Emit(OpCodes.Ldarg, index);
         }
     }
 
