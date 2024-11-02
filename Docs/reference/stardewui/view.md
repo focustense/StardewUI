@@ -776,7 +776,13 @@ public bool IsDirty();
 
 ##### Remarks
 
-Typically, a view will be considered dirty if and only if one of the following are true:  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
+Typically, a view will be considered dirty if and only if one of the following are true: 
+
+  - The [Layout](iview.md#layout) has changed
+  - The content has changed in a way that could affect layout, e.g. the text has changed in a [Content](layout/lengthtype.md#content) configuration
+  - The `availableSize` is not the same as the previously-seen value (see remarks in [Measure(Vector2)](iview.md#measurevector2))
+
+ A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
 
 -----
 

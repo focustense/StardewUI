@@ -154,7 +154,13 @@ public StardewUI.Widgets.Keybinding.KeybindType KeybindType { get; set; }
 
 ##### Remarks
 
-This determines the behavior of the capturing as well as what happens after capture:  Typically when using single-bind or single-button modes, the caller should [StartCapturing()](keybindoverlay.md#startcapturing) upon creation of the overlay in order to minimize redundant clicks.
+This determines the behavior of the capturing as well as what happens after capture: 
+
+  - [MultipleKeybinds](keybindtype.md#multiplekeybinds) displays the list of existing keybinds (if any), adds the captured keybind when all buttons/keys are released, and allows adding more;
+  - [SingleKeybind](keybindtype.md#singlekeybind) does not display the list or separator, and when all buttons/keys are released, updates its [KeybindList](keybindoverlay.md#keybindlist) to have that single keybind and closes the overlay.
+  - [SingleButton](keybindtype.md#singlebutton) is similar to [SingleKeybind](keybindtype.md#singlekeybind) but records the keybind and closes the overlay as soon as a single button is pressed.
+
+ Typically when using single-bind or single-button modes, the caller should [StartCapturing()](keybindoverlay.md#startcapturing) upon creation of the overlay in order to minimize redundant clicks.
 
 -----
 

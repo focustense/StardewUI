@@ -33,6 +33,7 @@ public interface IValueConverterFactory
 | [GetConverter&lt;TSource, TDestination&gt;()](#getconvertertsource-tdestination) | Gets a converter from a given source type to a given destination type. | 
 | [GetRequiredConverter&lt;TSource, TDestination&gt;()](#getrequiredconvertertsource-tdestination) | Gets a converter from a given source type to a given destination type, throwing if the conversion is not supported. | 
 | [TryGetConverter&lt;TSource, TDestination&gt;(IValueConverter&lt;TSource, TDestination&gt;)](#trygetconvertertsource-tdestinationivalueconvertertsource-tdestination) | Attempts to obtain a converter from a given source type to a given destination type. | 
+| [TryGetConverter(Type, Type, IValueConverter)](#trygetconvertertype-type-ivalueconverter) | Attempts to obtain a converter from a given source type to a given destination type. | 
 
 ## Details
 
@@ -81,6 +82,33 @@ bool TryGetConverter<TSource, TDestination>(out IValueConverter<TSource, TDestin
 ##### Parameters
 
 **`converter`** &nbsp; [IValueConverter&lt;TSource, TDestination&gt;](ivalueconverter-2.md)  
+If the method returns `true`, holds the converter that converts between the specified types; otherwise `null`.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if the conversion is supported, otherwise `false`.
+
+-----
+
+#### TryGetConverter(Type, Type, IValueConverter)
+
+Attempts to obtain a converter from a given source type to a given destination type.
+
+```cs
+bool TryGetConverter(System.Type sourceType, System.Type destinationType, out StardewUI.Framework.Converters.IValueConverter converter);
+```
+
+##### Parameters
+
+**`sourceType`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
+The type of value to be converted.
+
+**`destinationType`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
+The converted value type.
+
+**`converter`** &nbsp; [IValueConverter](ivalueconverter.md)  
 If the method returns `true`, holds the converter that converts between the specified types; otherwise `null`.
 
 ##### Returns

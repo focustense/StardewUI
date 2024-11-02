@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Layout parameters for an [IView](../iview.md).
 
 ```cs
+[StardewUI.DuckType]
 public readonly struct LayoutParameters : 
     IEquatable<StardewUI.Layout.LayoutParameters>
 ```

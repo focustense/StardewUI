@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Describes the position of a [FloatingElement](floatingelement.md).
 
 ```cs
+[StardewUI.DuckType]
 public class FloatingPosition
 ```
 

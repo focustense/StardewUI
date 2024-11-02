@@ -37,7 +37,11 @@ The type of value tracked.
 
 ## Remarks
 
-Decorated properties must be initialized in the decorator's constructor by calling [RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)](decoratorview-1.md#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue), and have the following behavior:
+Decorated properties must be initialized in the decorator's constructor by calling [RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)](decoratorview-1.md#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue), and have the following behavior: 
+
+  - The current value is tracked independently of the inner view;
+  - If the current value has **not** been set, then it is ignored when initializing a new view;
+  - If the current value **has** been set, the view's value is overwritten on initialization.
 
 ## Members
 
@@ -80,7 +84,11 @@ The initial value to return from [Get()](decoratorview-1.decoratedproperty-1.md#
 
 ##### Remarks
 
-Decorated properties must be initialized in the decorator's constructor by calling [RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)](decoratorview-1.md#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue), and have the following behavior:
+Decorated properties must be initialized in the decorator's constructor by calling [RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)](decoratorview-1.md#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue), and have the following behavior: 
+
+  - The current value is tracked independently of the inner view;
+  - If the current value has **not** been set, then it is ignored when initializing a new view;
+  - If the current value **has** been set, the view's value is overwritten on initialization.
 
 -----
 

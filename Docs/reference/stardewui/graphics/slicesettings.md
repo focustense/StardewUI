@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Additional nine-slice settings for dealing with certain "unique" structures.
 
 ```cs
+[StardewUI.DuckType]
 public record SliceSettings : IEquatable<StardewUI.Graphics.SliceSettings>
 ```
 

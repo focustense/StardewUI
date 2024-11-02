@@ -22,14 +22,15 @@ String converter for the XNA [Point](https://docs.monogame.net/api/Microsoft.Xna
 
 ```cs
 public class PointConverter : 
-    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Point>
+    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Point>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ PointConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)>
+[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)>, [IValueConverter](ivalueconverter.md)
 
 ## Members
 

@@ -22,7 +22,8 @@ Generic delegating converter, accepting a conversion function.
 
 ```cs
 public class ValueConverter<TSource, TDestination> : 
-    StardewUI.Framework.Converters.IValueConverter<TSource, TDestination>
+    StardewUI.Framework.Converters.IValueConverter<TSource, TDestination>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 ### Type Parameters
@@ -38,7 +39,7 @@ The converted value type.
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ ValueConverter&lt;TSource, TDestination&gt;
 
 **Implements**  
-[IValueConverter&lt;TSource, TDestination&gt;](ivalueconverter-2.md)
+[IValueConverter&lt;TSource, TDestination&gt;](ivalueconverter-2.md), [IValueConverter](ivalueconverter.md)
 
 ## Members
 

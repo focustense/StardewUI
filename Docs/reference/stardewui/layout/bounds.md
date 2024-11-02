@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A bounding rectangle using floating-point dimensions.
 
 ```cs
+[StardewUI.DuckType]
 public record Bounds : StardewUI.Layout.IOffsettable<StardewUI.Layout.Bounds>, 
     IEquatable<StardewUI.Layout.Bounds>
 ```

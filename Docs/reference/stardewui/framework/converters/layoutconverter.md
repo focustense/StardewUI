@@ -22,14 +22,15 @@ String converter for the [LayoutParameters](../../layout/layoutparameters.md) ty
 
 ```cs
 public class LayoutConverter : 
-    StardewUI.Framework.Converters.IValueConverter<string, StardewUI.Layout.LayoutParameters>
+    StardewUI.Framework.Converters.IValueConverter<string, StardewUI.Layout.LayoutParameters>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ LayoutConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [LayoutParameters](../../layout/layoutparameters.md)>
+[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [LayoutParameters](../../layout/layoutparameters.md)>, [IValueConverter](ivalueconverter.md)
 
 ## Remarks
 

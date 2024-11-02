@@ -22,14 +22,15 @@ Converts data from a game item to its corresponding sprite.
 
 ```cs
 public class ItemSpriteConverter : 
-    StardewUI.Framework.Converters.IValueConverter<StardewValley.ItemTypeDefinitions.ParsedItemData, StardewUI.Graphics.Sprite>
+    StardewUI.Framework.Converters.IValueConverter<StardewValley.ItemTypeDefinitions.ParsedItemData, StardewUI.Graphics.Sprite>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ ItemSpriteConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<ParsedItemData, [Sprite](../../graphics/sprite.md)>
+[IValueConverter](ivalueconverter-2.md)<ParsedItemData, [Sprite](../../graphics/sprite.md)>, [IValueConverter](ivalueconverter.md)
 
 ## Members
 

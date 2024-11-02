@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Specifies how to calculate the length of a single dimension (width or height).
 
 ```cs
+[StardewUI.DuckType]
 public readonly struct Length : IEquatable<StardewUI.Layout.Length>
 ```
 

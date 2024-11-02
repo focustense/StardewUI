@@ -22,14 +22,15 @@ Converts a texture to a sprite record, using the texture's entire bounds as the 
 
 ```cs
 public class TextureSpriteConverter : 
-    StardewUI.Framework.Converters.IValueConverter<Microsoft.Xna.Framework.Graphics.Texture2D, StardewUI.Graphics.Sprite>
+    StardewUI.Framework.Converters.IValueConverter<Microsoft.Xna.Framework.Graphics.Texture2D, StardewUI.Graphics.Sprite>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ TextureSpriteConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[Texture2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html), [Sprite](../../graphics/sprite.md)>
+[IValueConverter](ivalueconverter-2.md)<[Texture2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html), [Sprite](../../graphics/sprite.md)>, [IValueConverter](ivalueconverter.md)
 
 ## Members
 

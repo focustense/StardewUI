@@ -22,14 +22,15 @@ Converts a tuple with a texture and source rectangle (within the texture) to a s
 
 ```cs
 public class TextureRectSpriteConverter : 
-    StardewUI.Framework.Converters.IValueConverter<Tuple<Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Rectangle>, StardewUI.Graphics.Sprite>
+    StardewUI.Framework.Converters.IValueConverter<Tuple<Microsoft.Xna.Framework.Graphics.Texture2D, Microsoft.Xna.Framework.Rectangle>, StardewUI.Graphics.Sprite>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ TextureRectSpriteConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[Tuple](https://learn.microsoft.com/en-us/dotnet/api/system.tuple-2)<[Texture2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html), [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html)>, [Sprite](../../graphics/sprite.md)>
+[IValueConverter](ivalueconverter-2.md)<[Tuple](https://learn.microsoft.com/en-us/dotnet/api/system.tuple-2)<[Texture2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html), [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html)>, [Sprite](../../graphics/sprite.md)>, [IValueConverter](ivalueconverter.md)
 
 ## Members
 
