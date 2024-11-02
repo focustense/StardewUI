@@ -40,7 +40,7 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
         {
             Logger.Log(
                 $"Cycle detected in duck-type conversion from {typeof(TSource).FullName} to "
-                    + $"{typeof(TDestination).FullName}. Conversion between this types is disabled.",
+                    + $"{typeof(TDestination).FullName}. Conversion between these types is disabled.",
                 LogLevel.Warn
             );
             return false;
