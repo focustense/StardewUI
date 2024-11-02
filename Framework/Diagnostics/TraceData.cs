@@ -48,7 +48,7 @@ public class TraceFile
     }
 
     /// <summary>
-    /// Adds a new <see cref="Frame"/> and <see cref="TraceEvent"/> to open it, and returns the frame index to be used
+    /// Adds a new <see cref="TraceFrame"/> and <see cref="TraceEvent"/> to open it, and returns the frame index to be used
     /// subsequently with <see cref="CloseFrame(int)"/>.
     /// </summary>
     /// <param name="name">Name of the method or operation being traced.</param>
@@ -80,14 +80,14 @@ public class TraceShared
     /// <summary>
     /// The captured frames, or slices.
     /// </summary>
-    public List<Frame> Frames { get; } = [];
+    public List<TraceFrame> Frames { get; } = [];
 }
 
 /// <summary>
 /// Represents a single captured frame, or slice.
 /// </summary>
 /// <param name="Name">Name of the method or operation that was measured.</param>
-public record Frame(string Name);
+public record TraceFrame(string Name);
 
 /// <summary>
 /// A single profile in a trace.
