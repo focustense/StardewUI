@@ -764,6 +764,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -845,6 +849,48 @@
   
   <span class="md-ellipsis">
     DirectionExtensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../duckpropertyattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckPropertyAttribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ducktypeattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckTypeAttribute
   </span>
   
 
@@ -1685,7 +1731,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_20" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_22" checked>
         
           
           
@@ -1701,14 +1747,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_20" id="__nav_5_1_20_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_22" id="__nav_5_1_22_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_20_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_20">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_22">
             <span class="md-nav__icon md-icon"></span>
             Widgets
           </label>
@@ -3006,7 +3052,12 @@ The type of value tracked.</p>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ DecoratedProperty&lt;T, TValue&gt;</p>
 <h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
-<p>Decorated properties must be initialized in the decorator's constructor by calling <a href="../decoratorview-1/#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue">RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)</a>, and have the following behavior:</p>
+<p>Decorated properties must be initialized in the decorator's constructor by calling <a href="../decoratorview-1/#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue">RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)</a>, and have the following behavior: </p>
+<ul>
+<li>The current value is tracked independently of the inner view;</li>
+<li>If the current value has <strong>not</strong> been set, then it is ignored when initializing a new view;</li>
+<li>If the current value <strong>has</strong> been set, the view's value is overwritten on initialization.</li>
+</ul>
 <h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
 <h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
@@ -3060,7 +3111,12 @@ Delegate to change the current value on the inner view.</p>
 <p><strong><code>defaultValue</code></strong> &nbsp; TValue<br />
 The initial value to return from <a href="./#get">Get()</a> if no view exists and the value has not been changed. This is never written to the view, it is only used by <a href="./#get">Get()</a> and is effectively a hack to allow <a href="./">DecoratedProperty&lt;T, TValue&gt;</a> to deal with value (struct) types.</p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
-<p>Decorated properties must be initialized in the decorator's constructor by calling <a href="../decoratorview-1/#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue">RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)</a>, and have the following behavior:</p>
+<p>Decorated properties must be initialized in the decorator's constructor by calling <a href="../decoratorview-1/#registerdecoratedpropertytvaluedecoratedpropertyt-tvalue">RegisterDecoratedProperty&lt;TValue&gt;(DecoratedProperty&lt;T, TValue&gt;)</a>, and have the following behavior: </p>
+<ul>
+<li>The current value is tracked independently of the inner view;</li>
+<li>If the current value has <strong>not</strong> been set, then it is ignored when initializing a new view;</li>
+<li>If the current value <strong>has</strong> been set, the view's value is overwritten on initialization.</li>
+</ul>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="get">Get()<a class="headerlink" href="#get" title="Permanent link"></a></h4>

@@ -84,7 +84,8 @@ table .md-tooltip {
     padding: 0 0.5rem;
 }
 
-.md-typeset .api-reference p {
+.md-typeset .api-reference p,
+.md-typeset .api-reference li {
     font-size: 0.7rem;
 }
 

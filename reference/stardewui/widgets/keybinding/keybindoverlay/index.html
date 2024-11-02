@@ -764,6 +764,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -845,6 +849,48 @@
   
   <span class="md-ellipsis">
     DirectionExtensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../duckpropertyattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckPropertyAttribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ducktypeattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckTypeAttribute
   </span>
   
 
@@ -1685,7 +1731,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_20" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_22" checked>
         
           
           
@@ -1701,14 +1747,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_20" id="__nav_5_1_20_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_22" id="__nav_5_1_22_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_20_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_20">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_22">
             <span class="md-nav__icon md-icon"></span>
             Widgets
           </label>
@@ -2509,7 +2555,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_20_38" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_22_38" checked>
         
           
           
@@ -2525,14 +2571,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_20_38" id="__nav_5_1_20_38_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_22_38" id="__nav_5_1_22_38_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_20_38_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_20_38">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_22_38_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_22_38">
             <span class="md-nav__icon md-icon"></span>
             Keybinding
           </label>
@@ -3360,7 +3406,13 @@ Map of bindable buttons to sprite representations.</p>
 <h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../keybindtype/">KeybindType</a></p>
 <h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
-<p>This determines the behavior of the capturing as well as what happens after capture:  Typically when using single-bind or single-button modes, the caller should <a href="./#startcapturing">StartCapturing()</a> upon creation of the overlay in order to minimize redundant clicks.</p>
+<p>This determines the behavior of the capturing as well as what happens after capture: </p>
+<ul>
+<li><a href="../keybindtype/#multiplekeybinds">MultipleKeybinds</a> displays the list of existing keybinds (if any), adds the captured keybind when all buttons/keys are released, and allows adding more;</li>
+<li><a href="../keybindtype/#singlekeybind">SingleKeybind</a> does not display the list or separator, and when all buttons/keys are released, updates its <a href="./#keybindlist">KeybindList</a> to have that single keybind and closes the overlay.</li>
+<li><a href="../keybindtype/#singlebutton">SingleButton</a> is similar to <a href="../keybindtype/#singlekeybind">SingleKeybind</a> but records the keybind and closes the overlay as soon as a single button is pressed.</li>
+</ul>
+<p>Typically when using single-bind or single-button modes, the caller should <a href="./#startcapturing">StartCapturing()</a> upon creation of the overlay in order to minimize redundant clicks.</p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="createview">CreateView()<a class="headerlink" href="#createview" title="Permanent link"></a></h4>

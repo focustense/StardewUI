@@ -764,6 +764,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -845,6 +849,48 @@
   
   <span class="md-ellipsis">
     DirectionExtensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../duckpropertyattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckPropertyAttribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ducktypeattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckTypeAttribute
   </span>
   
 
@@ -3975,7 +4021,13 @@ The search position, relative to where this view's content starts (after applyin
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the view must be measured again; otherwise <code>false</code>.</p>
 <h5 id="remarks_17">Remarks<a class="headerlink" href="#remarks_17" title="Permanent link"></a></h5>
-<p>Typically, a view will be considered dirty if and only if one of the following are true:  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.</p>
+<p>Typically, a view will be considered dirty if and only if one of the following are true: </p>
+<ul>
+<li>The <a href="../iview/#layout">Layout</a> has changed</li>
+<li>The content has changed in a way that could affect layout, e.g. the text has changed in a <a href="../layout/lengthtype/#content">Content</a> configuration</li>
+<li>The <code>availableSize</code> is not the same as the previously-seen value (see remarks in <a href="../iview/#measurevector2">Measure(Vector2)</a>)</li>
+</ul>
+<p>A correct implementation is important for performance, as full layout can be very expensive to run on every frame.</p>
 <hr />
 <h4 id="logfocussearchstring">LogFocusSearch(string)<a class="headerlink" href="#logfocussearchstring" title="Permanent link"></a></h4>
 <p>Outputs a debug log entry with the current view type, name and specified message.</p>

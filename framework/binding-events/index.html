@@ -1098,12 +1098,9 @@
 <td><code>$Button</code></td>
 <td>An <em>event property</em> value. The <code>$</code> token is <strong>only</strong> valid for event arguments, and refers to the same-named property on the real <code>EventArgs</code> object. Specifically, we want the <a href="../../reference/stardewui/events/clickeventargs/#button"><code>Button</code></a> property of <code>ClickEventArgs</code>—for example, we might use this to implement different behavior for left-click vs. right-click.</td>
 </tr>
-<tr>
-<td>///</td>
-<td></td>
-</tr>
 </tbody>
 </table>
+</div>
 <p>This example covers all possible argument types: literals, context properties, and event properties. Other types of bindings, such as assets (<code>@path</code>) are <strong>not</strong> supported in event arguments.</p>
 <h2 id="return-values">Return Values<a class="headerlink" href="#return-values" title="Permanent link"></a></h2>
 <p>Event handler methods, such as the hypothetical <code>Buy</code> method above, will generally be <code>void</code>, but there is one special case: a handler may return <code>bool</code> in order to control the <a href="../../reference/stardewui/events/bubbleeventargs/#handled"><code>Handled</code></a> property of the event and prevent it from bubbling up.</p>
@@ -1184,7 +1181,6 @@
 </div>
 <p>StardewUI automatically recognizes that <code>DisplayExtraInfo</code> now returns a <code>bool</code>, and since we return <code>true</code>, it sets the event's <code>Handled</code> property to <code>true</code>, preventing <code>Buy()</code> from being triggered at the same time.</p>
 <p>This leaves us with the behavior we wanted originally: clicking the info button (<code>&lt;image&gt;</code>) <em>only</em> shows info, while clicking anywhere else within the list item (<code>&lt;frame&gt;</code>) runs the "buy" logic.</p>
-</div>
 
 
 
