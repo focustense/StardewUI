@@ -563,6 +563,8 @@
       
         
       
+        
+      
     
     
       
@@ -751,6 +753,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#duck-typing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Duck Typing
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -870,6 +881,27 @@
   
   <span class="md-ellipsis">
     Included Views
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../duck-typing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Duck Typing
   </span>
   
 
@@ -1204,6 +1236,15 @@
   <a href="#type-conversions" class="md-nav__link">
     <span class="md-ellipsis">
       Type Conversions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#duck-typing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Duck Typing
     </span>
   </a>
   
@@ -1965,7 +2006,8 @@
 <li><code>n</code> is any positive integer; lays out the <a href="../../library/standard-views/#grid">grid</a> using a fixed width/height of <code>n</code> per item, and wraps to the next row/column when reaching the end.</li>
 </ol>
 <p>If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from <code>string</code> to be used in literal attributes.</p>
-<p>Unfortunately, allowing mods to arbitrarily extend this list would be a chicken-egg problem: you need direct access to the destination type in order to implement a converter. However, if anything important is missing, feel free to make a <a href="https://github.com/focustense/StardewUI/issues">request</a> or a <a href="https://github.com/focustense/StardewUI/blob/dev/Framework/Converters/ValueConverterFactory.cs">contribution</a> (writing a converter is usually very simple, often a single line of code).</p>
+<h3 id="duck-typing">Duck Typing <span class="twemoji" title="Experimental"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 2v2h1v14a4 4 0 0 0 4 4 4 4 0 0 0 4-4V4h1V2zm4 14c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m2-4c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1m1-5h-4V4h4z"/></svg></span><a class="headerlink" href="#duck-typing" title="Permanent link"></a></h3>
+<p>If a particular type conversion is not in the table above, it may be available for automatic implicit conversion. See the page on <a href="../duck-typing/">duck typing</a> for rules and additional information on when and how this occurs.</p>
 <h2 id="children">Children<a class="headerlink" href="#children" title="Permanent link"></a></h2>
 <p>In StarML—as in HTML or XML—an element's children are any tags appearing between the parent element's opening and closing tags:</p>
 <div class="admonition example">
