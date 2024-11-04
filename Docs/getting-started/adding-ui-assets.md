@@ -92,7 +92,7 @@ If you intend to take many images from a single texture atlas ("sprite sheet") t
 
 ```json title="assets/sprites/buffs.json"
 {
-    "Texture": "LooseSprites/BuffsIcons",
+    "Texture": "TileSheets/BuffsIcons",
     "Sprites": {
         "Fishing": {
             "SourceRect": "16, 0, 16, 16"
