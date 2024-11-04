@@ -550,7 +550,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             (view, origin) =>
             {
                 var localPosition = mousePosition.ToVector2() - origin;
-                if (!view.ContainsPoint(origin))
+                if (!view.ContainsPoint(localPosition))
                 {
                     return;
                 }
