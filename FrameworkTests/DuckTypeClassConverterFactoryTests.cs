@@ -46,7 +46,7 @@ public class DuckTypeClassConverterFactoryTests
 
     public DuckTypeClassConverterFactoryTests()
     {
-        var rootFactory = new RootValueConverterFactory();
+        var rootFactory = new ValueConverterFactory();
         rootFactory.Register(new EnumNameConverterFactory());
         rootFactory.Register(new IdentityValueConverterFactory());
         factory = new(rootFactory);

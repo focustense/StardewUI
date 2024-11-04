@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Converters;
+﻿using StardewUI.Framework.Binding;
+using StardewUI.Framework.Converters;
 
 namespace StardewUI.Framework.Addons;
 
@@ -40,4 +41,15 @@ public interface IAddon
     /// conversions can apply.
     /// </remarks>
     IValueConverterFactory? ValueConverterFactory => null;
+
+    /// <summary>
+    /// Provides user-defined view types and enables them to be used with custom markup tags.
+    /// </summary>
+    /// <remarks>
+    /// All user-defined views have lower priority than the built-in views; a UI add-on is not allowed to replace the
+    /// behavior of a standard tag such as <c>&lt;label&gt;</c> or <c>&lt;lane&gt;</c>. Within the set of user-defined
+    /// views, the priority is based on inverted load order; the <em>last</em> add-on to associate a particular tag with
+    /// some view type will be the one to always handle that tag, as long as it is not a standard tag.
+    /// </remarks>
+    IViewFactory? ViewFactory => null;
 }

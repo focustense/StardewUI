@@ -1,122 +1,24 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewUI.Layout;
 
 namespace StardewUI.Framework.Converters;
 
 /// <summary>
-/// Standard implementation of <see cref="IValueConverterFactory"/> that allows registering new converters.
+/// Converter factory used as the root in StardewUI apps, including all built-in converters.
 /// </summary>
-public class RootValueConverterFactory : IValueConverterFactory
+internal class RootValueConverterFactory : ValueConverterFactory
 {
     /// <summary>
-    /// Creates a <see cref="RootValueConverterFactory"/> with the default set of built-in framework converters already
-    /// registered.
+    /// Initializes a new <see cref="RootValueConverterFactory"/> with the specified add-on factories.
     /// </summary>
-    /// <param name="addonFactories">View factories registered by add-ons, in order of priority. All add-ons factories
-    /// are considered after the standard conversions, but before fallback conversions (duck-type, ToString).</param>
-    internal static RootValueConverterFactory Default(IEnumerable<IValueConverterFactory> addonFactories)
+    /// <param name="addonFactories">Converter factories registered by add-ons, in order of priority. All add-on
+    /// factories are considered after the standard conversions, but before fallback conversions (duck-type,
+    /// ToString).</param>
+    public RootValueConverterFactory(IEnumerable<IValueConverterFactory> addonFactories)
     {
-        var factory = new RootValueConverterFactory();
-        factory.RegisterDefaults();
-        factory.factories.AddRange(addonFactories);
-        factory.RegisterFallbackDefaults();
-        return factory;
-    }
-
-    private readonly Dictionary<(Type, Type), IValueConverter?> converters = [];
-    private readonly List<IValueConverterFactory> factories = [];
-
-    /// <summary>
-    /// Initializes a new <see cref="RootValueConverterFactory"/> instance.
-    /// </summary>
-    public RootValueConverterFactory() { }
-
-    /// <summary>
-    /// Registers a delegate factory that may be used to obtain a converter for which there is no explicit registration.
-    /// </summary>
-    /// <remarks>
-    /// Use when a single converter may handle many input or output types, e.g. string-to-enum conversions.
-    /// </remarks>
-    /// <param name="factory">The delegate factory.</param>
-    public void Register(IValueConverterFactory factory)
-    {
-        factories.Add(factory);
-    }
-
-    /// <inheritdoc />
-    public bool TryGetConverter(
-        Type sourceType,
-        Type destinationType,
-        [MaybeNullWhen(false)] out IValueConverter converter
-    )
-    {
-        using var _ = Trace.Begin(this, nameof(TryGetConverter));
-        var key = (sourceType, destinationType);
-        if (converters.TryGetValue(key, out var cached))
-        {
-            converter = cached;
-        }
-        else
-        {
-            converter = factories
-                .Select(factory => factory.TryGetConverter(sourceType, destinationType, out var inner) ? inner : null)
-                .Where(converter => converter is not null)
-                .FirstOrDefault();
-            converters[key] = converter;
-        }
-        return converter is not null;
-    }
-
-    /// <inheritdoc />
-    public bool TryGetConverter<TSource, TDestination>(
-        [MaybeNullWhen(false)] out IValueConverter<TSource, TDestination> converter
-    )
-    {
-        using var _ = Trace.Begin(this, nameof(TryGetConverter));
-        var key = (typeof(TSource), typeof(TDestination));
-        if (converters.TryGetValue(key, out var cached))
-        {
-            converter = cached as IValueConverter<TSource, TDestination>;
-        }
-        else
-        {
-            converter = factories
-                .Select(factory => factory.TryGetConverter<TSource, TDestination>(out var inner) ? inner : null)
-                .Where(converter => converter is not null)
-                .FirstOrDefault();
-            converters[key] = converter;
-        }
-        return converter is not null;
-    }
-
-    /// <summary>
-    /// Attempts to register a new converter.
-    /// </summary>
-    /// <typeparam name="TSource">The type of value to be converted.</typeparam>
-    /// <typeparam name="TDestination">The converted value type.</typeparam>
-    /// <param name="converter">The converter that handles this conversion.</param>
-    /// <returns><c>true</c> if the <paramref name="converter"/> was registered for the specified types; <c>false</c> if
-    /// there was already a registration or cached converter for those types.</returns>
-    public bool TryRegister<TSource, TDestination>(IValueConverter<TSource, TDestination> converter)
-    {
-        return converters.TryAdd((typeof(TSource), typeof(TDestination)), converter);
-    }
-
-    /// <summary>
-    /// Attempts to register a new converter.
-    /// </summary>
-    /// <typeparam name="TSource">The type of value to be converted.</typeparam>
-    /// <typeparam name="TDestination">The converted value type.</typeparam>
-    /// <param name="convert">Function to convert from <typeparamref name="TSource"/> to
-    /// <typeparamref name="TDestination"/>.</param>
-    /// <returns><c>true</c> if the conversion function was registered for the specified types; <c>false</c> if there
-    /// was already a registration or cached converter for those types.</returns>
-    public bool TryRegister<TSource, TDestination>(Func<TSource, TDestination> convert)
-    {
-        var key = (typeof(TSource), typeof(TDestination));
-        var converter = new ValueConverter<TSource, TDestination>(convert);
-        return converters.TryAdd(key, converter);
+        RegisterDefaults();
+        Factories.AddRange(addonFactories);
+        RegisterFallbackDefaults();
     }
 
     // High-priority defaults that take precedence over user-defined conversions. These are all documented, tested,

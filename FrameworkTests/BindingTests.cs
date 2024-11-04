@@ -79,10 +79,10 @@ public partial class BindingTests
     {
         this.output = output;
         Logger.Monitor = new TestMonitor(output);
-        viewFactory = new ViewFactory();
+        viewFactory = new RootViewFactory([]);
         assetCache = new FakeAssetCache();
         valueSourceFactory = new ValueSourceFactory(assetCache);
-        valueConverterFactory = RootValueConverterFactory.Default([]);
+        valueConverterFactory = new RootValueConverterFactory([]);
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);

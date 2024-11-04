@@ -11,7 +11,7 @@ internal class ExampleAddon(string id) : IAddon
 
     private readonly Lazy<IValueConverterFactory> valueConverterFactory = new(() =>
     {
-        var factory = new RootValueConverterFactory();
+        var factory = new ValueConverterFactory();
         factory.TryRegister(new ItemIdToSpriteConverter());
         return factory;
     });

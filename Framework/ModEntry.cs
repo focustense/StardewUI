@@ -108,7 +108,12 @@ internal sealed class ModEntry : Mod
     private IViewNodeFactory CreateViewNodeFactory()
     {
         var loadOrder = UI.ResolveLoadOrder();
-        var viewFactory = new ViewFactory();
+        var addonViewFactories = loadOrder
+            .Reverse()
+            .Select(addon => addon.ViewFactory)
+            .Where(factory => factory is not null)
+            .Cast<IViewFactory>();
+        var rootViewFactory = new RootViewFactory(addonViewFactories);
         assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
         var valueSourceFactory = new ValueSourceFactory(assetCache);
         var addonValueConverterFactories = loadOrder
@@ -116,11 +121,17 @@ internal sealed class ModEntry : Mod
             .Select(addon => addon.ValueConverterFactory)
             .Where(factory => factory is not null)
             .Cast<IValueConverterFactory>();
-        var rootValueConverterFactory = RootValueConverterFactory.Default(addonValueConverterFactories);
+        var rootValueConverterFactory = new RootValueConverterFactory(addonValueConverterFactories);
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
-        return new ViewNodeFactory(viewFactory, valueSourceFactory, rootValueConverterFactory, viewBinder, assetCache);
+        return new ViewNodeFactory(
+            rootViewFactory,
+            valueSourceFactory,
+            rootValueConverterFactory,
+            viewBinder,
+            assetCache
+        );
     }
 
     [EventPriority(EventPriority.Normal + 1)]
