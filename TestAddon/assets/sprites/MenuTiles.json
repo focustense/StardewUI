@@ -1,0 +1,9 @@
+﻿{
+  "Texture": "Maps/MenuTiles",
+  "Sprites": {
+    "ItemBorder": {
+      "SourceRect": "0, 320, 60, 60",
+      "FixedEdges": "4, 9, 9, 4"
+    }
+  }
+}
