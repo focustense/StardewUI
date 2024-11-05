@@ -52,6 +52,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly bool wasHudDisplayed;
 
     private ViewChild[] hoverPath = [];
+    private bool isRehoverRequested;
+    private bool isRehoverStarted;
 
     // When clearing the activeClickableMenu, the game will call its Dispose method BEFORE actually changing the field
     // value to null or the new menu. If a Close handler then tries to open a different menu (which is really the
@@ -251,12 +253,21 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void performHoverAction(int x, int y)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(performHoverAction));
-        if (previousHoverPosition.X == x && previousHoverPosition.Y == y)
+        if (isRehoverStarted || (previousHoverPosition.X != x || previousHoverPosition.Y != y))
         {
-            return;
+            using var _ = OverlayContext.PushContext(overlayContext);
+            OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin, x, y));
         }
-        using var _ = OverlayContext.PushContext(overlayContext);
-        OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin, x, y));
+
+        // We use two flags for this in order to delay the re-hover by one frame, because (a) input events won't always
+        // get handled in the ideal order to track any specific change, and (b) even if they do, when operating menus
+        // from the Framework, there can often by a one-frame delay before everything gets perfectly in sync due to
+        // coordination between the view model, in vs. out bindings, reactions to INPC or other change events, etc.
+        //
+        // A delay of exactly 1 frame isn't always going to be perfect either, but it handles the majority of cases such
+        // as wheel scrolling and controller-triggered tab/page navigation.
+        isRehoverStarted = isRehoverRequested;
+        isRehoverRequested = false;
     }
 
     /// <inheritdoc />
@@ -563,6 +574,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 }
             }
         );
+        isRehoverRequested = true;
     }
 
     private void InitiateClick(SButton button, Point screenPoint)
@@ -599,6 +611,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         var args = new ClickEventArgs(localPosition, button);
         view.OnClick(args);
+        isRehoverRequested = true;
     }
 
     private void InitiateWheel(Direction direction)
@@ -619,6 +632,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 Refocus(view, origin, localPosition, pathBeforeScroll, direction);
             }
         );
+        isRehoverRequested = true;
     }
 
     private bool IsInputCaptured()
@@ -642,6 +656,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
+        isRehoverRequested = true;
         // Make gutters act as margins; otherwise centering could actually place content in the gutter.
         // For example, if there is an asymmetrical gutter with left = 100 and right = 200, and it takes up the full
         // viewport width, then it will actually occupy the horizontal region from 150 to (viewportWidth - 150), which
@@ -673,6 +688,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         if (isUpdateRequired)
         {
             overlayData.Update(overlay);
+            isRehoverRequested = true;
         }
         return overlayData;
     }
