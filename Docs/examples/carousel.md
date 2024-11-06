@@ -18,7 +18,7 @@ _Author: [:material-github:focustense](https://github.com/focustense)_
 
 A very showy, very hypothetical example of a "shop" where you can buy different items from different train cars.
 
-This example isn't meant to be very practical, but shows off how to use add-ons, AKA [framework extensions](../framework/framework-extensions.md), and includes some unusual features you're unlikely to find anywhere else, such as tweening motion, sub-layout and pagination using controller buttons.
+This example isn't meant to be very practical, but shows off how to use add-ons, AKA [framework extensions](../framework/extensions.md), and includes some unusual features you're unlikely to find anywhere else, such as tweening motion, sub-layout and pagination using controller buttons.
 
 !!! note
 
@@ -37,9 +37,9 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
     {
         public int HeaderIndex => SelectedPageIndex + 1;
         public List<CarouselMenuPage> Pages { get; set; } = [];
-
+    
         [Notify] private int selectedPageIndex;
-
+    
         public bool HandleButtonPress(SButton button)
         {
             return button switch
@@ -49,7 +49,7 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
                 _ => false
             };
         }
-
+    
         public bool NextPage()
         {
             if (SelectedPageIndex < (Pages.Count - 1))
@@ -59,7 +59,7 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
             }
             return false;
         }
-
+    
         public bool PreviousPage()
         {
             if (SelectedPageIndex > 0)
@@ -72,9 +72,9 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
     }
     
     internal enum TrainCarType { Passenger, Freight }
-
+    
     internal enum TrainCovering { None, Minerals, Boxes }
-
+    
     internal class CarouselMenuPage
     {
         public string Title { get; } = title;
@@ -82,7 +82,7 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
         public TrainCovering Covering { get; } = covering;
         public IReadOnlyList<PurchasableItem> Items { get; set; } = items ?? [];
     }
-
+    
     internal class PurchasableItem(ParsedItemData data, int price)
     {
         public ParsedItemData Data { get; } = data;
@@ -99,18 +99,18 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
         public IList<IView> Children { ... }
         public float Gap { ... }
         public LayoutParameters SelectionLayout { ... }
-
+    
         [Notify] private KeySpline easing = KeySpline.Linear;
         [Notify] private int selectedIndex;
         [Notify] private float transitionDuration = 500; // milliseconds
-
+    
         private readonly List<ViewChild> childPositions = [];
-
+    
         private float drawingOffset;
         private float selectedOffset;
         private float transitionProgress;
         private float transitionStartOffset;
-
+    
         public override void OnUpdate(TimeSpan elapsed)
         {
             if (drawingOffset == selectedOffset)
@@ -129,7 +129,7 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
             drawingOffset = transitionStartOffset +
                 (selectedOffset - transitionStartOffset) * offsetRatio;
         }
-
+    
         protected override FocusSearchResult? FindFocusableDescendant(
             Vector2 contentPosition,
             Direction direction)
@@ -147,13 +147,13 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
                 .FocusSearch(contentPosition + offset, direction)?
                 .Offset(-offset);
         }
-
+    
         protected override IEnumerable<ViewChild> GetLocalChildren()
         {
             var offset = new Vector2(-selectedOffset, 0);
             return childPositions.Select(c => c.Offset(offset));
         }
-
+    
         protected override void OnDrawContent(ISpriteBatch b)
         {
             using var _clip = b.Clip(new(0, 0, (int)OuterSize.X, (int)OuterSize.Y));
@@ -171,7 +171,7 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
                 child.View.Draw(b);
             }
         }
-
+    
         protected override void OnMeasure(Vector2 availableSize)
         {
             ContentSize = Layout.GetLimits(availableSize);
@@ -187,14 +187,14 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
             }
             selectedOffset = GetStartOffset(SelectedIndex);
         }
-
+    
         private void BeginTransition()
         {
             selectedOffset = GetStartOffset(SelectedIndex);
             transitionStartOffset = drawingOffset;
             transitionProgress = 0;
         }
-
+    
         private float GetStartOffset(int index)
         {
             if (childPositions.Count == 0
@@ -207,7 +207,7 @@ This example isn't meant to be very practical, but shows off how to use add-ons,
             var localOffset = (ContentSize.X - child.View.OuterSize.X) / 2;
             return child.Position.X - localOffset;
         }
-
+    
         // This method has a special name recognized by
         // PropertyChanged.SourceGenerator, and will run whenever the
         // SelectedIndex property changes to a new value.
