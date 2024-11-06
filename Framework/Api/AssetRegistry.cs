@@ -1,7 +1,9 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;
 using StardewUI.Graphics;
 
@@ -13,7 +15,7 @@ namespace StardewUI.Framework.Api;
 /// <remarks>
 /// Methods here are generally wrapped by the <see cref="IViewEngine"/>.
 /// </remarks>
-internal class AssetRegistry
+internal class AssetRegistry : ISourceResolver
 {
     record DirectoryMapping(string AssetPrefix, string ModDirectory);
 
@@ -91,6 +93,18 @@ internal class AssetRegistry
             assetPrefix += '/';
         }
         viewDirectories.Add(new(assetPrefix, PathUtilities.NormalizePath(modDirectory)));
+    }
+
+    /// <inheritdoc cref="IViewEngine.RegisterViews(string, string)" />
+    public bool TryGetProvidingModId(Document document, [MaybeNullWhen(false)] out string modId)
+    {
+        var filePath = SourceResolver.GetDocumentSourcePath(document);
+        modId =
+            !string.IsNullOrEmpty(filePath)
+            && viewDirectories.Any(dir => filePath.StartsWith(dir.ModDirectory, StringComparison.OrdinalIgnoreCase))
+                ? modId = helper.Translation.ModID
+                : null;
+        return modId is not null;
     }
 
     private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)

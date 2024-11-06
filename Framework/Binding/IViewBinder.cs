@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Descriptors;
+﻿using StardewUI.Framework.Content;
+using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 
 namespace StardewUI.Framework.Binding;
@@ -16,9 +17,10 @@ public interface IViewBinder
     /// <param name="context">The binding context/data, for any non-asset bindings using bindings whose
     /// <see cref="Grammar.AttributeValueType"/> is one of the recognized
     /// <see cref="Grammar.AttributeValueTypeExtensions.IsContextBinding(Grammar.AttributeValueType)"/> types.</param>
+    /// <param name="resolutionScope">Scope for resolving externalized attributes, such as translation keys.</param>
     /// <returns>A view binding that can be used to propagate changes in the <paramref name="context"/> or any dependent
     /// assets to the <paramref name="view"/>.</returns>
-    IViewBinding Bind(IView view, IElement element, BindingContext? context);
+    IViewBinding Bind(IView view, IElement element, BindingContext? context, IResolutionScope resolutionScope);
 
     /// <summary>
     /// Retrieves the descriptor for a view, which provides information about its properties.

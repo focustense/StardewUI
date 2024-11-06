@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -15,6 +16,7 @@ namespace StardewUI.Framework.Binding;
 /// <param name="viewBinder">Binding service used to create <see cref="IViewBinding"/> instances that detect changes to
 /// data or assets and propagate them to the bound <see cref="IView"/>.</param>
 /// <param name="element">Element data for this node.</param>
+/// <param name="resolutionScope">Scope for resolving externalized attributes, such as translation keys.</param>
 /// <param name="contextAttribute">Optional attribute specifying how to resolve the context for child nodes based on
 /// this node's assigned <see cref="Context"/>.</param>
 public class ViewNode(
@@ -22,6 +24,7 @@ public class ViewNode(
     IViewFactory viewFactory,
     IViewBinder viewBinder,
     SElement element,
+    IResolutionScope resolutionScope,
     IAttribute? contextAttribute = null
 ) : IViewNode
 {
@@ -156,7 +159,7 @@ public class ViewNode(
         else
         {
             // Don't require explicit update because IViewBinder.Bind always does an initial forced update.
-            binding = viewBinder.Bind(view, element, context);
+            binding = viewBinder.Bind(view, element, context, resolutionScope);
             wasChanged = true;
         }
         if (childContextSource is not null)

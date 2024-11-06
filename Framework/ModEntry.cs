@@ -15,6 +15,7 @@ internal sealed class ModEntry : Mod
     // Initialized in Entry
     private AssetCache assetCache = null!;
     private ModConfig config = null!;
+    private RootResolutionScopeFactory resolutionScopeFactory = null!;
     private SpriteMaps spriteMaps = null!;
     private IViewNodeFactory viewNodeFactory = null!;
 
@@ -57,7 +58,9 @@ internal sealed class ModEntry : Mod
             );
             return null;
         }
-        return new ViewEngine(assetCache, mod.Helper, viewNodeFactory);
+        var viewEngine = new ViewEngine(assetCache, mod.Helper, viewNodeFactory);
+        resolutionScopeFactory.AddSourceResolver(viewEngine.SourceResolver);
+        return viewEngine;
     }
 
     private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)
@@ -125,12 +128,14 @@ internal sealed class ModEntry : Mod
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
+        resolutionScopeFactory = new(Helper.ModRegistry);
         return new ViewNodeFactory(
             rootViewFactory,
             valueSourceFactory,
             rootValueConverterFactory,
             viewBinder,
-            assetCache
+            assetCache,
+            resolutionScopeFactory
         );
     }
 

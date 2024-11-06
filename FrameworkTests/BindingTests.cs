@@ -68,8 +68,28 @@ public partial class BindingTests
         public bool IsValid { get; set; } = true;
     }
 
+    class FakeResolutionScope : IResolutionScope
+    {
+        public Translation? GetTranslation(string key)
+        {
+            return null;
+        }
+    }
+
+    class FakeResolutionScopeFactory : IResolutionScopeFactory
+    {
+        public FakeResolutionScope Scope { get; } = new FakeResolutionScope();
+
+        public IResolutionScope CreateForDocument(Document document)
+        {
+            return Scope;
+        }
+    }
+
     private readonly FakeAssetCache assetCache;
     private readonly ITestOutputHelper output;
+    private readonly FakeResolutionScopeFactory resolutionScopeFactory;
+    private readonly FakeResolutionScope resolutionScope;
     private readonly IValueConverterFactory valueConverterFactory;
     private readonly IValueSourceFactory valueSourceFactory;
     private readonly IViewFactory viewFactory;
@@ -85,6 +105,8 @@ public partial class BindingTests
         valueConverterFactory = new RootValueConverterFactory([]);
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
+        resolutionScopeFactory = new FakeResolutionScopeFactory();
+        resolutionScope = resolutionScopeFactory.Scope;
         viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
     }
 
@@ -102,7 +124,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
-        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model), resolutionScope);
 
         var label = (Label)view;
         Assert.Equal(1, label.MaxLines);
@@ -137,7 +159,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = false, Size = Vector2.Zero };
-        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model), resolutionScope);
 
         // Initial bind should generally not cause immediate output sync, because we assume the view isn't completely
         // stable or fully initialized yet.
@@ -167,7 +189,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = true };
-        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model), resolutionScope);
 
         var checkbox = (CheckBox)view;
         Assert.True(model.Checked);
@@ -221,12 +243,12 @@ public partial class BindingTests
             ],
             []
         );
-        var tree = new ViewNode(valueSourceFactory, viewFactory, viewBinder, root)
+        var tree = new ViewNode(valueSourceFactory, viewFactory, viewBinder, root, resolutionScope)
         {
             Children =
             [
-                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child1)),
-                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child2)),
+                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child1, resolutionScope)),
+                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child2, resolutionScope)),
             ],
         };
         tree.Update();
@@ -267,7 +289,8 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache
+            assetCache,
+            resolutionScopeFactory
         );
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
@@ -277,7 +300,7 @@ public partial class BindingTests
                 <label max-lines=""2"" text={HeaderText} />
             </lane>";
         var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
+        var tree = viewNodeFactory.CreateNode(document);
         tree.Update();
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
@@ -1730,10 +1753,11 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache
+            assetCache,
+            resolutionScopeFactory
         );
         var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
+        var tree = viewNodeFactory.CreateNode(document);
         tree.Context = BindingContext.Create(model);
         tree.Update();
         return tree;

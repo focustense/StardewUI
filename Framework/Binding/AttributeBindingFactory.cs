@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
@@ -18,9 +19,15 @@ public interface IAttributeBindingFactory
     /// <param name="viewDescriptor">Descriptor for the bound view, providing access to its properties.</param>
     /// <param name="attribute">The attribute data.</param>
     /// <param name="context">The binding context, including the bound data and descriptor for the data type.</param>
+    /// <param name="resolutionScope">Scope for resolving externalized attributes, such as translation keys.</param>
     /// <returns>The created binding, or <c>null</c> if the arguments do not support creating a binding, such as an
     /// <paramref name="attribute"/> bound to a <c>null</c> value of <paramref name="context"/>.</returns>
-    IAttributeBinding? TryCreateBinding(IViewDescriptor viewDescriptor, IAttribute attribute, BindingContext? context);
+    IAttributeBinding? TryCreateBinding(
+        IViewDescriptor viewDescriptor,
+        IAttribute attribute,
+        BindingContext? context,
+        IResolutionScope resolutionScope
+    );
 }
 
 /// <summary>
@@ -133,7 +140,8 @@ public class AttributeBindingFactory(
     public IAttributeBinding? TryCreateBinding(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
-        BindingContext? context
+        BindingContext? context,
+        IResolutionScope resolutionScope
     )
     {
         using var _ = Trace.Begin(this, nameof(TryCreateBinding));
