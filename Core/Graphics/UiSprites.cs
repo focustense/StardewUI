@@ -109,6 +109,26 @@ public static class UiSprites
     public static Sprite GenericHorizontalDivider => new(Game1.menuTexture, SourceRect: new(64, 412, 64, 8));
 
     /// <summary>
+    /// Large down arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeDownArrow => new(Game1.mouseCursors, SourceRect: new(0, 64, 64, 64));
+
+    /// <summary>
+    /// Large left arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeLeftArrow => new(Game1.mouseCursors, SourceRect: new(0, 256, 64, 64));
+
+    /// <summary>
+    /// Large right arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeRightArrow => new(Game1.mouseCursors, SourceRect: new(0, 192, 64, 64));
+
+    /// <summary>
+    /// Large up arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeUpArrow => new(Game1.mouseCursors, SourceRect: new(64, 64, 64, 64));
+
+    /// <summary>
     /// Background used for the in-game menu, not including borders.
     /// </summary>
     public static Sprite MenuBackground => new(Game1.menuTexture, SourceRect: new(64, 128, 64, 64));
