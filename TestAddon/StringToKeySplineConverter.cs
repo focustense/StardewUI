@@ -29,7 +29,7 @@ internal class StringToKeySplineConverter : IValueConverter<string, KeySpline>
             "inquint" => KeySpline.EaseInQuint,
             "outquint" => KeySpline.EaseOutQuint,
             "inoutquint" => KeySpline.EaseInOutQuint,
-            _ => ParseCustomBezier(value)
+            _ => ParseCustomBezier(value),
         };
     }
 
@@ -39,8 +39,9 @@ internal class StringToKeySplineConverter : IValueConverter<string, KeySpline>
         if (values.Length != 4)
         {
             throw new FormatException(
-                $"Invalid cubic bezier value '{value}'. " +
-                $"Must be 4 numbers separated by commas, found {values.Length}.");
+                $"Invalid cubic bezier value '{value}'. "
+                    + $"Must be 4 numbers separated by commas, found {values.Length}."
+            );
         }
         return new(float.Parse(values[0]), float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3]));
     }

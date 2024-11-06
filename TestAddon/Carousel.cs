@@ -46,9 +46,14 @@ internal partial class Carousel : View
         }
     }
 
-    [Notify] private KeySpline easing = KeySpline.Linear;
-    [Notify] private int selectedIndex;
-    [Notify] private float transitionDuration = 500; // milliseconds
+    [Notify]
+    private KeySpline easing = KeySpline.Linear;
+
+    [Notify]
+    private int selectedIndex;
+
+    [Notify]
+    private float transitionDuration = 500; // milliseconds
 
     private readonly List<ViewChild> childPositions = [];
     private readonly DirtyTrackingList<IView> children = [];
@@ -84,9 +89,8 @@ internal partial class Carousel : View
         {
             return null;
         }
-        var selectedChild = (SelectedIndex >= 0 && SelectedIndex < Children.Count)
-            ? childPositions[SelectedIndex]
-            : childPositions[0];
+        var selectedChild =
+            (SelectedIndex >= 0 && SelectedIndex < Children.Count) ? childPositions[SelectedIndex] : childPositions[0];
         var offset = new Vector2(selectedOffset, 0);
         return selectedChild.FocusSearch(contentPosition + offset, direction)?.Offset(-offset);
     }

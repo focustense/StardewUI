@@ -10,7 +10,8 @@ internal partial class CarouselMenuViewModel
     public int HeaderIndex => SelectedPageIndex + 1;
     public List<CarouselMenuPage> Pages { get; set; } = [];
 
-    [Notify] private int selectedPageIndex;
+    [Notify]
+    private int selectedPageIndex;
 
     public bool HandleButtonPress(SButton button)
     {
@@ -35,7 +36,12 @@ internal partial class CarouselMenuViewModel
     }
 }
 
-internal class CarouselMenuPage(string title = "", TrainCarType carType = default, TrainCovering covering = default, IReadOnlyList<PurchasableItem>? items = null)
+internal class CarouselMenuPage(
+    string title = "",
+    TrainCarType carType = default,
+    TrainCovering covering = default,
+    IReadOnlyList<PurchasableItem>? items = null
+)
 {
     public string Title { get; } = title;
 
@@ -46,9 +52,18 @@ internal class CarouselMenuPage(string title = "", TrainCarType carType = defaul
     public IReadOnlyList<PurchasableItem> Items { get; set; } = items ?? [];
 }
 
-internal enum TrainCarType { Passenger, Freight }
+internal enum TrainCarType
+{
+    Passenger,
+    Freight,
+}
 
-internal enum TrainCovering { None, Minerals, Boxes }
+internal enum TrainCovering
+{
+    None,
+    Minerals,
+    Boxes,
+}
 
 internal class PurchasableItem(ParsedItemData data, int price)
 {

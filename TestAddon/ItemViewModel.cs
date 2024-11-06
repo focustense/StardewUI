@@ -9,7 +9,8 @@ internal partial class ItemViewModel : INotifyPropertyChanged
     public IReadOnlyList<string> AllIds { get; } = ItemRegistry.GetObjectTypeDefinition().GetAllIds().ToList();
     public string SelectedItemId => AllIds[ItemIndex];
 
-    [Notify] private int itemIndex;
+    [Notify]
+    private int itemIndex;
 
     public void NextItem()
     {
