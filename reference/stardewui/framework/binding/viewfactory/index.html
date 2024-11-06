@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="View factory for built-in view types.">
+        <meta name="description" content="A view factory based on per-tag delegates. Can be used as a base class for other view factories.">
       
       
       
@@ -67,7 +67,7 @@
       
         <meta  property="og:title"  content="ViewFactory - StardewUI Documentation" >
       
-        <meta  property="og:description"  content="View factory for built-in view types." >
+        <meta  property="og:description"  content="A view factory based on per-tag delegates. Can be used as a base class for other view factories." >
       
         <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/binding/viewfactory.png" >
       
@@ -83,7 +83,7 @@
       
         <meta  name="twitter:title"  content="ViewFactory - StardewUI Documentation" >
       
-        <meta  name="twitter:description"  content="View factory for built-in view types." >
+        <meta  name="twitter:description"  content="A view factory based on per-tag delegates. Can be used as a base class for other view factories." >
       
         <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/framework/binding/viewfactory.png" >
       
@@ -1298,6 +1298,8 @@
       
         
       
+        
+      
     
     
       
@@ -1523,6 +1525,59 @@
         
   
   
+    <a href="../../addons/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Addons
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
     <a href="../../api/" class="md-nav__link">
       
   
@@ -1626,7 +1681,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_17_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_17_11" checked>
         
           
           
@@ -1642,14 +1697,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_17_10" id="__nav_5_1_17_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_17_11" id="__nav_5_1_17_11_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_17_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_17_10">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_17_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_17_11">
             <span class="md-nav__icon md-icon"></span>
             Binding
           </label>
@@ -2303,6 +2358,33 @@
   <a href="#createviewstring" class="md-nav__link">
     <span class="md-ellipsis">
       CreateView(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registertviewstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register&lt;TView&gt;(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerstring-funciview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register(string, Func&lt;IView&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supportstagstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SupportsTag(string)
     </span>
   </a>
   
@@ -3383,6 +3465,8 @@
       
         
       
+        
+      
     
     
       
@@ -3541,6 +3625,33 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#registertviewstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register&lt;TView&gt;(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerstring-funciview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Register(string, Func&lt;IView&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supportstagstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SupportsTag(string)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3577,7 +3688,7 @@
 <p>Namespace: <a href="../">StardewUI.Framework.Binding</a><br />
 Assembly: StardewUI.dll  </p>
 </div>
-<p>View factory for built-in view types.</p>
+<p>A view factory based on per-tag delegates. Can be used as a base class for other view factories.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ViewFactory</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
@@ -3613,6 +3724,18 @@ Assembly: StardewUI.dll  </p>
 <td><a href="#createviewstring">CreateView(string)</a></td>
 <td>Creates a new view.</td>
 </tr>
+<tr>
+<td><a href="#registertviewstring">Register&lt;TView&gt;(string)</a></td>
+<td>Registers a view for a given tag using the view's default parameterless constructor.</td>
+</tr>
+<tr>
+<td><a href="#registerstring-funciview">Register(string, Func&lt;IView&gt;)</a></td>
+<td>Registers a view for a given tag using a delegate function.</td>
+</tr>
+<tr>
+<td><a href="#supportstagstring">SupportsTag(string)</a></td>
+<td>Checks if the factory can create views corresponding to a specific tag.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
@@ -3624,7 +3747,7 @@ Assembly: StardewUI.dll  </p>
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="createviewstring">CreateView(string)<a class="headerlink" href="#createviewstring" title="Permanent link"></a></h4>
 <p>Creates a new view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">CreateView</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">tagName</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">CreateView</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">tagName</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>tagName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
@@ -3632,6 +3755,35 @@ The markup tag that specifies the type of view.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../../iview/">IView</a></p>
 <p>A new view of a type corresponding to the <code>tagName</code>.</p>
+<hr />
+<h4 id="registertviewstring">Register&lt;TView&gt;(string)<a class="headerlink" href="#registertviewstring" title="Permanent link"></a></h4>
+<p>Registers a view for a given tag using the view's default parameterless constructor.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="n">Register</span><span class="o">&lt;</span><span class="n">TView</span><span class="o">&gt;</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">tagName</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>tagName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The markup tag corresponding to the <code>TView</code> type.</p>
+<hr />
+<h4 id="registerstring-funciview">Register(string, Func&lt;IView&gt;)<a class="headerlink" href="#registerstring-funciview" title="Permanent link"></a></h4>
+<p>Registers a view for a given tag using a delegate function.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Register</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">tagName</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="o">&gt;</span><span class="w"> </span><span class="n">tagFactory</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
+<p><strong><code>tagName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The markup tag to handle.</p>
+<p><strong><code>tagFactory</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-1">Func</a>&lt;<a href="../../../iview/">IView</a>&gt;<br />
+Delegate function to create the view corresponding to the <code>tagName</code>.</p>
+<hr />
+<h4 id="supportstagstring">SupportsTag(string)<a class="headerlink" href="#supportstagstring" title="Permanent link"></a></h4>
+<p>Checks if the factory can create views corresponding to a specific tag.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">SupportsTag</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">tagName</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
+<p><strong><code>tagName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The markup tag that specifies the type of view.</p>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p><code>true</code> if this factory should handle the specified <code>tagName</code>, otherwise <code>false</code>.</p>
 <hr />
 </div>
 

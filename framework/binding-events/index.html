@@ -808,7 +808,7 @@
         
   
   <span class="md-ellipsis">
-    Extensions
+    Framework Extensions
   </span>
   
 
@@ -947,6 +947,8 @@
       
         
           
+        
+      
         
       
         
@@ -1169,18 +1171,21 @@
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-html highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">click</span><span class="o">=</span><span class="s">|Buy()|</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>       <span class="na">pointer-enter</span><span class="o">=</span><span class="s">|SetBackgroundHover(&quot;true&quot;)|</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>       <span class="na">pointer-leave</span><span class="o">=</span><span class="s">|SetBackgroundHover(&quot;false&quot;)|</span><span class="p">&gt;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;400px 80px&quot;</span> <span class="na">vertical-content-alignment</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="p">&gt;</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{Text}</span> <span class="p">/&gt;</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="p">&lt;</span><span class="nt">image</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;32px&quot;</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>               <span class="na">sprite</span><span class="o">=</span><span class="s">{@Mods/MyMod/Sprites/Info}</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>               <span class="na">click</span><span class="o">=</span><span class="s">|DisplayExtraInfo()|</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>               <span class="na">pointer-enter</span><span class="o">=</span><span class="s">|SetInfoButtonHover(&quot;true&quot;)|</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>               <span class="na">pointer-leave</span><span class="o">=</span><span class="s">|SetInfoButtonHover(&quot;false&quot;)|</span> <span class="p">/&gt;</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="na">background</span><span class="o">=</span><span class="s">{@Mods/StardewUI/Sprites/ControlBorder}</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>       <span class="na">background-tint</span><span class="o">=</span><span class="s">{BackgroundTint}</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>       <span class="na">click</span><span class="o">=</span><span class="s">|Buy()|</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>       <span class="na">pointer-enter</span><span class="o">=</span><span class="s">|SetBackgroundHover(&quot;true&quot;)|</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>       <span class="na">pointer-leave</span><span class="o">=</span><span class="s">|SetBackgroundHover(&quot;false&quot;)|</span><span class="p">&gt;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="p">&lt;</span><span class="nt">lane</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;400px 80px&quot;</span> <span class="na">vertical-content-alignment</span><span class="o">=</span><span class="s">&quot;middle&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="p">&lt;</span><span class="nt">label</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{Text}</span> <span class="p">/&gt;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        <span class="p">&lt;</span><span class="nt">image</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;32px&quot;</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>               <span class="na">sprite</span><span class="o">=</span><span class="s">{@Mods/MyMod/Sprites/Info}</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>               <span class="na">tint</span><span class="o">=</span><span class="s">{InfoButtonTint}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>               <span class="na">click</span><span class="o">=</span><span class="s">|DisplayExtraInfo()|</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>               <span class="na">pointer-enter</span><span class="o">=</span><span class="s">|SetInfoButtonHover(&quot;true&quot;)|</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>               <span class="na">pointer-leave</span><span class="o">=</span><span class="s">|SetInfoButtonHover(&quot;false&quot;)|</span> <span class="p">/&gt;</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
 </span></code></pre></div>
 </div>
 </div>

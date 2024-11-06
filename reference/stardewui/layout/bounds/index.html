@@ -1296,6 +1296,8 @@
       
         
       
+        
+      
     
     
       
@@ -1911,6 +1913,15 @@
   <a href="#intersectionbounds" class="md-nav__link">
     <span class="md-ellipsis">
       Intersection(Bounds)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#intersectswithbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      IntersectsWith(Bounds)
     </span>
   </a>
   
@@ -2536,6 +2547,8 @@
       
         
       
+        
+      
     
     
       
@@ -2842,6 +2855,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#intersectswithbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      IntersectsWith(Bounds)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#offsetvector2" class="md-nav__link">
     <span class="md-ellipsis">
       Offset(Vector2)
@@ -3000,6 +3022,10 @@ Assembly: StardewUI.dll  </p>
 <td>Computes the intersection of this <a href="./">Bounds</a> with another instance.</td>
 </tr>
 <tr>
+<td><a href="#intersectswithbounds">IntersectsWith(Bounds)</a></td>
+<td>Checks if this <a href="./">Bounds</a> intersects with another instance, without computing the intersection.</td>
+</tr>
+<tr>
 <td><a href="#offsetvector2">Offset(Vector2)</a></td>
 <td>Offsets a <a href="./">Bounds</a> by a given distance.</td>
 </tr>
@@ -3119,25 +3145,36 @@ The other bounds to intersect with.</p>
 <p><a href="./">Bounds</a></p>
 <p>A new <a href="./">Bounds</a> whose area is the intersection of this instance and <code>other</code>, or <a href="./#empty">Empty</a> if they do not overlap.</p>
 <hr />
-<h4 id="offsetvector2">Offset(Vector2)<a class="headerlink" href="#offsetvector2" title="Permanent link"></a></h4>
-<p>Offsets a <a href="./">Bounds</a> by a given distance.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">Offset</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+<h4 id="intersectswithbounds">IntersectsWith(Bounds)<a class="headerlink" href="#intersectswithbounds" title="Permanent link"></a></h4>
+<p>Checks if this <a href="./">Bounds</a> intersects with another instance, without computing the intersection.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IntersectsWith</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
+<p><strong><code>other</code></strong> &nbsp; <a href="./">Bounds</a><br />
+The other bounds to check for intersection.</p>
+<h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p>True if this <a href="./">Bounds</a> and the <code>other</code> bounds have any intersecting area, otherwise <code>false</code>.</p>
+<hr />
+<h4 id="offsetvector2">Offset(Vector2)<a class="headerlink" href="#offsetvector2" title="Permanent link"></a></h4>
+<p>Offsets a <a href="./">Bounds</a> by a given distance.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">Offset</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>distance</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The offset distance.</p>
-<h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
+<h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
 <p><a href="./">Bounds</a></p>
 <p>A new <a href="./">Bounds</a> with the same size as this instance and a <a href="./#position">Position</a> offset by the specified <code>distance</code>.</p>
 <hr />
 <h4 id="unionbounds">Union(Bounds)<a class="headerlink" href="#unionbounds" title="Permanent link"></a></h4>
 <p>Computes the union of this <a href="./">Bounds</a> with another instance.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">Union</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">Union</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>other</code></strong> &nbsp; <a href="./">Bounds</a><br />
 The other bounds to add to the union.</p>
-<h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
 <p><a href="./">Bounds</a></p>
 <p>A new <a href="./">Bounds</a> whose set is the union of this instance and <code>other</code>; i.e. is exactly large enough to contain both bounds.</p>
 <hr />

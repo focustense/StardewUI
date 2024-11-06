@@ -1058,6 +1058,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#registeraddoniaddon" class="md-nav__link">
+    <span class="md-ellipsis">
+      RegisterAddon(IAddon)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1374,6 +1383,8 @@
       
         
           
+        
+      
         
       
         
@@ -1901,6 +1912,8 @@
       
         
       
+        
+      
     
     
       
@@ -2026,6 +2039,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#registeraddoniaddon" class="md-nav__link">
+    <span class="md-ellipsis">
+      RegisterAddon(IAddon)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2081,6 +2103,10 @@ Assembly: StardewUI.dll  </p>
 <td><a href="#initializeimodhelper-imonitor">Initialize(IModHelper, IMonitor)</a></td>
 <td>Initialize the framework.</td>
 </tr>
+<tr>
+<td><a href="#registeraddoniaddon">RegisterAddon(IAddon)</a></td>
+<td>Registers a UI add-on (mod extension).</td>
+</tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
@@ -2094,6 +2120,17 @@ Assembly: StardewUI.dll  </p>
 Helper for the calling mod.</p>
 <p><strong><code>monitor</code></strong> &nbsp; IMonitor<br />
 SMAPI logging helper.</p>
+<hr />
+<h4 id="registeraddoniaddon">RegisterAddon(IAddon)<a class="headerlink" href="#registeraddoniaddon" title="Permanent link"></a></h4>
+<p>Registers a UI add-on (mod extension).</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">RegisterAddon</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Addons</span><span class="p">.</span><span class="n">IAddon</span><span class="w"> </span><span class="n">addon</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>addon</code></strong> &nbsp; <a href="../framework/addons/iaddon/">IAddon</a><br />
+The add-on definition.</p>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
+<p>Add-ons are resolved in the game's GameLaunched event. Therefore, mods providing add-ons must register them as early as possible, typically in their Entry(IModHelper) method, but if that is too early, then in a <code>GameLaunched</code> handler of their own with a high EventPriority. </p>
+<p>Types provided by add-ons (views, converters, etc.) will not actually be used until a UI is created, so add-ons may employ lazy/deferred loading if they need to postpone some critical operations until after the game is fully loaded, other APIs are initialized, etc.</p>
 <hr />
 </div>
 

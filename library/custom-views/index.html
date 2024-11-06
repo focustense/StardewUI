@@ -943,6 +943,8 @@
       
         
       
+        
+      
     
     
       
@@ -1132,7 +1134,7 @@
 <li><a href="../../reference/stardewui/view/#onmeasurevector2"><code>OnMeasure(Vector2)</code></a>, the view's contribution to the combined <a href="../../concepts/#layout">measure and layout pass</a>;</li>
 <li><a href="../../reference/stardewui/view/#ondrawcontentispritebatch"><code>OnDrawContent(ISpriteBatch)</code></a>, which is where the actual rendering occurs.</li>
 </ul>
-<p>The <a href="https://github.com/focustense/StardewUI/blob/dev/Core/Widgets/Spacer.cs">Spacer</a> source demonstrates the bare minimum, although the spacer does not actually do anything other than occupy space, so a custom <code>View</code> will be more involved.</p>
+<p>The <a href="https://github.com/focustense/StardewUI/blob/dev/Core/Widgets/Spacer.cs">Spacer</a> source demonstrates the bare minimum, although the spacer does not actually do anything other than occupy space, so a custom <code>View</code> will be more involved. For a more comprehensive example, see the source for the test addon's <a href="https://github.com/focustense/StardewUI/blob/dev/TestAddon/Carousel.cs">Carousel</a> view, also shown in the <a href="../../examples/carousel/">Carousel example</a>.</p>
 <p>The main thing that <code>OnMeasure</code> <strong>must</strong> always do before returning is set the view's <a href="../../reference/stardewui/view/#contentsize"><code>ContentSize</code></a>, as this and only this is what layout views use to arrange content. If <code>ContentSize</code> is not set, the view will be "laid out" with a size of zero, and anything it tries to draw may overlap with or be overwritten by other views.</p>
 <p>Almost every <code>OnMeasure</code> method should start with the line:</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">var</span><span class="w"> </span><span class="n">limits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Layout</span><span class="p">.</span><span class="n">GetLimits</span><span class="p">(</span><span class="n">availableSize</span><span class="p">);</span>

@@ -1298,6 +1298,8 @@
       
         
       
+        
+      
     
     
       
@@ -1523,6 +1525,59 @@
         
   
   
+    <a href="../../addons/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Addons
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
     <a href="../../api/" class="md-nav__link">
       
   
@@ -1626,7 +1681,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_17_10" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_17_11" checked>
         
           
           
@@ -1642,14 +1697,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_17_10" id="__nav_5_1_17_10_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_17_11" id="__nav_5_1_17_11_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_17_10_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_17_10">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_17_11_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_17_11">
             <span class="md-nav__icon md-icon"></span>
             Binding
           </label>
@@ -2132,6 +2187,15 @@
   <a href="#createviewstring" class="md-nav__link">
     <span class="md-ellipsis">
       CreateView(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supportstagstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SupportsTag(string)
     </span>
   </a>
   
@@ -3359,6 +3423,8 @@
       
         
       
+        
+      
     
     
       
@@ -3493,6 +3559,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#supportstagstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      SupportsTag(string)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3548,6 +3623,10 @@ Assembly: StardewUI.dll  </p>
 <td><a href="#createviewstring">CreateView(string)</a></td>
 <td>Creates a new view.</td>
 </tr>
+<tr>
+<td><a href="#supportstagstring">SupportsTag(string)</a></td>
+<td>Checks if the factory can create views corresponding to a specific tag.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
@@ -3562,6 +3641,17 @@ The markup tag that specifies the type of view.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../../iview/">IView</a></p>
 <p>A new view of a type corresponding to the <code>tagName</code>.</p>
+<hr />
+<h4 id="supportstagstring">SupportsTag(string)<a class="headerlink" href="#supportstagstring" title="Permanent link"></a></h4>
+<p>Checks if the factory can create views corresponding to a specific tag.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">SupportsTag</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">tagName</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>tagName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The markup tag that specifies the type of view.</p>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p><code>true</code> if this factory should handle the specified <code>tagName</code>, otherwise <code>false</code>.</p>
 <hr />
 </div>
 

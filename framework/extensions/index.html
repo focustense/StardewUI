@@ -22,7 +22,7 @@
     
     
       
-        <title>Extensions - StardewUI Documentation</title>
+        <title>Framework Extensions - StardewUI Documentation</title>
       
     
     
@@ -63,7 +63,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Extensions - StardewUI Documentation" >
+        <meta  property="og:title"  content="Framework Extensions - StardewUI Documentation" >
       
         <meta  property="og:description"  content="None" >
       
@@ -79,7 +79,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Extensions - StardewUI Documentation" >
+        <meta  name="twitter:title"  content="Framework Extensions - StardewUI Documentation" >
       
         <meta  name="twitter:description"  content="None" >
       
@@ -104,6 +104,11 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
+      
+        
+        <a href="#framework-extensions" class="md-skip">
+          Skip to content
+        </a>
       
     </div>
     <div data-md-component="announce">
@@ -134,7 +139,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Extensions
+              Framework Extensions
             
           </span>
         </div>
@@ -747,16 +752,123 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Framework Extensions
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Extensions
+    Framework Extensions
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-add-ons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Add-Ons
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-converters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Converters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Converters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registering-converters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registering Converters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-converters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing Converters
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Views
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registering-custom-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registering Custom Views
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-custom-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Custom Views
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -900,6 +1012,8 @@
       
         
       
+        
+      
     
     
       
@@ -954,6 +1068,91 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-add-ons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Add-Ons
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-converters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Converters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Converters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registering-converters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registering Converters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementing-converters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing Converters
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Views
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Views">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#registering-custom-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registering Custom Views
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-custom-views" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Custom Views
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -971,9 +1170,171 @@
   
 
 
-  <h1>Extensions</h1>
-
-
+<h1 id="framework-extensions">Framework Extensions<a class="headerlink" href="#framework-extensions" title="Permanent link"></a></h1>
+<p>StardewUI's <a href="../">framework</a> is built on its own <a href="../../library/">core library</a>. The built-in set of <a href="../starml/#tags">tags</a> and <a href="../starml/#type-conversions">type conversions</a> are the set of <a href="../../library/standard-views/">standard views</a> and first-party converters.</p>
+<p>In some of the more unusual scenarios, the built-in features might seem either too restrictive or simply awkward (e.g. copypasta-heavy) to use. To allow more flexibility for users, StardewUI can be extended using a feature called <strong>add-ons</strong>.</p>
+<h2 id="creating-add-ons">Creating Add-Ons<a class="headerlink" href="#creating-add-ons" title="Permanent link"></a></h2>
+<p>To create an initially-empty add-on:</p>
+<ol>
+<li>
+<p>Add a <a href="../../library/#usage">direct reference to StardewUI</a>.</p>
+</li>
+<li>
+<p>Implement the <a href="../../reference/stardewui/framework/addons/iaddon/"><code>IAddon</code></a> interface. The only required property is <code>Id</code>, which should normally be your mod's ID.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Most add-ons can copy and paste the following template. Replace the name <code>MyAddon</code> with an appropriate name for your own mod/framework.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nf">MyAddon</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IAddon</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</li>
+<li>
+<p>Register the addon using <a href="../../reference/stardewui/ui/#registeraddoniaddon"><code>UI.RegisterAddon</code></a>. Do this <strong>as early as possible</strong>, ideally in your mod's <code>Entry</code> method:</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ModEntry</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Mod</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Entry</span><span class="p">(</span><span class="n">IModHelper</span><span class="w"> </span><span class="n">helper</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="n">UI</span><span class="p">.</span><span class="n">RegisterAddon</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">MyAddon</span><span class="p">(</span><span class="n">ModManifest</span><span class="p">.</span><span class="n">UniqueID</span><span class="p">));</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="c1">// Other mod initialization code</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</li>
+<li>
+<p>(Optional) If your add-on depends on any other add-on to function, add a <a href="../../reference/stardewui/framework/addons/iaddon/#dependencies"><code>Dependencies</code></a> field. For example, many mod authors create their own "shared" or "core" framework and an individual mod might require the add-on from this shared mod.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nf">MyAddon</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IAddon</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Dependencies</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="na">[</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="na">        &quot;authorname.SharedMod&quot;,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="na">    ]</span><span class="p">;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Note that <code>authorName.SharedMod</code> is the <strong>addon ID</strong>, which by the conventions described above <em>should</em> be the same as the mod's unique ID, but that is up to the add-on's author.</p>
+</div>
+</li>
+</ol>
+<h2 id="custom-converters">Custom Converters<a class="headerlink" href="#custom-converters" title="Permanent link"></a></h2>
+<p>User-defined conversions extend the <a href="../starml/#type-conversions">default type conversions</a>, so that other types—for example, types you've defined in your own mod—can be auto-converted to view properties/attributes without requiring any explicit conversion code in the model or context.</p>
+<h3 id="registering-converters">Registering Converters<a class="headerlink" href="#registering-converters" title="Permanent link"></a></h3>
+<p>Converters are provided through the <a href="../../reference/stardewui/framework/converters/ivalueconverterfactory/"><code>IValueConverterFactory</code></a> type; every add-on must specify exactly one (optional) converter factory. Most add-ons should use the <a href="../../reference/stardewui/framework/converters/valueconverterfactory/"><code>ValueConverterFactory</code></a> base class, which simplifies the registration of multiple converters and is ideal for using as a "root" factory that handles many different types of conversions.</p>
+<p>The <a href="https://github.com/focustense/StardewUI/blob/feaffb9457ea0ad637e4dafd43bb9d7c019f4b97/TestAddon/ExampleAddon.cs#L15">example addon</a> uses the following logic:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nf">ExampleAddon</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IAddon</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="c1">// --- Other addon features ---</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">ValueConverterFactory</span><span class="w"> </span><span class="o">=&gt;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="n">valueConverterFactory</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">Lazy</span><span class="o">&lt;</span><span class="n">IValueConverterFactory</span><span class="o">&gt;</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">        </span><span class="k">new</span><span class="p">(()</span><span class="w"> </span><span class="o">=&gt;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">            </span><span class="kt">var</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ValueConverterFactory</span><span class="p">();</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">            </span><span class="n">factory</span><span class="p">.</span><span class="n">TryRegister</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ItemIdToSpriteConverter</span><span class="p">());</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">            </span><span class="n">factory</span><span class="p">.</span><span class="n">TryRegister</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">StringToKeySplineConverter</span><span class="p">());</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">factory</span><span class="p">;</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">        </span><span class="p">});</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Using <code>Lazy&lt;T&gt;</code> here can help slightly with performance, as it ensures that your factory/converters aren't created until they are actually necessary for a conversion; however, it is not necessary to do this and could easily replaced with a line such as:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">ValueConverterFactory</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">CreateValueConverterFactory</span><span class="p">();</span>
+</span></code></pre></div>
+<p>where <code>CreateValueConverterFactory</code> is some static method.</p>
+<h3 id="implementing-converters">Implementing Converters<a class="headerlink" href="#implementing-converters" title="Permanent link"></a></h3>
+<p>Converters can be very simple or very complex. A simple example is the <a href="https://github.com/focustense/StardewUI/blob/dev/TestAddon/ItemIdToSpriteConverter.cs">ItemIdToSpriteConverter</a> in the test addon:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ItemIdToSpriteConverter</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IValueConverter</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">Sprite</span><span class="o">&gt;</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">Sprite</span><span class="w"> </span><span class="nf">Convert</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">itemData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ItemRegistry</span><span class="p">.</span><span class="n">GetDataOrErrorItem</span><span class="p">(</span><span class="k">value</span><span class="p">);</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nf">new</span><span class="p">(</span><span class="n">itemData</span><span class="p">.</span><span class="n">GetTexture</span><span class="p">(),</span><span class="w"> </span><span class="n">itemData</span><span class="p">.</span><span class="n">GetSourceRect</span><span class="p">());</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>This is simply a generic implementation of <code>IValueConverter</code>, which converts a <code>string</code> to a <code>Sprite</code>, assuming that string is a Stardew Valley Item ID. (Note that StardewUI doesn't include this converter as built-in, because even though every valid item ID is expected to have a sprite, not every string is going to be a valid item ID!)</p>
+<p>More complex converters that operate on runtime types will generally have to do so by adding a "sub-factory" or delegate factory implementing <code>IValueConverterFactory</code> and then registering that via <a href="../../reference/stardewui/framework/converters/valueconverterfactory/#registerivalueconverterfactory"><code>ValueConverterFactory.Register</code></a>. The implementation of one of these delegates will generally use at least some amount of reflection. A good beginner's example of a dynamic converter is the <a href="https://focustense.github.io/StardewUI/library/standard-views/"><code>EnumNameConverterFactory</code></a>, which allows any <code>string</code> to be converted to <strong>any</strong> enum type (not just a specific enum type) using its name.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">EnumNameConverterFactory</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IValueConverterFactory</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">TryGetConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="p">(</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="na">[MaybeNullWhen(false)]</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">IValueConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="w"> </span><span class="n">converter</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">TSource</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="k">typeof</span><span class="p">(</span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="k">typeof</span><span class="p">(</span><span class="n">TDestination</span><span class="p">).</span><span class="n">IsEnum</span><span class="p">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">            </span><span class="n">converter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">false</span><span class="p">;</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">converterType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">typeof</span><span class="p">(</span><span class="n">Converter</span><span class="o">&lt;&gt;</span><span class="p">).</span><span class="n">MakeGenericType</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">TDestination</span><span class="p">));</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="n">converter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">IValueConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="p">)</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">            </span><span class="n">Activator</span><span class="p">.</span><span class="n">CreateInstance</span><span class="p">(</span><span class="n">converterType</span><span class="p">)</span><span class="o">!</span><span class="p">;</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">true</span><span class="p">;</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="k">class</span><span class="w"> </span><span class="nc">Converter</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IValueConverter</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">        </span><span class="k">where</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">struct</span><span class="p">,</span><span class="w"> </span><span class="n">Enum</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="k">public</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="nf">Convert</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">)</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Enum</span><span class="p">.</span><span class="n">Parse</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="k">value</span><span class="p">,</span><span class="w"> </span><span class="k">true</span><span class="p">);</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<p>Since many dynamic conversions are already built in (enums, <code>Nullable&lt;T&gt;</code>, assignment casts, etc.) the most likely reason you might want to define a new one is to handle conversion to or from a <em>generic</em> type. <a href="https://github.com/focustense/StardewUI/blob/dev/Framework/Converters/NullableConverterFactory.cs"><code>NullableConverterFactory</code></a> illustrates the type of work generally involved with this approach.</p>
+<p>Converters are cached by type, so it is not necessary to do your own caching in a custom <code>IValueConverterFactory</code>, nor to spend too much time optimize the <code>TryGetConverter</code> method. Instead, focus on making the actual <code>Convert</code> method as fast as possible, since that is the method that may be called on every view update.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p><strong>Never include any state in a converter</strong>, since the same converter will be reused for all conversions between the source and destination types. Stateful converters may break at arbitrary and unexpected times, and in ways that are difficult to isolate or debug.</p>
+</div>
+<h2 id="custom-views">Custom Views<a class="headerlink" href="#custom-views" title="Permanent link"></a></h2>
+<p>Every <a href="../starml/#tags">tag</a> is really a <a href="../../library/standard-views/">view</a>, with the exception of a few special tags like <code>&lt;include&gt;</code>. If you can't find a standard view, or combination of standard views, that cleanly does what you are looking for, then there are several options for creating <a href="../../library/custom-views/">custom views</a>.</p>
+<h3 id="registering-custom-views">Registering Custom Views<a class="headerlink" href="#registering-custom-views" title="Permanent link"></a></h3>
+<p>To register a view you've created as a custom tag, define and register a new <a href="../../reference/stardewui/framework/binding/iviewfactory/"><code>IViewFactory</code></a> implementation. The registration API is very similar to that for <a href="#registering-converters">converters</a>, also providing a base class, <a href="../../reference/stardewui/framework/binding/viewfactory/"><code>ViewFactory</code></a>, to make registration of views more convenient.</p>
+<p>The <a href="../../examples/carousel/">Carousel example</a> defines a custom view, appropriately called <a href="https://github.com/focustense/StardewUI/blob/dev/TestAddon/Carousel.cs"><code>Carousel</code></a>, and registers it via:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nf">ExampleAddon</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IAddon</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="c1">// --- Other addon features ---</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">ViewFactory</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">Lazy</span><span class="o">&lt;</span><span class="n">IViewFactory</span><span class="o">&gt;</span><span class="w"> </span><span class="n">viewFactory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(()</span><span class="w"> </span><span class="o">=&gt;</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">factory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ViewFactory</span><span class="p">();</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="n">factory</span><span class="p">.</span><span class="n">Register</span><span class="o">&lt;</span><span class="n">Carousel</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;carousel&quot;</span><span class="p">);</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">factory</span><span class="p">;</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">    </span><span class="p">});</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>As with converters, it is useful, but not required, to use <code>Lazy&lt;T&gt;</code> for this, as long as the <code>ViewFactory</code> property retrieves a single long-lived instance and does not recreate the factory each time.</p>
+<h3 id="using-custom-views">Using Custom Views<a class="headerlink" href="#using-custom-views" title="Permanent link"></a></h3>
+<p>Once a custom view is registered, it can be used in a <a href="../starml/">StarML</a> document like any other tag, using the registered tag name:</p>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">&lt;</span><span class="nt">carousel</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch&quot;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>          <span class="na">selection-layout</span><span class="o">=</span><span class="s">&quot;600px stretch&quot;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>          <span class="na">easing</span><span class="o">=</span><span class="s">&quot;OutCubic&quot;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>          <span class="na">gap</span><span class="o">=</span><span class="s">&quot;50&quot;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>          <span class="na">selected-index</span><span class="o">=</span><span class="s">{SelectedPageIndex}</span><span class="p">&gt;</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="cm">&lt;!-- Carousel Contents --&gt;</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">&lt;/</span><span class="nt">carousel</span><span class="p">&gt;</span>
+</span></code></pre></div>
 
 
 
