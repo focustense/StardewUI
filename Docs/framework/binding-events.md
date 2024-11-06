@@ -100,13 +100,16 @@ These two cases might very well be part of the _same_ user interface, so let's i
     === "StarML"
     
         ```html
-        <frame click=|Buy()|
+        <frame background={@Mods/StardewUI/Sprites/ControlBorder}
+               background-tint={BackgroundTint}
+               click=|Buy()|
                pointer-enter=|SetBackgroundHover("true")|
                pointer-leave=|SetBackgroundHover("false")|>
             <lane layout="400px 80px" vertical-content-alignment="middle">
                 <label layout="stretch content" text={Text} />
                 <image layout="32px"
                        sprite={@Mods/MyMod/Sprites/Info}
+                       tint={InfoButtonTint}
                        click=|DisplayExtraInfo()|
                        pointer-enter=|SetInfoButtonHover("true")|
                        pointer-leave=|SetInfoButtonHover("false")| />
