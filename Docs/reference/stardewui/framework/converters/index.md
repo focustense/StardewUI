@@ -26,11 +26,11 @@ title: StardewUI.Framework.Converters
 | [NullableConverterFactory](nullableconverterfactory.md) | Factory that implements automatic conversion between nullable and non-nullable types. |
 | [PointConverter](pointconverter.md) | String converter for the XNA [Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html) type. |
 | [RectangleConverter](rectangleconverter.md) | String converter for the XNA [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html) type. |
-| [RootValueConverterFactory](rootvalueconverterfactory.md) | Standard implementation of [IValueConverterFactory](ivalueconverterfactory.md) that allows registering new converters. |
 | [StringConverterFactory](stringconverterfactory.md) | Provides conversions from any type to [string](https://learn.microsoft.com/en-us/dotnet/api/system.string). |
 | [TextureRectSpriteConverter](texturerectspriteconverter.md) | Converts a tuple with a texture and source rectangle (within the texture) to a sprite record. |
 | [TextureSpriteConverter](texturespriteconverter.md) | Converts a texture to a sprite record, using the texture's entire bounds as the source rectangle. |
 | [ValueConverter&lt;TSource, TDestination&gt;](valueconverter-2.md) | Generic delegating converter, accepting a conversion function. |
+| [ValueConverterFactory](valueconverterfactory.md) | Standard implementation of [IValueConverterFactory](ivalueconverterfactory.md) that allows registering new converters. |
 | [Vector2Converter](vector2converter.md) | String converter for the XNA [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) type. |
 
 ## Interfaces

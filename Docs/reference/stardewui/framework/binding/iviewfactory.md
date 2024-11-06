@@ -35,6 +35,7 @@ This is a simple, low-level abstraction that simply maps tags to view types. It 
  | Name | Description |
 | --- | --- |
 | [CreateView(string)](#createviewstring) | Creates a new view. | 
+| [SupportsTag(string)](#supportstagstring) | Checks if the factory can create views corresponding to a specific tag. | 
 
 ## Details
 
@@ -58,6 +59,27 @@ The markup tag that specifies the type of view.
 [IView](../../iview.md)
 
   A new view of a type corresponding to the `tagName`.
+
+-----
+
+#### SupportsTag(string)
+
+Checks if the factory can create views corresponding to a specific tag.
+
+```cs
+bool SupportsTag(string tagName);
+```
+
+##### Parameters
+
+**`tagName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The markup tag that specifies the type of view.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if this factory should handle the specified `tagName`, otherwise `false`.
 
 -----
 

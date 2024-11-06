@@ -66,6 +66,7 @@ public record Bounds : StardewUI.Layout.IOffsettable<StardewUI.Layout.Bounds>,
 | [ContainsBounds(Bounds)](#containsboundsbounds) | Checks if an entire bounding rectangle is fully within these bounds. | 
 | [ContainsPoint(Vector2)](#containspointvector2) | Checks if a given point is within the bounds. | 
 | [Intersection(Bounds)](#intersectionbounds) | Computes the intersection of this [Bounds](bounds.md) with another instance. | 
+| [IntersectsWith(Bounds)](#intersectswithbounds) | Checks if this [Bounds](bounds.md) intersects with another instance, without computing the intersection. | 
 | [Offset(Vector2)](#offsetvector2) | Offsets a [Bounds](bounds.md) by a given distance. | 
 | [Union(Bounds)](#unionbounds) | Computes the union of this [Bounds](bounds.md) with another instance. | 
 
@@ -283,6 +284,27 @@ The other bounds to intersect with.
 [Bounds](bounds.md)
 
   A new [Bounds](bounds.md) whose area is the intersection of this instance and `other`, or [Empty](bounds.md#empty) if they do not overlap.
+
+-----
+
+#### IntersectsWith(Bounds)
+
+Checks if this [Bounds](bounds.md) intersects with another instance, without computing the intersection.
+
+```cs
+public bool IntersectsWith(StardewUI.Layout.Bounds other);
+```
+
+##### Parameters
+
+**`other`** &nbsp; [Bounds](bounds.md)  
+The other bounds to check for intersection.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  True if this [Bounds](bounds.md) and the `other` bounds have any intersecting area, otherwise `false`.
 
 -----
 

@@ -25,7 +25,7 @@ title: StardewUI.Framework.Binding
 | [ReflectionViewBinder](reflectionviewbinder.md) | An [IViewBinder](iviewbinder.md) implementation using reflected view descriptors. |
 | [RepeaterNode](repeaternode.md) | A structural node that accepts a collection ([IEnumerable&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection. |
 | [UnaryCondition](unarycondition.md) | A condition based on a single value that is convertible to a [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean). |
-| [ViewFactory](viewfactory.md) | View factory for built-in view types. |
+| [ViewFactory](viewfactory.md) | A view factory based on per-tag delegates. Can be used as a base class for other view factories. |
 | [ViewNode](viewnode.md) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. |
 | [ViewNodeFactory](viewnodefactory.md) | Default in-game view engine. |
 

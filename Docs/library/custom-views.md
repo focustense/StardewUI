@@ -23,7 +23,7 @@ These types of widgets are referred to as _[component views](../reference/starde
 ??? note "Note on `DecoratorView`"
 
     For rare scenarios where the entire inner view needs to change, there are also _[decorator views](../reference/stardewui/widgets/decoratorview-1.md)_. These have the same concept, but the `View` has to be set directly, which means it is also nullable; inheriting from `DecoratorView<T>` is therefore more difficult and error prone than `ComponentView<T>` because a decorator's code has to be null-safe everywhere. Component views are inherently null-safe because the view tree is created on construction.
-
+    
     The only built-in view that uses `DecoratorView` directly is the internal `DynamicDropDownList` used to automagically detect data binding types and recreate the internal dropdown via reflection. Unless you are dealing with a similarly specialized scenario, prioritize `ComponentView` first and only use `DecoratorView` when necessary.
 
 The relative simplicity of the implementation does not mean it can only be used for views with simple behavior; the [Drop-Down List](standard-views.md#drop-down-list) and [Slider](standard-views.md#slider) are fairly complex widgets, but both are based on `ComponentView`.
@@ -53,7 +53,7 @@ As the heading suggests, there are only two _required_ method implementations fo
 - [`OnMeasure(Vector2)`](../reference/stardewui/view.md#onmeasurevector2), the view's contribution to the combined [measure and layout pass](../concepts.md#layout);
 - [`OnDrawContent(ISpriteBatch)`](../reference/stardewui/view.md#ondrawcontentispritebatch), which is where the actual rendering occurs.
 
-The [Spacer](https://github.com/focustense/StardewUI/blob/dev/Core/Widgets/Spacer.cs) source demonstrates the bare minimum, although the spacer does not actually do anything other than occupy space, so a custom `View` will be more involved.
+The [Spacer](https://github.com/focustense/StardewUI/blob/dev/Core/Widgets/Spacer.cs) source demonstrates the bare minimum, although the spacer does not actually do anything other than occupy space, so a custom `View` will be more involved. For a more comprehensive example, see the source for the test addon's [Carousel](https://github.com/focustense/StardewUI/blob/dev/TestAddon/Carousel.cs) view, also shown in the [Carousel example](../examples/carousel.md).
 
 The main thing that `OnMeasure` **must** always do before returning is set the view's [`ContentSize`](../reference/stardewui/view.md#contentsize), as this and only this is what layout views use to arrange content. If `ContentSize` is not set, the view will be "laid out" with a size of zero, and anything it tries to draw may overlap with or be overwritten by other views.
 
@@ -106,18 +106,18 @@ A typical implementation requires only a `readonly` field declaration, a propert
                 }
             }
         }
-
+    
         private readonly DirtyTracker<string> text = new("");
-
+    
         protected override bool IsContentDirty()
         {
             return text.IsDirty;
         }
         
         protected override void OnDrawContent(ISpriteBatch b) { ... }
-
+    
         protected override void OnMeasure(Vector2 availableSize) { ... }
-
+    
         protected override void ResetDirty()
         {
             text.ResetDirty();
