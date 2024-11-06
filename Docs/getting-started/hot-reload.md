@@ -7,7 +7,7 @@ When using the recommended [asset registration](adding-ui-assets.md#adding-views
 Once you have a [reference to the API](index.md#adding-the-api), turning on hot reload is a single method call:
 
 ```cs
-viewEngine.EnableHotReload();
+viewEngine.EnableHotReloading();
 ```
 
 A good place to do this is after the asset registrations, as in the [Example Mod](https://github.com/focustense/StardewUI/blob/v0.1.0/TestMod/ModEntry.cs#L36).
@@ -35,12 +35,12 @@ When hot-reload is enabled, StardewUI must monitor your mod directory. While the
 
 There are two ways to do this:
 
-1. Remove the call to `EnableHotReload()` before building your mod for release; or
+1. Remove the call to `EnableHotReloading()` before building your mod for release; or
 2. Use [conditional compilation](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives#conditional-compilation). A simple and effective solution is to enable hot reloading in Debug mode only, as you will presumably be shipping the Release version.
 
     ```cs
     #if DEBUG
-        viewEngine.EnableHotReload();
+        viewEngine.EnableHotReloading();
     #endif
     ```
 
