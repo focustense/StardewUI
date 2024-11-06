@@ -6,9 +6,10 @@
 /// <remarks>
 /// Unqualified keys will default to a single inner scope.
 /// </remarks>
-/// <param name="defaultScope">The default or "calling" scope that should handle all unqualified requests.</param>
+/// <param name="defaultScope">The default or "calling" scope that should handle all unqualified requests. If not
+/// specified, only fully qualified requests will be resolved.</param>
 /// <param name="registry">Mod registry for locating mods corresponding to qualified IDs.</param>
-internal class GlobalResolutionScope(IResolutionScope defaultScope, IModRegistry registry) : IResolutionScope
+internal class GlobalResolutionScope(IResolutionScope? defaultScope, IModRegistry registry) : IResolutionScope
 {
     /// <summary>
     /// Creates a new global scope whose default resolution is for a specified mod.
@@ -26,15 +27,15 @@ internal class GlobalResolutionScope(IResolutionScope defaultScope, IModRegistry
     }
 
     /// <inheritdoc />
-    public Translation GetTranslation(string key)
+    public Translation? GetTranslation(string key)
     {
         // Even if the key has a namespace separator (':'), that doesn't prove it's a qualified key, since SMAPI
         // translations don't restrict that character (or any character) from being part of the key itself.
         //
         // Therefore we always check for a translation in the default scope first, and only consider a possible
         // namespace if no local result is found.
-        var defaultResult = defaultScope.GetTranslation(key);
-        if (defaultResult.HasValue())
+        var defaultResult = defaultScope?.GetTranslation(key);
+        if (defaultResult?.HasValue() == true)
         {
             return defaultResult;
         }

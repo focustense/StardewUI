@@ -15,8 +15,15 @@ public interface IResolutionScope
     /// <param name="key">The qualified or unqualified translation key. Unqualified keys are identical to their name in
     /// the translation file (i.e. in <c>i18n/default.json</c>), while qualified keys include a prefix with the specific
     /// mod, e.g. <c>authorname.ModName:TranslationKey</c>.</param>
-    /// <returns>The translation, if available in the current language; the default-language (usually English) string if
-    /// the <paramref name="key"/> exists but no translation is available; or a placeholder value if the
-    /// <paramref name="key"/> is not valid or missing.</returns>
-    Translation GetTranslation(string key);
+    /// <returns>One of:
+    /// <list type="bullet">
+    /// <item>The translation, if available in the current language</item>
+    /// <item>The default-language (usually English) string, if the <paramref name="key"/> exists but no translation is
+    /// available;</item>
+    /// <item>A translation with placeholder text, if the <paramref name="key"/> resolves to a known mod (or if the
+    /// scope points to a default mod) but the mod is missing that specific key;</item>
+    /// <item><c>null</c>, if the <paramref name="key"/> is unqualified and no default scope is available.</item>
+    /// </list>
+    /// </returns>
+    Translation? GetTranslation(string key);
 }
