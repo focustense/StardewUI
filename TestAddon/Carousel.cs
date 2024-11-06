@@ -163,6 +163,8 @@ internal partial class Carousel : View
         return child.Position.X - localOffset;
     }
 
+    // This method has a special name recognized by PropertyChanged.SourceGenerator, and will run whenever the
+    // SelectedIndex property changes to a new value.
     private void OnSelectedIndexChanged()
     {
         BeginTransition();

@@ -15,22 +15,30 @@ internal partial class CarouselMenuViewModel
 
     public bool HandleButtonPress(SButton button)
     {
-        switch (button)
+        return button switch
         {
-            case SButton.RightShoulder:
-                if (SelectedPageIndex < (Pages.Count - 1))
-                {
-                    SelectedPageIndex++;
-                    return true;
-                }
-                break;
-            case SButton.LeftShoulder:
-                if (SelectedPageIndex > 0)
-                {
-                    SelectedPageIndex--;
-                    return true;
-                }
-                break;
+            SButton.LeftShoulder => PreviousPage(),
+            SButton.RightShoulder => NextPage(),
+            _ => false,
+        };
+    }
+
+    public bool NextPage()
+    {
+        if (SelectedPageIndex < (Pages.Count - 1))
+        {
+            SelectedPageIndex++;
+            return true;
+        }
+        return false;
+    }
+
+    public bool PreviousPage()
+    {
+        if (SelectedPageIndex > 0)
+        {
+            SelectedPageIndex--;
+            return true;
         }
         return false;
     }

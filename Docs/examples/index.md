@@ -20,6 +20,11 @@ The most current source for any example can usually be found in the `dev` branch
 
     [![Bestiary](../images/example-bestiary.png)](bestiary.md)
 
+-   [**Train Shop (Carousel)**](carousel.md)  
+    _@focustense_
+
+    [![Train Shop (Carousel)](../images/example-carousel.png)](carousel.md)
+
 -   [**Crop Calendar**](crop-calendar.md)  
     _@mushymato_
 
