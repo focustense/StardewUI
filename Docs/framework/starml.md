@@ -210,6 +210,7 @@ Regular HTML uses quoted attributes; to support the more complex behaviors where
 | `attr="value"`              | The literal ([converted](#type-conversions)) value inside the quotes. |
 | `attr={PropertyName}`       | The current value of the specified [context property](binding-context.md). |
 | `attr={@AssetName}`         | The current content of the [named asset](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F). |
+| `attr={#TranslationKey}`    | The translated string for a given [translation key](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation). Can be either unqualified (`foo.bar`) if referring to a translation in the same mod that provided the view, or qualified (`authorname.ModName:foo.bar`) if referring to a translation in any other mod. |
 | `attr=|Handler(Arg1, ...)|` | Call the specified [context method](binding-context.md), with the specified arguments; only valid for [event attributes](#events). |
 
 ??? note
