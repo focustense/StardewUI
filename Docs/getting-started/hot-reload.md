@@ -24,7 +24,32 @@ Hot reload works on the **mod assets**; it does not know the original source of 
 
 !!! tip "Important"
 
-    In order for hot reloading to work, make sure you are directly editing or copying your edits to the **deployed** files; that is, the file inside your `Stardew Valley\Mods\<ModName>` folder.
+    In order for hot reloading to work, make sure you are directly editing or copying your edits to the **deployed** files; that is, the file inside your `Stardew Valley\Mods\<ModName>` folder. See the [source sync](#source-sync) section below for a possible alternative, depending on your project setup.
+
+### Source Sync :material-test-tube:{ title="Experimental" }
+
+StardewUI can provide a built-in sync from your project assets directory to the deployed mod assets directory in order to work around the aforementioned limitation, and allow hot-reloading from your usual IDE or editor. There are two ways to enable this:
+
+1. Use the extension from the `ViewEngineExtensions` class, copied with the `IViewEngine` definition. For "ordinary" project structures, this is the most convenient as it will auto-detect the source path based on the caller.
+
+    ```cs
+    viewEngine.EnableHotReloadingWithSourceSync();
+    ```
+
+2. Provide your own path to the `EnableHotReloading` method. Use this strategy if your project structure is unusual, or if the previous method does not work for any other reason.
+
+    ```cs
+    // Replace C:\Projects\MyMod with the actual path to your mod source.
+    viewEngine.EnableHotReloading(@"C:\Projects\MyMod");
+    ```
+
+For either of the above to function, your source directory must have the same asset structure as the deployed mod. For example, if views have been registered for the path `assets/views`, then the source directory must be the directory containing `assets`, which in turn contains `views`.
+
+This will almost always be the case for projects using [ModBuildConfig](https://www.nuget.org/packages/Pathoschild.Stardew.ModBuildConfig) that don't use their own custom build/deployment actions for assets, but you may need to tweak it if your project is set up differently.
+
+!!! warning "Warning – Visual Studio Compatibility"
+
+    Source sync currently has issues with Visual Studio which render it inoperable, due to VS creating temporary files and moving entire directories instead of simply writing to the source file. Other editors, including Visual Studio Code, should function correctly.
 
 ## Performance
 
