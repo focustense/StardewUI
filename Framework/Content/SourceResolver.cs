@@ -27,11 +27,24 @@ internal class SourceResolver
 {
     private static readonly ConditionalWeakTable<Document, string> loadedDocumentSources = [];
 
+    /// <summary>
+    /// Gets the absolute file path that was used to load a given document.
+    /// </summary>
+    /// <param name="document">The loaded document.</param>
+    /// <returns>The path to the <paramref name="document"/> source file on disk, or <c>null</c> if unknown.</returns>
     public static string? GetDocumentSourcePath(Document document)
     {
         return loadedDocumentSources.TryGetValue(document, out var source) ? source : null;
     }
 
+    /// <summary>
+    /// Updates the tracked file path for a loaded document.
+    /// </summary>
+    /// <remarks>
+    /// Uses weak references, so this will not keep a <see cref="Document"/> alive if it is no longer in use.
+    /// </remarks>
+    /// <param name="document">The loaded document.</param>
+    /// <param name="path">The path to the <paramref name="document"/> source file on disk.</param>
     public static void SetDocumentSourcePath(Document document, string path)
     {
         loadedDocumentSources.AddOrUpdate(document, path);

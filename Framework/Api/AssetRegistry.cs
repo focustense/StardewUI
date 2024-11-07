@@ -99,9 +99,15 @@ internal class AssetRegistry : ISourceResolver
     public bool TryGetProvidingModId(Document document, [MaybeNullWhen(false)] out string modId)
     {
         var filePath = SourceResolver.GetDocumentSourcePath(document);
+        var directoryPath = PathUtilities.NormalizePath(Path.GetDirectoryName(filePath));
         modId =
-            !string.IsNullOrEmpty(filePath)
-            && viewDirectories.Any(dir => filePath.StartsWith(dir.ModDirectory, StringComparison.OrdinalIgnoreCase))
+            !string.IsNullOrEmpty(directoryPath)
+            && viewDirectories.Any(dir =>
+                directoryPath.StartsWith(
+                    Path.Combine(helper.DirectoryPath, dir.ModDirectory),
+                    StringComparison.OrdinalIgnoreCase
+                )
+            )
                 ? modId = helper.Translation.ModID
                 : null;
         return modId is not null;
