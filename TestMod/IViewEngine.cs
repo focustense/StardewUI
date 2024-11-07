@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
 
-namespace TestMod;
+namespace StardewUI.Framework;
 
 /// <summary>
 /// Public API for StardewUI, abstracting away all implementation details of views and trees.
@@ -76,9 +76,19 @@ public interface IViewEngine
     /// views and sprites.
     /// </summary>
     /// <remarks>
-    /// May impact game performance and should normally only be used during development and/or in debug mode.
+    /// <para>
+    /// If the <paramref name="sourceDirectory"/> argument is specified, and points to a directory with the same asset
+    /// structure as the mod, then an additional sync will be set up such that files modified in the
+    /// <c>sourceDirectory</c> while the game is running will be copied to the active mod directory and subsequently
+    /// reloaded. In other words, pointing this at the mod's <c>.csproj</c> directory allows hot reloading from the
+    /// source files instead of the deployed mod's files.
+    /// </para>
+    /// <para>
+    /// Hot reload may impact game performance and should normally only be used during development and/or in debug mode.
+    /// </para>
     /// </remarks>
-    /// <param name="sourceDirectory">Source directory to watch and sync changes from.</param>
+    /// <param name="sourceDirectory">Optional source directory to watch and sync changes from. If not specified, or not
+    /// a valid source directory, then hot reload will only pick up changes from within the live mod directory.</param>
     void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
@@ -140,53 +150,55 @@ public interface IViewDrawable : IDisposable
 }
 
 /// <summary>
-/// Extensions for IViewEngine containing some helper methods with default implementations.
+/// Extensions for the <see cref="IViewEngine"/> interface.
 /// </summary>
-public static class IViewEngineExtensions
+public static class ViewEngineExtensions
 {
     /// <summary>
-    /// Try to find the source directory based on callerFilePath.
-    /// The default approach is to traverse up until a .csproj file is found,
-    /// then use the directory of that .csproj as the source directory.
+    /// Starts monitoring this mod's directory for changes to assets managed by any of the <see cref="IViewEngine"/>'s
+    /// <c>Register</c> methods, e.g. views and sprites, and attempts to set up an additional sync from the mod's
+    /// project (source) directory to the deployed mod directory so that hot reloads can be initiated from the IDE.
     /// </summary>
     /// <remarks>
-    /// You can change this method's implementation if your project has non-standard setup.
+    /// <para>
+    /// Callers should normally omit the <paramref name="callerFilePath"/> parameter in their call; this will cause it
+    /// to be replaced at compile time with the actual file path of the caller, and used to automatically detect the
+    /// project path.
+    /// </para>
+    /// <para>
+    /// If detection/sync fails due to an unusual project structure, consider providing an exact path directly to
+    /// <see cref="IViewEngine.EnableHotReloading(string)"/> instead of using this extension.
+    /// </para>
+    /// <para>
+    /// Hot reload may impact game performance and should normally only be used during development and/or in debug mode.
+    /// </para>
     /// </remarks>
-    /// <param name="callerFilePath">Path to calling file, usually provided by [CallerFilePath]</param>
-    /// <returns></returns>
-    private static string? FindSourceDirectory(string? callerFilePath)
-    {
-        if (callerFilePath == null)
-            return null;
-        DirectoryInfo? dirInfo = Directory.GetParent(callerFilePath);
-        while (dirInfo != null)
-        {
-            foreach (FileInfo file in dirInfo.GetFiles())
-            {
-                if (file.Extension == ".csproj")
-                {
-                    return dirInfo.FullName;
-                }
-            }
-            dirInfo = dirInfo.Parent;
-        }
-        return null;
-    }
-
-    /// <summary>
-    /// Enable hot reloading with source sync to copy changes in workspace to mod deploy folder.
-    /// This extension method will try to detect the mod's source folder based on the caller.
-    /// </summary>
-    /// <remarks>
-    /// May impact game performance and should normally only be used during development and/or in debug mode.
-    /// </remarks>
-    /// <param name="viewEngine"></param>
-    /// <param name="callerFilePath">Do not pass in this argument, so that [CallerFilePath] can provide correct default value on build</param>
+    /// <param name="viewEngine">The view engine API.</param>
+    /// <param name="callerFilePath">Do not pass in this argument, so that <see cref="CallerFilePathAttribute"/> can
+    /// provide the correct value on build.</param>
     public static void EnableHotReloadingWithSourceSync(
         this IViewEngine viewEngine,
         [CallerFilePath] string? callerFilePath = null
     )
     {
-        viewEngine.EnableHotReloading(FindSourceDirectory(callerFilePath));
+        viewEngine.EnableHotReloading(FindProjectDirectory(callerFilePath));
+    }
+
+    // Attempts to determine the project root directory given the path to an arbitrary source file by walking up the
+    // directory tree until it finds a directory containing a file with .csproj extension.
+    private static string? FindProjectDirectory(string? sourceFilePath)
+    {
+        if (string.IsNullOrEmpty(sourceFilePath))
+        {
+            return null;
+        }
+        for (var dir = Directory.GetParent(sourceFilePath); dir is not null; dir = dir.Parent)
+        {
+            if (dir.EnumerateFiles("*.csproj").Any())
+            {
+                return dir.FullName;
+            }
+        }
+        return null;
     }
 }
