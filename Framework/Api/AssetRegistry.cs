@@ -59,9 +59,33 @@ internal class AssetRegistry : ISourceResolver
         contentEvents.AssetsInvalidated += Content_AssetsInvalidated;
     }
 
+    /// <summary></summary>
+    /// <param name="callerFilePath"></param>
+    /// <param name="sourceDirectory"></param>
+    /// <returns></returns>
+    private static bool TryFindSourceDirectory(string callerFilePath, [NotNullWhen(true)] out string? sourceDirectory)
+    {
+        sourceDirectory = null;
+        DirectoryInfo? dirInfo = Directory.GetParent(callerFilePath);
+        while (dirInfo != null)
+        {
+            foreach (FileInfo file in dirInfo.GetFiles())
+            {
+                if (file.Extension == ".csproj")
+                {
+                    sourceDirectory = dirInfo.FullName;
+                    return true;
+                }
+            }
+            dirInfo = dirInfo.Parent;
+        }
+        return false;
+    }
+
     /// <summary>
     /// Starts monitoring the file system for changes to any of the mod's assets.
     /// </summary>
+    /// <param name="sourceDirectory">Source directory to watch and sync changes from.</param>
     public void EnableHotReloading(string? sourceDirectory = null)
     {
         if (hotReloadWatcher is not null)
@@ -197,26 +221,46 @@ internal class AssetRegistry : ISourceResolver
         }
     }
 
+    private void SyncFile(IReadOnlyList<DirectoryMapping> directories, string fullPath, string relativePath)
+    {
+        string deployedPath = PathUtilities.NormalizePath(Path.Join(hotReloadWatcher!.Path, relativePath));
+        foreach (var mapping in directories)
+        {
+            if (relativePath.StartsWith(mapping.ModDirectory))
+            {
+                try
+                {
+                    Logger.Log($"Sync {relativePath} ({mapping.AssetPrefix})", LogLevel.Debug);
+                    File.Copy(fullPath, deployedPath, true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log($"Failed to sync changed file '{fullPath}' to '{fullPath}': {ex}", LogLevel.Warn);
+                    Logger.Log($"Stop watching {sourceSyncWatcher!.Path}", LogLevel.Debug);
+                    sourceSyncWatcher.Changed -= SourceSyncWatcher_Changed;
+                }
+            }
+        }
+        return;
+    }
+
     /// <summary>Copy file from source to deployed, if a file of same relative path exists on target</summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void SourceSyncWatcher_Changed(object sender, FileSystemEventArgs e)
     {
-        string relativePath = Path.GetRelativePath(sourceSyncWatcher!.Path, e.FullPath);
-        string deployedPath = PathUtilities.NormalizePath(Path.Join(hotReloadWatcher!.Path, relativePath));
-        if (File.Exists(deployedPath))
+        var relativePath = Path.GetRelativePath(sourceSyncWatcher!.Path, e.FullPath);
+        switch (Path.GetExtension(e.Name))
         {
-            try
-            {
-                Logger.Log($"Syncing {relativePath}", LogLevel.Debug);
-                File.Copy(e.FullPath, deployedPath, true);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log($"Failed to sync changed file '{e.FullPath}' to '{e.FullPath}': {ex}", LogLevel.Warn);
-                Logger.Log($"Stop watching {sourceSyncWatcher!.Path}", LogLevel.Debug);
-                sourceSyncWatcher.Changed -= SourceSyncWatcher_Changed;
-            }
+            case ".sml":
+                SyncFile(viewDirectories, e.FullPath, relativePath);
+                break;
+            case ".json":
+                SyncFile(spriteDirectories, e.FullPath, relativePath);
+                break;
+            case ".png":
+                SyncFile(spriteDirectories, e.FullPath, relativePath);
+                break;
         }
     }
 

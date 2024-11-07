@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
@@ -77,7 +78,8 @@ public interface IViewEngine
     /// <remarks>
     /// May impact game performance and should normally only be used during development and/or in debug mode.
     /// </remarks>
-    void EnableHotReloading();
+    /// <param name="callerFilePath">Caller file path, used to add a watcher to the source directory so that edits in the source directory can be copied to the mod directory for hot reload, set to null to disable.</param>
+    void EnableHotReloading([CallerFilePath] string? callerFilePath = null);
 
     /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
