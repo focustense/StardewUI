@@ -271,6 +271,7 @@ public ref struct DocumentReader(Lexer lexer)
             "<" => AttributeValueType.InputBinding,
             ">" => AttributeValueType.OutputBinding,
             "@" => AttributeValueType.AssetBinding,
+            "#" => AttributeValueType.TranslationBinding,
             _ => throw new ArgumentException($"Invalid binding modifier: {token}", nameof(token)),
         };
     }

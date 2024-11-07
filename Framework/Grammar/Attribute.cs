@@ -92,6 +92,11 @@ public enum AttributeValueType
     AssetBinding,
 
     /// <summary>
+    /// A read-only binding which obtains the value from a translation key registered with SMAPI.
+    /// </summary>
+    TranslationBinding,
+
+    /// <summary>
     /// A one-way data binding which obtains the value from the context data and assigns it to the view.
     /// </summary>
     InputBinding,
