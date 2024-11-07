@@ -16,7 +16,6 @@ title: StardewUI.Framework
 | [BackoffState](backoffstate.md) | State of an exponential backoff, e.g. as used in a `StardewUI.Framework.BackoffTracker<T>`. |
 | [ModConfig](modconfig.md) | Configuration settings for StardewUI.Framework. |
 | [UIException](uiexception.md) | Base class for all exceptions specific to StardewUI. |
-| [ViewEngineExtensions](viewengineextensions.md) | Extensions for the [IViewEngine](iviewengine.md) interface. |
 
 ## Interfaces
 

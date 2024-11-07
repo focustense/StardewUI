@@ -152,7 +152,7 @@ public interface IViewDrawable : IDisposable
 /// <summary>
 /// Extensions for the <see cref="IViewEngine"/> interface.
 /// </summary>
-public static class ViewEngineExtensions
+internal static class ViewEngineExtensions
 {
     /// <summary>
     /// Starts monitoring this mod's directory for changes to assets managed by any of the <see cref="IViewEngine"/>'s
