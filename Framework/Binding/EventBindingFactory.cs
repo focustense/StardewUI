@@ -134,7 +134,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
                             + $"{eventDescriptor.DeclaringType.Name}.{eventDescriptor.Name} ({argumentData}). "
                             + "Either the context is incorrect or the property does not exist."
                     );
-                var originalValueSource = valueSourceFactory.GetValueSource(argumentData, viewContext, valueType);
+                var originalValueSource = valueSourceFactory.GetValueSource(valueType, argumentData, viewContext);
                 var convertedValueSource = ConvertedValueSource.Create(
                     originalValueSource,
                     destinationType,

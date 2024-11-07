@@ -140,7 +140,7 @@ public class ViewNode(
             {
                 var childContextType = valueSourceFactory.GetValueType(contextAttribute, null, context);
                 childContextSource = childContextType is not null
-                    ? valueSourceFactory.GetValueSource(contextAttribute, context, childContextType)
+                    ? valueSourceFactory.GetValueSource(childContextType, contextAttribute, context, resolutionScope)
                     : null;
             }
             else

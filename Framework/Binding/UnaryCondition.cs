@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Converters;
+﻿using StardewUI.Framework.Content;
+using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
 
@@ -15,10 +16,12 @@ namespace StardewUI.Framework.Binding;
 /// <param name="valueConverterFactory">The factory responsible for creating
 /// <see cref="IValueConverter{TSource, TDestination}"/> instances, used to convert bound values to the types required
 /// by the target view.</param>
+/// <param name="resolutionScope">Scope for resolving externalized attributes, such as translation keys.</param>
 /// <param name="attribute">The attribute containing the conditional expression.</param>
 public class UnaryCondition(
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
+    IResolutionScope resolutionScope,
     IAttribute attribute
 ) : ICondition
 {
@@ -66,7 +69,7 @@ public class UnaryCondition(
         {
             var originalValueType = valueSourceFactory.GetValueType(attribute, null, context);
             var originalValueSource = originalValueType is not null
-                ? valueSourceFactory.GetValueSource(attribute, context, originalValueType)
+                ? valueSourceFactory.GetValueSource(originalValueType, attribute, context, resolutionScope)
                 : null;
             valueSource = originalValueSource is not null
                 ? ConvertedValueSource.Create<bool>(originalValueSource, valueConverterFactory)

@@ -15,7 +15,8 @@ public interface IResolutionScope
     /// <param name="key">The qualified or unqualified translation key. Unqualified keys are identical to their name in
     /// the translation file (i.e. in <c>i18n/default.json</c>), while qualified keys include a prefix with the specific
     /// mod, e.g. <c>authorname.ModName:TranslationKey</c>.</param>
-    /// <returns>One of:
+    /// <returns>
+    /// One of:
     /// <list type="bullet">
     /// <item>The translation, if available in the current language</item>
     /// <item>The default-language (usually English) string, if the <paramref name="key"/> exists but no translation is
@@ -26,4 +27,32 @@ public interface IResolutionScope
     /// </list>
     /// </returns>
     Translation? GetTranslation(string key);
+
+    /// <summary>
+    /// Attempts to obtain the string value of a translation with the given key.
+    /// </summary>
+    /// <remarks>
+    /// Unless specifically overridden, calling this is normally the same as <see cref="GetTranslation(string)"/>,
+    /// except that it returns <see cref="string"/> instead of <see cref="Translation"/>, of which the latter is not
+    /// instantiable outside of SMAPI's internals. To maintain consistency, code that <em>reads</em> translations should
+    /// always use <c>GetTranslationValue</c>, while code that <em>provides</em> translations (i.e. implementations of
+    /// <see cref="IResolutionScope"/>) should only implement <c>GetTranslation</c>, and leave this method alone.
+    /// </remarks>
+    /// <param name="key">The qualified or unqualified translation key. Unqualified keys are identical to their name in
+    /// the translation file (i.e. in <c>i18n/default.json</c>), while qualified keys include a prefix with the specific
+    /// mod, e.g. <c>authorname.ModName:TranslationKey</c>.</param>
+    /// <returns>
+    /// One of:
+    /// <list type="bullet">
+    /// <item>The translation, if available in the current language</item>
+    /// <item>The default-language (usually English) string, if the <paramref name="key"/> exists but no translation is
+    /// available;</item>
+    /// <item>A translation with placeholder text, if the <paramref name="key"/> cannot be resolved to a known
+    /// translation in a known mod.</item>
+    /// </list>
+    /// </returns>
+    string GetTranslationValue(string key)
+    {
+        return GetTranslation(key)?.ToString() ?? $"(no translation:{key})";
+    }
 }

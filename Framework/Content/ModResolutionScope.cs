@@ -42,8 +42,8 @@ internal class ModResolutionScope(ITranslationHelper translations) : IResolution
             ?? throw new KeyNotFoundException($"Required mod '{uniqueId}' is not loaded or not installed.");
         var traverse = new Traverse(modInfo);
         var translations =
-            traverse.Field<IMod?>("Mod").Value?.Helper.Translation
-            ?? traverse.Field<IContentPack?>("ContentPack").Value?.Translation
+            traverse.Property<IMod?>("Mod").Value?.Helper.Translation
+            ?? traverse.Property<IContentPack?>("ContentPack").Value?.Translation
             ?? throw new InvalidOperationException(
                 $"Could not obtain translation helper for mod '{uniqueId}' as it appears to be neither a SMAPI mod "
                     + "nor a content pack."

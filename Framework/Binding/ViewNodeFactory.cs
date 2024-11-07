@@ -41,7 +41,7 @@ public class ViewNodeFactory(
         return CreateNodeChild(node, null, resolutionScope).Node;
     }
 
-    record SwitchContext(IViewNode Node, IAttribute Attribute);
+    record SwitchContext(IViewNode Node, IAttribute Attribute, IResolutionScope ResolutionScope);
 
     private IViewNode.Child CreateNodeChild(SNode node, SwitchContext? switchContext, IResolutionScope resolutionScope)
     {
@@ -60,7 +60,7 @@ public class ViewNodeFactory(
         var structuralAttributes = StructuralAttributes.Get(node.Attributes);
         if (structuralAttributes.Repeat is IAttribute repeatAttr)
         {
-            return new(new RepeaterNode(valueSourceFactory, CreateNonRepeatingNodeChild, repeatAttr));
+            return new(new RepeaterNode(valueSourceFactory, CreateNonRepeatingNodeChild, resolutionScope, repeatAttr));
         }
         else
         {
@@ -92,6 +92,7 @@ public class ViewNodeFactory(
                 valueSourceFactory,
                 valueConverterFactory,
                 assetCache,
+                resolutionScope,
                 doc => CreateNodeChild(doc.Root, switchContext, resolutionScopeFactory.CreateForDocument(doc)).Node,
                 assetNameAttribute,
                 structuralAttributes.Context
@@ -116,7 +117,9 @@ public class ViewNodeFactory(
                 var condition = new BinaryCondition(
                     valueSourceFactory,
                     valueConverterFactory,
+                    switchContext.ResolutionScope,
                     switchContext.Attribute,
+                    resolutionScope,
                     caseAttr
                 )
                 {
@@ -126,11 +129,16 @@ public class ViewNodeFactory(
             }
             if (structuralAttributes.If is not null)
             {
-                var condition = new UnaryCondition(valueSourceFactory, valueConverterFactory, structuralAttributes.If);
+                var condition = new UnaryCondition(
+                    valueSourceFactory,
+                    valueConverterFactory,
+                    resolutionScope,
+                    structuralAttributes.If
+                );
                 result = new ConditionalNode(result, condition);
             }
             var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
-                ? new SwitchContext(viewNode, switchAttr)
+                ? new SwitchContext(viewNode, switchAttr, resolutionScope)
                 : switchContext;
             if (viewNode is ViewNode defaultViewNode)
             {

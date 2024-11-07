@@ -47,7 +47,8 @@ public class AttributeBindingFactory(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
         string propertyName,
-        BindingContext? context
+        BindingContext? context,
+        IResolutionScope resolutionScope
     );
 
     record AttributeBinding<TSource, TDest>(
@@ -172,20 +173,21 @@ public class AttributeBindingFactory(
             bindingFactory = typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
             bindingFactoryCache.Add(propertyKey, bindingFactory);
         }
-        return bindingFactory(viewDescriptor, attribute, propertyName, context);
+        return bindingFactory(viewDescriptor, attribute, propertyName, context, resolutionScope);
     }
 
     private IAttributeBinding CreateTypedBinding<TSource, TDest>(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
         string propertyName,
-        BindingContext? context
+        BindingContext? context,
+        IResolutionScope resolutionScope
     )
         where TSource : notnull
     {
         using var _ = Trace.Begin(this, nameof(CreateTypedBinding));
         var property = (IPropertyDescriptor<TDest>)viewDescriptor.GetProperty(propertyName);
-        var source = valueSourceFactory.GetValueSource<TSource>(attribute, context);
+        var source = valueSourceFactory.GetValueSource<TSource>(attribute, context, resolutionScope);
         var direction = GetBindingDirection(attribute);
         if (direction.IsIn())
         {

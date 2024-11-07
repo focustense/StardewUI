@@ -70,19 +70,39 @@ public partial class BindingTests
 
     class FakeResolutionScope : IResolutionScope
     {
+        private readonly Dictionary<string, string> translations = [];
+
+        public void AddTranslation(string key, string translation)
+        {
+            translations.Add(key, translation);
+        }
+
         public Translation? GetTranslation(string key)
         {
+            // Not used in tests; we implement GetTranslationValue instead.
             return null;
+        }
+
+        public string GetTranslationValue(string key)
+        {
+            return translations.GetValueOrDefault(key) ?? "";
         }
     }
 
     class FakeResolutionScopeFactory : IResolutionScopeFactory
     {
-        public FakeResolutionScope Scope { get; } = new FakeResolutionScope();
+        public FakeResolutionScope DefaultScope { get; } = new FakeResolutionScope();
+
+        private readonly Dictionary<Document, FakeResolutionScope> perDocumentScopes = [];
+
+        public void AddForDocument(Document document, FakeResolutionScope scope)
+        {
+            perDocumentScopes.Add(document, scope);
+        }
 
         public IResolutionScope CreateForDocument(Document document)
         {
-            return Scope;
+            return perDocumentScopes.TryGetValue(document, out var scope) ? scope : DefaultScope;
         }
     }
 
@@ -106,7 +126,7 @@ public partial class BindingTests
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         resolutionScopeFactory = new FakeResolutionScopeFactory();
-        resolutionScope = resolutionScopeFactory.Scope;
+        resolutionScope = resolutionScopeFactory.DefaultScope;
         viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
     }
 
@@ -354,6 +374,18 @@ public partial class BindingTests
 
         Assert.Equal("Second", label1.Text);
         Assert.Equal("First", label2.Text);
+    }
+
+    [Fact]
+    public void WhenBoundToTranslation_UpdatesWithTranslationValue()
+    {
+        resolutionScope.AddTranslation("TranslationKey", "Hello");
+        string markup = @"<label text={#TranslationKey} />";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var label = Assert.IsType<Label>(tree.Views.SingleOrDefault());
+
+        Assert.Equal("Hello", label.Text);
     }
 
     class FieldBindingTestModel
@@ -696,6 +728,37 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Baz", label.Text);
+            }
+        );
+    }
+
+    [Fact]
+    public void WhenRepeating_PropagatesResolutionScope()
+    {
+        resolutionScope.AddTranslation("RepeatTranslationKey", "Hello");
+        string markup = @"<label *repeat={Items} text={#RepeatTranslationKey} />";
+        var model = new RepeatingModel()
+        {
+            Items = [new() { Name = "Foo" }, new() { Name = "Bar" }, new() { Name = "Baz" }],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        Assert.Collection(
+            tree.Views,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Hello", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Hello", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Hello", label.Text);
             }
         );
     }
@@ -1130,6 +1193,30 @@ public partial class BindingTests
 
         [Notify]
         private Sprite? sprite;
+    }
+
+    [Fact]
+    public void WhenIncludedViewBindsToTranslation_UsesResolutionScopeForViewDocument()
+    {
+        resolutionScope.AddTranslation("OuterKey", "Foo");
+        var includedDocument = Document.Parse(@"<label text={#IncludedKey} />");
+        var includedScope = new FakeResolutionScope();
+        includedScope.AddTranslation("IncludedKey", "Bar");
+        resolutionScopeFactory.AddForDocument(includedDocument, includedScope);
+        assetCache.Put("IncludedView", includedDocument);
+
+        string markup =
+            @"<lane>
+                <label text={#OuterKey} />
+                <include name=""IncludedView"" />
+            </lane>";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var lane = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        var outerLabel = Assert.IsType<Label>(lane.Children[0]);
+        Assert.Equal("Foo", outerLabel.Text);
+        var innerLabel = Assert.IsType<Label>(lane.Children[1]);
+        Assert.Equal("Bar", innerLabel.Text);
     }
 
     [Fact]

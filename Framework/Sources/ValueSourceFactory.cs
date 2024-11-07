@@ -15,22 +15,23 @@ public interface IValueSourceFactory
     /// <summary>
     /// Creates a value source that supplies values of a given type according to the specified argument binding.
     /// </summary>
+    /// <param name="type">The type of value to obtain; can be determined using
+    /// <see cref="GetValueType(IArgument, BindingContext?)"/>.</param>
     /// <param name="argument">The parsed markup argument containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
     /// <see cref="ArgumentExpressionType.ContextBinding"/>).</param>
-    /// <param name="type">The type of value to obtain; can be determined using
-    /// <see cref="GetValueType(IArgument, BindingContext?)"/>.</param>
-    IValueSource GetValueSource(IArgument argument, BindingContext? context, Type type);
+    IValueSource GetValueSource(Type type, IArgument argument, BindingContext? context);
 
     /// <summary>
     /// Creates a value source that supplies values of a given type according to the specified binding attribute.
     /// </summary>
+    /// <param name="type">The type of value to obtain; can be determined using
+    /// <see cref="GetValueType(IAttribute, IPropertyDescriptor?, BindingContext?)"/>.</param>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
     /// <see cref="ArgumentExpressionType.ContextBinding"/>).</param>
-    /// <param name="type">The type of value to obtain; can be determined using
-    /// <see cref="GetValueType(IAttribute, IPropertyDescriptor?, BindingContext?)"/>.</param>
-    IValueSource GetValueSource(IAttribute attribute, BindingContext? context, Type type);
+    /// <param name="scope">Scope for resolving externalized attributes, such as translation keys.</param>
+    IValueSource GetValueSource(Type type, IAttribute attribute, BindingContext? context, IResolutionScope scope);
 
     /// <summary>
     /// Creates a value source that supplies values according to the specified argument binding.
@@ -53,7 +54,8 @@ public interface IValueSourceFactory
     /// <param name="context">The binding context to use for any contextual bindings (those with
     /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OneTimeBinding"/>,
     /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/>).</param>
-    IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context)
+    /// <param name="scope">Scope for resolving externalized attributes, such as translation keys.</param>
+    IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context, IResolutionScope scope)
         where T : notnull;
 
     /// <summary>
@@ -61,7 +63,7 @@ public interface IValueSourceFactory
     /// </summary>
     /// <remarks>
     /// This provides the type argument that must be supplied to
-    /// <see cref="GetValueSource(IArgument, BindingContext?, Type)"/>.
+    /// <see cref="GetValueSource(Type, IArgument, BindingContext?)"/>.
     /// </remarks>
     /// <param name="argument">The parsed markup argument containing the binding info.</param>
     /// <param name="context">The binding context to use for any contextual bindings (those with
@@ -73,7 +75,7 @@ public interface IValueSourceFactory
     /// </summary>
     /// <remarks>
     /// This provides the type argument that must be supplied to
-    /// <see cref="GetValueSource{T}(IAttribute, BindingContext?)"/>.
+    /// <see cref="GetValueSource{T}(IAttribute, BindingContext?, IResolutionScope)"/>.
     /// </remarks>
     /// <param name="attribute">The parsed markup attribute containing the binding info.</param>
     /// <param name="property">Binding metadata for the destination property; used when the source does not encode any
@@ -98,14 +100,17 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
     private static readonly MethodInfo getAttributeValueSourceMethod = typeof(ValueSourceFactory).GetMethod(
         nameof(GetValueSource),
         1,
-        [typeof(IAttribute), typeof(BindingContext)]
+        [typeof(IAttribute), typeof(BindingContext), typeof(IResolutionScope)]
     )!;
 
     private readonly Dictionary<Type, Func<IArgument, BindingContext?, IValueSource>> argumentCache = [];
-    private readonly Dictionary<Type, Func<IAttribute, BindingContext?, IValueSource>> attributeCache = [];
+    private readonly Dictionary<
+        Type,
+        Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>
+    > attributeCache = [];
 
     /// <inheritdoc />
-    public IValueSource GetValueSource(IArgument argument, BindingContext? context, Type type)
+    public IValueSource GetValueSource(Type type, IArgument argument, BindingContext? context)
     {
         if (!argumentCache.TryGetValue(type, out var valueSourceDelegate))
         {
@@ -135,25 +140,38 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
     }
 
     /// <inheritdoc />
-    public IValueSource GetValueSource(IAttribute attribute, BindingContext? context, Type type)
+    public IValueSource GetValueSource(
+        Type type,
+        IAttribute attribute,
+        BindingContext? context,
+        IResolutionScope resolutionScope
+    )
     {
         if (!attributeCache.TryGetValue(type, out var valueSourceDelegate))
         {
             var typedMethod = getAttributeValueSourceMethod.MakeGenericMethod(type);
-            valueSourceDelegate = typedMethod.CreateDelegate<Func<IAttribute, BindingContext?, IValueSource>>(this);
+            valueSourceDelegate = typedMethod.CreateDelegate<
+                Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>
+            >(this);
             attributeCache.Add(type, valueSourceDelegate);
         }
-        return valueSourceDelegate(attribute, context);
+        return valueSourceDelegate(attribute, context, resolutionScope);
     }
 
     /// <inheritdoc />
-    public IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context)
+    public IValueSource<T> GetValueSource<T>(
+        IAttribute attribute,
+        BindingContext? context,
+        IResolutionScope resolutionScope
+    )
         where T : notnull
     {
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => (IValueSource<T>)new ConstantValueSource<string>(attribute.Value),
             AttributeValueType.AssetBinding => new AssetValueSource<T>(assetCache, attribute.Value),
+            AttributeValueType.TranslationBinding => (IValueSource<T>)
+                new TranslationValueSource(resolutionScope, attribute.Value),
             AttributeValueType.InputBinding
             or AttributeValueType.OneTimeBinding
             or AttributeValueType.OutputBinding
@@ -188,7 +206,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
     {
         return attribute.ValueType switch
         {
-            AttributeValueType.Literal => typeof(string),
+            AttributeValueType.Literal or AttributeValueType.TranslationBinding => typeof(string),
             AttributeValueType.AssetBinding => property?.ValueType,
             AttributeValueType.InputBinding
             or AttributeValueType.OneTimeBinding
