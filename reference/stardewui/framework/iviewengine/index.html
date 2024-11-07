@@ -1571,9 +1571,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#enablehotreloading" class="md-nav__link">
+  <a href="#enablehotreloadingstring" class="md-nav__link">
     <span class="md-ellipsis">
-      EnableHotReloading()
+      EnableHotReloading(string)
     </span>
   </a>
   
@@ -3038,9 +3038,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#enablehotreloading" class="md-nav__link">
+  <a href="#enablehotreloadingstring" class="md-nav__link">
     <span class="md-ellipsis">
-      EnableHotReloading()
+      EnableHotReloading(string)
     </span>
   </a>
   
@@ -3130,7 +3130,7 @@ Assembly: StardewUI.dll  </p>
 <td>Creates a menu from arbitrary markup.</td>
 </tr>
 <tr>
-<td><a href="#enablehotreloading">EnableHotReloading()</a></td>
+<td><a href="#enablehotreloadingstring">EnableHotReloading(string)</a></td>
 <td>Starts monitoring this mod's directory for changes to assets managed by any of the <code>Register</code> methods, e.g. views and sprites.</td>
 </tr>
 <tr>
@@ -3202,18 +3202,22 @@ The context, or "model", for the menu's view, which holds any data-dependent val
 <h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p><strong>Warning:</strong> Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not use this API except for testing/experimentation.</p>
 <hr />
-<h4 id="enablehotreloading">EnableHotReloading()<a class="headerlink" href="#enablehotreloading" title="Permanent link"></a></h4>
+<h4 id="enablehotreloadingstring">EnableHotReloading(string)<a class="headerlink" href="#enablehotreloadingstring" title="Permanent link"></a></h4>
 <p>Starts monitoring this mod's directory for changes to assets managed by any of the <code>Register</code> methods, e.g. views and sprites.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">EnableHotReloading</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">EnableHotReloading</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">sourceDirectory</span><span class="p">);</span>
 </span></code></pre></div>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
+<p><strong><code>sourceDirectory</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+Optional source directory to watch and sync changes from. If not specified, or not a valid source directory, then hot reload will only pick up changes from within the live mod directory.</p>
 <h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
-<p>May impact game performance and should normally only be used during development and/or in debug mode.</p>
+<p>If the <code>sourceDirectory</code> argument is specified, and points to a directory with the same asset structure as the mod, then an additional sync will be set up such that files modified in the <code>sourceDirectory</code> while the game is running will be copied to the active mod directory and subsequently reloaded. In other words, pointing this at the mod's <code>.csproj</code> directory allows hot reloading from the source files instead of the deployed mod's files. </p>
+<p>Hot reload may impact game performance and should normally only be used during development and/or in debug mode.</p>
 <hr />
 <h4 id="registerspritesstring-string">RegisterSprites(string, string)<a class="headerlink" href="#registerspritesstring-string" title="Permanent link"></a></h4>
 <p>Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">RegisterSprites</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">assetPrefix</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">modDirectory</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>assetPrefix</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The prefix for all asset names, e.g. <code>Mods/MyMod/Sprites</code>. This can be any value but the same prefix must be used in <code>@AssetName</code> view bindings.</p>
 <p><strong><code>modDirectory</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
@@ -3223,7 +3227,7 @@ The physical directory where the asset files are located, relative to the mod di
 <p>Registers a mod directory to be searched for view (StarML) assets. Uses the <code>.sml</code> extension.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">RegisterViews</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">assetPrefix</span><span class="p">,</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">modDirectory</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>assetPrefix</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The prefix for all asset names, e.g. <code>Mods/MyMod/Views</code>. This can be any value but the same prefix must be used in <code>include</code> elements and in API calls to create views.</p>
 <p><strong><code>modDirectory</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
