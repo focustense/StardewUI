@@ -76,7 +76,8 @@ public interface IViewEngine
     /// <remarks>
     /// May impact game performance and should normally only be used during development and/or in debug mode.
     /// </remarks>
-    void EnableHotReloading();
+    /// <param name="sourceDirectory">Optional parameter, indicate a source folder to watch.</param>
+    void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.

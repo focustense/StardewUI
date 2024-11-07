@@ -45,7 +45,8 @@ internal class AssetRegistry : ISourceResolver
     private ConcurrentBag<string> assetsToInvalidate = [];
     private ConcurrentDictionary<string, string> changedFiles = [];
     private readonly Timer fileRetryTimer;
-    private FileSystemWatcher? fileSystemWatcher;
+    private FileSystemWatcher? hotReloadWatcher;
+    private FileSystemWatcher? sourceSyncWatcher;
 
     public AssetRegistry(IModHelper helper)
     {
@@ -61,18 +62,26 @@ internal class AssetRegistry : ISourceResolver
     /// <summary>
     /// Starts monitoring the file system for changes to any of the mod's assets.
     /// </summary>
-    public void EnableHotReloading()
+    public void EnableHotReloading(string? sourceDirectory = null)
     {
-        if (fileSystemWatcher is not null)
+        if (hotReloadWatcher is not null)
         {
             return;
         }
         helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
-        fileSystemWatcher = new FileSystemWatcher(helper.DirectoryPath) { IncludeSubdirectories = true };
-        fileSystemWatcher.Changed += FileSystemWatcher_Changed;
-        fileSystemWatcher.EnableRaisingEvents = true;
+        hotReloadWatcher = new FileSystemWatcher(helper.DirectoryPath) { IncludeSubdirectories = true };
+        hotReloadWatcher.Changed += HotReloadWatcher_Changed;
+        hotReloadWatcher.EnableRaisingEvents = true;
         fileRetryTimer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
         Logger.Log($"[Hot Reload] Watching {helper.DirectoryPath}...", LogLevel.Debug);
+        if (sourceSyncWatcher is not null || sourceDirectory == null || !Directory.Exists(sourceDirectory))
+        {
+            return;
+        }
+        sourceSyncWatcher = new FileSystemWatcher(sourceDirectory) { IncludeSubdirectories = true };
+        sourceSyncWatcher.Changed += SourceSyncWatcher_Changed;
+        sourceSyncWatcher.EnableRaisingEvents = true;
+        Logger.Log($"[Hot Reload] Will sync changes from {sourceDirectory}...", LogLevel.Debug);
     }
 
     /// <inheritdoc cref="IViewEngine.RegisterSprites(string, string)" />
@@ -180,11 +189,34 @@ internal class AssetRegistry : ISourceResolver
         }
     }
 
-    private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
+    private void HotReloadWatcher_Changed(object sender, FileSystemEventArgs e)
     {
         if (!TryInvalidateFile(e.FullPath, e.Name ?? ""))
         {
             changedFiles.TryAdd(e.FullPath, e.Name!);
+        }
+    }
+
+    /// <summary>Copy file from source to deployed, if a file of same relative path exists on target</summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void SourceSyncWatcher_Changed(object sender, FileSystemEventArgs e)
+    {
+        string relativePath = Path.GetRelativePath(sourceSyncWatcher!.Path, e.FullPath);
+        string deployedPath = PathUtilities.NormalizePath(Path.Join(hotReloadWatcher!.Path, relativePath));
+        if (File.Exists(deployedPath))
+        {
+            try
+            {
+                Logger.Log($"Syncing {relativePath}", LogLevel.Debug);
+                File.Copy(e.FullPath, deployedPath, true);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log($"Failed to sync changed file '{e.FullPath}' to '{e.FullPath}': {ex}", LogLevel.Warn);
+                Logger.Log($"Stop watching {sourceSyncWatcher!.Path}", LogLevel.Debug);
+                sourceSyncWatcher.Changed -= SourceSyncWatcher_Changed;
+            }
         }
     }
 
