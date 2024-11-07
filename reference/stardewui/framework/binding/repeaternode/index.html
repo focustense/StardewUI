@@ -2298,9 +2298,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#repeaternodeivaluesourcefactory-funcchild-iattribute" class="md-nav__link">
+  <a href="#repeaternodeivaluesourcefactory-funcchild-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)
+      RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -2530,6 +2530,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -3004,6 +3010,8 @@
       
         
           
+        
+      
         
       
         
@@ -3662,9 +3670,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#repeaternodeivaluesourcefactory-funcchild-iattribute" class="md-nav__link">
+  <a href="#repeaternodeivaluesourcefactory-funcchild-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)
+      RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -3827,7 +3835,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#repeaternodeivaluesourcefactory-funcchild-iattribute">RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)</a></td>
+<td><a href="#repeaternodeivaluesourcefactory-funcchild-iresolutionscope-iattribute">RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IResolutionScope, IAttribute)</a></td>
 <td>A structural node that accepts a collection (<a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a>) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection.</td>
 </tr>
 </tbody>
@@ -3888,15 +3896,17 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="repeaternodeivaluesourcefactory-funcchild-iattribute">RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)<a class="headerlink" href="#repeaternodeivaluesourcefactory-funcchild-iattribute" title="Permanent link"></a></h4>
+<h4 id="repeaternodeivaluesourcefactory-funcchild-iresolutionscope-iattribute">RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IResolutionScope, IAttribute)<a class="headerlink" href="#repeaternodeivaluesourcefactory-funcchild-iresolutionscope-iattribute" title="Permanent link"></a></h4>
 <p>A structural node that accepts a collection (<a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable&lt;T&gt;</a>) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">RepeaterNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="p">.</span><span class="n">Child</span><span class="o">&gt;</span><span class="w"> </span><span class="n">childCreator</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">repeatAttribute</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">RepeaterNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="p">.</span><span class="n">Child</span><span class="o">&gt;</span><span class="w"> </span><span class="n">childCreator</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">resolutionScope</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">repeatAttribute</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a><br />
 The factory responsible for creating <a href="../../sources/ivaluesource-1/">IValueSource&lt;T&gt;</a> instances from attribute data.</p>
 <p><strong><code>childCreator</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-1">Func</a>&lt;<a href="../iviewnode.child/">Child</a>&gt;<br />
 Delegate for creating a new child node.</p>
+<p><strong><code>resolutionScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
 <p><strong><code>repeatAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 The attribute containing the collection expression.</p>
 <hr />

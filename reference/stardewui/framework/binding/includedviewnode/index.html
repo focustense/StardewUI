@@ -2130,9 +2130,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute" class="md-nav__link">
+  <a href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-iresolutionscope-funcdocument-iviewnode-iattribute-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)
+      IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, IResolutionScope, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)
     </span>
   </a>
   
@@ -2530,6 +2530,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -3004,6 +3010,8 @@
       
         
           
+        
+      
         
       
         
@@ -3662,9 +3670,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute" class="md-nav__link">
+  <a href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-iresolutionscope-funcdocument-iviewnode-iattribute-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)
+      IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, IResolutionScope, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)
     </span>
   </a>
   
@@ -3827,7 +3835,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute">IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)</a></td>
+<td><a href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-iresolutionscope-funcdocument-iviewnode-iattribute-iattribute">IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, IResolutionScope, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)</a></td>
 <td>Quasi-structural node that loads its content from a shared game asset.</td>
 </tr>
 </tbody>
@@ -3888,14 +3896,15 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute">IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)<a class="headerlink" href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute" title="Permanent link"></a></h4>
+<h4 id="includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-iresolutionscope-funcdocument-iviewnode-iattribute-iattribute">IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, IResolutionScope, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)<a class="headerlink" href="#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-iresolutionscope-funcdocument-iviewnode-iattribute-iattribute" title="Permanent link"></a></h4>
 <p>Quasi-structural node that loads its content from a shared game asset.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">IncludedViewNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCache</span><span class="w"> </span><span class="n">assetCache</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">Document</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nodeCreator</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">assetNameAttribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">contextAttribute</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">IncludedViewNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCache</span><span class="w"> </span><span class="n">assetCache</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">resolutionScope</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">Document</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nodeCreator</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">assetNameAttribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">contextAttribute</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a></p>
 <p><strong><code>valueConverterFactory</code></strong> &nbsp; <a href="../../converters/ivalueconverterfactory/">IValueConverterFactory</a></p>
 <p><strong><code>assetCache</code></strong> &nbsp; <a href="../../content/iassetcache/">IAssetCache</a></p>
+<p><strong><code>resolutionScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a></p>
 <p><strong><code>nodeCreator</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-2">Func</a>&lt;<a href="../../dom/document/">Document</a>, <a href="../iviewnode/">IViewNode</a>&gt;</p>
 <p><strong><code>assetNameAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a></p>
 <p><strong><code>contextAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a></p>

@@ -2361,9 +2361,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute" class="md-nav__link">
+  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)
+      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -2530,6 +2530,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -3004,6 +3010,8 @@
       
         
           
+        
+      
         
       
         
@@ -3662,9 +3670,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute" class="md-nav__link">
+  <a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)
+      ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -3827,7 +3835,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)</a></td>
+<td><a href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)</a></td>
 <td>Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.</td>
 </tr>
 </tbody>
@@ -3888,9 +3896,9 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)<a class="headerlink" href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute" title="Permanent link"></a></h4>
+<h4 id="viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute">ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)<a class="headerlink" href="#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute" title="Permanent link"></a></h4>
 <p>Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewBinder</span><span class="w"> </span><span class="n">viewBinder</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SElement</span><span class="w"> </span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">contextAttribute</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewBinder</span><span class="w"> </span><span class="n">viewBinder</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SElement</span><span class="w"> </span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">resolutionScope</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">contextAttribute</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a><br />
@@ -3901,6 +3909,8 @@ Factory for creating views, based on their tag names.</p>
 Binding service used to create <a href="../iviewbinding/">IViewBinding</a> instances that detect changes to data or assets and propagate them to the bound <a href="../../../iview/">IView</a>.</p>
 <p><strong><code>element</code></strong> &nbsp; <a href="../../dom/selement/">SElement</a><br />
 Element data for this node.</p>
+<p><strong><code>resolutionScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
 <p><strong><code>contextAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 Optional attribute specifying how to resolve the context for child nodes based on this node's assigned <a href="./#context">Context</a>.</p>
 <hr />

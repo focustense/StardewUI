@@ -2373,9 +2373,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache" class="md-nav__link">
+  <a href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory" class="md-nav__link">
     <span class="md-ellipsis">
-      ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)
+      ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)
     </span>
   </a>
   
@@ -2397,9 +2397,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#createnodesnode" class="md-nav__link">
+  <a href="#createnodedocument" class="md-nav__link">
     <span class="md-ellipsis">
-      CreateNode(SNode)
+      CreateNode(Document)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createnodesnode-iresolutionscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      CreateNode(SNode, IResolutionScope)
     </span>
   </a>
   
@@ -2443,6 +2452,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -2917,6 +2932,8 @@
       
         
           
+        
+      
         
       
         
@@ -3566,9 +3583,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache" class="md-nav__link">
+  <a href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory" class="md-nav__link">
     <span class="md-ellipsis">
-      ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)
+      ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)
     </span>
   </a>
   
@@ -3590,9 +3607,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#createnodesnode" class="md-nav__link">
+  <a href="#createnodedocument" class="md-nav__link">
     <span class="md-ellipsis">
-      CreateNode(SNode)
+      CreateNode(Document)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createnodesnode-iresolutionscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      CreateNode(SNode, IResolutionScope)
     </span>
   </a>
   
@@ -3652,7 +3678,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache">ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)</a></td>
+<td><a href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory">ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)</a></td>
 <td>Default in-game view engine.</td>
 </tr>
 </tbody>
@@ -3667,16 +3693,20 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#createnodesnode">CreateNode(SNode)</a></td>
+<td><a href="#createnodedocument">CreateNode(Document)</a></td>
+<td>Creates a bound view node, and all descendants, from the root of a parsed <a href="../../dom/document/">Document</a>.</td>
+</tr>
+<tr>
+<td><a href="#createnodesnode-iresolutionscope">CreateNode(SNode, IResolutionScope)</a></td>
 <td>Creates a bound view node, and all descendants, from parsed node data.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache">ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)<a class="headerlink" href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache" title="Permanent link"></a></h4>
+<h4 id="viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory">ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)<a class="headerlink" href="#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory" title="Permanent link"></a></h4>
 <p>Default in-game view engine.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewNodeFactory</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewBinder</span><span class="w"> </span><span class="n">viewBinder</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCache</span><span class="w"> </span><span class="n">assetCache</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewNodeFactory</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewFactory</span><span class="w"> </span><span class="n">viewFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewBinder</span><span class="w"> </span><span class="n">viewBinder</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IAssetCache</span><span class="w"> </span><span class="n">assetCache</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScopeFactory</span><span class="w"> </span><span class="n">resolutionScopeFactory</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>viewFactory</code></strong> &nbsp; <a href="../iviewfactory/">IViewFactory</a><br />
@@ -3689,16 +3719,33 @@ The factory responsible for creating <a href="../../converters/ivalueconverter-2
 Binding service used to create <a href="../iviewbinding/">IViewBinding</a> instances that detect changes to data or assets and propagate them to the bound <a href="../../../iview/">IView</a>.</p>
 <p><strong><code>assetCache</code></strong> &nbsp; <a href="../../content/iassetcache/">IAssetCache</a><br />
 Cache for obtaining document assets. Used for included views.</p>
+<p><strong><code>resolutionScopeFactory</code></strong> &nbsp; <a href="../../content/iresolutionscopefactory/">IResolutionScopeFactory</a><br />
+Factory for creating <a href="../../content/iresolutionscope/">IResolutionScope</a> instances responsible for resolving external symbols such as translation keys.</p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
-<h4 id="createnodesnode">CreateNode(SNode)<a class="headerlink" href="#createnodesnode" title="Permanent link"></a></h4>
-<p>Creates a bound view node, and all descendants, from parsed node data.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SNode</span><span class="w"> </span><span class="n">node</span><span class="p">);</span>
+<h4 id="createnodedocument">CreateNode(Document)<a class="headerlink" href="#createnodedocument" title="Permanent link"></a></h4>
+<p>Creates a bound view node, and all descendants, from the root of a parsed <a href="../../dom/document/">Document</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">Document</span><span class="w"> </span><span class="n">document</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>document</code></strong> &nbsp; <a href="../../dom/document/">Document</a><br />
+The markup document.</p>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
+<p><a href="../iviewnode/">IViewNode</a></p>
+<p>An <a href="../iviewnode/">IViewNode</a> providing the <a href="../../../iview/">IView</a> bound with the node's attributes and children, which automatically applies changes on each <a href="../iviewnode/#updatetimespan">Update(TimeSpan)</a>.</p>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
+<p>This method automatically infers the correct <a href="../../content/iresolutionscope/">IResolutionScope</a>, so it does not require an explicit scope to be given.</p>
+<hr />
+<h4 id="createnodesnode-iresolutionscope">CreateNode(SNode, IResolutionScope)<a class="headerlink" href="#createnodesnode-iresolutionscope" title="Permanent link"></a></h4>
+<p>Creates a bound view node, and all descendants, from parsed node data.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SNode</span><span class="w"> </span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">resolutionScope</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>node</code></strong> &nbsp; <a href="../../dom/snode/">SNode</a><br />
 The node data.</p>
-<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
+<p><strong><code>resolutionScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../iviewnode/">IViewNode</a></p>
 <p>An <a href="../iviewnode/">IViewNode</a> providing the <a href="../../../iview/">IView</a> bound with the node's attributes and children, which automatically applies changes on each <a href="../iviewnode/#updatetimespan">Update(TimeSpan)</a>.</p>
 <hr />

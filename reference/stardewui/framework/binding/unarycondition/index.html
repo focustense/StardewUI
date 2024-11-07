@@ -2328,9 +2328,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute" class="md-nav__link">
+  <a href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      UnaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute)
+      UnaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -2503,6 +2503,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -2977,6 +2983,8 @@
       
         
           
+        
+      
         
       
         
@@ -3644,9 +3652,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute" class="md-nav__link">
+  <a href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      UnaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute)
+      UnaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -3775,7 +3783,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute">UnaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute)</a></td>
+<td><a href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute">UnaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute)</a></td>
 <td>A condition based on a single value that is convertible to a <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a>.</td>
 </tr>
 </tbody>
@@ -3820,15 +3828,17 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="unaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute">UnaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute)<a class="headerlink" href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute" title="Permanent link"></a></h4>
+<h4 id="unaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute">UnaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute)<a class="headerlink" href="#unaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute" title="Permanent link"></a></h4>
 <p>A condition based on a single value that is convertible to a <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">UnaryCondition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">UnaryCondition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">resolutionScope</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a><br />
 The factory responsible for creating <a href="../../sources/ivaluesource-1/">IValueSource&lt;T&gt;</a> instances from attribute data.</p>
 <p><strong><code>valueConverterFactory</code></strong> &nbsp; <a href="../../converters/ivalueconverterfactory/">IValueConverterFactory</a><br />
 The factory responsible for creating <a href="../../converters/ivalueconverter-2/">IValueConverter&lt;TSource, TDestination&gt;</a> instances, used to convert bound values to the types required by the target view.</p>
+<p><strong><code>resolutionScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
 <p><strong><code>attribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 The attribute containing the conditional expression.</p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>

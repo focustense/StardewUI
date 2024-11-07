@@ -1887,9 +1887,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute" class="md-nav__link">
+  <a href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)
+      BinaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -2538,6 +2538,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -3004,6 +3010,8 @@
       
         
           
+        
+      
         
       
         
@@ -3671,9 +3679,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute" class="md-nav__link">
+  <a href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute-iresolutionscope-iattribute" class="md-nav__link">
     <span class="md-ellipsis">
-      BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)
+      BinaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute, IResolutionScope, IAttribute)
     </span>
   </a>
   
@@ -3830,7 +3838,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute">BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)</a></td>
+<td><a href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute-iresolutionscope-iattribute">BinaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute, IResolutionScope, IAttribute)</a></td>
 <td>A condition based on the comparison of two values.</td>
 </tr>
 </tbody>
@@ -3887,17 +3895,21 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute">BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)<a class="headerlink" href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute" title="Permanent link"></a></h4>
+<h4 id="binaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute-iresolutionscope-iattribute">BinaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute, IResolutionScope, IAttribute)<a class="headerlink" href="#binaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute-iresolutionscope-iattribute" title="Permanent link"></a></h4>
 <p>A condition based on the comparison of two values.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">BinaryCondition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">leftAttribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">rightAttribute</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">BinaryCondition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSourceFactory</span><span class="w"> </span><span class="n">valueSourceFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Converters</span><span class="p">.</span><span class="n">IValueConverterFactory</span><span class="w"> </span><span class="n">valueConverterFactory</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">leftScope</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">leftAttribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">rightScope</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">rightAttribute</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>valueSourceFactory</code></strong> &nbsp; <a href="../../sources/ivaluesourcefactory/">IValueSourceFactory</a><br />
 The factory responsible for creating <a href="../../sources/ivaluesource-1/">IValueSource&lt;T&gt;</a> instances from attribute data.</p>
 <p><strong><code>valueConverterFactory</code></strong> &nbsp; <a href="../../converters/ivalueconverterfactory/">IValueConverterFactory</a><br />
 The factory responsible for creating <a href="../../converters/ivalueconverter-2/">IValueConverter&lt;TSource, TDestination&gt;</a> instances, used to convert bound values to the types required by the target view.</p>
+<p><strong><code>leftScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving any externalized <code>leftAttribute</code> values, such as translation keys.</p>
 <p><strong><code>leftAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 The attribute containing the expression for the LHS operand.</p>
+<p><strong><code>rightScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving any externalized <code>rightAttribute</code> values, such as translation keys.</p>
 <p><strong><code>rightAttribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 The attribute containing the expression for the RHS operand.</p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>

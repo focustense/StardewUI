@@ -1776,6 +1776,10 @@
 <td>The current content of the <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F">named asset</a>.</td>
 </tr>
 <tr>
+<td><code>attr={#TranslationKey}</code></td>
+<td>The translated string for a given <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation">translation key</a>. Can be either unqualified (<code>foo.bar</code>) if referring to a translation in the same mod that provided the view, or qualified (<code>authorname.ModName:foo.bar</code>) if referring to a translation in any other mod.</td>
+</tr>
+<tr>
 <td><code>attr=|Handler(Arg1, ...)|</code></td>
 <td>Call the specified <a href="../binding-context/">context method</a>, with the specified arguments; only valid for <a href="#events">event attributes</a>.</td>
 </tr>

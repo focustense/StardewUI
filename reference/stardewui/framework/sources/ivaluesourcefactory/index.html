@@ -16,7 +16,7 @@
         <link rel="prev" href="../ivaluesource/">
       
       
-        <link rel="next" href="../valuesourcefactory/">
+        <link rel="next" href="../translationvaluesource/">
       
       
       <link rel="icon" href="../../../../../assets/images/favicon.png">
@@ -1722,6 +1722,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -2210,6 +2216,8 @@
       
         
       
+        
+      
     
     
       
@@ -2508,18 +2516,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#getvaluesourceiargument-bindingcontext-type" class="md-nav__link">
+  <a href="#getvaluesourcetype-iargument-bindingcontext" class="md-nav__link">
     <span class="md-ellipsis">
-      GetValueSource(IArgument, BindingContext, Type)
+      GetValueSource(Type, IArgument, BindingContext)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#getvaluesourceiattribute-bindingcontext-type" class="md-nav__link">
+  <a href="#getvaluesourcetype-iattribute-bindingcontext-iresolutionscope" class="md-nav__link">
     <span class="md-ellipsis">
-      GetValueSource(IAttribute, BindingContext, Type)
+      GetValueSource(Type, IAttribute, BindingContext, IResolutionScope)
     </span>
   </a>
   
@@ -2535,9 +2543,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#getvaluesourcetiattribute-bindingcontext" class="md-nav__link">
+  <a href="#getvaluesourcetiattribute-bindingcontext-iresolutionscope" class="md-nav__link">
     <span class="md-ellipsis">
-      GetValueSource&lt;T&gt;(IAttribute, BindingContext)
+      GetValueSource&lt;T&gt;(IAttribute, BindingContext, IResolutionScope)
     </span>
   </a>
   
@@ -2575,6 +2583,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../translationvaluesource/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TranslationValueSource
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -3191,18 +3220,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#getvaluesourceiargument-bindingcontext-type" class="md-nav__link">
+  <a href="#getvaluesourcetype-iargument-bindingcontext" class="md-nav__link">
     <span class="md-ellipsis">
-      GetValueSource(IArgument, BindingContext, Type)
+      GetValueSource(Type, IArgument, BindingContext)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#getvaluesourceiattribute-bindingcontext-type" class="md-nav__link">
+  <a href="#getvaluesourcetype-iattribute-bindingcontext-iresolutionscope" class="md-nav__link">
     <span class="md-ellipsis">
-      GetValueSource(IAttribute, BindingContext, Type)
+      GetValueSource(Type, IAttribute, BindingContext, IResolutionScope)
     </span>
   </a>
   
@@ -3218,9 +3247,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#getvaluesourcetiattribute-bindingcontext" class="md-nav__link">
+  <a href="#getvaluesourcetiattribute-bindingcontext-iresolutionscope" class="md-nav__link">
     <span class="md-ellipsis">
-      GetValueSource&lt;T&gt;(IAttribute, BindingContext)
+      GetValueSource&lt;T&gt;(IAttribute, BindingContext, IResolutionScope)
     </span>
   </a>
   
@@ -3294,11 +3323,11 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#getvaluesourceiargument-bindingcontext-type">GetValueSource(IArgument, BindingContext, Type)</a></td>
+<td><a href="#getvaluesourcetype-iargument-bindingcontext">GetValueSource(Type, IArgument, BindingContext)</a></td>
 <td>Creates a value source that supplies values of a given type according to the specified argument binding.</td>
 </tr>
 <tr>
-<td><a href="#getvaluesourceiattribute-bindingcontext-type">GetValueSource(IAttribute, BindingContext, Type)</a></td>
+<td><a href="#getvaluesourcetype-iattribute-bindingcontext-iresolutionscope">GetValueSource(Type, IAttribute, BindingContext, IResolutionScope)</a></td>
 <td>Creates a value source that supplies values of a given type according to the specified binding attribute.</td>
 </tr>
 <tr>
@@ -3306,7 +3335,7 @@ Assembly: StardewUI.dll  </p>
 <td>Creates a value source that supplies values according to the specified argument binding.</td>
 </tr>
 <tr>
-<td><a href="#getvaluesourcetiattribute-bindingcontext">GetValueSource&lt;T&gt;(IAttribute, BindingContext)</a></td>
+<td><a href="#getvaluesourcetiattribute-bindingcontext-iresolutionscope">GetValueSource&lt;T&gt;(IAttribute, BindingContext, IResolutionScope)</a></td>
 <td>Creates a value source that supplies values according to the specified binding attribute.</td>
 </tr>
 <tr>
@@ -3321,31 +3350,33 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
-<h4 id="getvaluesourceiargument-bindingcontext-type">GetValueSource(IArgument, BindingContext, Type)<a class="headerlink" href="#getvaluesourceiargument-bindingcontext-type" title="Permanent link"></a></h4>
+<h4 id="getvaluesourcetype-iargument-bindingcontext">GetValueSource(Type, IArgument, BindingContext)<a class="headerlink" href="#getvaluesourcetype-iargument-bindingcontext" title="Permanent link"></a></h4>
 <p>Creates a value source that supplies values of a given type according to the specified argument binding.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSource</span><span class="w"> </span><span class="n">GetValueSource</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IArgument</span><span class="w"> </span><span class="n">argument</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSource</span><span class="w"> </span><span class="n">GetValueSource</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IArgument</span><span class="w"> </span><span class="n">argument</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
+<p><strong><code>type</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a><br />
+The type of value to obtain; can be determined using <a href="./#getvaluetypeiargument-bindingcontext">GetValueType(IArgument, BindingContext)</a>.</p>
 <p><strong><code>argument</code></strong> &nbsp; <a href="../../dom/iargument/">IArgument</a><br />
 The parsed markup argument containing the binding info.</p>
 <p><strong><code>context</code></strong> &nbsp; <a href="../../binding/bindingcontext/">BindingContext</a><br />
 The binding context to use for any contextual bindings (those with <a href="../../grammar/argumentexpressiontype/#contextbinding">ContextBinding</a>).</p>
-<p><strong><code>type</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a><br />
-The type of value to obtain; can be determined using <a href="./#getvaluetypeiargument-bindingcontext">GetValueType(IArgument, BindingContext)</a>.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../ivaluesource/">IValueSource</a></p>
 <hr />
-<h4 id="getvaluesourceiattribute-bindingcontext-type">GetValueSource(IAttribute, BindingContext, Type)<a class="headerlink" href="#getvaluesourceiattribute-bindingcontext-type" title="Permanent link"></a></h4>
+<h4 id="getvaluesourcetype-iattribute-bindingcontext-iresolutionscope">GetValueSource(Type, IAttribute, BindingContext, IResolutionScope)<a class="headerlink" href="#getvaluesourcetype-iattribute-bindingcontext-iresolutionscope" title="Permanent link"></a></h4>
 <p>Creates a value source that supplies values of a given type according to the specified binding attribute.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSource</span><span class="w"> </span><span class="n">GetValueSource</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSource</span><span class="w"> </span><span class="n">GetValueSource</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>type</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a><br />
+The type of value to obtain; can be determined using <a href="./#getvaluetypeiargument-bindingcontext">GetValueType(IArgument, BindingContext)</a>.</p>
 <p><strong><code>attribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 The parsed markup attribute containing the binding info.</p>
 <p><strong><code>context</code></strong> &nbsp; <a href="../../binding/bindingcontext/">BindingContext</a><br />
 The binding context to use for any contextual bindings (those with <a href="../../grammar/argumentexpressiontype/#contextbinding">ContextBinding</a>).</p>
-<p><strong><code>type</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a><br />
-The type of value to obtain; can be determined using <a href="./#getvaluetypeiargument-bindingcontext">GetValueType(IArgument, BindingContext)</a>.</p>
+<p><strong><code>scope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
 <h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../ivaluesource/">IValueSource</a></p>
 <hr />
@@ -3361,15 +3392,17 @@ The binding context to use for any contextual bindings (those with <a href="../.
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="../ivaluesource-1/">IValueSource&lt;T&gt;</a></p>
 <hr />
-<h4 id="getvaluesourcetiattribute-bindingcontext">GetValueSource&lt;T&gt;(IAttribute, BindingContext)<a class="headerlink" href="#getvaluesourcetiattribute-bindingcontext" title="Permanent link"></a></h4>
+<h4 id="getvaluesourcetiattribute-bindingcontext-iresolutionscope">GetValueSource&lt;T&gt;(IAttribute, BindingContext, IResolutionScope)<a class="headerlink" href="#getvaluesourcetiattribute-bindingcontext-iresolutionscope" title="Permanent link"></a></h4>
 <p>Creates a value source that supplies values according to the specified binding attribute.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSource</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetValueSource</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Sources</span><span class="p">.</span><span class="n">IValueSource</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetValueSource</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">scope</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>attribute</code></strong> &nbsp; <a href="../../dom/iattribute/">IAttribute</a><br />
 The parsed markup attribute containing the binding info.</p>
 <p><strong><code>context</code></strong> &nbsp; <a href="../../binding/bindingcontext/">BindingContext</a><br />
 The binding context to use for any contextual bindings (those with <a href="../../grammar/attributevaluetype/#inputbinding">InputBinding</a>, <a href="../../grammar/attributevaluetype/#onetimebinding">OneTimeBinding</a>, <a href="../../grammar/attributevaluetype/#outputbinding">OutputBinding</a> or <a href="../../grammar/attributevaluetype/#twowaybinding">TwoWayBinding</a>).</p>
+<p><strong><code>scope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
 <h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="../ivaluesource-1/">IValueSource&lt;T&gt;</a></p>
 <hr />
@@ -3385,7 +3418,7 @@ The binding context to use for any contextual bindings (those with <a href="../.
 <h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
-<p>This provides the type argument that must be supplied to <a href="./#getvaluesourceiargument-bindingcontext-type">GetValueSource(IArgument, BindingContext, Type)</a>.</p>
+<p>This provides the type argument that must be supplied to <a href="./#getvaluesourcetype-iargument-bindingcontext">GetValueSource(Type, IArgument, BindingContext)</a>.</p>
 <hr />
 <h4 id="getvaluetypeiattribute-ipropertydescriptor-bindingcontext">GetValueType(IAttribute, IPropertyDescriptor, BindingContext)<a class="headerlink" href="#getvaluetypeiattribute-ipropertydescriptor-bindingcontext" title="Permanent link"></a></h4>
 <p>Determines the type of value that will be supplied by a given attribute binding, and with the specified context.</p>
@@ -3401,7 +3434,7 @@ The binding context to use for any contextual bindings (those with <a href="../.
 <h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
-<p>This provides the type argument that must be supplied to <a href="./#getvaluesourceiargument-bindingcontext-type">GetValueSource(IArgument, BindingContext, Type)</a>.</p>
+<p>This provides the type argument that must be supplied to <a href="./#getvaluesourcetype-iargument-bindingcontext">GetValueSource(Type, IArgument, BindingContext)</a>.</p>
 <hr />
 </div>
 
@@ -3453,13 +3486,13 @@ The binding context to use for any contextual bindings (those with <a href="../.
         
         
           
-          <a href="../valuesourcefactory/" class="md-footer__link md-footer__link--next" aria-label="Next: ValueSourceFactory">
+          <a href="../translationvaluesource/" class="md-footer__link md-footer__link--next" aria-label="Next: TranslationValueSource">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                ValueSourceFactory
+                TranslationValueSource
               </div>
             </div>
             <div class="md-footer__button md-icon">

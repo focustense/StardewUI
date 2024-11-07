@@ -1851,9 +1851,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext" class="md-nav__link">
+  <a href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext-iresolutionscope" class="md-nav__link">
     <span class="md-ellipsis">
-      TryCreateBinding(IViewDescriptor, IAttribute, BindingContext)
+      TryCreateBinding(IViewDescriptor, IAttribute, BindingContext, IResolutionScope)
     </span>
   </a>
   
@@ -2451,6 +2451,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -2917,6 +2923,8 @@
       
         
           
+        
+      
         
       
         
@@ -3590,9 +3598,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext" class="md-nav__link">
+  <a href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext-iresolutionscope" class="md-nav__link">
     <span class="md-ellipsis">
-      TryCreateBinding(IViewDescriptor, IAttribute, BindingContext)
+      TryCreateBinding(IViewDescriptor, IAttribute, BindingContext, IResolutionScope)
     </span>
   </a>
   
@@ -3668,7 +3676,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext">TryCreateBinding(IViewDescriptor, IAttribute, BindingContext)</a></td>
+<td><a href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext-iresolutionscope">TryCreateBinding(IViewDescriptor, IAttribute, BindingContext, IResolutionScope)</a></td>
 <td>Attempts to creates a new attribute binding.</td>
 </tr>
 </tbody>
@@ -3686,9 +3694,9 @@ The factory responsible for creating <a href="../../sources/ivaluesource-1/">IVa
 The factory responsible for creating <a href="../../converters/ivalueconverter-2/">IValueConverter&lt;TSource, TDestination&gt;</a> instances, used to convert bound values to the types required by the target view.</p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
-<h4 id="trycreatebindingiviewdescriptor-iattribute-bindingcontext">TryCreateBinding(IViewDescriptor, IAttribute, BindingContext)<a class="headerlink" href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext" title="Permanent link"></a></h4>
+<h4 id="trycreatebindingiviewdescriptor-iattribute-bindingcontext-iresolutionscope">TryCreateBinding(IViewDescriptor, IAttribute, BindingContext, IResolutionScope)<a class="headerlink" href="#trycreatebindingiviewdescriptor-iattribute-bindingcontext-iresolutionscope" title="Permanent link"></a></h4>
 <p>Attempts to creates a new attribute binding.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IAttributeBinding</span><span class="w"> </span><span class="n">TryCreateBinding</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IViewDescriptor</span><span class="w"> </span><span class="n">viewDescriptor</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IAttributeBinding</span><span class="w"> </span><span class="n">TryCreateBinding</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IViewDescriptor</span><span class="w"> </span><span class="n">viewDescriptor</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">IAttribute</span><span class="w"> </span><span class="n">attribute</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">BindingContext</span><span class="w"> </span><span class="n">context</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">resolutionScope</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>viewDescriptor</code></strong> &nbsp; <a href="../../descriptors/iviewdescriptor/">IViewDescriptor</a><br />
@@ -3697,6 +3705,8 @@ Descriptor for the bound view, providing access to its properties.</p>
 The attribute data.</p>
 <p><strong><code>context</code></strong> &nbsp; <a href="../bindingcontext/">BindingContext</a><br />
 The binding context, including the bound data and descriptor for the data type.</p>
+<p><strong><code>resolutionScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../iattributebinding/">IAttributeBinding</a></p>
 <p>The created binding, or <code>null</code> if the arguments do not support creating a binding, such as an <code>attribute</code> bound to a <code>null</code> value of <code>context</code>.</p>

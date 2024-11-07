@@ -2238,9 +2238,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#createnodesnode" class="md-nav__link">
+  <a href="#createnodedocument" class="md-nav__link">
     <span class="md-ellipsis">
-      CreateNode(SNode)
+      CreateNode(Document)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createnodesnode-iresolutionscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      CreateNode(SNode, IResolutionScope)
     </span>
   </a>
   
@@ -2410,6 +2419,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -2884,6 +2899,8 @@
       
         
           
+        
+      
         
       
         
@@ -3524,9 +3541,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#createnodesnode" class="md-nav__link">
+  <a href="#createnodedocument" class="md-nav__link">
     <span class="md-ellipsis">
-      CreateNode(SNode)
+      CreateNode(Document)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createnodesnode-iresolutionscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      CreateNode(SNode, IResolutionScope)
     </span>
   </a>
   
@@ -3582,21 +3608,40 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#createnodesnode">CreateNode(SNode)</a></td>
+<td><a href="#createnodedocument">CreateNode(Document)</a></td>
+<td>Creates a bound view node, and all descendants, from the root of a parsed <a href="../../dom/document/">Document</a>.</td>
+</tr>
+<tr>
+<td><a href="#createnodesnode-iresolutionscope">CreateNode(SNode, IResolutionScope)</a></td>
 <td>Creates a bound view node, and all descendants, from parsed node data.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
-<h4 id="createnodesnode">CreateNode(SNode)<a class="headerlink" href="#createnodesnode" title="Permanent link"></a></h4>
-<p>Creates a bound view node, and all descendants, from parsed node data.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SNode</span><span class="w"> </span><span class="n">node</span><span class="p">);</span>
+<h4 id="createnodedocument">CreateNode(Document)<a class="headerlink" href="#createnodedocument" title="Permanent link"></a></h4>
+<p>Creates a bound view node, and all descendants, from the root of a parsed <a href="../../dom/document/">Document</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">Document</span><span class="w"> </span><span class="n">document</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
+<p><strong><code>document</code></strong> &nbsp; <a href="../../dom/document/">Document</a><br />
+The markup document.</p>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
+<p><a href="../iviewnode/">IViewNode</a></p>
+<p>An <a href="../iviewnode/">IViewNode</a> providing the <a href="../../../iview/">IView</a> bound with the node's attributes and children, which automatically applies changes on each <a href="../iviewnode/#updatetimespan">Update(TimeSpan)</a>.</p>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
+<p>This method automatically infers the correct <a href="../../content/iresolutionscope/">IResolutionScope</a>, so it does not require an explicit scope to be given.</p>
+<hr />
+<h4 id="createnodesnode-iresolutionscope">CreateNode(SNode, IResolutionScope)<a class="headerlink" href="#createnodesnode-iresolutionscope" title="Permanent link"></a></h4>
+<p>Creates a bound view node, and all descendants, from parsed node data.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Binding</span><span class="p">.</span><span class="n">IViewNode</span><span class="w"> </span><span class="n">CreateNode</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SNode</span><span class="w"> </span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Content</span><span class="p">.</span><span class="n">IResolutionScope</span><span class="w"> </span><span class="n">resolutionScope</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>node</code></strong> &nbsp; <a href="../../dom/snode/">SNode</a><br />
 The node data.</p>
-<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
+<p><strong><code>resolutionScope</code></strong> &nbsp; <a href="../../content/iresolutionscope/">IResolutionScope</a><br />
+Scope for resolving externalized attributes, such as translation keys.</p>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="../iviewnode/">IViewNode</a></p>
 <p>An <a href="../iviewnode/">IViewNode</a> providing the <a href="../../../iview/">IView</a> bound with the node's attributes and children, which automatically applies changes on each <a href="../iviewnode/#updatetimespan">Update(TimeSpan)</a>.</p>
 <hr />
