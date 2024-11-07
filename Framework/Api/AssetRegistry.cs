@@ -223,7 +223,17 @@ internal class AssetRegistry : ISourceResolver
 
     private void SyncFile(IReadOnlyList<DirectoryMapping> directories, string fullPath, string relativePath)
     {
+        if (!File.Exists(fullPath))
+        {
+            // file got deleted in source
+            return;
+        }
         string deployedPath = PathUtilities.NormalizePath(Path.Join(hotReloadWatcher!.Path, relativePath));
+        if (!(Directory.GetParent(deployedPath)?.Exists ?? false))
+        {
+            // target directory does not exist
+            return;
+        }
         foreach (var mapping in directories)
         {
             if (relativePath.StartsWith(mapping.ModDirectory))
@@ -233,11 +243,23 @@ internal class AssetRegistry : ISourceResolver
                     Logger.Log($"Sync {relativePath} ({mapping.AssetPrefix})", LogLevel.Debug);
                     File.Copy(fullPath, deployedPath, true);
                 }
-                catch (Exception ex)
+                catch (IOException ex)
                 {
-                    Logger.Log($"Failed to sync changed file '{fullPath}' to '{fullPath}': {ex}", LogLevel.Warn);
+                    Logger.Log($"Failed to sync changed file '{fullPath}' to '{fullPath}': {ex}", LogLevel.Debug);
+                }
+                catch (Exception ex)
+                    when (ex is UnauthorizedAccessException
+                        || ex is PathTooLongException
+                        || ex is NotSupportedException
+                        || ex is ArgumentNullException
+                        || ex is ArgumentException
+                    )
+                {
+                    // these exceptions need intervention, log error and stop watching
+                    Logger.Log($"Failed to sync changed file '{fullPath}' to '{fullPath}': {ex}", LogLevel.Error);
                     Logger.Log($"Stop watching {sourceSyncWatcher!.Path}", LogLevel.Debug);
-                    sourceSyncWatcher.Changed -= SourceSyncWatcher_Changed;
+                    sourceSyncWatcher.EnableRaisingEvents = false;
+                    return;
                 }
             }
         }
