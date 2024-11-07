@@ -24,6 +24,14 @@ internal class AssetRegistry : ISourceResolver
     // which is essentially how helpers like UiSprites behave.
     record SpriteCacheEntry(string TextureAssetName, Func<Texture2D, Sprite> Selector);
 
+    // Error codes that are considered transient, likely to go away after a retry.
+    private static readonly uint[] retryableHResults =
+    [
+        0x80070020, // ERROR_SHARING_VIOLATION
+        0x80070021 // ERROR_LOCK_VIOLATION
+        ,
+    ];
+
     private readonly IModHelper helper;
     private readonly List<DirectoryMapping> spriteDirectories = [];
     private readonly List<DirectoryMapping> viewDirectories = [];
@@ -43,7 +51,8 @@ internal class AssetRegistry : ISourceResolver
     private readonly Dictionary<string, WeakReference<Texture2D>> textureCache = new(StringComparer.OrdinalIgnoreCase);
 
     private ConcurrentBag<string> assetsToInvalidate = [];
-    private ConcurrentDictionary<string, string> changedFiles = [];
+    private ConcurrentDictionary<string, string> changedModFiles = [];
+    private ConcurrentDictionary<string, string> changedSourceFiles = [];
     private readonly Timer fileRetryTimer;
     private FileSystemWatcher? hotReloadWatcher;
     private FileSystemWatcher? sourceSyncWatcher;
@@ -57,29 +66,6 @@ internal class AssetRegistry : ISourceResolver
         var contentEvents = helper.Events.Content;
         contentEvents.AssetRequested += Content_AssetRequested;
         contentEvents.AssetsInvalidated += Content_AssetsInvalidated;
-    }
-
-    /// <summary></summary>
-    /// <param name="callerFilePath"></param>
-    /// <param name="sourceDirectory"></param>
-    /// <returns></returns>
-    private static bool TryFindSourceDirectory(string callerFilePath, [NotNullWhen(true)] out string? sourceDirectory)
-    {
-        sourceDirectory = null;
-        DirectoryInfo? dirInfo = Directory.GetParent(callerFilePath);
-        while (dirInfo != null)
-        {
-            foreach (FileInfo file in dirInfo.GetFiles())
-            {
-                if (file.Extension == ".csproj")
-                {
-                    sourceDirectory = dirInfo.FullName;
-                    return true;
-                }
-            }
-            dirInfo = dirInfo.Parent;
-        }
-        return false;
     }
 
     /// <summary>
@@ -98,14 +84,19 @@ internal class AssetRegistry : ISourceResolver
         hotReloadWatcher.EnableRaisingEvents = true;
         fileRetryTimer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
         Logger.Log($"[Hot Reload] Watching {helper.DirectoryPath}...", LogLevel.Debug);
-        if (sourceSyncWatcher is not null || sourceDirectory == null || !Directory.Exists(sourceDirectory))
+
+        if (
+            sourceSyncWatcher is not null
+            || string.IsNullOrEmpty(sourceDirectory)
+            || !Directory.Exists(sourceDirectory)
+        )
         {
             return;
         }
         sourceSyncWatcher = new FileSystemWatcher(sourceDirectory) { IncludeSubdirectories = true };
         sourceSyncWatcher.Changed += SourceSyncWatcher_Changed;
         sourceSyncWatcher.EnableRaisingEvents = true;
-        Logger.Log($"[Hot Reload] Will sync changes from {sourceDirectory}...", LogLevel.Debug);
+        Logger.Log($"[Hot Reload] Syncing changes from {sourceDirectory} to {helper.DirectoryPath}...", LogLevel.Debug);
     }
 
     /// <inheritdoc cref="IViewEngine.RegisterSprites(string, string)" />
@@ -202,65 +193,21 @@ internal class AssetRegistry : ISourceResolver
 
     private void FileRetryTimerCallback(object? _)
     {
-        var changedFiles = this.changedFiles;
-        this.changedFiles = [];
-        foreach (var (physicalPath, assetName) in changedFiles)
+        var changedModFiles = this.changedModFiles;
+        this.changedModFiles = [];
+        foreach (var (physicalPath, assetName) in changedModFiles)
         {
             if (!TryInvalidateFile(physicalPath, assetName))
             {
-                this.changedFiles.TryAdd(physicalPath, assetName);
+                this.changedModFiles.TryAdd(physicalPath, assetName);
             }
         }
-    }
 
-    private void HotReloadWatcher_Changed(object sender, FileSystemEventArgs e)
-    {
-        if (!TryInvalidateFile(e.FullPath, e.Name ?? ""))
+        var changedSourceFiles = this.changedSourceFiles;
+        this.changedSourceFiles = [];
+        foreach (var (sourcePath, destinationPath) in changedSourceFiles)
         {
-            changedFiles.TryAdd(e.FullPath, e.Name!);
-        }
-    }
-
-    private void SyncFile(IReadOnlyList<DirectoryMapping> directories, string fullPath, string relativePath)
-    {
-        string deployedPath = PathUtilities.NormalizePath(Path.Join(hotReloadWatcher!.Path, relativePath));
-        foreach (var mapping in directories)
-        {
-            if (relativePath.StartsWith(mapping.ModDirectory))
-            {
-                try
-                {
-                    Logger.Log($"Sync {relativePath} ({mapping.AssetPrefix})", LogLevel.Debug);
-                    File.Copy(fullPath, deployedPath, true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Log($"Failed to sync changed file '{fullPath}' to '{fullPath}': {ex}", LogLevel.Warn);
-                    Logger.Log($"Stop watching {sourceSyncWatcher!.Path}", LogLevel.Debug);
-                    sourceSyncWatcher.Changed -= SourceSyncWatcher_Changed;
-                }
-            }
-        }
-        return;
-    }
-
-    /// <summary>Copy file from source to deployed, if a file of same relative path exists on target</summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void SourceSyncWatcher_Changed(object sender, FileSystemEventArgs e)
-    {
-        var relativePath = Path.GetRelativePath(sourceSyncWatcher!.Path, e.FullPath);
-        switch (Path.GetExtension(e.Name))
-        {
-            case ".sml":
-                SyncFile(viewDirectories, e.FullPath, relativePath);
-                break;
-            case ".json":
-                SyncFile(spriteDirectories, e.FullPath, relativePath);
-                break;
-            case ".png":
-                SyncFile(spriteDirectories, e.FullPath, relativePath);
-                break;
+            SyncFile(sourcePath, destinationPath); // Will add back to changedSourceFiles if failed and retryable
         }
     }
 
@@ -315,6 +262,14 @@ internal class AssetRegistry : ISourceResolver
         return texture;
     }
 
+    private void HotReloadWatcher_Changed(object sender, FileSystemEventArgs e)
+    {
+        if (!TryInvalidateFile(e.FullPath, e.Name ?? ""))
+        {
+            changedModFiles.TryAdd(e.FullPath, e.Name!);
+        }
+    }
+
     private void InvalidateFile(
         IReadOnlyList<DirectoryMapping> directories,
         string relativePath,
@@ -343,6 +298,11 @@ internal class AssetRegistry : ISourceResolver
         }
     }
 
+    private static bool IsRetryable(Exception ex)
+    {
+        return ex is IOException io && retryableHResults.Contains((uint)io.HResult);
+    }
+
     // Performs scheduled tasks that must be run on the main thread.
     // In particular, cache invalidation for objects such as textures is dangerous to run in the background.
     private void MainThreadUpdate()
@@ -352,6 +312,69 @@ internal class AssetRegistry : ISourceResolver
         while (assetsToInvalidate.TryTake(out var assetName))
         {
             helper.GameContent.InvalidateCache(assetName);
+        }
+    }
+
+    private void SourceSyncWatcher_Changed(object sender, FileSystemEventArgs e)
+    {
+        var relativePath = Path.GetRelativePath(sourceSyncWatcher!.Path, e.FullPath);
+        switch (Path.GetExtension(e.Name))
+        {
+            case ".sml":
+                SyncFile(viewDirectories, e.FullPath, relativePath);
+                break;
+            case ".json":
+            case ".png":
+                SyncFile(spriteDirectories, e.FullPath, relativePath);
+                break;
+        }
+    }
+
+    private void SyncFile(IReadOnlyList<DirectoryMapping> directories, string fullPath, string relativePath)
+    {
+        string deployedPath = PathUtilities.NormalizePath(Path.Combine(hotReloadWatcher!.Path, relativePath));
+        foreach (var mapping in directories)
+        {
+            if (relativePath.StartsWith(mapping.ModDirectory))
+            {
+                Logger.Log(
+                    $"File '{fullPath}' matches asset prefix '{mapping.AssetPrefix}'; syncing to {deployedPath}",
+                    LogLevel.Debug
+                );
+                SyncFile(fullPath, deployedPath);
+                return;
+            }
+        }
+        Logger.Log(
+            $"File '{fullPath}' does not match any registered asset prefix and will not be synchronized.",
+            LogLevel.Info
+        );
+    }
+
+    private void SyncFile(string sourcePath, string destinationPath)
+    {
+        try
+        {
+            File.Copy(sourcePath, destinationPath, true);
+        }
+        catch (Exception ex)
+        {
+            if (IsRetryable(ex))
+            {
+                changedSourceFiles[sourcePath] = destinationPath;
+            }
+            else
+            {
+                Logger.Log(
+                    $"Unexpected error while syncing changed file '{sourcePath}' to '{destinationPath}': {ex}",
+                    LogLevel.Warn
+                );
+                Logger.Log(
+                    $"Source syncing from '{sourceSyncWatcher!.Path}' will be stopped to prevent a cascade.",
+                    LogLevel.Debug
+                );
+                sourceSyncWatcher.Changed -= SourceSyncWatcher_Changed;
+            }
         }
     }
 

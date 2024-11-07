@@ -47,7 +47,7 @@ internal sealed partial class ModEntry : Mod
         viewEngine = Helper.ModRegistry.GetApi<IViewEngine>("focustense.StardewUI")!;
         viewEngine.RegisterSprites($"Mods/{ModManifest.UniqueID}/Sprites", "assets/sprites");
         viewEngine.RegisterViews(viewAssetPrefix, "assets/views");
-        viewEngine.EnableHotReloading();
+        viewEngine.EnableHotReloadingWithSourceSync();
     }
 
     private void GameLoop_OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
