@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
 
@@ -74,9 +75,20 @@ public interface IViewEngine
     /// views and sprites.
     /// </summary>
     /// <remarks>
-    /// May impact game performance and should normally only be used during development and/or in debug mode.
+    /// <para>
+    /// If the <paramref name="sourceDirectory"/> argument is specified, and points to a directory with the same asset
+    /// structure as the mod, then an additional sync will be set up such that files modified in the
+    /// <c>sourceDirectory</c> while the game is running will be copied to the active mod directory and subsequently
+    /// reloaded. In other words, pointing this at the mod's <c>.csproj</c> directory allows hot reloading from the
+    /// source files instead of the deployed mod's files.
+    /// </para>
+    /// <para>
+    /// Hot reload may impact game performance and should normally only be used during development and/or in debug mode.
+    /// </para>
     /// </remarks>
-    void EnableHotReloading();
+    /// <param name="sourceDirectory">Optional source directory to watch and sync changes from. If not specified, or not
+    /// a valid source directory, then hot reload will only pick up changes from within the live mod directory.</param>
+    void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
@@ -134,4 +146,58 @@ public interface IViewDrawable : IDisposable
     /// <param name="b">Target sprite batch.</param>
     /// <param name="position">Position on the screen or viewport to use as the top-left corner.</param>
     void Draw(SpriteBatch b, Vector2 position);
+}
+
+/// <summary>
+/// Extensions for the <see cref="IViewEngine"/> interface.
+/// </summary>
+internal static class ViewEngineExtensions
+{
+    /// <summary>
+    /// Starts monitoring this mod's directory for changes to assets managed by any of the <see cref="IViewEngine"/>'s
+    /// <c>Register</c> methods, e.g. views and sprites, and attempts to set up an additional sync from the mod's
+    /// project (source) directory to the deployed mod directory so that hot reloads can be initiated from the IDE.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Callers should normally omit the <paramref name="callerFilePath"/> parameter in their call; this will cause it
+    /// to be replaced at compile time with the actual file path of the caller, and used to automatically detect the
+    /// project path.
+    /// </para>
+    /// <para>
+    /// If detection/sync fails due to an unusual project structure, consider providing an exact path directly to
+    /// <see cref="IViewEngine.EnableHotReloading(string)"/> instead of using this extension.
+    /// </para>
+    /// <para>
+    /// Hot reload may impact game performance and should normally only be used during development and/or in debug mode.
+    /// </para>
+    /// </remarks>
+    /// <param name="viewEngine">The view engine API.</param>
+    /// <param name="callerFilePath">Do not pass in this argument, so that <see cref="CallerFilePathAttribute"/> can
+    /// provide the correct value on build.</param>
+    public static void EnableHotReloadingWithSourceSync(
+        this IViewEngine viewEngine,
+        [CallerFilePath] string? callerFilePath = null
+    )
+    {
+        viewEngine.EnableHotReloading(FindProjectDirectory(callerFilePath));
+    }
+
+    // Attempts to determine the project root directory given the path to an arbitrary source file by walking up the
+    // directory tree until it finds a directory containing a file with .csproj extension.
+    private static string? FindProjectDirectory(string? sourceFilePath)
+    {
+        if (string.IsNullOrEmpty(sourceFilePath))
+        {
+            return null;
+        }
+        for (var dir = Directory.GetParent(sourceFilePath); dir is not null; dir = dir.Parent)
+        {
+            if (dir.EnumerateFiles("*.csproj").Any())
+            {
+                return dir.FullName;
+            }
+        }
+        return null;
+    }
 }

@@ -74,9 +74,9 @@ public class ViewEngine : IViewEngine
     }
 
     /// <inheritdoc />
-    public void EnableHotReloading()
+    public void EnableHotReloading(string? sourceDirectory = null)
     {
-        assetRegistry.EnableHotReloading();
+        assetRegistry.EnableHotReloading(sourceDirectory);
     }
 
     /// <inheritdoc />
