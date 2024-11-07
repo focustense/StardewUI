@@ -42,7 +42,7 @@ public class ReflectionViewBinder : StardewUI.Framework.Binding.IViewBinder
 
  | Name | Description |
 | --- | --- |
-| [Bind(IView, IElement, BindingContext)](#bindiview-ielement-bindingcontext) | Creates a view binding. | 
+| [Bind(IView, IElement, BindingContext, IResolutionScope)](#bindiview-ielement-bindingcontext-iresolutionscope) | Creates a view binding. | 
 | [GetDescriptor(IView)](#getdescriptoriview) | Retrieves the descriptor for a view, which provides information about its properties. | 
 
 ## Details
@@ -69,12 +69,12 @@ Factory for creating the [IEventBinding](ieventbinding.md) instances used to bin
 
 ### Methods
 
-#### Bind(IView, IElement, BindingContext)
+#### Bind(IView, IElement, BindingContext, IResolutionScope)
 
 Creates a view binding.
 
 ```cs
-public StardewUI.Framework.Binding.IViewBinding Bind(StardewUI.IView view, StardewUI.Framework.Dom.IElement element, StardewUI.Framework.Binding.BindingContext context);
+public StardewUI.Framework.Binding.IViewBinding Bind(StardewUI.IView view, StardewUI.Framework.Dom.IElement element, StardewUI.Framework.Binding.BindingContext context, StardewUI.Framework.Content.IResolutionScope resolutionScope);
 ```
 
 ##### Parameters
@@ -87,6 +87,9 @@ The element data providing the literal or binding attributes.
 
 **`context`** &nbsp; [BindingContext](bindingcontext.md)  
 The binding context/data, for any non-asset bindings using bindings whose [AttributeValueType](../grammar/attributevaluetype.md) is one of the recognized [IsContextBinding(AttributeValueType)](../grammar/attributevaluetypeextensions.md#iscontextbindingattributevaluetype) types.
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving externalized attributes, such as translation keys.
 
 ##### Returns
 

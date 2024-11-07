@@ -36,24 +36,25 @@ public class ViewNodeFactory : StardewUI.Framework.Binding.IViewNodeFactory
 
  | Name | Description |
 | --- | --- |
-| [ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)](#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache) | Default in-game view engine. | 
+| [ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)](#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory) | Default in-game view engine. | 
 
 ### Methods
 
  | Name | Description |
 | --- | --- |
-| [CreateNode(SNode)](#createnodesnode) | Creates a bound view node, and all descendants, from parsed node data. | 
+| [CreateNode(Document)](#createnodedocument) | Creates a bound view node, and all descendants, from the root of a parsed [Document](../dom/document.md). | 
+| [CreateNode(SNode, IResolutionScope)](#createnodesnode-iresolutionscope) | Creates a bound view node, and all descendants, from parsed node data. | 
 
 ## Details
 
 ### Constructors
 
-#### ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache)
+#### ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)
 
 Default in-game view engine.
 
 ```cs
-public ViewNodeFactory(StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Content.IAssetCache assetCache);
+public ViewNodeFactory(StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Content.IAssetCache assetCache, StardewUI.Framework.Content.IResolutionScopeFactory resolutionScopeFactory);
 ```
 
 ##### Parameters
@@ -73,22 +74,53 @@ Binding service used to create [IViewBinding](iviewbinding.md) instances that de
 **`assetCache`** &nbsp; [IAssetCache](../content/iassetcache.md)  
 Cache for obtaining document assets. Used for included views.
 
+**`resolutionScopeFactory`** &nbsp; [IResolutionScopeFactory](../content/iresolutionscopefactory.md)  
+Factory for creating [IResolutionScope](../content/iresolutionscope.md) instances responsible for resolving external symbols such as translation keys.
+
 -----
 
 ### Methods
 
-#### CreateNode(SNode)
+#### CreateNode(Document)
+
+Creates a bound view node, and all descendants, from the root of a parsed [Document](../dom/document.md).
+
+```cs
+public StardewUI.Framework.Binding.IViewNode CreateNode(StardewUI.Framework.Dom.Document document);
+```
+
+##### Parameters
+
+**`document`** &nbsp; [Document](../dom/document.md)  
+The markup document.
+
+##### Returns
+
+[IViewNode](iviewnode.md)
+
+  An [IViewNode](iviewnode.md) providing the [IView](../../iview.md) bound with the node's attributes and children, which automatically applies changes on each [Update(TimeSpan)](iviewnode.md#updatetimespan).
+
+##### Remarks
+
+This method automatically infers the correct [IResolutionScope](../content/iresolutionscope.md), so it does not require an explicit scope to be given.
+
+-----
+
+#### CreateNode(SNode, IResolutionScope)
 
 Creates a bound view node, and all descendants, from parsed node data.
 
 ```cs
-public StardewUI.Framework.Binding.IViewNode CreateNode(StardewUI.Framework.Dom.SNode node);
+public StardewUI.Framework.Binding.IViewNode CreateNode(StardewUI.Framework.Dom.SNode node, StardewUI.Framework.Content.IResolutionScope resolutionScope);
 ```
 
 ##### Parameters
 
 **`node`** &nbsp; [SNode](../dom/snode.md)  
 The node data.
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving externalized attributes, such as translation keys.
 
 ##### Returns
 

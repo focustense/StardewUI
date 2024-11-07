@@ -17,6 +17,7 @@ title: StardewUI.Framework.Sources
 | [ContextPropertyValueSource&lt;T&gt;](contextpropertyvaluesource-1.md) | Value source that obtains its value from a context (or "model") property. |
 | [ConvertedValueSource](convertedvaluesource.md) | Helpers for creating instances of the generic [ConvertedValueSource&lt;TSource, T&gt;](convertedvaluesource-2.md) when some of the types are unknown at compile time. |
 | [ConvertedValueSource&lt;TSource, T&gt;](convertedvaluesource-2.md) | A value source that wraps another [IValueSource&lt;T&gt;](ivaluesource-1.md) and performs automatic conversion. |
+| [TranslationValueSource](translationvaluesource.md) | Value source that reads the localized string from a translation key. |
 | [ValueSourceFactory](valuesourcefactory.md) | Default implementation of the [IValueSourceFactory](ivaluesourcefactory.md) supporting all binding types. |
 
 ## Interfaces

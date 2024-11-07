@@ -43,10 +43,10 @@ public class ValueSourceFactory :
 
  | Name | Description |
 | --- | --- |
-| [GetValueSource(IArgument, BindingContext, Type)](#getvaluesourceiargument-bindingcontext-type) | Creates a value source that supplies values of a given type according to the specified argument binding. | 
+| [GetValueSource(Type, IArgument, BindingContext)](#getvaluesourcetype-iargument-bindingcontext) | Creates a value source that supplies values of a given type according to the specified argument binding. | 
 | [GetValueSource&lt;T&gt;(IArgument, BindingContext)](#getvaluesourcetiargument-bindingcontext) | Creates a value source that supplies values according to the specified argument binding. | 
-| [GetValueSource(IAttribute, BindingContext, Type)](#getvaluesourceiattribute-bindingcontext-type) | Creates a value source that supplies values of a given type according to the specified binding attribute. | 
-| [GetValueSource&lt;T&gt;(IAttribute, BindingContext)](#getvaluesourcetiattribute-bindingcontext) | Creates a value source that supplies values according to the specified binding attribute. | 
+| [GetValueSource(Type, IAttribute, BindingContext, IResolutionScope)](#getvaluesourcetype-iattribute-bindingcontext-iresolutionscope) | Creates a value source that supplies values of a given type according to the specified binding attribute. | 
+| [GetValueSource&lt;T&gt;(IAttribute, BindingContext, IResolutionScope)](#getvaluesourcetiattribute-bindingcontext-iresolutionscope) | Creates a value source that supplies values according to the specified binding attribute. | 
 | [GetValueType(IArgument, BindingContext)](#getvaluetypeiargument-bindingcontext) | Determines the type of value that will be supplied by a given argument binding, and with the specified context. | 
 | [GetValueType(IAttribute, IPropertyDescriptor, BindingContext)](#getvaluetypeiattribute-ipropertydescriptor-bindingcontext) | Determines the type of value that will be supplied by a given attribute binding, and with the specified context. | 
 
@@ -71,24 +71,24 @@ The current asset cache, for any asset-scoped bindings.
 
 ### Methods
 
-#### GetValueSource(IArgument, BindingContext, Type)
+#### GetValueSource(Type, IArgument, BindingContext)
 
 Creates a value source that supplies values of a given type according to the specified argument binding.
 
 ```cs
-public StardewUI.Framework.Sources.IValueSource GetValueSource(StardewUI.Framework.Dom.IArgument argument, StardewUI.Framework.Binding.BindingContext context, System.Type type);
+public StardewUI.Framework.Sources.IValueSource GetValueSource(System.Type type, StardewUI.Framework.Dom.IArgument argument, StardewUI.Framework.Binding.BindingContext context);
 ```
 
 ##### Parameters
+
+**`type`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
+The type of value to obtain; can be determined using [GetValueType(IArgument, BindingContext)](ivaluesourcefactory.md#getvaluetypeiargument-bindingcontext).
 
 **`argument`** &nbsp; [IArgument](../dom/iargument.md)  
 The parsed markup argument containing the binding info.
 
 **`context`** &nbsp; [BindingContext](../binding/bindingcontext.md)  
 The binding context to use for any contextual bindings (those with [ContextBinding](../grammar/argumentexpressiontype.md#contextbinding)).
-
-**`type`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
-The type of value to obtain; can be determined using [GetValueType(IArgument, BindingContext)](ivaluesourcefactory.md#getvaluetypeiargument-bindingcontext).
 
 ##### Returns
 
@@ -118,15 +118,18 @@ The binding context to use for any contextual bindings (those with [InputBinding
 
 -----
 
-#### GetValueSource(IAttribute, BindingContext, Type)
+#### GetValueSource(Type, IAttribute, BindingContext, IResolutionScope)
 
 Creates a value source that supplies values of a given type according to the specified binding attribute.
 
 ```cs
-public StardewUI.Framework.Sources.IValueSource GetValueSource(StardewUI.Framework.Dom.IAttribute attribute, StardewUI.Framework.Binding.BindingContext context, System.Type type);
+public StardewUI.Framework.Sources.IValueSource GetValueSource(System.Type type, StardewUI.Framework.Dom.IAttribute attribute, StardewUI.Framework.Binding.BindingContext context, StardewUI.Framework.Content.IResolutionScope resolutionScope);
 ```
 
 ##### Parameters
+
+**`type`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
+The type of value to obtain; can be determined using [GetValueType(IArgument, BindingContext)](ivaluesourcefactory.md#getvaluetypeiargument-bindingcontext).
 
 **`attribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 The parsed markup attribute containing the binding info.
@@ -134,8 +137,7 @@ The parsed markup attribute containing the binding info.
 **`context`** &nbsp; [BindingContext](../binding/bindingcontext.md)  
 The binding context to use for any contextual bindings (those with [ContextBinding](../grammar/argumentexpressiontype.md#contextbinding)).
 
-**`type`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
-The type of value to obtain; can be determined using [GetValueType(IArgument, BindingContext)](ivaluesourcefactory.md#getvaluetypeiargument-bindingcontext).
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)
 
 ##### Returns
 
@@ -143,12 +145,12 @@ The type of value to obtain; can be determined using [GetValueType(IArgument, Bi
 
 -----
 
-#### GetValueSource&lt;T&gt;(IAttribute, BindingContext)
+#### GetValueSource&lt;T&gt;(IAttribute, BindingContext, IResolutionScope)
 
 Creates a value source that supplies values according to the specified binding attribute.
 
 ```cs
-public StardewUI.Framework.Sources.IValueSource<T> GetValueSource<T>(StardewUI.Framework.Dom.IAttribute attribute, StardewUI.Framework.Binding.BindingContext context);
+public StardewUI.Framework.Sources.IValueSource<T> GetValueSource<T>(StardewUI.Framework.Dom.IAttribute attribute, StardewUI.Framework.Binding.BindingContext context, StardewUI.Framework.Content.IResolutionScope resolutionScope);
 ```
 
 ##### Parameters
@@ -158,6 +160,8 @@ The parsed markup attribute containing the binding info.
 
 **`context`** &nbsp; [BindingContext](../binding/bindingcontext.md)  
 The binding context to use for any contextual bindings (those with [InputBinding](../grammar/attributevaluetype.md#inputbinding), [OneTimeBinding](../grammar/attributevaluetype.md#onetimebinding), [OutputBinding](../grammar/attributevaluetype.md#outputbinding) or [TwoWayBinding](../grammar/attributevaluetype.md#twowaybinding)).
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)
 
 ##### Returns
 
@@ -187,7 +191,7 @@ The binding context to use for any contextual bindings (those with [ContextBindi
 
 ##### Remarks
 
-This provides the type argument that must be supplied to [GetValueSource(IArgument, BindingContext, Type)](ivaluesourcefactory.md#getvaluesourceiargument-bindingcontext-type).
+This provides the type argument that must be supplied to [GetValueSource(Type, IArgument, BindingContext)](ivaluesourcefactory.md#getvaluesourcetype-iargument-bindingcontext).
 
 -----
 
@@ -216,7 +220,7 @@ The binding context to use for any contextual bindings (those with [InputBinding
 
 ##### Remarks
 
-This provides the type argument that must be supplied to [GetValueSource(IArgument, BindingContext, Type)](ivaluesourcefactory.md#getvaluesourceiargument-bindingcontext-type).
+This provides the type argument that must be supplied to [GetValueSource(Type, IArgument, BindingContext)](ivaluesourcefactory.md#getvaluesourcetype-iargument-bindingcontext).
 
 -----
 

@@ -30,18 +30,18 @@ public interface IAttributeBindingFactory
 
  | Name | Description |
 | --- | --- |
-| [TryCreateBinding(IViewDescriptor, IAttribute, BindingContext)](#trycreatebindingiviewdescriptor-iattribute-bindingcontext) | Attempts to creates a new attribute binding. | 
+| [TryCreateBinding(IViewDescriptor, IAttribute, BindingContext, IResolutionScope)](#trycreatebindingiviewdescriptor-iattribute-bindingcontext-iresolutionscope) | Attempts to creates a new attribute binding. | 
 
 ## Details
 
 ### Methods
 
-#### TryCreateBinding(IViewDescriptor, IAttribute, BindingContext)
+#### TryCreateBinding(IViewDescriptor, IAttribute, BindingContext, IResolutionScope)
 
 Attempts to creates a new attribute binding.
 
 ```cs
-StardewUI.Framework.Binding.IAttributeBinding TryCreateBinding(StardewUI.Framework.Descriptors.IViewDescriptor viewDescriptor, StardewUI.Framework.Dom.IAttribute attribute, StardewUI.Framework.Binding.BindingContext context);
+StardewUI.Framework.Binding.IAttributeBinding TryCreateBinding(StardewUI.Framework.Descriptors.IViewDescriptor viewDescriptor, StardewUI.Framework.Dom.IAttribute attribute, StardewUI.Framework.Binding.BindingContext context, StardewUI.Framework.Content.IResolutionScope resolutionScope);
 ```
 
 ##### Parameters
@@ -54,6 +54,9 @@ The attribute data.
 
 **`context`** &nbsp; [BindingContext](bindingcontext.md)  
 The binding context, including the bound data and descriptor for the data type.
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving externalized attributes, such as translation keys.
 
 ##### Returns
 

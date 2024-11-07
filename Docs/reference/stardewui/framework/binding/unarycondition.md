@@ -41,7 +41,7 @@ Passes whenever the value's boolean representation is `true`. Used for `*if` att
 
  | Name | Description |
 | --- | --- |
-| [UnaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute)](#unaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute) | A condition based on a single value that is convertible to a [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean). | 
+| [UnaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute)](#unaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute) | A condition based on a single value that is convertible to a [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean). | 
 
 ### Properties
 
@@ -61,12 +61,12 @@ Passes whenever the value's boolean representation is `true`. Used for `*if` att
 
 ### Constructors
 
-#### UnaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute)
+#### UnaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute)
 
 A condition based on a single value that is convertible to a [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean).
 
 ```cs
-public UnaryCondition(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Dom.IAttribute attribute);
+public UnaryCondition(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Content.IResolutionScope resolutionScope, StardewUI.Framework.Dom.IAttribute attribute);
 ```
 
 ##### Parameters
@@ -76,6 +76,9 @@ The factory responsible for creating [IValueSource&lt;T&gt;](../sources/ivalueso
 
 **`valueConverterFactory`** &nbsp; [IValueConverterFactory](../converters/ivalueconverterfactory.md)  
 The factory responsible for creating [IValueConverter&lt;TSource, TDestination&gt;](../converters/ivalueconverter-2.md) instances, used to convert bound values to the types required by the target view.
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving externalized attributes, such as translation keys.
 
 **`attribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 The attribute containing the conditional expression.

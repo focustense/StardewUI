@@ -38,6 +38,12 @@ public class ViewEngine : StardewUI.Framework.IViewEngine
 | --- | --- |
 | [ViewEngine(IAssetCache, IModHelper, IViewNodeFactory)](#viewengineiassetcache-imodhelper-iviewnodefactory) | Initializes a new [ViewEngine](viewengine.md) instance. | 
 
+### Properties
+
+ | Name | Description |
+| --- | --- |
+| [SourceResolver](#sourceresolver) | Source resolver for resolving documents created by this view engine back to their original mod. | 
+
 ### Methods
 
  | Name | Description |
@@ -72,6 +78,22 @@ SMAPI mod helper for the API consumer mod (not for StardewUI).
 
 **`viewNodeFactory`** &nbsp; [IViewNodeFactory](../binding/iviewnodefactory.md)  
 Factory for creating and binding [IViewNode](../binding/iviewnode.md)s.
+
+-----
+
+### Properties
+
+#### SourceResolver
+
+Source resolver for resolving documents created by this view engine back to their original mod.
+
+```cs
+public StardewUI.Framework.Content.ISourceResolver SourceResolver { get; }
+```
+
+##### Property Value
+
+[ISourceResolver](../content/isourceresolver.md)
 
 -----
 
