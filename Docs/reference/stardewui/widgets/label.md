@@ -62,6 +62,10 @@ public class Label : StardewUI.View
 | [PointerEventsEnabled](../view.md#pointereventsenabled) | Whether this view should receive pointer events like [Click](../view.md#click) or [Drag](../view.md#drag).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Scale](#scale) | Font scaling to apply. Default is `1.0` (normal size). | 
 | [ScrollWithChildren](../view.md#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../view.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [ShadowAlpha](#shadowalpha) | Alpha value for the text shadow, per layer in [ShadowLayers](label.md#shadowlayers). | 
+| [ShadowColor](#shadowcolor) | Base color for the text shadow, before applying [ShadowAlpha](label.md#shadowalpha). | 
+| [ShadowLayers](#shadowlayers) | Specifies which layers of the shadow should be drawn. | 
+| [ShadowOffset](#shadowoffset) | Offset to draw the text shadow, which is a second copy of the [Text](label.md#text) drawn entirely black. Text shadows will not be visible unless [ShadowAlpha](label.md#shadowalpha) is non-zero. | 
 | [Tags](../view.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Text](#text) | The text string to display. | 
 | [Tooltip](../view.md#tooltip) | Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -231,6 +235,70 @@ public float Scale { get; set; }
 ##### Remarks
 
 Applies only to the text itself and not layout properties such as [Margin](../view.md#margin).
+
+-----
+
+#### ShadowAlpha
+
+Alpha value for the text shadow, per layer in [ShadowLayers](label.md#shadowlayers).
+
+```cs
+public float ShadowAlpha { get; set; }
+```
+
+##### Property Value
+
+[Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+##### Remarks
+
+If set to zero, no text shadow will be drawn.
+
+-----
+
+#### ShadowColor
+
+Base color for the text shadow, before applying [ShadowAlpha](label.md#shadowalpha).
+
+```cs
+public Microsoft.Xna.Framework.Color ShadowColor { get; set; }
+```
+
+##### Property Value
+
+[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)
+
+-----
+
+#### ShadowLayers
+
+Specifies which layers of the shadow should be drawn.
+
+```cs
+public StardewUI.Widgets.ShadowLayers ShadowLayers { get; set; }
+```
+
+##### Property Value
+
+[ShadowLayers](shadowlayers.md)
+
+##### Remarks
+
+Layers are additive, so the same [ShadowAlpha](label.md#shadowalpha) will have a different visual intensity depending on which layers are allowed. If set to [None](shadowlayers.md#none), then no shadow will be drawn.
+
+-----
+
+#### ShadowOffset
+
+Offset to draw the text shadow, which is a second copy of the [Text](label.md#text) drawn entirely black. Text shadows will not be visible unless [ShadowAlpha](label.md#shadowalpha) is non-zero.
+
+```cs
+public Microsoft.Xna.Framework.Vector2 ShadowOffset { get; set; }
+```
+
+##### Property Value
+
+[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
 
 -----
 

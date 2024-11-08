@@ -53,4 +53,5 @@ title: StardewUI.Widgets
 | Name | Description |
 | --- | --- |
 | [ImageFit](imagefit.md) | Specifies how an image should be scaled to fit the content area when the available size is different from the image size, and especially when it has a different aspect ratio. |
+| [ShadowLayers](shadowlayers.md) | Describes which shadow layers will be drawn, for widgets such as [Label](label.md) that support layered shadows. |
 

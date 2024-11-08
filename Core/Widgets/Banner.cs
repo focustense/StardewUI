@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewUI.Graphics;
 using StardewUI.Layout;
+using StardewValley;
 using StardewValley.BellsAndWhistles;
 
 namespace StardewUI.Widgets;
@@ -68,8 +69,11 @@ public class Banner : View
     }
 
     /// <summary>
-    /// Alpha value for the text shadow. If set to the default of zero, no text shadow will be drawn.
+    /// Alpha value for the text shadow, per layer in <see cref="ShadowLayers"/>.
     /// </summary>
+    /// <remarks>
+    /// If set to zero, no text shadow will be drawn.
+    /// </remarks>
     public float TextShadowAlpha
     {
         get => textShadowAlpha;
@@ -79,6 +83,42 @@ public class Banner : View
             {
                 textShadowAlpha = value;
                 OnPropertyChanged(nameof(TextShadowAlpha));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Base color for the text shadow, before applying <see cref="TextShadowAlpha"/>.
+    /// </summary>
+    public Color TextShadowColor
+    {
+        get => textShadowColor;
+        set
+        {
+            if (value != textShadowColor)
+            {
+                textShadowColor = value;
+                OnPropertyChanged(nameof(textShadowColor));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Specifies which layers of the text shadow should be drawn.
+    /// </summary>
+    /// <remarks>
+    /// Layers are additive, so the same <see cref="TextShadowAlpha"/> will have a different visual intensity depending
+    /// on which layers are allowed. If set to <see cref="ShadowLayers.None"/>, then no shadow will be drawn.
+    /// </remarks>
+    public ShadowLayers TextShadowLayers
+    {
+        get => textShadowLayers;
+        set
+        {
+            if (value != textShadowLayers)
+            {
+                textShadowLayers = value;
+                OnPropertyChanged(nameof(TextShadowLayers));
             }
         }
     }
@@ -100,13 +140,22 @@ public class Banner : View
         }
     }
 
+    private static readonly ShadowLayers[] shadowLayerOrder =
+    [
+        ShadowLayers.Diagonal,
+        ShadowLayers.Vertical,
+        ShadowLayers.Horizontal,
+    ];
+
     private readonly DirtyTracker<Edges> backgroundBorderThickness = new(Edges.NONE);
     private readonly DirtyTracker<string> text = new("");
 
     private Sprite? background;
     private NineSlice? backgroundSlice;
     private float textShadowAlpha;
-    private Vector2 textShadowOffset;
+    private Color textShadowColor = Game1.textShadowDarkerColor;
+    private ShadowLayers textShadowLayers = ShadowLayers.All;
+    private Vector2 textShadowOffset = new(-3, 3);
     private Vector2 textSize;
 
     /// <inheritdoc />
@@ -134,16 +183,30 @@ public class Banner : View
         b.DelegateDraw(
             (wb, origin) =>
             {
-                if (TextShadowAlpha > 0)
+                if (TextShadowAlpha > 0 && TextShadowLayers > 0)
                 {
-                    var shadowColor = new Color(Color.Black, TextShadowAlpha);
-                    SpriteText.drawStringHorizontallyCenteredAt(
-                        wb,
-                        Text,
-                        (int)(origin.X + centerX + TextShadowOffset.X),
-                        (int)(origin.Y + TextShadowOffset.Y),
-                        color: shadowColor
-                    );
+                    var shadowAlphaColor = TextShadowColor * TextShadowAlpha;
+                    foreach (var layer in shadowLayerOrder)
+                    {
+                        if ((TextShadowLayers & layer) == 0)
+                        {
+                            continue;
+                        }
+                        var offset = layer switch
+                        {
+                            ShadowLayers.Diagonal => TextShadowOffset,
+                            ShadowLayers.Horizontal => new(TextShadowOffset.X, 0),
+                            ShadowLayers.Vertical => new(0, TextShadowOffset.Y),
+                            _ => throw new InvalidOperationException($"Invalid shadow layer {layer}"),
+                        };
+                        SpriteText.drawStringHorizontallyCenteredAt(
+                            wb,
+                            Text,
+                            (int)(origin.X + centerX + offset.X),
+                            (int)(origin.Y + offset.Y),
+                            color: shadowAlphaColor
+                        );
+                    }
                 }
                 SpriteText.drawStringHorizontallyCenteredAt(wb, Text, (int)(origin.X + centerX), (int)origin.Y);
             }

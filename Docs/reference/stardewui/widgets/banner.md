@@ -64,7 +64,9 @@ This is very similar to a [Label](label.md) inside a [Frame](frame.md), but uses
 | [ScrollWithChildren](../view.md#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../view.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Tags](../view.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Text](#text) | The text to display within the banner. | 
-| [TextShadowAlpha](#textshadowalpha) | Alpha value for the text shadow. If set to the default of zero, no text shadow will be drawn. | 
+| [TextShadowAlpha](#textshadowalpha) | Alpha value for the text shadow, per layer in [ShadowLayers](shadowlayers.md). | 
+| [TextShadowColor](#textshadowcolor) | Base color for the text shadow, before applying [TextShadowAlpha](banner.md#textshadowalpha). | 
+| [TextShadowLayers](#textshadowlayers) | Specifies which layers of the text shadow should be drawn. | 
 | [TextShadowOffset](#textshadowoffset) | Offset to draw the text shadow, which is a second copy of the [Text](banner.md#text) drawn entirely black. Text shadows will not be visible unless [TextShadowAlpha](banner.md#textshadowalpha) is non-zero. | 
 | [Tooltip](../view.md#tooltip) | Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Visibility](../view.md#visibility) | Visibility for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -187,7 +189,7 @@ public string Text { get; set; }
 
 #### TextShadowAlpha
 
-Alpha value for the text shadow. If set to the default of zero, no text shadow will be drawn.
+Alpha value for the text shadow, per layer in [ShadowLayers](shadowlayers.md).
 
 ```cs
 public float TextShadowAlpha { get; set; }
@@ -196,6 +198,42 @@ public float TextShadowAlpha { get; set; }
 ##### Property Value
 
 [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+##### Remarks
+
+If set to zero, no text shadow will be drawn.
+
+-----
+
+#### TextShadowColor
+
+Base color for the text shadow, before applying [TextShadowAlpha](banner.md#textshadowalpha).
+
+```cs
+public Microsoft.Xna.Framework.Color TextShadowColor { get; set; }
+```
+
+##### Property Value
+
+[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)
+
+-----
+
+#### TextShadowLayers
+
+Specifies which layers of the text shadow should be drawn.
+
+```cs
+public StardewUI.Widgets.ShadowLayers TextShadowLayers { get; set; }
+```
+
+##### Property Value
+
+[ShadowLayers](shadowlayers.md)
+
+##### Remarks
+
+Layers are additive, so the same [TextShadowAlpha](banner.md#textshadowalpha) will have a different visual intensity depending on which layers are allowed. If set to [None](shadowlayers.md#none), then no shadow will be drawn.
 
 -----
 

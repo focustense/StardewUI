@@ -109,7 +109,7 @@ public readonly record struct Length(LengthType Type, float Value)
             LengthType.Stretch => "stretch",
             LengthType.Px => $"{Value}px",
             LengthType.Percent => $"{Value}%",
-            _ => $"({Type}, {Value})"
+            _ => $"({Type}, {Value})",
         };
     }
 }
