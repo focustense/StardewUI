@@ -45,6 +45,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister<string, Edges>(Edges.Parse);
         TryRegister(new GridItemLayoutConverter());
         TryRegister(new LayoutConverter());
+        TryRegister<string, Length>(Length.Parse);
         TryRegister(new NamedFontConverter());
         TryRegister(new PointConverter());
         TryRegister(new RectangleConverter());

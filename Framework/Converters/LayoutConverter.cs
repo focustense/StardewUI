@@ -16,23 +16,46 @@ public class LayoutConverter : IValueConverter<string, LayoutParameters>
         var valueAsSpan = value.AsSpan().Trim();
         var separatorIndex = valueAsSpan.IndexOf(' ');
         var widthValue = separatorIndex >= 0 ? valueAsSpan[0..separatorIndex] : valueAsSpan;
-        var width = ParseDimension(widthValue);
-        var height = separatorIndex >= 0 ? ParseDimension(valueAsSpan[(separatorIndex + 1)..]) : width;
-        return new() { Width = width, Height = height };
+        var (width, minWidth, maxWidth) = ParseComponents(widthValue);
+        var (height, minHeight, maxHeight) =
+            separatorIndex >= 0 ? ParseComponents(valueAsSpan[(separatorIndex + 1)..]) : (width, minWidth, maxWidth);
+        return new()
+        {
+            Width = width,
+            MinWidth = minWidth,
+            MaxWidth = maxWidth,
+            Height = height,
+            MinHeight = minHeight,
+            MaxHeight = maxHeight,
+        };
     }
 
-    private static Length ParseDimension(ReadOnlySpan<char> value)
+    private static (Length, float?, float?) ParseComponents(ReadOnlySpan<char> value)
     {
-        return value switch
+        value = value.Trim();
+        int rangeStartIndex = value.IndexOf('[');
+        if (rangeStartIndex < 0)
         {
-            "content" => Length.Content(),
-            "stretch" => Length.Stretch(),
-            [.., 'p', 'x'] => Length.Px(float.Parse(value[..^2])),
-            [.., '%'] => Length.Percent(float.Parse(value[..^1])),
-            _ => throw new FormatException(
-                $"Invalid layout dimension '{value}'. "
-                    + "Must be one of: 'content', 'stretch', or a number followed by 'px' or '%'."
-            ),
-        };
+            return (Length.Parse(value), null, null);
+        }
+        var length = Length.Parse(value[..rangeStartIndex]);
+        var rangeString = value[rangeStartIndex..];
+        if (!value.EndsWith("]"))
+        {
+            throw new FormatException($"Invalid layout range '{rangeString}': missing closing ']'.");
+        }
+        rangeString = rangeString[1..^1];
+        var rangeSeparatorIndex = rangeString.IndexOf("..");
+        if (rangeSeparatorIndex < 0)
+        {
+            throw new FormatException(
+                $"Invalid layout range '{rangeString}': missing range separator '..' between min and max."
+            );
+        }
+        var minString = rangeString[..rangeSeparatorIndex].Trim();
+        float? minValue = minString.IsEmpty ? null : float.Parse(minString);
+        var maxString = rangeString[(rangeSeparatorIndex + 2)..].Trim();
+        float? maxValue = maxString.IsEmpty ? null : float.Parse(maxString);
+        return (length, minValue, maxValue);
     }
 }
