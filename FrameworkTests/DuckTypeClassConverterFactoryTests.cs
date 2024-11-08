@@ -4,11 +4,27 @@ using StardewUI.Framework.Converters;
 using StardewUI.Graphics;
 using StardewUI.Layout;
 using StardewValley;
+using Xunit.Abstractions;
 
 namespace StardewUI.Framework.Tests;
 
 public class DuckTypeClassConverterFactoryTests
 {
+    private readonly DuckTypeClassConverterFactory factory;
+    private readonly IValueConverterFactory rootFactory;
+
+    public DuckTypeClassConverterFactoryTests(ITestOutputHelper output)
+    {
+        Logger.Monitor = new TestMonitor(output);
+        var rootFactory = new ValueConverterFactory();
+        rootFactory.Register(new EnumNameConverterFactory());
+        rootFactory.Register(new IdentityValueConverterFactory());
+        rootFactory.TryRegister<string, Length>(Length.Parse);
+        factory = new(rootFactory) { EnableDebugOutput = true };
+        rootFactory.Register(factory);
+        this.rootFactory = rootFactory;
+    }
+
     class SourceClass
     {
         public string Bar = "";
@@ -39,19 +55,6 @@ public class DuckTypeClassConverterFactoryTests
         public float Baz { get; set; }
 
         public OptionEnum Option { get; set; }
-    }
-
-    private readonly DuckTypeClassConverterFactory factory;
-    private readonly IValueConverterFactory rootFactory;
-
-    public DuckTypeClassConverterFactoryTests()
-    {
-        var rootFactory = new ValueConverterFactory();
-        rootFactory.Register(new EnumNameConverterFactory());
-        rootFactory.Register(new IdentityValueConverterFactory());
-        factory = new(rootFactory);
-        rootFactory.Register(factory);
-        this.rootFactory = rootFactory;
     }
 
     [Fact]
@@ -212,5 +215,23 @@ public class DuckTypeClassConverterFactoryTests
         Assert.Equal(66, destination.Right);
         Assert.Equal(20, destination.Top);
         Assert.Equal(29, destination.Bottom);
+    }
+
+    record ExternalLayout(string Width, string Height, float? MaxWidth, float? MinHeight);
+
+    [Fact]
+    public void ConvertsToDestinationStruct()
+    {
+        var converter = rootFactory.GetRequiredConverter<ExternalLayout, LayoutParameters>();
+
+        var source = new ExternalLayout("stretch", "content", 450, 20);
+        var destination = converter.Convert(source);
+
+        Assert.Equal(Length.Stretch(), destination.Width);
+        Assert.Null(destination.MinWidth);
+        Assert.Equal(450, destination.MaxWidth);
+        Assert.Equal(Length.Content(), destination.Height);
+        Assert.Equal(20, destination.MinHeight);
+        Assert.Null(destination.MaxHeight);
     }
 }

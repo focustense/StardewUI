@@ -49,6 +49,12 @@ For the conversion to be allowed:
 | --- | --- |
 | [DuckTypeClassConverterFactory(IValueConverterFactory)](#ducktypeclassconverterfactoryivalueconverterfactory) | Factory that creates duck-typing converters for `class` and `struct` types. | 
 
+### Properties
+
+ | Name | Description |
+| --- | --- |
+| [EnableDebugOutput](#enabledebugoutput) | Whether or not to print MSIL output for generated conversion methods. | 
+
 ### Methods
 
  | Name | Description |
@@ -81,6 +87,26 @@ For the conversion to be allowed:
   - If the best or only constructor match is the default/parameterless constructor, at least one writable property on the target type must be satisfied by a property/field on the source type.
 
  Additionally, source types may use fields or properties, but only constructor arguments and properties will be considered on the destination type.
+
+-----
+
+### Properties
+
+#### EnableDebugOutput
+
+Whether or not to print MSIL output for generated conversion methods.
+
+```cs
+public bool EnableDebugOutput { get; set; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+Use for troubleshooting misbehaving converters or AVE crashes.
 
 -----
 
