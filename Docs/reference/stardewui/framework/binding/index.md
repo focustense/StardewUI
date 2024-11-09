@@ -19,6 +19,8 @@ title: StardewUI.Framework.Binding
 | [BindingDirectionExtensions](bindingdirectionextensions.md) | Extension methods for the [BindingDirection](bindingdirection.md) enum. |
 | [BindingException](bindingexception.md) | The exception that is thrown when an unrecoverable error happens during data binding for a view. |
 | [ConditionalNode](conditionalnode.md) | A structural node that only passes through its child node when some condition passes. |
+| [ContextUpdateTracker](contextupdatetracker.md) | Tracks context instances that already had updates dispatched this frame, to prevent duplication. |
+| [ContextUpdatingNodeDecorator](contextupdatingnodedecorator.md) | A transparent binding node that propagates [Update(TimeSpan)](iviewnode.md#updatetimespan) ticks to an eligible context. |
 | [EventBindingFactory](eventbindingfactory.md) | Reflection-based implementation of an [IEventBindingFactory](ieventbindingfactory.md). |
 | [IncludedViewNode](includedviewnode.md) | Quasi-structural node that loads its content from a shared game asset. |
 | [IViewNode](iviewnode.md).[Child](iviewnode.child.md) | Child of an [IViewNode](iviewnode.md), specifying the node data and the view outlet in which it should appear. |
