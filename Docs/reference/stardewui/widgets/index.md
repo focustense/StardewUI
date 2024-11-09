@@ -43,8 +43,10 @@ title: StardewUI.Widgets
 | [ScrollableView](scrollableview.md) | Provides a content container and accompanying scrollbar. |
 | [Scrollbar](scrollbar.md) | Controls the scrolling of a [ScrollContainer](scrollcontainer.md). |
 | [ScrollContainer](scrollcontainer.md) | Renders inner content clipped to a boundary and with a modifiable scroll offset. |
+| [SelectionGroup](selectiongroup.md) | Provides a single selection key with change notifications. |
 | [Slider](slider.md) | A horizontal track with draggable thumb (button) for choosing a numeric value in a range. |
 | [Spacer](spacer.md) | An empty view whose sole purpose is to separate other elements. |
+| [Tab](tab.md) | A view with tab appearance, used to navigate sections of a larger complex menu. |
 | [TextInput](textinput.md) | A text input field that allows typing from a physical or virtual keyboard. |
 | [TinyNumberLabel](tinynumberlabel.md) | Renders a single-line numeric label using custom digit sprites. |
 

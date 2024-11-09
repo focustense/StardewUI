@@ -244,6 +244,17 @@ public static class UiSprites
     public static Sprite SmallTrashCan => new(Game1.mouseCursors2, SourceRect: new(22, 11, 15, 20));
 
     /// <summary>
+    /// Top-facing tab with no inner content, used for tab controls.
+    /// </summary>
+    public static Sprite TabTopEmpty =>
+        new(
+            Game1.mouseCursors,
+            SourceRect: new(16, 368, 16, 16),
+            FixedEdges: new(5, 5, 5, 1),
+            SliceSettings: new(Scale: 4)
+        );
+
+    /// <summary>
     /// Border/background for a text input box.
     /// </summary>
     public static Sprite TextBox => new(textBoxTexture, FixedEdges: new(16, 12, 12, 12));
