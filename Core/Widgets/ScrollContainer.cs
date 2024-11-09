@@ -250,8 +250,7 @@ public class ScrollContainer : View
     /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
-        return Content?.ContainsPoint(contentPosition) == true
-            ? [new(Content, Vector2.Zero)] : [];
+        return Content?.ContainsPoint(contentPosition) == true ? [new(Content, Vector2.Zero)] : [];
     }
 
     /// <inheritdoc />

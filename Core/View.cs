@@ -702,9 +702,10 @@ public abstract class View : IView
         {
             return;
         }
-        var dispatchArgs = LayoutOffset != previousLayoutOffset
-            ? new(e.PreviousPosition - previousLayoutOffset + LayoutOffset, e.Position)
-            : e;
+        var dispatchArgs =
+            LayoutOffset != previousLayoutOffset
+                ? new(e.PreviousPosition - previousLayoutOffset + LayoutOffset, e.Position)
+                : e;
         previousLayoutOffset = LayoutOffset;
         var previousTarget = GetChildAt(dispatchArgs.PreviousPosition);
         var currentTarget = GetChildAt(e.Position);

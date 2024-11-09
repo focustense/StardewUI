@@ -58,6 +58,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
 | [LastAvailableSize](#lastavailablesize) | The most recent size used in a [Measure(Vector2)](view.md#measurevector2) pass. Used for additional dirty checks. | 
 | [Layout](#layout) | Layout settings for this view; determines how its dimensions will be computed. | 
+| [LayoutOffset](#layoutoffset) | Pixel offset of the view's content, which is applied to all pointer events and child queries. | 
 | [Margin](#margin) | Margins (whitespace outside border) for this view. | 
 | [Name](#name) | Simple name for this view, used in log/debug output; does not affect behavior. | 
 | [OuterSize](#outersize) | The size of the entire area occupied by this view including margins, border and padding. | 
@@ -307,6 +308,26 @@ public StardewUI.Layout.LayoutParameters Layout { get; set; }
 ##### Property Value
 
 [LayoutParameters](layout/layoutparameters.md)
+
+-----
+
+#### LayoutOffset
+
+Pixel offset of the view's content, which is applied to all pointer events and child queries.
+
+```cs
+protected Microsoft.Xna.Framework.Vector2 LayoutOffset { get; }
+```
+
+##### Property Value
+
+[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+##### Remarks
+
+A non-zero offset means that the nominal positions of any view children (e.g. as obtained from [GetChildren()](view.md#getchildren)) are different from their actual drawing positions on screen, for example in the case of a [ScrollContainer](widgets/scrollcontainer.md) that is not at the default scroll position. 
+
+ If a view will internally shift content in this way without affecting layout, it should update the [LayoutOffset](view.md#layoutoffset) property to ensure correctness of pointer events and coordinate-related queries such as [GetLocalChildrenAt(Vector2)](view.md#getlocalchildrenatvector2), **instead of** attempting to correct for that offset locally.
 
 -----
 

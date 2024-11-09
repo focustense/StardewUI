@@ -60,6 +60,7 @@ Does not provide its own scroll bar; scrolling UI and behavior can be controlled
 | [IsFocusable](../view.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [LastAvailableSize](../view.md#lastavailablesize) | The most recent size used in a [Measure(Vector2)](../view.md#measurevector2) pass. Used for additional dirty checks.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Layout](../view.md#layout) | Layout settings for this view; determines how its dimensions will be computed.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [LayoutOffset](#layoutoffset) | Pixel offset of the view's content, which is applied to all pointer events and child queries.<br><span class="muted" markdown>(Overrides [View](../view.md).`get_LayoutOffset()`)</span> | 
 | [Margin](../view.md#margin) | Margins (whitespace outside border) for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Name](../view.md#name) | Simple name for this view, used in log/debug output; does not affect behavior.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Orientation](#orientation) | The orientation, i.e. the direction of scrolling. | 
@@ -173,6 +174,26 @@ protected Microsoft.Xna.Framework.Vector2 ContentViewSize { get; }
 ##### Property Value
 
 [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+-----
+
+#### LayoutOffset
+
+Pixel offset of the view's content, which is applied to all pointer events and child queries.
+
+```cs
+protected Microsoft.Xna.Framework.Vector2 LayoutOffset { get; }
+```
+
+##### Property Value
+
+[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+##### Remarks
+
+A non-zero offset means that the nominal positions of any view children (e.g. as obtained from [GetChildren()](../view.md#getchildren)) are different from their actual drawing positions on screen, for example in the case of a [ScrollContainer](scrollcontainer.md) that is not at the default scroll position. 
+
+ If a view will internally shift content in this way without affecting layout, it should update the [LayoutOffset](../view.md#layoutoffset) property to ensure correctness of pointer events and coordinate-related queries such as [GetLocalChildrenAt(Vector2)](../view.md#getlocalchildrenatvector2), **instead of** attempting to correct for that offset locally.
 
 -----
 
