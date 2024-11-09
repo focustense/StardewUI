@@ -46,6 +46,8 @@ internal partial class Carousel : View
         }
     }
 
+    protected override Vector2 LayoutOffset => new(-selectedOffset, 0);
+
     [Notify]
     private KeySpline easing = KeySpline.Linear;
 
@@ -91,14 +93,12 @@ internal partial class Carousel : View
         }
         var selectedChild =
             (SelectedIndex >= 0 && SelectedIndex < Children.Count) ? childPositions[SelectedIndex] : childPositions[0];
-        var offset = new Vector2(selectedOffset, 0);
-        return selectedChild.FocusSearch(contentPosition + offset, direction)?.Offset(-offset);
+        return selectedChild.FocusSearch(contentPosition, direction);
     }
 
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
-        var offset = new Vector2(-selectedOffset, 0);
-        return childPositions.Select(c => c.Offset(offset));
+        return childPositions;
     }
 
     protected override bool IsContentDirty()

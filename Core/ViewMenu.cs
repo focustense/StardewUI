@@ -52,8 +52,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly bool wasHudDisplayed;
 
     private ViewChild[] hoverPath = [];
-    private bool isRehoverRequested;
-    private bool isRehoverStarted;
+    private bool isRehoverScheduled;
+    private int? rehoverRequestTick;
 
     // When clearing the activeClickableMenu, the game will call its Dispose method BEFORE actually changing the field
     // value to null or the new menu. If a Close handler then tries to open a different menu (which is really the
@@ -126,6 +126,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 if (found is not null)
                 {
                     FinishFocusSearch(view, origin.ToPoint(), found);
+                    RequestRehover();
                 }
             }
         );
@@ -253,21 +254,25 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void performHoverAction(int x, int y)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(performHoverAction));
-        if (isRehoverStarted || (previousHoverPosition.X != x || previousHoverPosition.Y != y))
+        bool rehover = isRehoverScheduled || rehoverRequestTick.HasValue;
+        if (rehover || (previousHoverPosition.X != x || previousHoverPosition.Y != y))
         {
             using var _ = OverlayContext.PushContext(overlayContext);
             OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin, x, y));
         }
 
-        // We use two flags for this in order to delay the re-hover by one frame, because (a) input events won't always
-        // get handled in the ideal order to track any specific change, and (b) even if they do, when operating menus
-        // from the Framework, there can often by a one-frame delay before everything gets perfectly in sync due to
-        // coordination between the view model, in vs. out bindings, reactions to INPC or other change events, etc.
+        // We use two flags for this in order to repeat the re-hover after one frame, because (a) input events won't
+        // always get handled in the ideal order to track any specific change, and (b) even if they do, when operating
+        // menus from the Framework, there can often by a one-frame delay before everything gets perfectly in sync due
+        // to coordination between the view model, in vs. out bindings, reactions to INPC or other change events, etc.
         //
         // A delay of exactly 1 frame isn't always going to be perfect either, but it handles the majority of cases such
         // as wheel scrolling and controller-triggered tab/page navigation.
-        isRehoverStarted = isRehoverRequested;
-        isRehoverRequested = false;
+        isRehoverScheduled = rehoverRequestTick.HasValue;
+        if (rehoverRequestTick <= Game1.ticks)
+        {
+            rehoverRequestTick = null;
+        }
     }
 
     /// <inheritdoc />
@@ -568,13 +573,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 var pathBeforeScroll = view.GetPathToPosition(localPosition).ToList();
                 var args = new ButtonEventArgs(localPosition, button);
                 view.OnButtonPress(args);
-                if (!args.Handled)
-                {
-                    return;
-                }
             }
         );
-        isRehoverRequested = true;
+        RequestRehover();
     }
 
     private void InitiateClick(SButton button, Point screenPoint)
@@ -611,7 +612,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         var args = new ClickEventArgs(localPosition, button);
         view.OnClick(args);
-        isRehoverRequested = true;
+        RequestRehover();
     }
 
     private void InitiateWheel(Direction direction)
@@ -630,9 +631,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 }
                 Game1.playSound("shiny4");
                 Refocus(view, origin, localPosition, pathBeforeScroll, direction);
+                RequestRehover();
             }
         );
-        isRehoverRequested = true;
     }
 
     private bool IsInputCaptured()
@@ -656,7 +657,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
-        isRehoverRequested = true;
+        RequestRehover();
         // Make gutters act as margins; otherwise centering could actually place content in the gutter.
         // For example, if there is an asymmetrical gutter with left = 100 and right = 200, and it takes up the full
         // viewport width, then it will actually occupy the horizontal region from 150 to (viewportWidth - 150), which
@@ -688,7 +689,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         if (isUpdateRequired)
         {
             overlayData.Update(overlay);
-            isRehoverRequested = true;
+            RequestRehover();
         }
         return overlayData;
     }
@@ -838,6 +839,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             captureTarget.ReleaseCapture();
         }
+    }
+
+    private void RequestRehover()
+    {
+        rehoverRequestTick = Game1.ticks;
     }
 
     private void RestoreFocusToOverlayActivation(IOverlay overlay)
