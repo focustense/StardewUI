@@ -47,8 +47,9 @@ public class ViewNodeFactory(
     {
         using var _ = Trace.Begin(this, nameof(CreateNode));
         var (innerNode, outletName) = CreateNodeChildWithoutBackoff(node, switchContext, resolutionScope);
-        var outerNode = new BackoffNodeDecorator(innerNode, BackoffRule.Default);
-        return new(outerNode, outletName);
+        var backoffDecorator = new BackoffNodeDecorator(innerNode, BackoffRule.Default);
+        var updatingDecorator = new ContextUpdatingNodeDecorator(innerNode, ContextUpdateTracker.Instance);
+        return new(updatingDecorator, outletName);
     }
 
     private IViewNode.Child CreateNodeChildWithoutBackoff(

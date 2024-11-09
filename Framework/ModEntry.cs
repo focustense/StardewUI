@@ -160,6 +160,7 @@ internal sealed class ModEntry : Mod
 
     private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
+        ContextUpdateTracker.Instance.Reset();
         assetCache.Update(Game1.currentGameTime.ElapsedGameTime);
     }
 
