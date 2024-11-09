@@ -19,7 +19,6 @@ internal sealed partial class ModEntry : Mod
     private IViewEngine viewEngine = null!;
 
     // Mod state
-    private BestiaryViewModel? bestiary;
     private CropsGridViewModel? cropsGrid;
     private IViewDrawable? hudWidget;
 
@@ -33,7 +32,6 @@ internal sealed partial class ModEntry : Mod
         helper.Events.Display.RenderedHud += Display_RenderedHud;
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
-        helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
     }
 
@@ -53,11 +51,6 @@ internal sealed partial class ModEntry : Mod
     private void GameLoop_OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
     {
         cropsGrid?.SelectedCrop.NextPhase();
-    }
-
-    private void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
-    {
-        bestiary?.Update(Game1.currentGameTime.ElapsedGameTime);
     }
 
     private void Input_ButtonPressed(object? sender, ButtonPressedEventArgs e)
@@ -89,7 +82,7 @@ internal sealed partial class ModEntry : Mod
 
     private void ShowBestiary()
     {
-        bestiary = BestiaryViewModel.LoadFromGameData();
+        var bestiary = BestiaryViewModel.LoadFromGameData();
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Bestiary", bestiary);
     }
 
