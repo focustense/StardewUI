@@ -660,6 +660,81 @@ Controller-based editing simply requires pressing the d-pad or left stick while 
     }
     ```
 
+### Tab &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/tab.md)
+
+A rectangular content frame with rounded top, which shifts its position slightly to indicate whether or not it is active.
+
+Generally used as part of a tab group where only one tab can be active at a time.
+
+In addition to supporting data binding on the active state, the tab automatically activates or "presses" on click, and raises events on activation and deactivation.
+
+When using the default sprite, the background will stretch and any inner content (i.e. whether text or image) can generally be represented.
+
+=== "Demo"
+
+    ![Tab Example](../images/example-tab.webp)
+
+=== "Usage (StarML)"
+
+    ```html
+    <lane z-index="1">
+        <tab *repeat={Tabs}
+             layout="64px"
+             tooltip={Name}
+             active={<>Active}
+             activate=|^OnTabActivated(Name)|>
+            <image layout="32px" sprite={Sprite} vertical-alignment="middle" />
+        </tab>
+    </lane>
+    ```
+
+=== "Usage (C#)"
+
+    ```cs
+    partial class TabData(string name, Texture2D texture, Rectangle sourceRect)
+        : INotifyPropertyChanged
+    {
+        public string Name { get; } = name;
+        public Tuple<Texture2D, Rectangle> Sprite { get; } =
+            Tuple.Create(texture, sourceRect);
+
+        [Notify] private bool active;
+    }
+   
+    partial class TabsViewModel
+    {
+        public IReadOnlyList<TabData> Tabs { get; set; } = [];
+
+        public void OnTabActivated(string name)
+        {
+            foreach (var tab in Tabs)
+            {
+                if (tab.Name != name)
+                {
+                    tab.Active = false;
+                }
+            }
+        }
+    }
+
+    private void ShowTabsExample()
+    {
+        var context = new TabsViewModel()
+        {
+            Tabs =
+            [
+                new("Home", Game1.mouseCursors, new(20, 388, 8, 8)) { Active = true },
+                new("Social", Game1.mouseCursors, new(36, 374, 7, 8)),
+                new("Money", Game1.mouseCursors, new(4, 388, 8, 8)),
+                new("Seasons", Game1.mouseCursors, new(420, 1204, 8, 8)),
+            ],
+        };
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+            $"Mods/focustense.StardewUITest/Views/TabTestView",
+            context);
+    }
+    ```
+
 ### Text Input &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/textinput.md)
 
 An input box similar to the one where you enter your farm name, Favorite Thing, etc. Supports a movable caret (cursor) using the mouse, arrow keys, or home/end keys; also supports gamepad input using Stardew's on-screen keyboard.

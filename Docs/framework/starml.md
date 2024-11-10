@@ -85,6 +85,8 @@ These are the standard tags available in the UI framework:
 | `<grid>`       | [Grid](../library/standard-views.md#grid) | Uniform grid layout using either fixed size per item or fixed number of items per row/column. |
 | `<image>`      | [Image](../library/standard-views.md#image) | Displays one image using a variety of scaling and fit options. |
 | `<include>`    | [Included View](included-views.md) | Insert a different StarML view in this position, using its asset `name` to load the content. |
+| `<keybind>`    | [Keybind](../library/standard-views.md#keybind) | Displays the buttons bound for a single keybinding. |
+| `<keybind-editor>` | [Keybind Editor](../library/standard-views.md#keybind-editor) | Displays and allows rebinding of all button combinations in a keybind list. |
 | `<label>`      | [Label](../library/standard-views.md#label) | Displays single- or multi-line text using a standard `SpriteFont`. |
 | `<lane>`       | [Lane](../library/standard-views.md#lane) | Arranges other views along one axis, either horizontal (left to right) or vertical (top to bottom). |
 | `<marquee>`    | [Marquee](../library/standard-views.md#marquee) | Animates scrolling text or other content horizontally; named after the [HTML Marquee](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). |
@@ -92,6 +94,7 @@ These are the standard tags available in the UI framework:
 | `<scrollable>` | [Scrollable View](../library/standard-views.md#scrollable-view) | Shows scroll bars and arrows when content is too large to fit. |
 | `<slider>`     | [Slider](../library/standard-views.md#slider) | A numeric slider that can be moved between a minimum and maximum range. |
 | `<spacer>`     | [Spacer](../library/standard-views.md#spacer) | Draws nothing, but takes up space in the layout; used to "push" siblings to one side. |
+| `<tab>`        | [Tab](../library/standard-views.md#tab) | Push-down tab used to select the active section or page of a larger menu. Can be rotated for side navigation. |
 | `<textinput>`  | [Text Input](../library/standard-views.md#text-input) | Input box for entering text; includes on-screen keyboard when activated by gamepad. |
 
 ## Attributes
