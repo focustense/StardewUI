@@ -35,6 +35,7 @@ public interface IView : System.ComponentModel.INotifyPropertyChanged
 | --- | --- |
 | [ActualBounds](#actualbounds) | The bounds of this view relative to the origin (0, 0). | 
 | [ContentBounds](#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](iview.md#actualbounds) excluding margins. | 
+| [FloatingBounds](#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants. | 
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
 | [Layout](#layout) | The current layout parameters, which determine how [Measure(Vector2)](iview.md#measurevector2) will behave. | 
 | [Name](#name) | Simple name for this view, used in log/debug output; does not affect behavior. | 
@@ -120,6 +121,20 @@ StardewUI.Layout.Bounds ContentBounds { get; }
 ##### Property Value
 
 [Bounds](layout/bounds.md)
+
+-----
+
+#### FloatingBounds
+
+Contains the bounds of all floating elements in this view tree, including the current view and all descendants.
+
+```cs
+System.Collections.Generic.IEnumerable<StardewUI.Layout.Bounds> FloatingBounds { get; }
+```
+
+##### Property Value
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[Bounds](layout/bounds.md)>
 
 -----
 

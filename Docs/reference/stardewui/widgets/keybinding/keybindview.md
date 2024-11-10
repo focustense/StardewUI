@@ -50,6 +50,7 @@ public class KeybindView : StardewUI.Widgets.ComponentView<T>
 | [ButtonMinWidth](#buttonminwidth) | Minimum width for button images/sprites, used if the layout width would be less than that implied by the [ButtonHeight](keybindview.md#buttonheight) and placeholder content (if any). | 
 | [ContentBounds](../decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [EmptyText](#emptytext) | Placeholder text to display when the current keybind is empty. | 
+| [FloatingBounds](../decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [Font](#font) | Font used to display text in button/key placeholders. | 
 | [IsFocusable](../decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [Keybind](#keybind) | The current keybind. | 

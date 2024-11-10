@@ -51,6 +51,7 @@ Tabs activate when clicked; multiple tabs can be assigned to the same [Group](ta
 | [Content](#content) | Content to draw inside the tab's border. | 
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [ContentMargin](#contentmargin) | Margin to apply to the frame containing the [Content](tab.md#content), i.e. distance between the tab's visual border and the inner image, text, etc. | 
+| [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Group](#group) | The selection group, if any, to which this tab belongs. | 
 | [GroupKey](#groupkey) | The unique key per [Group](tab.md#group) that identifies this tab. | 
 | [IsFocusable](decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 

@@ -47,6 +47,7 @@ The primary content is always kept centered, with optional title, footer and sid
 | [Content](#content) | The primary content, which displays inside the menu frame and is clipped/scrollable. | 
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [ContentLayout](#contentlayout) | Layout parameters to apply to the actual [ScrollContainer](scrollcontainer.md) containing the [Content](scrollableframeview.md#content). | 
+| [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Footer](#footer) | Optional footer to display below the [Content](scrollableframeview.md#content). | 
 | [FrameLayout](#framelayout) | Layout parameters to apply to the frame surrounding the [Content](scrollableframeview.md#content). | 
 | [IsFocusable](decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 

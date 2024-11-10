@@ -44,6 +44,7 @@ public class Expander : StardewUI.Widgets.ComponentView
 | [Content](#content) | The main content, displayed when expanded. | 
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [ExpandedSprite](#expandedsprite) | Sprite to show next to the header when expanded. | 
+| [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Header](#header) | The primary content, which displays inside the menu frame and is clipped/scrollable. | 
 | [HeaderBackground](#headerbackground) | Background sprite to display around the [Header](expander.md#header) and expansion indicator. | 
 | [HeaderBackgroundTint](#headerbackgroundtint) | Tint color for the [HeaderBackground](expander.md#headerbackground). | 
