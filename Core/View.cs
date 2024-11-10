@@ -85,6 +85,9 @@ public abstract class View : IView
     /// <inheritdoc/>
     public Bounds ContentBounds => GetContentBounds();
 
+    /// <inheritdoc/>
+    public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
+
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
@@ -136,7 +139,7 @@ public abstract class View : IView
             if (!value.SequenceEqual(floatingElements))
             {
                 floatingElements = new(value);
-                OnPropertyChanged(nameof(FloatingElement));
+                OnPropertyChanged(nameof(FloatingElements));
             }
         }
     }
@@ -397,7 +400,7 @@ public abstract class View : IView
     public bool ContainsPoint(Vector2 point)
     {
         return ActualBounds.ContainsPoint(point)
-            || FloatingElements.Any(fe => fe.AsViewChild().ContainsPoint(point))
+            || FloatingBounds.Any(bounds => bounds.ContainsPoint(point))
             || (hasChildrenWithOutOfBoundsContent && GetChildren().Any(c => c.ContainsPoint(point)));
     }
 
@@ -978,6 +981,9 @@ public abstract class View : IView
             case nameof(ActualBounds):
                 OnPropertyChanged(nameof(ContentBounds));
                 break;
+            case nameof(FloatingElements):
+                OnPropertyChanged(nameof(FloatingBounds));
+                break;
             default:
                 break;
         }
@@ -1075,6 +1081,19 @@ public abstract class View : IView
             + new Vector2(Margin.Left, Margin.Top)
             + new Vector2(borderThickness.Left, borderThickness.Top)
             + new Vector2(Padding.Left, Padding.Top);
+    }
+
+    private IEnumerable<Bounds> GetFloatingBounds()
+    {
+        return FloatingElements
+            .SelectMany(GetFloatingElementBounds)
+            .Concat(GetChildren().SelectMany(child => child.GetFloatingBounds()));
+    }
+
+    private static IEnumerable<Bounds> GetFloatingElementBounds(FloatingElement fe)
+    {
+        var floatingChild = fe.AsViewChild();
+        return floatingChild.GetFloatingBounds().Prepend(floatingChild.GetActualBounds());
     }
 
     private ViewChild? GetOrUpdateDraggingChild(Vector2 position)

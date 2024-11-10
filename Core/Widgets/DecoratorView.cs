@@ -150,6 +150,9 @@ public class DecoratorView<T> : IView, IDisposable
     public Bounds ContentBounds => view?.ContentBounds ?? Bounds.Empty;
 
     /// <inheritdoc />
+    public IEnumerable<Bounds> FloatingBounds => view?.FloatingBounds ?? [];
+
+    /// <inheritdoc />
     public bool IsFocusable => view?.IsFocusable ?? false;
 
     /// <inheritdoc />

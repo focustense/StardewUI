@@ -584,12 +584,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             var overlayData = GetOverlayLayoutData(overlay);
             var overlayLocalPosition = screenPoint.ToVector2() - overlayData.Position;
-            if (
-                overlayLocalPosition.X < 0
-                || overlayLocalPosition.Y < 0
-                || overlayLocalPosition.X >= overlay.View.OuterSize.X
-                || overlayLocalPosition.Y >= overlay.View.OuterSize.Y
-            )
+            if (!overlayData.ContainsPoint(overlayLocalPosition))
             {
                 overlayContext.Pop();
             }
@@ -878,12 +873,28 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         public ViewChild[] ParentPath { get; set; } = [];
         public Vector2 Position { get; set; }
 
+        // Interactable bounds are the individual bounding boxes of all top-level and floating views in the overlay.
+        //
+        // Union bounds are a single bounding box used to speed up checks that are completely outside any part of the
+        // overlay, but a point being inside the union does not guarantee that it actually lands on a real view; that
+        // is, there may be gaps between views.
+        //
+        // As a hybrid of speed and accuracy, we check the union bounds to exclude impossible points, then check the
+        // interactable bounds to confirm a positive match.
+        private Bounds[] interactableBounds = [];
+        private Bounds unionBounds = Bounds.Empty;
+
         public static OverlayLayoutData FromOverlay(IView rootView, Vector2 rootPosition, IOverlay overlay)
         {
             using var _ = Diagnostics.Trace.Begin(nameof(OverlayLayoutData), nameof(FromOverlay));
             var data = new OverlayLayoutData(new(rootView, rootPosition));
             data.Update(overlay);
             return data;
+        }
+
+        public bool ContainsPoint(Vector2 point)
+        {
+            return unionBounds.ContainsPoint(point) && interactableBounds.Any(bounds => bounds.ContainsPoint(point));
         }
 
         public void Update(IOverlay overlay)
@@ -918,6 +929,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 overlay.View.OuterSize.Y
             );
             Position = new Vector2(x, y);
+
+            interactableBounds = overlay.View.FloatingBounds.Prepend(overlay.View.ActualBounds).ToArray();
+            unionBounds = interactableBounds.Aggregate(Bounds.Empty, (acc, bounds) => acc.Union(bounds));
         }
 
         private ViewChild? GetImmediateParent() => ParentPath.Length > 0 ? ParentPath[^1] : null;

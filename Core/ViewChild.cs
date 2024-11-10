@@ -90,6 +90,15 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     }
 
     /// <summary>
+    /// Returns a sequence of <see cref="Bounds"/> representing the parent-relative bounds of this child's own floating
+    /// elements and those of all its descendants.
+    /// </summary>
+    public IEnumerable<Bounds> GetFloatingBounds()
+    {
+        return View.FloatingBounds.Select(bounds => bounds.Offset(Position));
+    }
+
+    /// <summary>
     /// Offsets the position by a given distance.
     /// </summary>
     /// <param name="distance">The offset distance.</param>
