@@ -2541,9 +2541,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#update" class="md-nav__link">
+  <a href="#updatebool" class="md-nav__link">
     <span class="md-ellipsis">
-      Update()
+      Update(bool)
     </span>
   </a>
   
@@ -3437,9 +3437,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#update" class="md-nav__link">
+  <a href="#updatebool" class="md-nav__link">
     <span class="md-ellipsis">
-      Update()
+      Update(bool)
     </span>
   </a>
   
@@ -3554,7 +3554,7 @@ The return type of the context property.</p>
 <td></td>
 </tr>
 <tr>
-<td><a href="#update">Update()</a></td>
+<td><a href="#updatebool">Update(Boolean)</a></td>
 <td>Checks if the value needs updating, and if so, updates <a href="../ivaluesource/#value">Value</a> to the latest.</td>
 </tr>
 </tbody>
@@ -3571,9 +3571,9 @@ Context used for the data binding.</p>
 <p><strong><code>propertyName</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 Property to read on the <a href="../../binding/bindingcontext/#data">Data</a> of the supplied <code>context</code> when updating.</p>
 <p><strong><code>allowUpdates</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
-Whether or not to allow <a href="./#update">Update()</a> to read a new value. <code>false</code> prevents all updates and makes the source read only one time.</p>
+Whether or not to allow <a href="./#updatebool">Update(Boolean)</a> to read a new value. <code>false</code> prevents all updates and makes the source read only one time.</p>
 <h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
-<p>If the <a href="../../binding/bindingcontext/#data">Data</a> of the supplied <code>context</code> implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>, then <a href="./#update">Update()</a> and <a href="./#value">Value</a> will respond to changes to the given <code>propertyName</code>. Otherwise, the source is "static" and will never change its value or return <code>true</code> from <a href="./#update">Update()</a>.</p>
+<p>If the <a href="../../binding/bindingcontext/#data">Data</a> of the supplied <code>context</code> implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>, then <a href="./#updatebool">Update(Boolean)</a> and <a href="./#value">Value</a> will respond to changes to the given <code>propertyName</code>. Otherwise, the source is "static" and will never change its value or return <code>true</code> from <a href="./#updatebool">Update(Boolean)</a>.</p>
 <hr />
 <h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
 <h4 id="canread">CanRead<a class="headerlink" href="#canread" title="Permanent link"></a></h4>
@@ -3615,10 +3615,13 @@ Whether or not to allow <a href="./#update">Update()</a> to read a new value. <c
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Dispose</span><span class="p">();</span>
 </span></code></pre></div>
 <hr />
-<h4 id="update">Update()<a class="headerlink" href="#update" title="Permanent link"></a></h4>
+<h4 id="updatebool">Update(bool)<a class="headerlink" href="#updatebool" title="Permanent link"></a></h4>
 <p>Checks if the value needs updating, and if so, updates <a href="../ivaluesource/#value">Value</a> to the latest.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Update</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="kt">bool</span><span class="w"> </span><span class="n">force</span><span class="p">);</span>
 </span></code></pre></div>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>force</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
+If <code>true</code>, forces the source to update its value even if it isn't considered dirty. This should never be used in a regular binding, but can be useful in sources that are intended for occasional or one-shot use such as event handler arguments.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the <a href="../ivaluesource/#value">Value</a> was updated; <code>false</code> if it already held the most recent value.</p>

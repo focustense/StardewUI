@@ -2466,6 +2466,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#isautoproperty" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsAutoProperty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsField
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#name" class="md-nav__link">
     <span class="md-ellipsis">
       Name
@@ -3665,6 +3683,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#isautoproperty" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsAutoProperty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsField
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#name" class="md-nav__link">
     <span class="md-ellipsis">
       Name
@@ -3804,6 +3840,14 @@ The field's value type.</p>
 <td>The type on which the member is declared.</td>
 </tr>
 <tr>
+<td><a href="#isautoproperty">IsAutoProperty</a></td>
+<td>Whether or not the property is likely auto-implemented.</td>
+</tr>
+<tr>
+<td><a href="#isfield">IsField</a></td>
+<td>Whether or not the underlying member is a field, rather than a real property.</td>
+</tr>
+<tr>
 <td><a href="#name">Name</a></td>
 <td>The member name.</td>
 </tr>
@@ -3868,24 +3912,43 @@ The reflected field.</p>
 <h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h4 id="name">Name<a class="headerlink" href="#name" title="Permanent link"></a></h4>
-<p>The member name.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="isautoproperty">IsAutoProperty<a class="headerlink" href="#isautoproperty" title="Permanent link"></a></h4>
+<p>Whether or not the property is likely auto-implemented.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsAutoProperty</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
+<p>Auto-property detection is heuristic, relying on the method's IL instructions and the name of its backing field. This can often be interpreted as a signal that the property won't receive property-change notifications, since to do so (whether explicitly or via some weaver/source generator) requires an implementation that is different from the auto-generated getter and setter. </p>
+<p>Caveats: This only works as a negative signal (a value of <code>false</code> does not prove that the property <em>will</em> receive notifications, even if the declaring type implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>), and is somewhat fuzzy even as a negative signal; it is theoretically possible for a source generator or IL weaver to leave behind all the markers of an auto property and still emit notifications, although no known libraries actually do so.</p>
+<hr />
+<h4 id="isfield">IsField<a class="headerlink" href="#isfield" title="Permanent link"></a></h4>
+<p>Whether or not the underlying member is a field, rather than a real property.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsField</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
+<p>For binding convenience, fields and properties are both called "properties" for descriptors, as the external access pattern is the same; however, mutable fields can never reliably emit property-change notifications regardless of whether the declaring type implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>, so this is usually used to emit some warning.</p>
+<hr />
+<h4 id="name">Name<a class="headerlink" href="#name" title="Permanent link"></a></h4>
+<p>The member name.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
 <h4 id="valuetype">ValueType<a class="headerlink" href="#valuetype" title="Permanent link"></a></h4>
 <p>The property's value type.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">ValueType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">ValueType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
+<h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="getvalueobject">GetValue(Object)<a class="headerlink" href="#getvalueobject" title="Permanent link"></a></h4>
 <p>Reads the current property value.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">TValue</span><span class="w"> </span><span class="nf">GetValue</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">source</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="n">TValue</span><span class="w"> </span><span class="nf">GetValue</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">source</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>source</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />
@@ -3895,7 +3958,7 @@ An instance of the property's <a href="../imemberdescriptor/#declaringtype">Decl
 <hr />
 <h4 id="setvalueobject-tvalue">SetValue(Object, TValue)<a class="headerlink" href="#setvalueobject-tvalue" title="Permanent link"></a></h4>
 <p>Writes a new property value.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">SetValue</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">TValue</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">SetValue</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Object</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">TValue</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>target</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a><br />

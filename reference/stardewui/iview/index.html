@@ -1044,6 +1044,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#floatingbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      FloatingBounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#isfocusable" class="md-nav__link">
     <span class="md-ellipsis">
       IsFocusable
@@ -2472,6 +2481,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#floatingbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      FloatingBounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#isfocusable" class="md-nav__link">
     <span class="md-ellipsis">
       IsFocusable
@@ -2912,6 +2930,10 @@ Assembly: StardewUI.dll  </p>
 <td>The true bounds of this view's content; i.e. <a href="./#actualbounds">ActualBounds</a> excluding margins.</td>
 </tr>
 <tr>
+<td><a href="#floatingbounds">FloatingBounds</a></td>
+<td>Contains the bounds of all floating elements in this view tree, including the current view and all descendants.</td>
+</tr>
+<tr>
 <td><a href="#isfocusable">IsFocusable</a></td>
 <td>Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.</td>
 </tr>
@@ -3110,50 +3132,57 @@ Assembly: StardewUI.dll  </p>
 <h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="../layout/bounds/">Bounds</a></p>
 <hr />
-<h4 id="isfocusable">IsFocusable<a class="headerlink" href="#isfocusable" title="Permanent link"></a></h4>
-<p>Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">IsFocusable</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="floatingbounds">FloatingBounds<a class="headerlink" href="#floatingbounds" title="Permanent link"></a></h4>
+<p>Contains the bounds of all floating elements in this view tree, including the current view and all descendants.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="o">&gt;</span><span class="w"> </span><span class="n">FloatingBounds</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../layout/bounds/">Bounds</a>&gt;</p>
+<hr />
+<h4 id="isfocusable">IsFocusable<a class="headerlink" href="#isfocusable" title="Permanent link"></a></h4>
+<p>Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">IsFocusable</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>In other game UI code this is more typically referred to as "snap", since there is no true input focus. However, focus is the more general term and better explains what is happening with e.g. a text box.</p>
 <hr />
 <h4 id="layout">Layout<a class="headerlink" href="#layout" title="Permanent link"></a></h4>
 <p>The current layout parameters, which determine how <a href="./#measurevector2">Measure(Vector2)</a> will behave.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">LayoutParameters</span><span class="w"> </span><span class="n">Layout</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">LayoutParameters</span><span class="w"> </span><span class="n">Layout</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="../layout/layoutparameters/">LayoutParameters</a></p>
 <hr />
 <h4 id="name">Name<a class="headerlink" href="#name" title="Permanent link"></a></h4>
 <p>Simple name for this view, used in log/debug output; does not affect behavior.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
 <h4 id="outersize">OuterSize<a class="headerlink" href="#outersize" title="Permanent link"></a></h4>
 <p>The true computed layout size resulting from a single <a href="./#measurevector2">Measure(Vector2)</a> pass.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">OuterSize</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">OuterSize</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
+<h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
 <hr />
 <h4 id="pointereventsenabled">PointerEventsEnabled<a class="headerlink" href="#pointereventsenabled" title="Permanent link"></a></h4>
 <p>Whether this view should receive pointer events like <a href="./#click">Click</a> or <a href="./#drag">Drag</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">PointerEventsEnabled</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">PointerEventsEnabled</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
+<h5 id="property-value_7">Property Value<a class="headerlink" href="#property-value_7" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>By default, all views receive pointer events; this may be disabled for views that intentionally overlap other views but shouldn't block their input, such as local non-modal overlays.</p>
 <hr />
 <h4 id="scrollwithchildren">ScrollWithChildren<a class="headerlink" href="#scrollwithchildren" title="Permanent link"></a></h4>
 <p>If set to an axis, specifies that when any child of the view is scrolled into view (using <a href="./#scrollintoviewienumerableviewchild-vector2">ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)</a>), then this entire view should be scrolled along with it.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Orientation</span><span class="o">?</span><span class="w"> </span><span class="n">ScrollWithChildren</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Orientation</span><span class="o">?</span><span class="w"> </span><span class="n">ScrollWithChildren</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_7">Property Value<a class="headerlink" href="#property-value_7" title="Permanent link"></a></h5>
+<h5 id="property-value_8">Property Value<a class="headerlink" href="#property-value_8" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="../layout/orientation/">Orientation</a>&gt;</p>
 <h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>For example, if the view lays out children horizontally, and some children may occupy only a very small amount of space near the top while others are much taller vertically or positioned near the bottom, it might be desirable to configure this with <a href="../layout/orientation/#vertical">Vertical</a>, so that the entire "row" is positioned within the scrollable viewport. </p>
@@ -3161,36 +3190,36 @@ Assembly: StardewUI.dll  </p>
 <hr />
 <h4 id="tags">Tags<a class="headerlink" href="#tags" title="Permanent link"></a></h4>
 <p>The user-defined tags for this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Tags</span><span class="w"> </span><span class="n">Tags</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Tags</span><span class="w"> </span><span class="n">Tags</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_8">Property Value<a class="headerlink" href="#property-value_8" title="Permanent link"></a></h5>
+<h5 id="property-value_9">Property Value<a class="headerlink" href="#property-value_9" title="Permanent link"></a></h5>
 <p><a href="../tags/">Tags</a></p>
 <hr />
 <h4 id="tooltip">Tooltip<a class="headerlink" href="#tooltip" title="Permanent link"></a></h4>
 <p>Localized tooltip to display on hover, if any.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">Tooltip</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kt">string</span><span class="w"> </span><span class="n">Tooltip</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_9">Property Value<a class="headerlink" href="#property-value_9" title="Permanent link"></a></h5>
+<h5 id="property-value_10">Property Value<a class="headerlink" href="#property-value_10" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
 <h4 id="visibility">Visibility<a class="headerlink" href="#visibility" title="Permanent link"></a></h4>
 <p>Drawing visibility for this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Visibility</span><span class="w"> </span><span class="n">Visibility</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Visibility</span><span class="w"> </span><span class="n">Visibility</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_10">Property Value<a class="headerlink" href="#property-value_10" title="Permanent link"></a></h5>
+<h5 id="property-value_11">Property Value<a class="headerlink" href="#property-value_11" title="Permanent link"></a></h5>
 <p><a href="../layout/visibility/">Visibility</a></p>
 <hr />
 <h4 id="zindex">ZIndex<a class="headerlink" href="#zindex" title="Permanent link"></a></h4>
 <p>Z order for this view within its direct parent. Higher indices draw later (on top).</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">ZIndex</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">ZIndex</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_11">Property Value<a class="headerlink" href="#property-value_11" title="Permanent link"></a></h5>
+<h5 id="property-value_12">Property Value<a class="headerlink" href="#property-value_12" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a></p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="containspointvector2">ContainsPoint(Vector2)<a class="headerlink" href="#containspointvector2" title="Permanent link"></a></h4>
 <p>Checks if a given point, relative to the view's origin, is within its bounds.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ContainsPoint</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">point</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ContainsPoint</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">point</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>point</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3201,7 +3230,7 @@ The point to test.</p>
 <hr />
 <h4 id="drawispritebatch">Draw(ISpriteBatch)<a class="headerlink" href="#drawispritebatch" title="Permanent link"></a></h4>
 <p>Draws the content for this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Draw</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Draw</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>b</code></strong> &nbsp; <a href="../graphics/ispritebatch/">ISpriteBatch</a><br />
@@ -3211,7 +3240,7 @@ Sprite batch to hold the drawing output.</p>
 <hr />
 <h4 id="focussearchvector2-direction">FocusSearch(Vector2, Direction)<a class="headerlink" href="#focussearchvector2-direction" title="Permanent link"></a></h4>
 <p>Finds the next focusable component in a given direction that does <em>not</em> overlap with a current position.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FocusSearch</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FocusSearch</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3232,7 +3261,7 @@ The direction of cursor movement.</p>
 <hr />
 <h4 id="getchildatvector2">GetChildAt(Vector2)<a class="headerlink" href="#getchildatvector2" title="Permanent link"></a></h4>
 <p>Finds the child at a given position.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">GetChildAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">GetChildAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3245,7 +3274,7 @@ The search position, relative to the view's top-left coordinate.</p>
 <hr />
 <h4 id="getchildpositioniview">GetChildPosition(IView)<a class="headerlink" href="#getchildpositioniview" title="Permanent link"></a></h4>
 <p>Computes or retrieves the position of a given direct child.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">GetChildPosition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">childView</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">GetChildPosition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">childView</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>childView</code></strong> &nbsp; <a href="./">IView</a><br />
@@ -3258,14 +3287,14 @@ The child of this view.</p>
 <hr />
 <h4 id="getchildren">GetChildren()<a class="headerlink" href="#getchildren" title="Permanent link"></a></h4>
 <p>Gets the current children of this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetChildren</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetChildren</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
 <hr />
 <h4 id="getchildrenatvector2">GetChildrenAt(Vector2)<a class="headerlink" href="#getchildrenatvector2" title="Permanent link"></a></h4>
 <p>Finds all children at a given position.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetChildrenAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetChildrenAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>position</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3276,7 +3305,7 @@ The search position, relative to the view's top-left coordinate.</p>
 <hr />
 <h4 id="getdefaultfocuschild">GetDefaultFocusChild()<a class="headerlink" href="#getdefaultfocuschild" title="Permanent link"></a></h4>
 <p>Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first opened.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">GetDefaultFocusChild</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">GetDefaultFocusChild</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
 <p><a href="../viewchild/">ViewChild</a></p>
@@ -3284,7 +3313,7 @@ The search position, relative to the view's top-left coordinate.</p>
 <hr />
 <h4 id="hasoutofboundscontent">HasOutOfBoundsContent()<a class="headerlink" href="#hasoutofboundscontent" title="Permanent link"></a></h4>
 <p>Checks if the view has content or elements that are all or partially outside the <a href="./#actualbounds">ActualBounds</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">HasOutOfBoundsContent</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">HasOutOfBoundsContent</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
@@ -3293,7 +3322,7 @@ The search position, relative to the view's top-left coordinate.</p>
 <hr />
 <h4 id="isdirty">IsDirty()<a class="headerlink" href="#isdirty" title="Permanent link"></a></h4>
 <p>Checks whether or not the view is dirty - i.e. requires a new layout with a full <a href="./#measurevector2">Measure(Vector2)</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">IsDirty</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">IsDirty</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_8">Returns<a class="headerlink" href="#returns_8" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
@@ -3309,7 +3338,7 @@ The search position, relative to the view's top-left coordinate.</p>
 <hr />
 <h4 id="measurevector2">Measure(Vector2)<a class="headerlink" href="#measurevector2" title="Permanent link"></a></h4>
 <p>Performs layout on this view, updating its <a href="./#outersize">OuterSize</a>, <a href="./#actualbounds">ActualBounds</a> and <a href="./#contentbounds">ContentBounds</a>, and arranging any children in their respective positions.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">Measure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">Measure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>availableSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3322,7 +3351,7 @@ The width/height that is still available in the container/parent.</p>
 <hr />
 <h4 id="onbuttonpressbuttoneventargs">OnButtonPress(ButtonEventArgs)<a class="headerlink" href="#onbuttonpressbuttoneventargs" title="Permanent link"></a></h4>
 <p>Called when a button press is received while this view is in the focus path.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnButtonPress</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ButtonEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnButtonPress</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ButtonEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_7">Parameters<a class="headerlink" href="#parameters_7" title="Permanent link"></a></h5>
 <p><strong><code>e</code></strong> &nbsp; <a href="../events/buttoneventargs/">ButtonEventArgs</a><br />
@@ -3330,7 +3359,7 @@ The event data.</p>
 <hr />
 <h4 id="onclickclickeventargs">OnClick(ClickEventArgs)<a class="headerlink" href="#onclickclickeventargs" title="Permanent link"></a></h4>
 <p>Called when a click is received within this view's bounds.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnClick</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnClick</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_8">Parameters<a class="headerlink" href="#parameters_8" title="Permanent link"></a></h5>
 <p><strong><code>e</code></strong> &nbsp; <a href="../events/clickeventargs/">ClickEventArgs</a><br />
@@ -3338,7 +3367,7 @@ The event data.</p>
 <hr />
 <h4 id="ondragpointereventargs">OnDrag(PointerEventArgs)<a class="headerlink" href="#ondragpointereventargs" title="Permanent link"></a></h4>
 <p>Called when the view is being dragged (mouse moved while left button held).</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnDrag</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnDrag</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_9">Parameters<a class="headerlink" href="#parameters_9" title="Permanent link"></a></h5>
 <p><strong><code>e</code></strong> &nbsp; <a href="../events/pointereventargs/">PointerEventArgs</a><br />
@@ -3346,7 +3375,7 @@ The event data.</p>
 <hr />
 <h4 id="ondroppointereventargs">OnDrop(PointerEventArgs)<a class="headerlink" href="#ondroppointereventargs" title="Permanent link"></a></h4>
 <p>Called when the mouse button is released after at least one <a href="./#ondragpointereventargs">OnDrag(PointerEventArgs)</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnDrop</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnDrop</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_10">Parameters<a class="headerlink" href="#parameters_10" title="Permanent link"></a></h5>
 <p><strong><code>e</code></strong> &nbsp; <a href="../events/pointereventargs/">PointerEventArgs</a><br />
@@ -3354,7 +3383,7 @@ The event data.</p>
 <hr />
 <h4 id="onpointermovepointermoveeventargs">OnPointerMove(PointerMoveEventArgs)<a class="headerlink" href="#onpointermovepointermoveeventargs" title="Permanent link"></a></h4>
 <p>Called when a pointer movement related to this view occurs.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnPointerMove</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerMoveEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnPointerMove</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerMoveEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_11">Parameters<a class="headerlink" href="#parameters_11" title="Permanent link"></a></h5>
 <p><strong><code>e</code></strong> &nbsp; <a href="../events/pointermoveeventargs/">PointerMoveEventArgs</a><br />
@@ -3364,7 +3393,7 @@ The event data.</p>
 <hr />
 <h4 id="onupdatetimespan">OnUpdate(TimeSpan)<a class="headerlink" href="#onupdatetimespan" title="Permanent link"></a></h4>
 <p>Runs on every update tick.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnUpdate</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_12">Parameters<a class="headerlink" href="#parameters_12" title="Permanent link"></a></h5>
 <p><strong><code>elapsed</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
@@ -3375,7 +3404,7 @@ Time elapsed since last game tick.</p>
 <hr />
 <h4 id="onwheelwheeleventargs">OnWheel(WheelEventArgs)<a class="headerlink" href="#onwheelwheeleventargs" title="Permanent link"></a></h4>
 <p>Called when a wheel event is received within this view's bounds.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnWheel</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">WheelEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">OnWheel</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">WheelEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_13">Parameters<a class="headerlink" href="#parameters_13" title="Permanent link"></a></h5>
 <p><strong><code>e</code></strong> &nbsp; <a href="../events/wheeleventargs/">WheelEventArgs</a><br />
@@ -3383,7 +3412,7 @@ The event data.</p>
 <hr />
 <h4 id="scrollintoviewienumerableviewchild-vector2">ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)<a class="headerlink" href="#scrollintoviewienumerableviewchild-vector2" title="Permanent link"></a></h4>
 <p>Attempts to scroll the specified target into view, including all of its ancestors, if not fully in view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollIntoView</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollIntoView</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_14">Parameters<a class="headerlink" href="#parameters_14" title="Permanent link"></a></h5>
 <p><strong><code>path</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;<br />
@@ -3397,7 +3426,7 @@ The total distance that was scrolled, including distance scrolled by descendants
 <h3 id="events_1">Events<a class="headerlink" href="#events_1" title="Permanent link"></a></h3>
 <h4 id="buttonpress">ButtonPress<a class="headerlink" href="#buttonpress" title="Permanent link"></a></h4>
 <p>Event raised when any button on any input device is pressed.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ButtonEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">ButtonPress</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ButtonEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">ButtonPress</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type">Event Type<a class="headerlink" href="#event-type" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/buttoneventargs/">ButtonEventArgs</a>&gt;</p>
@@ -3406,35 +3435,35 @@ The total distance that was scrolled, including distance scrolled by descendants
 <hr />
 <h4 id="click">Click<a class="headerlink" href="#click" title="Permanent link"></a></h4>
 <p>Event raised when the view receives a click initiated from any button.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Click</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Click</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_1">Event Type<a class="headerlink" href="#event-type_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/clickeventargs/">ClickEventArgs</a>&gt;</p>
 <hr />
 <h4 id="drag">Drag<a class="headerlink" href="#drag" title="Permanent link"></a></h4>
 <p>Event raised when the view is being dragged using the mouse.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Drag</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Drag</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_2">Event Type<a class="headerlink" href="#event-type_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
 <hr />
 <h4 id="dragend">DragEnd<a class="headerlink" href="#dragend" title="Permanent link"></a></h4>
 <p>Event raised when mouse dragging is stopped, i.e. when the button is released. Always raised after the last <a href="./#drag">Drag</a>, and only once per drag operation.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">DragEnd</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">DragEnd</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_3">Event Type<a class="headerlink" href="#event-type_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
 <hr />
 <h4 id="dragstart">DragStart<a class="headerlink" href="#dragstart" title="Permanent link"></a></h4>
 <p>Event raised when mouse dragging is first activated. Always raised before the first <a href="./#drag">Drag</a>, and only once per drag operation.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">DragStart</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">DragStart</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_4">Event Type<a class="headerlink" href="#event-type_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
 <hr />
 <h4 id="leftclick">LeftClick<a class="headerlink" href="#leftclick" title="Permanent link"></a></h4>
 <p>Event raised when the view receives a click initiated from the left mouse button, or the controller's action button (A).</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">LeftClick</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">LeftClick</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_5">Event Type<a class="headerlink" href="#event-type_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/clickeventargs/">ClickEventArgs</a>&gt;</p>
@@ -3443,21 +3472,21 @@ The total distance that was scrolled, including distance scrolled by descendants
 <hr />
 <h4 id="pointerenter">PointerEnter<a class="headerlink" href="#pointerenter" title="Permanent link"></a></h4>
 <p>Event raised when the pointer enters the view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">PointerEnter</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">PointerEnter</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_6">Event Type<a class="headerlink" href="#event-type_6" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
 <hr />
 <h4 id="pointerleave">PointerLeave<a class="headerlink" href="#pointerleave" title="Permanent link"></a></h4>
 <p>Event raised when the pointer exits the view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">PointerLeave</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">PointerEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">PointerLeave</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_7">Event Type<a class="headerlink" href="#event-type_7" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/pointereventargs/">PointerEventArgs</a>&gt;</p>
 <hr />
 <h4 id="rightclick">RightClick<a class="headerlink" href="#rightclick" title="Permanent link"></a></h4>
 <p>Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use button (X).</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">RightClick</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">ClickEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">RightClick</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_8">Event Type<a class="headerlink" href="#event-type_8" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/clickeventargs/">ClickEventArgs</a>&gt;</p>
@@ -3466,7 +3495,7 @@ The total distance that was scrolled, including distance scrolled by descendants
 <hr />
 <h4 id="wheel">Wheel<a class="headerlink" href="#wheel" title="Permanent link"></a></h4>
 <p>Event raised when the scroll wheel moves.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">WheelEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Wheel</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">WheelEventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Wheel</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type_9">Event Type<a class="headerlink" href="#event-type_9" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="../events/wheeleventargs/">WheelEventArgs</a>&gt;</p>

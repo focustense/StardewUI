@@ -2265,6 +2265,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#isautoproperty" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsAutoProperty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsField
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#valuetype" class="md-nav__link">
     <span class="md-ellipsis">
       ValueType
@@ -3473,6 +3491,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#isautoproperty" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsAutoProperty
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isfield" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsField
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#valuetype" class="md-nav__link">
     <span class="md-ellipsis">
       ValueType
@@ -3542,6 +3578,14 @@ Assembly: StardewUI.dll  </p>
 <td>Whether or not the property is writable, i.e. has a public setter.</td>
 </tr>
 <tr>
+<td><a href="#isautoproperty">IsAutoProperty</a></td>
+<td>Whether or not the property is likely auto-implemented.</td>
+</tr>
+<tr>
+<td><a href="#isfield">IsField</a></td>
+<td>Whether or not the underlying member is a field, rather than a real property.</td>
+</tr>
+<tr>
 <td><a href="#valuetype">ValueType</a></td>
 <td>The property's value type.</td>
 </tr>
@@ -3563,11 +3607,30 @@ Assembly: StardewUI.dll  </p>
 <h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
-<h4 id="valuetype">ValueType<a class="headerlink" href="#valuetype" title="Permanent link"></a></h4>
-<p>The property's value type.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">ValueType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="isautoproperty">IsAutoProperty<a class="headerlink" href="#isautoproperty" title="Permanent link"></a></h4>
+<p>Whether or not the property is likely auto-implemented.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">IsAutoProperty</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
+<p>Auto-property detection is heuristic, relying on the method's IL instructions and the name of its backing field. This can often be interpreted as a signal that the property won't receive property-change notifications, since to do so (whether explicitly or via some weaver/source generator) requires an implementation that is different from the auto-generated getter and setter. </p>
+<p>Caveats: This only works as a negative signal (a value of <code>false</code> does not prove that the property <em>will</em> receive notifications, even if the declaring type implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>), and is somewhat fuzzy even as a negative signal; it is theoretically possible for a source generator or IL weaver to leave behind all the markers of an auto property and still emit notifications, although no known libraries actually do so.</p>
+<hr />
+<h4 id="isfield">IsField<a class="headerlink" href="#isfield" title="Permanent link"></a></h4>
+<p>Whether or not the underlying member is a field, rather than a real property.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">IsField</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
+<p>For binding convenience, fields and properties are both called "properties" for descriptors, as the external access pattern is the same; however, mutable fields can never reliably emit property-change notifications regardless of whether the declaring type implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>, so this is usually used to emit some warning.</p>
+<hr />
+<h4 id="valuetype">ValueType<a class="headerlink" href="#valuetype" title="Permanent link"></a></h4>
+<p>The property's value type.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">ValueType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
 </div>

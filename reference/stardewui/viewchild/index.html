@@ -1251,6 +1251,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#getfloatingbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetFloatingBounds()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#isindirectionvector2-direction" class="md-nav__link">
     <span class="md-ellipsis">
       IsInDirection(Vector2, Direction)
@@ -2313,6 +2322,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#getfloatingbounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetFloatingBounds()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#isindirectionvector2-direction" class="md-nav__link">
     <span class="md-ellipsis">
       IsInDirection(Vector2, Direction)
@@ -2447,6 +2465,10 @@ Assembly: StardewUI.dll  </p>
 <td>Returns a <a href="../layout/bounds/">Bounds</a> representing the parent-relative content bounds of this child.</td>
 </tr>
 <tr>
+<td><a href="#getfloatingbounds">GetFloatingBounds()</a></td>
+<td>Returns a sequence of <a href="../layout/bounds/">Bounds</a> representing the parent-relative bounds of this child's own floating elements and those of all its descendants.</td>
+</tr>
+<tr>
 <td><a href="#isindirectionvector2-direction">IsInDirection(Vector2, Direction)</a></td>
 <td>Checks if a view can be reached by travelling from a given point in a given direction.</td>
 </tr>
@@ -2548,27 +2570,34 @@ The direction of cursor movement.</p>
 <h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>Equivalent to the <a href="../iview/#contentbounds">ContentBounds</a> offset by this child's <a href="./#position">Position</a>.</p>
 <hr />
+<h4 id="getfloatingbounds">GetFloatingBounds()<a class="headerlink" href="#getfloatingbounds" title="Permanent link"></a></h4>
+<p>Returns a sequence of <a href="../layout/bounds/">Bounds</a> representing the parent-relative bounds of this child's own floating elements and those of all its descendants.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetFloatingBounds</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../layout/bounds/">Bounds</a>&gt;</p>
+<hr />
 <h4 id="isindirectionvector2-direction">IsInDirection(Vector2, Direction)<a class="headerlink" href="#isindirectionvector2-direction" title="Permanent link"></a></h4>
 <p>Checks if a view can be reached by travelling from a given point in a given direction.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsInDirection</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsInDirection</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">origin</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>origin</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The origin point.</p>
 <p><strong><code>direction</code></strong> &nbsp; <a href="../direction/">Direction</a><br />
 The direction from <code>origin</code>.</p>
-<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
+<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the view's boundaries either already contain the <code>origin</code> or are in the specified <code>direction</code> from the <code>origin</code>; otherwise <code>false</code>.</p>
 <hr />
 <h4 id="offsetvector2">Offset(Vector2)<a class="headerlink" href="#offsetvector2" title="Permanent link"></a></h4>
 <p>Offsets the position by a given distance.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">Offset</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">Offset</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>distance</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The offset distance.</p>
-<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
+<h5 id="returns_8">Returns<a class="headerlink" href="#returns_8" title="Permanent link"></a></h5>
 <p><a href="./">ViewChild</a></p>
 <p>A copy of the current <a href="./">ViewChild</a> having the same <a href="./#view">View</a> and a <a href="./#position">Position</a> offset by <code>distance</code>.</p>
 <hr />
