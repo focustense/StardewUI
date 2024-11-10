@@ -39,7 +39,7 @@ Type of value supplied.
 
  | Name | Description |
 | --- | --- |
-| [Value](#value) | Gets the current value obtained from the most recent [Update()](ivaluesource.md#update), or writes a new value when set. | 
+| [Value](#value) | Gets the current value obtained from the most recent [Update(Boolean)](ivaluesource.md#updatebool), or writes a new value when set. | 
 
 ## Details
 
@@ -47,7 +47,7 @@ Type of value supplied.
 
 #### Value
 
-Gets the current value obtained from the most recent [Update()](ivaluesource.md#update), or writes a new value when set.
+Gets the current value obtained from the most recent [Update(Boolean)](ivaluesource.md#updatebool), or writes a new value when set.
 
 ```cs
 T Value { get; set; }

@@ -61,7 +61,7 @@ The return type of the context property.
  | Name | Description |
 | --- | --- |
 | [Dispose()](#dispose) |  | 
-| [Update()](#update) | Checks if the value needs updating, and if so, updates [Value](ivaluesource.md#value) to the latest. | 
+| [Update(Boolean)](#updatebool) | Checks if the value needs updating, and if so, updates [Value](ivaluesource.md#value) to the latest. | 
 
 ## Details
 
@@ -84,11 +84,11 @@ Context used for the data binding.
 Property to read on the [Data](../binding/bindingcontext.md#data) of the supplied `context` when updating.
 
 **`allowUpdates`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
-Whether or not to allow [Update()](contextpropertyvaluesource-1.md#update) to read a new value. `false` prevents all updates and makes the source read only one time.
+Whether or not to allow [Update(Boolean)](contextpropertyvaluesource-1.md#updatebool) to read a new value. `false` prevents all updates and makes the source read only one time.
 
 ##### Remarks
 
-If the [Data](../binding/bindingcontext.md#data) of the supplied `context` implements [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged), then [Update()](contextpropertyvaluesource-1.md#update) and [Value](contextpropertyvaluesource-1.md#value) will respond to changes to the given `propertyName`. Otherwise, the source is "static" and will never change its value or return `true` from [Update()](contextpropertyvaluesource-1.md#update).
+If the [Data](../binding/bindingcontext.md#data) of the supplied `context` implements [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged), then [Update(Boolean)](contextpropertyvaluesource-1.md#updatebool) and [Value](contextpropertyvaluesource-1.md#value) will respond to changes to the given `propertyName`. Otherwise, the source is "static" and will never change its value or return `true` from [Update(Boolean)](contextpropertyvaluesource-1.md#updatebool).
 
 -----
 
@@ -176,13 +176,18 @@ public void Dispose();
 
 -----
 
-#### Update()
+#### Update(bool)
 
 Checks if the value needs updating, and if so, updates [Value](ivaluesource.md#value) to the latest.
 
 ```cs
-public bool Update();
+public bool Update(bool force);
 ```
+
+##### Parameters
+
+**`force`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+If `true`, forces the source to update its value even if it isn't considered dirty. This should never be used in a regular binding, but can be useful in sources that are intended for occasional or one-shot use such as event handler arguments.
 
 ##### Returns
 

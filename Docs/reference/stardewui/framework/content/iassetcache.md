@@ -26,7 +26,7 @@ public interface IAssetCache
 
 ## Remarks
 
-Similar to SMAPI's content helpers, but instead of providing just the current asset at the time of the request, returns entry objects with an expired flag for effective (and performant) use in [Update()](../sources/ivaluesource.md#update).
+Similar to SMAPI's content helpers, but instead of providing just the current asset at the time of the request, returns entry objects with an expired flag for effective (and performant) use in [Update(Boolean)](../sources/ivaluesource.md#updatebool).
 
 ## Members
 
