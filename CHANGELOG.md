@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - [Duck typing conversions](https://focustense.github.io/StardewUI/framework/duck-typing/) for bound properties: internal types like `Sprite` can now be bound without an assembly reference by creating an equivalent type on the caller's side.
 - Add-on system, AKA [framework extensions](https://focustense.github.io/StardewUI/framework/extensions/): Create and register custom widgets and type converters that can be included in StarML.
-- Translation ("i18n") bindings using the syntax: `attr={#TranslationKey}` for keys in the same mod or `attr={#authorname.ModName#TranslationKey}` for keys in a different mod.
+- Translation ("i18n") bindings using the syntax: `attr={#TranslationKey}` for keys in the same mod or `attr={#authorname.ModName:TranslationKey}` for keys in a different mod.
 - [Tab widget](https://focustense.github.io/StardewUI/library/standard-views/#tab) to use for top or side navigation.
 
 ### Changed
