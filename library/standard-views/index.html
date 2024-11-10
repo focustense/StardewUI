@@ -917,6 +917,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tab &nbsp;
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#text-input" class="md-nav__link">
     <span class="md-ellipsis">
       Text Input &nbsp;
@@ -1358,6 +1367,15 @@
   <a href="#slider" class="md-nav__link">
     <span class="md-ellipsis">
       Slider &nbsp;
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tab &nbsp;
     </span>
   </a>
   
@@ -2000,33 +2018,102 @@
 </div>
 </div>
 </div>
+<h3 id="tab">Tab &nbsp; <a href="../../reference/stardewui/widgets/tab/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg></span></a><a class="headerlink" href="#tab" title="Permanent link"></a></h3>
+<p>A rectangular content frame with rounded top, which shifts its position slightly to indicate whether or not it is active.</p>
+<p>Generally used as part of a tab group where only one tab can be active at a time.</p>
+<p>In addition to supporting data binding on the active state, the tab automatically activates or "presses" on click, and raises events on activation and deactivation.</p>
+<p>When using the default sprite, the background will stretch and any inner content (i.e. whether text or image) can generally be represented.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="18:3"><input checked="checked" id="demo_17" name="__tabbed_18" type="radio" /><input id="usage-starml_17" name="__tabbed_18" type="radio" /><input id="usage-c_12" name="__tabbed_18" type="radio" /><div class="tabbed-labels"><label for="demo_17">Demo</label><label for="usage-starml_17">Usage (StarML)</label><label for="usage-c_12">Usage (C#)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><img alt="Tab Example" src="../../images/example-tab.webp" /></p>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">&lt;</span><span class="nt">lane</span> <span class="na">z-index</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>    <span class="p">&lt;</span><span class="nt">tab</span> <span class="err">*</span><span class="na">repeat</span><span class="o">=</span><span class="s">{Tabs}</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>         <span class="na">layout</span><span class="o">=</span><span class="s">&quot;64px&quot;</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>         <span class="na">tooltip</span><span class="o">=</span><span class="s">{Name}</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>         <span class="na">active</span><span class="o">=</span><span class="s">{&lt;</span><span class="p">&gt;</span>Active}
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>         activate=|^OnTabActivated(Name)|&gt;
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>        <span class="p">&lt;</span><span class="nt">image</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;32px&quot;</span> <span class="na">sprite</span><span class="o">=</span><span class="s">{Sprite}</span> <span class="na">vertical-alignment</span><span class="o">=</span><span class="s">&quot;middle&quot;</span> <span class="p">/&gt;</span>
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>    <span class="p">&lt;/</span><span class="nt">tab</span><span class="p">&gt;</span>
+</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="p">&lt;/</span><span class="nt">lane</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">partial</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nf">TabData</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">Texture2D</span><span class="w"> </span><span class="n">texture</span><span class="p">,</span><span class="w"> </span><span class="n">Rectangle</span><span class="w"> </span><span class="n">sourceRect</span><span class="p">)</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="n">INotifyPropertyChanged</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="p">{</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Name</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">Tuple</span><span class="o">&lt;</span><span class="n">Texture2D</span><span class="p">,</span><span class="w"> </span><span class="n">Rectangle</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Sprite</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">        </span><span class="n">Tuple</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="n">texture</span><span class="p">,</span><span class="w"> </span><span class="n">sourceRect</span><span class="p">);</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">active</span><span class="p">;</span>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="p">}</span>
+</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>
+</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="k">partial</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TabsViewModel</span>
+</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a><span class="p">{</span>
+</span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">IReadOnlyList</span><span class="o">&lt;</span><span class="n">TabData</span><span class="o">&gt;</span><span class="w"> </span><span class="n">Tabs</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+</span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>
+</span><span id="__span-31-15"><a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnTabActivated</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
+</span><span id="__span-31-16"><a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-31-17"><a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a><span class="w">        </span><span class="k">foreach</span><span class="w"> </span><span class="p">(</span><span class="kt">var</span><span class="w"> </span><span class="n">tab</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Tabs</span><span class="p">)</span>
+</span><span id="__span-31-18"><a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-31-19"><a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">tab</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">name</span><span class="p">)</span>
+</span><span id="__span-31-20"><a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a><span class="w">            </span><span class="p">{</span>
+</span><span id="__span-31-21"><a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a><span class="w">                </span><span class="n">tab</span><span class="p">.</span><span class="n">Active</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span><span class="p">;</span>
+</span><span id="__span-31-22"><a id="__codelineno-31-22" name="__codelineno-31-22" href="#__codelineno-31-22"></a><span class="w">            </span><span class="p">}</span>
+</span><span id="__span-31-23"><a id="__codelineno-31-23" name="__codelineno-31-23" href="#__codelineno-31-23"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-31-24"><a id="__codelineno-31-24" name="__codelineno-31-24" href="#__codelineno-31-24"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-31-25"><a id="__codelineno-31-25" name="__codelineno-31-25" href="#__codelineno-31-25"></a><span class="p">}</span>
+</span><span id="__span-31-26"><a id="__codelineno-31-26" name="__codelineno-31-26" href="#__codelineno-31-26"></a>
+</span><span id="__span-31-27"><a id="__codelineno-31-27" name="__codelineno-31-27" href="#__codelineno-31-27"></a><span class="k">private</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ShowTabsExample</span><span class="p">()</span>
+</span><span id="__span-31-28"><a id="__codelineno-31-28" name="__codelineno-31-28" href="#__codelineno-31-28"></a><span class="p">{</span>
+</span><span id="__span-31-29"><a id="__codelineno-31-29" name="__codelineno-31-29" href="#__codelineno-31-29"></a><span class="w">    </span><span class="kt">var</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TabsViewModel</span><span class="p">()</span>
+</span><span id="__span-31-30"><a id="__codelineno-31-30" name="__codelineno-31-30" href="#__codelineno-31-30"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-31-31"><a id="__codelineno-31-31" name="__codelineno-31-31" href="#__codelineno-31-31"></a><span class="w">        </span><span class="n">Tabs</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-31-32"><a id="__codelineno-31-32" name="__codelineno-31-32" href="#__codelineno-31-32"></a><span class="w">        </span><span class="na">[</span>
+</span><span id="__span-31-33"><a id="__codelineno-31-33" name="__codelineno-31-33" href="#__codelineno-31-33"></a><span class="na">            new(&quot;Home&quot;, Game1.mouseCursors, new(20, 388, 8, 8)) { Active = true },</span>
+</span><span id="__span-31-34"><a id="__codelineno-31-34" name="__codelineno-31-34" href="#__codelineno-31-34"></a><span class="na">            new(&quot;Social&quot;, Game1.mouseCursors, new(36, 374, 7, 8)),</span>
+</span><span id="__span-31-35"><a id="__codelineno-31-35" name="__codelineno-31-35" href="#__codelineno-31-35"></a><span class="na">            new(&quot;Money&quot;, Game1.mouseCursors, new(4, 388, 8, 8)),</span>
+</span><span id="__span-31-36"><a id="__codelineno-31-36" name="__codelineno-31-36" href="#__codelineno-31-36"></a><span class="na">            new(&quot;Seasons&quot;, Game1.mouseCursors, new(420, 1204, 8, 8)),</span>
+</span><span id="__span-31-37"><a id="__codelineno-31-37" name="__codelineno-31-37" href="#__codelineno-31-37"></a><span class="na">        ]</span><span class="p">,</span>
+</span><span id="__span-31-38"><a id="__codelineno-31-38" name="__codelineno-31-38" href="#__codelineno-31-38"></a><span class="w">    </span><span class="p">};</span>
+</span><span id="__span-31-39"><a id="__codelineno-31-39" name="__codelineno-31-39" href="#__codelineno-31-39"></a><span class="w">    </span><span class="n">Game1</span><span class="p">.</span><span class="n">activeClickableMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateMenuFromAsset</span><span class="p">(</span>
+</span><span id="__span-31-40"><a id="__codelineno-31-40" name="__codelineno-31-40" href="#__codelineno-31-40"></a><span class="w">        </span><span class="s">$&quot;Mods/focustense.StardewUITest/Views/TabTestView&quot;</span><span class="p">,</span>
+</span><span id="__span-31-41"><a id="__codelineno-31-41" name="__codelineno-31-41" href="#__codelineno-31-41"></a><span class="w">        </span><span class="n">context</span><span class="p">);</span>
+</span><span id="__span-31-42"><a id="__codelineno-31-42" name="__codelineno-31-42" href="#__codelineno-31-42"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
 <h3 id="text-input">Text Input &nbsp; <a href="../../reference/stardewui/widgets/textinput/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg></span></a><a class="headerlink" href="#text-input" title="Permanent link"></a></h3>
 <p>An input box similar to the one where you enter your farm name, Favorite Thing, etc. Supports a movable caret (cursor) using the mouse, arrow keys, or home/end keys; also supports gamepad input using Stardew's on-screen keyboard.</p>
 <p>The appearance is highly customizable, with editable fonts, colors, background and caret images, shadows and more. Consult the API reference for details.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="18:3"><input checked="checked" id="demo_17" name="__tabbed_18" type="radio" /><input id="usage-starml_17" name="__tabbed_18" type="radio" /><input id="usage-c_12" name="__tabbed_18" type="radio" /><div class="tabbed-labels"><label for="demo_17">Demo</label><label for="usage-starml_17">Usage (StarML)</label><label for="usage-c_12">Usage (C#)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="19:3"><input checked="checked" id="demo_18" name="__tabbed_19" type="radio" /><input id="usage-starml_18" name="__tabbed_19" type="radio" /><input id="usage-c_13" name="__tabbed_19" type="radio" /><div class="tabbed-labels"><label for="demo_18">Demo</label><label for="usage-starml_18">Usage (StarML)</label><label for="usage-c_13">Usage (C#)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><img alt="Text Input Example" src="../../images/example-textinput.webp" /></p>
 </div>
 <div class="tabbed-block">
-<div class="language-html highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">&lt;</span><span class="nt">textinput</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch 54px&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{&lt;</span><span class="p">&gt;</span>Text} /&gt;
+<div class="language-html highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">&lt;</span><span class="nt">textinput</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch 54px&quot;</span> <span class="na">text</span><span class="o">=</span><span class="s">{&lt;</span><span class="p">&gt;</span>Text} /&gt;
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">partial</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TextInputTestViewModel</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INotifyPropertyChanged</span>
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="p">{</span>
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
-</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="p">}</span>
-</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>
-</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="k">void</span><span class="w"> </span><span class="nf">ShowTextInputExample</span><span class="p">()</span>
-</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="p">{</span>
-</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="w">    </span><span class="n">Game1</span><span class="p">.</span><span class="n">activeClickableMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateMenuFromAsset</span><span class="p">(</span>
-</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="w">        </span><span class="s">$&quot;Mods/focustense.StardewUITest/Views/TextInputTestView&quot;</span><span class="p">,</span>
-</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="nf">TextInputTestViewModel</span><span class="p">()</span>
-</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="w">        </span><span class="p">{</span>
-</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a><span class="w">            </span><span class="n">Text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;It was the best of times, it was the blurst of times.&quot;</span>
-</span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a><span class="w">        </span><span class="p">});</span>
-</span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">partial</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">TextInputTestViewModel</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">INotifyPropertyChanged</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="p">{</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="p">}</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="k">void</span><span class="w"> </span><span class="nf">ShowTextInputExample</span><span class="p">()</span>
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="p">{</span>
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w">    </span><span class="n">Game1</span><span class="p">.</span><span class="n">activeClickableMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateMenuFromAsset</span><span class="p">(</span>
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="w">        </span><span class="s">$&quot;Mods/focustense.StardewUITest/Views/TextInputTestView&quot;</span><span class="p">,</span>
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="nf">TextInputTestViewModel</span><span class="p">()</span>
+</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="w">            </span><span class="n">Text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;It was the best of times, it was the blurst of times.&quot;</span>
+</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="w">        </span><span class="p">});</span>
+</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 </div>
@@ -2039,7 +2126,7 @@
 <h3 id="marquee">Marquee &nbsp; <a href="../../reference/stardewui/widgets/marquee/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.5c-1.35-.85-3.8-1.5-5.5-1.5-1.65 0-3.35.3-4.75 1.05-.1.05-.15.05-.25.05-.25 0-.5-.25-.5-.5V6c.6-.45 1.25-.75 2-1 1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5.75.25 1.4.55 2 1v14.6c0 .25-.25.5-.5.5-.1 0-.15 0-.25-.05-1.4-.75-3.1-1.05-4.75-1.05-1.7 0-4.15.65-5.5 1.5M12 8v11.5c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5V7c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5m1 3.5c1.11-.68 2.6-1 4.5-1 .91 0 1.76.09 2.5.28V9.23c-.87-.15-1.71-.23-2.5-.23q-2.655 0-4.5.84zm4.5.17c-1.71 0-3.21.26-4.5.79v1.69c1.11-.65 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24v-1.5c-.87-.16-1.71-.23-2.5-.23m2.5 2.9c-.87-.16-1.71-.24-2.5-.24-1.83 0-3.33.27-4.5.8v1.69c1.11-.66 2.6-.99 4.5-.99 1.04 0 1.88.08 2.5.24z"/></svg></span></a><a class="headerlink" href="#marquee" title="Permanent link"></a></h3>
 <p>A not-very-serious widget named after the long-deprecated HTML <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee">Marquee</a> element. Scrolls content infinitely similar to a classic electronic billboard.</p>
 <p>This was mostly done as a demonstration of what's possible in StardewUI, e.g. with a <a href="../custom-views/">custom view</a>. The inner content does not have to be simple text; anything from images to entire UIs can be auto-scrolled this way, but since the scrolling is a drawing trick rather than a layout trick, it is not recommended to put any interactive (<a href="../../framework/focus-and-interaction/#focusability">focusable</a>) elements inside the marquee.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="19:3"><input checked="checked" id="demo_18" name="__tabbed_19" type="radio" /><input id="usage-starml_18" name="__tabbed_19" type="radio" /><input id="usage-c_13" name="__tabbed_19" type="radio" /><div class="tabbed-labels"><label for="demo_18">Demo</label><label for="usage-starml_18">Usage (StarML)</label><label for="usage-c_13">Usage (C#)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="20:3"><input checked="checked" id="demo_19" name="__tabbed_20" type="radio" /><input id="usage-starml_19" name="__tabbed_20" type="radio" /><input id="usage-c_14" name="__tabbed_20" type="radio" /><div class="tabbed-labels"><label for="demo_19">Demo</label><label for="usage-starml_19">Usage (StarML)</label><label for="usage-c_14">Usage (C#)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p><video controls autoplay loop>
@@ -2047,28 +2134,28 @@
 </video></p>
 </div>
 <div class="tabbed-block">
-<div class="language-html highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">&lt;</span><span class="nt">marquee</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">padding</span><span class="o">=</span><span class="s">&quot;0,4&quot;</span> <span class="na">speed</span><span class="o">=</span><span class="s">&quot;150&quot;</span> <span class="na">extra-distance</span><span class="o">=</span><span class="s">&quot;80&quot;</span><span class="p">&gt;</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{Text}</span> <span class="p">/&gt;</span>
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="p">&lt;/</span><span class="nt">marquee</span><span class="p">&gt;</span>
+<div class="language-html highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="p">&lt;</span><span class="nt">marquee</span> <span class="na">layout</span><span class="o">=</span><span class="s">&quot;stretch content&quot;</span> <span class="na">padding</span><span class="o">=</span><span class="s">&quot;0,4&quot;</span> <span class="na">speed</span><span class="o">=</span><span class="s">&quot;150&quot;</span> <span class="na">extra-distance</span><span class="o">=</span><span class="s">&quot;80&quot;</span><span class="p">&gt;</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{Text}</span> <span class="p">/&gt;</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="p">&lt;/</span><span class="nt">marquee</span><span class="p">&gt;</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MarqueeTestViewModel</span>
-</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="p">{</span>
-</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="p">}</span>
-</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>
-</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="k">void</span><span class="w"> </span><span class="nf">ShowMarqueeExample</span><span class="p">()</span>
-</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="p">{</span>
-</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w">    </span><span class="n">Game1</span><span class="p">.</span><span class="n">activeClickableMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateMenuFromAsset</span><span class="p">(</span>
-</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="w">        </span><span class="s">$&quot;Mods/focustense.StardewUITest/Views/MarqueeTestView&quot;</span><span class="p">,</span>
-</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="nf">MarqueeTestViewModel</span><span class="p">()</span>
-</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="w">        </span><span class="p">{</span>
-</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="w">            </span><span class="n">Text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Pickle my bones in alcohol stranger, and I ain&#39;t &quot;</span>
-</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="w">                 </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;comin&#39; back Jimmy crack corn and I don&#39;t care &quot;</span><span class="w"> </span><span class="o">+</span>
-</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="w">                 </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;wildwood flower died when I was young run, what I had done.&quot;</span>
-</span><span id="__span-33-15"><a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="w">        </span><span class="p">});</span>
-</span><span id="__span-33-16"><a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MarqueeTestViewModel</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="p">{</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">Text</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="p">}</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="k">void</span><span class="w"> </span><span class="nf">ShowMarqueeExample</span><span class="p">()</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="p">{</span>
+</span><span id="__span-35-8"><a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="w">    </span><span class="n">Game1</span><span class="p">.</span><span class="n">activeClickableMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateMenuFromAsset</span><span class="p">(</span>
+</span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="w">        </span><span class="s">$&quot;Mods/focustense.StardewUITest/Views/MarqueeTestView&quot;</span><span class="p">,</span>
+</span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="w">        </span><span class="k">new</span><span class="w"> </span><span class="nf">MarqueeTestViewModel</span><span class="p">()</span>
+</span><span id="__span-35-11"><a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a><span class="w">        </span><span class="p">{</span>
+</span><span id="__span-35-12"><a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a><span class="w">            </span><span class="n">Text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Pickle my bones in alcohol stranger, and I ain&#39;t &quot;</span>
+</span><span id="__span-35-13"><a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a><span class="w">                 </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;comin&#39; back Jimmy crack corn and I don&#39;t care &quot;</span><span class="w"> </span><span class="o">+</span>
+</span><span id="__span-35-14"><a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a><span class="w">                 </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;wildwood flower died when I was young run, what I had done.&quot;</span>
+</span><span id="__span-35-15"><a id="__codelineno-35-15" name="__codelineno-35-15" href="#__codelineno-35-15"></a><span class="w">        </span><span class="p">});</span>
+</span><span id="__span-35-16"><a id="__codelineno-35-16" name="__codelineno-35-16" href="#__codelineno-35-16"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><em>(Filler text generated from <a href="https://hillbillyipsum.com">Hillbilly Ipsum</a>)</em></p>
 </div>

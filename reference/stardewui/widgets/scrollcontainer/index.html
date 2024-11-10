@@ -16,7 +16,7 @@
         <link rel="prev" href="../scrollbar/">
       
       
-        <link rel="next" href="../slider/">
+        <link rel="next" href="../selectiongroup/">
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
@@ -1721,6 +1721,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -2601,6 +2607,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#layoutoffset" class="md-nav__link">
+    <span class="md-ellipsis">
+      LayoutOffset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#orientation" class="md-nav__link">
     <span class="md-ellipsis">
       Orientation
@@ -2809,6 +2824,48 @@
   
   
     <li class="md-nav__item">
+      <a href="../selectiongroup/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SelectionGroup
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../shadowlayers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ShadowLayers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../slider/" class="md-nav__link">
         
   
@@ -2835,6 +2892,27 @@
   
   <span class="md-ellipsis">
     Spacer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tab/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tab
   </span>
   
 
@@ -3184,6 +3262,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#layoutoffset" class="md-nav__link">
+    <span class="md-ellipsis">
+      LayoutOffset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#orientation" class="md-nav__link">
     <span class="md-ellipsis">
       Orientation
@@ -3489,6 +3576,10 @@ Assembly: StardewUI.dll  </p>
 <td>Layout settings for this view; determines how its dimensions will be computed.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
+<td><a href="#layoutoffset">LayoutOffset</a></td>
+<td>Pixel offset of the view's content, which is applied to all pointer events and child queries.<br><span class="muted" markdown>(Overrides <a href="../../view/">View</a>.<code>get_LayoutOffset()</code>)</span></td>
+</tr>
+<tr>
 <td><a href="../../view/#margin">Margin</a></td>
 <td>Margins (whitespace outside border) for this view.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
@@ -3777,49 +3868,59 @@ Assembly: StardewUI.dll  </p>
 <h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
 <hr />
-<h4 id="orientation">Orientation<a class="headerlink" href="#orientation" title="Permanent link"></a></h4>
-<p>The orientation, i.e. the direction of scrolling.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Orientation</span><span class="w"> </span><span class="n">Orientation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="layoutoffset">LayoutOffset<a class="headerlink" href="#layoutoffset" title="Permanent link"></a></h4>
+<p>Pixel offset of the view's content, which is applied to all pointer events and child queries.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">LayoutOffset</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
-<p><a href="../../layout/orientation/">Orientation</a></p>
+<p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
+<p>A non-zero offset means that the nominal positions of any view children (e.g. as obtained from <a href="../../view/#getchildren">GetChildren()</a>) are different from their actual drawing positions on screen, for example in the case of a <a href="./">ScrollContainer</a> that is not at the default scroll position. </p>
+<p>If a view will internally shift content in this way without affecting layout, it should update the <a href="../../view/#layoutoffset">LayoutOffset</a> property to ensure correctness of pointer events and coordinate-related queries such as <a href="../../view/#getlocalchildrenatvector2">GetLocalChildrenAt(Vector2)</a>, <strong>instead of</strong> attempting to correct for that offset locally.</p>
+<hr />
+<h4 id="orientation">Orientation<a class="headerlink" href="#orientation" title="Permanent link"></a></h4>
+<p>The orientation, i.e. the direction of scrolling.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Orientation</span><span class="w"> </span><span class="n">Orientation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
+<p><a href="../../layout/orientation/">Orientation</a></p>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>A single <a href="./">ScrollContainer</a> can only scroll in one direction. If content needs to scroll both horizontally and vertically, a nested <a href="./">ScrollContainer</a> can be used.</p>
 <hr />
 <h4 id="peeking">Peeking<a class="headerlink" href="#peeking" title="Permanent link"></a></h4>
 <p>The amount of "peeking" to add when scrolling a component into view; adds extra space before/after the visible element so that all or part of the previous/next element is also visible.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Peeking</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Peeking</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
-<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>Nonzero values help with discoverability, making it clear that there is more content.</p>
 <hr />
 <h4 id="scrolloffset">ScrollOffset<a class="headerlink" href="#scrolloffset" title="Permanent link"></a></h4>
 <p>The current scroll position along the <a href="./#orientation">Orientation</a> axis.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ScrollOffset</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
-</span></code></pre></div>
-<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
-<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
-<hr />
-<h4 id="scrollsize">ScrollSize<a class="headerlink" href="#scrollsize" title="Permanent link"></a></h4>
-<p>The maximum amount by which the container can be scrolled without exceeding the inner content bounds.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ScrollSize</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ScrollOffset</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
-<h4 id="scrollstep">ScrollStep<a class="headerlink" href="#scrollstep" title="Permanent link"></a></h4>
-<p>Default scroll distance when calling <a href="./#scrollforward">ScrollForward()</a> or <a href="./#scrollbackward">ScrollBackward()</a>. Does not prevent directly setting the scroll position via <a href="./#scrolloffset">ScrollOffset</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ScrollStep</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="scrollsize">ScrollSize<a class="headerlink" href="#scrollsize" title="Permanent link"></a></h4>
+<p>The maximum amount by which the container can be scrolled without exceeding the inner content bounds.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ScrollSize</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
+<hr />
+<h4 id="scrollstep">ScrollStep<a class="headerlink" href="#scrollstep" title="Permanent link"></a></h4>
+<p>Default scroll distance when calling <a href="./#scrollforward">ScrollForward()</a> or <a href="./#scrollbackward">ScrollBackward()</a>. Does not prevent directly setting the scroll position via <a href="./#scrolloffset">ScrollOffset</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">ScrollStep</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_7">Property Value<a class="headerlink" href="#property-value_7" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="findfocusabledescendantvector2-direction">FindFocusableDescendant(Vector2, Direction)<a class="headerlink" href="#findfocusabledescendantvector2-direction" title="Permanent link"></a></h4>
 <p>Searches for a focusable child within this view that is reachable in the specified <code>direction</code>, and returns a result containing the view and search path if found.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FindFocusableDescendant</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FindFocusableDescendant</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>contentPosition</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3828,22 +3929,22 @@ The search position, relative to where this view's content starts (after applyin
 The search direction.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../input/focussearchresult/">FocusSearchResult</a></p>
-<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
 <p>This is the same as <a href="../../view/#focussearchvector2-direction">FocusSearch(Vector2, Direction)</a> but in pre-transformed content coordinates, and does not require checking for "self-focus" as <a href="../../view/#focussearchvector2-direction">FocusSearch(Vector2, Direction)</a> already does this. The default implementation simply returns <code>null</code> as most views do not have children; subclasses with children must override this.</p>
 <hr />
 <h4 id="getlocalchildren">GetLocalChildren()<a class="headerlink" href="#getlocalchildren" title="Permanent link"></a></h4>
 <p>Gets the view's children with positions relative to the content area.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildren</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildren</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../../viewchild/">ViewChild</a>&gt;</p>
-<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
+<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
 <p>This has the same signature as <a href="../../view/#getchildren">GetChildren()</a> but assumes that coordinates are in the same space as those used in <a href="../../view/#ondrawcontentispritebatch">OnDrawContent(ISpriteBatch)</a>, i.e. not accounting for margin/border/padding. These coordinates are automatically adjusted in the <a href="../../view/#getchildren">GetChildren()</a> to be relative to the entire view. </p>
 <p>The default implementation returns an empty sequence. Composite views must override this method in order for user interactions to behave correctly.</p>
 <hr />
 <h4 id="getlocalchildrenatvector2">GetLocalChildrenAt(Vector2)<a class="headerlink" href="#getlocalchildrenatvector2" title="Permanent link"></a></h4>
 <p>Searches for all views at a given position relative to the content area.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildrenAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildrenAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>contentPosition</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3851,43 +3952,43 @@ The search position, relative to where this view's content starts (after applyin
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../../viewchild/">ViewChild</a>&gt;</p>
 <p>The views at the specified <code>contentPosition</code>, sorted in reverse order of their <a href="../../iview/#zindex">ZIndex</a>.</p>
-<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
+<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
 <p>The default implementation performs a linear search on all children and returns all whose bounds overlap the specified <code>contentPosition</code>. Views can override this to provide optimized implementations for their layout, or handle overlapping views.</p>
 <hr />
 <h4 id="iscontentdirty">IsContentDirty()<a class="headerlink" href="#iscontentdirty" title="Permanent link"></a></h4>
 <p>Checks whether or not the internal content/layout has changed.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsContentDirty</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsContentDirty</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if content has changed; otherwise <code>false</code>.</p>
-<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
+<h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
 <p>The base implementation of <a href="../../view/#isdirty">IsDirty()</a> only checks if the base layout attributes have changed, i.e. <a href="../../view/#layout">Layout</a>, <a href="../../view/#margin">Margin</a>, <a href="../../view/#padding">Padding</a>, etc. It does not know about content/data in any subclasses; those that accept content parameters (like text) will typically use <a href="../../layout/dirtytracker-1/">DirtyTracker&lt;T&gt;</a> to hold that content and should implement this method to check their <a href="../../layout/dirtytracker-1/#isdirty">IsDirty</a> states.</p>
 <hr />
 <h4 id="ondrawcontentispritebatch">OnDrawContent(ISpriteBatch)<a class="headerlink" href="#ondrawcontentispritebatch" title="Permanent link"></a></h4>
 <p>Draws the inner content of this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnDrawContent</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnDrawContent</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>b</code></strong> &nbsp; <a href="../../graphics/ispritebatch/">ISpriteBatch</a><br />
 Sprite batch to hold the drawing output.</p>
-<h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
+<h5 id="remarks_8">Remarks<a class="headerlink" href="#remarks_8" title="Permanent link"></a></h5>
 <p>This is called from <a href="../../view/#drawispritebatch">Draw(ISpriteBatch)</a> after applying both <a href="../../view/#margin">Margin</a> and <a href="../../view/#padding">Padding</a>.</p>
 <hr />
 <h4 id="onmeasurevector2">OnMeasure(Vector2)<a class="headerlink" href="#onmeasurevector2" title="Permanent link"></a></h4>
 <p>Performs the internal layout.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnMeasure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnMeasure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>availableSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 Size available in the container, after applying padding, margin and borders.</p>
-<h5 id="remarks_8">Remarks<a class="headerlink" href="#remarks_8" title="Permanent link"></a></h5>
+<h5 id="remarks_9">Remarks<a class="headerlink" href="#remarks_9" title="Permanent link"></a></h5>
 <p>This is called from <a href="../../view/#measurevector2">Measure(Vector2)</a> only when the layout is dirty (layout parameters or content changed) and a new layout is actually required. Subclasses must implement this and set <a href="../../view/#contentsize">ContentSize</a> once layout is complete. Typically, <a href="../../layout/layoutparameters/#resolvevector2-funcvector2">Resolve(Vector2, Func&lt;Vector2&gt;)</a> should be used in order to ensure that the original <a href="../../layout/layoutparameters/">LayoutParameters</a> are respected (e.g. if the actual content size is smaller than the configured size). </p>
 <p>The <code>availableSize</code> provided to the method is pre-adjusted for <a href="../../view/#margin">Margin</a>, <a href="../../view/#padding">Padding</a>, and any border determined by <a href="../../view/#getborderthickness">GetBorderThickness()</a>.</p>
 <hr />
 <h4 id="onpropertychangedpropertychangedeventargs">OnPropertyChanged(PropertyChangedEventArgs)<a class="headerlink" href="#onpropertychangedpropertychangedeventargs" title="Permanent link"></a></h4>
 <p>Raises the <a href="../../view/#propertychanged">PropertyChanged</a> event.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnPropertyChanged</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">ComponentModel</span><span class="p">.</span><span class="n">PropertyChangedEventArgs</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnPropertyChanged</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">ComponentModel</span><span class="p">.</span><span class="n">PropertyChangedEventArgs</span><span class="w"> </span><span class="n">args</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>args</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.propertychangedeventargs">PropertyChangedEventArgs</a><br />
@@ -3895,28 +3996,28 @@ The event arguments.</p>
 <hr />
 <h4 id="resetdirty">ResetDirty()<a class="headerlink" href="#resetdirty" title="Permanent link"></a></h4>
 <p>Resets any dirty state associated with this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ResetDirty</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ResetDirty</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="remarks_9">Remarks<a class="headerlink" href="#remarks_9" title="Permanent link"></a></h5>
+<h5 id="remarks_10">Remarks<a class="headerlink" href="#remarks_10" title="Permanent link"></a></h5>
 <p>This is called at the end of <a href="../../view/#measurevector2">Measure(Vector2)</a>, so that on the next pass, all state appears clean unless it was marked dirty after the last pass completed. The default implementation is a no-op; subclasses should use it to clear any private dirty state, e.g. via <a href="../../layout/dirtytracker-1/#resetdirty">ResetDirty()</a>.</p>
 <hr />
 <h4 id="scrollbackward">ScrollBackward()<a class="headerlink" href="#scrollbackward" title="Permanent link"></a></h4>
 <p>Scrolls backward (up or left) by the distance configured in <a href="./#scrollstep">ScrollStep</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollBackward</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollBackward</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
 <h4 id="scrollforward">ScrollForward()<a class="headerlink" href="#scrollforward" title="Permanent link"></a></h4>
 <p>Scrolls forward (down or right) by the distance configured in <a href="./#scrollstep">ScrollStep</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollForward</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollForward</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
 <h4 id="scrollintoviewienumerableviewchild-vector2">ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)<a class="headerlink" href="#scrollintoviewienumerableviewchild-vector2" title="Permanent link"></a></h4>
 <p>Attempts to scroll the specified target into view, including all of its ancestors, if not fully in view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollIntoView</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">ScrollIntoView</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>path</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../../viewchild/">ViewChild</a>&gt;<br />
@@ -3926,17 +4027,17 @@ The total distance that was scrolled, including distance scrolled by descendants
 <h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p>Whether or not the scroll was successful; <code>false</code> prevents the request from bubbling.</p>
-<h5 id="remarks_10">Remarks<a class="headerlink" href="#remarks_10" title="Permanent link"></a></h5>
+<h5 id="remarks_11">Remarks<a class="headerlink" href="#remarks_11" title="Permanent link"></a></h5>
 <p>The default implementation does no scrolling of its own, only passes the request down to the child and aborts if the child returns <code>true</code>. Scrollable views must override this to provide scrolling behavior.</p>
 <hr />
 <h3 id="events_1">Events<a class="headerlink" href="#events_1" title="Permanent link"></a></h3>
 <h4 id="scrollchanged">ScrollChanged<a class="headerlink" href="#scrollchanged" title="Permanent link"></a></h4>
 <p>Event raised when any aspect of the scrolling changes.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">public</span><span class="w"> </span><span class="k">event</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">EventHandler</span><span class="o">?</span><span class="w"> </span><span class="n">ScrollChanged</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">public</span><span class="w"> </span><span class="k">event</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">EventHandler</span><span class="o">?</span><span class="w"> </span><span class="n">ScrollChanged</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="event-type">Event Type<a class="headerlink" href="#event-type" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler">EventHandler</a></p>
-<h5 id="remarks_11">Remarks<a class="headerlink" href="#remarks_11" title="Permanent link"></a></h5>
+<h5 id="remarks_12">Remarks<a class="headerlink" href="#remarks_12" title="Permanent link"></a></h5>
 <p>This tracks changes to the <a href="./#scrolloffset">ScrollOffset</a> but also the <a href="./#scrollsize">ScrollSize</a>, even if the offset has not changed. <a href="./#scrollstep">ScrollStep</a> is not included.</p>
 <hr />
 </div>
@@ -3989,13 +4090,13 @@ The total distance that was scrolled, including distance scrolled by descendants
         
         
           
-          <a href="../slider/" class="md-footer__link md-footer__link--next" aria-label="Next: Slider">
+          <a href="../selectiongroup/" class="md-footer__link md-footer__link--next" aria-label="Next: SelectionGroup">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Slider
+                SelectionGroup
               </div>
             </div>
             <div class="md-footer__button md-icon">

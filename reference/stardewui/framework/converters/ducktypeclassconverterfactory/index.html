@@ -1665,6 +1665,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -2027,6 +2031,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
     <span class="md-ellipsis">
       Methods
@@ -2064,6 +2077,30 @@
   <a href="#ducktypeclassconverterfactoryivalueconverterfactory" class="md-nav__link">
     <span class="md-ellipsis">
       DuckTypeClassConverterFactory(IValueConverterFactory)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabledebugoutput" class="md-nav__link">
+    <span class="md-ellipsis">
+      EnableDebugOutput
     </span>
   </a>
   
@@ -3320,6 +3357,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -3495,6 +3538,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#methods" class="md-nav__link">
     <span class="md-ellipsis">
       Methods
@@ -3532,6 +3584,30 @@
   <a href="#ducktypeclassconverterfactoryivalueconverterfactory" class="md-nav__link">
     <span class="md-ellipsis">
       DuckTypeClassConverterFactory(IValueConverterFactory)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enabledebugoutput" class="md-nav__link">
+    <span class="md-ellipsis">
+      EnableDebugOutput
     </span>
   </a>
   
@@ -3629,6 +3705,21 @@ Assembly: StardewUI.dll  </p>
 </tr>
 </tbody>
 </table>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#enabledebugoutput">EnableDebugOutput</a></td>
+<td>Whether or not to print MSIL output for generated conversion methods.</td>
+</tr>
+</tbody>
+</table>
 <h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
 <table>
 <thead>
@@ -3662,10 +3753,20 @@ The converter factory to handle conversion of individual properties/arguments.</
 </ul>
 <p>Additionally, source types may use fields or properties, but only constructor arguments and properties will be considered on the destination type.</p>
 <hr />
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="enabledebugoutput">EnableDebugOutput<a class="headerlink" href="#enabledebugoutput" title="Permanent link"></a></h4>
+<p>Whether or not to print MSIL output for generated conversion methods.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">EnableDebugOutput</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
+<p>Use for troubleshooting misbehaving converters or AVE crashes.</p>
+<hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="trygetconvertertsource-tdestinationivalueconvertertsource-tdestination">TryGetConverter&lt;TSource, TDestination&gt;(IValueConverter&lt;TSource, TDestination&gt;)<a class="headerlink" href="#trygetconvertertsource-tdestinationivalueconvertertsource-tdestination" title="Permanent link"></a></h4>
 <p>Attempts to obtain a converter from a given source type to a given destination type.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">TryGetConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="p">(</span><span class="k">out</span><span class="w"> </span><span class="n">IValueConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="w"> </span><span class="n">converter</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">TryGetConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="p">(</span><span class="k">out</span><span class="w"> </span><span class="n">IValueConverter</span><span class="o">&lt;</span><span class="n">TSource</span><span class="p">,</span><span class="w"> </span><span class="n">TDestination</span><span class="o">&gt;</span><span class="w"> </span><span class="n">converter</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>converter</code></strong> &nbsp; <a href="../ivalueconverter-2/">IValueConverter&lt;TSource, TDestination&gt;</a><br />

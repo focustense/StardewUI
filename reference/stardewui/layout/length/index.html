@@ -2024,6 +2024,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parsereadonlyspanchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse(ReadOnlySpan&lt;Char&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#percentfloat" class="md-nav__link">
     <span class="md-ellipsis">
       Percent(float)
@@ -2054,6 +2072,15 @@
   <a href="#stretch" class="md-nav__link">
     <span class="md-ellipsis">
       Stretch()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tostring" class="md-nav__link">
+    <span class="md-ellipsis">
+      ToString()
     </span>
   </a>
   
@@ -2303,6 +2330,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -2654,6 +2687,24 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parsereadonlyspanchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse(ReadOnlySpan&lt;Char&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#percentfloat" class="md-nav__link">
     <span class="md-ellipsis">
       Percent(float)
@@ -2684,6 +2735,15 @@
   <a href="#stretch" class="md-nav__link">
     <span class="md-ellipsis">
       Stretch()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tostring" class="md-nav__link">
+    <span class="md-ellipsis">
+      ToString()
     </span>
   </a>
   
@@ -2782,6 +2842,14 @@ Assembly: StardewUI.dll  </p>
 <td>Creates a new <a href="./">Length</a> having <a href="../lengthtype/#content">Content</a>.</td>
 </tr>
 <tr>
+<td><a href="#parsereadonlyspanchar">Parse(ReadOnlySpan&lt;Char&gt;)</a></td>
+<td>Parses a <a href="./">Length</a> from its string representation.</td>
+</tr>
+<tr>
+<td><a href="#parsestring">Parse(string)</a></td>
+<td>Parses a <a href="./">Length</a> from its string representation.</td>
+</tr>
+<tr>
 <td><a href="#percentfloat">Percent(Single)</a></td>
 <td>Creates a new <a href="./">Length</a> having <a href="../lengthtype/#percent">Percent</a> and the specified percent size.</td>
 </tr>
@@ -2796,6 +2864,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="#stretch">Stretch()</a></td>
 <td>Creates a new <a href="./">Length</a> having <a href="../lengthtype/#stretch">Stretch</a>.</td>
+</tr>
+<tr>
+<td><a href="#tostring">ToString()</a></td>
+<td><span class="muted" markdown>(Overrides <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a>.<code>ToString()</code>)</span></td>
 </tr>
 </tbody>
 </table>
@@ -2834,36 +2906,58 @@ The dimension value, with behavior determined by <a href="./#type">Type</a>.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="./">Length</a></p>
 <hr />
-<h4 id="percentfloat">Percent(float)<a class="headerlink" href="#percentfloat" title="Permanent link"></a></h4>
-<p>Creates a new <a href="./">Length</a> having <a href="../lengthtype/#percent">Percent</a> and the specified percent size.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Percent</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
+<h4 id="parsereadonlyspanchar">Parse(ReadOnlySpan&lt;Char&gt;)<a class="headerlink" href="#parsereadonlyspanchar" title="Permanent link"></a></h4>
+<p>Parses a <a href="./">Length</a> from its string representation.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Parse</span><span class="p">(</span><span class="n">ReadOnlySpan</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Char</span><span class="o">&gt;</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>value</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.char">Char</a>&gt;<br />
+The string representation of the <a href="./">Length</a>.</p>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
+<p><a href="./">Length</a></p>
+<p>The parsed <a href="./">Length</a>.</p>
+<hr />
+<h4 id="parsestring">Parse(string)<a class="headerlink" href="#parsestring" title="Permanent link"></a></h4>
+<p>Parses a <a href="./">Length</a> from its string representation.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Parse</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
+<p><strong><code>value</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The string representation of the <a href="./">Length</a>.</p>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
+<p><a href="./">Length</a></p>
+<p>The parsed <a href="./">Length</a>.</p>
+<hr />
+<h4 id="percentfloat">Percent(float)<a class="headerlink" href="#percentfloat" title="Permanent link"></a></h4>
+<p>Creates a new <a href="./">Length</a> having <a href="../lengthtype/#percent">Percent</a> and the specified percent size.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Percent</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>value</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The length in 100-based percent units (e.g. <code>50.0</code> is 50%).</p>
-<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
+<h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="./">Length</a></p>
 <hr />
 <h4 id="pxfloat">Px(float)<a class="headerlink" href="#pxfloat" title="Permanent link"></a></h4>
 <p>Creates a new <a href="./">Length</a> having <a href="../lengthtype/#px">Px</a> and the specified pixel size.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Px</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Px</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>value</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The length in pixels.</p>
-<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
+<h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="./">Length</a></p>
 <hr />
 <h4 id="resolvefloat-funcsingle">Resolve(float, Func&lt;Single&gt;)<a class="headerlink" href="#resolvefloat-funcsingle" title="Permanent link"></a></h4>
 <p>Resolves an actual (pixel) length.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="nf">Resolve</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">availableLength</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getContentLength</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="nf">Resolve</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">availableLength</span><span class="p">,</span><span class="w"> </span><span class="n">Func</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="o">&gt;</span><span class="w"> </span><span class="n">getContentLength</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>availableLength</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The remaining space available.</p>
 <p><strong><code>getContentLength</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.func-1">Func</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a>&gt;<br />
 A function to get the length of inner content. Will not be called unless the <a href="../lengthtype/">LengthType</a> requires it.</p>
-<h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
+<h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
 <p>This is a convenience method for common layout scenarios, where content length is relatively simple to compute. Its use is optional; complex widgets can use any means they prefer to compute <a href="../../view/#contentsize">ContentSize</a>. </p>
@@ -2871,10 +2965,16 @@ A function to get the length of inner content. Will not be called unless the <a 
 <hr />
 <h4 id="stretch">Stretch()<a class="headerlink" href="#stretch" title="Permanent link"></a></h4>
 <p>Creates a new <a href="./">Length</a> having <a href="../lengthtype/#stretch">Stretch</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Stretch</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Length</span><span class="w"> </span><span class="n">Stretch</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
 <p><a href="./">Length</a></p>
+<hr />
+<h4 id="tostring">ToString()<a class="headerlink" href="#tostring" title="Permanent link"></a></h4>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="nf">ToString</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a></p>
 <hr />
 </div>
 

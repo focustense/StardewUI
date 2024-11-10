@@ -696,13 +696,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#updates" class="md-nav__link">
+  <a href="#source-updates" class="md-nav__link">
     <span class="md-ellipsis">
-      Updates
+      Source Updates
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Updates">
+    <nav class="md-nav" aria-label="Source Updates">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -732,6 +732,15 @@
   <a href="#redirects" class="md-nav__link">
     <span class="md-ellipsis">
       Redirects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-ticks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Ticks
     </span>
   </a>
   
@@ -1063,13 +1072,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#updates" class="md-nav__link">
+  <a href="#source-updates" class="md-nav__link">
     <span class="md-ellipsis">
-      Updates
+      Source Updates
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Updates">
+    <nav class="md-nav" aria-label="Source Updates">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1099,6 +1108,15 @@
   <a href="#redirects" class="md-nav__link">
     <span class="md-ellipsis">
       Redirects
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-ticks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Ticks
     </span>
   </a>
   
@@ -1175,7 +1193,7 @@ columns 2
 <p>This behavior isn't necessarily limited to repeaters; for example, another way to narrow or drill down the context would be the <a href="../starml/#structural-attributes"><code>*context</code> attribute</a>.</p>
 <p>But note the <code>click</code> event in particular: <code>^SelectItem(Id)</code>. The <code>Id</code> is a property on the <code>MenuItem</code>, as we would expect since it is attached to the repeating element; however, <code>SelectItem</code> is referring back to the <code>MenuViewModel</code>. It does this using the <code>^</code> <a href="#redirects">redirect</a>, which instructs StardewUI to look at the <em>parent</em> or <em>previous</em> context to find the <code>SelectItem</code> method.</p>
 <p>The <em>model</em> or <em>data</em> refers to the specific object attached, or "bound", to any given node; the outer <code>&lt;lane&gt;</code> is bound to a <code>MenuViewModel</code> and each inner <code>&lt;lane&gt;</code> is bound to a <code>MenuItem</code>. The <em>context</em> has an awareness of the overall structure, and is able to backtrack to a previous level at any time.</p>
-<h2 id="updates">Updates<a class="headerlink" href="#updates" title="Permanent link"></a></h2>
+<h2 id="source-updates">Source Updates<a class="headerlink" href="#source-updates" title="Permanent link"></a></h2>
 <p>It is rare for any UI to be completely static, with content that never changes. Most UI needs to respond not only to user input, but to changes in the underlying data or state. More generally, it should always show the <em>most current</em> data, however one chooses to define it.</p>
 <div class="admonition failure">
 <p class="admonition-title">Broken</p>
@@ -1554,6 +1572,43 @@ columns 5
 <p>In an MV* design, document structure is itself usually based on the model, so you can <em>often</em> treat redirects as going to the "parent object", but may eventually run into scenarios where this doesn't work as expected.</p>
 <p>Remember that context lives <em>outside</em> your data.</p>
 </div>
+<h2 id="update-ticks">Update Ticks<a class="headerlink" href="#update-ticks" title="Permanent link"></a></h2>
+<p>As a convenience, StardewUI can dispatch update ticks to any objects bound as context so that you do not need to "drive" them from <code>ModEntry</code>, i.e. using SMAPI's <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Events#Game_loop">UpdateTicked</a> event.</p>
+<p>Importantly, these updates can be at any arbitrary nesting level, as long as they are reachable by some view/node; they do not have to be at the top level. This can be useful for running animations, synchronizing with external game state or netfields, or for any other purpose that requires frame-precision updates.</p>
+<p>To opt in, simply add a <code>void Update</code> method to any context type with either no parameters or a single <code>TimeSpan</code> parameter.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="code-c" name="__tabbed_7" type="radio" /><input id="view-starml" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="code-c">Code (C#)</label><label for="view-starml">View (StarML)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">OuterModel</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="p">{</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="n">StopwatchModel</span><span class="w"> </span><span class="n">Stopwatch</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">}</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">InnerModel</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="p">{</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="n">FormattedTime</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">Elapsed</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">@&quot;mm\:ss\.fff&quot;</span><span class="p">);</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="na">[Notify]</span><span class="w"> </span><span class="k">private</span><span class="w"> </span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">;</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">)</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">        </span><span class="n">Elapsed</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">elapsed</span><span class="p">;</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="p">}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-html highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">&lt;</span><span class="nt">frame</span> <span class="err">*</span><span class="na">context</span><span class="o">=</span><span class="s">{Stopwatch}</span><span class="p">&gt;</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="p">&lt;</span><span class="nt">label</span> <span class="na">text</span><span class="o">=</span><span class="s">{FormattedTime}</span> <span class="p">/&gt;</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="p">&lt;/</span><span class="nt">frame</span><span class="p">&gt;</span>
+</span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>The <code>Update</code> method <strong>must</strong> match the signature above (with or without the <code>TimeSpan</code> argument); any other signature will cause a warning to be logged and the method to be ignored.</p>
 <div class="footnote">
 <hr />
 <ol>
