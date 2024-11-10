@@ -301,8 +301,11 @@ public class TextInput : View
     /// <inheritdoc />
     public override void OnClick(ClickEventArgs e)
     {
-        Capture(e.Position);
-        e.Handled = true;
+        if (e.IsPrimaryButton())
+        {
+            Capture(e.Position);
+            e.Handled = true;
+        }
     }
 
     /// <inheritdoc />

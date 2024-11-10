@@ -22,14 +22,15 @@ String converter for the XNA [Vector2](https://docs.monogame.net/api/Microsoft.X
 
 ```cs
 public class Vector2Converter : 
-    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Vector2>
+    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Vector2>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ Vector2Converter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
+[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>, [IValueConverter](ivalueconverter.md)
 
 ## Members
 

@@ -22,14 +22,15 @@ Converter for fonts that are already built into the game, i.e. found on Game1.
 
 ```cs
 public class NamedFontConverter : 
-    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Graphics.SpriteFont>
+    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Graphics.SpriteFont>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ NamedFontConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [SpriteFont](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteFont.html)>
+[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [SpriteFont](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteFont.html)>, [IValueConverter](ivalueconverter.md)
 
 ## Remarks
 

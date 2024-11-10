@@ -35,6 +35,7 @@ The quickest way to explain the micro-syntax used for event bindings is to jump 
 The individual parts of this are as follows:
 
 /// html | div.no-code-break
+
 | Syntax | Explanation |
 | ---- | ---- |
 | `<button ... />` | The element/view that the event is being attached to, in this case a [Button](../reference/stardewui/widgets/button.md). |
@@ -44,7 +45,8 @@ The individual parts of this are as follows:
 | `"Cheese"` | A _literal_ argument value. The exact value is read as a literal string, and [converted](starml.md#type-conversions) as necessary to the required argument value; e.g. if the method takes an `int` then we can write `"42"`. |
 | `^Quantity` | A _context property_ value. This has the exact same behavior as a [property data binding](starml.md#attribute-flavors), but **without** the enclosing braces. [Redirects](binding-context.md#redirects) are supported with individual arguments of this kind, and are unrelated to the event handler's target. |
 | `$Button` | An _event property_ value. The `$` token is **only** valid for event arguments, and refers to the same-named property on the real `EventArgs` object. Specifically, we want the [`Button`](../reference/stardewui/events/clickeventargs.md#button) property of `ClickEventArgs`—for example, we might use this to implement different behavior for left-click vs. right-click. |
-|///||
+
+///
 
 This example covers all possible argument types: literals, context properties, and event properties. Other types of bindings, such as assets (`@path`) are **not** supported in event arguments.
 
@@ -98,13 +100,16 @@ These two cases might very well be part of the _same_ user interface, so let's i
     === "StarML"
     
         ```html
-        <frame click=|Buy()|
+        <frame background={@Mods/StardewUI/Sprites/ControlBorder}
+               background-tint={BackgroundTint}
+               click=|Buy()|
                pointer-enter=|SetBackgroundHover("true")|
                pointer-leave=|SetBackgroundHover("false")|>
             <lane layout="400px 80px" vertical-content-alignment="middle">
                 <label layout="stretch content" text={Text} />
                 <image layout="32px"
                        sprite={@Mods/MyMod/Sprites/Info}
+                       tint={InfoButtonTint}
                        click=|DisplayExtraInfo()|
                        pointer-enter=|SetInfoButtonHover("true")|
                        pointer-leave=|SetInfoButtonHover("false")| />

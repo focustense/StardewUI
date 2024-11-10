@@ -17,36 +17,51 @@ namespace StardewUI.Framework.Binding;
 /// <param name="viewBinder">Binding service used to create <see cref="IViewBinding"/> instances that detect changes to
 /// data or assets and propagate them to the bound <see cref="IView"/>.</param>
 /// <param name="assetCache">Cache for obtaining document assets. Used for included views.</param>
+/// <param name="resolutionScopeFactory">Factory for creating <see cref="IResolutionScope"/> instances responsible for
+/// resolving external symbols such as translation keys.</param>
 public class ViewNodeFactory(
     IViewFactory viewFactory,
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
     IViewBinder viewBinder,
-    IAssetCache assetCache
+    IAssetCache assetCache,
+    IResolutionScopeFactory resolutionScopeFactory
 ) : IViewNodeFactory
 {
     /// <inheritdoc />
-    public IViewNode CreateNode(SNode node)
+    public IViewNode CreateNode(Document document)
     {
-        return CreateNodeChild(node, null).Node;
+        var scope = resolutionScopeFactory.CreateForDocument(document);
+        return CreateNode(document.Root, scope);
     }
 
-    record SwitchContext(IViewNode Node, IAttribute Attribute);
+    /// <inheritdoc />
+    public IViewNode CreateNode(SNode node, IResolutionScope resolutionScope)
+    {
+        return CreateNodeChild(node, null, resolutionScope).Node;
+    }
 
-    private IViewNode.Child CreateNodeChild(SNode node, SwitchContext? switchContext)
+    record SwitchContext(IViewNode Node, IAttribute Attribute, IResolutionScope ResolutionScope);
+
+    private IViewNode.Child CreateNodeChild(SNode node, SwitchContext? switchContext, IResolutionScope resolutionScope)
     {
         using var _ = Trace.Begin(this, nameof(CreateNode));
-        var (innerNode, outletName) = CreateNodeChildWithoutBackoff(node, switchContext);
-        var outerNode = new BackoffNodeDecorator(innerNode, BackoffRule.Default);
-        return new(outerNode, outletName);
+        var (innerNode, outletName) = CreateNodeChildWithoutBackoff(node, switchContext, resolutionScope);
+        var backoffDecorator = new BackoffNodeDecorator(innerNode, BackoffRule.Default);
+        var updatingDecorator = new ContextUpdatingNodeDecorator(innerNode, ContextUpdateTracker.Instance);
+        return new(updatingDecorator, outletName);
     }
 
-    private IViewNode.Child CreateNodeChildWithoutBackoff(SNode node, SwitchContext? switchContext)
+    private IViewNode.Child CreateNodeChildWithoutBackoff(
+        SNode node,
+        SwitchContext? switchContext,
+        IResolutionScope resolutionScope
+    )
     {
         var structuralAttributes = StructuralAttributes.Get(node.Attributes);
         if (structuralAttributes.Repeat is IAttribute repeatAttr)
         {
-            return new(new RepeaterNode(valueSourceFactory, CreateNonRepeatingNodeChild, repeatAttr));
+            return new(new RepeaterNode(valueSourceFactory, CreateNonRepeatingNodeChild, resolutionScope, repeatAttr));
         }
         else
         {
@@ -60,6 +75,7 @@ public class ViewNodeFactory(
                 viewFactory,
                 viewBinder,
                 node.Element,
+                resolutionScope,
                 contextAttribute: structuralAttributes.Context
             );
         }
@@ -77,7 +93,8 @@ public class ViewNodeFactory(
                 valueSourceFactory,
                 valueConverterFactory,
                 assetCache,
-                doc => CreateNodeChild(doc.Root, switchContext).Node,
+                resolutionScope,
+                doc => CreateNodeChild(doc.Root, switchContext, resolutionScopeFactory.CreateForDocument(doc)).Node,
                 assetNameAttribute,
                 structuralAttributes.Context
             );
@@ -101,7 +118,9 @@ public class ViewNodeFactory(
                 var condition = new BinaryCondition(
                     valueSourceFactory,
                     valueConverterFactory,
+                    switchContext.ResolutionScope,
                     switchContext.Attribute,
+                    resolutionScope,
                     caseAttr
                 )
                 {
@@ -111,15 +130,22 @@ public class ViewNodeFactory(
             }
             if (structuralAttributes.If is not null)
             {
-                var condition = new UnaryCondition(valueSourceFactory, valueConverterFactory, structuralAttributes.If);
+                var condition = new UnaryCondition(
+                    valueSourceFactory,
+                    valueConverterFactory,
+                    resolutionScope,
+                    structuralAttributes.If
+                );
                 result = new ConditionalNode(result, condition);
             }
             var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
-                ? new SwitchContext(viewNode, switchAttr)
+                ? new SwitchContext(viewNode, switchAttr, resolutionScope)
                 : switchContext;
             if (viewNode is ViewNode defaultViewNode)
             {
-                defaultViewNode.Children = node.ChildNodes.Select(n => CreateNodeChild(n, nextSwitchContext)).ToList();
+                defaultViewNode.Children = node
+                    .ChildNodes.Select(n => CreateNodeChild(n, nextSwitchContext, resolutionScope))
+                    .ToList();
             }
             return new(result, structuralAttributes.Outlet?.Value);
         }

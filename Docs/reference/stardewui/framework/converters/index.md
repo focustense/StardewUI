@@ -15,6 +15,8 @@ title: StardewUI.Framework.Converters
 | [AnyCastConverterFactory](anycastconverterfactory.md) | Factory supporting conversions to and from [IAnyCast](../ianycast.md). |
 | [CastingValueConverterFactory](castingvalueconverterfactory.md) | Factory that automatically implements casting conversions, where the source type can be assigned directly to the destination type. |
 | [ColorConverter](colorconverter.md) | String converter for the XNA [Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html) type. |
+| [DuckTypeClassConverterFactory](ducktypeclassconverterfactory.md) | Factory that creates duck-typing converters for `class` and `struct` types. |
+| [DuckTypeEnumConverterFactory](ducktypeenumconverterfactory.md) | Factory that automatically implements duck-typing conversions between enum types that share the same names. |
 | [EnumNameConverterFactory](enumnameconverterfactory.md) | Factory that automatically implements string-to-enum conversions based on the case-insensitive enum names. |
 | [GridItemLayoutConverter](griditemlayoutconverter.md) | String converter for a [GridItemLayout](../../widgets/griditemlayout.md). |
 | [IdentityValueConverterFactory](identityvalueconverterfactory.md) | Factory that automatically implements identity conversions, where the source and destination type are the same. |
@@ -35,6 +37,7 @@ title: StardewUI.Framework.Converters
 
 | Name | Description |
 | --- | --- |
+| [IValueConverter](ivalueconverter.md) | Provides a method to convert between arbitrary types. |
 | [IValueConverter&lt;TSource, TDestination&gt;](ivalueconverter-2.md) | Provides a method to convert between value types. |
 | [IValueConverterFactory](ivalueconverterfactory.md) | Factory for obtaining instance of [IValueConverter&lt;TSource, TDestination&gt;](ivalueconverter-2.md). |
 

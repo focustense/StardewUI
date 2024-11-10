@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Layout parameters for an [IView](../iview.md).
 
 ```cs
+[StardewUI.DuckType]
 public readonly struct LayoutParameters : 
     IEquatable<StardewUI.Layout.LayoutParameters>
 ```
@@ -64,7 +65,7 @@ public readonly struct LayoutParameters :
 | [GetHashCode()](#gethashcode) | <span class="muted" markdown>(Overrides [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object).`GetHashCode()`)</span> | 
 | [GetLimits(Vector2)](#getlimitsvector2) | Determines the effective content size limits. | 
 | [Resolve(Vector2, Func&lt;Vector2&gt;)](#resolvevector2-funcvector2) | Resolves the actual size for the current [LayoutParameters](layoutparameters.md). | 
-| [ToString()](https://learn.microsoft.com/en-us/dotnet/api/system.valuetype.tostring) | <span class="muted" markdown>(Inherited from [ValueType](https://learn.microsoft.com/en-us/dotnet/api/system.valuetype))</span> | 
+| [ToString()](#tostring) | <span class="muted" markdown>(Overrides [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object).`ToString()`)</span> | 
 
 ## Details
 
@@ -367,6 +368,20 @@ Function to compute the inner content size based on limits obtained from [GetLim
 ##### Returns
 
 [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+-----
+
+#### ToString()
+
+
+
+```cs
+public override string ToString();
+```
+
+##### Returns
+
+[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
 
 -----
 

@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Specifies how to calculate the length of a single dimension (width or height).
 
 ```cs
+[StardewUI.DuckType]
 public readonly struct Length : IEquatable<StardewUI.Layout.Length>
 ```
 
@@ -50,10 +51,13 @@ public readonly struct Length : IEquatable<StardewUI.Layout.Length>
  | Name | Description |
 | --- | --- |
 | [Content()](#content) | Creates a new [Length](length.md) having [Content](lengthtype.md#content). | 
+| [Parse(ReadOnlySpan&lt;Char&gt;)](#parsereadonlyspanchar) | Parses a [Length](length.md) from its string representation. | 
+| [Parse(string)](#parsestring) | Parses a [Length](length.md) from its string representation. | 
 | [Percent(Single)](#percentfloat) | Creates a new [Length](length.md) having [Percent](lengthtype.md#percent) and the specified percent size. | 
 | [Px(Single)](#pxfloat) | Creates a new [Length](length.md) having [Px](lengthtype.md#px) and the specified pixel size. | 
 | [Resolve(Single, Func&lt;Single&gt;)](#resolvefloat-funcsingle) | Resolves an actual (pixel) length. | 
 | [Stretch()](#stretch) | Creates a new [Length](length.md) having [Stretch](lengthtype.md#stretch). | 
+| [ToString()](#tostring) | <span class="muted" markdown>(Overrides [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object).`ToString()`)</span> | 
 
 ## Details
 
@@ -120,6 +124,48 @@ public static StardewUI.Layout.Length Content();
 ##### Returns
 
 [Length](length.md)
+
+-----
+
+#### Parse(ReadOnlySpan&lt;Char&gt;)
+
+Parses a [Length](length.md) from its string representation.
+
+```cs
+public static StardewUI.Layout.Length Parse(ReadOnlySpan<System.Char> value);
+```
+
+##### Parameters
+
+**`value`** &nbsp; [ReadOnlySpan](https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1)<[Char](https://learn.microsoft.com/en-us/dotnet/api/system.char)>  
+The string representation of the [Length](length.md).
+
+##### Returns
+
+[Length](length.md)
+
+  The parsed [Length](length.md).
+
+-----
+
+#### Parse(string)
+
+Parses a [Length](length.md) from its string representation.
+
+```cs
+public static StardewUI.Layout.Length Parse(string value);
+```
+
+##### Parameters
+
+**`value`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The string representation of the [Length](length.md).
+
+##### Returns
+
+[Length](length.md)
+
+  The parsed [Length](length.md).
 
 -----
 
@@ -200,6 +246,20 @@ public static StardewUI.Layout.Length Stretch();
 ##### Returns
 
 [Length](length.md)
+
+-----
+
+#### ToString()
+
+
+
+```cs
+public override string ToString();
+```
+
+##### Returns
+
+[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
 
 -----
 

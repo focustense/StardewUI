@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Model for content placement along a nine-segment grid, i.e. all possible combinations of horizontal and vertical [Alignment](alignment.md).
 
 ```cs
+[StardewUI.DuckType]
 public record NineGridPlacement : IEquatable<StardewUI.Layout.NineGridPlacement>
 ```
 
@@ -98,7 +99,7 @@ Absolute axis-independent pixel offset.
 All the standard placements with no [Offset](ninegridplacement.md#offset), arranged from bottom-left to top-right.
 
 ```cs
-public static readonly System.Collections.Immutable.IImmutableList`1[[StardewUI.Layout.NineGridPlacement, StardewUI, Version=0.2.0.0, Culture=neutral, PublicKeyToken=null]] StandardPlacements;
+public static readonly System.Collections.Immutable.IImmutableList`1[[StardewUI.Layout.NineGridPlacement, StardewUI, Version=0.2.5.0, Culture=neutral, PublicKeyToken=null]] StandardPlacements;
 ```
 
 ##### Field Value

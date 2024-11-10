@@ -328,6 +328,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['<', ..] => new(TokenType.BindingModifier, 1),
                 ['>', ..] => new(TokenType.BindingModifier, 1),
                 ['@', ..] => new(TokenType.BindingModifier, 1),
+                ['#', ..] => new(TokenType.BindingModifier, 1),
                 _ => nameSeparatorEnabled ? ReadLiteralStringUntil("}", ".") : ReadLiteralStringUntil("}"),
             },
             Mode.Event => text switch

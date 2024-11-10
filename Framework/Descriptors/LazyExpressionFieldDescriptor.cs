@@ -89,6 +89,12 @@ public class LazyExpressionFieldDescriptor<TValue> : IPropertyDescriptor<TValue>
     public Type DeclaringType => throw new NotImplementedException();
 
     /// <inheritdoc />
+    public bool IsAutoProperty => false;
+
+    /// <inheritdoc />
+    public bool IsField => true;
+
+    /// <inheritdoc />
     public string Name => throw new NotImplementedException();
 
     /// <inheritdoc />

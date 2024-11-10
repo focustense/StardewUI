@@ -5,6 +5,7 @@
 /// </summary>
 /// <param name="Type">Specifies how to interpret the <see cref="Value"/>.</param>
 /// <param name="Value">The dimension value, with behavior determined by <see cref="Type"/>.</param>
+[DuckType]
 public readonly record struct Length(LengthType Type, float Value)
 {
     /// <summary>
@@ -13,6 +14,34 @@ public readonly record struct Length(LengthType Type, float Value)
     public static Length Content()
     {
         return new(LengthType.Content, 0);
+    }
+
+    /// <summary>
+    /// Parses a <see cref="Length"/> from its string representation.
+    /// </summary>
+    /// <param name="value">The string representation of the <see cref="Length"/>.</param>
+    /// <returns>The parsed <see cref="Length"/>.</returns>
+    /// <exception cref="FormatException">Thrown when <paramref name="value"/> is not in a recognized
+    /// format.</exception>
+    public static Length Parse(ReadOnlySpan<char> value)
+    {
+        return value switch
+        {
+            "content" => Content(),
+            "stretch" => Stretch(),
+            [.., 'p', 'x'] => Px(float.Parse(value[..^2])),
+            [.., '%'] => Percent(float.Parse(value[..^1])),
+            _ => throw new FormatException(
+                $"Invalid length '{value}'. "
+                    + "Must be one of: 'content', 'stretch', or a number followed by 'px' or '%'."
+            ),
+        };
+    }
+
+    /// <inheritdoc cref="Parse(ReadOnlySpan{char})" />
+    public static Length Parse(string value)
+    {
+        return Parse(value.AsSpan());
     }
 
     /// <summary>
@@ -68,6 +97,19 @@ public readonly record struct Length(LengthType Type, float Value)
             LengthType.Stretch => availableLength,
             LengthType.Content => getContentLength(),
             _ => throw new NotImplementedException($"Invalid length type: {Type}"),
+        };
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return Type switch
+        {
+            LengthType.Content => "content",
+            LengthType.Stretch => "stretch",
+            LengthType.Px => $"{Value}px",
+            LengthType.Percent => $"{Value}%",
+            _ => $"({Type}, {Value})",
         };
     }
 }

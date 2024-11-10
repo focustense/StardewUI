@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.Xna.Framework;
-using StardewUI.Layout;
+using System.Reflection;
 
 namespace StardewUI.Framework.Converters;
 
@@ -55,6 +54,24 @@ public interface IValueConverterFactory
     bool TryGetConverter<TSource, TDestination>(
         [MaybeNullWhen(false)] out IValueConverter<TSource, TDestination> converter
     );
+
+    /// <summary>
+    /// Attempts to obtain a converter from a given source type to a given destination type.
+    /// </summary>
+    /// <param name="sourceType">The type of value to be converted.</param>
+    /// <param name="destinationType">The converted value type.</param>
+    /// <param name="converter">If the method returns <c>true</c>, holds the converter that converts between the
+    /// specified types; otherwise <c>null</c>.</param>
+    /// <returns><c>true</c> if the conversion is supported, otherwise <c>false</c>.</returns>
+    bool TryGetConverter(Type sourceType, Type destinationType, [MaybeNullWhen(false)] out IValueConverter converter)
+    {
+        object?[] parameters = [null];
+        object? result = ValueConverterFactoryHelpers
+            .TryGetConverterMethodDef.MakeGenericMethod(sourceType, destinationType)
+            .Invoke(this, parameters);
+        converter = parameters[0] as IValueConverter;
+        return (bool)result!;
+    }
 }
 
 /// <summary>
@@ -62,77 +79,18 @@ public interface IValueConverterFactory
 /// </summary>
 public class ValueConverterFactory : IValueConverterFactory
 {
-    private readonly Dictionary<(Type, Type), object?> converters = [];
+    /// <summary>
+    /// The list of factories currently registered.
+    /// </summary>
+    protected List<IValueConverterFactory> Factories => factories;
+
+    private readonly Dictionary<(Type, Type), IValueConverter?> converters = [];
     private readonly List<IValueConverterFactory> factories = [];
 
     /// <summary>
     /// Initializes a new <see cref="ValueConverterFactory"/> instance.
     /// </summary>
-    public ValueConverterFactory()
-    {
-        // Automatically register string to primitive conversions.
-        TryRegister<string, byte>(byte.Parse);
-        TryRegister<string, sbyte>(sbyte.Parse);
-        TryRegister<string, short>(short.Parse);
-        TryRegister<string, ushort>(ushort.Parse);
-        TryRegister<string, int>(int.Parse);
-        TryRegister<string, uint>(uint.Parse);
-        TryRegister<string, long>(long.Parse);
-        TryRegister<string, ulong>(ulong.Parse);
-        TryRegister<string, decimal>(decimal.Parse);
-        TryRegister<string, float>(float.Parse);
-        TryRegister<string, double>(double.Parse);
-        TryRegister<string, bool>(bool.Parse);
-
-        // Convenience defaults for non-primitive types that are commonly specified as literals.
-        TryRegister(new ColorConverter());
-        TryRegister<string, Edges>(Edges.Parse);
-        TryRegister(new GridItemLayoutConverter());
-        TryRegister(new LayoutConverter());
-        TryRegister(new NamedFontConverter());
-        TryRegister(new PointConverter());
-        TryRegister(new RectangleConverter());
-        TryRegister(new Vector2Converter());
-
-        // Edges are better to bind as numbers, so we can use tuples and XNA equivalents in some cases.
-        TryRegister<int, Edges>(all => new(all));
-        TryRegister<Tuple<int, int>, Edges>(t => new(t.Item1, t.Item2));
-        TryRegister<Point, Edges>(p => new(p.X, p.Y));
-        TryRegister<Vector2, Edges>(v => new((int)v.X, (int)v.Y));
-        TryRegister<Tuple<int, int, int, int>, Edges>(t => new(t.Item1, t.Item2, t.Item3, t.Item4));
-        TryRegister<Tuple<Point, Point>, Edges>(t => new(t.Item1.X, t.Item1.Y, t.Item2.X, t.Item2.Y));
-        TryRegister<Tuple<Vector2, Vector2>, Edges>(t =>
-            new((int)t.Item1.X, (int)t.Item1.Y, (int)t.Item2.X, (int)t.Item2.Y)
-        );
-        TryRegister<Vector4, Edges>(v => new((int)v.X, (int)v.Y, (int)v.Z, (int)v.W));
-        // And the reverse conversions, where applicable...
-        TryRegister<Edges, Tuple<int, int, int, int>>(e => Tuple.Create(e.Left, e.Top, e.Right, e.Bottom));
-        TryRegister<Edges, Vector4>(e => new(e.Left, e.Top, e.Right, e.Bottom));
-
-        // Bounds are similar to edges, except we never accept them as inputs, so only need reverse conversions.
-        TryRegister<Bounds, Tuple<float, float, float, float>>(b => Tuple.Create(b.Left, b.Top, b.Right, b.Bottom));
-        TryRegister<Bounds, Tuple<Vector2, Vector2>>(b => Tuple.Create(b.Position, b.Size));
-        TryRegister<Bounds, Vector4>(b => new(b.Left, b.Top, b.Right, b.Bottom));
-        TryRegister<Bounds, Rectangle>(b => new(b.Position.ToPoint(), b.Size.ToPoint()));
-
-        // Several converters for just the Sprite type, as it can be surprisingly complex and users won't have the exact
-        // type.
-        TryRegister(new ItemSpriteConverter());
-        TryRegister(new TextureSpriteConverter());
-        TryRegister(new TextureRectSpriteConverter());
-
-        // Most enums are fine using the standard string-to-enum conversion.
-        Register(new EnumNameConverterFactory());
-
-        // If source and destination are the same, use a pass-through converter.
-        Register(new IdentityValueConverterFactory());
-        Register(new AnyCastConverterFactory());
-        Register(new CastingValueConverterFactory());
-        Register(new NullableConverterFactory(this));
-
-        // Anything can generally be converted to a string using the default converter.
-        Register(new StringConverterFactory());
-    }
+    public ValueConverterFactory() { }
 
     /// <summary>
     /// Registers a delegate factory that may be used to obtain a converter for which there is no explicit registration.
@@ -144,6 +102,30 @@ public class ValueConverterFactory : IValueConverterFactory
     public void Register(IValueConverterFactory factory)
     {
         factories.Add(factory);
+    }
+
+    /// <inheritdoc />
+    public bool TryGetConverter(
+        Type sourceType,
+        Type destinationType,
+        [MaybeNullWhen(false)] out IValueConverter converter
+    )
+    {
+        using var _ = Trace.Begin(this, nameof(TryGetConverter));
+        var key = (sourceType, destinationType);
+        if (converters.TryGetValue(key, out var cached))
+        {
+            converter = cached;
+        }
+        else
+        {
+            converter = factories
+                .Select(factory => factory.TryGetConverter(sourceType, destinationType, out var inner) ? inner : null)
+                .Where(converter => converter is not null)
+                .FirstOrDefault();
+            converters[key] = converter;
+        }
+        return converter is not null;
     }
 
     /// <inheritdoc />
@@ -196,4 +178,17 @@ public class ValueConverterFactory : IValueConverterFactory
         var converter = new ValueConverter<TSource, TDestination>(convert);
         return converters.TryAdd(key, converter);
     }
+}
+
+file static class ValueConverterFactoryHelpers
+{
+    public static readonly MethodInfo TryGetConverterMethodDef = typeof(IValueConverterFactory).GetMethod(
+        nameof(IValueConverterFactory.TryGetConverter),
+        2,
+        [
+            typeof(IValueConverter<,>)
+                .MakeGenericType(Type.MakeGenericMethodParameter(0), Type.MakeGenericMethodParameter(1))
+                .MakeByRefType(),
+        ]
+    )!;
 }

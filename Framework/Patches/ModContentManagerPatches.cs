@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.Xna.Framework.Content;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 
@@ -39,7 +40,9 @@ internal static class ModContentManagerPatches
         string markup = File.ReadAllText(file.FullName);
         try
         {
-            return Document.Parse(markup);
+            var document = Document.Parse(markup);
+            SourceResolver.SetDocumentSourcePath(document, file.FullName);
+            return document;
         }
         catch (LexerException ex)
         {

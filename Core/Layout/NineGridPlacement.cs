@@ -10,6 +10,7 @@ namespace StardewUI.Layout;
 /// <param name="HorizontalAlignment">Content alignment along the horizontal axis.</param>
 /// <param name="VerticalAlignment">Content alignment along the vertical axis.</param>
 /// <param name="Offset">Absolute axis-independent pixel offset.</param>
+[DuckType]
 public record NineGridPlacement(Alignment HorizontalAlignment, Alignment VerticalAlignment, Point Offset = new())
 {
     /// <summary>

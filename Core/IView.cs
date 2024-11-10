@@ -105,6 +105,11 @@ public interface IView : INotifyPropertyChanged
     Bounds ContentBounds { get; }
 
     /// <summary>
+    /// Contains the bounds of all floating elements in this view tree, including the current view and all descendants.
+    /// </summary>
+    IEnumerable<Bounds> FloatingBounds { get; }
+
+    /// <summary>
     /// Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this
     /// view. Not generally applicable for mouse controls.
     /// </summary>

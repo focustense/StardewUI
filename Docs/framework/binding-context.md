@@ -56,7 +56,7 @@ The specific layout or exact appearance in game isn't important to this example;
 - `click=|^SelectItem(Id)|`, which refers to the same-named method on `MenuViewModel`
 - `text={Text}` and `text={Price}` which are referring, _not_ to the `MenuViewModel` anymore, but to properties on the `MenuItem`.
 
-What happened? Although we only actually provided a single "model" (the `MenuViewModel`), the _context_ changed as soon as `*repeat` was encountered. Repeaters replace the original binding context (`MenuViewModel`) with a context referring to the specific item in the collection (`MenuItem`). As far as those inner `<label>` elements are concerned, the "model" or "data" is actually `MenuViewModel`.
+What happened? Although we only actually provided a single "model" (the `MenuViewModel`), the _context_ changed as soon as `*repeat` was encountered. Repeaters replace the original binding context (`MenuViewModel`) with a context referring to the specific item in the collection (`MenuItem`). As far as those inner `<label>` elements are concerned, the "model" or "data" is actually `MenuItem`.
 
 This behavior isn't necessarily limited to repeaters; for example, another way to narrow or drill down the context would be the [`*context` attribute](starml.md#structural-attributes).
 
@@ -64,7 +64,7 @@ But note the `click` event in particular: `^SelectItem(Id)`. The `Id` is a prope
 
 The _model_ or _data_ refers to the specific object attached, or "bound", to any given node; the outer `<lane>` is bound to a `MenuViewModel` and each inner `<lane>` is bound to a `MenuItem`. The _context_ has an awareness of the overall structure, and is able to backtrack to a previous level at any time.
 
-## Updates
+## Source Updates
 
 It is rare for any UI to be completely static, with content that never changes. Most UI needs to respond not only to user input, but to changes in the underlying data or state. More generally, it should always show the _most current_ data, however one chooses to define it.
 
@@ -374,3 +374,44 @@ Resolving `~InventoryViewModel.OwnerName` follows a very similar process, but in
     In an MV* design, document structure is itself usually based on the model, so you can _often_ treat redirects as going to the "parent object", but may eventually run into scenarios where this doesn't work as expected.
     
     Remember that context lives _outside_ your data.
+    
+## Update Ticks
+
+As a convenience, StardewUI can dispatch update ticks to any objects bound as context so that you do not need to "drive" them from `ModEntry`, i.e. using SMAPI's [UpdateTicked](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Events#Game_loop) event.
+
+Importantly, these updates can be at any arbitrary nesting level, as long as they are reachable by some view/node; they do not have to be at the top level. This can be useful for running animations, synchronizing with external game state or netfields, or for any other purpose that requires frame-precision updates.
+
+To opt in, simply add a `void Update` method to any context type with either no parameters or a single `TimeSpan` parameter.
+
+!!! example
+
+    === "Code (C#)"
+    
+        ```cs
+        public class OuterModel
+        {
+            public StopwatchModel Stopwatch { get; set; }
+        }
+        
+        public class InnerModel
+        {
+            public string FormattedTime => Elapsed.ToString(@"mm\:ss\.fff");
+
+            [Notify] private TimeSpan elapsed;
+
+            public void Update(TimeSpan elapsed)
+            {
+                Elapsed += elapsed;
+            }
+        }
+        ```
+
+    === "View (StarML)"
+    
+        ```html
+        <frame *context={Stopwatch}>
+            <label text={FormattedTime} />
+        </frame>
+        ```
+
+The `Update` method **must** match the signature above (with or without the `TimeSpan` argument); any other signature will cause a warning to be logged and the method to be ignored.

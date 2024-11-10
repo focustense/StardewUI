@@ -22,14 +22,15 @@ String converter for a [GridItemLayout](../../widgets/griditemlayout.md).
 
 ```cs
 public class GridItemLayoutConverter : 
-    StardewUI.Framework.Converters.IValueConverter<string, StardewUI.Widgets.GridItemLayout>
+    StardewUI.Framework.Converters.IValueConverter<string, StardewUI.Widgets.GridItemLayout>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ GridItemLayoutConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [GridItemLayout](../../widgets/griditemlayout.md)>
+[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [GridItemLayout](../../widgets/griditemlayout.md)>, [IValueConverter](ivalueconverter.md)
 
 ## Members
 

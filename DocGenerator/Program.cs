@@ -493,7 +493,7 @@ static string FormatNamespaceLink(string ns, string referringNamespace)
     return FormatLink(ns, path);
 }
 
-static string FormatParagraphText(XElement element, string referringNamespace)
+static string FormatParagraphText(XElement element, string referringNamespace, ListNumberer? listNumberer = null)
 {
     return element.Name.LocalName switch
     {
@@ -508,13 +508,31 @@ static string FormatParagraphText(XElement element, string referringNamespace)
             ),
         "paramref" or "typeparamref" => QuoteCode(element.Attribute("name")?.Value),
         "c" or "code" => QuoteCode(element.Value),
-        "para" => ReplaceElements(element, e => FormatParagraphText(e, referringNamespace))
+        "para" => ReplaceInnerElements() + Environment.NewLine + Environment.NewLine,
+        "b" or "strong" => "**" + ReplaceInnerElements() + "**",
+        "i" or "em" => "_" + ReplaceInnerElements() + "_",
+        "list" => Environment.NewLine
+            + ReplaceElements(
+                element,
+                e =>
+                    FormatParagraphText(
+                        e,
+                        referringNamespace,
+                        e.Attribute("type")?.Value == "number" ? new ListNumberer() : null
+                    )
+            )
             + Environment.NewLine
             + Environment.NewLine,
-        "b" or "strong" => "**" + ReplaceElements(element, e => FormatParagraphText(e, referringNamespace)) + "**",
-        "i" or "em" => "_" + ReplaceElements(element, e => FormatParagraphText(e, referringNamespace)) + "_",
+        "item" => Environment.NewLine
+            + "  "
+            + (listNumberer is not null ? listNumberer.ItemNumber++ : "-")
+            + ' '
+            + ReplaceElements(element, e => FormatParagraphText(e, referringNamespace)),
         _ => "",
     };
+
+    string ReplaceInnerElements() =>
+        ReplaceElements(element, e => FormatParagraphText(e, referringNamespace, listNumberer));
 }
 
 static string FormatPropertyName(
@@ -2004,6 +2022,11 @@ static void WriteTypeFrontMatter(StringBuilder sb, Type type, TypeComments? type
     var title = FormatGenericTypeName(type, includeOuterClasses: true);
     var description = typeComments is not null ? ReplaceTags(typeComments.Summary, FormatSimpleText) : null;
     WriteFrontMatter(sb, title, description);
+}
+
+class ListNumberer
+{
+    public int ItemNumber { get; set; } = 1;
 }
 
 class FixedUnindentXmlReader

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace StardewUI.Layout;
@@ -6,6 +7,7 @@ namespace StardewUI.Layout;
 /// <summary>
 /// Layout parameters for an <see cref="IView"/>.
 /// </summary>
+[DuckType]
 public readonly struct LayoutParameters : IEquatable<LayoutParameters>
 {
     /// <summary>
@@ -210,6 +212,36 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
             Math.Clamp(resolvedWidth, MinWidth ?? float.NegativeInfinity, MaxWidth ?? float.PositiveInfinity),
             Math.Clamp(resolvedHeight, MinHeight ?? float.NegativeInfinity, MaxHeight ?? float.PositiveInfinity)
         );
+    }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        Append(Width, MinWidth, MaxWidth);
+        sb.Append(' ');
+        Append(Height, MinHeight, MaxHeight);
+        return sb.ToString();
+
+        void Append(Length length, float? min, float? max)
+        {
+            sb.Append(length);
+            if (!min.HasValue && !max.HasValue)
+            {
+                return;
+            }
+            sb.Append('[');
+            if (min.HasValue)
+            {
+                sb.Append(min);
+            }
+            sb.Append("..");
+            if (max.HasValue)
+            {
+                sb.Append(max);
+            }
+            sb.Append(']');
+        }
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
@@ -18,9 +19,15 @@ public interface IAttributeBindingFactory
     /// <param name="viewDescriptor">Descriptor for the bound view, providing access to its properties.</param>
     /// <param name="attribute">The attribute data.</param>
     /// <param name="context">The binding context, including the bound data and descriptor for the data type.</param>
+    /// <param name="resolutionScope">Scope for resolving externalized attributes, such as translation keys.</param>
     /// <returns>The created binding, or <c>null</c> if the arguments do not support creating a binding, such as an
     /// <paramref name="attribute"/> bound to a <c>null</c> value of <paramref name="context"/>.</returns>
-    IAttributeBinding? TryCreateBinding(IViewDescriptor viewDescriptor, IAttribute attribute, BindingContext? context);
+    IAttributeBinding? TryCreateBinding(
+        IViewDescriptor viewDescriptor,
+        IAttribute attribute,
+        BindingContext? context,
+        IResolutionScope resolutionScope
+    );
 }
 
 /// <summary>
@@ -40,7 +47,8 @@ public class AttributeBindingFactory(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
         string propertyName,
-        BindingContext? context
+        BindingContext? context,
+        IResolutionScope resolutionScope
     );
 
     record AttributeBinding<TSource, TDest>(
@@ -133,7 +141,8 @@ public class AttributeBindingFactory(
     public IAttributeBinding? TryCreateBinding(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
-        BindingContext? context
+        BindingContext? context,
+        IResolutionScope resolutionScope
     )
     {
         using var _ = Trace.Begin(this, nameof(TryCreateBinding));
@@ -164,20 +173,21 @@ public class AttributeBindingFactory(
             bindingFactory = typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
             bindingFactoryCache.Add(propertyKey, bindingFactory);
         }
-        return bindingFactory(viewDescriptor, attribute, propertyName, context);
+        return bindingFactory(viewDescriptor, attribute, propertyName, context, resolutionScope);
     }
 
     private IAttributeBinding CreateTypedBinding<TSource, TDest>(
         IViewDescriptor viewDescriptor,
         IAttribute attribute,
         string propertyName,
-        BindingContext? context
+        BindingContext? context,
+        IResolutionScope resolutionScope
     )
         where TSource : notnull
     {
         using var _ = Trace.Begin(this, nameof(CreateTypedBinding));
         var property = (IPropertyDescriptor<TDest>)viewDescriptor.GetProperty(propertyName);
-        var source = valueSourceFactory.GetValueSource<TSource>(attribute, context);
+        var source = valueSourceFactory.GetValueSource<TSource>(attribute, context, resolutionScope);
         var direction = GetBindingDirection(attribute);
         if (direction.IsIn())
         {
@@ -217,20 +227,6 @@ public class AttributeBindingFactory(
         var outputConverter = direction.IsOut()
             ? valueConverterFactory.GetRequiredConverter<TDest, TSource>()
             : InvalidConverter<TDest, TSource>.Instance;
-        if (
-            context is not null
-            && !context.Descriptor.SupportsChangeNotifications
-            && direction.IsIn()
-            && attribute.ValueType.IsContextBinding()
-            && attribute.ValueType != AttributeValueType.OneTimeBinding
-        )
-        {
-            Logger.LogOnce(
-                $"Binding to '{context.Descriptor.TargetType.Name}.{attribute.Value}' will not receive updates because "
-                    + "the type does not implement INotifyPropertyChanged.",
-                LogLevel.Warn
-            );
-        }
         return new AttributeBinding<TSource, TDest>(source, inputConverter, outputConverter, property, direction);
     }
 

@@ -150,6 +150,9 @@ public class DecoratorView<T> : IView, IDisposable
     public Bounds ContentBounds => view?.ContentBounds ?? Bounds.Empty;
 
     /// <inheritdoc />
+    public IEnumerable<Bounds> FloatingBounds => view?.FloatingBounds ?? [];
+
+    /// <inheritdoc />
     public bool IsFocusable => view?.IsFocusable ?? false;
 
     /// <inheritdoc />
@@ -335,8 +338,7 @@ public class DecoratorView<T> : IView, IDisposable
     /// <inheritdoc />
     public virtual ViewChild? GetDefaultFocusChild()
     {
-        return view?.GetDefaultFocusChild()
-            ?? (view?.IsFocusable == true ? new(view, Vector2.Zero) : null);
+        return view?.GetDefaultFocusChild() ?? (view?.IsFocusable == true ? new(view, Vector2.Zero) : null);
     }
 
     /// <inheritdoc />

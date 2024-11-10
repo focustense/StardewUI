@@ -57,6 +57,7 @@ public record ViewChild : StardewUI.Layout.IOffsettable<StardewUI.ViewChild>,
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Performs a focus search on the referenced view. | 
 | [GetActualBounds()](#getactualbounds) | Returns a [Bounds](layout/bounds.md) representing the parent-relative layout bounds of this child. | 
 | [GetContentBounds()](#getcontentbounds) | Returns a [Bounds](layout/bounds.md) representing the parent-relative content bounds of this child. | 
+| [GetFloatingBounds()](#getfloatingbounds) | Returns a sequence of [Bounds](layout/bounds.md) representing the parent-relative bounds of this child's own floating elements and those of all its descendants. | 
 | [IsInDirection(Vector2, Direction)](#isindirectionvector2-direction) | Checks if a view can be reached by travelling from a given point in a given direction. | 
 | [Offset(Vector2)](#offsetvector2) | Offsets the position by a given distance. | 
 
@@ -238,6 +239,20 @@ public StardewUI.Layout.Bounds GetContentBounds();
 ##### Remarks
 
 Equivalent to the [ContentBounds](iview.md#contentbounds) offset by this child's [Position](viewchild.md#position).
+
+-----
+
+#### GetFloatingBounds()
+
+Returns a sequence of [Bounds](layout/bounds.md) representing the parent-relative bounds of this child's own floating elements and those of all its descendants.
+
+```cs
+public System.Collections.Generic.IEnumerable<StardewUI.Layout.Bounds> GetFloatingBounds();
+```
+
+##### Returns
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[Bounds](layout/bounds.md)>
 
 -----
 

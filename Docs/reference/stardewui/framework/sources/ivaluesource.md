@@ -44,7 +44,7 @@ Instances of this type should always implement [IValueSource&lt;T&gt;](ivaluesou
 
  | Name | Description |
 | --- | --- |
-| [Update()](#update) | Checks if the value needs updating, and if so, updates [Value](ivaluesource.md#value) to the latest. | 
+| [Update(Boolean)](#updatebool) | Checks if the value needs updating, and if so, updates [Value](ivaluesource.md#value) to the latest. | 
 
 ## Details
 
@@ -122,13 +122,18 @@ System.Type ValueType { get; }
 
 ### Methods
 
-#### Update()
+#### Update(bool)
 
 Checks if the value needs updating, and if so, updates [Value](ivaluesource.md#value) to the latest.
 
 ```cs
-bool Update();
+bool Update(bool force);
 ```
+
+##### Parameters
+
+**`force`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+If `true`, forces the source to update its value even if it isn't considered dirty. This should never be used in a regular binding, but can be useful in sources that are intended for occasional or one-shot use such as event handler arguments.
 
 ##### Returns
 

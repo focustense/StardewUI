@@ -50,12 +50,14 @@ This is very similar to a [Label](label.md) inside a [Frame](frame.md), but uses
 | [ContentBounds](../view.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [ContentSize](../view.md#contentsize) | The size of the view's content, which is drawn inside the padding. Subclasses set this in their [OnMeasure(Vector2)](../view.md#onmeasurevector2) method and padding, margins, etc. are handled automatically.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Draggable](../view.md#draggable) | Whether or not this view should fire drag events such as [DragStart](../view.md#dragstart) and [Drag](../view.md#drag).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [FloatingBounds](../view.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [FloatingElements](../view.md#floatingelements) | The floating elements to display relative to this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Focusable](../view.md#focusable) | Whether or not the view should be able to receive focus. Applies only to this specific view, not its children.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [InnerSize](../view.md#innersize) | The size allocated to the entire area inside the border, i.e. [ContentSize](../view.md#contentsize) plus any [Padding](../view.md#padding). Does not include border or [Margin](../view.md#margin).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [IsFocusable](../view.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [LastAvailableSize](../view.md#lastavailablesize) | The most recent size used in a [Measure(Vector2)](../view.md#measurevector2) pass. Used for additional dirty checks.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Layout](../view.md#layout) | Layout settings for this view; determines how its dimensions will be computed.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [LayoutOffset](../view.md#layoutoffset) | Pixel offset of the view's content, which is applied to all pointer events and child queries.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Margin](../view.md#margin) | Margins (whitespace outside border) for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Name](../view.md#name) | Simple name for this view, used in log/debug output; does not affect behavior.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [OuterSize](../view.md#outersize) | The size of the entire area occupied by this view including margins, border and padding.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -64,7 +66,9 @@ This is very similar to a [Label](label.md) inside a [Frame](frame.md), but uses
 | [ScrollWithChildren](../view.md#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../view.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Tags](../view.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Text](#text) | The text to display within the banner. | 
-| [TextShadowAlpha](#textshadowalpha) | Alpha value for the text shadow. If set to the default of zero, no text shadow will be drawn. | 
+| [TextShadowAlpha](#textshadowalpha) | Alpha value for the text shadow, per layer in [ShadowLayers](shadowlayers.md). | 
+| [TextShadowColor](#textshadowcolor) | Base color for the text shadow, before applying [TextShadowAlpha](banner.md#textshadowalpha). | 
+| [TextShadowLayers](#textshadowlayers) | Specifies which layers of the text shadow should be drawn. | 
 | [TextShadowOffset](#textshadowoffset) | Offset to draw the text shadow, which is a second copy of the [Text](banner.md#text) drawn entirely black. Text shadows will not be visible unless [TextShadowAlpha](banner.md#textshadowalpha) is non-zero. | 
 | [Tooltip](../view.md#tooltip) | Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Visibility](../view.md#visibility) | Visibility for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -187,7 +191,7 @@ public string Text { get; set; }
 
 #### TextShadowAlpha
 
-Alpha value for the text shadow. If set to the default of zero, no text shadow will be drawn.
+Alpha value for the text shadow, per layer in [ShadowLayers](shadowlayers.md).
 
 ```cs
 public float TextShadowAlpha { get; set; }
@@ -196,6 +200,42 @@ public float TextShadowAlpha { get; set; }
 ##### Property Value
 
 [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+##### Remarks
+
+If set to zero, no text shadow will be drawn.
+
+-----
+
+#### TextShadowColor
+
+Base color for the text shadow, before applying [TextShadowAlpha](banner.md#textshadowalpha).
+
+```cs
+public Microsoft.Xna.Framework.Color TextShadowColor { get; set; }
+```
+
+##### Property Value
+
+[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)
+
+-----
+
+#### TextShadowLayers
+
+Specifies which layers of the text shadow should be drawn.
+
+```cs
+public StardewUI.Widgets.ShadowLayers TextShadowLayers { get; set; }
+```
+
+##### Property Value
+
+[ShadowLayers](shadowlayers.md)
+
+##### Remarks
+
+Layers are additive, so the same [TextShadowAlpha](banner.md#textshadowalpha) will have a different visual intensity depending on which layers are allowed. If set to [None](shadowlayers.md#none), then no shadow will be drawn.
 
 -----
 

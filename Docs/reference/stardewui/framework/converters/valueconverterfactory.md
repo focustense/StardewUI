@@ -39,11 +39,18 @@ public class ValueConverterFactory :
 | --- | --- |
 | [ValueConverterFactory()](#valueconverterfactory) | Initializes a new [ValueConverterFactory](valueconverterfactory.md) instance. | 
 
+### Properties
+
+ | Name | Description |
+| --- | --- |
+| [Factories](#factories) | The list of factories currently registered. | 
+
 ### Methods
 
  | Name | Description |
 | --- | --- |
 | [Register(IValueConverterFactory)](#registerivalueconverterfactory) | Registers a delegate factory that may be used to obtain a converter for which there is no explicit registration. | 
+| [TryGetConverter(Type, Type, IValueConverter)](#trygetconvertertype-type-ivalueconverter) | Attempts to obtain a converter from a given source type to a given destination type. | 
 | [TryGetConverter&lt;TSource, TDestination&gt;(IValueConverter&lt;TSource, TDestination&gt;)](#trygetconvertertsource-tdestinationivalueconvertertsource-tdestination) | Attempts to obtain a converter from a given source type to a given destination type. | 
 | [TryRegister&lt;TSource, TDestination&gt;(IValueConverter&lt;TSource, TDestination&gt;)](#tryregistertsource-tdestinationivalueconvertertsource-tdestination) | Attempts to register a new converter. | 
 | [TryRegister&lt;TSource, TDestination&gt;(Func&lt;TSource, TDestination&gt;)](#tryregistertsource-tdestinationfunctsource-tdestination) | Attempts to register a new converter. | 
@@ -59,6 +66,22 @@ Initializes a new [ValueConverterFactory](valueconverterfactory.md) instance.
 ```cs
 public ValueConverterFactory();
 ```
+
+-----
+
+### Properties
+
+#### Factories
+
+The list of factories currently registered.
+
+```cs
+protected System.Collections.Generic.List<StardewUI.Framework.Converters.IValueConverterFactory> Factories { get; }
+```
+
+##### Property Value
+
+[List](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1)<[IValueConverterFactory](ivalueconverterfactory.md)>
 
 -----
 
@@ -80,6 +103,33 @@ The delegate factory.
 ##### Remarks
 
 Use when a single converter may handle many input or output types, e.g. string-to-enum conversions.
+
+-----
+
+#### TryGetConverter(Type, Type, IValueConverter)
+
+Attempts to obtain a converter from a given source type to a given destination type.
+
+```cs
+public bool TryGetConverter(System.Type sourceType, System.Type destinationType, out StardewUI.Framework.Converters.IValueConverter converter);
+```
+
+##### Parameters
+
+**`sourceType`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
+The type of value to be converted.
+
+**`destinationType`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
+The converted value type.
+
+**`converter`** &nbsp; [IValueConverter](ivalueconverter.md)  
+If the method returns `true`, holds the converter that converts between the specified types; otherwise `null`.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if the conversion is supported, otherwise `false`.
 
 -----
 

@@ -146,6 +146,9 @@ public class ScrollContainer : View
     /// </summary>
     protected Vector2 ContentViewSize => Content?.OuterSize ?? Vector2.Zero;
 
+    /// <inheritdoc />
+    protected override Vector2 LayoutOffset => -GetScrollOrigin();
+
     private readonly DirtyTracker<IView?> content = new(null);
     private readonly DirtyTracker<Orientation> orientation = new(Orientation.Vertical);
     private readonly DirtyTracker<float> scrollOffset = new(0);
@@ -235,26 +238,19 @@ public class ScrollContainer : View
     /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
-        var origin = GetScrollOrigin();
-        return Content?.FocusSearch(contentPosition + origin, direction)?.Offset(-origin);
+        return Content?.FocusSearch(contentPosition, direction);
     }
 
     /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
-        return Content is not null ? [new(Content, -GetScrollOrigin())] : [];
+        return Content is not null ? [new(Content, Vector2.Zero)] : [];
     }
 
     /// <inheritdoc />
     protected override IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
-        if (Content is null)
-        {
-            return [];
-        }
-        var origin = GetScrollOrigin();
-        var result = new ViewChild(Content, -origin);
-        return result.ContainsPoint(contentPosition) ? [result] : [];
+        return Content?.ContainsPoint(contentPosition) == true ? [new(Content, Vector2.Zero)] : [];
     }
 
     /// <inheritdoc />

@@ -66,12 +66,12 @@ public TraceShared();
 The captured frames, or slices.
 
 ```cs
-public System.Collections.Generic.List<StardewUI.Framework.Diagnostics.Frame> Frames { get; }
+public System.Collections.Generic.List<StardewUI.Framework.Diagnostics.TraceFrame> Frames { get; }
 ```
 
 ##### Property Value
 
-[List](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1)<[Frame](frame.md)>
+[List](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1)<[TraceFrame](traceframe.md)>
 
 -----
 

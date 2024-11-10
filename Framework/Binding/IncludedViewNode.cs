@@ -13,6 +13,7 @@ public class IncludedViewNode(
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
     IAssetCache assetCache,
+    IResolutionScope resolutionScope,
     Func<Document, IViewNode> nodeCreator,
     IAttribute assetNameAttribute,
     IAttribute? contextAttribute
@@ -138,7 +139,12 @@ public class IncludedViewNode(
         {
             return null;
         }
-        var rawAssetValueSource = valueSourceFactory.GetValueSource(assetNameAttribute, context, assetValueType);
+        var rawAssetValueSource = valueSourceFactory.GetValueSource(
+            assetValueType,
+            assetNameAttribute,
+            context,
+            resolutionScope
+        );
         return ConvertedValueSource.Create<string>(rawAssetValueSource, valueConverterFactory);
     }
 
@@ -151,7 +157,7 @@ public class IncludedViewNode(
         using var _ = Trace.Begin(this, nameof(TryCreateChildContextSource));
         var childContextType = valueSourceFactory.GetValueType(contextAttribute, null, context);
         return childContextType is not null
-            ? valueSourceFactory.GetValueSource(contextAttribute, context, childContextType)
+            ? valueSourceFactory.GetValueSource(childContextType, contextAttribute, context, resolutionScope)
             : null;
     }
 

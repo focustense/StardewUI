@@ -51,7 +51,7 @@ public static class ViewExtensions
     /// If no match is found, returns an empty sequence.</returns>
     public static IEnumerable<ViewChild> GetPathToPosition(this IView view, Vector2 position)
     {
-        if (position.X < 0 || position.Y < 0 || position.X > view.OuterSize.X || position.Y > view.OuterSize.Y)
+        if (!view.ContainsPoint(position))
         {
             yield break;
         }

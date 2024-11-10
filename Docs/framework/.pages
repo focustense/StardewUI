@@ -4,5 +4,6 @@ nav:
     - binding-context.md
     - binding-events.md
     - included-views.md
+    - duck-typing.md
     - focus-and-interaction.md
     - ...

@@ -37,7 +37,7 @@ public class IncludedViewNode : StardewUI.Framework.Binding.IViewNode,
 
  | Name | Description |
 | --- | --- |
-| [IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)](#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-funcdocument-iviewnode-iattribute-iattribute) | Quasi-structural node that loads its content from a shared game asset. | 
+| [IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, IResolutionScope, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)](#includedviewnodeivaluesourcefactory-ivalueconverterfactory-iassetcache-iresolutionscope-funcdocument-iviewnode-iattribute-iattribute) | Quasi-structural node that loads its content from a shared game asset. | 
 
 ### Properties
 
@@ -61,12 +61,12 @@ public class IncludedViewNode : StardewUI.Framework.Binding.IViewNode,
 
 ### Constructors
 
-#### IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)
+#### IncludedViewNode(IValueSourceFactory, IValueConverterFactory, IAssetCache, IResolutionScope, Func&lt;Document, IViewNode&gt;, IAttribute, IAttribute)
 
 Quasi-structural node that loads its content from a shared game asset.
 
 ```cs
-public IncludedViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Content.IAssetCache assetCache, Func<StardewUI.Framework.Dom.Document, StardewUI.Framework.Binding.IViewNode> nodeCreator, StardewUI.Framework.Dom.IAttribute assetNameAttribute, StardewUI.Framework.Dom.IAttribute contextAttribute);
+public IncludedViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Content.IAssetCache assetCache, StardewUI.Framework.Content.IResolutionScope resolutionScope, Func<StardewUI.Framework.Dom.Document, StardewUI.Framework.Binding.IViewNode> nodeCreator, StardewUI.Framework.Dom.IAttribute assetNameAttribute, StardewUI.Framework.Dom.IAttribute contextAttribute);
 ```
 
 ##### Parameters
@@ -76,6 +76,8 @@ public IncludedViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSou
 **`valueConverterFactory`** &nbsp; [IValueConverterFactory](../converters/ivalueconverterfactory.md)
 
 **`assetCache`** &nbsp; [IAssetCache](../content/iassetcache.md)
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)
 
 **`nodeCreator`** &nbsp; [Func](https://learn.microsoft.com/en-us/dotnet/api/system.func-2)<[Document](../dom/document.md), [IViewNode](iviewnode.md)>
 

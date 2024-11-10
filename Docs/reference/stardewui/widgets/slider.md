@@ -42,6 +42,7 @@ public class Slider : StardewUI.Widgets.ComponentView
 | [ActualBounds](decoratorview-1.md#actualbounds) | The bounds of this view relative to the origin (0, 0).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [BackgroundSprite](#backgroundsprite) | Background or track sprite, if not using the default. | 
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Interval](#interval) | The interval of which [Value](slider.md#value) should be a multiple. Affects which values will be hit while dragging. | 
 | [IsFocusable](decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Layout](decoratorview-1.md#layout) | The current layout parameters, which determine how [Measure(Vector2)](../iview.md#measurevector2) will behave.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
@@ -306,7 +307,13 @@ The direction of cursor movement.
 
 ##### Remarks
 
-If `position` is out of bounds, it does not necessarily mean that the view should return `null`; the expected result depends on the `direction` also. The base case is when the focus position is already in bounds, and in this case a view should return whichever view can be reached by moving from the edge of that view along a straight line in the specified `direction`. However, focus search is recursive and the result should reflect the "best" candidate for focus if the cursor were to move _into_ this view's bounds. For example, in a 1D horizontal layout the rules might be:  There are no strict rules for how a view performs focus search, but in general it is assumed that a view implementation understands its own layout and can accommodate accordingly; for example, a grid would follow essentially the same rules as our "list" example above, with additional considerations for navigating rows. "Ragged" 2D layouts might have complex rules requiring explicit neighbors, and therefore are typically easier to implement as nested lanes.
+If `position` is out of bounds, it does not necessarily mean that the view should return `null`; the expected result depends on the `direction` also. The base case is when the focus position is already in bounds, and in this case a view should return whichever view can be reached by moving from the edge of that view along a straight line in the specified `direction`. However, focus search is recursive and the result should reflect the "best" candidate for focus if the cursor were to move _into_ this view's bounds. For example, in a 1D horizontal layout the rules might be: 
+
+  - If the `direction` is [East](../direction.md#east), and the position's X value is negative, then the result should the leftmost focusable child, regardless of Y value.
+  - If the direction is [South](../direction.md#south), and the X position is within the view's horizontal bounds, and the Y value is negative or greater than the view's height, then result should be whichever child intersects with that X position.
+  - If the direction is [West](../direction.md#west) and the X position is negative, or the direction is [East](../direction.md#east) and the X position is greater than the view's width, then the result should be `null` as there is literally nothing the view knows about in that direction.
+
+ There are no strict rules for how a view performs focus search, but in general it is assumed that a view implementation understands its own layout and can accommodate accordingly; for example, a grid would follow essentially the same rules as our "list" example above, with additional considerations for navigating rows. "Ragged" 2D layouts might have complex rules requiring explicit neighbors, and therefore are typically easier to implement as nested lanes.
 
 -----
 

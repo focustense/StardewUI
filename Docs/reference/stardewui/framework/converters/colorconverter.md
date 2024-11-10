@@ -22,14 +22,15 @@ String converter for the XNA [Color](https://docs.monogame.net/api/Microsoft.Xna
 
 ```cs
 public class ColorConverter : 
-    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Color>
+    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Color>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ ColorConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)>
+[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)>, [IValueConverter](ivalueconverter.md)
 
 ## Remarks
 

@@ -13,7 +13,7 @@
             <Keywords name="Numbers, suffix1"></Keywords>
             <Keywords name="Numbers, suffix2"></Keywords>
             <Keywords name="Numbers, range"></Keywords>
-            <Keywords name="Operators1">= ^  ~ @ $ /</Keywords>
+            <Keywords name="Operators1">= ^ ~ @ # $ /</Keywords>
             <Keywords name="Operators2"></Keywords>
             <Keywords name="Folders in code1, open"></Keywords>
             <Keywords name="Folders in code1, middle"></Keywords>
@@ -25,7 +25,7 @@
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close"></Keywords>
             <Keywords name="Keywords1">*context *if *switch *case *outlet *repeat</Keywords>
-            <Keywords name="Keywords2">banner button checkbox digits dropdown expander frame grid image include label lane marquee panel scrollable slider spacer textinput</Keywords>
+            <Keywords name="Keywords2">banner button checkbox digits dropdown expander frame grid image include label lane marquee panel scrollable slider spacer tab textinput</Keywords>
             <Keywords name="Keywords3"></Keywords>
             <Keywords name="Keywords4"></Keywords>
             <Keywords name="Keywords5"></Keywords>

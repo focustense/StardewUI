@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -24,12 +25,18 @@ namespace StardewUI.Framework.Binding;
 /// <param name="valueConverterFactory">The factory responsible for creating
 /// <see cref="IValueConverter{TSource, TDestination}"/> instances, used to convert bound values to the types required
 /// by the target view.</param>
+/// <param name="leftScope">Scope for resolving any externalized <paramref name="leftAttribute"/> values, such as
+/// translation keys.</param>
 /// <param name="leftAttribute">The attribute containing the expression for the LHS operand.</param>
+/// <param name="rightScope">Scope for resolving any externalized <paramref name="rightAttribute"/> values, such as
+/// translation keys.</param>
 /// <param name="rightAttribute">The attribute containing the expression for the RHS operand.</param>
 public class BinaryCondition(
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
+    IResolutionScope leftScope,
     IAttribute leftAttribute,
+    IResolutionScope rightScope,
     IAttribute rightAttribute
 ) : ICondition
 {
@@ -142,7 +149,7 @@ public class BinaryCondition(
             anyContextChanged = true;
             var leftValueType = valueSourceFactory.GetValueType(leftAttribute, null, leftContext);
             leftValueSource = leftValueType is not null
-                ? valueSourceFactory.GetValueSource(leftAttribute, leftContext, leftValueType)
+                ? valueSourceFactory.GetValueSource(leftValueType, leftAttribute, leftContext, leftScope)
                 : null;
             wasLeftContextChanged = false;
         }
@@ -155,7 +162,7 @@ public class BinaryCondition(
             anyContextChanged = true;
             var rightValueType = valueSourceFactory.GetValueType(rightAttribute, null, rightContext);
             rightValueSource = rightValueType is not null
-                ? valueSourceFactory.GetValueSource(rightAttribute, rightContext, rightValueType)
+                ? valueSourceFactory.GetValueSource(rightValueType, rightAttribute, rightContext, rightScope)
                 : null;
             wasRightContextChanged = false;
         }

@@ -33,8 +33,9 @@ public enum AttributeValueType
 | --- | --- | --- |
 | <a id="literal">Literal</a> | 0 | The value is the literal string in the markup, i.e. it is the actual string representation of the target data type such as an integer, enumeration or another string. | 
 | <a id="assetbinding">AssetBinding</a> | 1 | A read-only binding which obtains the value from a named game asset. | 
-| <a id="inputbinding">InputBinding</a> | 2 | A one-way data binding which obtains the value from the context data and assigns it to the view. | 
-| <a id="onetimebinding">OneTimeBinding</a> | 3 | A special type of [InputBinding](attributevaluetype.md#inputbinding) that only reads the value a single time, and does not update subsequently afterward. | 
-| <a id="outputbinding">OutputBinding</a> | 4 | A one-way data binding which obtains the value from the view and assigns it to the context data. | 
-| <a id="twowaybinding">TwoWayBinding</a> | 5 | A two-way data binding which both assigns the context data's value to the view, and the view's value to the context data, depending on which one was most recently changed. | 
+| <a id="translationbinding">TranslationBinding</a> | 2 | A read-only binding which obtains the value from a translation key registered with SMAPI. | 
+| <a id="inputbinding">InputBinding</a> | 3 | A one-way data binding which obtains the value from the context data and assigns it to the view. | 
+| <a id="onetimebinding">OneTimeBinding</a> | 4 | A special type of [InputBinding](attributevaluetype.md#inputbinding) that only reads the value a single time, and does not update subsequently afterward. | 
+| <a id="outputbinding">OutputBinding</a> | 5 | A one-way data binding which obtains the value from the view and assigns it to the context data. | 
+| <a id="twowaybinding">TwoWayBinding</a> | 6 | A two-way data binding which both assigns the context data's value to the view, and the view's value to the context data, depending on which one was most recently changed. | 
 

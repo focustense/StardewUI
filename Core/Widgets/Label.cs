@@ -164,6 +164,78 @@ public class Label : View
     }
 
     /// <summary>
+    /// Alpha value for the text shadow, per layer in <see cref="ShadowLayers"/>.
+    /// </summary>
+    /// <remarks>
+    /// If set to zero, no text shadow will be drawn.
+    /// </remarks>
+    public float ShadowAlpha
+    {
+        get => shadowAlpha;
+        set
+        {
+            if (value != shadowAlpha)
+            {
+                shadowAlpha = value;
+                OnPropertyChanged(nameof(ShadowAlpha));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Base color for the text shadow, before applying <see cref="ShadowAlpha"/>.
+    /// </summary>
+    public Color ShadowColor
+    {
+        get => shadowColor;
+        set
+        {
+            if (value != shadowColor)
+            {
+                shadowColor = value;
+                OnPropertyChanged(nameof(shadowColor));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Specifies which layers of the shadow should be drawn.
+    /// </summary>
+    /// <remarks>
+    /// Layers are additive, so the same <see cref="ShadowAlpha"/> will have a different visual intensity depending on
+    /// which layers are allowed. If set to <see cref="ShadowLayers.None"/>, then no shadow will be drawn.
+    /// </remarks>
+    public ShadowLayers ShadowLayers
+    {
+        get => shadowLayers;
+        set
+        {
+            if (value != shadowLayers)
+            {
+                shadowLayers = value;
+                OnPropertyChanged(nameof(ShadowLayers));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Offset to draw the text shadow, which is a second copy of the <see cref="Text"/> drawn entirely black.
+    /// Text shadows will not be visible unless <see cref="ShadowAlpha"/> is non-zero.
+    /// </summary>
+    public Vector2 ShadowOffset
+    {
+        get => shadowOffset;
+        set
+        {
+            if (value != shadowOffset)
+            {
+                shadowOffset = value;
+                OnPropertyChanged(nameof(ShadowOffset));
+            }
+        }
+    }
+
+    /// <summary>
     /// The text string to display.
     /// </summary>
     public string Text
@@ -178,6 +250,13 @@ public class Label : View
         }
     }
 
+    private static readonly ShadowLayers[] shadowLayerOrder =
+    [
+        ShadowLayers.Diagonal,
+        ShadowLayers.Vertical,
+        ShadowLayers.Horizontal,
+    ];
+
     private readonly DirtyTracker<SpriteFont> font = new(Game1.smallFont);
     private readonly DirtyTracker<int> maxLines = new(0);
     private readonly DirtyTracker<float> scale = new(1.0f);
@@ -187,22 +266,53 @@ public class Label : View
     private Color color = Game1.textColor; // Not dirty-tracked because it doesn't affect layout.
     private Alignment horizontalAlignment; // Not dirty-tracked as it doesn't change the max line width.
     private List<string> lines = [];
+    private float shadowAlpha;
+    private Color shadowColor = Game1.textShadowDarkerColor;
+    private ShadowLayers shadowLayers = ShadowLayers.All;
+    private Vector2 shadowOffset = new(-2, 2);
 
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        var y = 0;
-        foreach (var line in lines)
+        if (ShadowAlpha > 0 && ShadowLayers > 0)
         {
-            var x = GetAlignedLeft(line);
-            b.DrawString(Font, line, new(x, y), Color, scale: Scale);
-            if (Bold)
+            var shadowAlphaColor = ShadowColor * ShadowAlpha;
+            foreach (var layer in shadowLayerOrder)
             {
-                b.DrawString(Font, line, new(x + 1, y), Color, scale: Scale);
-                b.DrawString(Font, line, new(x, y + 1), Color, scale: Scale);
-                b.DrawString(Font, line, new(x + 1, y + 1), Color, scale: Scale);
+                if ((ShadowLayers & layer) == 0)
+                {
+                    continue;
+                }
+                using var _ = b.SaveTransform();
+                b.Translate(
+                    layer switch
+                    {
+                        ShadowLayers.Diagonal => ShadowOffset,
+                        ShadowLayers.Horizontal => new(ShadowOffset.X, 0),
+                        ShadowLayers.Vertical => new(0, ShadowOffset.Y),
+                        _ => throw new InvalidOperationException($"Invalid shadow layer {layer}"),
+                    }
+                );
+                DrawText(shadowAlphaColor);
             }
-            y += Font.LineSpacing;
+        }
+        DrawText(Color);
+
+        void DrawText(Color color)
+        {
+            var y = 0;
+            foreach (var line in lines)
+            {
+                var x = GetAlignedLeft(line);
+                b.DrawString(Font, line, new(x, y), color, scale: Scale);
+                if (Bold)
+                {
+                    b.DrawString(Font, line, new(x + 1, y), color, scale: Scale);
+                    b.DrawString(Font, line, new(x, y + 1), color, scale: Scale);
+                    b.DrawString(Font, line, new(x + 1, y + 1), color, scale: Scale);
+                }
+                y += Font.LineSpacing;
+            }
         }
     }
 

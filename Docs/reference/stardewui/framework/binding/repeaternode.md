@@ -37,7 +37,7 @@ public class RepeaterNode : StardewUI.Framework.Binding.IViewNode,
 
  | Name | Description |
 | --- | --- |
-| [RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)](#repeaternodeivaluesourcefactory-funcchild-iattribute) | A structural node that accepts a collection ([IEnumerable&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection. | 
+| [RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IResolutionScope, IAttribute)](#repeaternodeivaluesourcefactory-funcchild-iresolutionscope-iattribute) | A structural node that accepts a collection ([IEnumerable&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection. | 
 
 ### Properties
 
@@ -61,12 +61,12 @@ public class RepeaterNode : StardewUI.Framework.Binding.IViewNode,
 
 ### Constructors
 
-#### RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IAttribute)
+#### RepeaterNode(IValueSourceFactory, Func&lt;Child&gt;, IResolutionScope, IAttribute)
 
 A structural node that accepts a collection ([IEnumerable&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection.
 
 ```cs
-public RepeaterNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, Func<StardewUI.Framework.Binding.IViewNode.Child> childCreator, StardewUI.Framework.Dom.IAttribute repeatAttribute);
+public RepeaterNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, Func<StardewUI.Framework.Binding.IViewNode.Child> childCreator, StardewUI.Framework.Content.IResolutionScope resolutionScope, StardewUI.Framework.Dom.IAttribute repeatAttribute);
 ```
 
 ##### Parameters
@@ -76,6 +76,9 @@ The factory responsible for creating [IValueSource&lt;T&gt;](../sources/ivalueso
 
 **`childCreator`** &nbsp; [Func](https://learn.microsoft.com/en-us/dotnet/api/system.func-1)<[Child](iviewnode.child.md)>  
 Delegate for creating a new child node.
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving externalized attributes, such as translation keys.
 
 **`repeatAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 The attribute containing the collection expression.

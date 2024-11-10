@@ -20,4 +20,7 @@ title: StardewUI.Framework.Content
 | --- | --- |
 | [IAssetCache](iassetcache.md) | Cache used for asset-based view bindings. |
 | [IAssetCacheEntry&lt;T&gt;](iassetcacheentry-1.md) | Entry retrieved from an [IAssetCache](iassetcache.md). |
+| [IResolutionScope](iresolutionscope.md) | Defines a scope in which certain types of external and potentially ambiguous binding attributes may be resolved. |
+| [IResolutionScopeFactory](iresolutionscopefactory.md) | Factory for creating [IResolutionScope](iresolutionscope.md) instances. |
+| [ISourceResolver](isourceresolver.md) | Provides a method to connect a parsed [Document](../dom/document.md) back to the mod that provided it. |
 

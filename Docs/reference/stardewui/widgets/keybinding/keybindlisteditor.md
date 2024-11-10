@@ -51,6 +51,7 @@ Displays all the configured keybinds in one row, and ([EditableType](keybindlist
 | [EditableType](#editabletype) | Specifies what kind of keybind the editor should allow. | 
 | [EmptyText](#emptytext) | Placeholder text to display when the current keybind list is empty. | 
 | [EmptyTextColor](#emptytextcolor) | Color of the displayed [EmptyText](keybindlisteditor.md#emptytext) when the list is empty. | 
+| [FloatingBounds](../decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [Focusable](#focusable) | Whether or not the view should be able to receive focus. Applies only to this specific view, not its children. | 
 | [Font](#font) | Font used to display text in button/key placeholders. | 
 | [IsFocusable](../decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 

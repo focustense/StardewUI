@@ -85,6 +85,9 @@ public abstract class View : IView
     /// <inheritdoc/>
     public Bounds ContentBounds => GetContentBounds();
 
+    /// <inheritdoc/>
+    public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
+
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
@@ -136,7 +139,7 @@ public abstract class View : IView
             if (!value.SequenceEqual(floatingElements))
             {
                 floatingElements = new(value);
-                OnPropertyChanged(nameof(FloatingElement));
+                OnPropertyChanged(nameof(FloatingElements));
             }
         }
     }
@@ -341,6 +344,23 @@ public abstract class View : IView
     }
 
     /// <summary>
+    /// Pixel offset of the view's content, which is applied to all pointer events and child queries.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// A non-zero offset means that the nominal positions of any view children (e.g. as obtained from
+    /// <see cref="GetChildren"/>) are different from their actual drawing positions on screen, for example in the case
+    /// of a <see cref="Widgets.ScrollContainer"/> that is not at the default scroll position.
+    /// </para>
+    /// <para>
+    /// If a view will internally shift content in this way without affecting layout, it should update the
+    /// <see cref="LayoutOffset"/> property to ensure correctness of pointer events and coordinate-related queries such
+    /// as <see cref="GetLocalChildrenAt(Vector2)"/>, <b>instead of</b> attempting to correct for that offset locally.
+    /// </para>
+    /// </remarks>
+    protected virtual Vector2 LayoutOffset => Vector2.Zero;
+
+    /// <summary>
     /// The most recent size used in a <see cref="Measure"/> pass. Used for additional dirty checks.
     /// </summary>
     protected Vector2 LastAvailableSize { get; private set; } = Vector2.Zero;
@@ -358,6 +378,7 @@ public abstract class View : IView
     private bool isFocusable;
     private string name;
     private bool pointerEventsEnabled = true;
+    private Vector2 previousLayoutOffset;
     private Orientation? scrollWithChildren;
     private Tags tags = new();
     private string tooltip = "";
@@ -379,7 +400,7 @@ public abstract class View : IView
     public bool ContainsPoint(Vector2 point)
     {
         return ActualBounds.ContainsPoint(point)
-            || FloatingElements.Any(fe => fe.AsViewChild().ContainsPoint(point))
+            || FloatingBounds.Any(bounds => bounds.ContainsPoint(point))
             || (hasChildrenWithOutOfBoundsContent && GetChildren().Any(c => c.ContainsPoint(point)));
     }
 
@@ -684,11 +705,16 @@ public abstract class View : IView
         {
             return;
         }
-        var previousTarget = GetChildAt(e.PreviousPosition);
+        var dispatchArgs =
+            LayoutOffset != previousLayoutOffset
+                ? new(e.PreviousPosition - previousLayoutOffset + LayoutOffset, e.Position)
+                : e;
+        previousLayoutOffset = LayoutOffset;
+        var previousTarget = GetChildAt(dispatchArgs.PreviousPosition);
         var currentTarget = GetChildAt(e.Position);
         if (currentTarget != previousTarget && previousTarget is not null)
         {
-            DispatchPointerEvent(previousTarget, e, (view, args) => view.OnPointerMove(args));
+            DispatchPointerEvent(previousTarget, dispatchArgs, (view, args) => view.OnPointerMove(args));
             if (e.Handled)
             {
                 return;
@@ -697,13 +723,14 @@ public abstract class View : IView
 
         if (currentTarget is not null)
         {
-            DispatchPointerEvent(currentTarget, e, (view, args) => view.OnPointerMove(args));
+            DispatchPointerEvent(currentTarget, dispatchArgs, (view, args) => view.OnPointerMove(args));
             if (e.Handled)
             {
                 return;
             }
         }
 
+        // For self checks, don't adjust previous position, as offset should only apply to inner content.
         var wasPointerInBounds = ContainsPoint(e.PreviousPosition);
         var isPointerInBounds = ContainsPoint(e.Position);
         if (isPointerInBounds && !wasPointerInBounds)
@@ -954,6 +981,9 @@ public abstract class View : IView
             case nameof(ActualBounds):
                 OnPropertyChanged(nameof(ContentBounds));
                 break;
+            case nameof(FloatingElements):
+                OnPropertyChanged(nameof(FloatingBounds));
+                break;
             default:
                 break;
         }
@@ -1047,9 +1077,23 @@ public abstract class View : IView
     private Vector2 GetContentOffset()
     {
         var borderThickness = GetBorderThickness();
-        return new Vector2(Margin.Left, Margin.Top)
+        return LayoutOffset
+            + new Vector2(Margin.Left, Margin.Top)
             + new Vector2(borderThickness.Left, borderThickness.Top)
             + new Vector2(Padding.Left, Padding.Top);
+    }
+
+    private IEnumerable<Bounds> GetFloatingBounds()
+    {
+        return FloatingElements
+            .SelectMany(GetFloatingElementBounds)
+            .Concat(GetChildren().SelectMany(child => child.GetFloatingBounds()));
+    }
+
+    private static IEnumerable<Bounds> GetFloatingElementBounds(FloatingElement fe)
+    {
+        var floatingChild = fe.AsViewChild();
+        return floatingChild.GetFloatingBounds().Prepend(floatingChild.GetActualBounds());
     }
 
     private ViewChild? GetOrUpdateDraggingChild(Vector2 position)

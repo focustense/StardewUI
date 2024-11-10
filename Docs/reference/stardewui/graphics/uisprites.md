@@ -45,6 +45,10 @@ public static class UiSprites
 | [DropDownBackground](#dropdownbackground) | Background of a drop-down menu. | 
 | [DropDownButton](#dropdownbutton) | Button to pull down a drop-down menu. | 
 | [GenericHorizontalDivider](#generichorizontaldivider) | Simpler, lighter horizontal divider than the [MenuHorizontalDivider](uisprites.md#menuhorizontaldivider), used as a horizontal rule to separate content areas without sectioning the entire menu. | 
+| [LargeDownArrow](#largedownarrow) | Large down arrow, used for macro navigation. | 
+| [LargeLeftArrow](#largeleftarrow) | Large left arrow, used for macro navigation. | 
+| [LargeRightArrow](#largerightarrow) | Large right arrow, used for macro navigation. | 
+| [LargeUpArrow](#largeuparrow) | Large up arrow, used for macro navigation. | 
 | [MenuBackground](#menubackground) | Background used for the in-game menu, not including borders. | 
 | [MenuBorder](#menuborder) | Modified 9-slice sprite used for the menu border, based on menu "tiles". Used for drawing the outer border of an entire menu UI. | 
 | [MenuBorderThickness](#menuborderthickness) | The actual distance from the outer edges of the [MenuBorder](uisprites.md#menuborder) sprite to where the actual "border" really ends, in terms of pixels. The border tiles are quite large, so this tends to be needed in order to determine where the content should go without adding a ton of extra padding. | 
@@ -62,6 +66,7 @@ public static class UiSprites
 | [SmallRightArrow](#smallrightarrow) | Small right arrow, typically used for top-level list navigation. | 
 | [SmallTrashCan](#smalltrashcan) | Small and tall trash can, larger than the [TinyTrashCan](uisprites.md#tinytrashcan) and more suitable for tall rows. | 
 | [SmallUpArrow](#smalluparrow) | Small up arrow, typically used for scroll bars. | 
+| [TabTopEmpty](#tabtopempty) | Top-facing tab with no inner content, used for tab controls. | 
 | [TextBox](#textbox) | Border/background for a text input box. | 
 | [TinyTrashCan](#tinytrashcan) | Very small trash can, e.g. to be used in lists/subforms as "remove" button. | 
 | [VerticalScrollThumb](#verticalscrollthumb) | Thumb sprite used for vertical scroll bars. | 
@@ -238,6 +243,62 @@ Simpler, lighter horizontal divider than the [MenuHorizontalDivider](uisprites.m
 
 ```cs
 public static StardewUI.Graphics.Sprite GenericHorizontalDivider { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### LargeDownArrow
+
+Large down arrow, used for macro navigation.
+
+```cs
+public static StardewUI.Graphics.Sprite LargeDownArrow { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### LargeLeftArrow
+
+Large left arrow, used for macro navigation.
+
+```cs
+public static StardewUI.Graphics.Sprite LargeLeftArrow { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### LargeRightArrow
+
+Large right arrow, used for macro navigation.
+
+```cs
+public static StardewUI.Graphics.Sprite LargeRightArrow { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### LargeUpArrow
+
+Large up arrow, used for macro navigation.
+
+```cs
+public static StardewUI.Graphics.Sprite LargeUpArrow { get; }
 ```
 
 ##### Property Value
@@ -480,6 +541,20 @@ Small up arrow, typically used for scroll bars.
 
 ```cs
 public static StardewUI.Graphics.Sprite SmallUpArrow { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### TabTopEmpty
+
+Top-facing tab with no inner content, used for tab controls.
+
+```cs
+public static StardewUI.Graphics.Sprite TabTopEmpty { get; }
 ```
 
 ##### Property Value

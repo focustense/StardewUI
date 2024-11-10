@@ -52,6 +52,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly bool wasHudDisplayed;
 
     private ViewChild[] hoverPath = [];
+    private bool isRehoverScheduled;
+    private int? rehoverRequestTick;
 
     // When clearing the activeClickableMenu, the game will call its Dispose method BEFORE actually changing the field
     // value to null or the new menu. If a Close handler then tries to open a different menu (which is really the
@@ -116,7 +118,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         using var trace = Diagnostics.Trace.Begin(this, nameof(applyMovementKey));
         using var _ = OverlayContext.PushContext(overlayContext);
         var direction = (Direction)directionValue;
-        var mousePosition = Game1.input.GetMouseState().Position;
+        var mousePosition = Game1.getMousePosition(true);
         OnViewOrOverlay(
             (view, origin) =>
             {
@@ -124,6 +126,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 if (found is not null)
                 {
                     FinishFocusSearch(view, origin.ToPoint(), found);
+                    RequestRehover();
                 }
             }
         );
@@ -251,12 +254,25 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void performHoverAction(int x, int y)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(performHoverAction));
-        if (previousHoverPosition.X == x && previousHoverPosition.Y == y)
+        bool rehover = isRehoverScheduled || rehoverRequestTick.HasValue;
+        if (rehover || (previousHoverPosition.X != x || previousHoverPosition.Y != y))
         {
-            return;
+            using var _ = OverlayContext.PushContext(overlayContext);
+            OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin, x, y));
         }
-        using var _ = OverlayContext.PushContext(overlayContext);
-        OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin, x, y));
+
+        // We use two flags for this in order to repeat the re-hover after one frame, because (a) input events won't
+        // always get handled in the ideal order to track any specific change, and (b) even if they do, when operating
+        // menus from the Framework, there can often by a one-frame delay before everything gets perfectly in sync due
+        // to coordination between the view model, in vs. out bindings, reactions to INPC or other change events, etc.
+        //
+        // A delay of exactly 1 frame isn't always going to be perfect either, but it handles the majority of cases such
+        // as wheel scrolling and controller-triggered tab/page navigation.
+        isRehoverScheduled = rehoverRequestTick.HasValue;
+        if (rehoverRequestTick <= Game1.ticks)
+        {
+            rehoverRequestTick = null;
+        }
     }
 
     /// <inheritdoc />
@@ -545,24 +561,21 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void InitiateButtonPress(SButton button)
     {
-        var mousePosition = Game1.input.GetMouseState().Position;
+        var mousePosition = Game1.getMousePosition(true);
         OnViewOrOverlay(
             (view, origin) =>
             {
                 var localPosition = mousePosition.ToVector2() - origin;
-                if (!view.ContainsPoint(origin))
+                if (!view.ContainsPoint(localPosition))
                 {
                     return;
                 }
                 var pathBeforeScroll = view.GetPathToPosition(localPosition).ToList();
                 var args = new ButtonEventArgs(localPosition, button);
                 view.OnButtonPress(args);
-                if (!args.Handled)
-                {
-                    return;
-                }
             }
         );
+        RequestRehover();
     }
 
     private void InitiateClick(SButton button, Point screenPoint)
@@ -571,12 +584,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             var overlayData = GetOverlayLayoutData(overlay);
             var overlayLocalPosition = screenPoint.ToVector2() - overlayData.Position;
-            if (
-                overlayLocalPosition.X < 0
-                || overlayLocalPosition.Y < 0
-                || overlayLocalPosition.X >= overlay.View.OuterSize.X
-                || overlayLocalPosition.Y >= overlay.View.OuterSize.Y
-            )
+            if (!overlayData.ContainsPoint(overlayLocalPosition))
             {
                 overlayContext.Pop();
             }
@@ -599,11 +607,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         var args = new ClickEventArgs(localPosition, button);
         view.OnClick(args);
+        RequestRehover();
     }
 
     private void InitiateWheel(Direction direction)
     {
-        var mousePosition = Game1.input.GetMouseState().Position;
+        var mousePosition = Game1.getMousePosition(true);
         OnViewOrOverlay(
             (view, origin) =>
             {
@@ -617,6 +626,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 }
                 Game1.playSound("shiny4");
                 Refocus(view, origin, localPosition, pathBeforeScroll, direction);
+                RequestRehover();
             }
         );
     }
@@ -642,6 +652,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
+        RequestRehover();
         // Make gutters act as margins; otherwise centering could actually place content in the gutter.
         // For example, if there is an asymmetrical gutter with left = 100 and right = 200, and it takes up the full
         // viewport width, then it will actually occupy the horizontal region from 150 to (viewportWidth - 150), which
@@ -673,6 +684,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         if (isUpdateRequired)
         {
             overlayData.Update(overlay);
+            RequestRehover();
         }
         return overlayData;
     }
@@ -824,6 +836,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
+    private void RequestRehover()
+    {
+        rehoverRequestTick = Game1.ticks;
+    }
+
     private void RestoreFocusToOverlayActivation(IOverlay overlay)
     {
         var overlayData = GetOverlayLayoutData(overlay);
@@ -856,12 +873,28 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         public ViewChild[] ParentPath { get; set; } = [];
         public Vector2 Position { get; set; }
 
+        // Interactable bounds are the individual bounding boxes of all top-level and floating views in the overlay.
+        //
+        // Union bounds are a single bounding box used to speed up checks that are completely outside any part of the
+        // overlay, but a point being inside the union does not guarantee that it actually lands on a real view; that
+        // is, there may be gaps between views.
+        //
+        // As a hybrid of speed and accuracy, we check the union bounds to exclude impossible points, then check the
+        // interactable bounds to confirm a positive match.
+        private Bounds[] interactableBounds = [];
+        private Bounds unionBounds = Bounds.Empty;
+
         public static OverlayLayoutData FromOverlay(IView rootView, Vector2 rootPosition, IOverlay overlay)
         {
             using var _ = Diagnostics.Trace.Begin(nameof(OverlayLayoutData), nameof(FromOverlay));
             var data = new OverlayLayoutData(new(rootView, rootPosition));
             data.Update(overlay);
             return data;
+        }
+
+        public bool ContainsPoint(Vector2 point)
+        {
+            return unionBounds.ContainsPoint(point) && interactableBounds.Any(bounds => bounds.ContainsPoint(point));
         }
 
         public void Update(IOverlay overlay)
@@ -896,6 +929,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 overlay.View.OuterSize.Y
             );
             Position = new Vector2(x, y);
+
+            interactableBounds = overlay.View.FloatingBounds.Prepend(overlay.View.ActualBounds).ToArray();
+            unionBounds = interactableBounds.Aggregate(Bounds.Empty, (acc, bounds) => acc.Union(bounds));
         }
 
         private ViewChild? GetImmediateParent() => ParentPath.Length > 0 ? ParentPath[^1] : null;

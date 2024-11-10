@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Configures the repeat rate of an action used in an [ActionState&lt;T&gt;](actionstate-1.md).
 
 ```cs
+[StardewUI.DuckType]
 public record ActionRepeat : IEquatable<StardewUI.Input.ActionRepeat>
 ```
 

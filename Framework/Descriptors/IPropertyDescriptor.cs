@@ -16,6 +16,37 @@ public interface IPropertyDescriptor : IMemberDescriptor
     bool CanWrite { get; }
 
     /// <summary>
+    /// Whether or not the property is likely auto-implemented.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Auto-property detection is heuristic, relying on the method's IL instructions and the name of its backing field.
+    /// This can often be interpreted as a signal that the property won't receive property-change notifications, since
+    /// to do so (whether explicitly or via some weaver/source generator) requires an implementation that is different
+    /// from the auto-generated getter and setter.
+    /// </para>
+    /// <para>
+    /// Caveats: This only works as a negative signal (a value of <c>false</c> does not prove that the property
+    /// <em>will</em> receive notifications, even if the declaring type implements
+    /// <see cref="System.ComponentModel.INotifyPropertyChanged"/>), and is somewhat fuzzy even as a negative signal;
+    /// it is theoretically possible for a source generator or IL weaver to leave behind all the markers of an auto
+    /// property and still emit notifications, although no known libraries actually do so.
+    /// </para>
+    /// </remarks>
+    bool IsAutoProperty { get; }
+
+    /// <summary>
+    /// Whether or not the underlying member is a field, rather than a real property.
+    /// </summary>
+    /// <remarks>
+    /// For binding convenience, fields and properties are both called "properties" for descriptors, as the external
+    /// access pattern is the same; however, mutable fields can never reliably emit property-change notifications
+    /// regardless of whether the declaring type implements <see cref="System.ComponentModel.INotifyPropertyChanged"/>,
+    /// so this is usually used to emit some warning.
+    /// </remarks>
+    bool IsField { get; }
+
+    /// <summary>
     /// The property's value type.
     /// </summary>
     Type ValueType { get; }

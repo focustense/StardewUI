@@ -1,3 +1,7 @@
+---
+title: Examples
+---
+
 # Examples [:material-file-code-outline:](https://github.com/focustense/StardewUI/blob/dev/TestMod/Examples/){ title="C# Source" } [:material-file-star-outline:](https://github.com/focustense/StardewUI/blob/dev/TestMod/assets/views/){ title="StarML Source" }
 
 Curated list of examples built with StardewUI to demonstrate the many features of the framework and how to use them.
@@ -15,5 +19,15 @@ The most current source for any example can usually be found in the `dev` branch
     _@mushymato, @focustense_
 
     [![Bestiary](../images/example-bestiary.png)](bestiary.md)
+
+-   [**Train Shop (Carousel)**](carousel.md)  
+    _@focustense_
+
+    [![Train Shop (Carousel)](../images/example-carousel.png)](carousel.md)
+
+-   [**Crop Calendar**](crop-calendar.md)  
+    _@mushymato_
+
+    [![Crop Calendar](../images/example-crop-calendar.png)](crop-calendar.md)
 
 </div>

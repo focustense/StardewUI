@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Describes a set of edge dimensions, e.g. for margin or padding.
 
 ```cs
+[StardewUI.DuckType]
 public record Edges : IEquatable<StardewUI.Layout.Edges>
 ```
 
@@ -335,7 +336,12 @@ The formatted edges to parse.
 
 ##### Remarks
 
-The behavior depends on the number of comma-separated tokens in the string, equivalent to the constructor overload with that number of parameters:
+The behavior depends on the number of comma-separated tokens in the string, equivalent to the constructor overload with that number of parameters: 
+
+  - A single value will give all edges the same length
+  - Two values will set the horizontal (left/right) and vertical (top/bottom) lengths
+  - Four values will set each length individually
+  - Any other format will throw [FormatException](https://learn.microsoft.com/en-us/dotnet/api/system.formatexception).
 
 -----
 

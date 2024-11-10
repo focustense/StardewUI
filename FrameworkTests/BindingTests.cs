@@ -16,6 +16,7 @@ using StardewUI.Framework.Views;
 using StardewUI.Graphics;
 using StardewUI.Layout;
 using StardewUI.Widgets;
+using StardewValley;
 using Xunit.Abstractions;
 
 namespace StarML.Tests;
@@ -68,8 +69,48 @@ public partial class BindingTests
         public bool IsValid { get; set; } = true;
     }
 
+    class FakeResolutionScope : IResolutionScope
+    {
+        private readonly Dictionary<string, string> translations = [];
+
+        public void AddTranslation(string key, string translation)
+        {
+            translations.Add(key, translation);
+        }
+
+        public Translation? GetTranslation(string key)
+        {
+            // Not used in tests; we implement GetTranslationValue instead.
+            return null;
+        }
+
+        public string GetTranslationValue(string key)
+        {
+            return translations.GetValueOrDefault(key) ?? "";
+        }
+    }
+
+    class FakeResolutionScopeFactory : IResolutionScopeFactory
+    {
+        public FakeResolutionScope DefaultScope { get; } = new FakeResolutionScope();
+
+        private readonly Dictionary<Document, FakeResolutionScope> perDocumentScopes = [];
+
+        public void AddForDocument(Document document, FakeResolutionScope scope)
+        {
+            perDocumentScopes.Add(document, scope);
+        }
+
+        public IResolutionScope CreateForDocument(Document document)
+        {
+            return perDocumentScopes.TryGetValue(document, out var scope) ? scope : DefaultScope;
+        }
+    }
+
     private readonly FakeAssetCache assetCache;
     private readonly ITestOutputHelper output;
+    private readonly FakeResolutionScopeFactory resolutionScopeFactory;
+    private readonly FakeResolutionScope resolutionScope;
     private readonly IValueConverterFactory valueConverterFactory;
     private readonly IValueSourceFactory valueSourceFactory;
     private readonly IViewFactory viewFactory;
@@ -79,12 +120,14 @@ public partial class BindingTests
     {
         this.output = output;
         Logger.Monitor = new TestMonitor(output);
-        viewFactory = new ViewFactory();
+        viewFactory = new RootViewFactory([]);
         assetCache = new FakeAssetCache();
         valueSourceFactory = new ValueSourceFactory(assetCache);
-        valueConverterFactory = new ValueConverterFactory();
+        valueConverterFactory = new RootValueConverterFactory([]);
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, valueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
+        resolutionScopeFactory = new FakeResolutionScopeFactory();
+        resolutionScope = resolutionScopeFactory.DefaultScope;
         viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
     }
 
@@ -102,7 +145,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new ModelWithNotify() { Name = "Test text", Color = Color.Blue };
-        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model), resolutionScope);
 
         var label = (Label)view;
         Assert.Equal(1, label.MaxLines);
@@ -137,7 +180,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = false, Size = Vector2.Zero };
-        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model), resolutionScope);
 
         // Initial bind should generally not cause immediate output sync, because we assume the view isn't completely
         // stable or fully initialized yet.
@@ -167,7 +210,7 @@ public partial class BindingTests
         );
         var view = viewFactory.CreateView(element.Tag);
         var model = new OutputBindingTestModel { Checked = true };
-        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model));
+        using var viewBinding = viewBinder.Bind(view, element, BindingContext.Create(model), resolutionScope);
 
         var checkbox = (CheckBox)view;
         Assert.True(model.Checked);
@@ -221,12 +264,12 @@ public partial class BindingTests
             ],
             []
         );
-        var tree = new ViewNode(valueSourceFactory, viewFactory, viewBinder, root)
+        var tree = new ViewNode(valueSourceFactory, viewFactory, viewBinder, root, resolutionScope)
         {
             Children =
             [
-                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child1)),
-                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child2)),
+                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child1, resolutionScope)),
+                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child2, resolutionScope)),
             ],
         };
         tree.Update();
@@ -267,7 +310,8 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache
+            assetCache,
+            resolutionScopeFactory
         );
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
@@ -277,7 +321,7 @@ public partial class BindingTests
                 <label max-lines=""2"" text={HeaderText} />
             </lane>";
         var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
+        var tree = viewNodeFactory.CreateNode(document);
         tree.Update();
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
@@ -331,6 +375,18 @@ public partial class BindingTests
 
         Assert.Equal("Second", label1.Text);
         Assert.Equal("First", label2.Text);
+    }
+
+    [Fact]
+    public void WhenBoundToTranslation_UpdatesWithTranslationValue()
+    {
+        resolutionScope.AddTranslation("TranslationKey", "Hello");
+        string markup = @"<label text={#TranslationKey} />";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var label = Assert.IsType<Label>(tree.Views.SingleOrDefault());
+
+        Assert.Equal("Hello", label.Text);
     }
 
     class FieldBindingTestModel
@@ -673,6 +729,37 @@ public partial class BindingTests
             {
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("Baz", label.Text);
+            }
+        );
+    }
+
+    [Fact]
+    public void WhenRepeating_PropagatesResolutionScope()
+    {
+        resolutionScope.AddTranslation("RepeatTranslationKey", "Hello");
+        string markup = @"<label *repeat={Items} text={#RepeatTranslationKey} />";
+        var model = new RepeatingModel()
+        {
+            Items = [new() { Name = "Foo" }, new() { Name = "Bar" }, new() { Name = "Baz" }],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        Assert.Collection(
+            tree.Views,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Hello", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Hello", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("Hello", label.Text);
             }
         );
     }
@@ -1107,6 +1194,30 @@ public partial class BindingTests
 
         [Notify]
         private Sprite? sprite;
+    }
+
+    [Fact]
+    public void WhenIncludedViewBindsToTranslation_UsesResolutionScopeForViewDocument()
+    {
+        resolutionScope.AddTranslation("OuterKey", "Foo");
+        var includedDocument = Document.Parse(@"<label text={#IncludedKey} />");
+        var includedScope = new FakeResolutionScope();
+        includedScope.AddTranslation("IncludedKey", "Bar");
+        resolutionScopeFactory.AddForDocument(includedDocument, includedScope);
+        assetCache.Put("IncludedView", includedDocument);
+
+        string markup =
+            @"<lane>
+                <label text={#OuterKey} />
+                <include name=""IncludedView"" />
+            </lane>";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var lane = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        var outerLabel = Assert.IsType<Label>(lane.Children[0]);
+        Assert.Equal("Foo", outerLabel.Text);
+        var innerLabel = Assert.IsType<Label>(lane.Children[1]);
+        Assert.Equal("Bar", innerLabel.Text);
     }
 
     [Fact]
@@ -1723,6 +1834,114 @@ public partial class BindingTests
         Assert.Equal("xuq", dropdown.SelectedOptionText);
     }
 
+    class UpdateOuterModel
+    {
+        public UpdateInnerModel Inner { get; set; } = new();
+        public int UpdateCount { get; set; }
+
+        public void Update()
+        {
+            UpdateCount++;
+        }
+    }
+
+    class UpdateInnerModel
+    {
+        public TimeSpan ElapsedTotal { get; set; }
+
+        public void Update(TimeSpan elapsed)
+        {
+            ElapsedTotal += elapsed;
+        }
+    }
+
+    [Fact]
+    public void WhenContextHasUpdateMethod_RunsEachTick()
+    {
+        // The markup deliberately attaches to the `Inner` context twice in order to verify that there isn't a duplicate
+        // update tick; it should be one per context, not one per context *binding*.
+        string markup =
+            @"<panel>
+                <lane>
+                    <frame *if=""true"" *context={Inner}>
+                        <button text=""Cancel"" />
+                    </frame>
+                    <frame *if=""true"" *context={Inner}>
+                        <button text=""OK"" />
+                    </frame>
+                </lane>
+            </panel>";
+        var model = new UpdateOuterModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        // Initial update, no time elapsed (see below).
+        Assert.Equal(1, model.UpdateCount);
+        Assert.Equal(TimeSpan.Zero, model.Inner.ElapsedTotal);
+
+        // Since there is no actual game loop running in these tests, we have to reset the tracker manually.
+        ContextUpdateTracker.Instance.Reset();
+        tree.Update(TimeSpan.FromMilliseconds(50));
+        // This should be ignored because the tracker hasn't reset.
+        tree.Update(TimeSpan.FromMilliseconds(60));
+
+        Assert.Equal(2, model.UpdateCount);
+        Assert.Equal(TimeSpan.FromMilliseconds(50), model.Inner.ElapsedTotal);
+
+        // Make double-plus sure that reset actually resets
+        ContextUpdateTracker.Instance.Reset();
+        tree.Update(TimeSpan.FromMilliseconds(40));
+
+        Assert.Equal(3, model.UpdateCount);
+        Assert.Equal(TimeSpan.FromMilliseconds(90), model.Inner.ElapsedTotal);
+    }
+
+    class UpdateInvalidReturnModel
+    {
+        public int UpdateCount { get; set; }
+
+        public bool Update()
+        {
+            UpdateCount++;
+            return true;
+        }
+    }
+
+    [Fact]
+    public void WhenUpdateMethodHasInvalidReturnType_IgnoresForTick()
+    {
+        string markup = @"<label text=""Hello"" />";
+        var model = new UpdateInvalidReturnModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        // BuildTreeFromMarkup would fire the first update anyway, but this adds a little more certainty.
+        tree.Update();
+
+        Assert.Equal(0, model.UpdateCount);
+    }
+
+    class UpdateInvalidArgsModel
+    {
+        public int UpdateCount { get; set; }
+
+        public void Update(TimeSpan elapsed, int arg)
+        {
+            UpdateCount++;
+        }
+    }
+
+    [Fact]
+    public void WhenUpdateMethodHasInvalidArgumentTypes_IgnoresForTick()
+    {
+        string markup = @"<label text=""Hello"" />";
+        var model = new UpdateInvalidArgsModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        // BuildTreeFromMarkup would fire the first update anyway, but this adds a little more certainty.
+        tree.Update();
+
+        Assert.Equal(0, model.UpdateCount);
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
         var viewNodeFactory = new ViewNodeFactory(
@@ -1730,10 +1949,11 @@ public partial class BindingTests
             valueSourceFactory,
             valueConverterFactory,
             viewBinder,
-            assetCache
+            assetCache,
+            resolutionScopeFactory
         );
         var document = Document.Parse(markup);
-        var tree = viewNodeFactory.CreateNode(document.Root);
+        var tree = viewNodeFactory.CreateNode(document);
         tree.Context = BindingContext.Create(model);
         tree.Update();
         return tree;

@@ -109,6 +109,26 @@ public static class UiSprites
     public static Sprite GenericHorizontalDivider => new(Game1.menuTexture, SourceRect: new(64, 412, 64, 8));
 
     /// <summary>
+    /// Large down arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeDownArrow => new(Game1.mouseCursors, SourceRect: new(0, 64, 64, 64));
+
+    /// <summary>
+    /// Large left arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeLeftArrow => new(Game1.mouseCursors, SourceRect: new(0, 256, 64, 64));
+
+    /// <summary>
+    /// Large right arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeRightArrow => new(Game1.mouseCursors, SourceRect: new(0, 192, 64, 64));
+
+    /// <summary>
+    /// Large up arrow, used for macro navigation.
+    /// </summary>
+    public static Sprite LargeUpArrow => new(Game1.mouseCursors, SourceRect: new(64, 64, 64, 64));
+
+    /// <summary>
     /// Background used for the in-game menu, not including borders.
     /// </summary>
     public static Sprite MenuBackground => new(Game1.menuTexture, SourceRect: new(64, 128, 64, 64));
@@ -222,6 +242,17 @@ public static class UiSprites
     /// Small and tall trash can, larger than the <see cref="TinyTrashCan"/> and more suitable for tall rows.
     /// </summary>
     public static Sprite SmallTrashCan => new(Game1.mouseCursors2, SourceRect: new(22, 11, 15, 20));
+
+    /// <summary>
+    /// Top-facing tab with no inner content, used for tab controls.
+    /// </summary>
+    public static Sprite TabTopEmpty =>
+        new(
+            Game1.mouseCursors,
+            SourceRect: new(16, 368, 16, 16),
+            FixedEdges: new(5, 5, 5, 1),
+            SliceSettings: new(Scale: 4)
+        );
 
     /// <summary>
     /// Border/background for a text input box.

@@ -35,6 +35,7 @@ public interface IView : System.ComponentModel.INotifyPropertyChanged
 | --- | --- |
 | [ActualBounds](#actualbounds) | The bounds of this view relative to the origin (0, 0). | 
 | [ContentBounds](#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](iview.md#actualbounds) excluding margins. | 
+| [FloatingBounds](#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants. | 
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
 | [Layout](#layout) | The current layout parameters, which determine how [Measure(Vector2)](iview.md#measurevector2) will behave. | 
 | [Name](#name) | Simple name for this view, used in log/debug output; does not affect behavior. | 
@@ -120,6 +121,20 @@ StardewUI.Layout.Bounds ContentBounds { get; }
 ##### Property Value
 
 [Bounds](layout/bounds.md)
+
+-----
+
+#### FloatingBounds
+
+Contains the bounds of all floating elements in this view tree, including the current view and all descendants.
+
+```cs
+System.Collections.Generic.IEnumerable<StardewUI.Layout.Bounds> FloatingBounds { get; }
+```
+
+##### Property Value
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[Bounds](layout/bounds.md)>
 
 -----
 
@@ -343,7 +358,13 @@ The direction of cursor movement.
 
 ##### Remarks
 
-If `position` is out of bounds, it does not necessarily mean that the view should return `null`; the expected result depends on the `direction` also. The base case is when the focus position is already in bounds, and in this case a view should return whichever view can be reached by moving from the edge of that view along a straight line in the specified `direction`. However, focus search is recursive and the result should reflect the "best" candidate for focus if the cursor were to move _into_ this view's bounds. For example, in a 1D horizontal layout the rules might be:  There are no strict rules for how a view performs focus search, but in general it is assumed that a view implementation understands its own layout and can accommodate accordingly; for example, a grid would follow essentially the same rules as our "list" example above, with additional considerations for navigating rows. "Ragged" 2D layouts might have complex rules requiring explicit neighbors, and therefore are typically easier to implement as nested lanes.
+If `position` is out of bounds, it does not necessarily mean that the view should return `null`; the expected result depends on the `direction` also. The base case is when the focus position is already in bounds, and in this case a view should return whichever view can be reached by moving from the edge of that view along a straight line in the specified `direction`. However, focus search is recursive and the result should reflect the "best" candidate for focus if the cursor were to move _into_ this view's bounds. For example, in a 1D horizontal layout the rules might be: 
+
+  - If the `direction` is [East](direction.md#east), and the position's X value is negative, then the result should the leftmost focusable child, regardless of Y value.
+  - If the direction is [South](direction.md#south), and the X position is within the view's horizontal bounds, and the Y value is negative or greater than the view's height, then result should be whichever child intersects with that X position.
+  - If the direction is [West](direction.md#west) and the X position is negative, or the direction is [East](direction.md#east) and the X position is greater than the view's width, then the result should be `null` as there is literally nothing the view knows about in that direction.
+
+ There are no strict rules for how a view performs focus search, but in general it is assumed that a view implementation understands its own layout and can accommodate accordingly; for example, a grid would follow essentially the same rules as our "list" example above, with additional considerations for navigating rows. "Ragged" 2D layouts might have complex rules requiring explicit neighbors, and therefore are typically easier to implement as nested lanes.
 
 -----
 
@@ -482,7 +503,13 @@ bool IsDirty();
 
 ##### Remarks
 
-Typically, a view will be considered dirty if and only if one of the following are true:  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
+Typically, a view will be considered dirty if and only if one of the following are true: 
+
+  - The [Layout](iview.md#layout) has changed
+  - The content has changed in a way that could affect layout, e.g. the text has changed in a [Content](layout/lengthtype.md#content) configuration
+  - The `availableSize` is not the same as the previously-seen value (see remarks in [Measure(Vector2)](iview.md#measurevector2))
+
+ A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
 
 -----
 

@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Descriptors;
+﻿using StardewUI.Framework.Content;
+using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 
@@ -17,14 +18,16 @@ public class ReflectionViewBinder(
 ) : IViewBinder
 {
     /// <inheritdoc />
-    public IViewBinding Bind(IView view, IElement element, BindingContext? context)
+    public IViewBinding Bind(IView view, IElement element, BindingContext? context, IResolutionScope resolutionScope)
     {
         using var _ = Trace.Begin(this, nameof(Bind));
         var viewDescriptor = GetDescriptor(view);
         var attributeBindings = element
             // Only property attributes are bound to the view; others affect the outer hierarchy.
             .Attributes.Where(attribute => attribute.Type == AttributeType.Property)
-            .Select(attribute => attributeBindingFactory.TryCreateBinding(viewDescriptor, attribute, context))
+            .Select(attribute =>
+                attributeBindingFactory.TryCreateBinding(viewDescriptor, attribute, context, resolutionScope)
+            )
             .Where(binding => binding is not null)
             .Cast<IAttributeBinding>()
             .ToList();

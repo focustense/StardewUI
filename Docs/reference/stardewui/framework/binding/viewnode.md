@@ -37,7 +37,7 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
  | Name | Description |
 | --- | --- |
-| [ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)](#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
+| [ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)](#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
 
 ### Properties
 
@@ -61,12 +61,12 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
 ### Constructors
 
-#### ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IAttribute)
+#### ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)
 
 Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.
 
 ```cs
-public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, StardewUI.Framework.Dom.IAttribute contextAttribute);
+public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, StardewUI.Framework.Content.IResolutionScope resolutionScope, StardewUI.Framework.Dom.IAttribute contextAttribute);
 ```
 
 ##### Parameters
@@ -82,6 +82,9 @@ Binding service used to create [IViewBinding](iviewbinding.md) instances that de
 
 **`element`** &nbsp; [SElement](../dom/selement.md)  
 Element data for this node.
+
+**`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving externalized attributes, such as translation keys.
 
 **`contextAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 Optional attribute specifying how to resolve the context for child nodes based on this node's assigned [Context](viewnode.md#context).

@@ -38,6 +38,12 @@ public class ViewEngine : StardewUI.Framework.IViewEngine
 | --- | --- |
 | [ViewEngine(IAssetCache, IModHelper, IViewNodeFactory)](#viewengineiassetcache-imodhelper-iviewnodefactory) | Initializes a new [ViewEngine](viewengine.md) instance. | 
 
+### Properties
+
+ | Name | Description |
+| --- | --- |
+| [SourceResolver](#sourceresolver) | Source resolver for resolving documents created by this view engine back to their original mod. | 
+
 ### Methods
 
  | Name | Description |
@@ -46,7 +52,7 @@ public class ViewEngine : StardewUI.Framework.IViewEngine
 | [CreateDrawableFromMarkup(string)](#createdrawablefrommarkupstring) | Creates an [IViewDrawable](../iviewdrawable.md) from arbitrary markup. | 
 | [CreateMenuFromAsset(string, Object)](#createmenufromassetstring-object) | Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher. | 
 | [CreateMenuFromMarkup(string, Object)](#createmenufrommarkupstring-object) | Creates a menu from arbitrary markup. | 
-| [EnableHotReloading()](#enablehotreloading) | Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites. | 
+| [EnableHotReloading(string)](#enablehotreloadingstring) | Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites. | 
 | [RegisterSprites(string, string)](#registerspritesstring-string) | Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets. | 
 | [RegisterViews(string, string)](#registerviewsstring-string) | Registers a mod directory to be searched for view (StarML) assets. Uses the `.sml` extension. | 
 
@@ -72,6 +78,22 @@ SMAPI mod helper for the API consumer mod (not for StardewUI).
 
 **`viewNodeFactory`** &nbsp; [IViewNodeFactory](../binding/iviewnodefactory.md)  
 Factory for creating and binding [IViewNode](../binding/iviewnode.md)s.
+
+-----
+
+### Properties
+
+#### SourceResolver
+
+Source resolver for resolving documents created by this view engine back to their original mod.
+
+```cs
+public StardewUI.Framework.Content.ISourceResolver SourceResolver { get; }
+```
+
+##### Property Value
+
+[ISourceResolver](../content/isourceresolver.md)
 
 -----
 
@@ -185,17 +207,24 @@ IClickableMenu
 
 -----
 
-#### EnableHotReloading()
+#### EnableHotReloading(string)
 
 Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites.
 
 ```cs
-public void EnableHotReloading();
+public void EnableHotReloading(string sourceDirectory);
 ```
+
+##### Parameters
+
+**`sourceDirectory`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+Optional source directory to watch and sync changes from. If not specified, or not a valid source directory, then hot reload will only pick up changes from within the live mod directory.
 
 ##### Remarks
 
-May impact game performance and should normally only be used during development and/or in debug mode.
+If the `sourceDirectory` argument is specified, and points to a directory with the same asset structure as the mod, then an additional sync will be set up such that files modified in the `sourceDirectory` while the game is running will be copied to the active mod directory and subsequently reloaded. In other words, pointing this at the mod's `.csproj` directory allows hot reloading from the source files instead of the deployed mod's files. 
+
+ Hot reload may impact game performance and should normally only be used during development and/or in debug mode.
 
 -----
 

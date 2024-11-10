@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
 
@@ -14,10 +15,12 @@ namespace StardewUI.Framework.Binding;
 /// <param name="valueSourceFactory">The factory responsible for creating <see cref="IValueSource{T}"/> instances from
 /// attribute data.</param>
 /// <param name="childCreator">Delegate for creating a new child node.</param>
+/// <param name="resolutionScope">Scope for resolving externalized attributes, such as translation keys.</param>
 /// <param name="repeatAttribute">The attribute containing the collection expression.</param>
 public class RepeaterNode(
     IValueSourceFactory valueSourceFactory,
     Func<IViewNode.Child> childCreator,
+    IResolutionScope resolutionScope,
     IAttribute repeatAttribute
 ) : IViewNode
 {
@@ -110,7 +113,7 @@ public class RepeaterNode(
         {
             var collectionType = valueSourceFactory.GetValueType(repeatAttribute, null, context);
             var collectionSource = collectionType is not null
-                ? valueSourceFactory.GetValueSource(repeatAttribute, context, collectionType)
+                ? valueSourceFactory.GetValueSource(collectionType, repeatAttribute, context, resolutionScope)
                 : null;
             collectionWatcher?.Dispose();
             collectionWatcher = collectionSource is not null ? CollectionWatcher.Create(collectionSource) : null;

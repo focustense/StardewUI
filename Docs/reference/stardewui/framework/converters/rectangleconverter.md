@@ -22,14 +22,15 @@ String converter for the XNA [Rectangle](https://docs.monogame.net/api/Microsoft
 
 ```cs
 public class RectangleConverter : 
-    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Rectangle>
+    StardewUI.Framework.Converters.IValueConverter<string, Microsoft.Xna.Framework.Rectangle>, 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ RectangleConverter
 
 **Implements**  
-[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html)>
+[IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html)>, [IValueConverter](ivalueconverter.md)
 
 ## Members
 

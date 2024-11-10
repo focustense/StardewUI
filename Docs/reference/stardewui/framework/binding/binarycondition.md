@@ -43,7 +43,7 @@ Passes whenever both values are equal. Used for `*switch` and `*case` attributes
 
  | Name | Description |
 | --- | --- |
-| [BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)](#binaryconditionivaluesourcefactory-ivalueconverterfactory-iattribute-iattribute) | A condition based on the comparison of two values. | 
+| [BinaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute, IResolutionScope, IAttribute)](#binaryconditionivaluesourcefactory-ivalueconverterfactory-iresolutionscope-iattribute-iresolutionscope-iattribute) | A condition based on the comparison of two values. | 
 
 ### Properties
 
@@ -66,12 +66,12 @@ Passes whenever both values are equal. Used for `*switch` and `*case` attributes
 
 ### Constructors
 
-#### BinaryCondition(IValueSourceFactory, IValueConverterFactory, IAttribute, IAttribute)
+#### BinaryCondition(IValueSourceFactory, IValueConverterFactory, IResolutionScope, IAttribute, IResolutionScope, IAttribute)
 
 A condition based on the comparison of two values.
 
 ```cs
-public BinaryCondition(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Dom.IAttribute leftAttribute, StardewUI.Framework.Dom.IAttribute rightAttribute);
+public BinaryCondition(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Content.IResolutionScope leftScope, StardewUI.Framework.Dom.IAttribute leftAttribute, StardewUI.Framework.Content.IResolutionScope rightScope, StardewUI.Framework.Dom.IAttribute rightAttribute);
 ```
 
 ##### Parameters
@@ -82,8 +82,14 @@ The factory responsible for creating [IValueSource&lt;T&gt;](../sources/ivalueso
 **`valueConverterFactory`** &nbsp; [IValueConverterFactory](../converters/ivalueconverterfactory.md)  
 The factory responsible for creating [IValueConverter&lt;TSource, TDestination&gt;](../converters/ivalueconverter-2.md) instances, used to convert bound values to the types required by the target view.
 
+**`leftScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving any externalized `leftAttribute` values, such as translation keys.
+
 **`leftAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 The attribute containing the expression for the LHS operand.
+
+**`rightScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
+Scope for resolving any externalized `rightAttribute` values, such as translation keys.
 
 **`rightAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 The attribute containing the expression for the RHS operand.

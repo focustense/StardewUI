@@ -21,7 +21,8 @@ Assembly: StardewUI.dll
 Provides a method to convert between value types.
 
 ```cs
-public interface IValueConverter<TSource, TDestination>
+public interface IValueConverter<TSource, TDestination> : 
+    StardewUI.Framework.Converters.IValueConverter
 ```
 
 ### Type Parameters
@@ -32,6 +33,9 @@ The type of value to be converted.
 **`TDestination`**  
 The converted value type.
 
+
+**Implements**  
+[IValueConverter](ivalueconverter.md)
 
 ## Members
 

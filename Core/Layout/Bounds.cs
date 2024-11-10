@@ -7,6 +7,7 @@ namespace StardewUI.Layout;
 /// </summary>
 /// <param name="Position">The top-left position.</param>
 /// <param name="Size">The width and height.</param>
+[DuckType]
 public record Bounds(Vector2 Position, Vector2 Size) : IOffsettable<Bounds>
 {
     /// <summary>
@@ -86,6 +87,17 @@ public record Bounds(Vector2 Position, Vector2 Size) : IOffsettable<Bounds>
         var position = new Vector2(left, top);
         var size = new Vector2(right - left, bottom - top);
         return new(position, size);
+    }
+
+    /// <summary>
+    /// Checks if this <see cref="Bounds"/> intersects with another instance, without computing the intersection.
+    /// </summary>
+    /// <param name="other">The other bounds to check for intersection.</param>
+    /// <returns>True if this <see cref="Bounds"/> and the <paramref name="other"/> bounds have any intersecting area,
+    /// otherwise <c>false</c>.</returns>
+    public bool IntersectsWith(Bounds other)
+    {
+        return other.Right > Left && other.Left < Right && other.Bottom > Top && other.Top < Bottom;
     }
 
     /// <summary>

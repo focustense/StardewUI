@@ -1,0 +1,33 @@
+{
+  "Texture": "LooseSprites/Cursors",
+  "Sprites": {
+    "Coin": {
+      "SourceRect": "193, 373, 9, 9",
+      "Scale": 4
+    },
+    "TrainEngine": {
+      "SourceRect": "576, 512, 128, 64",
+      "Scale": 2
+    },
+    "TrainCarPassenger": {
+      "SourceRect": "448, 512, 128, 64",
+      "Scale": 2
+    },
+    "TrainCarFreightUncovered": {
+      "SourceRect": "320, 512, 128, 64",
+      "Scale": 2
+    },
+    "TrainCarFreightCovered": {
+      "SourceRect": "192, 512, 128, 64",
+      "Scale": 2
+    },
+    "TrainCargoBoxes": {
+      "SourceRect": "455, 708, 115, 17",
+      "Scale": 2
+    },
+    "TrainCargoMinerals": {
+      "SourceRect": "583, 580, 115, 17",
+      "Scale": 2
+    }
+  }
+}

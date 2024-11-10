@@ -13,6 +13,8 @@ title: StardewUI
 | Name | Description |
 | --- | --- |
 | [DirectionExtensions](directionextensions.md) | Helpers for working with [Direction](direction.md). |
+| [DuckPropertyAttribute](duckpropertyattribute.md) | Specifies a property name to use for duck-type conversions, if different from the member name. |
+| [DuckTypeAttribute](ducktypeattribute.md) | Specifies that a type is eligible for duck-type conversions in data bindings. |
 | [Tags](tags.md) | Typesafe heterogeneous container for associating arbitrary data with a view or other UI object. |
 | [UI](ui.md) | Entry point for Stardew UI. Must be called from Entry(IModHelper). |
 | [UiViewport](uiviewport.md) | Utilities relating to the game's UI viewport. |

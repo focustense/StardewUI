@@ -8,7 +8,7 @@ namespace StardewUI;
 /// <summary>
 /// Entry point for Stardew UI. Must be called from <see cref="Mod.Entry(IModHelper)"/>.
 /// </summary>
-public static class UI
+public static partial class UI
 {
     /// <summary>
     /// Helper for game input.

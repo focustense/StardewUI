@@ -85,6 +85,8 @@ These are the standard tags available in the UI framework:
 | `<grid>`       | [Grid](../library/standard-views.md#grid) | Uniform grid layout using either fixed size per item or fixed number of items per row/column. |
 | `<image>`      | [Image](../library/standard-views.md#image) | Displays one image using a variety of scaling and fit options. |
 | `<include>`    | [Included View](included-views.md) | Insert a different StarML view in this position, using its asset `name` to load the content. |
+| `<keybind>`    | [Keybind](../library/standard-views.md#keybind) | Displays the buttons bound for a single keybinding. |
+| `<keybind-editor>` | [Keybind Editor](../library/standard-views.md#keybind-editor) | Displays and allows rebinding of all button combinations in a keybind list. |
 | `<label>`      | [Label](../library/standard-views.md#label) | Displays single- or multi-line text using a standard `SpriteFont`. |
 | `<lane>`       | [Lane](../library/standard-views.md#lane) | Arranges other views along one axis, either horizontal (left to right) or vertical (top to bottom). |
 | `<marquee>`    | [Marquee](../library/standard-views.md#marquee) | Animates scrolling text or other content horizontally; named after the [HTML Marquee](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). |
@@ -92,6 +94,7 @@ These are the standard tags available in the UI framework:
 | `<scrollable>` | [Scrollable View](../library/standard-views.md#scrollable-view) | Shows scroll bars and arrows when content is too large to fit. |
 | `<slider>`     | [Slider](../library/standard-views.md#slider) | A numeric slider that can be moved between a minimum and maximum range. |
 | `<spacer>`     | [Spacer](../library/standard-views.md#spacer) | Draws nothing, but takes up space in the layout; used to "push" siblings to one side. |
+| `<tab>`        | [Tab](../library/standard-views.md#tab) | Push-down tab used to select the active section or page of a larger menu. Can be rotated for side navigation. |
 | `<textinput>`  | [Text Input](../library/standard-views.md#text-input) | Input box for entering text; includes on-screen keyboard when activated by gamepad. |
 
 ## Attributes
@@ -210,6 +213,7 @@ Regular HTML uses quoted attributes; to support the more complex behaviors where
 | `attr="value"`              | The literal ([converted](#type-conversions)) value inside the quotes. |
 | `attr={PropertyName}`       | The current value of the specified [context property](binding-context.md). |
 | `attr={@AssetName}`         | The current content of the [named asset](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F). |
+| `attr={#TranslationKey}`    | The translated string for a given [translation key](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation). Can be either unqualified (`foo.bar`) if referring to a translation in the same mod that provided the view, or qualified (`authorname.ModName:foo.bar`) if referring to a translation in any other mod. |
 | `attr=|Handler(Arg1, ...)|` | Call the specified [context method](binding-context.md), with the specified arguments; only valid for [event attributes](#events). |
 
 ??? note
@@ -261,6 +265,9 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `Rectangle`              | `"x, y, width, height"`            | N/A                                   | N/A                                     |
 | `LayoutParameters` @span | `"<Length>"`&nbsp;(1)              | N/A @span                             | N/A @span                               |
 |                          | `"<Width> <Height>"`               |                                       |                                         |
+|                          | `"<...>[Min..]"`&nbsp;(12)         |                                       |                                         |
+|                          | `"<...>[Min..Max]"`                |                                       |                                         |
+|                          | `"<...>[..Max]"`                   |                                       |                                         |
 | `Length` @span           | `"<num>px"` (2)                    | N/A @span                             | N/A @span                               |
 |                          | `"<num>%"` (3)                     |                                       |                                         |
 |                          | `"content"` (4)                    |                                       |                                         |
@@ -305,10 +312,13 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 9.  Sprites can be bound to model properties, but should only be done for sprites that _must_ be dynamic. In the majority of cases, you should use [sprite assets](../getting-started/adding-ui-assets.md) instead.
 10.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using _n_ items per row/column and adjusts their size accordingly.
 11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.
+12.  Any `Length` (width, height or both) can have a range appended to it specifying the min and/or max, such as `50%[100..800]`, meaning "prefer 50% of container, but constrained between 100px and 800px". Use open ranges to specify only a minimum, or only a maximum.
 
 If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from `string` to be used in literal attributes.
 
-Unfortunately, allowing mods to arbitrarily extend this list would be a chicken-egg problem: you need direct access to the destination type in order to implement a converter. However, if anything important is missing, feel free to make a [request](https://github.com/focustense/StardewUI/issues) or a [contribution](https://github.com/focustense/StardewUI/blob/dev/Framework/Converters/ValueConverterFactory.cs) (writing a converter is usually very simple, often a single line of code).
+### Duck Typing :material-test-tube:{ title="Experimental" }
+
+If a particular type conversion is not in the table above, it may be available for automatic implicit conversion. See the page on [duck typing](duck-typing.md) for rules and additional information on when and how this occurs.
 
 ## Children
 
@@ -406,7 +416,7 @@ If an `*outlet` is not specified in the markup, then the default (unnamed) outle
         <label layout="stretch content" text={LongContent} />
     </expander>
     ```
-    
+
 This is not allowed because the expander's `header` outlet requires a single content view. However, if this were to use an `*if*` condition then it would be valid again:
 
 !!! success

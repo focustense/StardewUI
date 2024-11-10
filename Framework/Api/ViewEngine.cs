@@ -12,6 +12,11 @@ namespace StardewUI.Framework.Api;
 /// </summary>
 public class ViewEngine : IViewEngine
 {
+    /// <summary>
+    /// Source resolver for resolving documents created by this view engine back to their original mod.
+    /// </summary>
+    public ISourceResolver SourceResolver => assetRegistry;
+
     private readonly IAssetCache assetCache;
     private readonly AssetRegistry assetRegistry;
     private readonly List<WeakReference<IUpdatable>> updatables = [];
@@ -69,9 +74,9 @@ public class ViewEngine : IViewEngine
     }
 
     /// <inheritdoc />
-    public void EnableHotReloading()
+    public void EnableHotReloading(string? sourceDirectory = null)
     {
-        assetRegistry.EnableHotReloading();
+        assetRegistry.EnableHotReloading(sourceDirectory);
     }
 
     /// <inheritdoc />

@@ -95,7 +95,7 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
         }
         try
         {
-            rootNode = viewNodeFactory.CreateNode(documentSource.Value.Root);
+            rootNode = viewNodeFactory.CreateNode(documentSource.Value);
             rootNode.Context = Context;
             backoffState = null;
         }

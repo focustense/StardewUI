@@ -52,12 +52,14 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [ContentBounds](#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](iview.md#actualbounds) excluding margins. | 
 | [ContentSize](#contentsize) | The size of the view's content, which is drawn inside the padding. Subclasses set this in their [OnMeasure(Vector2)](view.md#onmeasurevector2) method and padding, margins, etc. are handled automatically. | 
 | [Draggable](#draggable) | Whether or not this view should fire drag events such as [DragStart](view.md#dragstart) and [Drag](view.md#drag). | 
+| [FloatingBounds](#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants. | 
 | [FloatingElements](#floatingelements) | The floating elements to display relative to this view. | 
 | [Focusable](#focusable) | Whether or not the view should be able to receive focus. Applies only to this specific view, not its children. | 
 | [InnerSize](#innersize) | The size allocated to the entire area inside the border, i.e. [ContentSize](view.md#contentsize) plus any [Padding](view.md#padding). Does not include border or [Margin](view.md#margin). | 
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
 | [LastAvailableSize](#lastavailablesize) | The most recent size used in a [Measure(Vector2)](view.md#measurevector2) pass. Used for additional dirty checks. | 
 | [Layout](#layout) | Layout settings for this view; determines how its dimensions will be computed. | 
+| [LayoutOffset](#layoutoffset) | Pixel offset of the view's content, which is applied to all pointer events and child queries. | 
 | [Margin](#margin) | Margins (whitespace outside border) for this view. | 
 | [Name](#name) | Simple name for this view, used in log/debug output; does not affect behavior. | 
 | [OuterSize](#outersize) | The size of the entire area occupied by this view including margins, border and padding. | 
@@ -218,6 +220,20 @@ public bool Draggable { get; set; }
 
 -----
 
+#### FloatingBounds
+
+Contains the bounds of all floating elements in this view tree, including the current view and all descendants.
+
+```cs
+public System.Collections.Generic.IEnumerable<StardewUI.Layout.Bounds> FloatingBounds { get; }
+```
+
+##### Property Value
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[Bounds](layout/bounds.md)>
+
+-----
+
 #### FloatingElements
 
 The floating elements to display relative to this view.
@@ -307,6 +323,26 @@ public StardewUI.Layout.LayoutParameters Layout { get; set; }
 ##### Property Value
 
 [LayoutParameters](layout/layoutparameters.md)
+
+-----
+
+#### LayoutOffset
+
+Pixel offset of the view's content, which is applied to all pointer events and child queries.
+
+```cs
+protected Microsoft.Xna.Framework.Vector2 LayoutOffset { get; }
+```
+
+##### Property Value
+
+[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+##### Remarks
+
+A non-zero offset means that the nominal positions of any view children (e.g. as obtained from [GetChildren()](view.md#getchildren)) are different from their actual drawing positions on screen, for example in the case of a [ScrollContainer](widgets/scrollcontainer.md) that is not at the default scroll position. 
+
+ If a view will internally shift content in this way without affecting layout, it should update the [LayoutOffset](view.md#layoutoffset) property to ensure correctness of pointer events and coordinate-related queries such as [GetLocalChildrenAt(Vector2)](view.md#getlocalchildrenatvector2), **instead of** attempting to correct for that offset locally.
 
 -----
 
@@ -776,7 +812,13 @@ public bool IsDirty();
 
 ##### Remarks
 
-Typically, a view will be considered dirty if and only if one of the following are true:  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
+Typically, a view will be considered dirty if and only if one of the following are true: 
+
+  - The [Layout](iview.md#layout) has changed
+  - The content has changed in a way that could affect layout, e.g. the text has changed in a [Content](layout/lengthtype.md#content) configuration
+  - The `availableSize` is not the same as the previously-seen value (see remarks in [Measure(Vector2)](iview.md#measurevector2))
+
+ A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
 
 -----
 

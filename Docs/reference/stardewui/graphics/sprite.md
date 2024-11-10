@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Definition for a scalable sprite.
 
 ```cs
+[StardewUI.DuckType]
 public record Sprite : IEquatable<StardewUI.Graphics.Sprite>
 ```
 

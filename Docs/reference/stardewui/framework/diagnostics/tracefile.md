@@ -50,7 +50,7 @@ public class TraceFile
  | Name | Description |
 | --- | --- |
 | [CloseFrame(Int32)](#closeframeint) | Appends an event that closes a frame previously opened with [OpenFrame(string)](tracefile.md#openframestring). | 
-| [OpenFrame(string)](#openframestring) | Adds a new [Frame](frame.md) and [TraceEvent](traceevent.md) to open it, and returns the frame index to be used subsequently with [CloseFrame(Int32)](tracefile.md#closeframeint). | 
+| [OpenFrame(string)](#openframestring) | Adds a new [TraceFrame](traceframe.md) and [TraceEvent](traceevent.md) to open it, and returns the frame index to be used subsequently with [CloseFrame(Int32)](tracefile.md#closeframeint). | 
 
 ## Details
 
@@ -157,7 +157,7 @@ The index of the tracked frame in [Frames](traceshared.md#frames).
 
 #### OpenFrame(string)
 
-Adds a new [Frame](frame.md) and [TraceEvent](traceevent.md) to open it, and returns the frame index to be used subsequently with [CloseFrame(Int32)](tracefile.md#closeframeint).
+Adds a new [TraceFrame](traceframe.md) and [TraceEvent](traceevent.md) to open it, and returns the frame index to be used subsequently with [CloseFrame(Int32)](tracefile.md#closeframeint).
 
 ```cs
 public int OpenFrame(string name);
