@@ -12,13 +12,13 @@
   "Author": "focustense",
   "Version": "0.1.0-Debug",
   "Description": "Example add-on mod for Stardew UI.",
-  "MinimumApiVersion": "4.0.5",
-  "MinimumGameVersion": "1.6.8",
+  "MinimumApiVersion": "4.1.3",
+  "MinimumGameVersion": "1.6.10",
   "EntryDll": "StardewUITestAddon.dll",
   "Dependencies": [
     {
       "UniqueID": "focustense.StardewUI",
-      "MinimumVersion": "0.2.5"
+      "MinimumVersion": "0.3.0"
     }
   ],
   "UpdateKeys": [

@@ -16,8 +16,8 @@
     <Authors>focustense</Authors>
     <Name>Stardew UI Test Addon</Name>
     <Description>Example add-on mod for Stardew UI.</Description>
-    <MinimumApiVersion>4.0.5</MinimumApiVersion>
-    <MinimumGameVersion>1.6.8</MinimumGameVersion>
+    <MinimumApiVersion>4.1.3</MinimumApiVersion>
+    <MinimumGameVersion>1.6.10</MinimumGameVersion>
     <UniqueId>$(Authors).$(AssemblyName)</UniqueId>
     <EntryDll>$(AssemblyName).dll</EntryDll>
     <UpdateKeys>GitHub:focustense/StardewUI</UpdateKeys>
@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <SMAPIDependency Include="focustense.StardewUI" Version="0.2.5" Reference="true" />
+    <SMAPIDependency Include="focustense.StardewUI" Version="0.3.0" Reference="true" />
   </ItemGroup>
 
   <ItemGroup>
