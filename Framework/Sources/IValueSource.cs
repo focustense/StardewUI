@@ -44,9 +44,12 @@ public interface IValueSource
     /// This method is called every frame, for every binding, and providing a correct return value is essential in order
     /// to avoid slowdowns due to unnecessary rebinds.
     /// </remarks>
+    /// <param name="force">If <c>true</c>, forces the source to update its value even if it isn't considered dirty.
+    /// This should never be used in a regular binding, but can be useful in sources that are intended for occasional or
+    /// one-shot use such as event handler arguments.</param>
     /// <returns><c>true</c> if the <see cref="Value"/> was updated; <c>false</c> if it already held the most recent
     /// value.</returns>
-    bool Update();
+    bool Update(bool force = false);
 }
 
 /// <summary>

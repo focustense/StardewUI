@@ -28,7 +28,7 @@ internal class BoundArgumentSource(IValueSource source) : IArgumentSource
 {
     public object? GetValue(object? _)
     {
-        source.Update();
+        source.Update(force: true);
         return source.Value;
     }
 }

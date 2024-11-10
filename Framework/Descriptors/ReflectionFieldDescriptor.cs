@@ -25,10 +25,16 @@ public class ReflectionFieldDescriptor<TValue>(FieldInfo field) : IPropertyDescr
     public Type DeclaringType => field.DeclaringType!;
 
     /// <inheritdoc />
-    public Type ValueType => field.FieldType;
+    public bool IsAutoProperty => false;
+
+    /// <inheritdoc />
+    public bool IsField => true;
 
     /// <inheritdoc />
     public string Name => field.Name;
+
+    /// <inheritdoc />
+    public Type ValueType => field.FieldType;
 
     /// <inheritdoc />
     public TValue GetValue(object source)

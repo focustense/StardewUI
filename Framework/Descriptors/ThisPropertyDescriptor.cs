@@ -43,13 +43,19 @@ public class ThisPropertyDescriptor<T> : IPropertyDescriptor<T>
     public bool CanWrite => false;
 
     /// <inheritdoc />
-    public Type ValueType => typeof(T);
-
-    /// <inheritdoc />
     public Type DeclaringType => typeof(T);
 
     /// <inheritdoc />
+    public bool IsAutoProperty => false;
+
+    /// <inheritdoc />
+    public bool IsField => false;
+
+    /// <inheritdoc />
     public string Name => "this";
+
+    /// <inheritdoc />
+    public Type ValueType => typeof(T);
 
     private ThisPropertyDescriptor() { }
 

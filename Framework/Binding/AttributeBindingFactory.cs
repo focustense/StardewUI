@@ -227,20 +227,6 @@ public class AttributeBindingFactory(
         var outputConverter = direction.IsOut()
             ? valueConverterFactory.GetRequiredConverter<TDest, TSource>()
             : InvalidConverter<TDest, TSource>.Instance;
-        if (
-            context is not null
-            && !context.Descriptor.SupportsChangeNotifications
-            && direction.IsIn()
-            && attribute.ValueType.IsContextBinding()
-            && attribute.ValueType != AttributeValueType.OneTimeBinding
-        )
-        {
-            Logger.LogOnce(
-                $"Binding to '{context.Descriptor.TargetType.Name}.{attribute.Value}' will not receive updates because "
-                    + "the type does not implement INotifyPropertyChanged.",
-                LogLevel.Warn
-            );
-        }
         return new AttributeBinding<TSource, TDest>(source, inputConverter, outputConverter, property, direction);
     }
 

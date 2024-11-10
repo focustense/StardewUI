@@ -51,9 +51,9 @@ public class AssetValueSource<T>(IAssetCache cache, string name) : IValueSource<
     /// <inheritdoc />
     /// <returns><c>true</c> if the underlying asset expired since the last update; <c>false</c> if the
     /// <see cref="Value"/> was still current.</returns>
-    public bool Update()
+    public bool Update(bool force = false)
     {
-        if (cacheEntry is null || !cacheEntry.IsValid)
+        if (force || cacheEntry is null || !cacheEntry.IsValid)
         {
             cacheEntry = cache.Get<T>(name);
             return true;

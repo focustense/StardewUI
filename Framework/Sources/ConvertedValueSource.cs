@@ -125,9 +125,9 @@ public class ConvertedValueSource<TSource, T>(
     private T? value = ReadValue(source, inputConverter);
 
     /// <inheritdoc />
-    public bool Update()
+    public bool Update(bool force = false)
     {
-        if (source.Update())
+        if (source.Update(force))
         {
             value = ReadValue(source, inputConverter);
             return true;

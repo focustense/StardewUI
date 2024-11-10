@@ -48,6 +48,10 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
     /// <inheritdoc />
     public Type ValueType => typeof(T);
 
+    private static readonly string oneTimeBindingTip =
+        "If this was intentional, consider using a one-time binding to suppress this warning, by prefixing the "
+        + "property name with the ':' character.";
+
     private readonly object? data;
     private readonly IPropertyDescriptor<T>? property;
     private readonly string propertyName;
@@ -75,9 +79,41 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
         data = context?.Data;
         property = context?.Descriptor.GetProperty(propertyName) as IPropertyDescriptor<T>;
         this.propertyName = propertyName;
-        if (allowUpdates && data is INotifyPropertyChanged npc)
+        if (allowUpdates && data is not null)
         {
-            npc.PropertyChanged += Context_PropertyChanged;
+            if (data is INotifyPropertyChanged npc)
+            {
+                npc.PropertyChanged += Context_PropertyChanged;
+                if (property?.IsField == true)
+                {
+                    Logger.LogOnce(
+                        $"Binding to field '{context!.Descriptor.TargetType.Name}.{propertyName}' will receive no "
+                            + "updates or inconsistent updates. To receive updates, bind to a property instead. "
+                            + oneTimeBindingTip,
+                        LogLevel.Warn
+                    );
+                }
+                else if (property?.IsAutoProperty == true)
+                {
+                    Logger.LogOnce(
+                        $"Binding to property '{data.GetType().Name}.{propertyName}' may receive no updates or "
+                            + "inconsistent updates because it appears to be an auto-implemented property, and will "
+                            + "not emit PropertyChanged events even if the declaring type implements "
+                            + "INotifyPropertyChanged. "
+                            + oneTimeBindingTip,
+                        LogLevel.Warn
+                    );
+                }
+            }
+            else
+            {
+                Logger.LogOnce(
+                    $"Binding to property '{context!.Descriptor.TargetType.Name}.{propertyName}' will not receive "
+                        + "updates because the type does not implement INotifyPropertyChanged. "
+                        + oneTimeBindingTip,
+                    LogLevel.Warn
+                );
+            }
         }
     }
 
@@ -100,9 +136,9 @@ public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
     }
 
     /// <inheritdoc />
-    public bool Update()
+    public bool Update(bool force = false)
     {
-        if (!isDirty)
+        if (!isDirty && !force)
         {
             return false;
         }

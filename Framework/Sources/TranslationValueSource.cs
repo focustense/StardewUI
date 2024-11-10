@@ -38,7 +38,7 @@ public class TranslationValueSource(IResolutionScope scope, string key) : IValue
     private readonly string value = scope.GetTranslationValue(key);
 
     /// <inheritdoc />
-    public bool Update()
+    public bool Update(bool force = false)
     {
         return false;
     }

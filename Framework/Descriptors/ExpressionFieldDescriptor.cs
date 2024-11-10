@@ -27,6 +27,12 @@ public class ExpressionFieldDescriptor<T, TValue> : IPropertyDescriptor<TValue>
     public Type DeclaringType { get; } = typeof(T);
 
     /// <inheritdoc />
+    public bool IsAutoProperty => false;
+
+    /// <inheritdoc />
+    public bool IsField => true;
+
+    /// <inheritdoc />
     public string Name { get; }
 
     /// <inheritdoc />

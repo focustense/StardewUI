@@ -130,7 +130,8 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
             ArgumentExpressionType.Literal => (IValueSource<T>)new ConstantValueSource<string>(argument.Expression),
             ArgumentExpressionType.ContextBinding => new ContextPropertyValueSource<T>(
                 context?.Redirect(argument.ContextRedirect),
-                argument.Expression
+                argument.Expression,
+                false
             ),
             _ => throw new ArgumentException(
                 $"Invalid or unsupported argument type {argument.Type}.",
@@ -179,6 +180,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
                 context?.Redirect(attribute.ContextRedirect),
                 attribute.Value,
                 attribute.ValueType != AttributeValueType.OneTimeBinding
+                    && attribute.ValueType != AttributeValueType.OutputBinding
             ),
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };

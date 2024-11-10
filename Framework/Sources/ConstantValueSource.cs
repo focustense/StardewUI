@@ -36,7 +36,7 @@ public class ConstantValueSource<T>(T value) : IValueSource<T>
     /// As implemented on <see cref="ConstantValueSource{T}"/>, always returns <c>false</c> as there can never be any
     /// change that requires an update.
     /// </remarks>
-    public bool Update()
+    public bool Update(bool force = false)
     {
         return false;
     }

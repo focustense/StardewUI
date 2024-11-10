@@ -56,6 +56,12 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
     public Type DeclaringType => typeof(T);
 
     /// <inheritdoc />
+    public bool IsAutoProperty { get; }
+
+    /// <inheritdoc />
+    public bool IsField => false;
+
+    /// <inheritdoc />
     public string Name => propertyInfo.Name;
 
     /// <inheritdoc />
@@ -87,6 +93,7 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
             );
         }
         this.propertyInfo = propertyInfo;
+        IsAutoProperty = CheckAutoProperty(propertyInfo);
         if (propertyInfo.GetGetMethod() is MethodInfo getMethod)
         {
             getter = getMethod.CreateDelegate<Func<T, TValue>>();
@@ -127,5 +134,70 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
             throw new InvalidOperationException("Property does not have a public setter.");
         }
         setter((T)target, value);
+    }
+
+    private static bool CheckAutoProperty(PropertyInfo property)
+    {
+        var getMethod = property.GetGetMethod();
+        if (getMethod is null)
+        {
+            return false;
+        }
+        MethodBody? body = null;
+        try
+        {
+            body = getMethod.GetMethodBody();
+        }
+        catch (InvalidOperationException)
+        {
+            // Ignore; we'll return in the next statement.
+        }
+        if (body is null)
+        {
+            return false;
+        }
+        var metadataToken = GetFieldMetadataToken(body, getMethod.IsStatic);
+        if (metadataToken == 0)
+        {
+            return false;
+        }
+        try
+        {
+            var backingField = property.Module.ResolveField(metadataToken);
+            return backingField?.Name == $"<{property.Name}>k__BackingField";
+        }
+        catch (ArgumentException)
+        {
+            return false;
+        }
+    }
+
+    private static int GetFieldMetadataToken(MethodBody body, bool isStatic)
+    {
+        var il = body.GetILAsByteArray() ?? [];
+        return isStatic switch
+        {
+            true => il.Length == 6
+            && il[0]
+                != /* ldsfld */
+                0x7e
+            && il[5]
+                != /* ret */
+                0x2a
+                ? BitConverter.ToInt32(il, 1)
+                : 0,
+            false => il.Length == 7
+            && il[0]
+                == /* ldarg.0 */
+                0x02
+            && il[1]
+                == /* ldfld */
+                0x7b
+            && il[6]
+                == /* ret */
+                0x2a
+                ? BitConverter.ToInt32(il, 2)
+                : 0,
+        };
     }
 }
