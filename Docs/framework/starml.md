@@ -265,6 +265,9 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `Rectangle`              | `"x, y, width, height"`            | N/A                                   | N/A                                     |
 | `LayoutParameters` @span | `"<Length>"`&nbsp;(1)              | N/A @span                             | N/A @span                               |
 |                          | `"<Width> <Height>"`               |                                       |                                         |
+|                          | `"<...>[Min..]"`&nbsp;(12)         |                                       |                                         |
+|                          | `"<...>[Min..Max]"`                |                                       |                                         |
+|                          | `"<...>[..Max]"`                   |                                       |                                         |
 | `Length` @span           | `"<num>px"` (2)                    | N/A @span                             | N/A @span                               |
 |                          | `"<num>%"` (3)                     |                                       |                                         |
 |                          | `"content"` (4)                    |                                       |                                         |
@@ -309,6 +312,7 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 9.  Sprites can be bound to model properties, but should only be done for sprites that _must_ be dynamic. In the majority of cases, you should use [sprite assets](../getting-started/adding-ui-assets.md) instead.
 10.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using _n_ items per row/column and adjusts their size accordingly.
 11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.
+12.  Any `Length` (width, height or both) can have a range appended to it specifying the min and/or max, such as `50%[100..800]`, meaning "prefer 50% of container, but constrained between 100px and 800px". Use open ranges to specify only a minimum, or only a maximum.
 
 If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from `string` to be used in literal attributes.
 
