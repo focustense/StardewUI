@@ -4,12 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.0] - 2024-11-10
+
+### Added
+
+- [Duck typing conversions](https://focustense.github.io/StardewUI/framework/duck-typing/) for bound properties: internal types like `Sprite` can now be bound without an assembly reference by creating an equivalent type on the caller's side.
+- Add-on system, AKA [framework extensions](https://focustense.github.io/StardewUI/framework/extensions/): Create and register custom widgets and type converters that can be included in StarML.
+- Translation ("i18n") bindings using the syntax: `attr={#TranslationKey}` for keys in the same mod or `attr={#authorname.ModName#TranslationKey}` for keys in a different mod.
+- [Tab widget](https://focustense.github.io/StardewUI/library/standard-views/#tab) to use for top or side navigation.
+
+### Changed
+
+- Improved hot reloading: files can now be edited in the source directory instead of deployed mod directory using the [source sync](https://focustense.github.io/StardewUI/getting-started/hot-reload/#source-sync) feature.
+- Layout strings (i.e. in the `layout` attribute) can now specify min and max values using a range similar to C# syntax.
+  - For example `layout="50%[600..1200] content[800..]"` specifies a width of 50% constrained between 600px and 1200px and a height that grows with content but has a minimum of 800px.
+- View bindings can now dispatch [update ticks](https://focustense.github.io/StardewUI/framework/binding-context/#update-ticks) to bound context (models).
+- [Label widget](https://focustense.github.io/StardewUI/library/standard-views/#label) now supports text shadows.
+- Text Input widget now only captures on left-click, to allow right-clicks to be used for other behavior such as clearing the text.
+- Expanded and improved warnings emitted to SMAPI console for bindings that can't receive updates. Warnings were already shown for types not implementing `INotifyPropertyChanged` but will now also be shown for fields and auto-properties regardless of the declaring type.
+- Renamed `Frame` debug class to `TraceFrame` to avoid ambiguity with `Frame` view.
 
 ### Fixed
 
 - Button, Wheel and Focus Search events now properly respect the UI scale when set to a value other than 100% or when running in split-screen mode.
 - Final row of a `Grid` will no longer be misaligned under specific layout conditions.
+- Input events now trigger a forced "re-hover" on menus so that tooltips update and pointer events (e.g. `pointer-enter` and `pointer-leave`) fire when content is scrolled but the actual mouse position has not changed.
+- Improved bounds-detection when overlays are combined with floating elements; should avoid premature closure in most cases.
 
 ## [0.2.5] - 2024-10-30
 
@@ -67,7 +87,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Initial documentation site based on material-mkdocs; many pages are stubs.
 - Syntax highlighting for Visual Studio, VSCode and Notepad++.
 
-[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.2.5...HEAD
+[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/focustense/StardewUI/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/focustense/StardewUI/compare/v0.2.0...v0.2.5
 [0.2.0]: https://github.com/focustense/StardewUI/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/focustense/StardewUI/tree/v0.1.0
