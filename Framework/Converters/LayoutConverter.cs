@@ -5,9 +5,6 @@ namespace StardewUI.Framework.Converters;
 /// <summary>
 /// String converter for the <see cref="LayoutParameters"/> type.
 /// </summary>
-/// <remarks>
-/// Currently only supports specifying the normal width and height, not min/max values.
-/// </remarks>
 public class LayoutConverter : IValueConverter<string, LayoutParameters>
 {
     /// <inheritdoc />

@@ -32,10 +32,6 @@ public class LayoutConverter :
 **Implements**  
 [IValueConverter](ivalueconverter-2.md)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [LayoutParameters](../../layout/layoutparameters.md)>, [IValueConverter](ivalueconverter.md)
 
-## Remarks
-
-Currently only supports specifying the normal width and height, not min/max values.
-
 ## Members
 
 ### Constructors
