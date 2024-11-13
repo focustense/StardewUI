@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -11,7 +12,7 @@ public static class LazyExpressionFieldDescriptor
         nameof(Create),
         BindingFlags.Static | BindingFlags.NonPublic
     )!;
-    private static readonly Dictionary<FieldInfo, IPropertyDescriptor> descriptorCache = [];
+    private static readonly ConcurrentDictionary<FieldInfo, IPropertyDescriptor> descriptorCache = [];
 
     /// <summary>
     /// Creates a binding field from reflected field info.
@@ -24,17 +25,18 @@ public static class LazyExpressionFieldDescriptor
     public static IPropertyDescriptor FromFieldInfo(FieldInfo fieldInfo)
     {
         using var _ = Trace.Begin(nameof(LazyExpressionFieldDescriptor), nameof(FromFieldInfo));
-        if (!descriptorCache.TryGetValue(fieldInfo, out var descriptor))
-        {
-            if (fieldInfo.DeclaringType is null)
+        return descriptorCache.GetOrAdd(
+            fieldInfo,
+            static fieldInfo =>
             {
-                throw new ArgumentException($"Field '{fieldInfo.Name}' is missing a declaring type.");
+                if (fieldInfo.DeclaringType is null)
+                {
+                    throw new ArgumentException($"Field '{fieldInfo.Name}' is missing a declaring type.");
+                }
+                var factoryMethod = createMethod.MakeGenericMethod(fieldInfo.DeclaringType, fieldInfo.FieldType);
+                return (IPropertyDescriptor)factoryMethod.Invoke(null, [fieldInfo])!;
             }
-            var factoryMethod = createMethod.MakeGenericMethod(fieldInfo.DeclaringType, fieldInfo.FieldType);
-            descriptor = (IPropertyDescriptor)factoryMethod.Invoke(null, [fieldInfo])!;
-            descriptorCache.Add(fieldInfo, descriptor);
-        }
-        return descriptor;
+        );
     }
 
     private static IPropertyDescriptor Create<T, TValue>(FieldInfo fieldInfo)

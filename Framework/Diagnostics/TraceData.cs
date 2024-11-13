@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Concurrent;
+using Newtonsoft.Json;
 
 namespace StardewUI.Framework.Diagnostics;
 
@@ -35,7 +36,7 @@ public class TraceFile
     /// </summary>
     public string Exporter { get; init; } = "";
 
-    private readonly Dictionary<string, int> frameCache = [];
+    private readonly ConcurrentDictionary<string, int> frameCache = [];
 
     /// <summary>
     /// Appends an event that closes a frame previously opened with <see cref="OpenFrame(string)"/>.
@@ -44,7 +45,10 @@ public class TraceFile
     public void CloseFrame(int frame)
     {
         var time = DateTime.UtcNow.Ticks / 10;
-        Profiles[0].Events.Add(new('C', time, frame));
+        lock (Profiles)
+        {
+            Profiles[0].Events.Add(new('C', time, frame));
+        }
     }
 
     /// <summary>
@@ -58,13 +62,21 @@ public class TraceFile
         var time = DateTime.UtcNow.Ticks / 10;
         // Reusing frames will definitely slow down the tracing itself, but also massively cuts down on the trace size
         // when accumulating identical method calls over thousands of frames.
-        if (!frameCache.TryGetValue(name, out var frameIndex))
+        int frameIndex = frameCache.GetOrAdd(
+            name,
+            _ =>
+            {
+                lock (Shared.Frames)
+                {
+                    Shared.Frames.Add(new(name));
+                    return Shared.Frames.Count - 1;
+                }
+            }
+        );
+        lock (Profiles)
         {
-            frameIndex = Shared.Frames.Count;
-            Shared.Frames.Add(new(name));
-            frameCache.Add(name, frameIndex);
+            Profiles[0].Events.Add(new('O', time, frameIndex));
         }
-        Profiles[0].Events.Add(new('O', time, frameIndex));
         return frameIndex;
     }
 }

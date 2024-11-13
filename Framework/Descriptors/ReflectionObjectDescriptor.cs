@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using StardewValley;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -15,12 +17,9 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// <inheritdoc />
     public Type TargetType { get; }
 
-    private static readonly Dictionary<Type, ReflectionObjectDescriptor> cache = [];
+    private static readonly ConcurrentDictionary<Type, ReflectionObjectDescriptor> cache = [];
 
-    private readonly IReadOnlyDictionary<string, Lazy<IEventDescriptor>> eventsByName;
-    private readonly IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> fieldsByName;
-    private readonly IReadOnlyDictionary<string, Lazy<IMethodDescriptor>> methodsByName;
-    private readonly IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> propertiesByName;
+    private readonly IReadOnlyDictionary<string, Lazy<IMemberDescriptor>> membersByName;
     private readonly Lazy<IPropertyDescriptor> thisDescriptor;
 
     /// <summary>
@@ -30,34 +29,42 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// <returns>The descriptor for the specified <paramref name="type"/>.</returns>
     public static ReflectionObjectDescriptor ForType(Type type)
     {
-        if (!cache.TryGetValue(type, out var descriptor))
-        {
-            descriptor = CreateDescriptor(type);
-            cache[type] = descriptor;
-        }
-        return descriptor;
+        return cache.GetOrAdd(type, CreateDescriptor);
     }
 
     private static ReflectionObjectDescriptor CreateDescriptor(Type type)
     {
         using var _ = Trace.Begin(nameof(ReflectionObjectDescriptor), nameof(CreateDescriptor));
         var interfaces = type.GetInterfaces();
-        var allMembers = type.GetMembers(BindingFlags.Instance | BindingFlags.Public);
-        var fieldsByName = allMembers.OfType<FieldInfo>().ToLazyDictionary(LazyExpressionFieldDescriptor.FromFieldInfo);
-        var propertiesByName = allMembers
-            .OfType<PropertyInfo>()
-            .Where(prop => prop.GetIndexParameters().Length == 0)
-            .ToLazyDictionary(ReflectionPropertyDescriptor.FromPropertyInfo);
-        var methodsByName = allMembers
-            .OfType<MethodInfo>()
-            .Where(method => !method.IsAbstract && !method.IsGenericMethod)
-            .DistinctBy(method => method.Name)
-            .ToLazyDictionary(ReflectionMethodDescriptor.FromMethodInfo);
-        var eventsByName = allMembers
-            .OfType<EventInfo>()
-            .Where(ev => ev.EventHandlerType is not null)
-            .ToLazyDictionary(ReflectionEventDescriptor.FromEventInfo);
-        return new(type, interfaces, fieldsByName, propertiesByName, methodsByName, eventsByName);
+        var membersByName = type.GetMembers(BindingFlags.Instance | BindingFlags.Public)
+            .AsParallel()
+            .Where(member =>
+                member switch
+                {
+                    FieldInfo field => true,
+                    PropertyInfo prop => prop.GetIndexParameters().Length == 0,
+                    MethodInfo method => !method.IsAbstract && !method.IsGenericMethod,
+                    EventInfo ev => ev.EventHandlerType is not null,
+                    _ => false,
+                }
+            )
+            // DistinctBy doesn't have a Parallel implementation so we use GroupBy instead.
+            .GroupBy(member => member.Name)
+            .Select(g => g.First())
+            .ToLazyDictionary(member =>
+                member switch
+                {
+                    FieldInfo field => LazyExpressionFieldDescriptor.FromFieldInfo(field) as IMemberDescriptor,
+                    PropertyInfo prop => ReflectionPropertyDescriptor.FromPropertyInfo(prop),
+                    MethodInfo method => ReflectionMethodDescriptor.FromMethodInfo(method),
+                    EventInfo ev => ReflectionEventDescriptor.FromEventInfo(ev),
+                    _ => throw new DescriptorException(
+                        $"Invalid member type {member.MemberType} for descriptor of "
+                            + $"{member.DeclaringType?.Name}.{member.Name}"
+                    ),
+                }
+            );
+        return new(type, interfaces, membersByName);
     }
 
     /// <summary>
@@ -65,24 +72,15 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// </summary>
     /// <param name="type">The <see cref="TargetType"/>.</param>
     /// <param name="interfaces">All interfaces implemented by the <see cref="TargetType"/>.</param>
-    /// <param name="fieldsByName">Dictionary of field names to the corresponding field descriptors.</param>
-    /// <param name="propertiesByName">Dictionary of property names to the corresponding property descriptors.</param>
-    /// <param name="methodsByName">Dictionary of method names to the corresponding method descriptors.</param>
-    /// <param name="eventsByName">Dictionary of event names to the corresponding event descriptors.</param>
+    /// <param name="membersByName">Dictionary of member names to the corresponding member descriptors.</param>
     protected ReflectionObjectDescriptor(
         Type type,
         IReadOnlyList<Type> interfaces,
-        IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> fieldsByName,
-        IReadOnlyDictionary<string, Lazy<IPropertyDescriptor>> propertiesByName,
-        IReadOnlyDictionary<string, Lazy<IMethodDescriptor>> methodsByName,
-        IReadOnlyDictionary<string, Lazy<IEventDescriptor>> eventsByName
+        IReadOnlyDictionary<string, Lazy<IMemberDescriptor>> membersByName
     )
     {
         TargetType = type;
-        this.fieldsByName = fieldsByName;
-        this.propertiesByName = propertiesByName;
-        this.methodsByName = methodsByName;
-        this.eventsByName = eventsByName;
+        this.membersByName = membersByName;
         thisDescriptor = new(() => ThisPropertyDescriptor.ForTypeUncached(type));
         SupportsChangeNotifications = interfaces.Any(t => t == typeof(INotifyPropertyChanged));
     }
@@ -90,17 +88,13 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// <inheritdoc />
     public bool TryGetEvent(string name, [MaybeNullWhen(false)] out IEventDescriptor @event)
     {
-        bool exists = eventsByName.TryGetValue(name, out var lazyEvent);
-        @event = lazyEvent?.Value;
-        return exists;
+        return TryGetMember(name, out @event);
     }
 
     /// <inheritdoc />
     public bool TryGetMethod(string name, [MaybeNullWhen(false)] out IMethodDescriptor method)
     {
-        bool exists = methodsByName.TryGetValue(name, out var lazyMethod);
-        method = lazyMethod?.Value;
-        return exists;
+        return TryGetMember(name, out method);
     }
 
     /// <inheritdoc />
@@ -111,18 +105,24 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
             property = thisDescriptor.Value;
             return true;
         }
-        bool exists =
-            propertiesByName.TryGetValue(name, out var lazyProperty)
-            || fieldsByName.TryGetValue(name, out lazyProperty);
-        property = lazyProperty?.Value;
-        return exists;
+        return TryGetMember(name, out property);
+    }
+
+    private bool TryGetMember<T>(string name, [MaybeNullWhen(false)] out T member)
+        where T : IMemberDescriptor
+    {
+        member =
+            membersByName.TryGetValue(name, out var lazyMember) && lazyMember.Value is T typedMember
+                ? typedMember
+                : default;
+        return member is not null;
     }
 }
 
 file static class MemberListExtensions
 {
     public static IReadOnlyDictionary<string, Lazy<TDescriptor>> ToLazyDictionary<T, TDescriptor>(
-        this IEnumerable<T> source,
+        this ParallelQuery<T> source,
         Func<T, TDescriptor> descriptorSelector
     )
         where T : MemberInfo

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -13,8 +14,8 @@ public static class ReflectionMethodDescriptor
         nameof(CreateDescriptorFactory),
         BindingFlags.Static | BindingFlags.NonPublic
     )!;
-    private static readonly Dictionary<MethodInfo, IMethodDescriptor> descriptorCache = [];
-    private static readonly Dictionary<Type, DescriptorFactory> factoryCache = [];
+    private static readonly ConcurrentDictionary<MethodInfo, IMethodDescriptor> descriptorCache = [];
+    private static readonly ConcurrentDictionary<Type, DescriptorFactory> factoryCache = [];
 
     /// <summary>
     /// Creates or retrieves a descriptor for a given method.
@@ -24,12 +25,14 @@ public static class ReflectionMethodDescriptor
     public static IMethodDescriptor FromMethodInfo(MethodInfo method)
     {
         using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(FromMethodInfo));
-        if (!descriptorCache.TryGetValue(method, out var descriptor))
-        {
-            var descriptorFactory = GetDescriptorFactory(method.ReturnType);
-            descriptor = descriptorFactory(method);
-            descriptorCache.Add(method, descriptor);
-        }
+        var descriptor = descriptorCache.GetOrAdd(
+            method,
+            static method =>
+            {
+                var descriptorFactory = GetDescriptorFactory(method.ReturnType);
+                return descriptorFactory(method);
+            }
+        );
         return descriptor;
     }
 
@@ -101,12 +104,11 @@ public static class ReflectionMethodDescriptor
         {
             returnType = typeof(object);
         }
-        if (!factoryCache.TryGetValue(returnType, out var factory))
-        {
-            factory = createDescriptorFactoryMethod.MakeGenericMethod(returnType).CreateDelegate<DescriptorFactory>();
-            factoryCache.Add(returnType, factory);
-        }
-        return factory;
+        return factoryCache.GetOrAdd(
+            returnType,
+            static returnType =>
+                createDescriptorFactoryMethod.MakeGenericMethod(returnType).CreateDelegate<DescriptorFactory>()
+        );
     }
 }
 

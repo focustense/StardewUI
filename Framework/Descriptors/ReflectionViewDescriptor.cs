@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using StardewUI.Widgets;
 
@@ -15,11 +16,10 @@ public class ReflectionViewDescriptor : IViewDescriptor
     /// <inheritdoc />
     public Type TargetType => innerDescriptor.TargetType;
 
-    private static readonly Dictionary<Type, ReflectionViewDescriptor> cache = [];
+    private static readonly ConcurrentDictionary<Type, ReflectionViewDescriptor> cache = [];
 
     private readonly IPropertyDescriptor? defaultOutletProperty;
-    private readonly Dictionary<string, IPropertyDescriptor> namedOutletProperties =
-        new(StringComparer.InvariantCultureIgnoreCase);
+    private readonly IReadOnlyDictionary<string, IPropertyDescriptor> namedOutletProperties;
     private readonly IObjectDescriptor innerDescriptor;
 
     /// <summary>
@@ -32,61 +32,29 @@ public class ReflectionViewDescriptor : IViewDescriptor
     public static ReflectionViewDescriptor ForViewType(Type viewType)
     {
         using var _ = Trace.Begin(nameof(ReflectionViewDescriptor), nameof(ForViewType));
-        if (!cache.TryGetValue(viewType, out var descriptor))
-        {
-            if (!typeof(IView).IsAssignableFrom(viewType))
+        return cache.GetOrAdd(
+            viewType,
+            static viewType =>
             {
-                throw new ArgumentException(
-                    $"{viewType.Name} does not implement {typeof(IView).Name}.",
-                    nameof(viewType)
-                );
+                if (!typeof(IView).IsAssignableFrom(viewType))
+                {
+                    throw new ArgumentException(
+                        $"{viewType.Name} does not implement {typeof(IView).Name}.",
+                        nameof(viewType)
+                    );
+                }
+                var innerDescriptor = ReflectionObjectDescriptor.ForType(viewType);
+                return new(viewType, innerDescriptor);
             }
-            var innerDescriptor = ReflectionObjectDescriptor.ForType(viewType);
-            descriptor = new(viewType, innerDescriptor);
-            cache[viewType] = descriptor;
-        }
-        return descriptor;
+        );
     }
 
     private ReflectionViewDescriptor(Type viewType, IObjectDescriptor innerDescriptor)
     {
         this.innerDescriptor = innerDescriptor;
-        var childrenProperties = viewType
-            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-            .Where(prop =>
-                prop.CanWrite
-                && (
-                    typeof(IView).IsAssignableFrom(prop.PropertyType)
-                    || typeof(IEnumerable<IView>).IsAssignableFrom(prop.PropertyType)
-                )
-            );
-        foreach (var property in childrenProperties)
-        {
-            var descriptor = innerDescriptor.GetProperty(property.Name);
-            var outletName = property.GetCustomAttribute<OutletAttribute>()?.Name;
-            if (!string.IsNullOrEmpty(outletName))
-            {
-                if (namedOutletProperties.TryGetValue(outletName, out var previousDescriptor))
-                {
-                    throw new DescriptorException(
-                        $"Cannot add property '{property.Name}' as outlet '{outletName}' for type {viewType.Name}: "
-                            + $"another property ('{previousDescriptor.Name}') has already been assigned to this outlet."
-                    );
-                }
-                namedOutletProperties.Add(outletName, descriptor);
-            }
-            else
-            {
-                if (defaultOutletProperty is not null)
-                {
-                    throw new DescriptorException(
-                        $"Cannot add property '{property.Name}' as the default outlet for type {viewType.Name}: "
-                            + $"another property ('{defaultOutletProperty.Name}') has already been assigned to this outlet."
-                    );
-                }
-                defaultOutletProperty = descriptor;
-            }
-        }
+        var (defaultOutletProperty, namedOutletProperties) = GetOutletProperties(viewType, innerDescriptor);
+        this.defaultOutletProperty = defaultOutletProperty;
+        this.namedOutletProperties = namedOutletProperties;
     }
 
     /// <inheritdoc />
@@ -119,5 +87,53 @@ public class ReflectionViewDescriptor : IViewDescriptor
     public bool TryGetProperty(string name, [MaybeNullWhen(false)] out IPropertyDescriptor property)
     {
         return innerDescriptor.TryGetProperty(name, out property);
+    }
+
+    private static (
+        IPropertyDescriptor? defaultOutlet,
+        IReadOnlyDictionary<string, IPropertyDescriptor> namedOutlets
+    ) GetOutletProperties(Type viewType, IObjectDescriptor innerDescriptor)
+    {
+        IPropertyDescriptor? defaultOutlet = null;
+        var namedOutlets = new ConcurrentDictionary<string, IPropertyDescriptor>(
+            StringComparer.InvariantCultureIgnoreCase
+        );
+        viewType
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .AsParallel()
+            .Where(prop =>
+                prop.CanWrite
+                && (
+                    typeof(IView).IsAssignableFrom(prop.PropertyType)
+                    || typeof(IEnumerable<IView>).IsAssignableFrom(prop.PropertyType)
+                )
+            )
+            .ForAll(property =>
+            {
+                var descriptor = innerDescriptor.GetProperty(property.Name);
+                var outletName = property.GetCustomAttribute<OutletAttribute>()?.Name;
+                if (!string.IsNullOrEmpty(outletName))
+                {
+                    var previousDescriptor = namedOutlets.GetOrAdd(outletName, descriptor);
+                    if (previousDescriptor != descriptor)
+                    {
+                        throw new DescriptorException(
+                            $"Cannot add property '{property.Name}' as outlet '{outletName}' for type {viewType.Name}: "
+                                + $"another property ('{previousDescriptor.Name}') has already been assigned to this outlet."
+                        );
+                    }
+                }
+                else
+                {
+                    if (Interlocked.CompareExchange(ref defaultOutlet, descriptor, null) is not null)
+                    {
+                        throw new DescriptorException(
+                            $"Cannot add property '{property.Name}' as the default outlet for type {viewType.Name}: "
+                                + $"another property ('{defaultOutlet.Name}') has already been assigned to this outlet."
+                        );
+                    }
+                }
+            });
+        return (defaultOutlet, namedOutlets);
     }
 }

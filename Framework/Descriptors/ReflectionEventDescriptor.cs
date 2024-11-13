@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -7,7 +8,7 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 public static class ReflectionEventDescriptor
 {
-    private static readonly Dictionary<EventInfo, IEventDescriptor> cache = [];
+    private static readonly ConcurrentDictionary<EventInfo, IEventDescriptor> cache = [];
     private static readonly MethodInfo createTypedDescriptorMethod = typeof(ReflectionEventDescriptor).GetMethod(
         nameof(CreateTypedDescriptor),
         BindingFlags.Static | BindingFlags.NonPublic
@@ -21,12 +22,7 @@ public static class ReflectionEventDescriptor
     public static IEventDescriptor FromEventInfo(EventInfo eventInfo)
     {
         using var _ = Trace.Begin(nameof(ReflectionEventDescriptor), nameof(FromEventInfo));
-        if (!cache.TryGetValue(eventInfo, out var descriptor))
-        {
-            descriptor = CreateDescriptor(eventInfo);
-            cache.Add(eventInfo, descriptor);
-        }
-        return descriptor;
+        return cache.GetOrAdd(eventInfo, CreateDescriptor);
     }
 
     private static IEventDescriptor CreateDescriptor(EventInfo eventInfo)
