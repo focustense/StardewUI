@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Converters;
+﻿using System.Collections.Concurrent;
+using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Sources;
 
@@ -39,7 +40,7 @@ internal class BoundArgumentSource(IValueSource source) : IArgumentSource
 /// </summary>
 internal static class EventArgumentSource
 {
-    private static readonly Dictionary<(Type, Type, Type), IArgumentSource> cache = [];
+    private static readonly ConcurrentDictionary<(Type, Type, Type), IArgumentSource> cache = [];
 
     /// <summary>
     /// Creates a new, typed <see cref="EventArgumentSource{TEventArgs, TSource, TDestination}"/>.
@@ -61,16 +62,15 @@ internal static class EventArgumentSource
     {
         using var _ = Trace.Begin(nameof(IArgumentSource), nameof(Create));
         var key = (eventArgsType, propertyDescriptor.ValueType, destinationType);
-        if (!cache.TryGetValue(key, out var source))
-        {
-            source = (IArgumentSource)
-                typeof(EventArgumentSource<,,>)
-                    .MakeGenericType(eventArgsType, propertyDescriptor.ValueType, destinationType)
-                    .GetConstructor([typeof(IPropertyDescriptor), typeof(IValueConverterFactory)])!
-                    .Invoke([propertyDescriptor, converterFactory]);
-            cache.Add(key, source);
-        }
-        return source;
+        return cache.GetOrAdd(
+            key,
+            _ =>
+                (IArgumentSource)
+                    typeof(EventArgumentSource<,,>)
+                        .MakeGenericType(eventArgsType, propertyDescriptor.ValueType, destinationType)
+                        .GetConstructor([typeof(IPropertyDescriptor), typeof(IValueConverterFactory)])!
+                        .Invoke([propertyDescriptor, converterFactory])
+        );
     }
 }
 

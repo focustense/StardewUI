@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Converters;
+﻿using System.Collections.Concurrent;
+using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -47,7 +48,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
 
     delegate IEventBinding? LocalBindingFactory(IView view, BindingContext viewContext, BindingContext handlerContext);
 
-    private static readonly Dictionary<CacheKey, LocalBindingFactory> cache = [];
+    private static readonly ConcurrentDictionary<CacheKey, LocalBindingFactory> cache = [];
 
     /// <inheritdoc />
     public IEventBinding? TryCreateBinding(
@@ -73,12 +74,12 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         var handlerMethod = handlerContextDescriptor.GetMethod(@event.HandlerName);
 
         var cacheKey = new CacheKey(eventDescriptor, handlerMethod, @event, context!.GetType());
-        if (!cache.TryGetValue(cacheKey, out var localFactory))
-        {
-            localFactory = (view, viewContext, handlerContext) =>
-                TryCreateHandlerBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext);
-            cache.Add(cacheKey, localFactory);
-        }
+        var localFactory = cache.GetOrAdd(
+            cacheKey,
+            _ =>
+                (view, viewContext, handlerContext) =>
+                    TryCreateHandlerBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext)
+        );
         return localFactory(view, context, handlerContext);
     }
 

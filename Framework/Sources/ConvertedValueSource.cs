@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Framework.Converters;
 
 namespace StardewUI.Framework.Sources;
@@ -15,7 +16,7 @@ public static class ConvertedValueSource
         nameof(CreateInternal),
         BindingFlags.Static | BindingFlags.NonPublic
     )!;
-    private static readonly Dictionary<(Type, Type), CreateValueSourceDelegate> creationCache = [];
+    private static readonly ConcurrentDictionary<(Type, Type), CreateValueSourceDelegate> creationCache = [];
 
     /// <summary>
     /// Creates a converted source with a specified output type, using an original source with unknown value type.
@@ -31,13 +32,13 @@ public static class ConvertedValueSource
     )
     {
         var typeKey = (original.ValueType, destinationType);
-        if (!creationCache.TryGetValue(typeKey, out var creator))
-        {
-            creator = createInternalMethod
-                .MakeGenericMethod(original.ValueType, destinationType)
-                .CreateDelegate<CreateValueSourceDelegate>();
-            creationCache.Add(typeKey, creator);
-        }
+        var creator = creationCache.GetOrAdd(
+            typeKey,
+            _ =>
+                createInternalMethod
+                    .MakeGenericMethod(original.ValueType, destinationType)
+                    .CreateDelegate<CreateValueSourceDelegate>()
+        );
         return creator(original, converterFactory);
     }
 

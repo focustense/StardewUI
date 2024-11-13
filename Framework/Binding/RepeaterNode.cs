@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
@@ -261,23 +262,21 @@ public class RepeaterNode(
             nameof(CreateInternal),
             BindingFlags.Static | BindingFlags.NonPublic
         )!;
-        private static readonly Dictionary<Type, Factory> factoryCache = [];
+        private static readonly ConcurrentDictionary<Type, Factory> factoryCache = [];
 
         public static ICollectionWatcher Create(IValueSource collectionSource)
         {
             using var _ = Trace.Begin(() => $"{nameof(RepeaterNode)}.{nameof(CollectionWatcher)}", nameof(Create));
-            if (!factoryCache.TryGetValue(collectionSource.ValueType, out var factory))
-            {
-                var elementType =
-                    collectionSource.ValueType.GetEnumerableElementType()
-                    ?? throw new BindingException(
-                        $"Repeater node cannot bind to non-enumerable type {collectionSource.ValueType.Name}."
-                    );
-                factory = createInternalMethod
-                    .MakeGenericMethod(collectionSource.ValueType, elementType)
-                    .CreateDelegate<Factory>();
-                factoryCache.Add(collectionSource.ValueType, factory);
-            }
+            var factory = factoryCache.GetOrAdd(
+                collectionSource.ValueType,
+                static type =>
+                {
+                    var elementType =
+                        type.GetEnumerableElementType()
+                        ?? throw new BindingException($"Repeater node cannot bind to non-enumerable type {type.Name}.");
+                    return createInternalMethod.MakeGenericMethod(type, elementType).CreateDelegate<Factory>();
+                }
+            );
             return factory(collectionSource);
         }
 

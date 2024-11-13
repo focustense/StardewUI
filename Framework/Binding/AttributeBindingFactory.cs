@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
@@ -117,6 +118,7 @@ public class AttributeBindingFactory(
                         + $"{Destination.DeclaringType.Name}.{Destination.Name}."
                 );
             }
+            var previousValue = Source.Value;
             if (!(Source.Update() || force))
             {
                 return false;
@@ -134,8 +136,8 @@ public class AttributeBindingFactory(
         }
     }
 
-    private readonly Dictionary<(Type, string, Type), LocalBindingFactory> bindingFactoryCache = [];
-    private readonly Dictionary<(Type, Type), MethodInfo> genericMethodCache = [];
+    private readonly ConcurrentDictionary<(Type, string, Type), LocalBindingFactory> bindingFactoryCache = [];
+    private readonly ConcurrentDictionary<(Type, Type), MethodInfo> genericMethodCache = [];
 
     /// <inheritdoc />
     public IAttributeBinding? TryCreateBinding(
@@ -157,22 +159,23 @@ public class AttributeBindingFactory(
             return null;
         }
         var propertyKey = (viewDescriptor.TargetType, attribute.Name, sourceType);
-        if (!bindingFactoryCache.TryGetValue(propertyKey, out var bindingFactory))
-        {
-            var typedBindingMethod = typeof(AttributeBindingFactory).GetMethod(
-                nameof(CreateTypedBinding),
-                BindingFlags.NonPublic | BindingFlags.Instance
-            )!;
-            // MakeGenericMethod can be expensive, so it helps to also cache the method itself, independently of the
-            // attribute it's being associated with, in case many attributes use the same types (which they will).
-            if (!genericMethodCache.TryGetValue((sourceType, property.ValueType), out var typedBindingGenericMethod))
+        var bindingFactory = bindingFactoryCache.GetOrAdd(
+            propertyKey,
+            _ =>
             {
-                typedBindingGenericMethod = typedBindingMethod.MakeGenericMethod(sourceType, property.ValueType);
-                genericMethodCache.Add((sourceType, property.ValueType), typedBindingGenericMethod);
+                var typedBindingMethod = typeof(AttributeBindingFactory).GetMethod(
+                    nameof(CreateTypedBinding),
+                    BindingFlags.NonPublic | BindingFlags.Instance
+                )!;
+                // MakeGenericMethod can be expensive, so it helps to also cache the method itself, independently of the
+                // attribute it's being associated with, in case many attributes use the same types (which they will).
+                var typedBindingGenericMethod = genericMethodCache.GetOrAdd(
+                    (sourceType, property.ValueType),
+                    _ => typedBindingMethod.MakeGenericMethod(sourceType, property.ValueType)
+                );
+                return typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
             }
-            bindingFactory = typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
-            bindingFactoryCache.Add(propertyKey, bindingFactory);
-        }
+        );
         return bindingFactory(viewDescriptor, attribute, propertyName, context, resolutionScope);
     }
 

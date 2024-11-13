@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Descriptors;
@@ -103,8 +104,8 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         [typeof(IAttribute), typeof(BindingContext), typeof(IResolutionScope)]
     )!;
 
-    private readonly Dictionary<Type, Func<IArgument, BindingContext?, IValueSource>> argumentCache = [];
-    private readonly Dictionary<
+    private readonly ConcurrentDictionary<Type, Func<IArgument, BindingContext?, IValueSource>> argumentCache = [];
+    private readonly ConcurrentDictionary<
         Type,
         Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>
     > attributeCache = [];
@@ -112,12 +113,14 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
     /// <inheritdoc />
     public IValueSource GetValueSource(Type type, IArgument argument, BindingContext? context)
     {
-        if (!argumentCache.TryGetValue(type, out var valueSourceDelegate))
-        {
-            var typedMethod = getArgumentValueSourceMethod.MakeGenericMethod(type);
-            valueSourceDelegate = typedMethod.CreateDelegate<Func<IArgument, BindingContext?, IValueSource>>(this);
-            argumentCache.Add(type, valueSourceDelegate);
-        }
+        var valueSourceDelegate = argumentCache.GetOrAdd(
+            type,
+            _ =>
+            {
+                var typedMethod = getArgumentValueSourceMethod.MakeGenericMethod(type);
+                return typedMethod.CreateDelegate<Func<IArgument, BindingContext?, IValueSource>>(this);
+            }
+        );
         return valueSourceDelegate(argument, context);
     }
 
@@ -148,14 +151,16 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         IResolutionScope resolutionScope
     )
     {
-        if (!attributeCache.TryGetValue(type, out var valueSourceDelegate))
-        {
-            var typedMethod = getAttributeValueSourceMethod.MakeGenericMethod(type);
-            valueSourceDelegate = typedMethod.CreateDelegate<
-                Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>
-            >(this);
-            attributeCache.Add(type, valueSourceDelegate);
-        }
+        var valueSourceDelegate = attributeCache.GetOrAdd(
+            type,
+            _ =>
+            {
+                var typedMethod = getAttributeValueSourceMethod.MakeGenericMethod(type);
+                return typedMethod.CreateDelegate<Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>>(
+                    this
+                );
+            }
+        );
         return valueSourceDelegate(attribute, context, resolutionScope);
     }
 
