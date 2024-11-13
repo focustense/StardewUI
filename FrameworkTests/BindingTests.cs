@@ -108,7 +108,6 @@ public partial class BindingTests
     }
 
     private readonly FakeAssetCache assetCache;
-    private readonly ITestOutputHelper output;
     private readonly FakeResolutionScopeFactory resolutionScopeFactory;
     private readonly FakeResolutionScope resolutionScope;
     private readonly IValueConverterFactory valueConverterFactory;
@@ -118,7 +117,6 @@ public partial class BindingTests
 
     public BindingTests(ITestOutputHelper output)
     {
-        this.output = output;
         Logger.Monitor = new TestMonitor(output);
         viewFactory = new RootViewFactory([]);
         assetCache = new FakeAssetCache();
