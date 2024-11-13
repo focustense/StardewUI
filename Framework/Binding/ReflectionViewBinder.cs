@@ -24,7 +24,15 @@ public class ReflectionViewBinder(
         var viewDescriptor = GetDescriptor(view);
         var attributeBindings = element
             // Only property attributes are bound to the view; others affect the outer hierarchy.
-            .Attributes.Where(attribute => attribute.Type == AttributeType.Property)
+            .Attributes.AsParallel()
+            // Ideally, attribute order should not affect the outcome, but in some rare cases it can, e.g. if a
+            // drop-down has two-way bindings on both the selected index and selected item.
+            //
+            // Order preservation won't "fix" that, but it will make the behavior consistent, and avoid frustrating
+            // scenarios where the UI sometimes appears to do what it's supposed to and sometimes doesn't, depending on
+            // how the binding happened to get set up the first time.
+            .AsOrdered()
+            .Where(attribute => attribute.Type == AttributeType.Property)
             .Select(attribute =>
                 attributeBindingFactory.TryCreateBinding(viewDescriptor, attribute, context, resolutionScope)
             )
@@ -40,7 +48,11 @@ public class ReflectionViewBinder(
             }
         }
         var eventBindings = element
-            .Events.Select(@event => eventBindingFactory.TryCreateBinding(view, viewDescriptor, @event, context))
+            .Events.AsParallel()
+            // Events do not need the same ordering treatment as attributes because event order is defined by the order
+            // in which those events are actually fired, not the order they are bound in.
+            // Performance is slightly improved by allowing order to be ignored.
+            .Select(@event => eventBindingFactory.TryCreateBinding(view, viewDescriptor, @event, context))
             .Where(binding => binding is not null)
             .Cast<IEventBinding>()
             .ToList();
