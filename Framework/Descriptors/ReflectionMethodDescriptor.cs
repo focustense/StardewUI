@@ -36,6 +36,21 @@ public static class ReflectionMethodDescriptor
         return descriptor;
     }
 
+    /// <summary>
+    /// Checks if a method is supported for view binding.
+    /// </summary>
+    /// <param name="method">The method info.</param>
+    /// <returns><c>true</c> if a <see cref="ReflectionMethodDescriptor{TResult}"/> can be created for the specified
+    /// <paramref name="method"/>, otherwise <c>false</c>.</returns>
+    public static bool IsSupported(MethodInfo method)
+    {
+        return method.DeclaringType is not null
+            && !method.IsAbstract
+            && !method.IsGenericMethod
+            && !method.IsGenericMethodDefinition
+            && method.GetParameters().All(p => !p.IsIn && !p.IsOut);
+    }
+
     private static IMethodDescriptor CreateDescriptorFactory<TResult>(MethodInfo method)
     {
         using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(CreateDescriptorFactory));

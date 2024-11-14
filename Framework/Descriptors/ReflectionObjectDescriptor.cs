@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using StardewValley;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -26,44 +25,49 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// Creates or retrieves a descriptor for a given object type.
     /// </summary>
     /// <param name="type">The object type.</param>
+    /// <param name="lazy">Whether to use lazy initialization for individual members. Lazy member initialization can
+    /// speed up initial descriptor creation time at the cost of slower initial access times for the members, which
+    /// typically slows down bind times. This parameter is ignored for already-cached descriptors.</param>
     /// <returns>The descriptor for the specified <paramref name="type"/>.</returns>
-    public static ReflectionObjectDescriptor ForType(Type type)
+    public static ReflectionObjectDescriptor ForType(Type type, bool lazy = false)
     {
-        return cache.GetOrAdd(type, CreateDescriptor);
+        return cache.GetOrAdd(type, _ => CreateDescriptor(type, lazy));
     }
 
-    private static ReflectionObjectDescriptor CreateDescriptor(Type type)
+    private static ReflectionObjectDescriptor CreateDescriptor(Type type, bool lazy)
     {
         using var _ = Trace.Begin(nameof(ReflectionObjectDescriptor), nameof(CreateDescriptor));
         var interfaces = type.GetInterfaces();
         var membersByName = type.GetMembers(BindingFlags.Instance | BindingFlags.Public)
             .AsParallel()
-            .WithDegreeOfParallelism(Math.Max(1, Environment.ProcessorCount / 2))
+            .WithDegreeOfParallelism(Math.Max(2, Environment.ProcessorCount / 2))
             .Where(member =>
                 member switch
                 {
                     FieldInfo field => true,
                     PropertyInfo prop => prop.GetIndexParameters().Length == 0,
-                    MethodInfo method => !method.IsAbstract && !method.IsGenericMethod,
-                    EventInfo ev => ev.EventHandlerType is not null,
+                    MethodInfo method => ReflectionMethodDescriptor.IsSupported(method),
+                    EventInfo ev => ReflectionEventDescriptor.IsSupported(ev),
                     _ => false,
                 }
             )
             // DistinctBy doesn't have a Parallel implementation so we use GroupBy instead.
             .GroupBy(member => member.Name)
             .Select(g => g.First())
-            .ToLazyDictionary(member =>
-                member switch
-                {
-                    FieldInfo field => LazyExpressionFieldDescriptor.FromFieldInfo(field) as IMemberDescriptor,
-                    PropertyInfo prop => ReflectionPropertyDescriptor.FromPropertyInfo(prop),
-                    MethodInfo method => ReflectionMethodDescriptor.FromMethodInfo(method),
-                    EventInfo ev => ReflectionEventDescriptor.FromEventInfo(ev),
-                    _ => throw new DescriptorException(
-                        $"Invalid member type {member.MemberType} for descriptor of "
-                            + $"{member.DeclaringType?.Name}.{member.Name}"
-                    ),
-                }
+            .ToLazyDictionary(
+                member =>
+                    member switch
+                    {
+                        FieldInfo field => LazyExpressionFieldDescriptor.FromFieldInfo(field) as IMemberDescriptor,
+                        PropertyInfo prop => ReflectionPropertyDescriptor.FromPropertyInfo(prop),
+                        MethodInfo method => ReflectionMethodDescriptor.FromMethodInfo(method),
+                        EventInfo ev => ReflectionEventDescriptor.FromEventInfo(ev),
+                        _ => throw new DescriptorException(
+                            $"Invalid member type {member.MemberType} for descriptor of "
+                                + $"{member.DeclaringType?.Name}.{member.Name}"
+                        ),
+                    },
+                lazy
             );
         return new(type, interfaces, membersByName);
     }
@@ -124,12 +128,18 @@ file static class MemberListExtensions
 {
     public static IReadOnlyDictionary<string, Lazy<TDescriptor>> ToLazyDictionary<T, TDescriptor>(
         this ParallelQuery<T> source,
-        Func<T, TDescriptor> descriptorSelector
+        Func<T, TDescriptor> descriptorSelector,
+        bool lazy
     )
         where T : MemberInfo
     {
         return source
-            .Select(x => (key: x.Name, descriptor: new Lazy<TDescriptor>(() => descriptorSelector(x))))
+            .Select(x =>
+                (
+                    key: x.Name,
+                    descriptor: lazy ? new Lazy<TDescriptor>(() => descriptorSelector(x)) : new(descriptorSelector(x))
+                )
+            )
             .ToDictionary(x => x.key, x => x.descriptor);
     }
 }

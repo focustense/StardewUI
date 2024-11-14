@@ -25,6 +25,20 @@ public static class ReflectionEventDescriptor
         return cache.GetOrAdd(eventInfo, CreateDescriptor);
     }
 
+    /// <summary>
+    /// Checks if an event is supported for view binding.
+    /// </summary>
+    /// <param name="eventInfo">The event info.</param>
+    /// <returns><c>true</c> if a <see cref="ReflectionEventDescriptor{TTarget, THandler}"/> can be created for the
+    /// specified <paramref name="eventInfo"/>, otherwise <c>false</c>.</returns>
+    public static bool IsSupported(EventInfo eventInfo)
+    {
+        return eventInfo.DeclaringType is not null
+            && eventInfo.EventHandlerType is not null
+            && eventInfo.AddMethod is not null
+            && eventInfo.RemoveMethod is not null;
+    }
+
     private static IEventDescriptor CreateDescriptor(EventInfo eventInfo)
     {
         using var _ = Trace.Begin(nameof(ReflectionEventDescriptor), nameof(CreateDescriptor));
