@@ -25,6 +25,7 @@ public class ReflectionViewBinder(
         var attributeBindings = element
             // Only property attributes are bound to the view; others affect the outer hierarchy.
             .Attributes.AsParallel()
+            .WithDegreeOfParallelism(Math.Max(1, Environment.ProcessorCount / 4))
             // Ideally, attribute order should not affect the outcome, but in some rare cases it can, e.g. if a
             // drop-down has two-way bindings on both the selected index and selected item.
             //
@@ -49,6 +50,7 @@ public class ReflectionViewBinder(
         }
         var eventBindings = element
             .Events.AsParallel()
+            .WithDegreeOfParallelism(Math.Max(1, Environment.ProcessorCount / 4))
             // Events do not need the same ordering treatment as attributes because event order is defined by the order
             // in which those events are actually fired, not the order they are bound in.
             // Performance is slightly improved by allowing order to be ignored.

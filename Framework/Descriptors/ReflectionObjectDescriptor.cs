@@ -38,6 +38,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
         var interfaces = type.GetInterfaces();
         var membersByName = type.GetMembers(BindingFlags.Instance | BindingFlags.Public)
             .AsParallel()
+            .WithDegreeOfParallelism(Math.Max(1, Environment.ProcessorCount / 2))
             .Where(member =>
                 member switch
                 {
