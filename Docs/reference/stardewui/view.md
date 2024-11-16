@@ -120,6 +120,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [LeftClick](#leftclick) | Event raised when the view receives a click initiated from the left mouse button, or the controller's action button (A). | 
 | [PointerEnter](#pointerenter) | Event raised when the pointer enters the view. | 
 | [PointerLeave](#pointerleave) | Event raised when the pointer exits the view. | 
+| [PointerMove](#pointermove) | Event raised when the pointer moves within the view. | 
 | [PropertyChanged](#propertychanged) |  | 
 | [RightClick](#rightclick) | Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use button (X). | 
 | [Wheel](#wheel) | Event raised when the scroll wheel moves. | 
@@ -1237,6 +1238,20 @@ public event EventHandler<StardewUI.Events.PointerEventArgs>? PointerLeave;
 ##### Event Type
 
 [EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[PointerEventArgs](events/pointereventargs.md)>
+
+-----
+
+#### PointerMove
+
+Event raised when the pointer moves within the view.
+
+```cs
+public event EventHandler<StardewUI.Events.PointerMoveEventArgs>? PointerMove;
+```
+
+##### Event Type
+
+[EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[PointerMoveEventArgs](events/pointermoveeventargs.md)>
 
 -----
 

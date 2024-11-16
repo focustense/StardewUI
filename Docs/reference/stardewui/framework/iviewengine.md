@@ -32,6 +32,8 @@ public interface IViewEngine
 | --- | --- |
 | [CreateDrawableFromAsset(string)](#createdrawablefromassetstring) | Creates an [IViewDrawable](iviewdrawable.md) from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher. | 
 | [CreateDrawableFromMarkup(string)](#createdrawablefrommarkupstring) | Creates an [IViewDrawable](iviewdrawable.md) from arbitrary markup. | 
+| [CreateMenuControllerFromAsset(string, Object)](#createmenucontrollerfromassetstring-object) | Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher, and returns a controller for customizing the menu's behavior. | 
+| [CreateMenuControllerFromMarkup(string, Object)](#createmenucontrollerfrommarkupstring-object) | Creates a menu from arbitrary markup, and returns a controller for customizing the menu's behavior. | 
 | [CreateMenuFromAsset(string, Object)](#createmenufromassetstring-object) | Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher. | 
 | [CreateMenuFromMarkup(string, Object)](#createmenufrommarkupstring-object) | Creates a menu from arbitrary markup. | 
 | [EnableHotReloading(string)](#enablehotreloadingstring) | Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites. | 
@@ -89,6 +91,62 @@ The markup in StarML format.
 ##### Remarks
 
 The [Context](iviewdrawable.md#context) and [MaxSize](iviewdrawable.md#maxsize) can be provided after creation. 
+
+**Warning:** Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not use this API except for testing/experimentation.
+
+-----
+
+#### CreateMenuControllerFromAsset(string, Object)
+
+Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher, and returns a controller for customizing the menu's behavior.
+
+```cs
+StardewUI.Framework.IMenuController CreateMenuControllerFromAsset(string assetName, System.Object context);
+```
+
+##### Parameters
+
+**`assetName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The name of the StarML view asset in the content pipeline, e.g. `Mods/MyMod/Views/MyView`.
+
+**`context`** &nbsp; [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)  
+The context, or "model", for the menu's view, which holds any data-dependent values. **Note:** The type must implement [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged) in order for any changes to this data to be automatically reflected in the UI.
+
+##### Returns
+
+[IMenuController](imenucontroller.md)
+
+  A controller object whose [Menu](imenucontroller.md#menu) is the created menu and whose other properties can be used to change menu-level behavior.
+
+##### Remarks
+
+The menu that is created is the same as the result of [CreateMenuFromMarkup(string, Object)](iviewengine.md#createmenufrommarkupstring-object). The menu is not automatically shown; to show it, use activeClickableMenu or equivalent.
+
+-----
+
+#### CreateMenuControllerFromMarkup(string, Object)
+
+Creates a menu from arbitrary markup, and returns a controller for customizing the menu's behavior.
+
+```cs
+StardewUI.Framework.IMenuController CreateMenuControllerFromMarkup(string markup, System.Object context);
+```
+
+##### Parameters
+
+**`markup`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The markup in StarML format.
+
+**`context`** &nbsp; [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)  
+The context, or "model", for the menu's view, which holds any data-dependent values. **Note:** The type must implement [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged) in order for any changes to this data to be automatically reflected in the UI.
+
+##### Returns
+
+[IMenuController](imenucontroller.md)
+
+  A controller object whose [Menu](imenucontroller.md#menu) is the created menu and whose other properties can be used to change menu-level behavior.
+
+##### Remarks
 
 **Warning:** Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not use this API except for testing/experimentation.
 

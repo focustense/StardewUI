@@ -68,6 +68,7 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
  | Name | Description |
 | --- | --- |
 | [DimmingAmount](#dimmingamount) | Amount of dimming between 0 and 1; i.e. opacity of the background underlay. | 
+| [Gutter](#gutter) | Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu may be drawn. | 
 | Position | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [View](#view) | The view to display with this menu. | 
 
@@ -105,6 +106,7 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 | GetChildMenu() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | getComponentWithID(Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | getCurrentlySnappedComponent() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [GetOriginPosition(Point, Point)](#getoriginpositionpoint-point) | Computes the origin (top left) position of the menu for a given viewport and offset. | 
 | GetParentMenu() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | HasDependencies() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | initialize(Int32, Int32, Int32, Int32, Boolean) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
@@ -182,6 +184,24 @@ public float DimmingAmount { get; set; }
 ##### Remarks
 
 Underlay is only drawn when game options do not force clear backgrounds.
+
+-----
+
+#### Gutter
+
+Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu may be drawn.
+
+```cs
+protected StardewUI.Layout.Edges Gutter { get; set; }
+```
+
+##### Property Value
+
+[Edges](layout/edges.md)
+
+##### Remarks
+
+Gutters effectively shrink the viewport for both measurement (size calculation) and layout (centering) by clipping the screen edges.
 
 -----
 
@@ -303,6 +323,30 @@ Sequence of all elements, and their relative positions, that the mouse coordinat
 ##### Remarks
 
 The default implementation reads the string value of the _last_ (lowest-level) view with a non-empty [Tooltip](iview.md#tooltip), and breaks lines longer than 640px, which is the default vanilla tooltip width.
+
+-----
+
+#### GetOriginPosition(Point, Point)
+
+Computes the origin (top left) position of the menu for a given viewport and offset.
+
+```cs
+protected virtual Microsoft.Xna.Framework.Point GetOriginPosition(Microsoft.Xna.Framework.Point viewportSize, Microsoft.Xna.Framework.Point gutterOffset);
+```
+
+##### Parameters
+
+**`viewportSize`** &nbsp; [Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)  
+The available size of the viewport in which the menu is to be displayed.
+
+**`gutterOffset`** &nbsp; [Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)  
+The offset implied by any asymmetrical [Gutter](viewmenu-1.md#gutter) setting; for example, a gutter whose [Left](layout/edges.md#left) edge is `100` px and whose [Right](layout/edges.md#right) edge is only `50` px would have an X offset of `25` px (half the difference, because centered).
+
+##### Returns
+
+[Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)
+
+  The origin (top left) position for the menu's root view.
 
 -----
 
