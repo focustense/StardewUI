@@ -14,7 +14,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A text input field that allows typing from a physical or virtual keyboard.
 /// </summary>
-public class TextInput : View
+public partial class TextInput : View
 {
     /// <summary>
     /// Event raised when the <see cref="Text"/> changes.

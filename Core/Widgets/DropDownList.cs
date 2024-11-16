@@ -11,7 +11,7 @@ namespace StardewUI.Widgets;
 /// Button/text field with a drop-down menu.
 /// </summary>
 /// <typeparam name="T">The type of list item that can be chosen.</typeparam>
-public class DropDownList<T> : ComponentView
+public partial class DropDownList<T> : ComponentView
     where T : notnull
 {
     /// <summary>

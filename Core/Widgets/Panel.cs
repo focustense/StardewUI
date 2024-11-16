@@ -23,7 +23,7 @@ namespace StardewUI.Widgets;
 /// sense, e.g. there is no explicit "background" or "border", or if there are more than 2 layers to draw.
 /// </para>
 /// </remarks>
-public class Panel : View
+public partial class Panel : View
 {
     /// <summary>
     /// Child views to display in this layout.

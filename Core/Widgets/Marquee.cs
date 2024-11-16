@@ -13,7 +13,7 @@ namespace StardewUI.Widgets;
 /// Works by doubling and shifting the drawing the portion and applying a clipping rectangle, and therefore should be
 /// used only for non-interactive content; clicks and focus searches will not be correct inside the content area.
 /// </remarks>
-public class Marquee : View
+public partial class Marquee : View
 {
     /// <summary>
     /// Content to scroll inside the marquee.

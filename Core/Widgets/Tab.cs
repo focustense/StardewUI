@@ -13,7 +13,7 @@ namespace StardewUI.Widgets;
 /// Tabs activate when clicked; multiple tabs can be assigned to the same <see cref="Group"/>, each with a unique
 /// <see cref="GroupKey"/>, in order to deactivate other tabs when any one tab is activated.
 /// </remarks>
-public class Tab : ComponentView<Panel>
+public partial class Tab : ComponentView<Panel>
 {
     /// <summary>
     /// Event raised when <see cref="Active"/> becomes <c>true</c>.

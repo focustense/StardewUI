@@ -12,7 +12,7 @@ namespace StardewUI.Widgets.Keybinding;
 /// <summary>
 /// Display widget for a single <see cref="Keybind"/> showing all required keys.
 /// </summary>
-public class KeybindView : ComponentView<Lane>
+public partial class KeybindView : ComponentView<Lane>
 {
     /// <summary>
     /// Default setting for <see cref="ButtonHeight"/>.

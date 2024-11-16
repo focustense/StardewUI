@@ -10,7 +10,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A horizontal track with draggable thumb (button) for choosing a numeric value in a range.
 /// </summary>
-public class Slider : ComponentView
+public partial class Slider : ComponentView
 {
     private const int DEFAULT_TRACK_WIDTH = 120;
     private const int TRACK_HEIGHT = 24;

@@ -9,7 +9,7 @@ namespace StardewUI.Widgets;
 /// A view that holds another view, typically for the purpose of adding a border or background, or in some cases
 /// swapping out the content.
 /// </summary>
-public class Frame : View
+public partial class Frame : View
 {
     /// <summary>
     /// The background sprite to draw for this frame.

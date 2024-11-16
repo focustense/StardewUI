@@ -12,7 +12,7 @@ namespace StardewUI.Widgets;
 /// Can be configured to use either a fixed cell size, and therefore a variable number of rows and columns depending on
 /// the grid size, or a fixed number of rows and columns, with a variable size per cell.
 /// </remarks>
-public class Grid : View
+public partial class Grid : View
 {
     /// <summary>
     /// Child views to display in this layout, arranged according to the <see cref="ItemLayout"/>.

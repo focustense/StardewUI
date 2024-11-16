@@ -9,7 +9,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// Simple button with optional hover background.
 /// </summary>
-public class Button : ComponentView<View>
+public partial class Button : ComponentView<View>
 {
     /// <summary>
     /// Content view to display inside the button frame.

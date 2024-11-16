@@ -17,7 +17,7 @@ namespace StardewUI.Widgets.Keybinding;
 /// Displays all the configured keybinds in one row, and (<see cref="EditableType"/> is not <c>null</c>) opens up a
 /// <see cref="KeybindOverlay"/> to edit the keybinds when clicked.
 /// </remarks>
-public class KeybindListEditor : ComponentView
+public partial class KeybindListEditor : ComponentView
 {
     /// <summary>
     /// The <see cref="KeybindOverlay.AddButtonText"/> to display for adding new bindings.

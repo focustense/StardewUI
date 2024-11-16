@@ -18,7 +18,7 @@ namespace StardewUI.Widgets;
 /// will not change the rendered text; the text is not scaled to the layout bounds.
 /// </para>
 /// </remarks>
-public class TinyNumberLabel : View
+public partial class TinyNumberLabel : View
 {
     /// <summary>
     /// The sprites for each individual digit, with the index corresponding to the digit itself (element 0 for digit

@@ -27,7 +27,7 @@ namespace StardewUI.Widgets;
 /// suitable for extremely long lists or other unbounded content.
 /// </para>
 /// </remarks>
-public class ScrollContainer : View
+public partial class ScrollContainer : View
 {
     /// <summary>
     /// Event raised when any aspect of the scrolling changes.
