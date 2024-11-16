@@ -206,6 +206,7 @@ public class ParserTests
                     ),
                 ]
             },
+            { @"<label text="""" bold=""true"" />", [new("label", [new("text", ""), new("bold", "true")])] },
             // We don't test or need to test this in the Lexer, but it's useful to have one test combining both
             // attributes and event bindings to make sure the parser doesn't get confused about what the lexer is
             // emitting.

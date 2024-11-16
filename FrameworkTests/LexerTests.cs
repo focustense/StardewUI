@@ -267,6 +267,24 @@ public class LexerTests
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },
+            {
+                @"<label text="""" bold=""true"" />",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Name, "bold"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "true"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
         };
 
     [Theory]

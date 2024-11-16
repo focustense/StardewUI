@@ -327,8 +327,14 @@ public ref struct DocumentReader(Lexer lexer)
             TokenType.BindingModifier,
             TokenType.ContextParent,
             TokenType.ContextAncestor,
-            TokenType.Literal
+            TokenType.Literal,
+            TokenType.Quote
         );
+        if (lexer.Current.Type == TokenType.Quote)
+        {
+            Attribute = new(name, type, valueType, "", 0, "");
+            return;
+        }
         if (lexer.Current.Type == TokenType.BindingModifier)
         {
             valueType = GetBindingType(lexer.Current.Text);
