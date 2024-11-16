@@ -63,6 +63,11 @@ public interface IView : INotifyPropertyChanged
     event EventHandler<PointerEventArgs> PointerLeave;
 
     /// <summary>
+    /// Event raised when the pointer moves within the view.
+    /// </summary>
+    event EventHandler<PointerMoveEventArgs> PointerMove;
+
+    /// <summary>
     /// Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use
     /// button (X).
     /// </summary>

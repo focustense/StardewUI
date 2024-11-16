@@ -65,6 +65,11 @@ public abstract class View : IView
     /// </summary>
     public event EventHandler<PointerEventArgs>? PointerLeave;
 
+    /// <summary>
+    /// Event raised when the pointer moves within the view.
+    /// </summary>
+    public event EventHandler<PointerMoveEventArgs>? PointerMove;
+
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -733,9 +738,16 @@ public abstract class View : IView
         // For self checks, don't adjust previous position, as offset should only apply to inner content.
         var wasPointerInBounds = ContainsPoint(e.PreviousPosition);
         var isPointerInBounds = ContainsPoint(e.Position);
-        if (isPointerInBounds && !wasPointerInBounds)
+        if (isPointerInBounds)
         {
-            PointerEnter?.Invoke(this, e);
+            if (wasPointerInBounds)
+            {
+                PointerMove?.Invoke(this, e);
+            }
+            else
+            {
+                PointerEnter?.Invoke(this, e);
+            }
         }
         else if (!isPointerInBounds && wasPointerInBounds)
         {

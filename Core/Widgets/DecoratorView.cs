@@ -235,6 +235,9 @@ public class DecoratorView<T> : IView, IDisposable
     public event EventHandler<PointerEventArgs>? PointerLeave;
 
     /// <inheritdoc />
+    public event EventHandler<PointerMoveEventArgs>? PointerMove;
+
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <inheritdoc />
@@ -465,6 +468,7 @@ public class DecoratorView<T> : IView, IDisposable
         view.LeftClick += View_LeftClick;
         view.PointerEnter += View_PointerEnter;
         view.PointerLeave += View_PointerLeave;
+        view.PointerMove += View_PointerMove;
         view.PropertyChanged += View_PropertyChanged;
         view.RightClick += View_RightClick;
         view.Wheel += View_Wheel;
@@ -484,6 +488,7 @@ public class DecoratorView<T> : IView, IDisposable
         view.LeftClick -= View_LeftClick;
         view.PointerEnter -= View_PointerEnter;
         view.PointerLeave -= View_PointerLeave;
+        view.PointerMove -= View_PointerMove;
         view.PropertyChanged -= View_PropertyChanged;
         view.RightClick -= View_RightClick;
         view.Wheel -= View_Wheel;
@@ -519,6 +524,8 @@ public class DecoratorView<T> : IView, IDisposable
     private void View_PointerEnter(object? _, PointerEventArgs e) => PointerEnter?.Invoke(this, e);
 
     private void View_PointerLeave(object? _, PointerEventArgs e) => PointerLeave?.Invoke(this, e);
+
+    private void View_PointerMove(object? _, PointerMoveEventArgs e) => PointerMove?.Invoke(this, e);
 
     private void View_PropertyChanged(object? _, PropertyChangedEventArgs e) => PropertyChanged?.Invoke(this, e);
 
