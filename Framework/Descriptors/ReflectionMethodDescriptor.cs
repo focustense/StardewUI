@@ -45,7 +45,6 @@ public static class ReflectionMethodDescriptor
     public static bool IsSupported(MethodInfo method)
     {
         return method.DeclaringType is not null
-            && !method.IsAbstract
             && !method.IsGenericMethod
             && !method.IsGenericMethodDefinition
             && method.GetParameters().All(p => !p.IsIn && !p.IsOut);

@@ -51,9 +51,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
                     _ => false,
                 }
             )
-            // DistinctBy doesn't have a Parallel implementation so we use GroupBy instead.
-            .GroupBy(member => member.Name)
-            .Select(g => g.First())
+            .Distinct(MemberNameComparer.Instance)
             .ToLazyDictionary(
                 member =>
                     member switch
@@ -141,5 +139,20 @@ file static class MemberListExtensions
                 )
             )
             .ToDictionary(x => x.key, x => x.descriptor);
+    }
+}
+
+file class MemberNameComparer : IEqualityComparer<MemberInfo>
+{
+    public static MemberNameComparer Instance = new();
+
+    public bool Equals(MemberInfo? x, MemberInfo? y)
+    {
+        return string.Equals(x?.Name, y?.Name);
+    }
+
+    public int GetHashCode([DisallowNull] MemberInfo obj)
+    {
+        return obj.Name.GetHashCode();
     }
 }
