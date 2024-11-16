@@ -117,12 +117,22 @@ internal sealed partial class ModEntry : Mod
 
         [Notify]
         private float speedMultiplier = 25;
+
+        [Notify]
+        private bool allowClose = true;
     }
 
     private void ShowExampleMenu3()
     {
         var context = new Example3Model();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Form", context);
+        var controller = viewEngine.CreateMenuControllerFromAsset($"{viewAssetPrefix}/Example-Form", context);
+        controller.CanClose = () => context.AllowClose;
+        if (Helper.Input.IsDown(SButton.RightShift))
+        {
+            var position = Game1.getMousePosition(true);
+            controller.PositionSelector = () => position;
+        }
+        Game1.activeClickableMenu = controller.Menu;
     }
 
     private void ShowCropsGridExample()

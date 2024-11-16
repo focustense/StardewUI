@@ -38,9 +38,23 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// </summary>
     public T View => view;
 
+    /// <summary>
+    /// Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu
+    /// may be drawn.
+    /// </summary>
+    /// <remarks>
+    /// Gutters effectively shrink the viewport for both measurement (size calculation) and layout (centering) by
+    /// clipping the screen edges.
+    /// </remarks>
+    protected Edges? Gutter
+    {
+        get => gutter;
+        set => gutter = value;
+    }
+
     private static readonly Edges DefaultGutter = new(100, 50);
 
-    private readonly Edges? gutter;
+    private Edges? gutter;
 
     // For tracking activation paths, we not only want a weak table for the overlay itself (to prevent overlays from
     // being leaked) but also for the ViewChild path used to activate it, because these views may go out of scope while
@@ -523,6 +537,21 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         return Game1.parseText(tooltip, Game1.smallFont, 640);
     }
 
+    /// <summary>
+    /// Computes the origin (top left) position of the menu for a given viewport and offset.
+    /// </summary>
+    /// <param name="viewportSize">The available size of the viewport in which the menu is to be displayed.</param>
+    /// <param name="gutterOffset">The offset implied by any asymmetrical <see cref="Gutter"/> setting; for example,
+    /// a gutter whose <see cref="Edges.Left"/> edge is <c>100</c> px and whose <see cref="Edges.Right"/> edge is only
+    /// <c>50</c> px would have an X offset of <c>25</c> px (half the difference, because centered).</param>
+    /// <returns>The origin (top left) position for the menu's root view.</returns>
+    protected virtual Point GetOriginPosition(Point viewportSize, Point gutterOffset)
+    {
+        int x = viewportSize.X / 2 - width / 2 + gutterOffset.X;
+        int y = viewportSize.Y / 2 - height / 2 + gutterOffset.Y;
+        return new(x, y);
+    }
+
     private static void FinishFocusSearch(IView rootView, Point origin, FocusSearchResult found)
     {
         LogFocusSearchResult(found.Target);
@@ -662,8 +691,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         var gutterOffsetY = (currentGutter.Top - currentGutter.Bottom) / 2;
         width = (int)MathF.Round(view.OuterSize.X);
         height = (int)MathF.Round(view.OuterSize.Y);
-        xPositionOnScreen = viewportSize.X / 2 - width / 2 + gutterOffsetX;
-        yPositionOnScreen = viewportSize.Y / 2 - height / 2 + gutterOffsetY;
+        (xPositionOnScreen, yPositionOnScreen) = GetOriginPosition(viewportSize, new(gutterOffsetX, gutterOffsetY));
         Refocus();
     }
 

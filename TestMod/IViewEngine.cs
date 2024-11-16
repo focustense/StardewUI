@@ -42,6 +42,38 @@ public interface IViewEngine
     IViewDrawable CreateDrawableFromMarkup(string markup);
 
     /// <summary>
+    /// Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher, and
+    /// returns a controller for customizing the menu's behavior.
+    /// </summary>
+    /// <remarks>
+    /// The menu that is created is the same as the result of <see cref="CreateMenuFromMarkup(string, object?)"/>. The
+    /// menu is not automatically shown; to show it, use <see cref="Game1.activeClickableMenu"/> or equivalent.
+    /// </remarks>
+    /// <param name="assetName">The name of the StarML view asset in the content pipeline, e.g.
+    /// <c>Mods/MyMod/Views/MyView</c>.</param>
+    /// <param name="context">The context, or "model", for the menu's view, which holds any data-dependent values.
+    /// <b>Note:</b> The type must implement <see cref="INotifyPropertyChanged"/> in order for any changes to this data
+    /// to be automatically reflected in the UI.</param>
+    /// <returns>A controller object whose <see cref="IMenuController.Menu"/> is the created menu and whose other
+    /// properties can be used to change menu-level behavior.</returns>
+    IMenuController CreateMenuControllerFromAsset(string assetName, object? context = null);
+
+    /// <summary>
+    /// Creates a menu from arbitrary markup, and returns a controller for customizing the menu's behavior.
+    /// </summary>
+    /// <remarks>
+    /// <b>Warning:</b> Ad-hoc menus created this way cannot be cached, nor patched by other mods. Most mods should not
+    /// use this API except for testing/experimentation.
+    /// </remarks>
+    /// <param name="markup">The markup in StarML format.</param>
+    /// <param name="context">The context, or "model", for the menu's view, which holds any data-dependent values.
+    /// <b>Note:</b> The type must implement <see cref="INotifyPropertyChanged"/> in order for any changes to this data
+    /// to be automatically reflected in the UI.</param>
+    /// <returns>A controller object whose <see cref="IMenuController.Menu"/> is the created menu and whose other
+    /// properties can be used to change menu-level behavior.</returns>
+    IMenuController CreateMenuControllerFromMarkup(string markup, object? context = null);
+
+    /// <summary>
     /// Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher.
     /// </summary>
     /// <remarks>
@@ -147,6 +179,57 @@ public interface IViewDrawable : IDisposable
     /// <param name="b">Target sprite batch.</param>
     /// <param name="position">Position on the screen or viewport to use as the top-left corner.</param>
     void Draw(SpriteBatch b, Vector2 position);
+}
+
+/// <summary>
+/// Wrapper for a mod-managed <see cref="IClickableMenu"/> that allows further customization of menu-level properties
+/// not accessible to StarML or data binding.
+/// </summary>
+public interface IMenuController : IDisposable
+{
+    /// <summary>
+    /// Gets or sets a function that returns whether or not the menu can be closed.
+    /// </summary>
+    /// <remarks>
+    /// This is equivalent to implementing <see cref="IClickableMenu.readyToClose"/>.
+    /// </remarks>
+    Func<bool>? CanClose { get; set; }
+
+    /// <summary>
+    /// Gets the menu, which can be opened using <see cref="Game1.activeClickableMenu"/>, or as a child menu.
+    /// </summary>
+    IClickableMenu Menu { get; }
+
+    /// <summary>
+    /// Gets or sets a function that returns the top-left position of the menu.
+    /// </summary>
+    /// <remarks>
+    /// Setting any non-null value will disable the auto-centering functionality, and is equivalent to setting the
+    /// <see cref="IClickableMenu.xPositionOnScreen"/> and <see cref="IClickableMenu.yPositionOnScreen"/> fields.
+    /// </remarks>
+    Func<Point>? PositionSelector { get; set; }
+
+    /// <summary>
+    /// Configures the menu's gutter widths/heights.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Gutters are areas of the screen that the menu should not occupy. These are typically used with a menu whose root
+    /// view uses <see cref="Layout.Length.Stretch"/> for one of its <see cref="IView.Layout"/> dimensions, and allows
+    /// limiting the max width/height relative to the viewport size.
+    /// </para>
+    /// <para>
+    /// The historical reason for gutters is <see href="https://en.wikipedia.org/wiki/Overscan">overscan</see>, however
+    /// they are still commonly used for aesthetic reasons.
+    /// </para>
+    /// </remarks>
+    /// <param name="left">The gutter width on the left side of the viewport.</param>
+    /// <param name="top">The gutter height at the top of the viewport.</param>
+    /// <param name="right">The gutter width on the right side of the viewport. The default value of <c>-1</c> specifies
+    /// that the <paramref name="left"/> value should be mirrored on the right.</param>
+    /// <param name="bottom">The gutter height at the bottom of the viewport. The default value of <c>-1</c> specifies
+    /// that the <paramref name="top"/> value should be mirrored on the bottom.</param>
+    void SetGutters(int left, int top, int right = -1, int bottom = -1);
 }
 
 /// <summary>

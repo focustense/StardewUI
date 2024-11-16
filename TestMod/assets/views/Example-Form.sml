@@ -11,6 +11,10 @@
                 <label layout="280px content" margin="0,8" text={#ExampleForm.SpeedMultiplier.Title} />
                 <slider min="10" max="100" value={<>SpeedMultiplier} />
             </lane>
+            <lane layout="stretch content" margin="16,0" vertical-content-alignment="middle">
+                <label layout="280px content" margin="0,8" text="Allow Closing" />
+                <checkbox is-checked={<>AllowClose} />
+            </lane>
         </lane>
     </frame>
 </lane>
