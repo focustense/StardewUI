@@ -450,7 +450,7 @@ internal class AssetRegistry : ISourceResolver
         return true;
     }
 
-    private static bool TryLoadAsset<T>(
+    private bool TryLoadAsset<T>(
         IReadOnlyList<DirectoryMapping> directories,
         AssetRequestedEventArgs e,
         string extension,
@@ -469,6 +469,10 @@ internal class AssetRegistry : ISourceResolver
                     relativePath = relativePath[..^suffix.Length];
                 }
                 var modPath = Path.Combine(modDirectory, relativePath + '.' + extension);
+                if (!File.Exists(Path.Combine(helper.DirectoryPath, modPath)))
+                {
+                    return false;
+                }
                 e.LoadFromModFile<T>(modPath, AssetLoadPriority.Low);
                 return true;
             }

@@ -67,7 +67,8 @@ internal sealed class ModEntry : Mod
     {
         if (e.NameWithoutLocale.StartsWith(UiSpriteProvider.AssetNamePrefix))
         {
-            e.LoadFrom(() => UiSpriteProvider.GetSprite(e.Name.Name), AssetLoadPriority.Exclusive);
+            // Built-in UI sprites point to Game1-instanced textures, so they should not and cannot be localized.
+            e.LoadFrom(() => UiSpriteProvider.GetSprite(e.NameWithoutLocale.Name), AssetLoadPriority.Exclusive);
         }
         else if (e.NameWithoutLocale.StartsWith(SpriteMaps.AssetNamePrefix))
         {
