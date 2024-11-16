@@ -91,6 +91,7 @@ public class AssetCache : IAssetCache
         where T : notnull
     {
         using var _ = Trace.Begin(this, nameof(TryLoad));
+        using var _name = Trace.Begin("#" + name);
         try
         {
             bool success = backoff.TryRun(name, () => content.Load<T>(name), out result);

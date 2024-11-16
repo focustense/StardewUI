@@ -223,6 +223,7 @@ internal class AssetRegistry : ISourceResolver
 
     private SpriteSheetData GetSpriteSheetData(string assetName)
     {
+        using var _ = Trace.Begin(this, nameof(GetSpriteSheetData));
         if (!spriteSheetCache.TryGetValue(assetName, out var data))
         {
             try
@@ -241,6 +242,8 @@ internal class AssetRegistry : ISourceResolver
 
     private Texture2D GetTexture(string assetName)
     {
+        using var _ = Trace.Begin(this, nameof(GetTexture));
+        using var _name = Trace.Begin("#" + assetName);
         if (textureCache.TryGetValue(assetName, out var textureRef))
         {
             if (textureRef.TryGetTarget(out var cachedTexture) && !cachedTexture.IsDisposed)
@@ -421,6 +424,7 @@ internal class AssetRegistry : ISourceResolver
     )
         where T : notnull
     {
+        using var _ = Trace.Begin(nameof(AssetRegistry), nameof(TryLoadAsset));
         foreach (var (assetPrefix, modDirectory) in directories)
         {
             var relativePath = GetRelativeAssetPath(e, assetPrefix);
@@ -440,6 +444,7 @@ internal class AssetRegistry : ISourceResolver
 
     private bool TryLoadSprite(AssetRequestedEventArgs e)
     {
+        using var _ = Trace.Begin(this, nameof(TryLoadSprite));
         if (!spriteCache.TryGetValue(e.Name.Name, out var entry))
         {
             foreach (var (assetPrefix, modDirectory) in spriteDirectories)

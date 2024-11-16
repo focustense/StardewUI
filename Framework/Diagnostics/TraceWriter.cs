@@ -82,8 +82,15 @@ internal class TraceWriter(IManifest mod, Func<TraceConfig> configSelector) : St
 
     class FrameCloser(TraceFile trace, int frame) : IDisposable
     {
+        private bool isDisposed;
+
         public void Dispose()
         {
+            if (isDisposed)
+            {
+                return;
+            }
+            isDisposed = true;
             trace.CloseFrame(frame);
             GC.SuppressFinalize(this);
         }
