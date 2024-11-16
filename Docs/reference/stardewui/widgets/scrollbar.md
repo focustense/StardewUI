@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Controls the scrolling of a [ScrollContainer](scrollcontainer.md).
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Scrollbar : StardewUI.Widgets.ComponentView<T>
 ```
 

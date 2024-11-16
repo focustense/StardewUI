@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Renders inner content clipped to a boundary and with a modifiable scroll offset.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class ScrollContainer : StardewUI.View
 ```
 

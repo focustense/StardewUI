@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A view that holds another view, typically for the purpose of adding a border or background, or in some cases swapping out the content.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Frame : StardewUI.View
 ```
 

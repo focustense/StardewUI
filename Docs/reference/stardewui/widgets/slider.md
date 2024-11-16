@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A horizontal track with draggable thumb (button) for choosing a numeric value in a range.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Slider : StardewUI.Widgets.ComponentView
 ```
 

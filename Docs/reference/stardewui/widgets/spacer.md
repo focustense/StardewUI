@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 An empty view whose sole purpose is to separate other elements.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Spacer : StardewUI.View
 ```
 

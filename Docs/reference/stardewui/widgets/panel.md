@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A layout view whose children all overlap the same boundaries.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Panel : StardewUI.View
 ```
 

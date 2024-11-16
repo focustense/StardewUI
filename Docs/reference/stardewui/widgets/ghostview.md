@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A view that draws an exact copy of another view, generally with a tint and transparency to indicate that it is not the original view. Can be used for dragging, indicating target snap positions, etc.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class GhostView : StardewUI.View
 ```
 

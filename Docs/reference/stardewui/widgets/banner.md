@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Draws banner-style text with an optional background.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Banner : StardewUI.View
 ```
 

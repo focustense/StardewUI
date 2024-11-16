@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A view that draws a sprite, scaled to the layout size.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Image : StardewUI.View
 ```
 

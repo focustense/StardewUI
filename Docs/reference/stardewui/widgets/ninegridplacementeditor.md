@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Editor widget for a [NineGridPlacement](../layout/ninegridplacement.md), which brings up a [PositioningOverlay](positioningoverlay.md) on click.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class NineGridPlacementEditor : StardewUI.View
 ```
 

@@ -1493,7 +1493,7 @@ void WriteFieldDetail(StringBuilder sb, FieldInfo field)
     {
         sb.Append("readonly ");
     }
-    sb.Append(field.FieldType.FullName ?? field.FieldType.Name);
+    sb.Append(FormatGenericTypeName(field.FieldType, fullPath: true, escaped: false, collapsePrimitives: true));
     sb.Append(' ');
     sb.Append(field.Name);
     sb.AppendLine(";");

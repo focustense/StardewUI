@@ -1,13 +1,13 @@
 ---
-title: ThisPropertyDescriptor&lt;T&gt;
-description: Special descriptor used for "this" references in argument/attribute bindings, allowing them to reference the current context instead of a property on it.
+title: PrecompiledPropertyDescriptor&lt;TTarget, TProperty&gt;
+description: Statically-typed implementation of an IPropertyDescriptor&lt;T&gt; with predefined attributes.
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
 
 /// html | div.api-reference
 
-# Class ThisPropertyDescriptor&lt;T&gt;
+# Class PrecompiledPropertyDescriptor&lt;TTarget, TProperty&gt;
 
 ## Definition
 
@@ -18,34 +18,37 @@ Assembly: StardewUI.dll
 
 </div>
 
-Special descriptor used for "this" references in argument/attribute bindings, allowing them to reference the current context instead of a property on it.
+Statically-typed implementation of an [IPropertyDescriptor&lt;T&gt;](ipropertydescriptor-1.md) with predefined attributes.
 
 ```cs
-public class ThisPropertyDescriptor<T> : 
-    StardewUI.Framework.Descriptors.IPropertyDescriptor<T>, 
+public class PrecompiledPropertyDescriptor<TTarget, TProperty> : 
+    StardewUI.Framework.Descriptors.IPropertyDescriptor<TProperty>, 
     StardewUI.Framework.Descriptors.IPropertyDescriptor, 
     StardewUI.Framework.Descriptors.IMemberDescriptor
 ```
 
 ### Type Parameters
 
-**`T`**  
-The object type.
+**`TTarget`**  
+The property's declaring type.
+
+**`TProperty`**  
+The property value type.
 
 
 **Inheritance**  
-[Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ ThisPropertyDescriptor&lt;T&gt;
+[Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ PrecompiledPropertyDescriptor&lt;TTarget, TProperty&gt;
 
 **Implements**  
-[IPropertyDescriptor&lt;T&gt;](ipropertydescriptor-1.md), [IPropertyDescriptor](ipropertydescriptor.md), [IMemberDescriptor](imemberdescriptor.md)
+[IPropertyDescriptor&lt;TProperty&gt;](ipropertydescriptor-1.md), [IPropertyDescriptor](ipropertydescriptor.md), [IMemberDescriptor](imemberdescriptor.md)
 
 ## Members
 
-### Fields
+### Constructors
 
  | Name | Description |
 | --- | --- |
-| [Instance](#instance) | Gets the singleton descriptor instance for the current object/property type. | 
+| [PrecompiledPropertyDescriptor&lt;TTarget, TProperty&gt;(string, Boolean, Boolean, Func&lt;TTarget, TProperty&gt;, Action&lt;TTarget, TProperty&gt;)](#precompiledpropertydescriptorttarget-tpropertystring-bool-bool-functtarget-tproperty-actionttarget-tproperty) | Statically-typed implementation of an [IPropertyDescriptor&lt;T&gt;](ipropertydescriptor-1.md) with predefined attributes. | 
 
 ### Properties
 
@@ -64,23 +67,36 @@ The object type.
  | Name | Description |
 | --- | --- |
 | [GetValue(Object)](#getvalueobject) | Reads the current property value. | 
-| [SetValue(Object, T)](#setvalueobject-t) | Writes a new property value. | 
+| [SetValue(Object, TProperty)](#setvalueobject-tproperty) | Writes a new property value. | 
 
 ## Details
 
-### Fields
+### Constructors
 
-#### Instance
+#### PrecompiledPropertyDescriptor&lt;TTarget, TProperty&gt;(string, bool, bool, Func&lt;TTarget, TProperty&gt;, Action&lt;TTarget, TProperty&gt;)
 
-Gets the singleton descriptor instance for the current object/property type.
+Statically-typed implementation of an [IPropertyDescriptor&lt;T&gt;](ipropertydescriptor-1.md) with predefined attributes.
 
 ```cs
-public static readonly StardewUI.Framework.Descriptors.ThisPropertyDescriptor<T> Instance;
+public PrecompiledPropertyDescriptor<TTarget, TProperty>(string name, bool isField, bool isAutoProperty, Func<TTarget, TProperty> getter, Action<TTarget, TProperty> setter);
 ```
 
-##### Field Value
+##### Parameters
 
-[ThisPropertyDescriptor&lt;T&gt;](thispropertydescriptor-1.md)
+**`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The event name.
+
+**`isField`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether or not this descriptor is really for an unwrapped field.
+
+**`isAutoProperty`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether or not the property is auto-implemented.
+
+**`getter`** &nbsp; [Func&lt;TTarget, TProperty&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.func-2)  
+Function to retrieve the current property value from a target instance.
+
+**`setter`** &nbsp; [Action&lt;TTarget, TProperty&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.action-2)  
+Function to set the current property value on a target instance.
 
 -----
 
@@ -201,7 +217,7 @@ public System.Type ValueType { get; }
 Reads the current property value.
 
 ```cs
-public T GetValue(System.Object source);
+public TProperty GetValue(System.Object source);
 ```
 
 ##### Parameters
@@ -211,16 +227,16 @@ An instance of the property's [DeclaringType](imemberdescriptor.md#declaringtype
 
 ##### Returns
 
-`T`
+`TProperty`
 
 -----
 
-#### SetValue(Object, T)
+#### SetValue(Object, TProperty)
 
 Writes a new property value.
 
 ```cs
-public void SetValue(System.Object target, T value);
+public void SetValue(System.Object target, TProperty value);
 ```
 
 ##### Parameters
@@ -228,7 +244,7 @@ public void SetValue(System.Object target, T value);
 **`target`** &nbsp; [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)  
 An instance of the property's [DeclaringType](imemberdescriptor.md#declaringtype).
 
-**`value`** &nbsp; T  
+**`value`** &nbsp; TProperty  
 The new property value.
 
 -----

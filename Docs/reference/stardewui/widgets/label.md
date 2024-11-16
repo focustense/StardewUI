@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A view that renders a read-only text string.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Label : StardewUI.View
 ```
 

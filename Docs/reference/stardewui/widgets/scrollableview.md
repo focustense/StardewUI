@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Provides a content container and accompanying scrollbar.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class ScrollableView : StardewUI.Widgets.ComponentView<T>
 ```
 

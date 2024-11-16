@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A view with tab appearance, used to navigate sections of a larger complex menu.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Tab : StardewUI.Widgets.ComponentView<T>
 ```
 

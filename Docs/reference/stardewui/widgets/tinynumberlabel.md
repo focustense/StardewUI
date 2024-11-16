@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Renders a single-line numeric label using custom digit sprites.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class TinyNumberLabel : StardewUI.View
 ```
 

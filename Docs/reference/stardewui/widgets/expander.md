@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A widget that can be clicked to expand/collapse with additional content.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Expander : StardewUI.Widgets.ComponentView
 ```
 

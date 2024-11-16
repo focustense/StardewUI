@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A togglable checkbox.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class CheckBox : StardewUI.Widgets.ComponentView<T>
 ```
 

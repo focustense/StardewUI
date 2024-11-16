@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Simple unidirectional layout that draws multiple child views in a row or column arrangement.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Lane : StardewUI.View
 ```
 

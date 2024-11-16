@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Editor widget for a [KeybindList](keybindlisteditor.md#keybindlist).
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class KeybindListEditor : StardewUI.Widgets.ComponentView
 ```
 

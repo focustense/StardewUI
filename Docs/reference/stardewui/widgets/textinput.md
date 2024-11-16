@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A text input field that allows typing from a physical or virtual keyboard.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class TextInput : StardewUI.View
 ```
 

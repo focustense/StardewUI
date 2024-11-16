@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Display widget for a single [Keybind](keybindview.md#keybind) showing all required keys.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class KeybindView : StardewUI.Widgets.ComponentView<T>
 ```
 
@@ -137,7 +138,7 @@ public KeybindView();
 Default setting for [ButtonHeight](keybindview.md#buttonheight).
 
 ```cs
-public static const System.Int32 DEFAULT_BUTTON_HEIGHT;
+public static const int DEFAULT_BUTTON_HEIGHT;
 ```
 
 ##### Field Value

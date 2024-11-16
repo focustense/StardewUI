@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Simple button with optional hover background.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Button : StardewUI.Widgets.ComponentView<T>
 ```
 

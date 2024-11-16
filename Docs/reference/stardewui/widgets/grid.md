@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A uniform grid containing other views.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Grid : StardewUI.View
 ```
 

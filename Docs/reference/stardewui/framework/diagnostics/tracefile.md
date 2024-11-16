@@ -41,7 +41,7 @@ public class TraceFile
 | --- | --- |
 | [CreationDate](#creationdate) | Exact date and time when the trace was started. | 
 | [Exporter](#exporter) | The name and version of the exporting mod (i.e. StardewUI). | 
-| [Profiles](#profiles) | List of profiles. StardewUI traces include exactly one evented profile. | 
+| [Profiles](#profiles) | List of profiles; each profile corresponds to a running thread. | 
 | [SchemaUrl](#schemaurl) | JSON schema URL; required by the Speedscope web tool. | 
 | [Shared](#shared) | Shared trace data, containing the frames or slice names. | 
 
@@ -98,15 +98,15 @@ public string Exporter { get; set; }
 
 #### Profiles
 
-List of profiles. StardewUI traces include exactly one evented profile.
+List of profiles; each profile corresponds to a running thread.
 
 ```cs
-public System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Diagnostics.TraceProfile> Profiles { get; }
+public System.Collections.Generic.List<StardewUI.Framework.Diagnostics.TraceProfile> Profiles { get; }
 ```
 
 ##### Property Value
 
-[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[TraceProfile](traceprofile.md)>
+[List](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1)<[TraceProfile](traceprofile.md)>
 
 -----
 

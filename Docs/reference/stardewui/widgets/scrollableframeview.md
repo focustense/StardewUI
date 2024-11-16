@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 Layout widget for a sectioned menu including a scrollable content area.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class ScrollableFrameView : StardewUI.Widgets.ComponentView
 ```
 

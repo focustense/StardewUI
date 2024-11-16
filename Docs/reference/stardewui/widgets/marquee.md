@@ -21,6 +21,7 @@ Assembly: StardewUI.dll
 A scrolling marquee supporting any inner content.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class Marquee : StardewUI.View
 ```
 
