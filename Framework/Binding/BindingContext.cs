@@ -26,7 +26,7 @@ public record BindingContext(IObjectDescriptor Descriptor, object Data, BindingC
     }
 
     // Used to cache redirects by type name.
-    private static readonly Dictionary<(Type, string), bool> typeNameMatches = [];
+    private static readonly ConcurrentDictionary<(Type, string), bool> typeNameMatches = [];
 
     /// <summary>
     /// Resolves a redirected context, using this context as the starting point.
@@ -62,12 +62,7 @@ public record BindingContext(IObjectDescriptor Descriptor, object Data, BindingC
     private static bool DoesTypeNameMatch(Type type, string typeName)
     {
         var key = (type, typeName);
-        if (!typeNameMatches.TryGetValue(key, out var isMatch))
-        {
-            isMatch = HasMatchingBaseOrInterface(type, typeName);
-            typeNameMatches.Add(key, isMatch);
-        }
-        return isMatch;
+        return typeNameMatches.GetOrAdd(key, _ => HasMatchingBaseOrInterface(type, typeName));
 
         static bool HasMatchingBaseOrInterface(Type type, string typeName)
         {
