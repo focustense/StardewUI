@@ -29,7 +29,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// speed up initial descriptor creation time at the cost of slower initial access times for the members, which
     /// typically slows down bind times. This parameter is ignored for already-cached descriptors.</param>
     /// <returns>The descriptor for the specified <paramref name="type"/>.</returns>
-    public static ReflectionObjectDescriptor ForType(Type type, bool lazy = false)
+    internal static ReflectionObjectDescriptor ForType(Type type, bool lazy = false)
     {
         return cache.GetOrAdd(type, _ => CreateDescriptor(type, lazy));
     }

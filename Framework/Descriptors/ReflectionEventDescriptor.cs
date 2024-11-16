@@ -91,7 +91,7 @@ public static class ReflectionEventDescriptor
             );
         }
         var argsType = GetArgsType(invokeMethod, () => $"{eventInfo.DeclaringType!.Name}.{eventInfo.Name}");
-        var argsTypeDescriptor = argsType is not null ? ReflectionObjectDescriptor.ForType(argsType) : null;
+        var argsTypeDescriptor = argsType is not null ? DescriptorFactory.GetObjectDescriptor(argsType) : null;
         return new ReflectionEventDescriptor<TTarget, THandler>(
             eventInfo,
             invokeMethod,

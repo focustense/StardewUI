@@ -22,7 +22,7 @@ public static class ReflectionMethodDescriptor
     /// </summary>
     /// <param name="method">The method info.</param>
     /// <returns>The descriptor for the specified <paramref name="method"/>.</returns>
-    public static IMethodDescriptor FromMethodInfo(MethodInfo method)
+    internal static IMethodDescriptor FromMethodInfo(MethodInfo method)
     {
         using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(FromMethodInfo));
         var descriptor = descriptorCache.GetOrAdd(

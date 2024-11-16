@@ -29,7 +29,7 @@ public class ReflectionViewDescriptor : IViewDescriptor
     /// <returns>The descriptor for the specified <paramref name="viewType"/>.</returns>
     /// <exception cref="ArgumentException">Thrown when <paramref name="viewType"/> does not implement
     /// <see cref="IView"/>.</exception>
-    public static ReflectionViewDescriptor ForViewType(Type viewType)
+    internal static ReflectionViewDescriptor ForViewType(Type viewType)
     {
         using var _ = Trace.Begin(nameof(ReflectionViewDescriptor), nameof(ForViewType));
         return cache.GetOrAdd(
@@ -43,7 +43,7 @@ public class ReflectionViewDescriptor : IViewDescriptor
                         nameof(viewType)
                     );
                 }
-                var innerDescriptor = ReflectionObjectDescriptor.ForType(viewType);
+                var innerDescriptor = DescriptorFactory.GetObjectDescriptor(viewType);
                 return new(viewType, innerDescriptor);
             }
         );

@@ -65,6 +65,6 @@ public class ReflectionViewBinder(
     /// <inheritdoc />
     public IViewDescriptor GetDescriptor(IView view)
     {
-        return ReflectionViewDescriptor.ForViewType(view.GetType());
+        return DescriptorFactory.GetViewDescriptor(view.GetType());
     }
 }

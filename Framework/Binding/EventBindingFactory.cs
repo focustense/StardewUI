@@ -70,7 +70,9 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         // Could possibly use ctor injection of a "descriptor factory" but at the moment this is YAGNI since there is no
         // other way to get a descriptor anyway. If we add codegen/sourcegen as a means for creating descriptors then
         // it might be worth changing.
-        IObjectDescriptor handlerContextDescriptor = ReflectionObjectDescriptor.ForType(handlerContext.Data.GetType());
+        IObjectDescriptor handlerContextDescriptor = DescriptorFactory.GetObjectDescriptor(
+            handlerContext.Data.GetType()
+        );
         var handlerMethod = handlerContextDescriptor.GetMethod(@event.HandlerName);
 
         var cacheKey = new CacheKey(eventDescriptor, handlerMethod, @event, context!.GetType());

@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Descriptors;
+﻿using System.Collections.Concurrent;
+using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 
 namespace StardewUI.Framework.Binding;
@@ -21,7 +22,7 @@ public record BindingContext(IObjectDescriptor Descriptor, object Data, BindingC
     /// and whose <see cref="Descriptor"/> is the descriptor of <paramref name="data"/>'s runtime type.</returns>
     public static BindingContext Create(object data, BindingContext? parent = null)
     {
-        var descriptor = ReflectionObjectDescriptor.ForType(data.GetType());
+        var descriptor = DescriptorFactory.GetObjectDescriptor(data.GetType());
         return new(descriptor, data, parent);
     }
 
