@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Microsoft.Xna.Framework;
+using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
@@ -171,9 +172,9 @@ public interface IView : INotifyPropertyChanged
     Tags Tags { get; }
 
     /// <summary>
-    /// Localized tooltip to display on hover, if any.
+    /// Tooltip data to display on hover, if any.
     /// </summary>
-    string Tooltip { get; set; }
+    TooltipData? Tooltip { get; set; }
 
     /// <summary>
     /// Drawing visibility for this view.

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
@@ -190,7 +191,7 @@ public class DecoratorView<T> : IView, IDisposable
     public Tags Tags => view?.Tags ?? Tags.Empty;
 
     /// <inheritdoc />
-    public string Tooltip
+    public TooltipData? Tooltip
     {
         get => tooltip;
         set => tooltip.Set(value);
@@ -263,7 +264,7 @@ public class DecoratorView<T> : IView, IDisposable
         new(x => x.PointerEventsEnabled, (x, v) => x.PointerEventsEnabled = v, true);
     private readonly DecoratedProperty<Orientation?> scrollWithChildren =
         new(x => x.ScrollWithChildren, (x, v) => x.ScrollWithChildren = v, null);
-    private readonly DecoratedProperty<string> tooltip = new(x => x.Tooltip, (x, v) => x.Tooltip = v, "");
+    private readonly DecoratedProperty<TooltipData?> tooltip = new(x => x.Tooltip, (x, v) => x.Tooltip = v, null);
     private readonly DecoratedProperty<Visibility> visibility =
         new(x => x.Visibility, (x, v) => x.Visibility = v, Visibility.Visible);
     private readonly DecoratedProperty<int> zIndex = new(x => x.ZIndex, (x, v) => x.ZIndex = v, 0);

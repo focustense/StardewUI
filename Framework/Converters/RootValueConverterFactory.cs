@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Data;
 using StardewUI.Layout;
+using StardewValley.ItemTypeDefinitions;
 
 namespace StardewUI.Framework.Converters;
 
@@ -77,6 +79,14 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new ItemSpriteConverter());
         TryRegister(new TextureSpriteConverter());
         TryRegister(new TextureRectSpriteConverter());
+
+        // Tooltips have a lot of different parameters; these are some common conversions.
+        TryRegister<string, TooltipData>(text => new(text));
+        TryRegister<Tuple<string, string>, TooltipData>(t => new(t.Item2, t.Item1));
+        TryRegister<ParsedItemData, TooltipData>(data =>
+            new(data.DisplayName, data.Description, ItemRegistry.Create(data.ItemId))
+        );
+        TryRegister<Item, TooltipData>(item => new(item.DisplayName, item.getDescription(), item));
 
         // Most enums are fine using the standard string-to-enum conversion.
         Register(new EnumNameConverterFactory());

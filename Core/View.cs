@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
@@ -303,7 +304,7 @@ public abstract class View : IView
     /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
-    public string Tooltip
+    public TooltipData? Tooltip
     {
         get => tooltip;
         set
@@ -386,7 +387,7 @@ public abstract class View : IView
     private Vector2 previousLayoutOffset;
     private Orientation? scrollWithChildren;
     private Tags tags = new();
-    private string tooltip = "";
+    private TooltipData? tooltip = null;
     private Visibility visibility;
     private int zIndex;
 

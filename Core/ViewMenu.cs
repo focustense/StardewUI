@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
+using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
@@ -219,10 +220,22 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         justPushedOverlay = false;
 
-        var tooltip = FormatTooltip(hoverPath);
-        if (!string.IsNullOrEmpty(tooltip))
+        var tooltip = BuildTooltip(hoverPath);
+        if (tooltip is not null)
         {
-            drawToolTip(b, tooltip, null, null);
+            string? extraItemToShowIndex = TooltipData.ValidateItemId(tooltip.RequiredItemId);
+            drawToolTip(
+                b,
+                !string.IsNullOrEmpty(tooltip.Title) ? tooltip.Title : tooltip.Text,
+                !string.IsNullOrEmpty(tooltip.Title) ? tooltip.Text : null,
+                tooltip.Item,
+                moneyAmountToShowAtBottom: tooltip.CurrencyAmount ?? -1,
+                currencySymbol: tooltip.CurrencySymbol,
+                extraItemToShowIndex: extraItemToShowIndex,
+                extraItemToShowAmount: tooltip.RequiredItemAmount,
+                craftingIngredients: tooltip.CraftingRecipe,
+                additionalCraftMaterials: tooltip.AdditionalCraftingMaterials
+            );
         }
 
         Game1.mouseCursorTransparency = 1.0f;
@@ -522,19 +535,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     }
 
     /// <summary>
-    /// Formats a tooltip given the sequence of views from root to the lowest-level hovered child.
+    /// Builds/formats a tooltip given the sequence of views from root to the lowest-level hovered child.
     /// </summary>
     /// <remarks>
-    /// The default implementation reads the string value of the <em>last</em> (lowest-level) view with a non-empty
-    /// <see cref="IView.Tooltip"/>, and breaks lines longer than 640px, which is the default vanilla tooltip width.
+    /// The default implementation reads the value of the <em>last</em> (lowest-level) view with a non-null
+    /// <see cref="IView.Tooltip"/>, and breaks <see cref="TooltipData.Text"/> and <see cref="TooltipData.Title"/> lines
+    /// longer than 640px, which is the default vanilla tooltip width.
     /// </remarks>
     /// <param name="path">Sequence of all elements, and their relative positions, that the mouse coordinates are
     /// currently within.</param>
     /// <returns>The tooltip string to display, or <c>null</c> to not show any tooltip.</returns>
-    protected virtual string? FormatTooltip(IEnumerable<ViewChild> path)
+    protected virtual TooltipData? BuildTooltip(IEnumerable<ViewChild> path)
     {
-        var tooltip = hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => !string.IsNullOrEmpty(tooltip));
-        return Game1.parseText(tooltip, Game1.smallFont, 640);
+        var tooltipData = hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => tooltip is not null);
+        return tooltipData?.ConstrainTextWidth(640);
     }
 
     /// <summary>
