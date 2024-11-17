@@ -35,6 +35,7 @@ public interface IMenuController : System.IDisposable
 | --- | --- |
 | [CanClose](#canclose) | Gets or sets a function that returns whether or not the menu can be closed. | 
 | [Menu](#menu) | Gets the menu, which can be opened using activeClickableMenu, or as a child menu. | 
+| [OnClosing](#onclosing) | Gets or sets the action to be invoked before the menu closes. | 
 | [PositionSelector](#positionselector) | Gets or sets a function that returns the top-left position of the menu. | 
 
 ### Methods
@@ -76,6 +77,24 @@ StardewValley.Menus.IClickableMenu Menu { get; }
 ##### Property Value
 
 IClickableMenu
+
+-----
+
+#### OnClosing
+
+Gets or sets the action to be invoked before the menu closes.
+
+```cs
+System.Action OnClosing { get; set; }
+```
+
+##### Property Value
+
+[Action](https://learn.microsoft.com/en-us/dotnet/api/system.action)
+
+##### Remarks
+
+This is equivalent to implementing cleanupBeforeExit().
 
 -----
 
