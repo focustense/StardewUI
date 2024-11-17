@@ -20,6 +20,9 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     public Func<bool>? CanClose { get; set; }
 
     /// <inheritdoc />
+    public Action<IClickableMenu>? OnClosing { get; set; }
+
+    /// <inheritdoc />
     public IClickableMenu Menu => this;
 
     /// <inheritdoc />
@@ -29,6 +32,13 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     public override bool readyToClose()
     {
         return CanClose?.Invoke() ?? base.readyToClose();
+    }
+
+    /// <inheritdoc />
+    protected override void cleanupBeforeExit()
+    {
+        OnClosing?.Invoke(this);
+        base.cleanupBeforeExit();
     }
 
     /// <inheritdoc />

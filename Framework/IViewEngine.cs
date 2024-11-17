@@ -196,6 +196,14 @@ public interface IMenuController : IDisposable
     Func<bool>? CanClose { get; set; }
 
     /// <summary>
+    /// Gets or sets the action to be invoked before the menu closes.
+    /// </summary>
+    /// <remarks>
+    /// This is equivalent to implementing <see cref="IClickableMenu.cleanupBeforeExit"/>.
+    /// </remarks>
+    Action<IClickableMenu>? OnClosing { get; set; }
+
+    /// <summary>
     /// Gets the menu, which can be opened using <see cref="Game1.activeClickableMenu"/>, or as a child menu.
     /// </summary>
     IClickableMenu Menu { get; }
