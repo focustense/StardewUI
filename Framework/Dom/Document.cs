@@ -1,12 +1,14 @@
-﻿using StardewUI.Framework.Grammar;
+﻿using System.Collections.Immutable;
+using StardewUI.Framework.Grammar;
 
 namespace StardewUI.Framework.Dom;
 
 /// <summary>
 /// A standalone StarML document.
 /// </summary>
-/// <param name="Root">The top-level node.</param>
-public record Document(SNode Root)
+/// <param name="Root">The primary content node.</param>
+/// <param name="Templates">Dictionary of template nodes for inline expansion, keyed by template name.</param>
+public record Document(SNode Root, IReadOnlyDictionary<string, SNode> Templates)
 {
     /// <summary>
     /// Parses a <see cref="Document"/> from its original markup text.
@@ -18,15 +20,51 @@ public record Document(SNode Root)
     {
         using var _ = Trace.Begin(nameof(Document), nameof(Parse));
         var reader = new DocumentReader(text);
-        var root = SNode.Parse(ref reader);
-        if (!reader.Eof)
+        SNode? root = null;
+        var templates = ImmutableDictionary.CreateBuilder<string, SNode>();
+        while (!reader.Eof)
         {
-            throw new ParserException(
-                "Invalid content at end of string. StarML documents must have exactly one root element and no "
-                    + "other trailing content except whitespace.",
-                reader.Position
-            );
+            int position = reader.Position;
+            var node = SNode.Parse(ref reader);
+            if (node.Tag.Equals("template", StringComparison.OrdinalIgnoreCase))
+            {
+                var nameAttribute = node.Attributes.FirstOrDefault(attr =>
+                    attr.Name.Equals("name", StringComparison.OrdinalIgnoreCase)
+                );
+                if (nameAttribute is null)
+                {
+                    throw new ParserException("<template> element is missing a 'name' attribute.", position);
+                }
+                else if (nameAttribute.ValueType != AttributeValueType.Literal)
+                {
+                    throw new ParserException(
+                        $"<template> element uses invalid {nameAttribute.ValueType} type for 'name' attribute. "
+                            + "Template names must be literal (quoted) strings.",
+                        position
+                    );
+                }
+                else if (string.IsNullOrEmpty(nameAttribute.Value))
+                {
+                    throw new ParserException("<template> element has an empty 'name' attribute.", position);
+                }
+                templates.Add(nameAttribute.Value, node);
+            }
+            else
+            {
+                if (root is not null)
+                {
+                    throw new ParserException(
+                        $"View cannot have multiple content nodes.\n\nPrevious root was: {root}",
+                        position
+                    );
+                }
+                root = node;
+            }
         }
-        return new(root);
+        if (root is null)
+        {
+            throw new ParserException("Document is missing a content node.", 0);
+        }
+        return new(root, templates.ToImmutable());
     }
 }

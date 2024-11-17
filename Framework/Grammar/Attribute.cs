@@ -117,6 +117,11 @@ public enum AttributeValueType
     /// context data, depending on which one was most recently changed.
     /// </summary>
     TwoWayBinding,
+
+    /// <summary>
+    /// Binds to the attribute value of the containing template; only valid within a template node.
+    /// </summary>
+    TemplateBinding,
 }
 
 /// <summary>

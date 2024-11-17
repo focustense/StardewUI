@@ -3,7 +3,6 @@ using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using PropertyChanged.SourceGenerator;
 using StardewModdingAPI;
-using StardewUI;
 using StardewUI.Events;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
@@ -11,7 +10,6 @@ using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
-using StardewUI.Framework.Tests;
 using StardewUI.Framework.Views;
 using StardewUI.Graphics;
 using StardewUI.Layout;
@@ -19,7 +17,7 @@ using StardewUI.Widgets;
 using StardewValley;
 using Xunit.Abstractions;
 
-namespace StarML.Tests;
+namespace StardewUI.Framework.Tests;
 
 public partial class BindingTests
 {

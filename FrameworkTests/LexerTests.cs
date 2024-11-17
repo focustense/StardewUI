@@ -1,6 +1,6 @@
 using StardewUI.Framework.Grammar;
 
-namespace StarML.Tests;
+namespace StardewUI.Framework.Tests;
 
 public class LexerTests
 {

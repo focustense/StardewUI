@@ -188,6 +188,13 @@ public class AttributeBindingFactory(
     )
         where TSource : notnull
     {
+        if (attribute.ValueType == AttributeValueType.TemplateBinding)
+        {
+            throw new BindingException(
+                $"Template binding attribute '{attribute}' is invalid here; template bindings may only be used from "
+                    + "within a <template> node."
+            );
+        }
         using var _ = Trace.Begin(this, nameof(CreateTypedBinding));
         var property = (IPropertyDescriptor<TDest>)viewDescriptor.GetProperty(propertyName);
         var source = valueSourceFactory.GetValueSource<TSource>(attribute, context, resolutionScope);
