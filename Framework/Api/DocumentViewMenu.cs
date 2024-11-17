@@ -20,10 +20,10 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     public Func<bool>? CanClose { get; set; }
 
     /// <inheritdoc />
-    public Action<IClickableMenu>? OnClosing { get; set; }
+    public IClickableMenu Menu => this;
 
     /// <inheritdoc />
-    public IClickableMenu Menu => this;
+    public Action? OnClosing { get; set; }
 
     /// <inheritdoc />
     public Func<Point>? PositionSelector { get; set; }
@@ -35,16 +35,16 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     }
 
     /// <inheritdoc />
-    protected override void cleanupBeforeExit()
-    {
-        OnClosing?.Invoke(this);
-        base.cleanupBeforeExit();
-    }
-
-    /// <inheritdoc />
     public void SetGutters(int left, int top, int right = -1, int bottom = -1)
     {
         Gutter = new(left, top, right == -1 ? left : right, bottom == -1 ? top : bottom);
+    }
+
+    /// <inheritdoc />
+    protected override void cleanupBeforeExit()
+    {
+        OnClosing?.Invoke();
+        base.cleanupBeforeExit();
     }
 
     /// <inheritdoc />
