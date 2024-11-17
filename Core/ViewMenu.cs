@@ -184,7 +184,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         using var trace = Diagnostics.Trace.Begin(this, nameof(draw));
 
         var viewportBounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
-        if (!Game1.options.showClearBackgrounds)
+        if (!Game1.options.showClearBackgrounds && DimmingAmount > 0)
         {
             b.Draw(Game1.fadeToBlackRect, viewportBounds, Color.Black * DimmingAmount);
         }

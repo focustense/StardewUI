@@ -196,6 +196,15 @@ public interface IMenuController : IDisposable
     Func<bool>? CanClose { get; set; }
 
     /// <summary>
+    /// How much the menu should dim the entire screen underneath.
+    /// </summary>
+    /// <remarks>
+    /// The default dimming is appropriate for most menus, but if the menu is being drawn as a delegate of some other
+    /// macro-menu, then it can be lowered or removed (set to <c>0</c>) entirely.
+    /// </remarks>
+    float DimmingAmount { get; set; }
+
+    /// <summary>
     /// Gets the menu, which can be opened using <see cref="Game1.activeClickableMenu"/>, or as a child menu.
     /// </summary>
     IClickableMenu Menu { get; }
