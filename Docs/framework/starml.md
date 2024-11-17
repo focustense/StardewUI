@@ -132,7 +132,7 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `pointer-events-enabled` | In/Out | `bool` | Can be set to `false` to prevent receiving clicks, mouseovers, etc. Use when a transparent view is drawn on top of an interactive view. |
 | `scroll-with-children` | In/Out | `Orientation` | Forces the entire view to be visible when navigating in the specified direction. See the [ScrollableView](../library/standard-views.md#scrollable-view) documentation for details. |
 | `tags` | In/Out | `Tags` | Allows arbitrary data to be associated with the view. **Not supported in StarML yet** - may be supported in the future. |
-| `tooltip` | In/Out | `string` | Tooltip to show when hovered with the mouse, or focused on via game controller. |
+| `tooltip` | In/Out | `TooltipData` | Tooltip to show when hovered with the mouse, or focused on via game controller. |
 | `visibility` | In/Out | `Visibility` | Whether to show or hide the view; hiding does *not* remove it from the layout, use `*if` for that. |
 | `z-index` | In/Out | `int` | Drawing order within the parent; higher indices are drawn later (on top). |
 
@@ -294,6 +294,10 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `SpriteFont` @span       | `"dialogue"` (6)                   | N/A @span                             | N/A @span                               |
 |                          | `"small"` (7)                      |                                       |                                         |
 |                          | `"tiny"` (8)                       |                                       |                                         |
+| `TooltipData` @span      | Any @span                          | `string` (text only)                  | N/A @span                               |
+|                          |                                    | `Tuple<string, string>`<br/>(title + text) |                                    |
+|                          |                                    | `Item`                                |                                         |
+|                          |                                    | `ParsedItemData`                      |                                         |
 | `GridItemLayout` @span   | `"count: n"` (10)                  | N/A @span                             | N/A @span                               |
 |                          | `"length: n"` (11)                 |                                       |                                         |
 
