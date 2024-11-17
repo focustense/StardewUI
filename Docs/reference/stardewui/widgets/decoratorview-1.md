@@ -65,7 +65,7 @@ Decorator views, while not abstract, are used as a base type for other composite
 | [PointerEventsEnabled](#pointereventsenabled) | Whether this view should receive pointer events like [Click](../iview.md#click) or [Drag](../iview.md#drag). | 
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
-| [Tooltip](#tooltip) | Localized tooltip to display on hover, if any. | 
+| [Tooltip](#tooltip) | Tooltip data to display on hover, if any. | 
 | [View](#view) | The inner view that is decorated by this view. | 
 | [Visibility](#visibility) | Drawing visibility for this view. | 
 | [ZIndex](#zindex) | Z order for this view within its direct parent. Higher indices draw later (on top). | 
@@ -294,15 +294,15 @@ public StardewUI.Tags Tags { get; }
 
 #### Tooltip
 
-Localized tooltip to display on hover, if any.
+Tooltip data to display on hover, if any.
 
 ```cs
-public string Tooltip { get; set; }
+public StardewUI.Data.TooltipData Tooltip { get; set; }
 ```
 
 ##### Property Value
 
-[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+[TooltipData](../data/tooltipdata.md)
 
 -----
 

@@ -83,6 +83,7 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 | applyMovementKey(Keys) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [areGamePadControlsImplemented()](#aregamepadcontrolsimplemented) | Returns whether or not the menu wants **exclusive** gamepad controls.<br><span class="muted" markdown>(Overrides IClickableMenu.areGamePadControlsImplemented())</span> | 
 | automaticSnapBehavior(Int32, Int32, Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [BuildTooltip(IEnumerable&lt;ViewChild&gt;)](#buildtooltipienumerableviewchild) | Builds/formats a tooltip given the sequence of views from root to the lowest-level hovered child. | 
 | cleanupBeforeExit() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | clickAway() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [CreateView()](#createview) | Creates the view. | 
@@ -100,7 +101,6 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 | emergencyShutDown() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | exitThisMenu(Boolean) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | exitThisMenuNoSound() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
-| [FormatTooltip(IEnumerable&lt;ViewChild&gt;)](#formattooltipienumerableviewchild) | Formats a tooltip given the sequence of views from root to the lowest-level hovered child. | 
 | gamePadButtonHeld(Buttons) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | gameWindowSizeChanged(Rectangle, Rectangle) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | GetChildMenu() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
@@ -256,6 +256,31 @@ This implementation always returns `false`. Contrary to what the name in Stardew
 
 -----
 
+#### BuildTooltip(IEnumerable&lt;ViewChild&gt;)
+
+Builds/formats a tooltip given the sequence of views from root to the lowest-level hovered child.
+
+```cs
+protected virtual StardewUI.Data.TooltipData BuildTooltip(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> path);
+```
+
+##### Parameters
+
+**`path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
+Sequence of all elements, and their relative positions, that the mouse coordinates are currently within.
+
+##### Returns
+
+[TooltipData](data/tooltipdata.md)
+
+  The tooltip string to display, or `null` to not show any tooltip.
+
+##### Remarks
+
+The default implementation reads the value of the _last_ (lowest-level) view with a non-null [Tooltip](iview.md#tooltip), and breaks [Text](data/tooltipdata.md#text) and [Title](data/tooltipdata.md#title) lines longer than 640px, which is the default vanilla tooltip width.
+
+-----
+
 #### CreateView()
 
 Creates the view.
@@ -298,31 +323,6 @@ public override void draw(Microsoft.Xna.Framework.Graphics.SpriteBatch b);
 
 **`b`** &nbsp; [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html)  
 The target batch.
-
------
-
-#### FormatTooltip(IEnumerable&lt;ViewChild&gt;)
-
-Formats a tooltip given the sequence of views from root to the lowest-level hovered child.
-
-```cs
-protected virtual string FormatTooltip(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> path);
-```
-
-##### Parameters
-
-**`path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
-Sequence of all elements, and their relative positions, that the mouse coordinates are currently within.
-
-##### Returns
-
-[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
-
-  The tooltip string to display, or `null` to not show any tooltip.
-
-##### Remarks
-
-The default implementation reads the string value of the _last_ (lowest-level) view with a non-empty [Tooltip](iview.md#tooltip), and breaks lines longer than 640px, which is the default vanilla tooltip width.
 
 -----
 

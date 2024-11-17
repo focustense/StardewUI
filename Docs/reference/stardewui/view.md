@@ -460,12 +460,12 @@ public StardewUI.Tags Tags { get; set; }
 Localized tooltip to display on hover, if any.
 
 ```cs
-public string Tooltip { get; set; }
+public StardewUI.Data.TooltipData Tooltip { get; set; }
 ```
 
 ##### Property Value
 
-[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+[TooltipData](data/tooltipdata.md)
 
 -----
 

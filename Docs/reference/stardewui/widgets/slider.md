@@ -56,7 +56,7 @@ public class Slider : StardewUI.Widgets.ComponentView
 | [Tags](decoratorview-1.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [ThumbSize](#thumbsize) | Override for the thumb/button size, recommended when using a custom [ThumbSprite](slider.md#thumbsprite). | 
 | [ThumbSprite](#thumbsprite) | Sprite for the thumb/button, if not using the default. | 
-| [Tooltip](decoratorview-1.md#tooltip) | Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [Tooltip](decoratorview-1.md#tooltip) | Tooltip data to display on hover, if any.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [TrackWidth](#trackwidth) | Width of the track bar. | 
 | [Value](#value) | The current value. | 
 | [ValueColor](#valuecolor) | Color of the value text to render, if overriding the default text color. | 
