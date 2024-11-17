@@ -226,8 +226,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             string? extraItemToShowIndex = TooltipData.ValidateItemId(tooltip.RequiredItemId);
             drawToolTip(
                 b,
-                !string.IsNullOrEmpty(tooltip.Title) ? tooltip.Title : tooltip.Text,
-                !string.IsNullOrEmpty(tooltip.Title) ? tooltip.Text : null,
+                tooltip.Text,
+                tooltip.Title ?? "",
                 tooltip.Item,
                 moneyAmountToShowAtBottom: tooltip.CurrencyAmount ?? -1,
                 currencySymbol: tooltip.CurrencySymbol,
