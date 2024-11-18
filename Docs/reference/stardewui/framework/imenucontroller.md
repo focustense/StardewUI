@@ -34,6 +34,7 @@ public interface IMenuController : System.IDisposable
  | Name | Description |
 | --- | --- |
 | [CanClose](#canclose) | Gets or sets a function that returns whether or not the menu can be closed. | 
+| [DimmingAmount](#dimmingamount) | How much the menu should dim the entire screen underneath. | 
 | [Menu](#menu) | Gets the menu, which can be opened using activeClickableMenu, or as a child menu. | 
 | [OnClosing](#onclosing) | Gets or sets the action to be invoked before the menu closes. | 
 | [PositionSelector](#positionselector) | Gets or sets a function that returns the top-left position of the menu. | 
@@ -63,6 +64,24 @@ Func<System.Boolean> CanClose { get; set; }
 ##### Remarks
 
 This is equivalent to implementing readyToClose().
+
+-----
+
+#### DimmingAmount
+
+How much the menu should dim the entire screen underneath.
+
+```cs
+float DimmingAmount { get; set; }
+```
+
+##### Property Value
+
+[Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+##### Remarks
+
+The default dimming is appropriate for most menus, but if the menu is being drawn as a delegate of some other macro-menu, then it can be lowered or removed (set to `0`) entirely.
 
 -----
 

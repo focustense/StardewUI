@@ -36,14 +36,15 @@ public record Document : IEquatable<StardewUI.Framework.Dom.Document>
 
  | Name | Description |
 | --- | --- |
-| [Document(SNode)](#documentsnode) | A standalone StarML document. | 
+| [Document(SNode, IReadOnlyList&lt;SNode&gt;)](#documentsnode-ireadonlylistsnode) | A standalone StarML document. | 
 
 ### Properties
 
  | Name | Description |
 | --- | --- |
 | [EqualityContract](#equalitycontract) |  | 
-| [Root](#root) | The top-level node. | 
+| [Root](#root) | The primary content node. | 
+| [Templates](#templates) | List of template nodes for inline expansion. | 
 
 ### Methods
 
@@ -55,18 +56,21 @@ public record Document : IEquatable<StardewUI.Framework.Dom.Document>
 
 ### Constructors
 
-#### Document(SNode)
+#### Document(SNode, IReadOnlyList&lt;SNode&gt;)
 
 A standalone StarML document.
 
 ```cs
-public Document(StardewUI.Framework.Dom.SNode Root);
+public Document(StardewUI.Framework.Dom.SNode Root, System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Dom.SNode> Templates);
 ```
 
 ##### Parameters
 
 **`Root`** &nbsp; [SNode](snode.md)  
-The top-level node.
+The primary content node.
+
+**`Templates`** &nbsp; [IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[SNode](snode.md)>  
+List of template nodes for inline expansion.
 
 -----
 
@@ -88,7 +92,7 @@ protected System.Type EqualityContract { get; }
 
 #### Root
 
-The top-level node.
+The primary content node.
 
 ```cs
 public StardewUI.Framework.Dom.SNode Root { get; set; }
@@ -97,6 +101,20 @@ public StardewUI.Framework.Dom.SNode Root { get; set; }
 ##### Property Value
 
 [SNode](snode.md)
+
+-----
+
+#### Templates
+
+List of template nodes for inline expansion.
+
+```cs
+public System.Collections.Generic.IReadOnlyList<StardewUI.Framework.Dom.SNode> Templates { get; set; }
+```
+
+##### Property Value
+
+[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[SNode](snode.md)>
 
 -----
 

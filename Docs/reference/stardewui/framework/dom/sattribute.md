@@ -55,6 +55,13 @@ Must be separate from the grammar's [Attribute](../grammar/attribute.md) since `
 | [Value](#value) | The literal value text. | 
 | [ValueType](#valuetype) | The type of the value expression, defining how the `Value` should be interpreted. | 
 
+### Methods
+
+ | Name | Description |
+| --- | --- |
+| [AsArgument()](#asargument) | Creates a method argument that will receive the same value as this attribute when bound. | 
+| [WithName(string)](#withnamestring) | Creates a copy of this attribute with a different [Name](sattribute.md#name), and all other properties the same. | 
+
 ## Details
 
 ### Constructors
@@ -188,6 +195,45 @@ public StardewUI.Framework.Grammar.AttributeValueType ValueType { get; set; }
 ##### Property Value
 
 [AttributeValueType](../grammar/attributevaluetype.md)
+
+-----
+
+### Methods
+
+#### AsArgument()
+
+Creates a method argument that will receive the same value as this attribute when bound.
+
+```cs
+public StardewUI.Framework.Dom.SArgument AsArgument();
+```
+
+##### Returns
+
+[SArgument](sargument.md)
+
+  The converted argument.
+
+-----
+
+#### WithName(string)
+
+Creates a copy of this attribute with a different [Name](sattribute.md#name), and all other properties the same.
+
+```cs
+public StardewUI.Framework.Dom.SAttribute WithName(string name);
+```
+
+##### Parameters
+
+**`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The new attribute name.
+
+##### Returns
+
+[SAttribute](sattribute.md)
+
+  The renamed attribute.
 
 -----
 

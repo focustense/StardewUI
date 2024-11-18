@@ -34,4 +34,5 @@ public enum ArgumentExpressionType
 | <a id="literal">Literal</a> | 0 | The value is the literal string in the markup, i.e. it is the actual string representation of the target data type such as an integer, enumeration or another string. | 
 | <a id="contextbinding">ContextBinding</a> | 1 | The current value of some property in the context data. | 
 | <a id="eventbinding">EventBinding</a> | 2 | The value of a named property of the [EventArgs](https://learn.microsoft.com/en-us/dotnet/api/system.eventargs) subclass of an associated event, when an argument is being provided to an event handler. | 
+| <a id="templatebinding">TemplateBinding</a> | 3 | The expanded value of a template parameter; only valid within a template node. | 
 
