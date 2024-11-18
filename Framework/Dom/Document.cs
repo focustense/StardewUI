@@ -7,8 +7,8 @@ namespace StardewUI.Framework.Dom;
 /// A standalone StarML document.
 /// </summary>
 /// <param name="Root">The primary content node.</param>
-/// <param name="Templates">Dictionary of template nodes for inline expansion, keyed by template name.</param>
-public record Document(SNode Root, IReadOnlyDictionary<string, SNode> Templates)
+/// <param name="Templates">List of template nodes for inline expansion.</param>
+public record Document(SNode Root, IReadOnlyList<SNode> Templates)
 {
     /// <summary>
     /// Parses a <see cref="Document"/> from its original markup text.
@@ -21,7 +21,7 @@ public record Document(SNode Root, IReadOnlyDictionary<string, SNode> Templates)
         using var _ = Trace.Begin(nameof(Document), nameof(Parse));
         var reader = new DocumentReader(text);
         SNode? root = null;
-        var templates = ImmutableDictionary.CreateBuilder<string, SNode>();
+        var templates = ImmutableArray.CreateBuilder<SNode>();
         while (!reader.Eof)
         {
             int position = reader.Position;
@@ -47,7 +47,7 @@ public record Document(SNode Root, IReadOnlyDictionary<string, SNode> Templates)
                 {
                     throw new ParserException("<template> element has an empty 'name' attribute.", position);
                 }
-                templates.Add(nameAttribute.Value, node);
+                templates.Add(node);
             }
             else
             {

@@ -416,12 +416,11 @@ public class ParserTests
         );
         Assert.Collection(
             document.Templates,
-            kvp =>
+            template =>
             {
-                Assert.Equal("foo", kvp.Key);
-                Assert.Equal("template", kvp.Value.Tag);
+                Assert.Equal("template", template.Tag);
                 Assert.Collection(
-                    kvp.Value.Attributes,
+                    template.Attributes,
                     attr =>
                     {
                         Assert.Equal("name", attr.Name);
@@ -429,7 +428,7 @@ public class ParserTests
                     }
                 );
                 Assert.Collection(
-                    kvp.Value.ChildNodes,
+                    template.ChildNodes,
                     node =>
                     {
                         Assert.Equal("label", node.Tag);

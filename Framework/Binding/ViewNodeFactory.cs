@@ -32,21 +32,36 @@ public class ViewNodeFactory(
     public IViewNode CreateNode(Document document)
     {
         var scope = resolutionScopeFactory.CreateForDocument(document);
-        return CreateNode(document.Root, scope);
+        var nodeTransformers = GetNodeTransformers(document);
+        return CreateNode(document.Root, nodeTransformers, scope);
     }
 
     /// <inheritdoc />
-    public IViewNode CreateNode(SNode node, IResolutionScope resolutionScope)
+    public IViewNode CreateNode(
+        SNode node,
+        IReadOnlyList<INodeTransformer> nodeTransformers,
+        IResolutionScope resolutionScope
+    )
     {
-        return CreateNodeChild(node, null, resolutionScope).Node;
+        return CreateNodeChild(node, nodeTransformers, null, resolutionScope).Node;
     }
 
     record SwitchContext(IViewNode Node, IAttribute Attribute, IResolutionScope ResolutionScope);
 
-    private IViewNode.Child CreateNodeChild(SNode node, SwitchContext? switchContext, IResolutionScope resolutionScope)
+    private IViewNode.Child CreateNodeChild(
+        SNode node,
+        IReadOnlyList<INodeTransformer> nodeTransformers,
+        SwitchContext? switchContext,
+        IResolutionScope resolutionScope
+    )
     {
         using var _ = Trace.Begin(this, nameof(CreateNode));
-        var (innerNode, outletName) = CreateNodeChildWithoutBackoff(node, switchContext, resolutionScope);
+        var (innerNode, outletName) = CreateNodeChildWithoutBackoff(
+            node,
+            nodeTransformers,
+            switchContext,
+            resolutionScope
+        );
         var backoffDecorator = new BackoffNodeDecorator(innerNode, BackoffRule.Default);
         var updatingDecorator = new ContextUpdatingNodeDecorator(innerNode, ContextUpdateTracker.Instance);
         return new(updatingDecorator, outletName);
@@ -54,6 +69,7 @@ public class ViewNodeFactory(
 
     private IViewNode.Child CreateNodeChildWithoutBackoff(
         SNode node,
+        IReadOnlyList<INodeTransformer> nodeTransformers,
         SwitchContext? switchContext,
         IResolutionScope resolutionScope
     )
@@ -94,7 +110,13 @@ public class ViewNodeFactory(
                 valueConverterFactory,
                 assetCache,
                 resolutionScope,
-                doc => CreateNodeChild(doc.Root, switchContext, resolutionScopeFactory.CreateForDocument(doc)).Node,
+                doc =>
+                    CreateNodeChild(
+                        doc.Root,
+                        GetNodeTransformers(doc),
+                        switchContext,
+                        resolutionScopeFactory.CreateForDocument(doc)
+                    ).Node,
                 assetNameAttribute,
                 structuralAttributes.Context
             );
@@ -143,12 +165,24 @@ public class ViewNodeFactory(
                 : switchContext;
             if (viewNode is ViewNode defaultViewNode)
             {
-                defaultViewNode.Children = node
-                    .ChildNodes.Select(n => CreateNodeChild(n, nextSwitchContext, resolutionScope))
+                var childNodes = node.ChildNodes.AsEnumerable();
+                foreach (var transformer in nodeTransformers)
+                {
+                    childNodes = childNodes.SelectMany(transformer.Transform);
+                }
+                defaultViewNode.Children = childNodes
+                    .Select(n => CreateNodeChild(n, nodeTransformers, nextSwitchContext, resolutionScope))
                     .ToList();
             }
             return new(result, structuralAttributes.Outlet?.Value);
         }
+    }
+
+    private static IReadOnlyList<INodeTransformer> GetNodeTransformers(Document document)
+    {
+        // Transformers could be cached by document, but since TemplateNodeTransformer is just a wrapper around the
+        // template that we already have access to here, it's unlikely to be worth the cost.
+        return document.Templates.Select(template => new TemplateNodeTransformer(template)).ToArray();
     }
 
     class StructuralAttributes

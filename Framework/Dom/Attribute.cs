@@ -169,4 +169,14 @@ public record SAttribute(
             attribute.ValueType,
             ContextRedirect.FromParts(attribute.ParentDepth, attribute.ParentType)
         ) { }
+
+    /// <summary>
+    /// Creates a copy of this attribute with a different <see cref="Name"/>, and all other properties the same.
+    /// </summary>
+    /// <param name="name">The new attribute name.</param>
+    /// <returns>The renamed attribute.</returns>
+    public SAttribute WithName(string name)
+    {
+        return new(name, Value, Type, ValueType, ContextRedirect);
+    }
 }
