@@ -47,7 +47,7 @@ public static class ReflectionMethodDescriptor
         return method.DeclaringType is not null
             && !method.IsGenericMethod
             && !method.IsGenericMethodDefinition
-            && method.GetParameters().All(p => !p.IsIn && !p.IsOut);
+            && method.GetParameters().All(p => !p.IsIn && !p.IsOut && !p.ParameterType.IsByRef);
     }
 
     private static IMethodDescriptor CreateDescriptorFactory<TResult>(MethodInfo method)
