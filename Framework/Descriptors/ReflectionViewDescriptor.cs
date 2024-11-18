@@ -101,6 +101,7 @@ public class ReflectionViewDescriptor : IViewDescriptor
         viewType
             .GetProperties(BindingFlags.Instance | BindingFlags.Public)
             .AsParallel()
+            .WithDegreeOfParallelism(Math.Clamp(Environment.ProcessorCount / 2, 2, 4))
             .Where(prop =>
                 prop.CanWrite
                 && (

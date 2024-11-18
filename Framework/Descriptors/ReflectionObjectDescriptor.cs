@@ -40,7 +40,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
         var interfaces = type.GetInterfaces();
         var membersByName = type.GetMembers(BindingFlags.Instance | BindingFlags.Public)
             .AsParallel()
-            .WithDegreeOfParallelism(Math.Max(2, Environment.ProcessorCount / 2))
+            .WithDegreeOfParallelism(Math.Clamp(Environment.ProcessorCount / 2, 2, 4))
             .Where(member =>
                 member switch
                 {
