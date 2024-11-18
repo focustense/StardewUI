@@ -9,7 +9,6 @@ namespace StardewUI.Framework.Sources;
 /// </summary>
 /// <typeparam name="T">The return type of the context property.</typeparam>
 public class ContextPropertyValueSource<T> : IValueSource<T>, IDisposable
-    where T : notnull
 {
     /// <inheritdoc />
     public bool CanRead =>

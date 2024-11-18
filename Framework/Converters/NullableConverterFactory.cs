@@ -9,6 +9,16 @@ namespace StardewUI.Framework.Converters;
 /// <param name="innerFactory">The converter factory to handle conversion of the element type(s).</param>
 public class NullableConverterFactory(IValueConverterFactory innerFactory) : IValueConverterFactory
 {
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        typeof(NullableToNullableConverter<,>).MakeGenericType(typeof(int), typeof(int));
+        typeof(NonNullableToNullableConverter<,>).MakeGenericType(typeof(int), typeof(int));
+        typeof(NullableToNonNullableConverter<,>).MakeGenericType(typeof(int), typeof(int));
+    }
+
     /// <inheritdoc />
     public bool TryGetConverter<TSource, TDestination>(
         [MaybeNullWhen(false)] out IValueConverter<TSource, TDestination> converter

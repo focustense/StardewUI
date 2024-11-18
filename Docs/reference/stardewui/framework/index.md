@@ -15,6 +15,7 @@ title: StardewUI.Framework
 | [BackoffRule](backoffrule.md) | Defines the rules for exponential backoff. |
 | [BackoffState](backoffstate.md) | State of an exponential backoff, e.g. as used in a `StardewUI.Framework.BackoffTracker<T>`. |
 | [ModConfig](modconfig.md) | Configuration settings for StardewUI.Framework. |
+| [PerformanceConfig](performanceconfig.md) | Configuration sub-settings providing control over performance tweaks. |
 | [UIException](uiexception.md) | Base class for all exceptions specific to StardewUI. |
 
 ## Interfaces

@@ -65,6 +65,8 @@ public interface IValueConverterFactory
     /// <returns><c>true</c> if the conversion is supported, otherwise <c>false</c>.</returns>
     bool TryGetConverter(Type sourceType, Type destinationType, [MaybeNullWhen(false)] out IValueConverter converter)
     {
+        using var _ = Trace.Begin(this, nameof(TryGetConverter) + "#Dyn");
+        using var _name = Trace.Begin(this, $"{sourceType.Name}:{destinationType.Name}");
         object?[] parameters = [null];
         object? result = ValueConverterFactoryHelpers
             .TryGetConverterMethodDef.MakeGenericMethod(sourceType, destinationType)
@@ -134,6 +136,7 @@ public class ValueConverterFactory : IValueConverterFactory
     )
     {
         using var _ = Trace.Begin(this, nameof(TryGetConverter));
+        using var _name = Trace.Begin(this, $"{typeof(TSource).Name}:{typeof(TDestination).Name}");
         var key = (typeof(TSource), typeof(TDestination));
         if (converters.TryGetValue(key, out var cached))
         {

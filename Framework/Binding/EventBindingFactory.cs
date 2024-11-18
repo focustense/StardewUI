@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
@@ -84,6 +85,33 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
                     TryCreateHandlerBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext)
         );
         return localFactory(view, context, handlerContext);
+    }
+
+    /// <summary>
+    /// Prepares the reflection cache for the use of an event argument type.
+    /// </summary>
+    /// <remarks>
+    /// This method may run slowly and should always be run on a low-priority background thread.
+    /// </remarks>
+    /// <param name="eventArgsType">The <see cref="EventArgs"/> subtype.</param>
+    internal void Warmup(Type eventArgsType)
+    {
+        var argsDescriptor = DescriptorFactory.GetObjectDescriptor(eventArgsType);
+        var propertyDescriptors = eventArgsType
+            .GetMembers(BindingFlags.Instance | BindingFlags.Public)
+            .Where(m => m.MemberType == MemberTypes.Field || m.MemberType == MemberTypes.Property)
+            .Select(m => argsDescriptor.TryGetProperty(m.Name, out var property) ? property : null)
+            .Where(p => p is not null)
+            .Cast<IPropertyDescriptor>();
+        foreach (var propertyDescriptor in propertyDescriptors)
+        {
+            EventArgumentSource.Create(
+                eventArgsType,
+                propertyDescriptor.ValueType,
+                propertyDescriptor,
+                valueConverterFactory
+            );
+        }
     }
 
     private IEventBinding? TryCreateHandlerBinding(

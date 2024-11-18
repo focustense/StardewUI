@@ -30,12 +30,11 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
                 StringComparer.InvariantCultureIgnoreCase
             );
         var defaultOutletContents = namedOutletContents.Remove("", out var nodes) ? nodes.ToList() : [];
-        var result = template
+        return template
             .ChildNodes.SelectMany(node =>
                 TransformTemplateNode(node, attributes, defaultOutletContents, namedOutletContents)
             )
             .ToArray();
-        return result;
     }
 
     private static IEnumerable<SNode> TransformTemplateNode(

@@ -39,6 +39,14 @@ public static class LazyExpressionFieldDescriptor
         );
     }
 
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        createMethod.MakeGenericMethod(typeof(object), typeof(object));
+    }
+
     private static IPropertyDescriptor Create<T, TValue>(FieldInfo fieldInfo)
     {
         var reflectionDescriptor = new ReflectionFieldDescriptor<TValue>(fieldInfo);

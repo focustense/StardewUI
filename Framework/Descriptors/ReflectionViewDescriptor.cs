@@ -98,43 +98,61 @@ public class ReflectionViewDescriptor : IViewDescriptor
         var namedOutlets = new ConcurrentDictionary<string, IPropertyDescriptor>(
             StringComparer.InvariantCultureIgnoreCase
         );
-        viewType
-            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-            .AsParallel()
-            .WithDegreeOfParallelism(Math.Clamp(Environment.ProcessorCount / 2, 2, 4))
-            .Where(prop =>
-                prop.CanWrite
-                && (
-                    typeof(IView).IsAssignableFrom(prop.PropertyType)
-                    || typeof(IEnumerable<IView>).IsAssignableFrom(prop.PropertyType)
-                )
-            )
-            .ForAll(property =>
+        var properties = viewType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+        if (ReflectionObjectDescriptor.EnableParallelCreation())
+        {
+            properties
+                .AsParallel()
+                .WithDegreeOfParallelism(Math.Clamp(Environment.ProcessorCount / 2, 2, 4))
+                .Where(IsOutlet)
+                .ForAll(AddOutlet);
+        }
+        else
+        {
+            foreach (var property in properties)
             {
-                var descriptor = innerDescriptor.GetProperty(property.Name);
-                var outletName = property.GetCustomAttribute<OutletAttribute>()?.Name;
-                if (!string.IsNullOrEmpty(outletName))
+                if (IsOutlet(property))
                 {
-                    var previousDescriptor = namedOutlets.GetOrAdd(outletName, descriptor);
-                    if (previousDescriptor != descriptor)
-                    {
-                        throw new DescriptorException(
-                            $"Cannot add property '{property.Name}' as outlet '{outletName}' for type {viewType.Name}: "
-                                + $"another property ('{previousDescriptor.Name}') has already been assigned to this outlet."
-                        );
-                    }
+                    AddOutlet(property);
                 }
-                else
-                {
-                    if (Interlocked.CompareExchange(ref defaultOutlet, descriptor, null) is not null)
-                    {
-                        throw new DescriptorException(
-                            $"Cannot add property '{property.Name}' as the default outlet for type {viewType.Name}: "
-                                + $"another property ('{defaultOutlet.Name}') has already been assigned to this outlet."
-                        );
-                    }
-                }
-            });
+            }
+        }
         return (defaultOutlet, namedOutlets);
+
+        void AddOutlet(PropertyInfo property)
+        {
+            var descriptor = innerDescriptor.GetProperty(property.Name);
+            var outletName = property.GetCustomAttribute<OutletAttribute>()?.Name;
+            if (!string.IsNullOrEmpty(outletName))
+            {
+                var previousDescriptor = namedOutlets.GetOrAdd(outletName, descriptor);
+                if (previousDescriptor != descriptor)
+                {
+                    throw new DescriptorException(
+                        $"Cannot add property '{property.Name}' as outlet '{outletName}' for type {viewType.Name}: "
+                            + $"another property ('{previousDescriptor.Name}') has already been assigned to this outlet."
+                    );
+                }
+            }
+            else
+            {
+                if (Interlocked.CompareExchange(ref defaultOutlet, descriptor, null) is not null)
+                {
+                    throw new DescriptorException(
+                        $"Cannot add property '{property.Name}' as the default outlet for type {viewType.Name}: "
+                            + $"another property ('{defaultOutlet.Name}') has already been assigned to this outlet."
+                    );
+                }
+            }
+        }
+    }
+
+    private static bool IsOutlet(PropertyInfo property)
+    {
+        return property.CanWrite
+            && (
+                typeof(IView).IsAssignableFrom(property.PropertyType)
+                || typeof(IEnumerable<IView>).IsAssignableFrom(property.PropertyType)
+            );
     }
 }

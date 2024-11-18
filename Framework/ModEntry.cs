@@ -130,6 +130,10 @@ internal sealed class ModEntry : Mod
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
         resolutionScopeFactory = new(Helper.ModRegistry);
+        if (config.Performance.EnableReflectionWarmup)
+        {
+            Warmups.WarmupAttributeBindingFactory(attributeBindingFactory, eventBindingFactory, valueSourceFactory);
+        }
         return new ViewNodeFactory(
             rootViewFactory,
             valueSourceFactory,

@@ -50,6 +50,15 @@ public static class ReflectionMethodDescriptor
             && method.GetParameters().All(p => !p.IsIn && !p.IsOut && !p.ParameterType.IsByRef);
     }
 
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        ReflectionMethodDescriptor<object>.Warmup();
+        ReflectionMethodDescriptor<bool>.Warmup();
+    }
+
     private static IMethodDescriptor CreateDescriptorFactory<TResult>(MethodInfo method)
     {
         using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(CreateDescriptorFactory));
@@ -150,6 +159,19 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
     private readonly Dictionary<int, IInvoker<TResult>> optionalInvokers = [];
 
     /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        for (int i = 1; i < 9; i++)
+        {
+            var argumentTypes = new Type[i];
+            Array.Fill(argumentTypes, typeof(object));
+            GetInvokerType(argumentTypes);
+        }
+    }
+
+    /// <summary>
     /// Initializes a new instance of <see cref="ReflectionMethodDescriptor{TResult}"/>.
     /// </summary>
     /// <param name="method">The method to be described/invoked.</param>
@@ -215,7 +237,15 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
     private IInvoker<TResult> CreateInvoker(Type[] argumentTypes)
     {
         using var _ = Trace.Begin(this, nameof(CreateInvoker));
-        var invokerType = argumentTypes.Length switch
+        var invokerType = GetInvokerType(argumentTypes);
+        return invokerType is not null
+            ? (IInvoker<TResult>)invokerType.GetConstructor([typeof(MethodInfo)])!.Invoke([method])
+            : new ReflectionInvoker<TResult>(method);
+    }
+
+    private static Type? GetInvokerType(Type[] argumentTypes)
+    {
+        return argumentTypes.Length switch
         {
             1 => typeof(Invoker<>).MakeGenericType(argumentTypes),
             2 => typeof(Invoker<,>).MakeGenericType(argumentTypes),
@@ -228,9 +258,6 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
             9 => typeof(Invoker<,,,,,,,,>).MakeGenericType(argumentTypes),
             _ => null,
         };
-        return invokerType is not null
-            ? (IInvoker<TResult>)invokerType.GetConstructor([typeof(MethodInfo)])!.Invoke([method])
-            : new ReflectionInvoker<TResult>(method);
     }
 }
 

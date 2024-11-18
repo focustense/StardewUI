@@ -39,6 +39,14 @@ public static class ReflectionEventDescriptor
             && eventInfo.RemoveMethod is not null;
     }
 
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        createTypedDescriptorMethod.MakeGenericMethod(typeof(object), typeof(Action));
+    }
+
     private static IEventDescriptor CreateDescriptor(EventInfo eventInfo)
     {
         using var _ = Trace.Begin(nameof(ReflectionEventDescriptor), nameof(CreateDescriptor));

@@ -50,6 +50,14 @@ public class RepeaterNode(
     private BindingContext? context;
     private bool wasContextChanged;
 
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        CollectionWatcher.Warmup();
+    }
+
     /// <inheritdoc />
     public void Dispose()
     {
@@ -278,6 +286,11 @@ public class RepeaterNode(
                 }
             );
             return factory(collectionSource);
+        }
+
+        internal static void Warmup()
+        {
+            createInternalMethod.MakeGenericMethod(typeof(IEnumerable<IView>), typeof(IView));
         }
 
         private static ICollectionWatcher CreateInternal<TCollection, TElement>(IValueSource collectionSource)

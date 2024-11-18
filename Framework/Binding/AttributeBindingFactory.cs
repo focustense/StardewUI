@@ -136,8 +136,13 @@ public class AttributeBindingFactory(
         }
     }
 
+    private static readonly MethodInfo typedBindingMethod = typeof(AttributeBindingFactory).GetMethod(
+        nameof(CreateTypedBinding),
+        BindingFlags.NonPublic | BindingFlags.Instance
+    )!;
+
     private readonly ConcurrentDictionary<(Type, string, Type), LocalBindingFactory> bindingFactoryCache = [];
-    private readonly ConcurrentDictionary<(Type, Type), MethodInfo> genericMethodCache = [];
+    private readonly ConcurrentDictionary<(Type, Type), LocalBindingFactory> createTypedBindingMethodCache = new();
 
     /// <inheritdoc />
     public IAttributeBinding? TryCreateBinding(
@@ -161,22 +166,37 @@ public class AttributeBindingFactory(
         var propertyKey = (viewDescriptor.TargetType, attribute.Name, sourceType);
         var bindingFactory = bindingFactoryCache.GetOrAdd(
             propertyKey,
-            _ =>
-            {
-                var typedBindingMethod = typeof(AttributeBindingFactory).GetMethod(
-                    nameof(CreateTypedBinding),
-                    BindingFlags.NonPublic | BindingFlags.Instance
-                )!;
-                // MakeGenericMethod can be expensive, so it helps to also cache the method itself, independently of the
-                // attribute it's being associated with, in case many attributes use the same types (which they will).
-                var typedBindingGenericMethod = genericMethodCache.GetOrAdd(
-                    (sourceType, property.ValueType),
-                    _ => typedBindingMethod.MakeGenericMethod(sourceType, property.ValueType)
-                );
-                return typedBindingGenericMethod.CreateDelegate<LocalBindingFactory>(this);
-            }
+            _ => GetLocalBindingFactory(sourceType, property.ValueType)
         );
         return bindingFactory(viewDescriptor, attribute, propertyName, context, resolutionScope);
+    }
+
+    /// <summary>
+    /// Prepares the reflection cache for a future binding from the specified source type to destination type.
+    /// </summary>
+    /// <remarks>
+    /// This does not actually create a binding and is safe to call during startup. This overload is preferred over
+    /// <see cref="Warmup(Type, Type)"/> when possible, as it does not use any reflection, and can be called from the
+    /// main thread.
+    /// </remarks>
+    /// <typeparam name="TSource">The type of the source (e.g. attribute/context) value.</typeparam>
+    /// <typeparam name="TDestination">The type of the destination (e.g. view) value.</typeparam>
+    internal void Warmup<TSource, TDestination>()
+    {
+        createTypedBindingMethodCache.TryAdd(
+            (typeof(TSource), typeof(TDestination)),
+            CreateTypedBinding<TSource, TDestination>
+        );
+    }
+
+    /// <summary>
+    /// Prepares the reflection cache for a future binding from the specified source type to destination type.
+    /// </summary>
+    /// <param name="sourceType">The type of the source (e.g. attribute/context) value.</param>
+    /// <param name="destinationType">The type of the destination (e.g. view) value.</param>
+    internal void Warmup(Type sourceType, Type destinationType)
+    {
+        GetLocalBindingFactory(sourceType, destinationType);
     }
 
     private IAttributeBinding CreateTypedBinding<TSource, TDest>(
@@ -186,7 +206,6 @@ public class AttributeBindingFactory(
         BindingContext? context,
         IResolutionScope resolutionScope
     )
-        where TSource : notnull
     {
         if (attribute.ValueType == AttributeValueType.TemplateBinding)
         {
@@ -248,5 +267,21 @@ public class AttributeBindingFactory(
             AttributeValueType.TwoWayBinding => BindingDirection.InOut,
             _ => BindingDirection.In,
         };
+    }
+
+    private LocalBindingFactory GetLocalBindingFactory(Type sourceType, Type destinationType)
+    {
+        // MakeGenericMethod can be expensive, so it helps to also cache the method itself, independently of the
+        // attribute it's being associated with, in case many attributes use the same types (which they will).
+        return createTypedBindingMethodCache.GetOrAdd(
+            (sourceType, destinationType),
+            _ =>
+            {
+                using var _trace = Trace.Begin(this, nameof(GetLocalBindingFactory));
+                return typedBindingMethod
+                    .MakeGenericMethod(sourceType, destinationType)
+                    .CreateDelegate<LocalBindingFactory>(this);
+            }
+        );
     }
 }

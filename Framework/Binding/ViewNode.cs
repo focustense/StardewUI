@@ -60,6 +60,19 @@ public class ViewNode(
     /// <inheritdoc />
     public IReadOnlyList<IView> Views => view is not null ? [view] : [];
 
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    /// <remarks>
+    /// This method uses reflection and should only be invoked during background startup.
+    /// </remarks>
+    /// <typeparam name="TView">The view type.</typeparam>
+    internal static void Warmup<TView>()
+        where TView : IView
+    {
+        ReflectionChildrenBinder.Warmup<TView>();
+    }
+
     private IViewBinding? binding;
     private IValueSource? childContextSource;
     private IReadOnlyList<IViewNode.Child> children = [];
@@ -252,6 +265,14 @@ public class ViewNode(
             );
         }
 
+        /// <summary>
+        /// Pre-initializes some reflection state in order to make future invocations faster.
+        /// </summary>
+        internal static void Warmup<TView>()
+        {
+            FromViewDescriptor(DescriptorFactory.GetViewDescriptor(typeof(TView)));
+        }
+
         private static IChildrenBinder CreateChildrenBinder<TView>(IViewDescriptor viewDescriptor)
             where TView : IView
         {
@@ -272,6 +293,12 @@ public class ViewNode(
             nameof(Single),
             BindingFlags.Static | BindingFlags.NonPublic
         )!;
+
+        internal static void Warmup()
+        {
+            multipleMethod.MakeGenericMethod(typeof(View), typeof(IView));
+            singleMethod.MakeGenericMethod(typeof(View), typeof(IView));
+        }
 
         public void SetChildren(IView view, string? outletName, IEnumerable<IView> children)
         {
