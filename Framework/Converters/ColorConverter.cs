@@ -14,10 +14,10 @@ namespace StardewUI.Framework.Converters;
 public class ColorConverter : IValueConverter<string, Color>
 {
     private static readonly Dictionary<string, Lazy<Color>> namedColors = typeof(Color)
-        .GetFields(BindingFlags.Public | BindingFlags.Static)
-        .Where(field => field.FieldType == typeof(Color))
-        .Select(field => (name: field.Name, color: new Lazy<Color>(() => (Color)field.GetValue(null)!)))
-        .ToDictionary(x => x.name, x => x.color);
+        .GetProperties(BindingFlags.Public | BindingFlags.Static)
+        .Where(property => property.PropertyType == typeof(Color))
+        .Select(property => (name: property.Name, color: new Lazy<Color>(() => (Color)property.GetValue(null)!)))
+        .ToDictionary(x => x.name, x => x.color, StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc />
     public Color Convert(string value)
