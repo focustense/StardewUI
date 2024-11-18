@@ -2,6 +2,7 @@
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
+using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework.Binding;
@@ -109,6 +110,13 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         for (int i = 0; i < argumentSourceCount; i++)
         {
             var argumentData = @event.Arguments[i];
+            if (argumentData.Type == ArgumentExpressionType.TemplateBinding)
+            {
+                throw new BindingException(
+                    $"Template binding argument '{argumentData}' is invalid here; template bindings may only be used "
+                        + "from within a <template> node."
+                );
+            }
             var destinationType = handlerMethod.ArgumentTypes[i];
             if (argumentData.Type == Grammar.ArgumentExpressionType.EventBinding)
             {

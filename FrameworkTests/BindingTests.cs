@@ -2040,6 +2040,51 @@ public partial class BindingTests
         Assert.True(option2Checkbox.IsChecked);
     }
 
+    partial class TemplateBindingEventOuterModel
+    {
+        public string Arg1 { get; private set; } = "";
+        public int Arg2 { get; private set; }
+        public string Arg3 { get; private set; } = "";
+        public TemplateBindingEventInnerModel? Inner { get; set; }
+
+        public void Handle(string arg1, int arg2, string arg3)
+        {
+            Arg1 = arg1;
+            Arg2 = arg2;
+            Arg3 = arg3;
+        }
+    }
+
+    partial class TemplateBindingEventInnerModel
+    {
+        public int Id { get; set; }
+    }
+
+    [Fact]
+    public void WhenBoundWithTemplateNodes_ExpandsEventHandlerArguments()
+    {
+        // It might seem silly that we're passing in the same "Count" property that's already in the model as an event
+        // argument, but it's just for testing the template binding.
+        string markup =
+            @"<panel *context={Inner}>
+                <foo bar=""abc"" id={Id} />
+            </panel>
+
+            <template name=""foo"">
+                <button click=|^Handle(""dummy"", &id, &bar)| />
+            </template>";
+        var model = new TemplateBindingEventOuterModel() { Inner = new() { Id = 38 } };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var panel = Assert.IsType<Panel>(tree.Views.SingleOrDefault());
+        var button = Assert.IsType<Button>(panel.Children.SingleOrDefault());
+        button.OnClick(new(Vector2.Zero, SButton.ControllerA));
+
+        Assert.Equal("dummy", model.Arg1);
+        Assert.Equal(38, model.Arg2);
+        Assert.Equal("abc", model.Arg3);
+    }
+
     [Fact]
     public void WhenTemplateReferencesOtherTemplate_ExpandsInOrder()
     {

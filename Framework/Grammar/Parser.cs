@@ -127,7 +127,15 @@ public ref struct DocumentReader(Lexer lexer)
                 Argument = new(ArgumentExpressionType.Literal, quotedExpression, 0, []);
                 return true;
             case TokenType.ArgumentPrefix:
-                defaultExpressionType = ArgumentExpressionType.EventBinding;
+                defaultExpressionType = lexer.Current.Text switch
+                {
+                    "$" => ArgumentExpressionType.EventBinding,
+                    "&" => ArgumentExpressionType.TemplateBinding,
+                    _ => throw ParserException.ForCurrentToken(
+                        lexer,
+                        $"Invalid prefix '{lexer.Current.Text}' found for method argument."
+                    ),
+                };
                 lexer.ReadRequiredToken(TokenType.Name);
                 goto default;
             default:

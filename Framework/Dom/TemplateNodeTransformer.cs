@@ -73,9 +73,37 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
             .Where(attr => attr is not null)
             .Cast<SAttribute>()
             .ToArray();
-        // TODO: Also transform events; event args could also accept template params, though the lexer/parser need to be
-        // updated for this.
-        var transformedEvents = templateNode.Element.Events;
+        var transformedEvents = templateNode
+            .Element.Events.Select(ev =>
+            {
+                var transformedArguments = ev
+                    .Arguments.Select(arg =>
+                        arg.Type == Grammar.ArgumentExpressionType.TemplateBinding
+                            ? attributes.TryGetValue(arg.Expression, out var injectAttr)
+                                ? injectAttr.AsArgument()
+                                : null
+                            : arg
+                    )
+                    .ToArray();
+                var missingArgs = ev
+                    .Arguments.Zip(transformedArguments, (original, transformed) => (original, transformed))
+                    .Where(x => x.transformed is null)
+                    .Select(x => x.original.Expression)
+                    .ToArray();
+                if (missingArgs.Length > 0)
+                {
+                    Logger.LogOnce(
+                        $"Skipping templated event binding for event '{ev.Name}' because some template arguments are "
+                            + $"missing: [{string.Join(", ", missingArgs)}]",
+                        LogLevel.Warn
+                    );
+                    return null;
+                }
+                return new SEvent(ev.Name, ev.HandlerName, transformedArguments!, ev.ContextRedirect);
+            })
+            .Where(ev => ev is not null)
+            .Cast<SEvent>()
+            .ToArray();
         var transformedChildNodes = templateNode
             .ChildNodes.SelectMany(node =>
                 TransformTemplateNode(node, attributes, defaultOutletContents, namedOutletContents)

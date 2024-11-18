@@ -350,6 +350,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 [',', ..] => new(TokenType.ArgumentSeparator, 1),
                 ['"', ..] => new(TokenType.Quote, 1),
                 ['$', ..] => new(TokenType.ArgumentPrefix, 1),
+                ['&', ..] => new(TokenType.ArgumentPrefix, 1),
                 _ => ReadName(),
             },
             _ => text switch

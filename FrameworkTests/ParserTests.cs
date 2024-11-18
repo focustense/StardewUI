@@ -168,7 +168,7 @@ public class ParserTests
                 ]
             },
             {
-                @"<button click=|^^HandleClick(Foo, $Bar)| />",
+                @"<button click=|^^HandleClick(Foo, $Bar, &Baz)| />",
 
                 [
                     new(
@@ -181,6 +181,7 @@ public class ParserTests
                                 [
                                     new(ArgumentExpressionType.ContextBinding, "Foo"),
                                     new(ArgumentExpressionType.EventBinding, "Bar"),
+                                    new(ArgumentExpressionType.TemplateBinding, "Baz"),
                                 ],
                                 new ContextRedirect.Distance(2)
                             ),
