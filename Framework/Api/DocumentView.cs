@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using StardewUI.Framework.Binding;
+using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
 using StardewUI.Widgets;
@@ -12,13 +13,12 @@ namespace StardewUI.Framework.Api;
 /// <remarks>
 /// This view type mainly exists as glue for the API, to be used in a <see cref="ViewMenu{T}"/>.
 /// </remarks>
-/// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
-/// <param name="documentSource">Source providing the StarML document describing the view.</param>
-internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Document> documentSource)
-    : DecoratorView,
-        IDisposable
+internal class DocumentView : DecoratorView, IDescriptorDependent, IDisposable
 {
     private static readonly BackoffRule backoffRule = BackoffRule.Default;
+
+    private readonly IViewNodeFactory viewNodeFactory;
+    private readonly IValueSource<Document> documentSource;
 
     /// <summary>
     /// The data context (model) to provide to the root node.
@@ -42,6 +42,18 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
     private BackoffState? backoffState;
     private BindingContext? context;
     private IViewNode? rootNode;
+
+    /// <summary>
+    /// Initializes a new <see cref="DocumentView"/> instance.
+    /// </summary>
+    /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
+    /// <param name="documentSource">Source providing the StarML document describing the view.</param>
+    public DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Document> documentSource)
+    {
+        this.viewNodeFactory = viewNodeFactory;
+        this.documentSource = documentSource;
+        CodeReloadHandler.RegisterDependent(this);
+    }
 
     public override void Dispose()
     {
@@ -128,5 +140,13 @@ internal class DocumentView(IViewNodeFactory viewNodeFactory, IValueSource<Docum
             messageBuilder.AppendLine().Append(ex);
             Logger.Log(messageBuilder.ToString(), LogLevel.Error);
         }
+    }
+
+    void IDescriptorDependent.InvalidateDescriptors()
+    {
+        rootNode?.Dispose();
+        rootNode = null;
+        Context = Context is not null ? BindingContext.Create(Context.Data, Context.Parent) : null;
+        OnUpdate(TimeSpan.FromTicks(1));
     }
 }

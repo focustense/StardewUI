@@ -49,6 +49,20 @@ public class ReflectionViewDescriptor : IViewDescriptor
         );
     }
 
+    /// <summary>
+    /// Invalidates a cached descriptor, removing its type from the cache.
+    /// </summary>
+    /// <remarks>
+    /// This method is designed only to be invoked from an application metadata update (.NET Hot Reload, as opposed to
+    /// StardewUI's own hot reload based on assets) and should never be called by user code.
+    /// </remarks>
+    /// <param name="type">The type to invalidate.</param>
+    /// <returns><c>true</c> if the type was invalidated; <c>false</c> if no descriptor was cached.</returns>
+    internal static bool Invalidate(Type type)
+    {
+        return cache.TryRemove(type, out _);
+    }
+
     private ReflectionViewDescriptor(Type viewType, IObjectDescriptor innerDescriptor)
     {
         this.innerDescriptor = innerDescriptor;
