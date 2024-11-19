@@ -126,8 +126,10 @@ internal sealed partial class ModEntry : Mod
     {
         var context = new Example3Model();
         var controller = viewEngine.CreateMenuControllerFromAsset($"{viewAssetPrefix}/Example-Form", context);
+        controller.EnableCloseButton();
         controller.CanClose = () => context.AllowClose;
-        controller.OnClosing = () => Monitor.Log("Menu Closing", LogLevel.Info);
+        controller.Closing += () => Monitor.Log("Menu Closing", LogLevel.Info);
+        controller.Closed += () => Monitor.Log("Menu Closed", LogLevel.Info);
         if (Helper.Input.IsDown(SButton.RightShift))
         {
             var position = Game1.getMousePosition(true);

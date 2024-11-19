@@ -1,15 +1,18 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
+using StardewUI.Animation;
 using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
 using StardewUI.Layout;
 using StardewUI.Overlays;
+using StardewUI.Widgets;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -24,7 +27,23 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <summary>
     /// Event raised when the menu is closed.
     /// </summary>
-    public event EventHandler<EventArgs>? Close;
+    public event EventHandler<EventArgs>? Closed;
+
+    /// <summary>
+    /// Offset from the menu view's top-right edge to draw the close button, if a <see cref="CloseButtonSprite"/> is
+    /// also specified.
+    /// </summary>
+    public Vector2 CloseButtonOffset { get; set; } = new(36, -8);
+
+    /// <summary>
+    /// The sprite to draw for the close button shown on the upper right. If no value is specified, then no close button
+    /// will be drawn. The default behavior is to not show any close button.
+    /// </summary>
+    public Sprite? CloseButtonSprite
+    {
+        get => closeButton.Sprite;
+        set => closeButton.Sprite = value;
+    }
 
     /// <summary>
     /// Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
@@ -55,7 +74,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private static readonly Edges DefaultGutter = new(100, 50);
 
-    private Edges? gutter;
+    private readonly Image closeButton = new();
 
     // For tracking activation paths, we not only want a weak table for the overlay itself (to prevent overlays from
     // being leaked) but also for the ViewChild path used to activate it, because these views may go out of scope while
@@ -66,6 +85,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly T view;
     private readonly bool wasHudDisplayed;
 
+    private Edges? gutter;
     private ViewChild[] hoverPath = [];
     private bool isRehoverScheduled;
     private int? rehoverRequestTick;
@@ -111,6 +131,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         wasHudDisplayed = Game1.displayHUD;
         Game1.displayHUD = false;
+
+        HoverScale.Attach(closeButton, 1.2f, TimeSpan.FromMilliseconds(150));
     }
 
     /// <summary>
@@ -162,6 +184,42 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         return false;
     }
 
+    /// <summary>
+    /// Closes this menu, either by removing it from the parent if it is a child menu, or removing it as the game's
+    /// active menu if it is standalone.
+    /// </summary>
+    public void Close()
+    {
+        var behavior = GetCloseBehavior();
+        if (behavior == MenuCloseBehavior.Disabled)
+        {
+            return;
+        }
+        if (IsTitleSubmenu())
+        {
+            Game1.playSound(closeSound);
+            TitleMenu.subMenu = null;
+            return;
+        }
+        if (behavior == MenuCloseBehavior.Custom)
+        {
+            behaviorBeforeCleanup?.Invoke(this);
+            cleanupBeforeExit();
+            Game1.playSound(closeSound);
+            CustomClose();
+            if (exitFunction != null)
+            {
+                onExit onExit = exitFunction;
+                exitFunction = null;
+                onExit();
+            }
+        }
+        else
+        {
+            exitThisMenu();
+        }
+    }
+
     /// <inheritdoc />
     public void Dispose()
     {
@@ -171,7 +229,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         isDisposed = true;
         Game1.displayHUD = wasHudDisplayed;
-        Close?.Invoke(this, EventArgs.Empty);
+        OnClosed(EventArgs.Empty);
         GC.SuppressFinalize(this);
     }
 
@@ -195,7 +253,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         var origin = new Point(xPositionOnScreen, yPositionOnScreen);
         var viewBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(origin.ToVector2()));
-        view.Draw(viewBatch);
+        using (viewBatch.SaveTransform())
+        {
+            view.Draw(viewBatch);
+        }
+
+        if (shouldDrawCloseButton() && closeButton.Sprite is not null)
+        {
+            closeButton.Measure(viewportBounds.Size.ToVector2());
+            using (viewBatch.SaveTransform())
+            {
+                viewBatch.Translate(GetCloseButtonTranslation());
+                closeButton.Draw(viewBatch);
+            }
+        }
 
         foreach (var overlay in overlayContext.BackToFront())
         {
@@ -270,6 +341,46 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     }
 
     /// <summary>
+    /// Opens this menu, i.e. makes it active if it is not already active.
+    /// </summary>
+    /// <remarks>
+    /// </remarks>
+    /// <param name="activationMode">The activation behavior which determines which (if any) other active menu this one
+    /// can replace. Ignored when the game's title menu is open.</param>
+    public void Open(MenuActivationMode activationMode = MenuActivationMode.Standalone)
+    {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(Open));
+        if (Game1.activeClickableMenu is TitleMenu)
+        {
+            TitleMenu.subMenu = this;
+        }
+        else
+        {
+            for (var menu = Game1.activeClickableMenu; menu is not null; menu = menu.GetParentMenu())
+            {
+                if (menu == this)
+                {
+                    return;
+                }
+            }
+            var parentMenu = activationMode switch
+            {
+                MenuActivationMode.Child => Game1.activeClickableMenu,
+                MenuActivationMode.Sibling => Game1.activeClickableMenu?.GetParentMenu(),
+                _ => null,
+            };
+            if (parentMenu is not null)
+            {
+                parentMenu.SetChildMenu(this);
+            }
+            else
+            {
+                Game1.activeClickableMenu = this;
+            }
+        }
+    }
+
+    /// <summary>
     /// Invoked on every frame with the mouse's current coordinates.
     /// </summary>
     /// <remarks>
@@ -310,6 +421,14 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     {
         // The base class does a bunch of nasty reflection to populate the list, none of which is compatible with how
         // this menu works. To save time, we can simply do nothing here.
+    }
+
+    /// <summary>
+    /// Checks if the menu is allowed to be closed by the game's default input handling.
+    /// </summary>
+    public override bool readyToClose()
+    {
+        return GetCloseBehavior() == MenuCloseBehavior.Default;
     }
 
     /// <summary>
@@ -359,6 +478,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             case SButton.RightShoulder:
                 OnPageable(p => p.NextPage());
                 break;
+            case SButton.ControllerB:
+                if (ShouldForceCloseOnMenuButton())
+                {
+                    Close();
+                }
+                break;
         }
     }
 
@@ -401,7 +526,14 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             || Game1.isAnyGamePadButtonBeingHeld()
         )
         {
-            base.receiveKeyPress(key);
+            if (ShouldForceCloseOnMenuButton() && Game1.options.menuButton.Any(b => b.key == key))
+            {
+                Close();
+            }
+            else
+            {
+                base.receiveKeyPress(key);
+            }
         }
     }
 
@@ -487,37 +619,14 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     }
 
     /// <summary>
-    /// Activates or deactivates the menu.
+    /// Returns whether or not to draw a button on the upper right that closes the menu when clicked.
     /// </summary>
-    /// <param name="active">Whether the menu should be active (displayed). If this is <c>false</c>, then the menu will
-    /// be closed if already open; if <c>true</c>, it will be opened if not already open.</param>
-    public void SetActive(bool active)
+    /// <remarks>
+    /// Regardless of this value, a close button will never be drawn unless <see cref="CloseButtonSprite"/> is set.
+    /// </remarks>
+    public override bool shouldDrawCloseButton()
     {
-        using var _ = Diagnostics.Trace.Begin(this, nameof(SetActive));
-        if (Game1.activeClickableMenu is TitleMenu)
-        {
-            if (active)
-            {
-                TitleMenu.subMenu = this;
-            }
-            else if (TitleMenu.subMenu == this)
-            {
-                Game1.playSound(closeSound);
-                TitleMenu.subMenu = null;
-            }
-        }
-        else
-        {
-            if (active)
-            {
-                Game1.activeClickableMenu = this;
-            }
-            else if (Game1.activeClickableMenu == this)
-            {
-                Game1.playSound(closeSound);
-                Game1.activeClickableMenu = null;
-            }
-        }
+        return CloseButtonSprite is not null && GetCloseBehavior() != MenuCloseBehavior.Disabled;
     }
 
     /// <summary>
@@ -552,6 +661,42 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     }
 
     /// <summary>
+    /// When overridden in a derived class, provides an alternative method to close the menu instead of the default
+    /// logic in <see cref="IClickableMenu.exitThisMenu(bool)"/>.
+    /// </summary>
+    /// <remarks>
+    /// The method will only be called when the menu is closed (either programmatically or via the UI) while
+    /// <see cref="GetCloseBehavior"/> is returning <see cref="MenuCloseBehavior.Custom"/>.
+    /// </remarks>
+    protected virtual void CustomClose()
+    {
+        if (
+            this == Game1.activeClickableMenu
+            || (Game1.activeClickableMenu is GameMenu gameMenu && gameMenu.GetCurrentPage() == this)
+        )
+        {
+            Game1.exitActiveMenu();
+        }
+        if (_parentMenu is IClickableMenu parentMenu)
+        {
+            _parentMenu = null;
+            parentMenu.SetChildMenu(null);
+        }
+    }
+
+    /// <summary>
+    /// Gets the current close behavior for the menu.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation always returns <see cref="MenuCloseBehavior.Default"/>. Subclasses may override this
+    /// in order to use <see cref="CustomClose"/>, or disable closure entirely.
+    /// </remarks>
+    protected virtual MenuCloseBehavior GetCloseBehavior()
+    {
+        return MenuCloseBehavior.Default;
+    }
+
+    /// <summary>
     /// Computes the origin (top left) position of the menu for a given viewport and offset.
     /// </summary>
     /// <param name="viewportSize">The available size of the viewport in which the menu is to be displayed.</param>
@@ -566,6 +711,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         return new(x, y);
     }
 
+    /// <summary>
+    /// Invokes the <see cref="Closed"/> event handler.
+    /// </summary>
+    /// <param name="e">The event arguments.</param>
+    protected virtual void OnClosed(EventArgs e)
+    {
+        Closed?.Invoke(this, e);
+    }
+
     private static void FinishFocusSearch(IView rootView, Point origin, FocusSearchResult found)
     {
         LogFocusSearchResult(found.Target);
@@ -578,6 +732,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             nextMousePosition -= distance.ToPoint();
         }
         Game1.setMousePosition(nextMousePosition, true);
+    }
+
+    private Vector2 GetCloseButtonTranslation()
+    {
+        return new(view.OuterSize.X + CloseButtonOffset.X, CloseButtonOffset.Y);
     }
 
     private OverlayLayoutData GetOverlayLayoutData(IOverlay overlay)
@@ -650,6 +809,16 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         var args = new ClickEventArgs(localPosition, button);
         view.OnClick(args);
+        if (!args.Handled && closeButton.Sprite is not null && GetCloseBehavior() != MenuCloseBehavior.Disabled)
+        {
+            var closePosition = GetCloseButtonTranslation();
+            var closeBounds = new Bounds(closePosition, closeButton.OuterSize);
+            if (closeBounds.ContainsPoint(localPosition))
+            {
+                Close();
+                return;
+            }
+        }
         RequestRehover();
     }
 
@@ -677,6 +846,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private bool IsInputCaptured()
     {
         return overlayContext.FrontToBack().Any(overlay => overlay.CapturingInput);
+    }
+
+    private bool IsTitleSubmenu()
+    {
+        return Game1.activeClickableMenu is TitleMenu && TitleMenu.subMenu == this;
     }
 
     [Conditional("DEBUG_FOCUS_SEARCH")]
@@ -795,7 +969,18 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         var previousLocalPosition = previousHoverPosition.ToVector2() - viewPosition;
         previousHoverPosition = new(mouseX, mouseY);
         hoverPath = rootView.GetPathToPosition(localPosition).ToArray();
-        rootView.OnPointerMove(new PointerMoveEventArgs(previousLocalPosition, localPosition));
+        var args = new PointerMoveEventArgs(previousLocalPosition, localPosition);
+        rootView.OnPointerMove(args);
+        if (!args.Handled && hoverPath.Length == 0 && view.Equals(rootView) && closeButton.Sprite is not null)
+        {
+            var closePosition = GetCloseButtonTranslation();
+            var closeBounds = new Bounds(closePosition, closeButton.OuterSize);
+            if (closeBounds.ContainsPoint(localPosition) || closeBounds.ContainsPoint(previousLocalPosition))
+            {
+                var closeArgs = args.Offset(-closePosition);
+                closeButton.OnPointerMove(closeArgs);
+            }
+        }
     }
 
     private void Refocus(Direction searchDirection = Direction.South)
@@ -907,6 +1092,16 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             Game1.setMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint(), true);
         }
+    }
+
+    private bool ShouldForceCloseOnMenuButton()
+    {
+        return GetCloseBehavior() switch
+        {
+            MenuCloseBehavior.Disabled => false,
+            MenuCloseBehavior.Custom => true,
+            _ => IsTitleSubmenu(),
+        };
     }
 
     class OverlayLayoutData(ViewChild root)

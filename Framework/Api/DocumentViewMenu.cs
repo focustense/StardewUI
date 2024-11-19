@@ -1,13 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
+using StardewUI.Graphics;
 using StardewValley.Menus;
 
 namespace StardewUI.Framework.Api;
 
 /// <summary>
-///
+/// <see cref="ViewMenu{T}"/> implementation based on a StarML <see cref="Document"/>.
 /// </summary>
 /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
 /// <param name="documentSource">Source providing the StarML document describing the view.</param>
@@ -17,21 +19,39 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
         IMenuController
 {
     /// <inheritdoc />
+    public event Action? Closing;
+
+    event Action IMenuController.Closed
+    {
+        add => ControllerClosed += value;
+        remove => ControllerClosed -= value;
+    }
+
+    /// <inheritdoc />
     public Func<bool>? CanClose { get; set; }
+
+    /// <inheritdoc />
+    public Action? CloseAction { get; set; }
 
     /// <inheritdoc />
     public IClickableMenu Menu => this;
 
     /// <inheritdoc />
-    public Action? OnClosing { get; set; }
-
-    /// <inheritdoc />
     public Func<Point>? PositionSelector { get; set; }
 
+    private event Action? ControllerClosed;
+
     /// <inheritdoc />
-    public override bool readyToClose()
+    public void EnableCloseButton(Texture2D? texture = null, Rectangle? sourceRect = null, float scale = 4)
     {
-        return CanClose?.Invoke() ?? base.readyToClose();
+        if (texture is null)
+        {
+            CloseButtonSprite = UiSprites.CloseButton;
+        }
+        else
+        {
+            CloseButtonSprite = new(texture, sourceRect, SliceSettings: new(Scale: scale));
+        }
     }
 
     /// <inheritdoc />
@@ -43,7 +63,7 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     /// <inheritdoc />
     protected override void cleanupBeforeExit()
     {
-        OnClosing?.Invoke();
+        Closing?.Invoke();
         base.cleanupBeforeExit();
     }
 
@@ -55,8 +75,42 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     }
 
     /// <inheritdoc />
+    protected override void CustomClose()
+    {
+        if (CloseAction is not null)
+        {
+            CloseAction();
+        }
+        else
+        {
+            base.CustomClose();
+        }
+    }
+
+    /// <inheritdoc />
+    protected override MenuCloseBehavior GetCloseBehavior()
+    {
+        if (CanClose is not null && !CanClose.Invoke())
+        {
+            return MenuCloseBehavior.Disabled;
+        }
+        if (CloseAction is not null)
+        {
+            return MenuCloseBehavior.Custom;
+        }
+        return MenuCloseBehavior.Default;
+    }
+
+    /// <inheritdoc />
     protected override Point GetOriginPosition(Point viewportSize, Point gutterOffset)
     {
         return PositionSelector?.Invoke() ?? base.GetOriginPosition(viewportSize, gutterOffset);
+    }
+
+    /// <inheritdoc />
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        ControllerClosed?.Invoke();
     }
 }

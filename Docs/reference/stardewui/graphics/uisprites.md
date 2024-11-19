@@ -40,6 +40,7 @@ public static class UiSprites
 | [CaretRight](#caretright) | A caret-style directional arrow pointing right. | 
 | [CheckboxChecked](#checkboxchecked) | Checkbox with a green "X" through it. | 
 | [CheckboxUnchecked](#checkboxunchecked) | Unchecked checkbox, i.e. only the border. | 
+| [CloseButton](#closebutton) | Red X with border/background, generally used as upper-right close button for menus. | 
 | [ControlBorder](#controlborder) | Border/background sprite for an individual control, such as a button. Less prominent than [MenuBorder](uisprites.md#menuborder). | 
 | [Digits](#digits) | List of sprites for the outlined "tiny digits" 0-9, in that order. | 
 | [DropDownBackground](#dropdownbackground) | Background of a drop-down menu. | 
@@ -173,6 +174,20 @@ Unchecked checkbox, i.e. only the border.
 
 ```cs
 public static StardewUI.Graphics.Sprite CheckboxUnchecked { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### CloseButton
+
+Red X with border/background, generally used as upper-right close button for menus.
+
+```cs
+public static StardewUI.Graphics.Sprite CloseButton { get; }
 ```
 
 ##### Property Value

@@ -188,12 +188,44 @@ public interface IViewDrawable : IDisposable
 public interface IMenuController : IDisposable
 {
     /// <summary>
+    /// Event raised after the menu has been closed.
+    /// </summary>
+    event Action Closed;
+
+    /// <summary>
+    /// Event raised when the menu is about to close.
+    /// </summary>
+    /// <remarks>
+    /// This has the same lifecycle as <see cref="IClickableMenu.cleanupBeforeExit"/>.
+    /// </remarks>
+    event Action Closing;
+
+    /// <summary>
     /// Gets or sets a function that returns whether or not the menu can be closed.
     /// </summary>
     /// <remarks>
     /// This is equivalent to implementing <see cref="IClickableMenu.readyToClose"/>.
     /// </remarks>
     Func<bool>? CanClose { get; set; }
+
+    /// <summary>
+    /// Gets or sets an action that <b>replaces</b> the default menu-close behavior.
+    /// </summary>
+    /// <remarks>
+    /// Most users should leave this property unset. It is intended for use in unusual contexts, such as replacing the
+    /// mod settings in a Generic Mod Config Menu integration. Setting any non-null value to this property will suppress
+    /// the default behavior of <see cref="IClickableMenu.exitThisMenu(bool)"/> entirely, so the caller is responsible
+    /// for handling all possible scenarios (e.g. child of another menu, or sub-menu of the title menu).
+    /// </remarks>
+    Action? CloseAction { get; set; }
+
+    /// <summary>
+    /// Offset from the menu view's top-right edge to draw the close button.
+    /// </summary>
+    /// <remarks>
+    /// Only applies when <see cref="EnableCloseButton"/> has been called at least once.
+    /// </remarks>
+    Vector2 CloseButtonOffset { get; set; }
 
     /// <summary>
     /// How much the menu should dim the entire screen underneath.
@@ -210,14 +242,6 @@ public interface IMenuController : IDisposable
     IClickableMenu Menu { get; }
 
     /// <summary>
-    /// Gets or sets the action to be invoked before the menu closes.
-    /// </summary>
-    /// <remarks>
-    /// This is equivalent to implementing <see cref="IClickableMenu.cleanupBeforeExit"/>.
-    /// </remarks>
-    Action? OnClosing { get; set; }
-
-    /// <summary>
     /// Gets or sets a function that returns the top-left position of the menu.
     /// </summary>
     /// <remarks>
@@ -225,6 +249,20 @@ public interface IMenuController : IDisposable
     /// <see cref="IClickableMenu.xPositionOnScreen"/> and <see cref="IClickableMenu.yPositionOnScreen"/> fields.
     /// </remarks>
     Func<Point>? PositionSelector { get; set; }
+
+    /// <summary>
+    /// Configures the menu to display a close button on the upper-right side.
+    /// </summary>
+    /// <remarks>
+    /// If no <paramref name="texture"/> is specified, then all other parameters are ignored and the default close
+    /// button sprite is drawn. Otherwise, a custom sprite will be drawn using the specified parameters.
+    /// </remarks>
+    /// <param name="texture">The source image/tile sheet containing the button image.</param>
+    /// <param name="sourceRect">The location within the <paramref name="texture"/> where the image is located, or
+    /// <c>null</c> to draw the entire <paramref name="texture"/>.</param>
+    /// <param name="scale">Scale to apply, if the destination size should be different from the size of the
+    /// <paramref name="sourceRect"/>.</param>
+    void EnableCloseButton(Texture2D? texture = null, Rectangle? sourceRect = null, float scale = 4f);
 
     /// <summary>
     /// Configures the menu's gutter widths/heights.

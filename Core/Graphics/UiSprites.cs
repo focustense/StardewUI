@@ -69,6 +69,12 @@ public static class UiSprites
         new(Game1.mouseCursors, SourceRect: new(227, 425, 9, 9), FixedEdges: new(1), SliceSettings: new(Scale: 4));
 
     /// <summary>
+    /// Red X with border/background, generally used as upper-right close button for menus.
+    /// </summary>
+    public static Sprite CloseButton =>
+        new(Game1.mouseCursors, SourceRect: new(337, 494, 12, 12), SliceSettings: new(Scale: 4));
+
+    /// <summary>
     /// Border/background sprite for an individual control, such as a button. Less prominent than
     /// <see cref="MenuBorder"/>.
     /// </summary>
