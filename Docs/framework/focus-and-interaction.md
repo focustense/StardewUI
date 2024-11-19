@@ -82,7 +82,7 @@ Tooltips don't have to be on `focusable` elements; see the note in [pointer even
 
 ??? note "Customization"
 
-    While not common, it is possible to further customize the tooltip when using the [Core Library](../library/index.md) directly, via the [FormatTooltip](../reference/stardewui/viewmenu-1.md#formattooltipienumerableviewchild) method. The [Garbage In Garbage Can](https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15) mod does this in order to add button prompts to the tooltip.
+    While not common, it is possible to further customize the tooltip when using the [Core Library](../library/index.md) directly, via the [BuildTooltip](../reference/stardewui/viewmenu-1.md#buildtooltipienumerableviewchild) method. The [Garbage In Garbage Can](https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15) mod does this in order to add button prompts to the tooltip.
     
     Note, however, that (a) this code was written before the [framework](index.md) and StarML existed, and (b) it is completely possible to achieve using standard tooltips, and was only written this way to make it slightly easier to adapt the tooltip's exact wording based on whether the _current_ input is mouse vs. controller. Most tooltips are not going to require this degree of control.
 

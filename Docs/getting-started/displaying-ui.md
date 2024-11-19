@@ -58,6 +58,35 @@ Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
     context);
 ```
 
+### Menu Controllers
+
+Menus are analogous to the "window" in a web or desktop app. While the StarML document always results in a [View](../concepts.md#views), underneath it there is a more complex mechanism responsible for backgrounds, input handling, pausing game state, ensuring only one menu can be active, and so on. This is the the Menu itself—the implementation of `IActiveClickableMenu` which also acts as the bridge between Stardew Valley and StardewUI.
+
+Most UIs do not need to change anything about how the [`ViewMenu`](../reference/stardewui/viewmenu-1.md) works; it is set up so that its defaults accommodate 80-90% of usage scenarios. For those scenarios that require more precise control over aspects of the menu that cannot be controlled by either the StarML markup or a reference to the `IClickableMenu`, StardewUI provides an alternative set of APIs for working with [`IMenuController`](../reference/stardewui/framework/imenucontroller.md).
+
+The controller allows you to:
+
+- Change how the menu is closed: prevent closing, respond to events before/after closing, or replace the default `Close` implementation entirely for menus that need to be integrated into other frameworks;
+- Display the clickable Close button or "red X" found at the top-right of many Stardew Valley menus, and optionally customize its image or location;
+- Change absolute position, screen dimming, gutters, and other aspects affecting the "exterior" of the menu.
+
+The full set of controller customizations are documented in the [`IMenuController` reference](../reference/stardewui/framework/imenucontroller.md).
+
+Any standard menu is easy to replace with a menu controller by simply changing the API call from `CreateMenuFromAsset` to `CreateMenuControllerFromAsset` and referring to the controller's [`Menu`](../reference/stardewui/framework/imenucontroller.md#menu) when ready. The previous example would be changed to:
+
+```cs
+var context = new
+{
+    HeaderText = "Example Menu Title",
+    ItemData = ItemRegistry.GetData("(O)117"),
+};
+var controller = viewEngine.CreateMenuControllerFromAsset(
+    "Mods/focustense.StardewUITest/Views/TestView",
+    context);
+controller.DimmingAmount = 0.5f; // Example customization
+Game1.activeClickableMenu = controller.Menu;
+```
+
 ## HUD
 
 The game's HUD – Heads Up Display – refers to the persistent UI that is drawn over top of the game world, such as the date/time widget, health/energy bars, and so on.
