@@ -3,6 +3,7 @@ nav:
     - starml.md
     - binding-context.md
     - binding-events.md
+    - templates.md
     - included-views.md
     - duck-typing.md
     - focus-and-interaction.md

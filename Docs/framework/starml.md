@@ -90,11 +90,13 @@ These are the standard tags available in the UI framework:
 | `<label>`      | [Label](../library/standard-views.md#label) | Displays single- or multi-line text using a standard `SpriteFont`. |
 | `<lane>`       | [Lane](../library/standard-views.md#lane) | Arranges other views along one axis, either horizontal (left to right) or vertical (top to bottom). |
 | `<marquee>`    | [Marquee](../library/standard-views.md#marquee) | Animates scrolling text or other content horizontally; named after the [HTML Marquee](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). |
+| `<outlet>`     | N/A | Default or named [template outlet](templates.md#outlets). **Only valid within a `<template>` element.** |
 | `<panel>`      | [Panel](../library/standard-views.md#panel) | Displays all children as layers ordered by z-index. Positions can be adjusted using margins. |
 | `<scrollable>` | [Scrollable View](../library/standard-views.md#scrollable-view) | Shows scroll bars and arrows when content is too large to fit. |
 | `<slider>`     | [Slider](../library/standard-views.md#slider) | A numeric slider that can be moved between a minimum and maximum range. |
 | `<spacer>`     | [Spacer](../library/standard-views.md#spacer) | Draws nothing, but takes up space in the layout; used to "push" siblings to one side. |
 | `<tab>`        | [Tab](../library/standard-views.md#tab) | Push-down tab used to select the active section or page of a larger menu. Can be rotated for side navigation. |
+| `<template>`   | [Template](templates.md) | Defines a custom tag for replacement. **Must be at the document root;** not valid as a child of any other element. |
 | `<textinput>`  | [Text Input](../library/standard-views.md#text-input) | Input box for entering text; includes on-screen keyboard when activated by gamepad. |
 
 ## Attributes
@@ -214,6 +216,7 @@ Regular HTML uses quoted attributes; to support the more complex behaviors where
 | `attr={PropertyName}`       | The current value of the specified [context property](binding-context.md). |
 | `attr={@AssetName}`         | The current content of the [named asset](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F). |
 | `attr={#TranslationKey}`    | The translated string for a given [translation key](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation). Can be either unqualified (`foo.bar`) if referring to a translation in the same mod that provided the view, or qualified (`authorname.ModName:foo.bar`) if referring to a translation in any other mod. |
+| `attr={&templateParam}`     | Replace with a [template attribute](templates.md#template-attributes) of the same name. **Only valid in a `<template>` element.** |
 | `attr=|Handler(Arg1, ...)|` | Call the specified [context method](binding-context.md), with the specified arguments; only valid for [event attributes](#events). |
 
 ??? note
