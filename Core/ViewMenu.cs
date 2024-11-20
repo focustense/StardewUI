@@ -230,6 +230,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         isDisposed = true;
         Game1.displayHUD = wasHudDisplayed;
         OnClosed(EventArgs.Empty);
+        view.Dispose();
         GC.SuppressFinalize(this);
     }
 

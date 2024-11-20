@@ -12,6 +12,11 @@ namespace StardewUI.Graphics;
 public class Transform
 {
     /// <summary>
+    /// Default instance with no transformations applied.
+    /// </summary>
+    public static readonly Transform Default = new();
+
+    /// <summary>
     /// Creates a <see cref="Transform"/> using a specified translation offset.
     /// </summary>
     /// <param name="translation">The translation offset.</param>

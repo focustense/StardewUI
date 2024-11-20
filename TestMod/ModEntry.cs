@@ -120,6 +120,9 @@ internal sealed partial class ModEntry : Mod
 
         [Notify]
         private bool allowClose = true;
+
+        [Notify]
+        private float opacity = 1f;
     }
 
     private void ShowExampleMenu3()

@@ -171,6 +171,13 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public float Opacity
+    {
+        get => opacity;
+        set => opacity.Set(value);
+    }
+
+    /// <inheritdoc />
     public Vector2 OuterSize => view?.OuterSize ?? Vector2.Zero;
 
     /// <inheritdoc />
@@ -260,6 +267,7 @@ public class DecoratorView<T> : IView, IDisposable
 
     private readonly DecoratedProperty<LayoutParameters> layout = new(x => x.Layout, (x, v) => x.Layout = v, new());
     private readonly DecoratedProperty<string> name = new(x => x.Name, (x, v) => x.Name = v, "");
+    private readonly DecoratedProperty<float> opacity = new(x => x.Opacity, (x, v) => x.Opacity = v, 1f);
     private readonly DecoratedProperty<bool> pointerEventsEnabled =
         new(x => x.PointerEventsEnabled, (x, v) => x.PointerEventsEnabled = v, true);
     private readonly DecoratedProperty<Orientation?> scrollWithChildren =
@@ -278,6 +286,7 @@ public class DecoratorView<T> : IView, IDisposable
     {
         RegisterDecoratedProperty(layout);
         RegisterDecoratedProperty(name);
+        RegisterDecoratedProperty(opacity);
         RegisterDecoratedProperty(pointerEventsEnabled);
         RegisterDecoratedProperty(scrollWithChildren);
         RegisterDecoratedProperty(tooltip);
@@ -295,10 +304,7 @@ public class DecoratorView<T> : IView, IDisposable
     public virtual void Dispose()
     {
         DetachHandlers();
-        if (view is IDisposable viewDisposable)
-        {
-            viewDisposable.Dispose();
-        }
+        view?.Dispose();
         view = null;
         GC.SuppressFinalize(this);
     }

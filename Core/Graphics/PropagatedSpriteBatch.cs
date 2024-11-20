@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,41 +10,28 @@ namespace StardewUI.Graphics;
 /// </summary>
 public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform) : ISpriteBatch
 {
-    private static readonly FieldInfo blendStateField = typeof(SpriteBatch).GetField(
-        "_blendState",
-        BindingFlags.Instance | BindingFlags.NonPublic
-    )!;
-    private static readonly FieldInfo rasterizerStateField = typeof(SpriteBatch).GetField(
-        "_rasterizerState",
-        BindingFlags.Instance | BindingFlags.NonPublic
-    )!;
-
+    private readonly GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
     private readonly SpriteBatch spriteBatch = spriteBatch;
     private Transform transform = transform;
 
     /// <inheritdoc />
     public IDisposable Blend(BlendState blendState)
     {
-        var previousRasterizerState = (RasterizerState)rasterizerStateField.GetValue(spriteBatch)!;
-        var previousBlendState = (BlendState)blendStateField.GetValue(spriteBatch)!;
-        var reverter = new BlendReverter(this, previousRasterizerState, previousBlendState);
+        var reverter = new GraphicsReverter(this);
         spriteBatch.End();
-        BeginSpriteBatch(previousRasterizerState, blendState);
+        BeginSpriteBatch(reverter.RasterizerState, blendState);
         return reverter;
     }
 
     /// <inheritdoc />
     public IDisposable Clip(Rectangle clipRect)
     {
-        var previousRect = spriteBatch.GraphicsDevice.ScissorRectangle;
-        // Doing this with reflection in a draw loop sucks for performance, but there seems to be no other way to get
-        // access to the previous state. `SpriteBatch.GraphcisDevice.RasterizerState` does not sync with it.
-        var previousRasterizerState = (RasterizerState)rasterizerStateField.GetValue(spriteBatch)!;
+        var reverter = new GraphicsReverter(this);
         var location = (clipRect.Location.ToVector2() + transform.Translation).ToPoint();
         spriteBatch.End();
         BeginSpriteBatch(new() { ScissorTestEnable = true });
-        spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(previousRect, new(location, clipRect.Size));
-        return new ClipReverter(this, previousRasterizerState, previousRect);
+        spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(reverter.ScissorRect, new(location, clipRect.Size));
+        return reverter;
     }
 
     /// <inheritdoc />
@@ -156,9 +144,44 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
     }
 
     /// <inheritdoc />
+    public void InitializeRenderTarget([NotNull] ref RenderTarget2D? target, int width, int height)
+    {
+        if (target is null || target.Width != width || target.Height != height)
+        {
+            target?.Dispose();
+            target = new(
+                graphicsDevice,
+                width,
+                height,
+                false,
+                SurfaceFormat.Color,
+                DepthFormat.None,
+                0,
+                RenderTargetUsage.PreserveContents
+            );
+        }
+    }
+
+    /// <inheritdoc />
     public IDisposable SaveTransform()
     {
         return new TransformReverter(this);
+    }
+
+    /// <inheritdoc />
+    public IDisposable SetRenderTarget(RenderTarget2D renderTarget, Color? clearColor = null)
+    {
+        var graphicsReverter = new GraphicsReverter(this);
+        var transformReverter = new TransformReverter(this);
+        spriteBatch.End();
+        graphicsDevice.SetRenderTarget(renderTarget);
+        if (clearColor.HasValue)
+        {
+            graphicsDevice.Clear(clearColor.Value);
+        }
+        BeginSpriteBatch(graphicsReverter.RasterizerState, graphicsReverter.BlendState);
+        transform = Transform.Default;
+        return new RenderTargetReverter(graphicsReverter, transformReverter);
     }
 
     /// <inheritdoc />
@@ -192,31 +215,42 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
         return new(left, top, Math.Max(right - left, 0), Math.Max(bottom - top, 0));
     }
 
-    private class BlendReverter(
-        PropagatedSpriteBatch owner,
-        RasterizerState previousRasterizerState,
-        BlendState previousBlendState
-    ) : IDisposable
+    private class GraphicsReverter(PropagatedSpriteBatch owner) : IDisposable
     {
+        // Doing this with reflection in a draw loop sucks for performance, but there seems to be no other way to get
+        // access to the previous state. `SpriteBatch.GraphcisDevice.RasterizerState` does not sync with it.
+        public BlendState? BlendState { get; } = (BlendState)blendStateField.GetValue(owner.spriteBatch)!;
+        public RasterizerState RasterizerState { get; } =
+            (RasterizerState)rasterizerStateField.GetValue(owner.spriteBatch)!;
+        public RenderTargetBinding[] RenderTargets { get; } = owner.graphicsDevice.GetRenderTargets();
+        public Rectangle ScissorRect { get; } = owner.spriteBatch.GraphicsDevice.ScissorRectangle;
+
+        private static readonly FieldInfo blendStateField = typeof(SpriteBatch).GetField(
+            "_blendState",
+            BindingFlags.Instance | BindingFlags.NonPublic
+        )!;
+        private static readonly FieldInfo rasterizerStateField = typeof(SpriteBatch).GetField(
+            "_rasterizerState",
+            BindingFlags.Instance | BindingFlags.NonPublic
+        )!;
+
         public void Dispose()
         {
             owner.spriteBatch.End();
-            owner.BeginSpriteBatch(previousRasterizerState, previousBlendState);
+            owner.graphicsDevice.SetRenderTargets(RenderTargets);
+            owner.BeginSpriteBatch(RasterizerState, BlendState);
+            owner.graphicsDevice.ScissorRectangle = ScissorRect;
             GC.SuppressFinalize(this);
         }
     }
 
-    private class ClipReverter(
-        PropagatedSpriteBatch owner,
-        RasterizerState previousRasterizerState,
-        Rectangle previousRect
-    ) : IDisposable
+    private class RenderTargetReverter(GraphicsReverter graphicsReverter, TransformReverter transformReverter)
+        : IDisposable
     {
         public void Dispose()
         {
-            owner.spriteBatch.End();
-            owner.BeginSpriteBatch(previousRasterizerState);
-            owner.spriteBatch.GraphicsDevice.ScissorRectangle = previousRect;
+            graphicsReverter.Dispose();
+            transformReverter.Dispose();
             GC.SuppressFinalize(this);
         }
     }
