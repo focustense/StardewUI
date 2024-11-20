@@ -129,6 +129,7 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `layout` | In/Out | `LayoutParameters` | The intended width and height. See [conversions](#type-conversions) for allowed values. |
 | `margin` | In/Out | `Edges` | Pixel sizes for whitespace outside the border/background. |
 | `name` | In/Out | `string` | For `<include>` elements, the view's asset name; for all other elements, a user-defined name used mainly for logging and troubleshooting. |
+| `opacity` | In/Out | `float` | Opacity (alpha) value of the entire view, from 0.0 (fully transparent/hidden) to 1.0 (fully opaque). |
 | `outer-size` | Out | `Bounds` | Total layout size occupied by the element, including padding, borders and margins. |
 | `padding` | In/Out | `Edges` | Pixel sizes for whitespace inside the border/background. |
 | `pointer-events-enabled` | In/Out | `bool` | Can be set to `false` to prevent receiving clicks, mouseovers, etc. Use when a transparent view is drawn on top of an interactive view. |
@@ -183,7 +184,7 @@ To experienced C# programmers, this may look like an ordinary method call, but i
     
     In StarML, the name of an attribute is always the [kebab-case](https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case) version of the event name, e.g. `LeftClick` becomes `left-click`.
 
-<div class="annotate event-table" markdown>
+<div class="annotate event-table no-code-break" markdown>
 
 | Event | Arguments&nbsp;Type&nbsp;(1) | Condition |
 | --------- | -------- | ----------- |
@@ -195,6 +196,7 @@ To experienced C# programmers, this may look like an ordinary method call, but i
 | `left-click` | `ClickEventArgs` | Left mouse button or controller A was pressed. |
 | `pointer-enter` | `PointerEventArgs` | Cursor just moved inside the view's bounds. |
 | `pointer-leave` | `PointerEventArgs` | Cursor just moved outside the view's bounds. |
+| `pointer-move` | `PointerMoveEventArgs` | Cursor moved within a view's bounds after entering. |
 | `right-click` | `ClickEventArgs` | Right mouse button or controller X was pressed. |
 | `wheel` | `WheelEventArgs` | Mouse wheel movement was detected. |
 

@@ -11,8 +11,6 @@ table .md-tooltip {
 
 .attribute-table th:nth-child(1) { width: 180px; }
 
-.event-table th:nth-child(1) { width: 150px; }
-
 .span-table [colspan], .span-table [rowspan] {
     font-weight: inherit;
 }

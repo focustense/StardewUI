@@ -93,9 +93,6 @@ public abstract class View : IView
     /// <inheritdoc/>
     public Bounds ContentBounds => GetContentBounds();
 
-    /// <inheritdoc/>
-    public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
-
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
@@ -135,6 +132,9 @@ public abstract class View : IView
             }
         }
     }
+
+    /// <inheritdoc/>
+    public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
 
     /// <summary>
     /// The floating elements to display relative to this view.

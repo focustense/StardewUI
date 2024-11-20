@@ -41,7 +41,9 @@ Importantly, this interface represents a "local" sprite batch with inherited tra
 | [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Vector2?, Vector2?, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-vector2-vector2-spriteeffects-float) |  | 
 | [Draw(Texture2D, Rectangle, Rectangle?, Color?, Single, Vector2?, SpriteEffects, Single)](#drawtexture2d-rectangle-rectangle-color-float-vector2-spriteeffects-float) |  | 
 | [DrawString(SpriteFont, string, Vector2, Color, Single, Vector2?, Single, SpriteEffects, Single)](#drawstringspritefont-string-vector2-color-float-vector2-float-spriteeffects-float) |  | 
+| [InitializeRenderTarget(RenderTarget2D, Int32, Int32)](#initializerendertargetrendertarget2d-int-int) | Initializes a [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html) for use with [SetRenderTarget(RenderTarget2D, Color?)](ispritebatch.md#setrendertargetrendertarget2d-color). | 
 | [SaveTransform()](#savetransform) | Saves the current transform, so that it can later be restored to its current state. | 
+| [SetRenderTarget(RenderTarget2D, Color?)](#setrendertargetrendertarget2d-color) | Sets up subsequent draw calls to use a custom render target. | 
 | [Translate(Vector2)](#translatevector2) | Applies a translation offset to subsequent operations. | 
 | [Translate(Single, Single)](#translatefloat-float) | Applies a translation offset to subsequent operations. | 
 
@@ -230,6 +232,31 @@ void DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont spriteFont, string t
 
 -----
 
+#### InitializeRenderTarget(RenderTarget2D, int, int)
+
+Initializes a [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html) for use with [SetRenderTarget(RenderTarget2D, Color?)](ispritebatch.md#setrendertargetrendertarget2d-color).
+
+```cs
+void InitializeRenderTarget(Microsoft.Xna.Framework.Graphics.RenderTarget2D target, int width, int height);
+```
+
+##### Parameters
+
+**`target`** &nbsp; [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html)  
+The previous render target, if any, to reuse if possible.
+
+**`width`** &nbsp; [Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32)  
+The target width.
+
+**`height`** &nbsp; [Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32)  
+The target height.
+
+##### Remarks
+
+This will reuse an existing render target if available, i.e. if `target` is not `null` and matches the specified `width` and `height`; otherwise it will replace any previous `target` and replace it with a new instance.
+
+-----
+
 #### SaveTransform()
 
 Saves the current transform, so that it can later be restored to its current state.
@@ -247,6 +274,34 @@ System.IDisposable SaveTransform();
 ##### Remarks
 
 This is typically used in hierarchical layout; i.e. a view with children would apply a transform before handing the canvas or sprite batch down to any of those children, and then restore it after the child is done with it. This enables a single [ISpriteBatch](ispritebatch.md) instance to be used for the entire layout rather than having to create a tree.
+
+-----
+
+#### SetRenderTarget(RenderTarget2D, Color?)
+
+Sets up subsequent draw calls to use a custom render target.
+
+```cs
+System.IDisposable SetRenderTarget(Microsoft.Xna.Framework.Graphics.RenderTarget2D renderTarget, Microsoft.Xna.Framework.Color? clearColor);
+```
+
+##### Parameters
+
+**`renderTarget`** &nbsp; [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html)  
+The new render target.
+
+**`clearColor`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)>  
+Color to clear the `renderTarget` with after making it active, or `null` to skip clearing.
+
+##### Returns
+
+[IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable)
+
+  A disposable instance which, when disposed, will revert to the previous render target(s).
+
+##### Remarks
+
+This will also reset any active transforms for the new render target, e.g. those resulting from [Translate(Vector2)](ispritebatch.md#translatevector2). Previously-active transforms will be restored when the render target is reverted by calling [Dispose()](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable.dispose) on the result.
 
 -----
 

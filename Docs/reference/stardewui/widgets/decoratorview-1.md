@@ -21,8 +21,8 @@ Assembly: StardewUI.dll
 A view that owns and delegates to an inner view.
 
 ```cs
-public class DecoratorView<T> : StardewUI.IView, 
-    System.ComponentModel.INotifyPropertyChanged, System.IDisposable
+public class DecoratorView<T> : StardewUI.IView, System.IDisposable, 
+    System.ComponentModel.INotifyPropertyChanged
 ```
 
 ### Type Parameters
@@ -35,7 +35,7 @@ The specific type of view that the decorator owns.
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ DecoratorView&lt;T&gt;
 
 **Implements**  
-[IView](../iview.md), [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged), [IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable)
+[IView](../iview.md), [IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable), [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged)
 
 ## Remarks
 
@@ -61,6 +61,7 @@ Decorator views, while not abstract, are used as a base type for other composite
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
 | [Layout](#layout) | The current layout parameters, which determine how [Measure(Vector2)](../iview.md#measurevector2) will behave. | 
 | [Name](#name) | Simple name for this view, used in log/debug output; does not affect behavior. | 
+| [Opacity](#opacity) | Opacity (alpha level) of the view. | 
 | [OuterSize](#outersize) | The true computed layout size resulting from a single [Measure(Vector2)](../iview.md#measurevector2) pass. | 
 | [PointerEventsEnabled](#pointereventsenabled) | Whether this view should receive pointer events like [Click](../iview.md#click) or [Drag](../iview.md#drag). | 
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
@@ -223,6 +224,24 @@ public string Name { get; set; }
 ##### Property Value
 
 [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+
+-----
+
+#### Opacity
+
+Opacity (alpha level) of the view.
+
+```cs
+public float Opacity { get; set; }
+```
+
+##### Property Value
+
+[Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+##### Remarks
+
+Affects this view and all descendants; used to control opacity of an entire control or layout area.
 
 -----
 

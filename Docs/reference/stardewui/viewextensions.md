@@ -38,6 +38,8 @@ public static class ViewExtensions
 | [GetPathToView(IView, IView)](#getpathtoviewiview-iview) | Retrieves the path to a descendant view. | 
 | [ResolveChildPath(IView, IEnumerable&lt;IView&gt;)](#resolvechildpathiview-ienumerableiview) | Takes an existing view path and resolves it with child coordinates for the view at each level. | 
 | [ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)](#toglobalpositionsienumerableviewchild) | Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2)](viewextensions.md#getpathtopositioniview-vector2) and transforms each element to have an absolute [Position](viewchild.md#position). | 
+| [ZOrder(IEnumerable&lt;ViewChild&gt;)](#zorderienumerableviewchild) | Sorts a sequence of children in ascending z-order. | 
+| [ZOrderDescending(IEnumerable&lt;ViewChild&gt;)](#zorderdescendingienumerableviewchild) | Sorts a sequence of children in descending z-order. | 
 
 ## Details
 
@@ -162,6 +164,54 @@ The path from root down to leaf view.
 ##### Remarks
 
 Since [ViewChild](viewchild.md) does not specify whether the position is local (parent) or global (absolute), it is not possible to validate the incoming sequence and prevent a "double transformation". Callers are responsible for knowing whether or not the input sequence is local or global.
+
+-----
+
+#### ZOrder(IEnumerable&lt;ViewChild&gt;)
+
+Sorts a sequence of children in ascending z-order.
+
+```cs
+public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ZOrder(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> children);
+```
+
+##### Parameters
+
+**`children`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
+The view children.
+
+##### Returns
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>
+
+  The `children` ordered by the view's [ZIndex](iview.md#zindex) and original sequence order.
+
+##### Remarks
+
+Order is preserved between views with the same [ZIndex](iview.md#zindex), so the resulting sequence will have a primary order of z-index (lower indices first) and a secondary order of original sequence position. This is the correct order for drawing views.
+
+-----
+
+#### ZOrderDescending(IEnumerable&lt;ViewChild&gt;)
+
+Sorts a sequence of children in descending z-order.
+
+```cs
+public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ZOrderDescending(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> children);
+```
+
+##### Parameters
+
+**`children`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
+The view children.
+
+##### Returns
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>
+
+##### Remarks
+
+The resulting sequence will have an order such that views with higher [ZIndex](iview.md#zindex) appear first, and views with the same z-index will appear in the _reverse_ order of the original sequence. This is the correct order for handling cursor events and any other actions that need to operate on the "topmost" view first.
 
 -----
 

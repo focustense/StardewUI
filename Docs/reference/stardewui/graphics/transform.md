@@ -33,6 +33,12 @@ Currently only propagates the translation, since this is comparatively trivial t
 
 ## Members
 
+### Fields
+
+ | Name | Description |
+| --- | --- |
+| [Default](#default) | Default instance with no transformations applied. | 
+
 ### Properties
 
  | Name | Description |
@@ -47,6 +53,22 @@ Currently only propagates the translation, since this is comparatively trivial t
 | [Translate(Vector2)](#translatevector2) | Applies a specified translation. | 
 
 ## Details
+
+### Fields
+
+#### Default
+
+Default instance with no transformations applied.
+
+```cs
+public static readonly StardewUI.Graphics.Transform Default;
+```
+
+##### Field Value
+
+[Transform](transform.md)
+
+-----
 
 ### Properties
 

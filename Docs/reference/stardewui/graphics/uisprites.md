@@ -58,6 +58,8 @@ public static class UiSprites
 | [MenuSlotInset](#menuslotinset) | Inset-style background and border, often used to hold an item or represent a slot. | 
 | [MenuSlotOutset](#menuslotoutset) | Outset-style background and border, often used to hold an item or represent a slot. | 
 | [MenuSlotTransparent](#menuslottransparent) | Single-line rectangular border with a slight inset look. | 
+| [MenuVerticalDivider](#menuverticaldivider) | Modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the [MenuBorder](uisprites.md#menuborder) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid). | 
+| [MenuVerticalDividerMargin](#menuverticaldividermargin) | Margin adjustment to apply to content adjacent to a [MenuVerticalDivider](uisprites.md#menuverticaldivider) to make content flush with the border; adjusts for internal sprite padding. | 
 | [ScrollBarTrack](#scrollbartrack) | Background for the scroll bar track (which the thumb is inside). | 
 | [SliderBackground](#sliderbackground) | Background of a slider control. | 
 | [SliderButton](#sliderbutton) | The movable part of a slider control ("button"). | 
@@ -69,6 +71,8 @@ public static class UiSprites
 | [SmallUpArrow](#smalluparrow) | Small up arrow, typically used for scroll bars. | 
 | [TabTopEmpty](#tabtopempty) | Top-facing tab with no inner content, used for tab controls. | 
 | [TextBox](#textbox) | Border/background for a text input box. | 
+| [ThinHorizontalDivider](#thinhorizontaldivider) | Simple horizontal divider, typically used to divide sections of uniform content, e.g. grid rows. | 
+| [ThinVerticalDivider](#thinverticaldivider) | Simple vertical divider, typically used to divide sections of uniform content, e.g. grid columns. | 
 | [TinyTrashCan](#tinytrashcan) | Very small trash can, e.g. to be used in lists/subforms as "remove" button. | 
 | [VerticalScrollThumb](#verticalscrollthumb) | Thumb sprite used for vertical scroll bars. | 
 
@@ -434,6 +438,34 @@ public static StardewUI.Graphics.Sprite MenuSlotTransparent { get; }
 
 -----
 
+#### MenuVerticalDivider
+
+Modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the [MenuBorder](uisprites.md#menuborder) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid).
+
+```cs
+public static StardewUI.Graphics.Sprite MenuVerticalDivider { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### MenuVerticalDividerMargin
+
+Margin adjustment to apply to content adjacent to a [MenuVerticalDivider](uisprites.md#menuverticaldivider) to make content flush with the border; adjusts for internal sprite padding.
+
+```cs
+public static StardewUI.Layout.Edges MenuVerticalDividerMargin { get; }
+```
+
+##### Property Value
+
+[Edges](../layout/edges.md)
+
+-----
+
 #### ScrollBarTrack
 
 Background for the scroll bar track (which the thumb is inside).
@@ -584,6 +616,34 @@ Border/background for a text input box.
 
 ```cs
 public static StardewUI.Graphics.Sprite TextBox { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### ThinHorizontalDivider
+
+Simple horizontal divider, typically used to divide sections of uniform content, e.g. grid rows.
+
+```cs
+public static StardewUI.Graphics.Sprite ThinHorizontalDivider { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### ThinVerticalDivider
+
+Simple vertical divider, typically used to divide sections of uniform content, e.g. grid columns.
+
+```cs
+public static StardewUI.Graphics.Sprite ThinVerticalDivider { get; }
 ```
 
 ##### Property Value
