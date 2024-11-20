@@ -128,6 +128,45 @@ public static class ViewExtensions
         }
     }
 
+    /// <summary>
+    /// Sorts a sequence of children in ascending z-order.
+    /// </summary>
+    /// <remarks>
+    /// Order is preserved between views with the same <see cref="IView.ZIndex"/>, so the resulting sequence will have
+    /// a primary order of z-index (lower indices first) and a secondary order of original sequence position. This is
+    /// the correct order for drawing views.
+    /// </remarks>
+    /// <param name="children">The view children.</param>
+    /// <returns>The <paramref name="children"/> ordered by the view's <see cref="IView.ZIndex"/> and original sequence
+    /// order.</returns>
+    public static IEnumerable<ViewChild> ZOrder(this IEnumerable<ViewChild> children)
+    {
+        // OrderBy is a stable sort so we don't need to do anything extra to preserve original sequence order.
+        return children.OrderBy(child => child.View.ZIndex);
+    }
+
+    /// <summary>
+    /// Sorts a sequence of children in descending z-order.
+    /// </summary>
+    /// <remarks>
+    /// The resulting sequence will have an order such that views with higher <see cref="IView.ZIndex"/> appear first,
+    /// and views with the same z-index will appear in the <em>reverse</em> order of the original sequence. This is the
+    /// correct order for handling cursor events and any other actions that need to operate on the "topmost" view first.
+    /// </remarks>
+    /// <param name="children">The view children.</param>
+    /// <returns></returns>
+    public static IEnumerable<ViewChild> ZOrderDescending(this IEnumerable<ViewChild> children)
+    {
+        // With OrderByDescending, the stable sort works against us here, because it reverses the order of the key but
+        // does NOT reverse the original sequence order. To get the correct result, we have to be explicit about the
+        // sequence order.
+        return children
+            .Select((child, index) => (child, index))
+            .OrderByDescending(x => x.child.View.ZIndex)
+            .ThenByDescending(x => x.index)
+            .Select(x => x.child);
+    }
+
     private static IEnumerable<ViewChild>? GetPathToView(ViewChild parent, IView descendant)
     {
         if (parent.View == descendant)

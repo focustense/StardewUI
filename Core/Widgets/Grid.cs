@@ -226,7 +226,7 @@ public partial class Grid : View
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        foreach (var (child, position) in childPositions.OrderBy(child => child.View.ZIndex))
+        foreach (var (child, position) in childPositions.ZOrder())
         {
             using var _ = b.SaveTransform();
             b.Translate(position);

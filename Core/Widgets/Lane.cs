@@ -289,7 +289,7 @@ public partial class Lane : View
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        foreach (var (child, position) in visibleChildPositions.OrderBy(child => child.View.ZIndex))
+        foreach (var (child, position) in visibleChildPositions.ZOrder())
         {
             using var _ = b.SaveTransform();
             b.Translate(position);

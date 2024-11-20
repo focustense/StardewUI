@@ -511,7 +511,7 @@ public abstract class View : IView
     /// <inheritdoc />
     public ViewChild? GetChildAt(Vector2 position)
     {
-        return GetChildrenAt(position).FirstOrDefault();
+        return GetChildrenAt(position).ZOrderDescending().FirstOrDefault();
     }
 
     /// <inheritdoc />
@@ -878,13 +878,11 @@ public abstract class View : IView
     /// </remarks>
     /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
     /// margin, borders and padding).</param>
-    /// <returns>The views at the specified <paramref name="contentPosition"/>, sorted in reverse order of their
-    /// <see cref="IView.ZIndex"/>.</returns>
+    /// <returns>The views at the specified <paramref name="contentPosition"/>, in original layout order.</returns>
     protected virtual IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
         return GetLocalChildren()
-            .Where(child => child.ContainsPoint(contentPosition))
-            .OrderByDescending(child => child.View.ZIndex);
+            .Where(child => child.ContainsPoint(contentPosition));
     }
 
     /// <summary>
@@ -1024,7 +1022,7 @@ public abstract class View : IView
     private void DispatchPointerEvent<T>(T eventArgs, Action<IView, T> dispatch)
         where T : PointerEventArgs, IOffsettable<T>
     {
-        foreach (var child in GetChildrenAt(eventArgs.Position))
+        foreach (var child in GetChildrenAt(eventArgs.Position).ZOrderDescending())
         {
             if (child.View.PointerEventsEnabled)
             {
@@ -1120,7 +1118,7 @@ public abstract class View : IView
             return childPosition is not null ? new(draggingView, childPosition.Value) : null;
         }
 
-        foreach (var child in GetChildrenAt(position))
+        foreach (var child in GetChildrenAt(position).ZOrderDescending())
         {
             if (child.View.PointerEventsEnabled)
             {

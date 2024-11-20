@@ -111,8 +111,11 @@ public partial class Panel : View
     {
         foreach (
             var childPosition in childPositions
-                .OrderByDescending(child => child.ContainsPoint(contentPosition))
-                .ThenByDescending(child => child.View.ZIndex)
+                .Select((child, index) => (child, index))
+                .OrderByDescending(x => x.child.ContainsPoint(contentPosition))
+                .ThenByDescending(x => x.child.View.ZIndex)
+                .ThenByDescending(x => x.index)
+                .Select(x => x.child)
         )
         {
             var (view, position) = childPosition;
@@ -155,7 +158,7 @@ public partial class Panel : View
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        foreach (var (child, position) in childPositions.OrderBy(child => child.View.ZIndex))
+        foreach (var (child, position) in childPositions.ZOrder())
         {
             using var _ = b.SaveTransform();
             b.Translate(position);

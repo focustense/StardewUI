@@ -33,6 +33,7 @@
       <None Remove="assets\views\Example-ScrollingItemGrid.sml" />
       <None Remove="assets\views\Example-Tabs.sml" />
       <None Remove="assets\views\TestView.sml" />
+      <None Remove="assets\views\ZOrderTest.sml" />
       <None Remove="i18n\default.json" />
     </ItemGroup>
 
@@ -68,6 +69,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <Content Include="assets\views\TestView.sml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="assets\views\ZOrderTest.sml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
