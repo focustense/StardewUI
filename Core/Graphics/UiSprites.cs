@@ -194,6 +194,25 @@ public static class UiSprites
         new(Game1.menuTexture, SourceRect: new(128, 128, 64, 64), FixedEdges: new(4));
 
     /// <summary>
+    /// Modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the
+    /// <see cref="MenuBorder"/> to denote separate "sub-panels" or "sections" of the menu to group logically very
+    /// different menu functions (as opposed to lines on a grid).
+    /// </summary>
+    public static Sprite MenuVerticalDivider =>
+        new(
+            Game1.menuTexture,
+            SourceRect: new(64, 0, 64, 256),
+            FixedEdges: new(0, 64),
+            SliceSettings: new(CenterY: 128, CenterYPosition: SliceCenterPosition.End)
+        );
+
+    /// <summary>
+    /// Margin adjustment to apply to content adjacent to a <see cref="MenuVerticalDivider"/> to make content flush
+    /// with the border; adjusts for internal sprite padding.
+    /// </summary>
+    public static Edges MenuVerticalDividerMargin => new(-20, -36, -20, -40);
+
+    /// <summary>
     /// Background for the scroll bar track (which the thumb is inside).
     /// </summary>
     public static Sprite ScrollBarTrack =>
@@ -264,6 +283,16 @@ public static class UiSprites
     /// Border/background for a text input box.
     /// </summary>
     public static Sprite TextBox => new(textBoxTexture, FixedEdges: new(16, 12, 12, 12));
+
+    /// <summary>
+    /// Simple horizontal divider, typically used to divide sections of uniform content, e.g. grid rows.
+    /// </summary>
+    public static Sprite ThinHorizontalDivider => new(Game1.menuTexture, SourceRect: new(64, 412, 64, 8));
+
+    /// <summary>
+    /// Simple vertical divider, typically used to divide sections of uniform content, e.g. grid columns.
+    /// </summary>
+    public static Sprite ThinVerticalDivider => new(Game1.menuTexture, SourceRect: new(156, 384, 8, 64));
 
     /// <summary>
     /// Very small trash can, e.g. to be used in lists/subforms as "remove" button.

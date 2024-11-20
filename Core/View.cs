@@ -881,8 +881,7 @@ public abstract class View : IView
     /// <returns>The views at the specified <paramref name="contentPosition"/>, in original layout order.</returns>
     protected virtual IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
-        return GetLocalChildren()
-            .Where(child => child.ContainsPoint(contentPosition));
+        return GetLocalChildren().Where(child => child.ContainsPoint(contentPosition));
     }
 
     /// <summary>
