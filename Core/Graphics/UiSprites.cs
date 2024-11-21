@@ -303,4 +303,9 @@ public static class UiSprites
     /// Thumb sprite used for vertical scroll bars.
     /// </summary>
     public static Sprite VerticalScrollThumb => new(Game1.mouseCursors, SourceRect: new(435, 463, 6, 10));
+
+    /// <summary>
+    /// A single white pixel.
+    /// </summary>
+    public static Sprite White => new(Game1.staminaRect);
 }
