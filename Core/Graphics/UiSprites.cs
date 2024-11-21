@@ -11,11 +11,11 @@ namespace StardewUI.Graphics;
 /// </summary>
 public static class UiSprites
 {
-    private static readonly IReadOnlyList<Rectangle> digitRects = Enumerable
+    private static readonly IReadOnlyList<Rectangle> DigitRects = Enumerable
         .Range(0, 10)
         .Select(i => new Rectangle(368 + 5 * i, 56, 5, 7))
         .ToList();
-    private static Texture2D textBoxTexture => Game1.content.Load<Texture2D>("LooseSprites/textBox");
+    private static Texture2D TextBoxTexture => Game1.content.Load<Texture2D>("LooseSprites/textBox");
 
     /// <summary>
     /// Background for the a banner or "scroll" style text, often used for menu/dialogue titles.
@@ -81,10 +81,17 @@ public static class UiSprites
     public static Sprite ControlBorder => new(Game1.menuTexture, SourceRect: new(0, 256, 60, 60), FixedEdges: new(16));
 
     /// <summary>
+    /// Colorless border/background sprite for an individual control, such as a button. Less prominent than
+    /// <see cref="MenuBorderUncolored"/>.
+    /// </summary>
+    public static Sprite ControlBorderUncolored =>
+        new(Game1.uncoloredMenuTexture, SourceRect: new(0, 256, 60, 60), FixedEdges: new(16));
+
+    /// <summary>
     /// List of sprites for the outlined "tiny digits" 0-9, in that order.
     /// </summary>
     public static IReadOnlyList<Sprite> Digits =>
-        digitRects.Select(rect => new Sprite(Game1.mouseCursors, rect)).ToList();
+        DigitRects.Select(rect => new Sprite(Game1.mouseCursors, rect)).ToList();
 
     /// <summary>
     /// Background of a drop-down menu.
@@ -115,6 +122,13 @@ public static class UiSprites
     public static Sprite GenericHorizontalDivider => new(Game1.menuTexture, SourceRect: new(64, 412, 64, 8));
 
     /// <summary>
+    /// Colorless horizontal divider that is simpler and lighter the <see cref="MenuHorizontalDividerUncolored"/>, used
+    /// as a horizontal rule to separate content areas without sectioning the entire menu.
+    /// </summary>
+    public static Sprite GenericHorizontalDividerUncolored =>
+        new(Game1.uncoloredMenuTexture, SourceRect: new(64, 412, 64, 8));
+
+    /// <summary>
     /// Large down arrow, used for macro navigation.
     /// </summary>
     public static Sprite LargeDownArrow => new(Game1.mouseCursors, SourceRect: new(0, 64, 64, 64));
@@ -140,12 +154,29 @@ public static class UiSprites
     public static Sprite MenuBackground => new(Game1.menuTexture, SourceRect: new(64, 128, 64, 64));
 
     /// <summary>
+    /// Colorless background used for the in-game menu, not including borders.
+    /// </summary>
+    public static Sprite MenuBackgroundUncolored => new(Game1.uncoloredMenuTexture, SourceRect: new(64, 128, 64, 64));
+
+    /// <summary>
     /// Modified 9-slice sprite used for the menu border, based on menu "tiles". Used for drawing the outer border of an
     /// entire menu UI.
     /// </summary>
     public static Sprite MenuBorder =>
         new(
             Game1.menuTexture,
+            SourceRect: new(0, 0, 256, 256),
+            FixedEdges: new(64),
+            SliceSettings: new(CenterX: 128, CenterY: 128, EdgesOnly: true)
+        );
+
+    /// <summary>
+    /// Colorless version of the modified 9-slice sprite used for the menu border, based on menu "tiles". Used for
+    /// drawing the outer border of an entire menu UI.
+    /// </summary>
+    public static Sprite MenuBorderUncolored =>
+        new(
+            Game1.uncoloredMenuTexture,
             SourceRect: new(0, 0, 256, 256),
             FixedEdges: new(64),
             SliceSettings: new(CenterX: 128, CenterY: 128, EdgesOnly: true)
@@ -172,6 +203,19 @@ public static class UiSprites
         );
 
     /// <summary>
+    /// Colorless version of the modified 9-slice sprite used for the menu's horizontal divider, meant to be drawn over
+    /// top of the <see cref="MenuBorderUncolored"/> to denote separate "sub-panels" or "sections" of the menu to group
+    /// logically very different menu functions (as opposed to lines on a grid).
+    /// </summary>
+    public static Sprite MenuHorizontalDividerUncolored =>
+        new(
+            Game1.uncoloredMenuTexture,
+            SourceRect: new(0, 64, 256, 64),
+            FixedEdges: new(64, 0),
+            SliceSettings: new(CenterX: 128)
+        );
+
+    /// <summary>
     /// Margin adjustment to apply to content adjacent to a <see cref="MenuHorizontalDivider"/> to make content flush
     /// with the border; adjusts for internal sprite padding.
     /// </summary>
@@ -183,15 +227,29 @@ public static class UiSprites
     public static Sprite MenuSlotInset => new(Game1.menuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(9));
 
     /// <summary>
+    /// Colorless inset-style background and border, often used to hold an item or represent a slot.
+    /// </summary>
+    public static Sprite MenuSlotInsetUncolored =>
+        new(Game1.uncoloredMenuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(9));
+
+    /// <summary>
     /// Outset-style background and border, often used to hold an item or represent a slot.
     /// </summary>
     public static Sprite MenuSlotOutset => new(Game1.menuTexture, SourceRect: new(64, 320, 60, 60), FixedEdges: new(8));
+
+    // MenuSlotOutsetUncolored would go here if the sprite actually existed, but it's blank on the tilesheet.
 
     /// <summary>
     /// Single-line rectangular border with a slight inset look.
     /// </summary>
     public static Sprite MenuSlotTransparent =>
         new(Game1.menuTexture, SourceRect: new(128, 128, 64, 64), FixedEdges: new(4));
+
+    /// <summary>
+    /// Colorless single-line rectangular border with a slight inset look.
+    /// </summary>
+    public static Sprite MenuSlotTransparentUncolored =>
+        new(Game1.uncoloredMenuTexture, SourceRect: new(128, 128, 64, 64), FixedEdges: new(4));
 
     /// <summary>
     /// Modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the
@@ -201,6 +259,19 @@ public static class UiSprites
     public static Sprite MenuVerticalDivider =>
         new(
             Game1.menuTexture,
+            SourceRect: new(64, 0, 64, 256),
+            FixedEdges: new(0, 64),
+            SliceSettings: new(CenterY: 128, CenterYPosition: SliceCenterPosition.End)
+        );
+
+    /// <summary>
+    /// Colorless version of the modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over
+    /// top of the <see cref="MenuBorderUncolored"/> to denote separate "sub-panels" or "sections" of the menu to group
+    /// logically very different menu functions (as opposed to lines on a grid).
+    /// </summary>
+    public static Sprite MenuVerticalDividerUncolored =>
+        new(
+            Game1.uncoloredMenuTexture,
             SourceRect: new(64, 0, 64, 256),
             FixedEdges: new(0, 64),
             SliceSettings: new(CenterY: 128, CenterYPosition: SliceCenterPosition.End)
@@ -282,7 +353,7 @@ public static class UiSprites
     /// <summary>
     /// Border/background for a text input box.
     /// </summary>
-    public static Sprite TextBox => new(textBoxTexture, FixedEdges: new(16, 12, 12, 12));
+    public static Sprite TextBox => new(TextBoxTexture, FixedEdges: new(16, 12, 12, 12));
 
     /// <summary>
     /// Simple horizontal divider, typically used to divide sections of uniform content, e.g. grid rows.
@@ -290,9 +361,21 @@ public static class UiSprites
     public static Sprite ThinHorizontalDivider => new(Game1.menuTexture, SourceRect: new(64, 412, 64, 8));
 
     /// <summary>
+    /// Simple, colorless horizontal divider, typically used to divide sections of uniform content, e.g. grid rows.
+    /// </summary>
+    public static Sprite ThinHorizontalDividerUncolored =>
+        new(Game1.uncoloredMenuTexture, SourceRect: new(64, 412, 64, 8));
+
+    /// <summary>
     /// Simple vertical divider, typically used to divide sections of uniform content, e.g. grid columns.
     /// </summary>
     public static Sprite ThinVerticalDivider => new(Game1.menuTexture, SourceRect: new(156, 384, 8, 64));
+
+    /// <summary>
+    /// Simple, colorless vertical divider, typically used to divide sections of uniform content, e.g. grid columns.
+    /// </summary>
+    public static Sprite ThinVerticalDividerUncolored =>
+        new(Game1.uncoloredMenuTexture, SourceRect: new(156, 384, 8, 64));
 
     /// <summary>
     /// Very small trash can, e.g. to be used in lists/subforms as "remove" button.
