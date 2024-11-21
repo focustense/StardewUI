@@ -746,9 +746,7 @@ public abstract class View : IView
     /// <remarks>
     /// The default implementation is a stub. Subclasses may override this if they require separate cleanup.
     /// </remarks>
-    protected virtual void OnDispose()
-    {
-    }
+    protected virtual void OnDispose() { }
 
     /// <inheritdoc/>
     public virtual void OnDrag(PointerEventArgs e)
