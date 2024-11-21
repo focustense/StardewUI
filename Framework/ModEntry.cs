@@ -7,6 +7,7 @@ using StardewUI.Framework.Converters;
 using StardewUI.Framework.Diagnostics;
 using StardewUI.Framework.Patches;
 using StardewUI.Framework.Sources;
+using StardewUI.Graphics;
 
 namespace StardewUI.Framework;
 
@@ -69,6 +70,10 @@ internal sealed class ModEntry : Mod
         {
             // Built-in UI sprites point to Game1-instanced textures, so they should not and cannot be localized.
             e.LoadFrom(() => UiSpriteProvider.GetSprite(e.NameWithoutLocale.Name), AssetLoadPriority.Exclusive);
+        }
+        else if (e.DataType == typeof(Sprite) && e.NameWithoutLocale.StartsWith(ItemSpriteProvider.AssetNamePrefix))
+        {
+            e.LoadFrom(() => ItemSpriteProvider.GetSprite(e.NameWithoutLocale.Name), AssetLoadPriority.Exclusive);
         }
         else if (e.NameWithoutLocale.StartsWith(SpriteMaps.AssetNamePrefix))
         {
