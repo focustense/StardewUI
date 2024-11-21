@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
@@ -310,9 +311,10 @@ file class ReflectionInvoker<TResult>(MethodInfo method) : IInvoker<TResult>
 // slower DefaultInvoker implementation using reflection instead of delegates.
 file class Invoker<TResult>(MethodInfo method) : IInvoker<TResult>
 {
-    private readonly Action? invokeAction = method.ReturnType == typeof(void) ? method.CreateDelegate<Action>() : null;
+    private readonly Action? invokeAction =
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action>() : null;
     private readonly Func<TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -328,9 +330,9 @@ file class Invoker<TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0>>() : null;
     private readonly Func<T0, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -347,9 +349,9 @@ file class Invoker<T0, TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, T1, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1>>() : null;
     private readonly Func<T0, T1, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -367,9 +369,9 @@ file class Invoker<T0, T1, TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, T1, T2, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2>>() : null;
     private readonly Func<T0, T1, T2, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -388,9 +390,9 @@ file class Invoker<T0, T1, T2, TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, T1, T2, T3, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3>>() : null;
     private readonly Func<T0, T1, T2, T3, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -410,9 +412,9 @@ file class Invoker<T0, T1, T2, T3, TResult>(MethodInfo method) : IInvoker<TResul
 file class Invoker<T0, T1, T2, T3, T4, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -433,9 +435,9 @@ file class Invoker<T0, T1, T2, T3, T4, TResult>(MethodInfo method) : IInvoker<TR
 file class Invoker<T0, T1, T2, T3, T4, T5, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4, T5>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4, T5>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4, T5>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, T5, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, T5, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, T5, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -457,9 +459,11 @@ file class Invoker<T0, T1, T2, T3, T4, T5, TResult>(MethodInfo method) : IInvoke
 file class Invoker<T0, T1, T2, T3, T4, T5, T6, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4, T5, T6>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, T5, T6, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, TResult>>() : null;
+        method.ReturnType != typeof(void)
+            ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, TResult>>()
+            : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -482,10 +486,10 @@ file class Invoker<T0, T1, T2, T3, T4, T5, T6, TResult>(MethodInfo method) : IIn
 file class Invoker<T0, T1, T2, T3, T4, T5, T6, T7, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4, T5, T6, T7>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6, T7>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6, T7>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, T5, T6, T7, TResult>? invokeFunc =
         method.ReturnType != typeof(void)
-            ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, T7, TResult>>()
+            ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, T7, TResult>>()
             : null;
 
     public TResult Invoke(object? target, object?[] args)
@@ -517,5 +521,34 @@ file static class ArgumentExtensions
                 : args[argIndex - 1]
             : args[argIndex];
         return (T)argObject!;
+    }
+}
+
+file static class MethodInfoExtensions
+{
+    public static T SafeCreateDelegate<T>(this MethodInfo method)
+        where T : Delegate
+    {
+        if (
+            method.IsStatic
+            || method.DeclaringType is null
+            || (!method.DeclaringType.IsValueType && method.DeclaringType != typeof(ValueType))
+        )
+        {
+            return method.CreateDelegate<T>();
+        }
+        // Compiling an expression here is substantially slower than MethodInfo.CreateDelegate, but it is the only
+        // mechanism (other than IL emit, which is even worse) that seems to work correctly for value types.
+        var instanceType = method.DeclaringType == typeof(ValueType) ? method.ReflectedType! : method.DeclaringType;
+        var instanceParam = Expression.Parameter(instanceType, "instance");
+        var parameters = method.GetParameters();
+        var arguments = new Expression[parameters.Length];
+        var argumentsWithInstance = new ParameterExpression[parameters.Length + 1];
+        argumentsWithInstance[0] = instanceParam;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            arguments[i] = argumentsWithInstance[i + 1] = Expression.Parameter(parameters[i].ParameterType, "arg" + i);
+        }
+        return Expression.Lambda<T>(Expression.Call(instanceParam, method, arguments), argumentsWithInstance).Compile();
     }
 }

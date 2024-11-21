@@ -9,9 +9,11 @@ public static partial class DescriptorFactory
     /// Gets a descriptor for an arbitrary object type; typically used for binding targets.
     /// </summary>
     /// <param name="type">The object type.</param>
-    public static IObjectDescriptor GetObjectDescriptor(Type type)
+    /// <param name="lazy">Whether to create the descriptor with lazily-initialized members. Lazy descriptors are faster
+    /// to create, but may have slower initial access times.</param>
+    public static IObjectDescriptor GetObjectDescriptor(Type type, bool lazy = false)
     {
-        return PrecompiledDescriptors.GetValueOrDefault(type) ?? ReflectionObjectDescriptor.ForType(type);
+        return PrecompiledDescriptors.GetValueOrDefault(type) ?? ReflectionObjectDescriptor.ForType(type, lazy);
     }
 
     /// <summary>
