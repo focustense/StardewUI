@@ -567,6 +567,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -770,6 +774,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -914,6 +924,48 @@
   
   <span class="md-ellipsis">
     IView
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../menuactivationmode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuActivationMode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../menuclosebehavior/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuCloseBehavior
   </span>
   
 
@@ -1148,6 +1200,59 @@
       
         
       
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../data/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Data
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
         
       
     
@@ -1298,6 +1403,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1397,7 +1506,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_18" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_21" checked>
         
           
           
@@ -1413,14 +1522,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_18" id="__nav_5_1_18_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_21" id="__nav_5_1_21_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_18_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_18">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_21_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_21">
             <span class="md-nav__icon md-icon"></span>
             Graphics
           </label>
@@ -1714,9 +1823,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#initializerendertargetrendertarget2d-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      InitializeRenderTarget(RenderTarget2D, int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#savetransform" class="md-nav__link">
     <span class="md-ellipsis">
       SaveTransform()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrendertargetrendertarget2d-color" class="md-nav__link">
+    <span class="md-ellipsis">
+      SetRenderTarget(RenderTarget2D, Color?)
     </span>
   </a>
   
@@ -2378,6 +2505,8 @@
       
         
       
+        
+      
     
     
       
@@ -2591,9 +2720,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#initializerendertargetrendertarget2d-int-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      InitializeRenderTarget(RenderTarget2D, int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#savetransform" class="md-nav__link">
     <span class="md-ellipsis">
       SaveTransform()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrendertargetrendertarget2d-color" class="md-nav__link">
+    <span class="md-ellipsis">
+      SetRenderTarget(RenderTarget2D, Color?)
     </span>
   </a>
   
@@ -2714,8 +2861,16 @@ Assembly: StardewUI.dll  </p>
 <td></td>
 </tr>
 <tr>
+<td><a href="#initializerendertargetrendertarget2d-int-int">InitializeRenderTarget(RenderTarget2D, Int32, Int32)</a></td>
+<td>Initializes a <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html">RenderTarget2D</a> for use with <a href="../ispritebatch/#setrendertargetrendertarget2d-color">SetRenderTarget(RenderTarget2D, Color?)</a>.</td>
+</tr>
+<tr>
 <td><a href="#savetransform">SaveTransform()</a></td>
 <td>Saves the current transform, so that it can later be restored to its current state.</td>
+</tr>
+<tr>
+<td><a href="#setrendertargetrendertarget2d-color">SetRenderTarget(RenderTarget2D, Color?)</a></td>
+<td>Sets up subsequent draw calls to use a custom render target.</td>
 </tr>
 <tr>
 <td><a href="#translatefloat-float">Translate(Single, Single)</a></td>
@@ -2826,21 +2981,50 @@ A function that accepts an underlying <a href="https://docs.monogame.net/api/Mic
 <p><strong><code>effects</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html">SpriteEffects</a></p>
 <p><strong><code>layerDepth</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
+<h4 id="initializerendertargetrendertarget2d-int-int">InitializeRenderTarget(RenderTarget2D, int, int)<a class="headerlink" href="#initializerendertargetrendertarget2d-int-int" title="Permanent link"></a></h4>
+<p>Initializes a <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html">RenderTarget2D</a> for use with <a href="../ispritebatch/#setrendertargetrendertarget2d-color">SetRenderTarget(RenderTarget2D, Color?)</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">InitializeRenderTarget</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">RenderTarget2D</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_8">Parameters<a class="headerlink" href="#parameters_8" title="Permanent link"></a></h5>
+<p><strong><code>target</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html">RenderTarget2D</a><br />
+The previous render target, if any, to reuse if possible.</p>
+<p><strong><code>width</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The target width.</p>
+<p><strong><code>height</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The target height.</p>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
+<p>This will reuse an existing render target if available, i.e. if <code>target</code> is not <code>null</code> and matches the specified <code>width</code> and <code>height</code>; otherwise it will replace any previous <code>target</code> and replace it with a new instance.</p>
+<hr />
 <h4 id="savetransform">SaveTransform()<a class="headerlink" href="#savetransform" title="Permanent link"></a></h4>
 <p>Saves the current transform, so that it can later be restored to its current state.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span><span class="w"> </span><span class="n">SaveTransform</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span><span class="w"> </span><span class="n">SaveTransform</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
 <p>A disposable instance which, when disposed, restores the transform of this <a href="../ispritebatch/">ISpriteBatch</a> to the same state it was in before <code>SaveTransform</code> was called.</p>
-<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>This is typically used in hierarchical layout; i.e. a view with children would apply a transform before handing the canvas or sprite batch down to any of those children, and then restore it after the child is done with it. This enables a single <a href="../ispritebatch/">ISpriteBatch</a> instance to be used for the entire layout rather than having to create a tree.</p>
+<hr />
+<h4 id="setrendertargetrendertarget2d-color">SetRenderTarget(RenderTarget2D, Color?)<a class="headerlink" href="#setrendertargetrendertarget2d-color" title="Permanent link"></a></h4>
+<p>Sets up subsequent draw calls to use a custom render target.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span><span class="w"> </span><span class="n">SetRenderTarget</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">RenderTarget2D</span><span class="w"> </span><span class="n">renderTarget</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Color</span><span class="o">?</span><span class="w"> </span><span class="n">clearColor</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_9">Parameters<a class="headerlink" href="#parameters_9" title="Permanent link"></a></h5>
+<p><strong><code>renderTarget</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html">RenderTarget2D</a><br />
+The new render target.</p>
+<p><strong><code>clearColor</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html">Color</a>&gt;<br />
+Color to clear the <code>renderTarget</code> with after making it active, or <code>null</code> to skip clearing.</p>
+<h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
+<p>A disposable instance which, when disposed, will revert to the previous render target(s).</p>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
+<p>This will also reset any active transforms for the new render target, e.g. those resulting from <a href="../ispritebatch/#translatevector2">Translate(Vector2)</a>. Previously-active transforms will be restored when the render target is reverted by calling <a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable.dispose">Dispose()</a> on the result.</p>
 <hr />
 <h4 id="translatefloat-float">Translate(float, float)<a class="headerlink" href="#translatefloat-float" title="Permanent link"></a></h4>
 <p>Applies a translation offset to subsequent operations.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Translate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Translate</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_8">Parameters<a class="headerlink" href="#parameters_8" title="Permanent link"></a></h5>
+<h5 id="parameters_10">Parameters<a class="headerlink" href="#parameters_10" title="Permanent link"></a></h5>
 <p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The translation's X component.</p>
 <p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
@@ -2848,9 +3032,9 @@ The translation's Y component.</p>
 <hr />
 <h4 id="translatevector2">Translate(Vector2)<a class="headerlink" href="#translatevector2" title="Permanent link"></a></h4>
 <p>Applies a translation offset to subsequent operations.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Translate</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">translation</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Translate</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">translation</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_9">Parameters<a class="headerlink" href="#parameters_9" title="Permanent link"></a></h5>
+<h5 id="parameters_11">Parameters<a class="headerlink" href="#parameters_11" title="Permanent link"></a></h5>
 <p><strong><code>translation</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The translation vector.</p>
 <hr />

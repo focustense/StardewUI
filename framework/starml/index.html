@@ -565,6 +565,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -876,6 +880,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../templates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Templates
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../included-views/" class="md-nav__link">
         
   
@@ -944,6 +969,27 @@
   
   <span class="md-ellipsis">
     Framework Extensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dry-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The DRY Guide
   </span>
   
 
@@ -1082,6 +1128,8 @@
       
         
           
+        
+      
         
       
         
@@ -1469,6 +1517,11 @@
 <td>Animates scrolling text or other content horizontally; named after the <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee">HTML Marquee</a>.</td>
 </tr>
 <tr>
+<td><code>&lt;outlet&gt;</code></td>
+<td>N/A</td>
+<td>Default or named <a href="../templates/#outlets">template outlet</a>. <strong>Only valid within a <code>&lt;template&gt;</code> element.</strong></td>
+</tr>
+<tr>
 <td><code>&lt;panel&gt;</code></td>
 <td><a href="../../library/standard-views/#panel">Panel</a></td>
 <td>Displays all children as layers ordered by z-index. Positions can be adjusted using margins.</td>
@@ -1492,6 +1545,11 @@
 <td><code>&lt;tab&gt;</code></td>
 <td><a href="../../library/standard-views/#tab">Tab</a></td>
 <td>Push-down tab used to select the active section or page of a larger menu. Can be rotated for side navigation.</td>
+</tr>
+<tr>
+<td><code>&lt;template&gt;</code></td>
+<td><a href="../templates/">Template</a></td>
+<td>Defines a custom tag for replacement. <strong>Must be at the document root;</strong> not valid as a child of any other element.</td>
 </tr>
 <tr>
 <td><code>&lt;textinput&gt;</code></td>
@@ -1582,6 +1640,12 @@
 <td>For <code>&lt;include&gt;</code> elements, the view's asset name; for all other elements, a user-defined name used mainly for logging and troubleshooting.</td>
 </tr>
 <tr>
+<td><code>opacity</code></td>
+<td>In/Out</td>
+<td><code>float</code></td>
+<td>Opacity (alpha) value of the entire view, from 0.0 (fully transparent/hidden) to 1.0 (fully opaque).</td>
+</tr>
+<tr>
 <td><code>outer-size</code></td>
 <td>Out</td>
 <td><code>Bounds</code></td>
@@ -1614,7 +1678,7 @@
 <tr>
 <td><code>tooltip</code></td>
 <td>In/Out</td>
-<td><code>string</code></td>
+<td><code>TooltipData</code></td>
 <td>Tooltip to show when hovered with the mouse, or focused on via game controller.</td>
 </tr>
 <tr>
@@ -1698,7 +1762,7 @@
 <p>The events described below are the events common to <strong>all</strong> types of views (tags). Specific views may have additional events. Refer to the <a href="../../library/standard-views/">standard views</a> documentation for details.</p>
 <p>In StarML, the name of an attribute is always the <a href="https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case">kebab-case</a> version of the event name, e.g. <code>LeftClick</code> becomes <code>left-click</code>.</p>
 </div>
-<div class="annotate event-table">
+<div class="annotate event-table no-code-break">
 <table>
 <thead>
 <tr>
@@ -1749,6 +1813,11 @@
 <td>Cursor just moved outside the view's bounds.</td>
 </tr>
 <tr>
+<td><code>pointer-move</code></td>
+<td><code>PointerMoveEventArgs</code></td>
+<td>Cursor moved within a view's bounds after entering.</td>
+</tr>
+<tr>
 <td><code>right-click</code></td>
 <td><code>ClickEventArgs</code></td>
 <td>Right mouse button or controller X was pressed.</td>
@@ -1793,6 +1862,10 @@
 <tr>
 <td><code>attr={#TranslationKey}</code></td>
 <td>The translated string for a given <a href="https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation">translation key</a>. Can be either unqualified (<code>foo.bar</code>) if referring to a translation in the same mod that provided the view, or qualified (<code>authorname.ModName:foo.bar</code>) if referring to a translation in any other mod.</td>
+</tr>
+<tr>
+<td><code>attr={&amp;templateParam}</code></td>
+<td>Replace with a <a href="../templates/#template-attributes">template attribute</a> of the same name. <strong>Only valid in a <code>&lt;template&gt;</code> element.</strong></td>
 </tr>
 <tr>
 <td><code>attr=|Handler(Arg1, ...)|</code></td>
@@ -2009,6 +2082,21 @@
 </tr>
 <tr>
 <td><code>"tiny"</code> (8)</td>
+</tr>
+<tr>
+<td rowspan="4"><code>TooltipData</code></td>
+<td rowspan="4">Any</td>
+<td><code>string</code> (text only)</td>
+<td rowspan="4">N/A</td>
+</tr>
+<tr>
+<td><code>Tuple&lt;string, string&gt;</code><br/>(title + text)</td>
+</tr>
+<tr>
+<td><code>Item</code></td>
+</tr>
+<tr>
+<td><code>ParsedItemData</code></td>
 </tr>
 <tr>
 <td rowspan="2"><code>GridItemLayout</code></td>

@@ -567,6 +567,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -770,6 +774,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -914,6 +924,48 @@
   
   <span class="md-ellipsis">
     IView
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../menuactivationmode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuActivationMode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../menuclosebehavior/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuCloseBehavior
   </span>
   
 
@@ -1178,6 +1230,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#zorderienumerableviewchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZOrder(IEnumerable&lt;ViewChild&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zorderdescendingienumerableviewchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZOrderDescending(IEnumerable&lt;ViewChild&gt;)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1266,6 +1336,59 @@
   
   <span class="md-ellipsis">
     Animation
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../data/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Data
   </span>
   
 
@@ -1410,6 +1533,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -1947,6 +2074,8 @@
       
         
       
+        
+      
     
     
       
@@ -2108,6 +2237,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#zorderienumerableviewchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZOrder(IEnumerable&lt;ViewChild&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zorderdescendingienumerableviewchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      ZOrderDescending(IEnumerable&lt;ViewChild&gt;)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2179,6 +2326,14 @@ Assembly: StardewUI.dll  </p>
 <td><a href="#toglobalpositionsienumerableviewchild">ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)</a></td>
 <td>Converts a view path in parent-relative coordinates (e.g. from <a href="./#getpathtopositioniview-vector2">GetPathToPosition(IView, Vector2)</a> and transforms each element to have an absolute <a href="../viewchild/#position">Position</a>.</td>
 </tr>
+<tr>
+<td><a href="#zorderienumerableviewchild">ZOrder(IEnumerable&lt;ViewChild&gt;)</a></td>
+<td>Sorts a sequence of children in ascending z-order.</td>
+</tr>
+<tr>
+<td><a href="#zorderdescendingienumerableviewchild">ZOrderDescending(IEnumerable&lt;ViewChild&gt;)</a></td>
+<td>Sorts a sequence of children in descending z-order.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
@@ -2247,6 +2402,31 @@ The path from root down to leaf view.</p>
 <p>The <code>path</code> with positions in global coordinates.</p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Since <a href="../viewchild/">ViewChild</a> does not specify whether the position is local (parent) or global (absolute), it is not possible to validate the incoming sequence and prevent a "double transformation". Callers are responsible for knowing whether or not the input sequence is local or global.</p>
+<hr />
+<h4 id="zorderienumerableviewchild">ZOrder(IEnumerable&lt;ViewChild&gt;)<a class="headerlink" href="#zorderienumerableviewchild" title="Permanent link"></a></h4>
+<p>Sorts a sequence of children in ascending z-order.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ZOrder</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">children</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
+<p><strong><code>children</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;<br />
+The view children.</p>
+<h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
+<p>The <code>children</code> ordered by the view's <a href="../iview/#zindex">ZIndex</a> and original sequence order.</p>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
+<p>Order is preserved between views with the same <a href="../iview/#zindex">ZIndex</a>, so the resulting sequence will have a primary order of z-index (lower indices first) and a secondary order of original sequence position. This is the correct order for drawing views.</p>
+<hr />
+<h4 id="zorderdescendingienumerableviewchild">ZOrderDescending(IEnumerable&lt;ViewChild&gt;)<a class="headerlink" href="#zorderdescendingienumerableviewchild" title="Permanent link"></a></h4>
+<p>Sorts a sequence of children in descending z-order.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ZOrderDescending</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">children</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
+<p><strong><code>children</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;<br />
+The view children.</p>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
+<p>The resulting sequence will have an order such that views with higher <a href="../iview/#zindex">ZIndex</a> appear first, and views with the same z-index will appear in the <em>reverse</em> order of the original sequence. This is the correct order for handling cursor events and any other actions that need to operate on the "topmost" view first.</p>
 <hr />
 </div>
 

@@ -567,6 +567,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -770,6 +774,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -914,6 +924,48 @@
   
   <span class="md-ellipsis">
     IView
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../menuactivationmode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuActivationMode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../menuclosebehavior/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuCloseBehavior
   </span>
   
 
@@ -1148,6 +1200,59 @@
       
         
       
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../data/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Data
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
         
       
     
@@ -1262,6 +1367,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -1460,7 +1569,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_19" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_22" checked>
         
           
           
@@ -1476,14 +1585,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_19" id="__nav_5_1_19_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_22" id="__nav_5_1_22_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_19_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_19">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_22">
             <span class="md-nav__icon md-icon"></span>
             Input
           </label>
@@ -1747,6 +1856,15 @@
   <a href="#releasecapture" class="md-nav__link">
     <span class="md-ellipsis">
       ReleaseCapture()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatetimespan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update(TimeSpan)
     </span>
   </a>
   
@@ -2096,6 +2214,8 @@
       
         
       
+        
+      
     
     
       
@@ -2263,6 +2383,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#updatetimespan" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update(TimeSpan)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2333,6 +2462,10 @@ Assembly: StardewUI.dll  </p>
 <td><a href="#releasecapture">ReleaseCapture()</a></td>
 <td>Stops input capturing from this target.</td>
 </tr>
+<tr>
+<td><a href="#updatetimespan">Update(TimeSpan)</a></td>
+<td>Runs on every game update tick while capturing.</td>
+</tr>
 </tbody>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
@@ -2349,6 +2482,14 @@ Assembly: StardewUI.dll  </p>
 <p>Stops input capturing from this target.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">ReleaseCapture</span><span class="p">();</span>
 </span></code></pre></div>
+<hr />
+<h4 id="updatetimespan">Update(TimeSpan)<a class="headerlink" href="#updatetimespan" title="Permanent link"></a></h4>
+<p>Runs on every game update tick while capturing.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">void</span><span class="w"> </span><span class="nf">Update</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">TimeSpan</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
+<p><strong><code>elapsed</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.timespan">TimeSpan</a><br />
+The amount of real time elapsed since the last tick.</p>
 <hr />
 </div>
 

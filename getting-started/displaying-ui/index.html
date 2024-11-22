@@ -650,6 +650,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Menus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#menu-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Menu Controllers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -742,6 +757,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -927,6 +946,8 @@
       
         
       
+        
+      
     
     
       
@@ -996,6 +1017,21 @@
       Menus
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Menus">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#menu-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Menu Controllers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1108,6 +1144,28 @@
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="s">&quot;Mods/focustense.StardewUITest/Views/TestView&quot;</span><span class="p">,</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">context</span><span class="p">);</span>
 </span></code></pre></div>
+<h3 id="menu-controllers">Menu Controllers<a class="headerlink" href="#menu-controllers" title="Permanent link"></a></h3>
+<p>Menus are analogous to the "window" in a web or desktop app. While the StarML document always results in a <a href="../../concepts/#views">View</a>, underneath it there is a more complex mechanism responsible for backgrounds, input handling, pausing game state, ensuring only one menu can be active, and so on. This is the the Menu itself—the implementation of <code>IActiveClickableMenu</code> which also acts as the bridge between Stardew Valley and StardewUI.</p>
+<p>Most UIs do not need to change anything about how the <a href="../../reference/stardewui/viewmenu-1/"><code>ViewMenu</code></a> works; it is set up so that its defaults accommodate 80-90% of usage scenarios. For those scenarios that require more precise control over aspects of the menu that cannot be controlled by either the StarML markup or a reference to the <code>IClickableMenu</code>, StardewUI provides an alternative set of APIs for working with <a href="../../reference/stardewui/framework/imenucontroller/"><code>IMenuController</code></a>.</p>
+<p>The controller allows you to:</p>
+<ul>
+<li>Change how the menu is closed: prevent closing, respond to events before/after closing, or replace the default <code>Close</code> implementation entirely for menus that need to be integrated into other frameworks;</li>
+<li>Display the clickable Close button or "red X" found at the top-right of many Stardew Valley menus, and optionally customize its image or location;</li>
+<li>Change absolute position, screen dimming, gutters, and other aspects affecting the "exterior" of the menu.</li>
+</ul>
+<p>The full set of controller customizations are documented in the <a href="../../reference/stardewui/framework/imenucontroller/"><code>IMenuController</code> reference</a>.</p>
+<p>Any standard menu is easy to replace with a menu controller by simply changing the API call from <code>CreateMenuFromAsset</code> to <code>CreateMenuControllerFromAsset</code> and referring to the controller's <a href="../../reference/stardewui/framework/imenucontroller/#menu"><code>Menu</code></a> when ready. The previous example would be changed to:</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">var</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">HeaderText</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Example Menu Title&quot;</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="n">ItemData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ItemRegistry</span><span class="p">.</span><span class="n">GetData</span><span class="p">(</span><span class="s">&quot;(O)117&quot;</span><span class="p">),</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">};</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kt">var</span><span class="w"> </span><span class="n">controller</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateMenuControllerFromAsset</span><span class="p">(</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="s">&quot;Mods/focustense.StardewUITest/Views/TestView&quot;</span><span class="p">,</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="n">context</span><span class="p">);</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">controller</span><span class="p">.</span><span class="n">DimmingAmount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5f</span><span class="p">;</span><span class="w"> </span><span class="c1">// Example customization</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">Game1</span><span class="p">.</span><span class="n">activeClickableMenu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">controller</span><span class="p">.</span><span class="n">Menu</span><span class="p">;</span>
+</span></code></pre></div>
 <h2 id="hud">HUD<a class="headerlink" href="#hud" title="Permanent link"></a></h2>
 <p>The game's HUD – Heads Up Display – refers to the persistent UI that is drawn over top of the game world, such as the date/time widget, health/energy bars, and so on.</p>
 <h3 id="using-the-api">Using the API<a class="headerlink" href="#using-the-api" title="Permanent link"></a></h3>
@@ -1115,24 +1173,24 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="drawable-from-asset" name="__tabbed_2" type="radio" /><input id="drawable-from-markup" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="drawable-from-asset">Drawable From Asset</label><label for="drawable-from-markup">Drawable From Markup</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">IViewDrawable</span><span class="w"> </span><span class="n">drawable</span><span class="w"> </span><span class="o">=</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateDrawableFromAsset</span><span class="p">(</span><span class="s">&quot;Mods/authorName.ModName/Views/SomeView&quot;</span><span class="p">);</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">drawable</span><span class="p">.</span><span class="n">Context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="p">(...);</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1">// Optional, only needed if the view is not fixed-size</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">drawable</span><span class="p">.</span><span class="n">MaxSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="n">maxWidth</span><span class="p">,</span><span class="w"> </span><span class="n">maxHeight</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">IViewDrawable</span><span class="w"> </span><span class="n">drawable</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateDrawableFromAsset</span><span class="p">(</span><span class="s">&quot;Mods/authorName.ModName/Views/SomeView&quot;</span><span class="p">);</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">drawable</span><span class="p">.</span><span class="n">Context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="p">(...);</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1">// Optional, only needed if the view is not fixed-size</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">drawable</span><span class="p">.</span><span class="n">MaxSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="n">maxWidth</span><span class="p">,</span><span class="w"> </span><span class="n">maxHeight</span><span class="p">);</span>
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">var</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="p">();</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kt">string</span><span class="w"> </span><span class="n">markup</span><span class="w"> </span><span class="o">=</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="s">@&quot;&lt;lane layout=&quot;&quot;500px content&quot;&quot; orientation=&quot;&quot;vertical&quot;&quot;&gt;</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="s">        &lt;label font=&quot;&quot;dialogue&quot;&quot; text=&quot;&quot;Things&quot;&quot; /&gt;</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="s">        &lt;label *repeat={Things} text={DisplayName} /&gt;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="s">    &lt;/lane&gt;&quot;</span><span class="p">;</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">IViewDrawable</span><span class="w"> </span><span class="n">drawable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateDrawableFromMarkup</span><span class="p">(</span><span class="n">markup</span><span class="p">);</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">drawable</span><span class="p">.</span><span class="n">Context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="p">(...);</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1">// Optional, only needed if the view is not fixed-size</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">drawable</span><span class="p">.</span><span class="n">MaxSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="n">maxWidth</span><span class="p">,</span><span class="w"> </span><span class="n">maxHeight</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">var</span><span class="w"> </span><span class="n">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="p">();</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kt">string</span><span class="w"> </span><span class="n">markup</span><span class="w"> </span><span class="o">=</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="s">@&quot;&lt;lane layout=&quot;&quot;500px content&quot;&quot; orientation=&quot;&quot;vertical&quot;&quot;&gt;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="s">        &lt;label font=&quot;&quot;dialogue&quot;&quot; text=&quot;&quot;Things&quot;&quot; /&gt;</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="s">        &lt;label *repeat={Things} text={DisplayName} /&gt;</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="s">    &lt;/lane&gt;&quot;</span><span class="p">;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">IViewDrawable</span><span class="w"> </span><span class="n">drawable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateDrawableFromMarkup</span><span class="p">(</span><span class="n">markup</span><span class="p">);</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">drawable</span><span class="p">.</span><span class="n">Context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="p">(...);</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">// Optional, only needed if the view is not fixed-size</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">drawable</span><span class="p">.</span><span class="n">MaxSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="p">(</span><span class="n">maxWidth</span><span class="p">,</span><span class="w"> </span><span class="n">maxHeight</span><span class="p">);</span>
 </span></code></pre></div>
 </div>
 </div>
@@ -1143,20 +1201,20 @@
 </div>
 <p><code>IViewDrawable</code> implements <code>IDisposable</code>. If you are done with an instance and never going to draw it again, make sure to call its <code>Dispose()</code> method. StardewUI will attempt to detect unreachable drawables and stop updating them, but this is less reliable and will take longer than a drawable that was disposed correctly, potentially degrading game performance over time.</p>
 <p>The test mod also has a simple <a href="https://github.com/focustense/StardewUI/blob/440cb50d6bdd61228128585f29dee595527d369b/TestMod/ModEntry.cs#L117">HUD example</a>:</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">private</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ToggleHud</span><span class="p">()</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p">{</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hudWidget</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="p">{</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="n">hudWidget</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="n">hudWidget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="k">else</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="p">{</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">        </span><span class="n">hudWidget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateDrawableFromAsset</span><span class="p">(</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">            </span><span class="s">&quot;Mods/focustense.StardewUITest/Views/Example-Hud&quot;</span><span class="p">);</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">        </span><span class="n">hudWidget</span><span class="p">.</span><span class="n">Context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;I&#39;m a HUD!&quot;</span><span class="w"> </span><span class="p">};</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">private</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ToggleHud</span><span class="p">()</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hudWidget</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="k">null</span><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">        </span><span class="n">hudWidget</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="n">hudWidget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">null</span><span class="p">;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="k">else</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="n">hudWidget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewEngine</span><span class="p">.</span><span class="n">CreateDrawableFromAsset</span><span class="p">(</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">            </span><span class="s">&quot;Mods/focustense.StardewUITest/Views/Example-Hud&quot;</span><span class="p">);</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="n">hudWidget</span><span class="p">.</span><span class="n">Context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;I&#39;m a HUD!&quot;</span><span class="w"> </span><span class="p">};</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="p">}</span>
 </span></code></pre></div>
 <h3 id="using-views-directly">Using Views Directly<a class="headerlink" href="#using-views-directly" title="Permanent link"></a></h3>
 <div class="admonition warning">
@@ -1167,27 +1225,27 @@
 <p><a href="https://github.com/focustense/StardewFishingSea">A Fishing Sea</a> uses this older method for its HUD:</p>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ModEntry</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Mod</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="n">IView</span><span class="o">?</span><span class="w"> </span><span class="n">seedFishPreview</span><span class="p">;</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Entry</span><span class="p">(</span><span class="n">IModHelper</span><span class="w"> </span><span class="n">helper</span><span class="p">)</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="p">{</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="n">seedFishPreview</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SeedFishInfoView</span><span class="p">();</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="n">helper</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">Display</span><span class="p">.</span><span class="n">RenderedHud</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">Display_RenderedHud</span><span class="p">;</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Display_RenderedHud</span><span class="p">(</span><span class="kt">object?</span><span class="w"> </span><span class="n">sender</span><span class="p">,</span><span class="w"> </span><span class="n">RenderedHudEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="p">{</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">        </span><span class="n">seedFishPreview</span><span class="p">.</span><span class="n">Measure</span><span class="p">(</span><span class="k">new</span><span class="p">(</span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">));</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">overlayBatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PropagatedSpriteBatch</span><span class="p">(</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">            </span><span class="n">spriteBatch</span><span class="p">,</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">            </span><span class="n">Transform</span><span class="p">.</span><span class="n">FromTranslation</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Vector2</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">))</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="p">);</span>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">        </span><span class="n">SeedFishPreview</span><span class="p">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">overlayBatch</span><span class="p">);</span>
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">internal</span><span class="w"> </span><span class="k">sealed</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ModEntry</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Mod</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="n">IView</span><span class="o">?</span><span class="w"> </span><span class="n">seedFishPreview</span><span class="p">;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Entry</span><span class="p">(</span><span class="n">IModHelper</span><span class="w"> </span><span class="n">helper</span><span class="p">)</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="n">seedFishPreview</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SeedFishInfoView</span><span class="p">();</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">        </span><span class="n">helper</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">Display</span><span class="p">.</span><span class="n">RenderedHud</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">Display_RenderedHud</span><span class="p">;</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="k">private</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Display_RenderedHud</span><span class="p">(</span><span class="kt">object?</span><span class="w"> </span><span class="n">sender</span><span class="p">,</span><span class="w"> </span><span class="n">RenderedHudEventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="p">{</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="n">seedFishPreview</span><span class="p">.</span><span class="n">Measure</span><span class="p">(</span><span class="k">new</span><span class="p">(</span><span class="m">500</span><span class="p">,</span><span class="w"> </span><span class="m">500</span><span class="p">));</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">        </span><span class="kt">var</span><span class="w"> </span><span class="n">overlayBatch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">PropagatedSpriteBatch</span><span class="p">(</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">            </span><span class="n">spriteBatch</span><span class="p">,</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">            </span><span class="n">Transform</span><span class="p">.</span><span class="n">FromTranslation</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Vector2</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">100</span><span class="p">))</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">        </span><span class="p">);</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">        </span><span class="n">SeedFishPreview</span><span class="p">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">overlayBatch</span><span class="p">);</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="p">}</span>
 </span></code></pre></div>
 </div>
 <p>The above is substantially simplified from the actual mod code for brevity. There are only 3 steps to the process:</p>

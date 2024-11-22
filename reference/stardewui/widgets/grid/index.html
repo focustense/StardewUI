@@ -567,6 +567,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -770,6 +774,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -914,6 +924,48 @@
   
   <span class="md-ellipsis">
     IView
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../menuactivationmode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuActivationMode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../menuclosebehavior/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuCloseBehavior
   </span>
   
 
@@ -1148,6 +1200,59 @@
       
         
       
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../data/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Data
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
         
       
     
@@ -1262,6 +1367,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -1741,7 +1850,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_22" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_25" checked>
         
           
           
@@ -1757,14 +1866,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_22" id="__nav_5_1_22_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_25" id="__nav_5_1_25_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_22_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_22">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_25_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_25">
             <span class="md-nav__icon md-icon"></span>
             Widgets
           </label>
@@ -2989,6 +3098,8 @@
       
         
       
+        
+      
     
     
       
@@ -3334,7 +3445,8 @@
 Assembly: StardewUI.dll  </p>
 </div>
 <p>A uniform grid containing other views.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Grid</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">View</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="na">[StardewUI.GenerateDescriptor]</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">Grid</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">View</span>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ <a href="../../view/">View</a> ⇦ Grid</p>
@@ -3442,6 +3554,10 @@ Assembly: StardewUI.dll  </p>
 <td>Simple name for this view, used in log/debug output; does not affect behavior.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
+<td><a href="../../view/#opacity">Opacity</a></td>
+<td>Opacity (alpha level) of the view.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
 <td><a href="../../view/#outersize">OuterSize</a></td>
 <td>The size of the entire area occupied by this view including margins, border and padding.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
@@ -3495,6 +3611,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="../../view/#containspointvector2">ContainsPoint(Vector2)</a></td>
 <td>Checks if a given point, relative to the view's origin, is within its bounds.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#dispose">Dispose()</a></td>
+<td><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#drawispritebatch">Draw(ISpriteBatch)</a></td>
@@ -3567,6 +3687,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="../../view/#onclickclickeventargs">OnClick(ClickEventArgs)</a></td>
 <td>Called when a click is received within this view's bounds.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#ondispose">OnDispose()</a></td>
+<td>Performs additional cleanup when <a href="../../view/#dispose">Dispose()</a> is called.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#ondragpointereventargs">OnDrag(PointerEventArgs)</a></td>
@@ -3662,6 +3786,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="../../view/#pointerleave">PointerLeave</a></td>
 <td>Event raised when the pointer exits the view.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#pointermove">PointerMove</a></td>
+<td>Event raised when the pointer moves within the view.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#propertychanged">PropertyChanged</a></td>
@@ -3768,7 +3896,7 @@ The search direction.</p>
 The search position, relative to where this view's content starts (after applying margin, borders and padding).</p>
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../../viewchild/">ViewChild</a>&gt;</p>
-<p>The views at the specified <code>contentPosition</code>, sorted in reverse order of their <a href="../../iview/#zindex">ZIndex</a>.</p>
+<p>The views at the specified <code>contentPosition</code>, in original layout order.</p>
 <h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
 <p>The default implementation performs a linear search on all children and returns all whose bounds overlap the specified <code>contentPosition</code>. Views can override this to provide optimized implementations for their layout, or handle overlapping views.</p>
 <hr />

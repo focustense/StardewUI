@@ -565,6 +565,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -667,6 +671,27 @@
   
   <span class="md-ellipsis">
     Binding Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../templates/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Templates
   </span>
   
 
@@ -860,6 +885,27 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dry-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    The DRY Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -989,6 +1035,8 @@
       
         
           
+        
+      
         
       
         
@@ -1199,7 +1247,7 @@
 <p>Tooltips don't have to be on <code>focusable</code> elements; see the note in <a href="#pointer-events">pointer events</a> for why you might do this on purpose. Tooltips also do not have to be on <em>clickable</em> elements; they could be informational only, as is the case in the <a href="../../examples/scrolling-item-grid/">scrolling item grid</a> example.</p>
 <details class="note">
 <summary>Customization</summary>
-<p>While not common, it is possible to further customize the tooltip when using the <a href="../../library/">Core Library</a> directly, via the <a href="../../reference/stardewui/viewmenu-1/#formattooltipienumerableviewchild">FormatTooltip</a> method. The <a href="https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15">Garbage In Garbage Can</a> mod does this in order to add button prompts to the tooltip.</p>
+<p>While not common, it is possible to further customize the tooltip when using the <a href="../../library/">Core Library</a> directly, via the <a href="../../reference/stardewui/viewmenu-1/#buildtooltipienumerableviewchild">BuildTooltip</a> method. The <a href="https://github.com/focustense/StardewAutoTrash/blob/ce988abeaf18d58b756a16ae41b2ceabc02a3427/GarbageInGarbageCan/UI/TrashMenu.cs#L15">Garbage In Garbage Can</a> mod does this in order to add button prompts to the tooltip.</p>
 <p>Note, however, that (a) this code was written before the <a href="../">framework</a> and StarML existed, and (b) it is completely possible to achieve using standard tooltips, and was only written this way to make it slightly easier to adapt the tooltip's exact wording based on whether the <em>current</em> input is mouse vs. controller. Most tooltips are not going to require this degree of control.</p>
 </details>
 <h2 id="scrolling">Scrolling<a class="headerlink" href="#scrolling" title="Permanent link"></a></h2>
