@@ -2086,6 +2086,44 @@ public partial class BindingTests
     }
 
     [Fact]
+    public void WhenTemplateNodeHasStructuralAttributes_AppliesToExpandedNodes()
+    {
+        string markup =
+            @"<lane>
+                <foo *repeat={this} color=""blue"" />
+            </lane>
+
+            <template name=""foo"">
+                <label text={this} color={&color} />
+            </template>";
+        var model = new List<string> { "aaa", "bbb", "ccc" };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var lane = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        Assert.Collection(
+            lane.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("aaa", label.Text);
+                Assert.Equal(Color.Blue, label.Color);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("bbb", label.Text);
+                Assert.Equal(Color.Blue, label.Color);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("ccc", label.Text);
+                Assert.Equal(Color.Blue, label.Color);
+            }
+        );
+    }
+
+    [Fact]
     public void WhenTemplateReferencesOtherTemplate_ExpandsInOrder()
     {
         string markup =

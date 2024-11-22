@@ -19,9 +19,7 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
         {
             return [source];
         }
-        var attributes = source
-            .Attributes.Where(attr => attr.Type == Grammar.AttributeType.Property)
-            .ToDictionary(attr => attr.Name, StringComparer.InvariantCultureIgnoreCase);
+        var attributes = source.Attributes.ToDictionary(attr => attr.Name, StringComparer.InvariantCultureIgnoreCase);
         var namedOutletContents = source
             .ChildNodes.GroupBy(GetOutletName)
             .ToDictionary(
@@ -39,7 +37,7 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
 
     private static IEnumerable<SNode> TransformTemplateNode(
         SNode templateNode,
-        IReadOnlyDictionary<string, SAttribute> attributes,
+        IReadOnlyDictionary<string, SAttribute> sourceAttributes,
         IReadOnlyList<SNode> defaultOutletContents,
         IReadOnlyDictionary<string, IReadOnlyList<SNode>> namedOutletContents
     )
@@ -61,24 +59,39 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
                 ? namedOutletContents.GetValueOrDefault(nameAttribute.Value, [])
                 : defaultOutletContents;
         }
+        var structuralAttributes = sourceAttributes
+            .Values.Where(attr => attr.Type == Grammar.AttributeType.Structural)
+            .ToArray();
         var transformedAttributes = templateNode
             .Attributes.Select(attr =>
                 attr.ValueType == Grammar.AttributeValueType.TemplateBinding
-                    ? attributes.TryGetValue(attr.Value, out var injectAttr)
+                    ? sourceAttributes.TryGetValue(attr.Value, out var injectAttr)
                         ? injectAttr.WithName(attr.Name)
                         : null
                     : attr
             )
             .Where(attr => attr is not null)
-            .Cast<SAttribute>()
-            .ToArray();
+            .Cast<SAttribute>();
+        if (structuralAttributes.Length > 0)
+        {
+            transformedAttributes = transformedAttributes
+                .Concat(sourceAttributes.Values.Where(IsPropagatableStructuralAttribute))
+                .DistinctBy(attr => attr.Name);
+        }
+        transformedAttributes = transformedAttributes.ToArray();
+        if (structuralAttributes.Length > 0)
+        {
+            sourceAttributes = sourceAttributes
+                .Values.Where(attr => !IsPropagatableStructuralAttribute(attr))
+                .ToDictionary(attr => attr.Name, StringComparer.InvariantCultureIgnoreCase);
+        }
         var transformedEvents = templateNode
             .Element.Events.Select(ev =>
             {
                 var transformedArguments = ev
                     .Arguments.Select(arg =>
                         arg.Type == Grammar.ArgumentExpressionType.TemplateBinding
-                            ? attributes.TryGetValue(arg.Expression, out var injectAttr)
+                            ? sourceAttributes.TryGetValue(arg.Expression, out var injectAttr)
                                 ? injectAttr.AsArgument()
                                 : null
                             : arg
@@ -105,10 +118,10 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
             .ToArray();
         var transformedChildNodes = templateNode
             .ChildNodes.SelectMany(node =>
-                TransformTemplateNode(node, attributes, defaultOutletContents, namedOutletContents)
+                TransformTemplateNode(node, sourceAttributes, defaultOutletContents, namedOutletContents)
             )
             .ToArray();
-        var transformedElement = new SElement(templateNode.Tag, transformedAttributes, transformedEvents);
+        var transformedElement = new SElement(templateNode.Tag, (SAttribute[])transformedAttributes, transformedEvents);
         return [new(transformedElement, transformedChildNodes)];
     }
 
@@ -127,5 +140,12 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
             return "";
         }
         return attribute?.Value ?? "";
+    }
+
+    private static bool IsPropagatableStructuralAttribute(IAttribute attribute)
+    {
+        return attribute.Type == Grammar.AttributeType.Structural
+            // Don't propagate *outlet because that has special meaning in template contents.
+            && !attribute.Name.Equals("outlet", StringComparison.OrdinalIgnoreCase);
     }
 }
