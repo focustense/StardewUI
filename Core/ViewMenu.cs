@@ -96,11 +96,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     // Dispose -> Close (Handler) -> set Game1.activeClickableMenu -> Dispose again
     // As a workaround, we can track when dispose has been requested and suppress duplicates.
     private bool isDisposed;
-
-    // Whether the overlay was pushed within the last frame.
-    private bool justPushedOverlay;
+    private bool justPushedOverlay; // Whether the overlay was pushed within the last frame.
+    private WeakViewChild[] keyboardCaptureActivationPath = [];
     private Point previousHoverPosition;
     private Point previousDragPosition;
+    private bool wasKeyboardCaptured;
 
     /// <summary>
     /// Initializes a new instance of <see cref="ViewMenu{T}"/>.
@@ -315,6 +315,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             drawMouse(b);
         }
+
+        // This "should" be done in Update, not Draw, but the game won't send any updates to the menu while the capture
+        // target is active.
+        HandleKeyboardCaptureChange();
     }
 
     /// <summary>
@@ -762,6 +766,27 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         return null;
     }
 
+    private void HandleKeyboardCaptureChange()
+    {
+        if (GetChildMenu() is not null)
+        {
+            return;
+        }
+        bool isKeyboardCaptured = Game1.keyboardDispatcher.Subscriber is ICaptureTarget;
+        if (isKeyboardCaptured != wasKeyboardCaptured)
+        {
+            if (isKeyboardCaptured)
+            {
+                keyboardCaptureActivationPath = hoverPath.Select(child => child.AsWeak()).ToArray();
+            }
+            else if (Game1.options.gamepadControls)
+            {
+                RestoreFocusToPath(keyboardCaptureActivationPath);
+            }
+            wasKeyboardCaptured = isKeyboardCaptured;
+        }
+    }
+
     private void InitiateButtonPress(SButton button)
     {
         var mousePosition = Game1.getMousePosition(true);
@@ -1072,27 +1097,35 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private void RestoreFocusToOverlayActivation(IOverlay overlay)
     {
         var overlayData = GetOverlayLayoutData(overlay);
-        if (overlayActivationPaths.TryGetValue(overlay, out var activationPath) && activationPath.Length > 0)
+        if (overlayActivationPaths.TryGetValue(overlay, out var activationPath) && RestoreFocusToPath(activationPath))
         {
-            var strongActivationPath = activationPath
-                .Select(x => x.TryResolve(out var viewChild) ? viewChild : null)
-                .ToList();
-            if (strongActivationPath.Count > 0 && strongActivationPath.All(child => child is not null))
-            {
-                var rootPosition = GetRootViewPosition(strongActivationPath[0]!.View);
-                if (rootPosition is not null)
-                {
-                    var position = strongActivationPath!.ToGlobalPositions().Last().Center();
-                    Game1.setMousePosition((rootPosition.Value + position).ToPoint(), true);
-                    return;
-                }
-            }
+            return;
         }
         var defaultFocusPosition = overlay.Parent?.GetDefaultFocusPath().ToGlobalPositions().LastOrDefault()?.Center();
         if (defaultFocusPosition.HasValue)
         {
             Game1.setMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint(), true);
         }
+    }
+
+    private bool RestoreFocusToPath(WeakViewChild[] path)
+    {
+        if (path.Length == 0)
+        {
+            return false;
+        }
+        var strongActivationPath = path.Select(x => x.TryResolve(out var viewChild) ? viewChild : null).ToList();
+        if (strongActivationPath.Count > 0 && strongActivationPath.All(child => child is not null))
+        {
+            var rootPosition = GetRootViewPosition(strongActivationPath[0]!.View);
+            if (rootPosition is not null)
+            {
+                var position = strongActivationPath!.ToGlobalPositions().Last().Center();
+                Game1.setMousePosition((rootPosition.Value + position).ToPoint(), true);
+                return true;
+            }
+        }
+        return false;
     }
 
     private bool ShouldForceCloseOnMenuButton()

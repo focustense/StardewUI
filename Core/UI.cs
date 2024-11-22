@@ -1,6 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewUI.Animation;
+using StardewUI.Input;
 using StardewValley;
 
 namespace StardewUI;
@@ -47,6 +48,11 @@ public static partial class UI
 
     private static void GameLoop_UpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
-        AnimationRunner.Tick(Game1.currentGameTime.ElapsedGameTime);
+        var elapsed = Game1.currentGameTime.ElapsedGameTime;
+        AnimationRunner.Tick(elapsed);
+        if (Game1.keyboardDispatcher.Subscriber is ICaptureTarget captureTarget)
+        {
+            captureTarget.Update(elapsed);
+        }
     }
 }
