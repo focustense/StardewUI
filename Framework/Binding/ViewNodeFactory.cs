@@ -63,7 +63,7 @@ public class ViewNodeFactory(
             resolutionScope
         );
         var backoffDecorator = new BackoffNodeDecorator(innerNode, BackoffRule.Default);
-        var updatingDecorator = new ContextUpdatingNodeDecorator(innerNode, ContextUpdateTracker.Instance);
+        var updatingDecorator = new ContextUpdatingNodeDecorator(backoffDecorator, ContextUpdateTracker.Instance);
         return new(updatingDecorator, outletName);
     }
 
