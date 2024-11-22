@@ -4,9 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
+
+  <Import Project="..\StardewUI.props"/>
 
   <PropertyGroup>
     <EnableGameDebugging>false</EnableGameDebugging>
@@ -16,19 +16,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSharpier.MsBuild" Version="0.29.2">
+    <PackageReference Include="Krafs.Publicizer">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Krafs.Publicizer" Version="2.2.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="LoxSmoke.DocXml" Version="3.7.1" />
+    <PackageReference Include="LoxSmoke.DocXml" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" />
   </ItemGroup>
 
   <ItemGroup>

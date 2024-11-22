@@ -1,20 +1,33 @@
-﻿{
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "focustense.StardewUITest",
   "Name": "StardewUITest",
   "Author": "focustense",
-  "Version": "0.1.0",
-  "Description": "Description of the mod",
-  "UniqueID": "focustense.StardewUITest",
+  "Version": "0.4.0",
+  "Description": "Test mod and example gallery for StardewUI",
+  "MinimumApiVersion": "4.1.7",
+  "MinimumGameVersion": "1.6.14",
   "EntryDll": "StardewUITest.dll",
   "Dependencies": [
     {
       "UniqueID": "focustense.StardewUI",
-      "MinimumVersion": "0.3.0"
+      "MinimumVersion": "0.4.0"
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.14.0",
       "IsRequired": false
     }
   ],
-  "MinimumApiVersion": "4.1.3",
-  "UpdateKeys": [ "Nexus:0", "GitHub:focustense/StardewUITest" ]
+  "UpdateKeys": [
+    "Nexus:0",
+    "GitHub:focustense/StardewUITest"
+  ]
 }

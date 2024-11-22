@@ -136,7 +136,7 @@ internal sealed partial class ModEntry : Mod
                     ShowCropsGrid
                 ),
                 new(I18n.Gallery_Example_Form_Title(), I18n.Gallery_Example_Form_Description(), "(O)867", ShowForm),
-                ..api.Registrations.Select(register => register())
+                .. api.Registrations.Select(register => register()),
             ]
         );
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Gallery", context);

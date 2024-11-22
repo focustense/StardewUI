@@ -30,9 +30,9 @@ internal class ModEntry : Mod
     private IMenuController CreateCarousel()
     {
         var materialItems = PurchasableItem.LoadAll(
-                ["(O)330", "(O)382", "(O)380", "(O)388", "(O)390", "(O)709"],
-                0.25f
-            );
+            ["(O)330", "(O)382", "(O)380", "(O)388", "(O)390", "(O)709"],
+            0.25f
+        );
         var artifactItems = PurchasableItem.LoadAll(["(O)113", "(O)585", "(O)109", "(O)126"], 0.6f);
         var foodItems = PurchasableItem.LoadAll(["(O)239", "(O)730", "(O)214", "(O)207", "(O)218"], 0.12f);
         return viewEngine.CreateMenuControllerFromAsset(

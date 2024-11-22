@@ -1,0 +1,41 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Common product/mod information -->
+  <PropertyGroup>
+    <Product>StardewUI</Product>
+    <Authors>focustense</Authors>
+    <Version>0.4.0</Version>
+  </PropertyGroup>
+  
+  <!-- Build settings -->
+  <PropertyGroup>
+    <LangVersion>Latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+  </PropertyGroup>
+  
+  <!-- Common configuration for ModManifestBuilder; no effect in non-mod projects. -->
+	<PropertyGroup>
+    <UniqueId>$(Authors).$(AssemblyName)</UniqueId>
+    <EntryDll>$(AssemblyName).dll</EntryDll>
+    <MinimumApiVersion_Behavior>UpdateFull</MinimumApiVersion_Behavior>
+    <MinimumGameVersion_Behavior>UpdateFull</MinimumGameVersion_Behavior>
+    <Version_AppendConfiguration>false</Version_AppendConfiguration>
+    <Dependencies_VersionBehavior>SetNoPrerelease</Dependencies_VersionBehavior>
+	</PropertyGroup>
+
+  <!--
+    Workaround for Visual Extensions still requiring legacy MSBuild projects.
+    
+    This would be better off as a GlobalPackageReference in Directory.Packages.props, but isn't compatible with non-SDK
+    projects; and to top it off, the non-SDK projects don't seem to respect the <ManagePackageVersionsCentrally> option
+    being overridden (to false) to prevent its attempted inclusion.
+    
+    Since all projects except the VSIX should use this props file anyway, it's a reasonable alternative for now.
+  -->
+  <ItemGroup>
+    <PackageReference Include="CSharpier.MsBuild">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
