@@ -1,6 +1,5 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewUI;
 using StardewUI.Framework;
 using StardewUITest.Examples;
 using StardewValley;
@@ -9,6 +8,8 @@ namespace StardewUITest;
 
 internal sealed partial class ModEntry : Mod
 {
+    private readonly GalleryApi api = new();
+
     // Initialized in Entry
     private ModConfig config = null!;
 
@@ -23,7 +24,6 @@ internal sealed partial class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         I18n.Init(helper.Translation);
-        UI.Initialize(helper, Monitor);
         config = helper.ReadConfig<ModConfig>();
         viewAssetPrefix = $"Mods/{ModManifest.UniqueID}/Views";
 
@@ -31,6 +31,11 @@ internal sealed partial class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+    }
+
+    public override object? GetApi()
+    {
+        return api;
     }
 
     private void Display_RenderedHud(object? sender, RenderedHudEventArgs e)
@@ -77,21 +82,7 @@ internal sealed partial class ModEntry : Mod
 
     private void OpenExample(string assetName, object? context)
     {
-        var controller = viewEngine.CreateMenuControllerFromAsset(assetName, context);
-        OpenExample(controller);
-    }
-
-    private static void OpenExample(IMenuController controller)
-    {
-        if (Game1.activeClickableMenu is not null)
-        {
-            controller.DimmingAmount = 0.88f;
-            Game1.activeClickableMenu.SetChildMenu(controller.Menu);
-        }
-        else
-        {
-            Game1.activeClickableMenu = controller.Menu;
-        }
+        viewEngine.CreateMenuControllerFromAsset(assetName, context).Launch();
     }
 
     private void ShowBestiary()
@@ -119,7 +110,7 @@ internal sealed partial class ModEntry : Mod
             var position = Game1.getMousePosition(true);
             controller.PositionSelector = () => position;
         }
-        OpenExample(controller);
+        controller.Launch();
     }
 
     private void ShowGallery()
@@ -145,12 +136,7 @@ internal sealed partial class ModEntry : Mod
                     ShowCropsGrid
                 ),
                 new(I18n.Gallery_Example_Form_Title(), I18n.Gallery_Example_Form_Description(), "(O)867", ShowForm),
-                new(
-                    I18n.Gallery_Example_Carousel_Title(),
-                    I18n.Gallery_Example_Carousel_Description(),
-                    "(O)108",
-                    () => { }
-                ),
+                ..api.Registrations.Select(register => register())
             ]
         );
         Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Gallery", context);

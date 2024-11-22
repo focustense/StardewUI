@@ -92,6 +92,4 @@
     </ItemGroup>
 
     <ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" /></VisualStudio></ProjectExtensions>
-
-    <Import Project="..\Core\StardewUI.projitems" Label="Shared" />
 </Project>

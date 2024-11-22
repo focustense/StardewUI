@@ -13,8 +13,6 @@
   "Example.Form.Button.Cancel": "Cancel",
   "Example.Form.Button.OK": "OK",
 
-  "ExampleForm.TurboBoost.Title": "Enable turbo boost",
-  "ExampleForm.SpeedMultiplier.Title": "Speed multiplier",
   "Gallery.Title": "Stardew UI Gallery",
   "Gallery.Welcome": "Welcome to StardewUI's example gallery! To get started, click on any of the examples below to see it in action.",
   "Gallery.Example.ItemGrid.Title": "Item Grid",
@@ -24,7 +22,5 @@
   "Gallery.Example.CropCalendar.Title": "Crop Calendar",
   "Gallery.Example.CropCalendar.Description": "Idea for an interactive crop planner: view seeds, blooms, produce and harvest timing for any growable item.",
   "Gallery.Example.Form.Title": "Settings Form",
-  "Gallery.Example.Form.Description": "Generic Mod Config Menu is great, but what if you're looking to build something a little less generic?",
-  "Gallery.Example.Carousel.Title": "Train Carousel",
-  "Gallery.Example.Carousel.Description": "Do you ever wish that shops were more like trains? No? Well, here it is anyway, showing off the potential of custom views."
+  "Gallery.Example.Form.Description": "Generic Mod Config Menu is great, but what if you're looking to build something a little less generic?"
 }
