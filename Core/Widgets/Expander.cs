@@ -8,7 +8,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A widget that can be clicked to expand/collapse with additional content.
 /// </summary>
-public class Expander : ComponentView
+public partial class Expander : ComponentView
 {
     /// <summary>
     /// Event that fires when the <see cref="IsExpanded"/> property is changed, either externally

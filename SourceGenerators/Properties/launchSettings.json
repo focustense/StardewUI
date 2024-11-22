@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Framework": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\Framework\\StardewUI.Framework.csproj"
+    }
+  }
+}

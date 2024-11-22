@@ -50,21 +50,24 @@ internal class TraceWriter(IManifest mod, Func<TraceConfig> configSelector) : St
     /// <inheritdoc />
     public void EndTrace()
     {
-        if (currentTrace is null)
+        var trace =
+            Interlocked.Exchange(ref currentTrace, null)
+            ?? throw new InvalidOperationException("Cannot end trace when no trace is active.");
+        var endTime = DateTime.UtcNow.Ticks / 10;
+        foreach (var profile in trace.Profiles)
         {
-            throw new InvalidOperationException("Cannot end trace when no trace is active.");
+            profile.EndValue = endTime;
         }
         var config = configSelector();
         var outputDirectory = Path.IsPathFullyQualified(config.OutputDirectory)
             ? config.OutputDirectory
             : Path.Combine(Constants.DataPath, config.OutputDirectory);
         Directory.CreateDirectory(outputDirectory);
-        var traceName = $"StardewUI_{currentTrace.CreationDate:yyyyMMdd_HHmmss}.json";
+        var traceName = $"StardewUI_{trace.CreationDate:yyyyMMdd_HHmmss}.json";
         var fileName = Path.Combine(outputDirectory, traceName);
         using var file = File.CreateText(fileName);
-        serializer.Serialize(file, currentTrace);
+        serializer.Serialize(file, trace);
         file.Flush();
-        currentTrace = null;
         LogTraceMessage($"Trace written to {traceName}", config.EnableHudNotifications);
     }
 
@@ -79,8 +82,15 @@ internal class TraceWriter(IManifest mod, Func<TraceConfig> configSelector) : St
 
     class FrameCloser(TraceFile trace, int frame) : IDisposable
     {
+        private bool isDisposed;
+
         public void Dispose()
         {
+            if (isDisposed)
+            {
+                return;
+            }
+            isDisposed = true;
             trace.CloseFrame(frame);
             GC.SuppressFinalize(this);
         }

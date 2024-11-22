@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace StardewUI.Graphics;
@@ -96,6 +97,19 @@ public interface ISpriteBatch
     );
 
     /// <summary>
+    /// Initializes a <see cref="RenderTarget2D"/> for use with <see cref="SetRenderTarget"/>.
+    /// </summary>
+    /// <remarks>
+    /// This will reuse an existing render target if available, i.e. if <paramref name="target"/> is not <c>null</c>
+    /// and matches the specified <paramref name="width"/> and <paramref name="height"/>; otherwise it will replace any
+    /// previous <paramref name="target"/> and replace it with a new instance.
+    /// </remarks>
+    /// <param name="target">The previous render target, if any, to reuse if possible.</param>
+    /// <param name="width">The target width.</param>
+    /// <param name="height">The target height.</param>
+    void InitializeRenderTarget([NotNull] ref RenderTarget2D? target, int width, int height);
+
+    /// <summary>
     /// Saves the current transform, so that it can later be restored to its current state.
     /// </summary>
     /// <remarks>
@@ -107,6 +121,20 @@ public interface ISpriteBatch
     /// <returns>A disposable instance which, when disposed, restores the transform of this <see cref="ISpriteBatch"/>
     /// to the same state it was in before <c>SaveTransform</c> was called.</returns>
     IDisposable SaveTransform();
+
+    /// <summary>
+    /// Sets up subsequent draw calls to use a custom render target.
+    /// </summary>
+    /// <remarks>
+    /// This will also reset any active transforms for the new render target, e.g. those resulting from
+    /// <see cref="Translate(Vector2)"/>. Previously-active transforms will be restored when the render target is
+    /// reverted by calling <see cref="IDisposable.Dispose"/> on the result.
+    /// </remarks>
+    /// <param name="renderTarget">The new render target.</param>
+    /// <param name="clearColor">Color to clear the <paramref name="renderTarget"/> with after making it active, or
+    /// <c>null</c> to skip clearing.</param>
+    /// <returns>A disposable instance which, when disposed, will revert to the previous render target(s).</returns>
+    IDisposable SetRenderTarget(RenderTarget2D renderTarget, Color? clearColor = null);
 
     /// <summary>
     /// Applies a translation offset to subsequent operations.

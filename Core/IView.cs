@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Microsoft.Xna.Framework;
+using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
@@ -10,7 +11,7 @@ namespace StardewUI;
 /// <summary>
 /// Represents some arbitrary UI element or layout.
 /// </summary>
-public interface IView : INotifyPropertyChanged
+public interface IView : IDisposable, INotifyPropertyChanged
 {
     /// <summary>
     /// Event raised when any button on any input device is pressed.
@@ -61,6 +62,11 @@ public interface IView : INotifyPropertyChanged
     /// Event raised when the pointer exits the view.
     /// </summary>
     event EventHandler<PointerEventArgs> PointerLeave;
+
+    /// <summary>
+    /// Event raised when the pointer moves within the view.
+    /// </summary>
+    event EventHandler<PointerMoveEventArgs> PointerMove;
 
     /// <summary>
     /// Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use
@@ -130,6 +136,14 @@ public interface IView : INotifyPropertyChanged
     string Name { get; set; }
 
     /// <summary>
+    /// Opacity (alpha level) of the view.
+    /// </summary>
+    /// <remarks>
+    /// Affects this view and all descendants; used to control opacity of an entire control or layout area.
+    /// </remarks>
+    float Opacity { get; set; }
+
+    /// <summary>
     /// The true computed layout size resulting from a single <see cref="Measure"/> pass.
     /// </summary>
     Vector2 OuterSize { get; }
@@ -166,9 +180,9 @@ public interface IView : INotifyPropertyChanged
     Tags Tags { get; }
 
     /// <summary>
-    /// Localized tooltip to display on hover, if any.
+    /// Tooltip data to display on hover, if any.
     /// </summary>
-    string Tooltip { get; set; }
+    TooltipData? Tooltip { get; set; }
 
     /// <summary>
     /// Drawing visibility for this view.

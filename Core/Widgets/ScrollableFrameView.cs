@@ -14,7 +14,7 @@ namespace StardewUI.Widgets;
 /// navigation) available to decorate the view. Many if not most menus can be fully represented with
 /// this layout, as long as they do not have built-in subnavigation such as top-level tabs.
 /// </remarks>
-public class ScrollableFrameView : ComponentView
+public partial class ScrollableFrameView : ComponentView
 {
     /// <summary>
     /// The primary content, which displays inside the menu frame and is clipped/scrollable.

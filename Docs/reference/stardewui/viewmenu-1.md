@@ -67,7 +67,10 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 
  | Name | Description |
 | --- | --- |
+| [CloseButtonOffset](#closebuttonoffset) | Offset from the menu view's top-right edge to draw the close button, if a [CloseButtonSprite](viewmenu-1.md#closebuttonsprite) is also specified. | 
+| [CloseButtonSprite](#closebuttonsprite) | The sprite to draw for the close button shown on the upper right. If no value is specified, then no close button will be drawn. The default behavior is to not show any close button. | 
 | [DimmingAmount](#dimmingamount) | Amount of dimming between 0 and 1; i.e. opacity of the background underlay. | 
+| [Gutter](#gutter) | Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu may be drawn. | 
 | Position | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [View](#view) | The view to display with this menu. | 
 
@@ -82,9 +85,12 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 | applyMovementKey(Keys) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [areGamePadControlsImplemented()](#aregamepadcontrolsimplemented) | Returns whether or not the menu wants **exclusive** gamepad controls.<br><span class="muted" markdown>(Overrides IClickableMenu.areGamePadControlsImplemented())</span> | 
 | automaticSnapBehavior(Int32, Int32, Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [BuildTooltip(IEnumerable&lt;ViewChild&gt;)](#buildtooltipienumerableviewchild) | Builds/formats a tooltip given the sequence of views from root to the lowest-level hovered child. | 
 | cleanupBeforeExit() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | clickAway() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [Close()](#close) | Closes this menu, either by removing it from the parent if it is a child menu, or removing it as the game's active menu if it is standalone. | 
 | [CreateView()](#createview) | Creates the view. | 
+| [CustomClose()](#customclose) | When overridden in a derived class, provides an alternative method to close the menu instead of the default logic in exitThisMenu(Boolean). | 
 | customSnapBehavior(Int32, Int32, Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [Dispose()](#dispose) |  | 
 | [draw(SpriteBatch)](#drawspritebatch) | Draws the current menu content.<br><span class="muted" markdown>(Overrides IClickableMenu.draw(SpriteBatch))</span> | 
@@ -99,12 +105,13 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 | emergencyShutDown() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | exitThisMenu(Boolean) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | exitThisMenuNoSound() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
-| [FormatTooltip(IEnumerable&lt;ViewChild&gt;)](#formattooltipienumerableviewchild) | Formats a tooltip given the sequence of views from root to the lowest-level hovered child. | 
 | gamePadButtonHeld(Buttons) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | gameWindowSizeChanged(Rectangle, Rectangle) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | GetChildMenu() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [GetCloseBehavior()](#getclosebehavior) | Gets the current close behavior for the menu. | 
 | getComponentWithID(Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | getCurrentlySnappedComponent() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [GetOriginPosition(Point, Point)](#getoriginpositionpoint-point) | Computes the origin (top left) position of the menu for a given viewport and offset. | 
 | GetParentMenu() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | HasDependencies() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | initialize(Int32, Int32, Int32, Int32, Boolean) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
@@ -115,10 +122,12 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 | [leftClickHeld(Int32, Int32)](#leftclickheldint-int) | Invoked on every frame in which a mouse button is down, regardless of the state in the previous frame.<br><span class="muted" markdown>(Overrides IClickableMenu.leftClickHeld(Int32, Int32))</span> | 
 | moveCursorInDirection(Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | noSnappedComponentFound(Int32, Int32, Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [OnClosed(EventArgs)](#onclosedeventargs) | Invokes the [Closed](viewmenu-1.md#closed) event handler. | 
+| [Open(MenuActivationMode)](#openmenuactivationmode) | Opens this menu, i.e. makes it active if it is not already active. | 
 | overrideSnappyMenuCursorMovementBan() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [performHoverAction(Int32, Int32)](#performhoveractionint-int) | Invoked on every frame with the mouse's current coordinates.<br><span class="muted" markdown>(Overrides IClickableMenu.performHoverAction(Int32, Int32))</span> | 
 | [populateClickableComponentList()](#populateclickablecomponentlist) | <span class="muted" markdown>(Overrides IClickableMenu.populateClickableComponentList())</span> | 
-| readyToClose() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [readyToClose()](#readytoclose) | Checks if the menu is allowed to be closed by the game's default input handling.<br><span class="muted" markdown>(Overrides IClickableMenu.readyToClose())</span> | 
 | [receiveGamePadButton(Buttons)](#receivegamepadbuttonbuttons) | Invoked whenever a controller button is newly pressed.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveGamePadButton(Buttons))</span> | 
 | [receiveKeyPress(Keys)](#receivekeypresskeys) | Invoked whenever a keyboard key is newly pressed.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveKeyPress(Keys))</span> | 
 | [receiveLeftClick(Int32, Int32, Boolean)](#receiveleftclickint-int-bool) | Invoked whenever the left mouse button is newly pressed.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveLeftClick(Int32, Int32, Boolean))</span> | 
@@ -126,12 +135,11 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 | [receiveScrollWheelAction(Int32)](#receivescrollwheelactionint) | Invoked whenever the mouse wheel is used. Only works with vertical scrolls.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveScrollWheelAction(Int32))</span> | 
 | [releaseLeftClick(Int32, Int32)](#releaseleftclickint-int) | Invoked whenever the left mouse button is just released, after being pressed/held on the last frame.<br><span class="muted" markdown>(Overrides IClickableMenu.releaseLeftClick(Int32, Int32))</span> | 
 | RemoveDependency() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
-| [SetActive(Boolean)](#setactivebool) | Activates or deactivates the menu. | 
 | SetChildMenu(IClickableMenu) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | setCurrentlySnappedComponentTo(Int32) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | setUpForGamePadMode() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | shouldClampGamePadCursor() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
-| shouldDrawCloseButton() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [shouldDrawCloseButton()](#shoulddrawclosebutton) | Returns whether or not to draw a button on the upper right that closes the menu when clicked.<br><span class="muted" markdown>(Overrides IClickableMenu.shouldDrawCloseButton())</span> | 
 | showWithoutTransparencyIfOptionIsSet() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | snapCursorToCurrentSnappedComponent() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | snapToDefaultClickableComponent() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
@@ -141,7 +149,7 @@ public class ViewMenu<T> : StardewValley.Menus.IClickableMenu,
 
  | Name | Description |
 | --- | --- |
-| [Close](#close) | Event raised when the menu is closed. | 
+| [Closed](#closed) | Event raised when the menu is closed. | 
 
 ## Details
 
@@ -167,6 +175,34 @@ Whether to always focus (snap the cursor to) the default element, even if the me
 
 ### Properties
 
+#### CloseButtonOffset
+
+Offset from the menu view's top-right edge to draw the close button, if a [CloseButtonSprite](viewmenu-1.md#closebuttonsprite) is also specified.
+
+```cs
+public Microsoft.Xna.Framework.Vector2 CloseButtonOffset { get; set; }
+```
+
+##### Property Value
+
+[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+-----
+
+#### CloseButtonSprite
+
+The sprite to draw for the close button shown on the upper right. If no value is specified, then no close button will be drawn. The default behavior is to not show any close button.
+
+```cs
+public StardewUI.Graphics.Sprite CloseButtonSprite { get; set; }
+```
+
+##### Property Value
+
+[Sprite](graphics/sprite.md)
+
+-----
+
 #### DimmingAmount
 
 Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
@@ -182,6 +218,24 @@ public float DimmingAmount { get; set; }
 ##### Remarks
 
 Underlay is only drawn when game options do not force clear backgrounds.
+
+-----
+
+#### Gutter
+
+Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu may be drawn.
+
+```cs
+protected StardewUI.Layout.Edges Gutter { get; set; }
+```
+
+##### Property Value
+
+[Edges](layout/edges.md)
+
+##### Remarks
+
+Gutters effectively shrink the viewport for both measurement (size calculation) and layout (centering) by clipping the screen edges.
 
 -----
 
@@ -236,6 +290,41 @@ This implementation always returns `false`. Contrary to what the name in Stardew
 
 -----
 
+#### BuildTooltip(IEnumerable&lt;ViewChild&gt;)
+
+Builds/formats a tooltip given the sequence of views from root to the lowest-level hovered child.
+
+```cs
+protected virtual StardewUI.Data.TooltipData BuildTooltip(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> path);
+```
+
+##### Parameters
+
+**`path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
+Sequence of all elements, and their relative positions, that the mouse coordinates are currently within.
+
+##### Returns
+
+[TooltipData](data/tooltipdata.md)
+
+  The tooltip string to display, or `null` to not show any tooltip.
+
+##### Remarks
+
+The default implementation reads the value of the _last_ (lowest-level) view with a non-null [Tooltip](iview.md#tooltip), and breaks [Text](data/tooltipdata.md#text) and [Title](data/tooltipdata.md#title) lines longer than 640px, which is the default vanilla tooltip width.
+
+-----
+
+#### Close()
+
+Closes this menu, either by removing it from the parent if it is a child menu, or removing it as the game's active menu if it is standalone.
+
+```cs
+public void Close();
+```
+
+-----
+
 #### CreateView()
 
 Creates the view.
@@ -253,6 +342,20 @@ protected virtual T CreateView();
 ##### Remarks
 
 Subclasses will generally create an entire tree in this method and store references to any views that might require content updates.
+
+-----
+
+#### CustomClose()
+
+When overridden in a derived class, provides an alternative method to close the menu instead of the default logic in exitThisMenu(Boolean).
+
+```cs
+protected virtual void CustomClose();
+```
+
+##### Remarks
+
+The method will only be called when the menu is closed (either programmatically or via the UI) while [GetCloseBehavior()](viewmenu-1.md#getclosebehavior) is returning [Custom](menuclosebehavior.md#custom).
 
 -----
 
@@ -281,28 +384,45 @@ The target batch.
 
 -----
 
-#### FormatTooltip(IEnumerable&lt;ViewChild&gt;)
+#### GetCloseBehavior()
 
-Formats a tooltip given the sequence of views from root to the lowest-level hovered child.
+Gets the current close behavior for the menu.
 
 ```cs
-protected virtual string FormatTooltip(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> path);
+protected virtual StardewUI.MenuCloseBehavior GetCloseBehavior();
+```
+
+##### Returns
+
+[MenuCloseBehavior](menuclosebehavior.md)
+
+##### Remarks
+
+The default implementation always returns [Default](menuclosebehavior.md#default). Subclasses may override this in order to use [CustomClose()](viewmenu-1.md#customclose), or disable closure entirely.
+
+-----
+
+#### GetOriginPosition(Point, Point)
+
+Computes the origin (top left) position of the menu for a given viewport and offset.
+
+```cs
+protected virtual Microsoft.Xna.Framework.Point GetOriginPosition(Microsoft.Xna.Framework.Point viewportSize, Microsoft.Xna.Framework.Point gutterOffset);
 ```
 
 ##### Parameters
 
-**`path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
-Sequence of all elements, and their relative positions, that the mouse coordinates are currently within.
+**`viewportSize`** &nbsp; [Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)  
+The available size of the viewport in which the menu is to be displayed.
+
+**`gutterOffset`** &nbsp; [Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)  
+The offset implied by any asymmetrical [Gutter](viewmenu-1.md#gutter) setting; for example, a gutter whose [Left](layout/edges.md#left) edge is `100` px and whose [Right](layout/edges.md#right) edge is only `50` px would have an X offset of `25` px (half the difference, because centered).
 
 ##### Returns
 
-[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+[Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)
 
-  The tooltip string to display, or `null` to not show any tooltip.
-
-##### Remarks
-
-The default implementation reads the string value of the _last_ (lowest-level) view with a non-empty [Tooltip](iview.md#tooltip), and breaks lines longer than 640px, which is the default vanilla tooltip width.
+  The origin (top left) position for the menu's root view.
 
 -----
 
@@ -321,6 +441,36 @@ The mouse's current X position on screen.
 
 **`y`** &nbsp; [Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32)  
 The mouse's current Y position on screen.
+
+-----
+
+#### OnClosed(EventArgs)
+
+Invokes the [Closed](viewmenu-1.md#closed) event handler.
+
+```cs
+protected virtual void OnClosed(System.EventArgs e);
+```
+
+##### Parameters
+
+**`e`** &nbsp; [EventArgs](https://learn.microsoft.com/en-us/dotnet/api/system.eventargs)  
+The event arguments.
+
+-----
+
+#### Open(MenuActivationMode)
+
+Opens this menu, i.e. makes it active if it is not already active.
+
+```cs
+public void Open(StardewUI.MenuActivationMode activationMode);
+```
+
+##### Parameters
+
+**`activationMode`** &nbsp; [MenuActivationMode](menuactivationmode.md)  
+The activation behavior which determines which (if any) other active menu this one can replace. Ignored when the game's title menu is open.
 
 -----
 
@@ -357,6 +507,20 @@ public override void populateClickableComponentList();
 ##### Remarks
 
 Always a no-op for menus in StardewUI.
+
+-----
+
+#### readyToClose()
+
+Checks if the menu is allowed to be closed by the game's default input handling.
+
+```cs
+public override bool readyToClose();
+```
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
 -----
 
@@ -465,18 +629,21 @@ The mouse's current Y position on screen.
 
 -----
 
-#### SetActive(bool)
+#### shouldDrawCloseButton()
 
-Activates or deactivates the menu.
+Returns whether or not to draw a button on the upper right that closes the menu when clicked.
 
 ```cs
-public void SetActive(bool active);
+public override bool shouldDrawCloseButton();
 ```
 
-##### Parameters
+##### Returns
 
-**`active`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
-Whether the menu should be active (displayed). If this is `false`, then the menu will be closed if already open; if `true`, it will be opened if not already open.
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+Regardless of this value, a close button will never be drawn unless [CloseButtonSprite](viewmenu-1.md#closebuttonsprite) is set.
 
 -----
 
@@ -497,12 +664,12 @@ The current [GameTime](https://docs.monogame.net/api/Microsoft.Xna.Framework.Gam
 
 ### Events
 
-#### Close
+#### Closed
 
 Event raised when the menu is closed.
 
 ```cs
-public event EventHandler<System.EventArgs>? Close;
+public event EventHandler<System.EventArgs>? Closed;
 ```
 
 ##### Event Type

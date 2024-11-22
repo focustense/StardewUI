@@ -30,4 +30,9 @@ The most current source for any example can usually be found in the `dev` branch
 
     [![Crop Calendar](../images/example-crop-calendar.png)](crop-calendar.md)
 
+-   [**Settings Form**](settings-form.md)  
+    _@focustense_
+
+    [![Settings Form](../images/example-form.png)](settings-form.md)
+
 </div>

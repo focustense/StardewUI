@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
@@ -196,7 +197,7 @@ public class BinaryCondition(
             nameof(CreateFactoryDelegate),
             BindingFlags.Static | BindingFlags.NonPublic
         )!;
-        private static readonly Dictionary<(Type, Type), Factory> factoryDelegates = [];
+        private static readonly ConcurrentDictionary<(Type, Type), Factory> factoryDelegates = [];
 
         public static IComparison? Create(
             IValueSource left,
@@ -206,14 +207,14 @@ public class BinaryCondition(
         {
             using var _ = Trace.Begin(() => $"{nameof(BinaryCondition)}.{nameof(Comparison)}", nameof(Create));
             var delegateKey = (left.ValueType, right.ValueType);
-            if (!factoryDelegates.TryGetValue(delegateKey, out var factory))
-            {
-                factory = (Factory)
-                    createFactoryDelegateMethod
-                        .MakeGenericMethod(left.ValueType, right.ValueType)
-                        .Invoke(null, [converterFactory])!;
-                factoryDelegates.Add(delegateKey, factory);
-            }
+            var factory = factoryDelegates.GetOrAdd(
+                delegateKey,
+                _ =>
+                    (Factory)
+                        createFactoryDelegateMethod
+                            .MakeGenericMethod(left.ValueType, right.ValueType)
+                            .Invoke(null, [converterFactory])!
+            );
             return factory(left, right);
         }
 

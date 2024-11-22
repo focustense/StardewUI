@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Descriptors;
+﻿using System.Collections.Concurrent;
+using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 
 namespace StardewUI.Framework.Binding;
@@ -21,12 +22,12 @@ public record BindingContext(IObjectDescriptor Descriptor, object Data, BindingC
     /// and whose <see cref="Descriptor"/> is the descriptor of <paramref name="data"/>'s runtime type.</returns>
     public static BindingContext Create(object data, BindingContext? parent = null)
     {
-        var descriptor = ReflectionObjectDescriptor.ForType(data.GetType());
+        var descriptor = DescriptorFactory.GetObjectDescriptor(data.GetType(), lazy: true);
         return new(descriptor, data, parent);
     }
 
     // Used to cache redirects by type name.
-    private static readonly Dictionary<(Type, string), bool> typeNameMatches = [];
+    private static readonly ConcurrentDictionary<(Type, string), bool> typeNameMatches = [];
 
     /// <summary>
     /// Resolves a redirected context, using this context as the starting point.
@@ -62,12 +63,7 @@ public record BindingContext(IObjectDescriptor Descriptor, object Data, BindingC
     private static bool DoesTypeNameMatch(Type type, string typeName)
     {
         var key = (type, typeName);
-        if (!typeNameMatches.TryGetValue(key, out var isMatch))
-        {
-            isMatch = HasMatchingBaseOrInterface(type, typeName);
-            typeNameMatches.Add(key, isMatch);
-        }
-        return isMatch;
+        return typeNameMatches.GetOrAdd(key, _ => HasMatchingBaseOrInterface(type, typeName));
 
         static bool HasMatchingBaseOrInterface(Type type, string typeName)
         {

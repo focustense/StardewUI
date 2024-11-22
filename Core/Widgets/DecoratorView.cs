@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
@@ -170,6 +171,13 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public float Opacity
+    {
+        get => opacity;
+        set => opacity.Set(value);
+    }
+
+    /// <inheritdoc />
     public Vector2 OuterSize => view?.OuterSize ?? Vector2.Zero;
 
     /// <inheritdoc />
@@ -190,7 +198,7 @@ public class DecoratorView<T> : IView, IDisposable
     public Tags Tags => view?.Tags ?? Tags.Empty;
 
     /// <inheritdoc />
-    public string Tooltip
+    public TooltipData? Tooltip
     {
         get => tooltip;
         set => tooltip.Set(value);
@@ -235,6 +243,9 @@ public class DecoratorView<T> : IView, IDisposable
     public event EventHandler<PointerEventArgs>? PointerLeave;
 
     /// <inheritdoc />
+    public event EventHandler<PointerMoveEventArgs>? PointerMove;
+
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <inheritdoc />
@@ -256,11 +267,12 @@ public class DecoratorView<T> : IView, IDisposable
 
     private readonly DecoratedProperty<LayoutParameters> layout = new(x => x.Layout, (x, v) => x.Layout = v, new());
     private readonly DecoratedProperty<string> name = new(x => x.Name, (x, v) => x.Name = v, "");
+    private readonly DecoratedProperty<float> opacity = new(x => x.Opacity, (x, v) => x.Opacity = v, 1f);
     private readonly DecoratedProperty<bool> pointerEventsEnabled =
         new(x => x.PointerEventsEnabled, (x, v) => x.PointerEventsEnabled = v, true);
     private readonly DecoratedProperty<Orientation?> scrollWithChildren =
         new(x => x.ScrollWithChildren, (x, v) => x.ScrollWithChildren = v, null);
-    private readonly DecoratedProperty<string> tooltip = new(x => x.Tooltip, (x, v) => x.Tooltip = v, "");
+    private readonly DecoratedProperty<TooltipData?> tooltip = new(x => x.Tooltip, (x, v) => x.Tooltip = v, null);
     private readonly DecoratedProperty<Visibility> visibility =
         new(x => x.Visibility, (x, v) => x.Visibility = v, Visibility.Visible);
     private readonly DecoratedProperty<int> zIndex = new(x => x.ZIndex, (x, v) => x.ZIndex = v, 0);
@@ -274,6 +286,7 @@ public class DecoratorView<T> : IView, IDisposable
     {
         RegisterDecoratedProperty(layout);
         RegisterDecoratedProperty(name);
+        RegisterDecoratedProperty(opacity);
         RegisterDecoratedProperty(pointerEventsEnabled);
         RegisterDecoratedProperty(scrollWithChildren);
         RegisterDecoratedProperty(tooltip);
@@ -291,10 +304,7 @@ public class DecoratorView<T> : IView, IDisposable
     public virtual void Dispose()
     {
         DetachHandlers();
-        if (view is IDisposable viewDisposable)
-        {
-            viewDisposable.Dispose();
-        }
+        view?.Dispose();
         view = null;
         GC.SuppressFinalize(this);
     }
@@ -465,6 +475,7 @@ public class DecoratorView<T> : IView, IDisposable
         view.LeftClick += View_LeftClick;
         view.PointerEnter += View_PointerEnter;
         view.PointerLeave += View_PointerLeave;
+        view.PointerMove += View_PointerMove;
         view.PropertyChanged += View_PropertyChanged;
         view.RightClick += View_RightClick;
         view.Wheel += View_Wheel;
@@ -484,6 +495,7 @@ public class DecoratorView<T> : IView, IDisposable
         view.LeftClick -= View_LeftClick;
         view.PointerEnter -= View_PointerEnter;
         view.PointerLeave -= View_PointerLeave;
+        view.PointerMove -= View_PointerMove;
         view.PropertyChanged -= View_PropertyChanged;
         view.RightClick -= View_RightClick;
         view.Wheel -= View_Wheel;
@@ -519,6 +531,8 @@ public class DecoratorView<T> : IView, IDisposable
     private void View_PointerEnter(object? _, PointerEventArgs e) => PointerEnter?.Invoke(this, e);
 
     private void View_PointerLeave(object? _, PointerEventArgs e) => PointerLeave?.Invoke(this, e);
+
+    private void View_PointerMove(object? _, PointerMoveEventArgs e) => PointerMove?.Invoke(this, e);
 
     private void View_PropertyChanged(object? _, PropertyChangedEventArgs e) => PropertyChanged?.Invoke(this, e);
 

@@ -12,7 +12,7 @@ namespace StardewUI.Widgets;
 /// The <see cref="RealView"/> must be part of a real layout in order for the ghosting to work correctly;
 /// <see cref="GhostView"/> does no layout or layout-forwarding of its own.
 /// </remarks>
-public class GhostView : View
+public partial class GhostView : View
 {
     /// <summary>
     /// The view for which a copy will be drawn.

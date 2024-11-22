@@ -22,4 +22,10 @@ public interface ICaptureTarget
     /// Stops input capturing from this target.
     /// </summary>
     void ReleaseCapture();
+
+    /// <summary>
+    /// Runs on every game update tick while capturing.
+    /// </summary>
+    /// <param name="elapsed">The amount of real time elapsed since the last tick.</param>
+    void Update(TimeSpan elapsed) { }
 }

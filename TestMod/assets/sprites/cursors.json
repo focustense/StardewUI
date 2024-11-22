@@ -31,6 +31,10 @@
     },
     "LuckIcon": {
       "SourceRect": "50, 428, 10, 10"
+    },
+    "SelectionRect": {
+      "SourceRect": "448, 128, 64, 64",
+      "FixedEdges":  "4"
     }
   }
 }

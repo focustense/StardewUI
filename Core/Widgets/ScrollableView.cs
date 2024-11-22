@@ -16,7 +16,7 @@ namespace StardewUI.Widgets;
 /// Currently supports only vertically-scrolling content.
 /// </para>
 /// </remarks>
-public class ScrollableView : ComponentView<ScrollContainer>
+public partial class ScrollableView : ComponentView<ScrollContainer>
 {
     /// <summary>
     /// The content to make scrollable.

@@ -7,6 +7,7 @@ using StardewUI.Framework.Converters;
 using StardewUI.Framework.Diagnostics;
 using StardewUI.Framework.Patches;
 using StardewUI.Framework.Sources;
+using StardewUI.Graphics;
 
 namespace StardewUI.Framework;
 
@@ -67,7 +68,12 @@ internal sealed class ModEntry : Mod
     {
         if (e.NameWithoutLocale.StartsWith(UiSpriteProvider.AssetNamePrefix))
         {
-            e.LoadFrom(() => UiSpriteProvider.GetSprite(e.Name.Name), AssetLoadPriority.Exclusive);
+            // Built-in UI sprites point to Game1-instanced textures, so they should not and cannot be localized.
+            e.LoadFrom(() => UiSpriteProvider.GetSprite(e.NameWithoutLocale.Name), AssetLoadPriority.Exclusive);
+        }
+        else if (e.DataType == typeof(Sprite) && e.NameWithoutLocale.StartsWith(ItemSpriteProvider.AssetNamePrefix))
+        {
+            e.LoadFrom(() => ItemSpriteProvider.GetSprite(e.NameWithoutLocale.Name), AssetLoadPriority.Exclusive);
         }
         else if (e.NameWithoutLocale.StartsWith(SpriteMaps.AssetNamePrefix))
         {
@@ -129,6 +135,10 @@ internal sealed class ModEntry : Mod
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
         resolutionScopeFactory = new(Helper.ModRegistry);
+        if (config.Performance.EnableReflectionWarmup)
+        {
+            Warmups.WarmupAttributeBindingFactory(attributeBindingFactory, eventBindingFactory, valueSourceFactory);
+        }
         return new ViewNodeFactory(
             rootViewFactory,
             valueSourceFactory,

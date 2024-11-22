@@ -1,6 +1,6 @@
 using StardewUI.Framework.Grammar;
 
-namespace StarML.Tests;
+namespace StardewUI.Framework.Tests;
 
 public class LexerTests
 {
@@ -226,7 +226,7 @@ public class LexerTests
                 ]
             },
             {
-                @"<button click=|^^HandleClick(Foo, $Bar)| />",
+                @"<button click=|^^HandleClick(Foo, $Bar, &Baz)| />",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
@@ -242,6 +242,9 @@ public class LexerTests
                     new(TokenType.ArgumentSeparator, ","),
                     new(TokenType.ArgumentPrefix, "$"),
                     new(TokenType.Name, "Bar"),
+                    new(TokenType.ArgumentSeparator, ","),
+                    new(TokenType.ArgumentPrefix, "&"),
+                    new(TokenType.Name, "Baz"),
                     new(TokenType.ArgumentListEnd, ")"),
                     new(TokenType.Pipe, "|"),
                     new(TokenType.SelfClosingTagEnd, "/>"),
@@ -264,6 +267,24 @@ public class LexerTests
                     new(TokenType.Name, "Bar"),
                     new(TokenType.ArgumentListEnd, ")"),
                     new(TokenType.Pipe, "|"),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
+                @"<label text="""" bold=""true"" />",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Name, "bold"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "true"),
+                    new(TokenType.Quote, "\""),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -7,7 +8,7 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 public static class ReflectionEventDescriptor
 {
-    private static readonly Dictionary<EventInfo, IEventDescriptor> cache = [];
+    private static readonly ConcurrentDictionary<EventInfo, IEventDescriptor> cache = [];
     private static readonly MethodInfo createTypedDescriptorMethod = typeof(ReflectionEventDescriptor).GetMethod(
         nameof(CreateTypedDescriptor),
         BindingFlags.Static | BindingFlags.NonPublic
@@ -21,12 +22,29 @@ public static class ReflectionEventDescriptor
     public static IEventDescriptor FromEventInfo(EventInfo eventInfo)
     {
         using var _ = Trace.Begin(nameof(ReflectionEventDescriptor), nameof(FromEventInfo));
-        if (!cache.TryGetValue(eventInfo, out var descriptor))
-        {
-            descriptor = CreateDescriptor(eventInfo);
-            cache.Add(eventInfo, descriptor);
-        }
-        return descriptor;
+        return cache.GetOrAdd(eventInfo, CreateDescriptor);
+    }
+
+    /// <summary>
+    /// Checks if an event is supported for view binding.
+    /// </summary>
+    /// <param name="eventInfo">The event info.</param>
+    /// <returns><c>true</c> if a <see cref="ReflectionEventDescriptor{TTarget, THandler}"/> can be created for the
+    /// specified <paramref name="eventInfo"/>, otherwise <c>false</c>.</returns>
+    public static bool IsSupported(EventInfo eventInfo)
+    {
+        return eventInfo.DeclaringType is not null
+            && eventInfo.EventHandlerType is not null
+            && eventInfo.AddMethod is not null
+            && eventInfo.RemoveMethod is not null;
+    }
+
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        createTypedDescriptorMethod.MakeGenericMethod(typeof(object), typeof(Action));
     }
 
     private static IEventDescriptor CreateDescriptor(EventInfo eventInfo)
@@ -81,7 +99,7 @@ public static class ReflectionEventDescriptor
             );
         }
         var argsType = GetArgsType(invokeMethod, () => $"{eventInfo.DeclaringType!.Name}.{eventInfo.Name}");
-        var argsTypeDescriptor = argsType is not null ? ReflectionObjectDescriptor.ForType(argsType) : null;
+        var argsTypeDescriptor = argsType is not null ? DescriptorFactory.GetObjectDescriptor(argsType) : null;
         return new ReflectionEventDescriptor<TTarget, THandler>(
             eventInfo,
             invokeMethod,

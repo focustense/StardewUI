@@ -1,6 +1,9 @@
-﻿using StardewUI.Framework.Converters;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
+using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
+using StardewUI.Framework.Grammar;
 using StardewUI.Framework.Sources;
 
 namespace StardewUI.Framework.Binding;
@@ -47,7 +50,7 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
 
     delegate IEventBinding? LocalBindingFactory(IView view, BindingContext viewContext, BindingContext handlerContext);
 
-    private static readonly Dictionary<CacheKey, LocalBindingFactory> cache = [];
+    private static readonly ConcurrentDictionary<CacheKey, LocalBindingFactory> cache = [];
 
     /// <inheritdoc />
     public IEventBinding? TryCreateBinding(
@@ -69,17 +72,46 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         // Could possibly use ctor injection of a "descriptor factory" but at the moment this is YAGNI since there is no
         // other way to get a descriptor anyway. If we add codegen/sourcegen as a means for creating descriptors then
         // it might be worth changing.
-        IObjectDescriptor handlerContextDescriptor = ReflectionObjectDescriptor.ForType(handlerContext.Data.GetType());
+        IObjectDescriptor handlerContextDescriptor = DescriptorFactory.GetObjectDescriptor(
+            handlerContext.Data.GetType()
+        );
         var handlerMethod = handlerContextDescriptor.GetMethod(@event.HandlerName);
 
         var cacheKey = new CacheKey(eventDescriptor, handlerMethod, @event, context!.GetType());
-        if (!cache.TryGetValue(cacheKey, out var localFactory))
-        {
-            localFactory = (view, viewContext, handlerContext) =>
-                TryCreateHandlerBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext);
-            cache.Add(cacheKey, localFactory);
-        }
+        var localFactory = cache.GetOrAdd(
+            cacheKey,
+            _ =>
+                (view, viewContext, handlerContext) =>
+                    TryCreateHandlerBinding(view, eventDescriptor, handlerMethod, @event, viewContext, handlerContext)
+        );
         return localFactory(view, context, handlerContext);
+    }
+
+    /// <summary>
+    /// Prepares the reflection cache for the use of an event argument type.
+    /// </summary>
+    /// <remarks>
+    /// This method may run slowly and should always be run on a low-priority background thread.
+    /// </remarks>
+    /// <param name="eventArgsType">The <see cref="EventArgs"/> subtype.</param>
+    internal void Warmup(Type eventArgsType)
+    {
+        var argsDescriptor = DescriptorFactory.GetObjectDescriptor(eventArgsType);
+        var propertyDescriptors = eventArgsType
+            .GetMembers(BindingFlags.Instance | BindingFlags.Public)
+            .Where(m => m.MemberType == MemberTypes.Field || m.MemberType == MemberTypes.Property)
+            .Select(m => argsDescriptor.TryGetProperty(m.Name, out var property) ? property : null)
+            .Where(p => p is not null)
+            .Cast<IPropertyDescriptor>();
+        foreach (var propertyDescriptor in propertyDescriptors)
+        {
+            EventArgumentSource.Create(
+                eventArgsType,
+                propertyDescriptor.ValueType,
+                propertyDescriptor,
+                valueConverterFactory
+            );
+        }
     }
 
     private IEventBinding? TryCreateHandlerBinding(
@@ -106,6 +138,13 @@ public class EventBindingFactory(IValueSourceFactory valueSourceFactory, IValueC
         for (int i = 0; i < argumentSourceCount; i++)
         {
             var argumentData = @event.Arguments[i];
+            if (argumentData.Type == ArgumentExpressionType.TemplateBinding)
+            {
+                throw new BindingException(
+                    $"Template binding argument '{argumentData}' is invalid here; template bindings may only be used "
+                        + "from within a <template> node."
+                );
+            }
             var destinationType = handlerMethod.ArgumentTypes[i];
             if (argumentData.Type == Grammar.ArgumentExpressionType.EventBinding)
             {

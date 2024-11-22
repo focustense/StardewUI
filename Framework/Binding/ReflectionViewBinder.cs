@@ -22,6 +22,7 @@ public class ReflectionViewBinder(
     {
         using var _ = Trace.Begin(this, nameof(Bind));
         var viewDescriptor = GetDescriptor(view);
+        using var attributeTrace = Trace.Begin("#CreateAttributeBindings");
         var attributeBindings = element
             // Only property attributes are bound to the view; others affect the outer hierarchy.
             .Attributes.Where(attribute => attribute.Type == AttributeType.Property)
@@ -31,6 +32,8 @@ public class ReflectionViewBinder(
             .Where(binding => binding is not null)
             .Cast<IAttributeBinding>()
             .ToList();
+        attributeTrace?.Dispose();
+        using var initialUpdateTrace = Trace.Begin("#InitialUpdateView");
         // Initial forced update since some binding types (e.g. literals) never have updates.
         foreach (var attributeBinding in attributeBindings)
         {
@@ -39,11 +42,14 @@ public class ReflectionViewBinder(
                 attributeBinding.UpdateView(view, force: true);
             }
         }
+        initialUpdateTrace?.Dispose();
+        using var eventTrace = Trace.Begin("#CreateEventBindings");
         var eventBindings = element
             .Events.Select(@event => eventBindingFactory.TryCreateBinding(view, viewDescriptor, @event, context))
             .Where(binding => binding is not null)
             .Cast<IEventBinding>()
             .ToList();
+        eventTrace?.Dispose();
         var viewBinding = new ViewBinding(view, attributeBindings, eventBindings);
         return viewBinding;
     }
@@ -51,6 +57,6 @@ public class ReflectionViewBinder(
     /// <inheritdoc />
     public IViewDescriptor GetDescriptor(IView view)
     {
-        return ReflectionViewDescriptor.ForViewType(view.GetType());
+        return DescriptorFactory.GetViewDescriptor(view.GetType());
     }
 }

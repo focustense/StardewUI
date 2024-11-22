@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Framework.Converters;
 
 namespace StardewUI.Framework.Sources;
@@ -15,7 +16,7 @@ public static class ConvertedValueSource
         nameof(CreateInternal),
         BindingFlags.Static | BindingFlags.NonPublic
     )!;
-    private static readonly Dictionary<(Type, Type), CreateValueSourceDelegate> creationCache = [];
+    private static readonly ConcurrentDictionary<(Type, Type), CreateValueSourceDelegate> creationCache = [];
 
     /// <summary>
     /// Creates a converted source with a specified output type, using an original source with unknown value type.
@@ -30,14 +31,7 @@ public static class ConvertedValueSource
         IValueConverterFactory converterFactory
     )
     {
-        var typeKey = (original.ValueType, destinationType);
-        if (!creationCache.TryGetValue(typeKey, out var creator))
-        {
-            creator = createInternalMethod
-                .MakeGenericMethod(original.ValueType, destinationType)
-                .CreateDelegate<CreateValueSourceDelegate>();
-            creationCache.Add(typeKey, creator);
-        }
+        var creator = GetCreatorDelegate(original.ValueType, destinationType);
         return creator(original, converterFactory);
     }
 
@@ -53,6 +47,26 @@ public static class ConvertedValueSource
         return (IValueSource<T>)Create(original, typeof(T), converterFactory);
     }
 
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the original value.</typeparam>
+    /// <typeparam name="TDestination">The converted value type.</typeparam>
+    internal static void Warmup<TSource, TDestination>()
+    {
+        creationCache.TryAdd((typeof(TSource), typeof(TDestination)), CreateInternal<TSource, TDestination>);
+    }
+
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    /// <param name="sourceType">The type of the original value.</param>
+    /// <param name="destinationType">The converted value type.</param>
+    internal static void Warmup(Type sourceType, Type destinationType)
+    {
+        GetCreatorDelegate(sourceType, destinationType);
+    }
+
     private static IValueSource CreateInternal<TSource, T>(
         IValueSource original,
         IValueConverterFactory converterFactory
@@ -61,6 +75,18 @@ public static class ConvertedValueSource
         var inputConverter = converterFactory.GetConverter<TSource, T>();
         var outputConverter = converterFactory.GetConverter<T, TSource>();
         return new ConvertedValueSource<TSource, T>((IValueSource<TSource>)original, inputConverter, outputConverter);
+    }
+
+    private static CreateValueSourceDelegate GetCreatorDelegate(Type sourceType, Type destinationType)
+    {
+        var typeKey = (sourceType, destinationType);
+        return creationCache.GetOrAdd(
+            typeKey,
+            _ =>
+                createInternalMethod
+                    .MakeGenericMethod(sourceType, destinationType)
+                    .CreateDelegate<CreateValueSourceDelegate>()
+        );
     }
 }
 

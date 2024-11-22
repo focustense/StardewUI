@@ -9,7 +9,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A togglable checkbox.
 /// </summary>
-public class CheckBox : ComponentView<Lane>
+public partial class CheckBox : ComponentView<Lane>
 {
     /// <summary>
     /// Event raised when the checked state changes.

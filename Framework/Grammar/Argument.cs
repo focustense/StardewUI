@@ -67,4 +67,9 @@ public enum ArgumentExpressionType
     /// is being provided to an event handler.
     /// </summary>
     EventBinding,
+
+    /// <summary>
+    /// The expanded value of a template parameter; only valid within a template node.
+    /// </summary>
+    TemplateBinding,
 }

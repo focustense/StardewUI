@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Descriptors;
@@ -42,8 +43,7 @@ public interface IValueSourceFactory
     /// <param name="context">The binding context to use for any contextual bindings (those with
     /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OneTimeBinding"/>,
     /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/>).</param>
-    IValueSource<T> GetValueSource<T>(IArgument argument, BindingContext? context)
-        where T : notnull;
+    IValueSource<T> GetValueSource<T>(IArgument argument, BindingContext? context);
 
     /// <summary>
     /// Creates a value source that supplies values according to the specified binding attribute.
@@ -55,8 +55,7 @@ public interface IValueSourceFactory
     /// <see cref="AttributeValueType.InputBinding"/>, <see cref="AttributeValueType.OneTimeBinding"/>,
     /// <see cref="AttributeValueType.OutputBinding"/> or <see cref="AttributeValueType.TwoWayBinding"/>).</param>
     /// <param name="scope">Scope for resolving externalized attributes, such as translation keys.</param>
-    IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context, IResolutionScope scope)
-        where T : notnull;
+    IValueSource<T> GetValueSource<T>(IAttribute attribute, BindingContext? context, IResolutionScope scope);
 
     /// <summary>
     /// Determines the type of value that will be supplied by a given argument binding, and with the specified context.
@@ -103,28 +102,37 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         [typeof(IAttribute), typeof(BindingContext), typeof(IResolutionScope)]
     )!;
 
-    private readonly Dictionary<Type, Func<IArgument, BindingContext?, IValueSource>> argumentCache = [];
-    private readonly Dictionary<
+    private readonly ConcurrentDictionary<Type, Func<IArgument, BindingContext?, IValueSource>> argumentCache = [];
+    private readonly ConcurrentDictionary<
         Type,
         Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>
     > attributeCache = [];
 
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal void Warmup()
+    {
+        // The .NET runtime caches some aspects of MakeGenericMethod and MakeGenericType, so there tends to be a large
+        // hit the very first time they are called for a given method/type definition, and much smaller afterward.
+        // It's still important to cache the closed generics, but making the first call early on can reduce jank on
+        // UI frames later.
+        GetArgumentValueSourceDelegate(typeof(object));
+        GetAttributeValueSourceDelegate(typeof(object));
+    }
+
     /// <inheritdoc />
     public IValueSource GetValueSource(Type type, IArgument argument, BindingContext? context)
     {
-        if (!argumentCache.TryGetValue(type, out var valueSourceDelegate))
-        {
-            var typedMethod = getArgumentValueSourceMethod.MakeGenericMethod(type);
-            valueSourceDelegate = typedMethod.CreateDelegate<Func<IArgument, BindingContext?, IValueSource>>(this);
-            argumentCache.Add(type, valueSourceDelegate);
-        }
+        using var _ = Trace.Begin(this, nameof(GetValueSource) + "#Arg");
+        var valueSourceDelegate = GetArgumentValueSourceDelegate(type);
         return valueSourceDelegate(argument, context);
     }
 
     /// <inheritdoc />
     public IValueSource<T> GetValueSource<T>(IArgument argument, BindingContext? context)
-        where T : notnull
     {
+        using var _ = Trace.Begin(this, nameof(GetValueSource) + "<T>#Arg");
         return argument.Type switch
         {
             ArgumentExpressionType.Literal => (IValueSource<T>)new ConstantValueSource<string>(argument.Expression),
@@ -148,14 +156,8 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         IResolutionScope resolutionScope
     )
     {
-        if (!attributeCache.TryGetValue(type, out var valueSourceDelegate))
-        {
-            var typedMethod = getAttributeValueSourceMethod.MakeGenericMethod(type);
-            valueSourceDelegate = typedMethod.CreateDelegate<
-                Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>
-            >(this);
-            attributeCache.Add(type, valueSourceDelegate);
-        }
+        using var _ = Trace.Begin(this, nameof(GetValueSource) + "#Prop");
+        var valueSourceDelegate = GetAttributeValueSourceDelegate(type);
         return valueSourceDelegate(attribute, context, resolutionScope);
     }
 
@@ -165,12 +167,17 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
         BindingContext? context,
         IResolutionScope resolutionScope
     )
-        where T : notnull
     {
+        using var _ = Trace.Begin(this, nameof(GetValueSource) + "<T>#Prop");
         return attribute.ValueType switch
         {
             AttributeValueType.Literal => (IValueSource<T>)new ConstantValueSource<string>(attribute.Value),
+#nullable disable
+            // Nullable constraint here emanates from SMAPI's Content.Load<T>, which is not very helpful to us here
+            // because it only matters for the return value, and for attributes, nullness only matters in the context of
+            // the particular binding/conversion happening.
             AttributeValueType.AssetBinding => new AssetValueSource<T>(assetCache, attribute.Value),
+#nullable enable
             AttributeValueType.TranslationBinding => (IValueSource<T>)
                 new TranslationValueSource(resolutionScope, attribute.Value),
             AttributeValueType.InputBinding
@@ -189,6 +196,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
     /// <inheritdoc />
     public Type? GetValueType(IArgument argument, BindingContext? context)
     {
+        using var _ = Trace.Begin(this, nameof(GetValueType) + "#Arg");
         return argument.Type switch
         {
             ArgumentExpressionType.Literal => typeof(string),
@@ -206,6 +214,7 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
     /// <inheritdoc />
     public Type? GetValueType(IAttribute attribute, IPropertyDescriptor? property, BindingContext? context)
     {
+        using var _ = Trace.Begin(this, nameof(GetValueType) + "#Prop");
         return attribute.ValueType switch
         {
             AttributeValueType.Literal or AttributeValueType.TranslationBinding => typeof(string),
@@ -219,5 +228,31 @@ public class ValueSourceFactory(IAssetCache assetCache) : IValueSourceFactory
                 .ValueType,
             _ => throw new ArgumentException($"Invalid attribute type {attribute.ValueType}.", nameof(attribute)),
         };
+    }
+
+    private Func<IArgument, BindingContext?, IValueSource> GetArgumentValueSourceDelegate(Type type)
+    {
+        return argumentCache.GetOrAdd(
+            type,
+            _ =>
+            {
+                var typedMethod = getArgumentValueSourceMethod.MakeGenericMethod(type);
+                return typedMethod.CreateDelegate<Func<IArgument, BindingContext?, IValueSource>>(this);
+            }
+        );
+    }
+
+    private Func<IAttribute, BindingContext?, IResolutionScope, IValueSource> GetAttributeValueSourceDelegate(Type type)
+    {
+        return attributeCache.GetOrAdd(
+            type,
+            _ =>
+            {
+                var typedMethod = getAttributeValueSourceMethod.MakeGenericMethod(type);
+                return typedMethod.CreateDelegate<Func<IAttribute, BindingContext?, IResolutionScope, IValueSource>>(
+                    this
+                );
+            }
+        );
     }
 }

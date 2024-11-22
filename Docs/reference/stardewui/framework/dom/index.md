@@ -21,6 +21,7 @@ title: StardewUI.Framework.Dom
 | [SElement](selement.md) | Record implementation of a StarML [IElement](ielement.md). |
 | [SEvent](sevent.md) | An event attribute in a StarML document. |
 | [SNode](snode.md) | A node in a StarML document, encapsulating the tag, its attributes, and all child nodes. |
+| [TemplateNodeTransformer](templatenodetransformer.md) | Transforms a `template` node based on the structure (attributes, children, etc.) of the instantiating node. |
 
 ## Interfaces
 
@@ -30,4 +31,5 @@ title: StardewUI.Framework.Dom
 | [IAttribute](iattribute.md) | Attribute of a StarML element. |
 | [IElement](ielement.md) | Element in a StarML document, including the tag and all enclosed attributes. |
 | [IEvent](ievent.md) | Event wire-up in a StarML element. |
+| [INodeTransformer](inodetransformer.md) | Provides a method to transform nodes into other nodes. |
 

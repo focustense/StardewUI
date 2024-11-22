@@ -16,7 +16,7 @@ namespace StardewUI.Widgets;
 /// different background color. The grid is uniform and the size of each cell is determined by the widget's actual size
 /// (by way of its <see cref="IView.Layout"/>) and the current <see cref="LineWidth"/>.
 /// </remarks>
-public class NineGridPlacementEditor : View
+public partial class NineGridPlacementEditor : View
 {
     /// <summary>
     /// Map of buttons to button prompt sprites.

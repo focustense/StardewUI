@@ -17,6 +17,7 @@ internal static class TextExtensions
     /// <returns>The <paramref name="text"/> with case conversion applied.</returns>
     public static string ToUpperCamelCase(this ReadOnlySpan<char> text)
     {
+        using var _ = Trace.Begin(nameof(TextExtensions), nameof(ToUpperCamelCase));
         var sb = new StringBuilder(text.Length);
         bool capitalizeNext = true;
         foreach (var rune in text.EnumerateRunes())

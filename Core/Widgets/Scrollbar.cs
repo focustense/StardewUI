@@ -13,7 +13,7 @@ namespace StardewUI.Widgets;
 /// Must be associated with a <see cref="ScrollContainer"/> in order to work; will not draw if the container is not set
 /// or if its <see cref="ScrollContainer.ScrollSize"/> is zero.
 /// </remarks>
-public class Scrollbar : ComponentView<Lane>
+public partial class Scrollbar : ComponentView<Lane>
 {
     /// <summary>
     /// The scroll container that this <see cref="Scrollbar"/> controls.

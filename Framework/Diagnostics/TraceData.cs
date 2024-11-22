@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Concurrent;
+using Newtonsoft.Json;
 
 namespace StardewUI.Framework.Diagnostics;
 
@@ -26,16 +27,18 @@ public class TraceFile
     public TraceShared Shared { get; } = new();
 
     /// <summary>
-    /// List of profiles. StardewUI traces include exactly one evented profile.
+    /// List of profiles; each profile corresponds to a running thread.
     /// </summary>
-    public IReadOnlyList<TraceProfile> Profiles { get; } = [new()];
+    public List<TraceProfile> Profiles { get; } = [];
 
     /// <summary>
     /// The name and version of the exporting mod (i.e. StardewUI).
     /// </summary>
     public string Exporter { get; init; } = "";
 
-    private readonly Dictionary<string, int> frameCache = [];
+    private readonly ConcurrentDictionary<string, int> frameCache = [];
+    private readonly long startTime = DateTime.UtcNow.Ticks / 10;
+    private readonly ConcurrentDictionary<int, int> threadProfileIndices = [];
 
     /// <summary>
     /// Appends an event that closes a frame previously opened with <see cref="OpenFrame(string)"/>.
@@ -44,7 +47,8 @@ public class TraceFile
     public void CloseFrame(int frame)
     {
         var time = DateTime.UtcNow.Ticks / 10;
-        Profiles[0].Events.Add(new('C', time, frame));
+        var profile = GetCurrentThreadProfile();
+        profile.Events.Add(new('C', time, frame));
     }
 
     /// <summary>
@@ -58,14 +62,49 @@ public class TraceFile
         var time = DateTime.UtcNow.Ticks / 10;
         // Reusing frames will definitely slow down the tracing itself, but also massively cuts down on the trace size
         // when accumulating identical method calls over thousands of frames.
-        if (!frameCache.TryGetValue(name, out var frameIndex))
-        {
-            frameIndex = Shared.Frames.Count;
-            Shared.Frames.Add(new(name));
-            frameCache.Add(name, frameIndex);
-        }
-        Profiles[0].Events.Add(new('O', time, frameIndex));
+        int frameIndex = frameCache.GetOrAdd(
+            name,
+            _ =>
+            {
+                lock (Shared.Frames)
+                {
+                    Shared.Frames.Add(new(name));
+                    return Shared.Frames.Count - 1;
+                }
+            }
+        );
+        var profile = GetCurrentThreadProfile();
+        profile.Events.Add(new('O', time, frameIndex));
         return frameIndex;
+    }
+
+    private TraceProfile GetCurrentThreadProfile()
+    {
+        int threadId = Environment.CurrentManagedThreadId;
+        var profileIndex = threadProfileIndices.GetOrAdd(
+            threadId,
+            _ =>
+            {
+                var thread = Thread.CurrentThread;
+                string threadName =
+                    threadId == 1 ? "Main"
+                    : !thread.IsThreadPoolThread && !string.IsNullOrEmpty(thread.Name) ? thread.Name
+                    : threadId.ToString();
+                if (string.IsNullOrEmpty(threadName))
+                {
+                    threadName = threadId.ToString();
+                }
+                lock (Profiles)
+                {
+                    Profiles.Add(new(threadName, startTime));
+                    return Profiles.Count - 1;
+                }
+            }
+        );
+        lock (Profiles)
+        {
+            return Profiles[profileIndex];
+        }
     }
 }
 
@@ -95,7 +134,10 @@ public record TraceFrame(string Name);
 /// <remarks>
 /// For speedscope purposes, this is always an "EventedProfile". StardewUI does not use sampled profiles.
 /// </remarks>
-public class TraceProfile
+/// <param name="name">The <see cref="Name"/> of the profile, used to identify the thread.</param>
+/// <param name="startValue">The timestamp when tracing was started, in the specified <see cref="Unit"/> (default:
+/// microseconds).</param>
+public class TraceProfile(string name, long startValue)
 {
     /// <summary>
     /// Discriminator for the profile type. In StardewUI, this is always <c>evented</c>.
@@ -103,13 +145,9 @@ public class TraceProfile
     public string Type { get; } = "evented";
 
     /// <summary>
-    /// Name of the profile.
+    /// Name of the profile. Used to identify the thread.
     /// </summary>
-    /// <remarks>
-    /// This is an arbitrary string often used to indicate the name of the profile "file" that was used to configure the
-    /// trace. Since StardewUI only uses a single, hardcoded "profile", this is the literal string <c>StardewUI</c>.
-    /// </remarks>
-    public string Name { get; } = "StardewUI";
+    public string Name { get; set; } = name;
 
     /// <summary>
     /// Unit of measurement for all time values.
@@ -122,12 +160,12 @@ public class TraceProfile
     /// <summary>
     /// The timestamp when tracing was started, in the specified <see cref="Unit"/>.
     /// </summary>
-    public long StartValue { get; } = DateTime.UtcNow.Ticks / 10;
+    public long StartValue { get; init; } = startValue;
 
     /// <summary>
     /// The timestamp when tracing ended, in the specified <see cref="Unit"/>.
     /// </summary>
-    public long EndValue { get; }
+    public long EndValue { get; set; }
 
     /// <summary>
     /// The events recorded for this profile.

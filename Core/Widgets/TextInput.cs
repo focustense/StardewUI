@@ -14,7 +14,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A text input field that allows typing from a physical or virtual keyboard.
 /// </summary>
-public class TextInput : View
+public partial class TextInput : View
 {
     /// <summary>
     /// Event raised when the <see cref="Text"/> changes.
@@ -226,6 +226,7 @@ public class TextInput : View
     private readonly TextBoxInterceptor textBoxInterceptor;
     private readonly TextInputSubscriber textInputSubscriber;
 
+    private bool isTextEntryMenuShown;
     private int maxLength;
 
     /// <summary>
@@ -325,7 +326,7 @@ public class TextInput : View
     private void Capture(Vector2 cursorPosition)
     {
         Release(); // In case of switch between mouse and controller
-        if (Game1.options.gamepadControls && !Game1.lastCursorMotionWasMouse)
+        if (Game1.options.gamepadControls)
         {
             // Vanilla text entry doesn't support moving the caret, so make sure we're at the end.
             CaretPosition = Text.Length;
@@ -333,6 +334,7 @@ public class TextInput : View
             textBoxInterceptor.Height = (int)OuterSize.Y;
             textBoxInterceptor.Selected = true;
             Game1.showTextEntry(textBoxInterceptor);
+            isTextEntryMenuShown = true;
         }
         else
         {
@@ -459,6 +461,7 @@ public class TextInput : View
         textBoxInterceptor.Selected = false;
         textInputSubscriber.Selected = false;
         Game1.closeTextEntry();
+        isTextEntryMenuShown = false;
         caretBlinkAnimator.Stop();
         caret.Visibility = Visibility.Hidden;
     }
@@ -532,6 +535,15 @@ public class TextInput : View
         public void ReleaseCapture()
         {
             owner.Release();
+        }
+
+        void ICaptureTarget.Update(TimeSpan elapsed)
+        {
+            if (owner.isTextEntryMenuShown && Game1.textEntry is null)
+            {
+                ReleaseCapture();
+                return;
+            }
         }
     }
 

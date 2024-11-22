@@ -21,7 +21,7 @@ Assembly: StardewUI.dll
 Base class for typical widgets wanting to implement [IView](iview.md).
 
 ```cs
-public class View : StardewUI.IView, 
+public class View : StardewUI.IView, System.IDisposable, 
     System.ComponentModel.INotifyPropertyChanged
 ```
 
@@ -29,7 +29,7 @@ public class View : StardewUI.IView,
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ View
 
 **Implements**  
-[IView](iview.md), [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged)
+[IView](iview.md), [IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable), [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged)
 
 ## Remarks
 
@@ -62,6 +62,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [LayoutOffset](#layoutoffset) | Pixel offset of the view's content, which is applied to all pointer events and child queries. | 
 | [Margin](#margin) | Margins (whitespace outside border) for this view. | 
 | [Name](#name) | Simple name for this view, used in log/debug output; does not affect behavior. | 
+| [Opacity](#opacity) | Opacity (alpha level) of the view. | 
 | [OuterSize](#outersize) | The size of the entire area occupied by this view including margins, border and padding. | 
 | [Padding](#padding) | Padding (whitespace inside border) for this view. | 
 | [PointerEventsEnabled](#pointereventsenabled) | Whether this view should receive pointer events like [Click](view.md#click) or [Drag](view.md#drag). | 
@@ -76,6 +77,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
  | Name | Description |
 | --- | --- |
 | [ContainsPoint(Vector2)](#containspointvector2) | Checks if a given point, relative to the view's origin, is within its bounds. | 
+| [Dispose()](#dispose) |  | 
 | [Draw(ISpriteBatch)](#drawispritebatch) | Draws the content for this view. | 
 | [FindFocusableDescendant(Vector2, Direction)](#findfocusabledescendantvector2-direction) | Searches for a focusable child within this view that is reachable in the specified `direction`, and returns a result containing the view and search path if found. | 
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
@@ -94,6 +96,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [Measure(Vector2)](#measurevector2) | Performs layout on this view, updating its [OuterSize](iview.md#outersize), [ActualBounds](iview.md#actualbounds) and [ContentBounds](iview.md#contentbounds), and arranging any children in their respective positions. | 
 | [OnButtonPress(ButtonEventArgs)](#onbuttonpressbuttoneventargs) | Called when a button press is received while this view is in the focus path. | 
 | [OnClick(ClickEventArgs)](#onclickclickeventargs) | Called when a click is received within this view's bounds. | 
+| [OnDispose()](#ondispose) | Performs additional cleanup when [Dispose()](view.md#dispose) is called. | 
 | [OnDrag(PointerEventArgs)](#ondragpointereventargs) | Called when the view is being dragged (mouse moved while left button held). | 
 | [OnDrawBorder(ISpriteBatch)](#ondrawborderispritebatch) | Draws the view's border, if it has one. | 
 | [OnDrawContent(ISpriteBatch)](#ondrawcontentispritebatch) | Draws the inner content of this view. | 
@@ -120,6 +123,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [LeftClick](#leftclick) | Event raised when the view receives a click initiated from the left mouse button, or the controller's action button (A). | 
 | [PointerEnter](#pointerenter) | Event raised when the pointer enters the view. | 
 | [PointerLeave](#pointerleave) | Event raised when the pointer exits the view. | 
+| [PointerMove](#pointermove) | Event raised when the pointer moves within the view. | 
 | [PropertyChanged](#propertychanged) |  | 
 | [RightClick](#rightclick) | Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use button (X). | 
 | [Wheel](#wheel) | Event raised when the scroll wheel moves. | 
@@ -374,6 +378,24 @@ public string Name { get; set; }
 
 -----
 
+#### Opacity
+
+Opacity (alpha level) of the view.
+
+```cs
+public float Opacity { get; set; }
+```
+
+##### Property Value
+
+[Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+##### Remarks
+
+Affects this view and all descendants; used to control opacity of an entire control or layout area.
+
+-----
+
 #### OuterSize
 
 The size of the entire area occupied by this view including margins, border and padding.
@@ -459,12 +481,12 @@ public StardewUI.Tags Tags { get; set; }
 Localized tooltip to display on hover, if any.
 
 ```cs
-public string Tooltip { get; set; }
+public StardewUI.Data.TooltipData Tooltip { get; set; }
 ```
 
 ##### Property Value
 
-[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+[TooltipData](data/tooltipdata.md)
 
 -----
 
@@ -516,6 +538,16 @@ The point to test.
 [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
   `true` if `point` is within the view bounds; otherwise `false`.
+
+-----
+
+#### Dispose()
+
+
+
+```cs
+public void Dispose();
+```
 
 -----
 
@@ -750,7 +782,7 @@ The search position, relative to where this view's content starts (after applyin
 
 [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>
 
-  The views at the specified `contentPosition`, sorted in reverse order of their [ZIndex](iview.md#zindex).
+  The views at the specified `contentPosition`, in original layout order.
 
 ##### Remarks
 
@@ -893,6 +925,20 @@ public virtual void OnClick(StardewUI.Events.ClickEventArgs e);
 
 **`e`** &nbsp; [ClickEventArgs](events/clickeventargs.md)  
 The event data.
+
+-----
+
+#### OnDispose()
+
+Performs additional cleanup when [Dispose()](view.md#dispose) is called.
+
+```cs
+protected virtual void OnDispose();
+```
+
+##### Remarks
+
+The default implementation is a stub. Subclasses may override this if they require separate cleanup.
 
 -----
 
@@ -1237,6 +1283,20 @@ public event EventHandler<StardewUI.Events.PointerEventArgs>? PointerLeave;
 ##### Event Type
 
 [EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[PointerEventArgs](events/pointereventargs.md)>
+
+-----
+
+#### PointerMove
+
+Event raised when the pointer moves within the view.
+
+```cs
+public event EventHandler<StardewUI.Events.PointerMoveEventArgs>? PointerMove;
+```
+
+##### Event Type
+
+[EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[PointerMoveEventArgs](events/pointermoveeventargs.md)>
 
 -----
 

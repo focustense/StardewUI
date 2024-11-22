@@ -33,18 +33,18 @@ public static class ReflectionMethodDescriptor
 
  | Name | Description |
 | --- | --- |
-| [FromMethodInfo(MethodInfo)](#frommethodinfomethodinfo) | Creates or retrieves a descriptor for a given method. | 
+| [IsSupported(MethodInfo)](#issupportedmethodinfo) | Checks if a method is supported for view binding. | 
 
 ## Details
 
 ### Methods
 
-#### FromMethodInfo(MethodInfo)
+#### IsSupported(MethodInfo)
 
-Creates or retrieves a descriptor for a given method.
+Checks if a method is supported for view binding.
 
 ```cs
-public static StardewUI.Framework.Descriptors.IMethodDescriptor FromMethodInfo(System.Reflection.MethodInfo method);
+public static bool IsSupported(System.Reflection.MethodInfo method);
 ```
 
 ##### Parameters
@@ -54,9 +54,9 @@ The method info.
 
 ##### Returns
 
-[IMethodDescriptor](imethoddescriptor.md)
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
-  The descriptor for the specified `method`.
+  `true` if a `StardewUI.Framework.Descriptors.ReflectionMethodDescriptor<TResult>` can be created for the specified `method`, otherwise `false`.
 
 -----
 

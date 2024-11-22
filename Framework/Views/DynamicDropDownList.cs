@@ -56,6 +56,10 @@ internal class DynamicDropDownList : DecoratorView
             {
                 MaybeRecreateAdapter();
                 adapter.Options = value;
+                if (selectedOption.IsDirty)
+                {
+                    TrySetSelectedOption(selectedOption.Value?.Value);
+                }
             }
         }
     }
@@ -82,15 +86,21 @@ internal class DynamicDropDownList : DecoratorView
         {
             if (selectedOption.SetIfChanged(value))
             {
-                if (adapter.IsValidOption(value?.Value))
-                {
-                    adapter.SelectedOption = value?.Value;
-                    if (adapter.SelectedIndex >= 0 || !selectedIndex.IsDirty)
-                    {
-                        selectedIndex.Value = adapter.SelectedIndex;
-                    }
-                }
+                TrySetSelectedOption(value?.Value);
             }
+        }
+    }
+
+    private void TrySetSelectedOption(object? value)
+    {
+        if (!adapter.IsValidOption(value))
+        {
+            return;
+        }
+        adapter.SelectedOption = value;
+        if (adapter.SelectedIndex >= 0 || !selectedIndex.IsDirty)
+        {
+            selectedIndex.Value = adapter.SelectedIndex;
         }
     }
 
@@ -187,6 +197,7 @@ internal class DynamicDropDownList : DecoratorView
         {
             return;
         }
+        float optionMinWidth = adapter.OptionMinWidth;
         if (!adapterFactoryCache.TryGetValue(elementType, out var factory))
         {
             factory = createDropDownAdapterMethodDefinition
@@ -199,6 +210,7 @@ internal class DynamicDropDownList : DecoratorView
         {
             newAdapter.OptionFormat = OptionFormat;
         }
+        newAdapter.OptionMinWidth = optionMinWidth;
         SetInitialAdapterIndex(newAdapter);
         SetAdapter(newAdapter);
     }

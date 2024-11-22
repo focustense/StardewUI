@@ -34,4 +34,6 @@ title: StardewUI
 | Name | Description |
 | --- | --- |
 | [Direction](direction.md) | Cardinal directions used in UI, matching gamepad stick/button directions for navigation. |
+| [MenuActivationMode](menuactivationmode.md) | Available behaviors for opening a [ViewMenu&lt;T&gt;](viewmenu-1.md). |
+| [MenuCloseBehavior](menuclosebehavior.md) | Available behaviors for closing a [ViewMenu&lt;T&gt;](viewmenu-1.md). |
 

@@ -37,7 +37,7 @@ public class ReflectionObjectDescriptor :
 
  | Name | Description |
 | --- | --- |
-| [ReflectionObjectDescriptor(Type, IReadOnlyList&lt;Type&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IPropertyDescriptor&gt;&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IPropertyDescriptor&gt;&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IMethodDescriptor&gt;&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IEventDescriptor&gt;&gt;)](#reflectionobjectdescriptortype-ireadonlylisttype-ireadonlydictionarystring-lazyipropertydescriptor-ireadonlydictionarystring-lazyipropertydescriptor-ireadonlydictionarystring-lazyimethoddescriptor-ireadonlydictionarystring-lazyieventdescriptor) | Initializes a new [ReflectionObjectDescriptor](reflectionobjectdescriptor.md) with the given target type and members. | 
+| [ReflectionObjectDescriptor(Type, IReadOnlyList&lt;Type&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IMemberDescriptor&gt;&gt;)](#reflectionobjectdescriptortype-ireadonlylisttype-ireadonlydictionarystring-lazyimemberdescriptor) | Initializes a new [ReflectionObjectDescriptor](reflectionobjectdescriptor.md) with the given target type and members. | 
 
 ### Properties
 
@@ -50,7 +50,6 @@ public class ReflectionObjectDescriptor :
 
  | Name | Description |
 | --- | --- |
-| [ForType(Type)](#fortypetype) | Creates or retrieves a descriptor for a given object type. | 
 | [TryGetEvent(string, IEventDescriptor)](#trygeteventstring-ieventdescriptor) | Attempts to retrieve a named event on the [TargetType](iobjectdescriptor.md#targettype). | 
 | [TryGetMethod(string, IMethodDescriptor)](#trygetmethodstring-imethoddescriptor) | Attempts to retrieve a named method of the [TargetType](iobjectdescriptor.md#targettype). | 
 | [TryGetProperty(string, IPropertyDescriptor)](#trygetpropertystring-ipropertydescriptor) | Attempts to retrieve a named property of the [TargetType](iobjectdescriptor.md#targettype). | 
@@ -59,12 +58,12 @@ public class ReflectionObjectDescriptor :
 
 ### Constructors
 
-#### ReflectionObjectDescriptor(Type, IReadOnlyList&lt;Type&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IPropertyDescriptor&gt;&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IPropertyDescriptor&gt;&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IMethodDescriptor&gt;&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IEventDescriptor&gt;&gt;)
+#### ReflectionObjectDescriptor(Type, IReadOnlyList&lt;Type&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IMemberDescriptor&gt;&gt;)
 
 Initializes a new [ReflectionObjectDescriptor](reflectionobjectdescriptor.md) with the given target type and members.
 
 ```cs
-protected ReflectionObjectDescriptor(System.Type type, System.Collections.Generic.IReadOnlyList<System.Type> interfaces, System.Collections.Generic.IReadOnlyDictionary<string, Lazy<StardewUI.Framework.Descriptors.IPropertyDescriptor>> fieldsByName, System.Collections.Generic.IReadOnlyDictionary<string, Lazy<StardewUI.Framework.Descriptors.IPropertyDescriptor>> propertiesByName, System.Collections.Generic.IReadOnlyDictionary<string, Lazy<StardewUI.Framework.Descriptors.IMethodDescriptor>> methodsByName, System.Collections.Generic.IReadOnlyDictionary<string, Lazy<StardewUI.Framework.Descriptors.IEventDescriptor>> eventsByName);
+protected ReflectionObjectDescriptor(System.Type type, System.Collections.Generic.IReadOnlyList<System.Type> interfaces, System.Collections.Generic.IReadOnlyDictionary<string, Lazy<StardewUI.Framework.Descriptors.IMemberDescriptor>> membersByName);
 ```
 
 ##### Parameters
@@ -75,17 +74,8 @@ The [TargetType](reflectionobjectdescriptor.md#targettype).
 **`interfaces`** &nbsp; [IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)>  
 All interfaces implemented by the [TargetType](reflectionobjectdescriptor.md#targettype).
 
-**`fieldsByName`** &nbsp; [IReadOnlyDictionary](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlydictionary-2)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Lazy](https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1)<[IPropertyDescriptor](ipropertydescriptor.md)>>  
-Dictionary of field names to the corresponding field descriptors.
-
-**`propertiesByName`** &nbsp; [IReadOnlyDictionary](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlydictionary-2)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Lazy](https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1)<[IPropertyDescriptor](ipropertydescriptor.md)>>  
-Dictionary of property names to the corresponding property descriptors.
-
-**`methodsByName`** &nbsp; [IReadOnlyDictionary](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlydictionary-2)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Lazy](https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1)<[IMethodDescriptor](imethoddescriptor.md)>>  
-Dictionary of method names to the corresponding method descriptors.
-
-**`eventsByName`** &nbsp; [IReadOnlyDictionary](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlydictionary-2)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Lazy](https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1)<[IEventDescriptor](ieventdescriptor.md)>>  
-Dictionary of event names to the corresponding event descriptors.
+**`membersByName`** &nbsp; [IReadOnlyDictionary](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlydictionary-2)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Lazy](https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1)<[IMemberDescriptor](imemberdescriptor.md)>>  
+Dictionary of member names to the corresponding member descriptors.
 
 -----
 
@@ -120,27 +110,6 @@ public System.Type TargetType { get; }
 -----
 
 ### Methods
-
-#### ForType(Type)
-
-Creates or retrieves a descriptor for a given object type.
-
-```cs
-public static StardewUI.Framework.Descriptors.ReflectionObjectDescriptor ForType(System.Type type);
-```
-
-##### Parameters
-
-**`type`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
-The object type.
-
-##### Returns
-
-[ReflectionObjectDescriptor](reflectionobjectdescriptor.md)
-
-  The descriptor for the specified `type`.
-
------
 
 #### TryGetEvent(string, IEventDescriptor)
 

@@ -12,7 +12,7 @@ namespace StardewUI.Widgets;
 /// Can be configured to use either a fixed cell size, and therefore a variable number of rows and columns depending on
 /// the grid size, or a fixed number of rows and columns, with a variable size per cell.
 /// </remarks>
-public class Grid : View
+public partial class Grid : View
 {
     /// <summary>
     /// Child views to display in this layout, arranged according to the <see cref="ItemLayout"/>.
@@ -226,7 +226,7 @@ public class Grid : View
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        foreach (var (child, position) in childPositions.OrderBy(child => child.View.ZIndex))
+        foreach (var (child, position) in childPositions.ZOrder())
         {
             using var _ = b.SaveTransform();
             b.Translate(position);

@@ -8,7 +8,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// Simple unidirectional layout that draws multiple child views in a row or column arrangement.
 /// </summary>
-public class Lane : View
+public partial class Lane : View
 {
     /// <summary>
     /// Child views to display in this layout.
@@ -289,7 +289,7 @@ public class Lane : View
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
-        foreach (var (child, position) in visibleChildPositions.OrderBy(child => child.View.ZIndex))
+        foreach (var (child, position) in visibleChildPositions.ZOrder())
         {
             using var _ = b.SaveTransform();
             b.Translate(position);

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using StardewUI.Events;
 using StardewUI.Framework.Descriptors;
 
@@ -18,7 +19,7 @@ internal static class EventBinding
         IArgumentSource[] argumentSources
     );
 
-    private static readonly Dictionary<(Type, Type), Factory> cache = [];
+    private static readonly ConcurrentDictionary<(Type, Type), Factory> cache = [];
     private static readonly MethodInfo createInternalMethod = typeof(EventBinding).GetMethod(
         nameof(CreateInternal),
         BindingFlags.Static | BindingFlags.NonPublic
@@ -51,11 +52,10 @@ internal static class EventBinding
             returnType = typeof(object);
         }
         var key = (argsType, returnType);
-        if (!cache.TryGetValue(key, out var factory))
-        {
-            factory = createInternalMethod.MakeGenericMethod(argsType, returnType).CreateDelegate<Factory>();
-            cache.Add(key, factory);
-        }
+        var factory = cache.GetOrAdd(
+            key,
+            _ => createInternalMethod.MakeGenericMethod(argsType, returnType).CreateDelegate<Factory>()
+        );
         return factory(eventTarget, eventDescriptor, destinationContext, destinationMethod, argumentSources);
     }
 

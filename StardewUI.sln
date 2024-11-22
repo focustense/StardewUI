@@ -15,7 +15,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewUI.VisualStudio", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.DocGenerator", "DocGenerator\StardewUI.DocGenerator.csproj", "{6A9552D5-894B-4E9B-BBF2-6FEA1CF7AB58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewUI.TestAddon", "TestAddon\StardewUI.TestAddon.csproj", "{E79E4444-BCAC-4492-929B-097E1F6201B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewUI.TestAddon", "TestAddon\StardewUI.TestAddon.csproj", "{E79E4444-BCAC-4492-929B-097E1F6201B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StardewUI.SourceGenerators", "SourceGenerators\StardewUI.SourceGenerators.csproj", "{646AC866-272F-47E5-AA98-C5BE398270D1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{20153EA6-99FB-4812-AF27-7BA5AFAA9937}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Packages.props = Directory.Packages.props
+		StardewUI.props = StardewUI.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +107,18 @@ Global
 		{E79E4444-BCAC-4492-929B-097E1F6201B7}.Release|arm64.Build.0 = Release|Any CPU
 		{E79E4444-BCAC-4492-929B-097E1F6201B7}.Release|x86.ActiveCfg = Release|Any CPU
 		{E79E4444-BCAC-4492-929B-097E1F6201B7}.Release|x86.Build.0 = Release|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Debug|arm64.Build.0 = Debug|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Debug|x86.Build.0 = Debug|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Release|arm64.ActiveCfg = Release|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Release|arm64.Build.0 = Release|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Release|x86.ActiveCfg = Release|Any CPU
+		{646AC866-272F-47E5-AA98-C5BE398270D1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,7 +127,6 @@ Global
 		SolutionGuid = {3B07BEBA-5C2A-4BEF-8537-FB0B3B4A3169}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Core\StardewUI.projitems*{431c8e71-0644-4faa-81fb-d3ceeed6c89f}*SharedItemsImports = 5
 		Core\StardewUI.projitems*{91f57065-e3c0-4832-ad57-18bb271e9d56}*SharedItemsImports = 5
 		Core\StardewUI.projitems*{d3dbb38b-79af-4b84-b425-1cffdefa7a86}*SharedItemsImports = 13
 	EndGlobalSection

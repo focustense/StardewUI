@@ -21,11 +21,12 @@ Assembly: StardewUI.dll
 Represents some arbitrary UI element or layout.
 
 ```cs
-public interface IView : System.ComponentModel.INotifyPropertyChanged
+public interface IView : System.IDisposable, 
+    System.ComponentModel.INotifyPropertyChanged
 ```
 
 **Implements**  
-[INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged)
+[IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable), [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged)
 
 ## Members
 
@@ -39,11 +40,12 @@ public interface IView : System.ComponentModel.INotifyPropertyChanged
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
 | [Layout](#layout) | The current layout parameters, which determine how [Measure(Vector2)](iview.md#measurevector2) will behave. | 
 | [Name](#name) | Simple name for this view, used in log/debug output; does not affect behavior. | 
+| [Opacity](#opacity) | Opacity (alpha level) of the view. | 
 | [OuterSize](#outersize) | The true computed layout size resulting from a single [Measure(Vector2)](iview.md#measurevector2) pass. | 
 | [PointerEventsEnabled](#pointereventsenabled) | Whether this view should receive pointer events like [Click](iview.md#click) or [Drag](iview.md#drag). | 
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
-| [Tooltip](#tooltip) | Localized tooltip to display on hover, if any. | 
+| [Tooltip](#tooltip) | Tooltip data to display on hover, if any. | 
 | [Visibility](#visibility) | Drawing visibility for this view. | 
 | [ZIndex](#zindex) | Z order for this view within its direct parent. Higher indices draw later (on top). | 
 
@@ -83,6 +85,7 @@ public interface IView : System.ComponentModel.INotifyPropertyChanged
 | [LeftClick](#leftclick) | Event raised when the view receives a click initiated from the left mouse button, or the controller's action button (A). | 
 | [PointerEnter](#pointerenter) | Event raised when the pointer enters the view. | 
 | [PointerLeave](#pointerleave) | Event raised when the pointer exits the view. | 
+| [PointerMove](#pointermove) | Event raised when the pointer moves within the view. | 
 | [RightClick](#rightclick) | Event raised when the view receives a click initiated from the right mouse button, or the controller's tool-use button (X). | 
 | [Wheel](#wheel) | Event raised when the scroll wheel moves. | 
 
@@ -184,6 +187,24 @@ string Name { get; set; }
 
 -----
 
+#### Opacity
+
+Opacity (alpha level) of the view.
+
+```cs
+float Opacity { get; set; }
+```
+
+##### Property Value
+
+[Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+##### Remarks
+
+Affects this view and all descendants; used to control opacity of an entire control or layout area.
+
+-----
+
 #### OuterSize
 
 The true computed layout size resulting from a single [Measure(Vector2)](iview.md#measurevector2) pass.
@@ -252,15 +273,15 @@ StardewUI.Tags Tags { get; }
 
 #### Tooltip
 
-Localized tooltip to display on hover, if any.
+Tooltip data to display on hover, if any.
 
 ```cs
-string Tooltip { get; set; }
+StardewUI.Data.TooltipData Tooltip { get; set; }
 ```
 
 ##### Property Value
 
-[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+[TooltipData](data/tooltipdata.md)
 
 -----
 
@@ -796,6 +817,20 @@ event EventHandler<StardewUI.Events.PointerEventArgs>? PointerLeave;
 ##### Event Type
 
 [EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[PointerEventArgs](events/pointereventargs.md)>
+
+-----
+
+#### PointerMove
+
+Event raised when the pointer moves within the view.
+
+```cs
+event EventHandler<StardewUI.Events.PointerMoveEventArgs>? PointerMove;
+```
+
+##### Event Type
+
+[EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[PointerMoveEventArgs](events/pointermoveeventargs.md)>
 
 -----
 

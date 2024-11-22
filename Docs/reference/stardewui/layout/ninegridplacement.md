@@ -99,7 +99,7 @@ Absolute axis-independent pixel offset.
 All the standard placements with no [Offset](ninegridplacement.md#offset), arranged from bottom-left to top-right.
 
 ```cs
-public static readonly System.Collections.Immutable.IImmutableList`1[[StardewUI.Layout.NineGridPlacement, StardewUI, Version=0.2.5.0, Culture=neutral, PublicKeyToken=null]] StandardPlacements;
+public static readonly System.Collections.Immutable.IImmutableList<StardewUI.Layout.NineGridPlacement> StandardPlacements;
 ```
 
 ##### Field Value

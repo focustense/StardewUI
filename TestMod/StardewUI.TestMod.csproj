@@ -1,89 +1,101 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <AssemblyName>StardewUITest</AssemblyName>
-        <RootNamespace>StardewUITest</RootNamespace>
-        <Version>0.1.0</Version>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>Latest</LangVersion>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <WarningsAsErrors>Nullable</WarningsAsErrors>
-        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    </PropertyGroup>
-	
-	<PropertyGroup>
-		<ModFolderName>StardewUITest</ModFolderName>
-	</PropertyGroup>
-	
-	<ItemGroup>
-	  <Compile Remove="views\**" />
-	  <EmbeddedResource Remove="views\**" />
-	  <None Remove="views\**" />
-	</ItemGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-      <None Remove="assets\sprites\cursors.json" />
-      <None Remove="assets\sprites\MenuTiles.json" />
-      <None Remove="assets\sprites\status.json" />
-      <None Remove="assets\sprites\status.png" />
-      <None Remove="assets\views\Example-Bestiary.sml" />
-      <None Remove="assets\views\Example-CropsGrid.sml" />
-      <None Remove="assets\views\Example-Form.sml" />
-      <None Remove="assets\views\Example-Hud.sml" />
-      <None Remove="assets\views\Example-ScrollingItemGrid.sml" />
-      <None Remove="assets\views\Example-Tabs.sml" />
-      <None Remove="assets\views\TestView.sml" />
-      <None Remove="i18n\default.json" />
-    </ItemGroup>
+  <PropertyGroup>
+    <AssemblyName>StardewUITest</AssemblyName>
+    <RootNamespace>StardewUITest</RootNamespace>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <Content Include="assets\sprites\Cursors.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\sprites\MenuTiles.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\sprites\Status.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\sprites\Status.png">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\views\Example-CropsGrid.sml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\views\Example-Form.sml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\views\Example-Hud.sml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\views\Example-ScrollingItemGrid.sml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\views\Example-Bestiary.sml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\views\Example-Tabs.sml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="assets\views\TestView.sml">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
+  <Import Project="..\StardewUI.props"/>
 
-    <ItemGroup>
-        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="PropertyChanged.SourceGenerator" Version="1.0.8">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
+  <PropertyGroup>
+    <Description>Test mod and example gallery for StardewUI</Description>
+    <ModFolderName>StardewUITest</ModFolderName>
+  </PropertyGroup>
 
-    <ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" /></VisualStudio></ProjectExtensions>
+  <ItemGroup>
+    <Compile Remove="views\**" />
+    <EmbeddedResource Remove="views\**" />
+    <None Remove="views\**" />
+  </ItemGroup>
 
-    <Import Project="..\Core\StardewUI.projitems" Label="Shared" />
+  <ItemGroup>
+    <None Remove="assets\sprites\cursors.json" />
+    <None Remove="assets\sprites\MenuTiles.json" />
+    <None Remove="assets\sprites\status.json" />
+    <None Remove="assets\sprites\status.png" />
+    <None Remove="assets\views\Example-Bestiary.sml" />
+    <None Remove="assets\views\Example-CropsGrid.sml" />
+    <None Remove="assets\views\Example-Form.sml" />
+    <None Remove="assets\views\Example-Hud.sml" />
+    <None Remove="assets\views\Example-ScrollingItemGrid.sml" />
+    <None Remove="assets\views\Example-Tabs.sml" />
+    <None Remove="assets\views\Gallery.sml" />
+    <None Remove="assets\views\TestView.sml" />
+    <None Remove="assets\views\ZOrderTest.sml" />
+    <None Remove="i18n\default.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\sprites\Cursors.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\sprites\MenuTiles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\sprites\Status.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\sprites\Status.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Example-CropsGrid.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Example-Form.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Example-Hud.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Example-ScrollingItemGrid.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Example-Bestiary.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Example-Tabs.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Gallery.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\TestView.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\ZOrderTest.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="PropertyChanged.SourceGenerator">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" />
+    </VisualStudio>
+  </ProjectExtensions>
+
 </Project>

@@ -8,8 +8,8 @@ Some editors may behave acceptably if told to treat `.sml` as either HTML or XML
 
 These are the editors with full support for StarML, provided as extensions.
 
-- [Visual Studio](https://visualstudio.microsoft.com/), using the [StardewUI Extension](https://github.com/focustense/StardewUI/releases/download/v0.1.0/StardewUI.VisualStudio.vsix). Best for C# developers on Windows.
-- [Visual Studio Code](https://code.visualstudio.com/), using the [vscode-starml](https://github.com/focustense/StardewUI/releases/download/v0.1.0/vscode-starml-0.1.0.vsix) extension.
+- [Visual Studio](https://visualstudio.microsoft.com/), using the [StardewUI Extension](https://github.com/focustense/StardewUI/releases/download/v{{{release.version}}}/StardewUI.VisualStudio.vsix). Best for C# developers on Windows.
+- [Visual Studio Code](https://code.visualstudio.com/), using the [vscode-starml](https://github.com/focustense/StardewUI/releases/download/v{{{release.version}}}/vscode-starml-{{{release.version}}}.vsix) extension.
 
 When using one of these editors with the corresponding extension installed, `.sml` (or `.starml`) files will be recognized as StarML and have correct highlighting for all types of syntax elements (tags, literal attributes, [structural attributes](../framework/starml.md#structural-attributes), all the different [attribute flavors](../framework/starml.md#attribute-flavors)).
 

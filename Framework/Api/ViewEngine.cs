@@ -59,18 +59,30 @@ public class ViewEngine : IViewEngine
     }
 
     /// <inheritdoc />
-    public IClickableMenu CreateMenuFromAsset(string assetName, object? context = null)
+    public IMenuController CreateMenuControllerFromAsset(string assetName, object? context = null)
     {
         var documentSource = new AssetValueSource<Document>(assetCache, assetName);
         return new DocumentViewMenu(viewNodeFactory, documentSource, context);
     }
 
     /// <inheritdoc />
-    public IClickableMenu CreateMenuFromMarkup(string markup, object? context = null)
+    public IMenuController CreateMenuControllerFromMarkup(string markup, object? context = null)
     {
         var document = Document.Parse(markup);
         var documentSource = new ConstantValueSource<Document>(document);
         return new DocumentViewMenu(viewNodeFactory, documentSource, context);
+    }
+
+    /// <inheritdoc />
+    public IClickableMenu CreateMenuFromAsset(string assetName, object? context = null)
+    {
+        return CreateMenuControllerFromAsset(assetName, context).Menu;
+    }
+
+    /// <inheritdoc />
+    public IClickableMenu CreateMenuFromMarkup(string markup, object? context = null)
+    {
+        return CreateMenuControllerFromMarkup(markup, context).Menu;
     }
 
     /// <inheritdoc />

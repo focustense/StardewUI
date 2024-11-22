@@ -45,7 +45,6 @@ public class ReflectionViewDescriptor :
 
  | Name | Description |
 | --- | --- |
-| [ForViewType(Type)](#forviewtypetype) | Derives a view descriptor for a given view type. | 
 | [TryGetChildrenProperty(string, IPropertyDescriptor)](#trygetchildrenpropertystring-ipropertydescriptor) | Attempts to retrieve the property of the [TargetType](iobjectdescriptor.md#targettype) that holds the view's children/content. | 
 | [TryGetEvent(string, IEventDescriptor)](#trygeteventstring-ieventdescriptor) | Attempts to retrieve a named event on the [TargetType](iobjectdescriptor.md#targettype). | 
 | [TryGetMethod(string, IMethodDescriptor)](#trygetmethodstring-imethoddescriptor) | Attempts to retrieve a named method of the [TargetType](iobjectdescriptor.md#targettype). | 
@@ -84,27 +83,6 @@ public System.Type TargetType { get; }
 -----
 
 ### Methods
-
-#### ForViewType(Type)
-
-Derives a view descriptor for a given view type.
-
-```cs
-public static StardewUI.Framework.Descriptors.ReflectionViewDescriptor ForViewType(System.Type viewType);
-```
-
-##### Parameters
-
-**`viewType`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
-The view type; must be a type implementing [IView](../../iview.md).
-
-##### Returns
-
-[ReflectionViewDescriptor](reflectionviewdescriptor.md)
-
-  The descriptor for the specified `viewType`.
-
------
 
 #### TryGetChildrenProperty(string, IPropertyDescriptor)
 

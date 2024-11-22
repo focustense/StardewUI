@@ -14,7 +14,7 @@ namespace StardewUI.Widgets;
 /// <see cref="SpriteText"/> font which is more prominent than any of the game's available
 /// <see cref="Microsoft.Xna.Framework.Graphics.SpriteFont"/>s and often used for top-level headings/menu titles.
 /// </remarks>
-public class Banner : View
+public partial class Banner : View
 {
     /// <summary>
     /// Background sprite (including border) to draw underneath the text.

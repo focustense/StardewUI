@@ -11,16 +11,19 @@ table .md-tooltip {
 
 .attribute-table th:nth-child(1) { width: 180px; }
 
-.event-table th:nth-child(1) { width: 150px; }
-
 .span-table [colspan], .span-table [rowspan] {
     font-weight: inherit;
 }
 
-.span-table.dense td,
+.span-table.semi-dense td,
 .type-conversions td {
     border: 0.05rem solid var(--md-typeset-table-color);
     padding: 0.25rem 0.5rem;
+}
+
+.md-typeset .semi-dense table th,
+.md-typeset .semi-dense table td {
+    padding: 0.7em 1.1em;
 }
 
 .tree-table table {
@@ -34,6 +37,11 @@ table .md-tooltip {
 
 .table-stretch {
     width: 100%;
+}
+
+.no-header-break table th
+{
+    white-space: nowrap;
 }
 
 .type-conversions tr:first-child td:nth-child(3) { width: 240px; }

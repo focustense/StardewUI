@@ -40,23 +40,34 @@ public static class UiSprites
 | [CaretRight](#caretright) | A caret-style directional arrow pointing right. | 
 | [CheckboxChecked](#checkboxchecked) | Checkbox with a green "X" through it. | 
 | [CheckboxUnchecked](#checkboxunchecked) | Unchecked checkbox, i.e. only the border. | 
+| [CloseButton](#closebutton) | Red X with border/background, generally used as upper-right close button for menus. | 
 | [ControlBorder](#controlborder) | Border/background sprite for an individual control, such as a button. Less prominent than [MenuBorder](uisprites.md#menuborder). | 
+| [ControlBorderUncolored](#controlborderuncolored) | Colorless border/background sprite for an individual control, such as a button. Less prominent than [MenuBorderUncolored](uisprites.md#menuborderuncolored). | 
 | [Digits](#digits) | List of sprites for the outlined "tiny digits" 0-9, in that order. | 
 | [DropDownBackground](#dropdownbackground) | Background of a drop-down menu. | 
 | [DropDownButton](#dropdownbutton) | Button to pull down a drop-down menu. | 
 | [GenericHorizontalDivider](#generichorizontaldivider) | Simpler, lighter horizontal divider than the [MenuHorizontalDivider](uisprites.md#menuhorizontaldivider), used as a horizontal rule to separate content areas without sectioning the entire menu. | 
+| [GenericHorizontalDividerUncolored](#generichorizontaldivideruncolored) | Colorless horizontal divider that is simpler and lighter the [MenuHorizontalDividerUncolored](uisprites.md#menuhorizontaldivideruncolored), used as a horizontal rule to separate content areas without sectioning the entire menu. | 
 | [LargeDownArrow](#largedownarrow) | Large down arrow, used for macro navigation. | 
 | [LargeLeftArrow](#largeleftarrow) | Large left arrow, used for macro navigation. | 
 | [LargeRightArrow](#largerightarrow) | Large right arrow, used for macro navigation. | 
 | [LargeUpArrow](#largeuparrow) | Large up arrow, used for macro navigation. | 
 | [MenuBackground](#menubackground) | Background used for the in-game menu, not including borders. | 
+| [MenuBackgroundUncolored](#menubackgrounduncolored) | Colorless background used for the in-game menu, not including borders. | 
 | [MenuBorder](#menuborder) | Modified 9-slice sprite used for the menu border, based on menu "tiles". Used for drawing the outer border of an entire menu UI. | 
 | [MenuBorderThickness](#menuborderthickness) | The actual distance from the outer edges of the [MenuBorder](uisprites.md#menuborder) sprite to where the actual "border" really ends, in terms of pixels. The border tiles are quite large, so this tends to be needed in order to determine where the content should go without adding a ton of extra padding. | 
+| [MenuBorderUncolored](#menuborderuncolored) | Colorless version of the modified 9-slice sprite used for the menu border, based on menu "tiles". Used for drawing the outer border of an entire menu UI. | 
 | [MenuHorizontalDivider](#menuhorizontaldivider) | Modified 9-slice sprite used for the menu's horizontal divider, meant to be drawn over top of the [MenuBorder](uisprites.md#menuborder) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid). | 
 | [MenuHorizontalDividerMargin](#menuhorizontaldividermargin) | Margin adjustment to apply to content adjacent to a [MenuHorizontalDivider](uisprites.md#menuhorizontaldivider) to make content flush with the border; adjusts for internal sprite padding. | 
+| [MenuHorizontalDividerUncolored](#menuhorizontaldivideruncolored) | Colorless version of the modified 9-slice sprite used for the menu's horizontal divider, meant to be drawn over top of the [MenuBorderUncolored](uisprites.md#menuborderuncolored) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid). | 
 | [MenuSlotInset](#menuslotinset) | Inset-style background and border, often used to hold an item or represent a slot. | 
+| [MenuSlotInsetUncolored](#menuslotinsetuncolored) | Colorless inset-style background and border, often used to hold an item or represent a slot. | 
 | [MenuSlotOutset](#menuslotoutset) | Outset-style background and border, often used to hold an item or represent a slot. | 
 | [MenuSlotTransparent](#menuslottransparent) | Single-line rectangular border with a slight inset look. | 
+| [MenuSlotTransparentUncolored](#menuslottransparentuncolored) | Colorless single-line rectangular border with a slight inset look. | 
+| [MenuVerticalDivider](#menuverticaldivider) | Modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the [MenuBorder](uisprites.md#menuborder) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid). | 
+| [MenuVerticalDividerMargin](#menuverticaldividermargin) | Margin adjustment to apply to content adjacent to a [MenuVerticalDivider](uisprites.md#menuverticaldivider) to make content flush with the border; adjusts for internal sprite padding. | 
+| [MenuVerticalDividerUncolored](#menuverticaldivideruncolored) | Colorless version of the modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the [MenuBorderUncolored](uisprites.md#menuborderuncolored) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid). | 
 | [ScrollBarTrack](#scrollbartrack) | Background for the scroll bar track (which the thumb is inside). | 
 | [SliderBackground](#sliderbackground) | Background of a slider control. | 
 | [SliderButton](#sliderbutton) | The movable part of a slider control ("button"). | 
@@ -68,8 +79,13 @@ public static class UiSprites
 | [SmallUpArrow](#smalluparrow) | Small up arrow, typically used for scroll bars. | 
 | [TabTopEmpty](#tabtopempty) | Top-facing tab with no inner content, used for tab controls. | 
 | [TextBox](#textbox) | Border/background for a text input box. | 
+| [ThinHorizontalDivider](#thinhorizontaldivider) | Simple horizontal divider, typically used to divide sections of uniform content, e.g. grid rows. | 
+| [ThinHorizontalDividerUncolored](#thinhorizontaldivideruncolored) | Simple, colorless horizontal divider, typically used to divide sections of uniform content, e.g. grid rows. | 
+| [ThinVerticalDivider](#thinverticaldivider) | Simple vertical divider, typically used to divide sections of uniform content, e.g. grid columns. | 
+| [ThinVerticalDividerUncolored](#thinverticaldivideruncolored) | Simple, colorless vertical divider, typically used to divide sections of uniform content, e.g. grid columns. | 
 | [TinyTrashCan](#tinytrashcan) | Very small trash can, e.g. to be used in lists/subforms as "remove" button. | 
 | [VerticalScrollThumb](#verticalscrollthumb) | Thumb sprite used for vertical scroll bars. | 
+| [White](#white) | A single white pixel. | 
 
 ## Details
 
@@ -181,12 +197,40 @@ public static StardewUI.Graphics.Sprite CheckboxUnchecked { get; }
 
 -----
 
+#### CloseButton
+
+Red X with border/background, generally used as upper-right close button for menus.
+
+```cs
+public static StardewUI.Graphics.Sprite CloseButton { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
 #### ControlBorder
 
 Border/background sprite for an individual control, such as a button. Less prominent than [MenuBorder](uisprites.md#menuborder).
 
 ```cs
 public static StardewUI.Graphics.Sprite ControlBorder { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### ControlBorderUncolored
+
+Colorless border/background sprite for an individual control, such as a button. Less prominent than [MenuBorderUncolored](uisprites.md#menuborderuncolored).
+
+```cs
+public static StardewUI.Graphics.Sprite ControlBorderUncolored { get; }
 ```
 
 ##### Property Value
@@ -243,6 +287,20 @@ Simpler, lighter horizontal divider than the [MenuHorizontalDivider](uisprites.m
 
 ```cs
 public static StardewUI.Graphics.Sprite GenericHorizontalDivider { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### GenericHorizontalDividerUncolored
+
+Colorless horizontal divider that is simpler and lighter the [MenuHorizontalDividerUncolored](uisprites.md#menuhorizontaldivideruncolored), used as a horizontal rule to separate content areas without sectioning the entire menu.
+
+```cs
+public static StardewUI.Graphics.Sprite GenericHorizontalDividerUncolored { get; }
 ```
 
 ##### Property Value
@@ -321,6 +379,20 @@ public static StardewUI.Graphics.Sprite MenuBackground { get; }
 
 -----
 
+#### MenuBackgroundUncolored
+
+Colorless background used for the in-game menu, not including borders.
+
+```cs
+public static StardewUI.Graphics.Sprite MenuBackgroundUncolored { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
 #### MenuBorder
 
 Modified 9-slice sprite used for the menu border, based on menu "tiles". Used for drawing the outer border of an entire menu UI.
@@ -346,6 +418,20 @@ public static StardewUI.Layout.Edges MenuBorderThickness { get; }
 ##### Property Value
 
 [Edges](../layout/edges.md)
+
+-----
+
+#### MenuBorderUncolored
+
+Colorless version of the modified 9-slice sprite used for the menu border, based on menu "tiles". Used for drawing the outer border of an entire menu UI.
+
+```cs
+public static StardewUI.Graphics.Sprite MenuBorderUncolored { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
 
 -----
 
@@ -377,12 +463,40 @@ public static StardewUI.Layout.Edges MenuHorizontalDividerMargin { get; }
 
 -----
 
+#### MenuHorizontalDividerUncolored
+
+Colorless version of the modified 9-slice sprite used for the menu's horizontal divider, meant to be drawn over top of the [MenuBorderUncolored](uisprites.md#menuborderuncolored) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid).
+
+```cs
+public static StardewUI.Graphics.Sprite MenuHorizontalDividerUncolored { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
 #### MenuSlotInset
 
 Inset-style background and border, often used to hold an item or represent a slot.
 
 ```cs
 public static StardewUI.Graphics.Sprite MenuSlotInset { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### MenuSlotInsetUncolored
+
+Colorless inset-style background and border, often used to hold an item or represent a slot.
+
+```cs
+public static StardewUI.Graphics.Sprite MenuSlotInsetUncolored { get; }
 ```
 
 ##### Property Value
@@ -411,6 +525,62 @@ Single-line rectangular border with a slight inset look.
 
 ```cs
 public static StardewUI.Graphics.Sprite MenuSlotTransparent { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### MenuSlotTransparentUncolored
+
+Colorless single-line rectangular border with a slight inset look.
+
+```cs
+public static StardewUI.Graphics.Sprite MenuSlotTransparentUncolored { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### MenuVerticalDivider
+
+Modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the [MenuBorder](uisprites.md#menuborder) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid).
+
+```cs
+public static StardewUI.Graphics.Sprite MenuVerticalDivider { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### MenuVerticalDividerMargin
+
+Margin adjustment to apply to content adjacent to a [MenuVerticalDivider](uisprites.md#menuverticaldivider) to make content flush with the border; adjusts for internal sprite padding.
+
+```cs
+public static StardewUI.Layout.Edges MenuVerticalDividerMargin { get; }
+```
+
+##### Property Value
+
+[Edges](../layout/edges.md)
+
+-----
+
+#### MenuVerticalDividerUncolored
+
+Colorless version of the modified 9-slice sprite used for the menu's vertical divider, meant to be drawn over top of the [MenuBorderUncolored](uisprites.md#menuborderuncolored) to denote separate "sub-panels" or "sections" of the menu to group logically very different menu functions (as opposed to lines on a grid).
+
+```cs
+public static StardewUI.Graphics.Sprite MenuVerticalDividerUncolored { get; }
 ```
 
 ##### Property Value
@@ -577,6 +747,62 @@ public static StardewUI.Graphics.Sprite TextBox { get; }
 
 -----
 
+#### ThinHorizontalDivider
+
+Simple horizontal divider, typically used to divide sections of uniform content, e.g. grid rows.
+
+```cs
+public static StardewUI.Graphics.Sprite ThinHorizontalDivider { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### ThinHorizontalDividerUncolored
+
+Simple, colorless horizontal divider, typically used to divide sections of uniform content, e.g. grid rows.
+
+```cs
+public static StardewUI.Graphics.Sprite ThinHorizontalDividerUncolored { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### ThinVerticalDivider
+
+Simple vertical divider, typically used to divide sections of uniform content, e.g. grid columns.
+
+```cs
+public static StardewUI.Graphics.Sprite ThinVerticalDivider { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### ThinVerticalDividerUncolored
+
+Simple, colorless vertical divider, typically used to divide sections of uniform content, e.g. grid columns.
+
+```cs
+public static StardewUI.Graphics.Sprite ThinVerticalDividerUncolored { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
 #### TinyTrashCan
 
 Very small trash can, e.g. to be used in lists/subforms as "remove" button.
@@ -597,6 +823,20 @@ Thumb sprite used for vertical scroll bars.
 
 ```cs
 public static StardewUI.Graphics.Sprite VerticalScrollThumb { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### White
+
+A single white pixel.
+
+```cs
+public static StardewUI.Graphics.Sprite White { get; }
 ```
 
 ##### Property Value

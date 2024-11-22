@@ -72,7 +72,12 @@ Stardew Valley's visuals, like those of most 2D games, are based around [sprites
 
 Neither Stardew nor SMAPI have an explicit concept of a _sprite_. Since StardewUI needs to deal quite heavily with sprites, it defines its own [Sprite](../reference/stardewui/graphics/sprite.md) type, which includes not only the source image and rectangular region but also information pertaining to [9-slice scaling](https://en.wikipedia.org/wiki/9-slice_scaling), which is how it is able to display elements such as frame borders and menu backgrounds without having them appear awkwardly stretched.
 
-A variety of useful UI sprites are already included in the [UiSprites](../reference/stardewui/graphics/uisprites.md) class, and each of these sprites is available to StarML via an [asset binding](../framework/starml.md#attribute-flavors) of the form `@Mods/StardewUI/Sprites/{Name}`; for example, `@Mods/StardewUI/Sprites/CaretRight`. However, Stardew Valley has thousands of individual sprites, and if you want to use anything that's not in `UiSprites`, or any sprite that you've produced yourself, then you need to register it as an asset.
+A limited set of built-in sprites are available without any additional setup:
+
+- The [UiSprites](../reference/stardewui/graphics/uisprites.md) class contains sprites that are common for building UIs and menus in particular; these are available to StarML via an [asset binding](../framework/starml.md#attribute-flavors) of the form `@Mods/StardewUI/Sprites/{Name}`; for example, `@Mods/StardewUI/Sprites/CaretRight`.
+- To use the sprite of an in-game `Item`, use an asset binding with `Item/` prefix followed by the qualified ID; for example, `@Item/(O)24` will produce the image of a parsnip.
+
+However, Stardew Valley has thousands of individual sprites, and if you want to use anything that is not built-in, including any custom sprite that you've produced yourself, then you will need to register it as an asset.
 
 You can accomplish this with [model binding](../concepts.md#data-binding) by providing a `Texture2D` or `Tuple<Texture2D, Rectangle>` property, as described in [conversion reference](../framework/starml.md#type-conversions), but the **recommended** way to deal with sprites is to register them with StardewUI.
 

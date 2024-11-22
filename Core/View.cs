@@ -1,8 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewUI.Data;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Input;
@@ -65,6 +68,11 @@ public abstract class View : IView
     /// </summary>
     public event EventHandler<PointerEventArgs>? PointerLeave;
 
+    /// <summary>
+    /// Event raised when the pointer moves within the view.
+    /// </summary>
+    public event EventHandler<PointerMoveEventArgs>? PointerMove;
+
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -84,9 +92,6 @@ public abstract class View : IView
 
     /// <inheritdoc/>
     public Bounds ContentBounds => GetContentBounds();
-
-    /// <inheritdoc/>
-    public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
 
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
@@ -127,6 +132,9 @@ public abstract class View : IView
             }
         }
     }
+
+    /// <inheritdoc/>
+    public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
 
     /// <summary>
     /// The floating elements to display relative to this view.
@@ -222,6 +230,26 @@ public abstract class View : IView
     }
 
     /// <summary>
+    /// Opacity (alpha level) of the view.
+    /// </summary>
+    /// <remarks>
+    /// Affects this view and all descendants; used to control opacity of an entire control or layout area.
+    /// </remarks>
+    public float Opacity
+    {
+        get => opacity;
+        set
+        {
+            var newOpacity = Math.Clamp(value, 0f, 1f);
+            if (newOpacity != opacity)
+            {
+                opacity = newOpacity;
+                OnPropertyChanged(nameof(Opacity));
+            }
+        }
+    }
+
+    /// <summary>
     /// The size of the entire area occupied by this view including margins, border and padding.
     /// </summary>
     public Vector2 OuterSize => BorderSize + Margin.Total;
@@ -298,7 +326,7 @@ public abstract class View : IView
     /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
-    public string Tooltip
+    public TooltipData? Tooltip
     {
         get => tooltip;
         set
@@ -374,14 +402,18 @@ public abstract class View : IView
     private IView? draggingView;
     private ObservableCollection<FloatingElement> floatingElements = [];
     private bool hasChildrenWithOutOfBoundsContent;
+    private bool isDisposed;
     private bool isDragging;
     private bool isFocusable;
     private string name;
+    private float opacity = 1f;
+    private RenderTarget2D? opacitySourceTarget;
+    private RenderTarget2D? opacityDestinationTarget;
     private bool pointerEventsEnabled = true;
     private Vector2 previousLayoutOffset;
     private Orientation? scrollWithChildren;
     private Tags tags = new();
-    private string tooltip = "";
+    private TooltipData? tooltip = null;
     private Visibility visibility;
     private int zIndex;
 
@@ -404,6 +436,26 @@ public abstract class View : IView
             || (hasChildrenWithOutOfBoundsContent && GetChildren().Any(c => c.ContainsPoint(point)));
     }
 
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        if (isDisposed)
+        {
+            return;
+        }
+        isDisposed = true;
+        foreach (var child in GetLocalChildren())
+        {
+            child.View.Dispose();
+        }
+        opacitySourceTarget?.Dispose();
+        opacitySourceTarget = null;
+        opacityDestinationTarget?.Dispose();
+        opacityDestinationTarget = null;
+        OnDispose();
+        GC.SuppressFinalize(this);
+    }
+
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
     /// Drawing always happens after the measure pass, so <see cref="ContentSize"/> should be known and stable at this
@@ -412,21 +464,71 @@ public abstract class View : IView
     public void Draw(ISpriteBatch b)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(Draw));
-        if (Visibility != Visibility.Visible)
+        if (Visibility != Visibility.Visible || Opacity == 0)
         {
             return;
         }
-        b.Translate(Margin.Left, Margin.Top);
-        using (b.SaveTransform())
+
+        if (Opacity == 1)
         {
-            OnDrawBorder(b);
-            var borderThickness = GetBorderThickness();
-            b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
-            OnDrawContent(b);
+            DrawContent();
+            return;
         }
-        foreach (var floatingElement in FloatingElements)
+
+        // The extremely limited and frankly obtuse blending system in XNA/MonoGame seems to make this effectively
+        // impossible to do in one draw, and in fact, probably impossible or at least lacking any obvious method to do
+        // in two draws when considering nested transparencies.
+        //
+        // The reason is that there is no blend mode that combines a "blend factor" AND source alpha, it is either one
+        // or the other. Any mechanism that tries to blend directly on the back buffer will therefore either have to
+        // ignore the opacity value (making this all moot) or lose the original source alpha.
+        //
+        // So we need to use TWO temporary render targets and three steps:
+        //
+        // 1. Draw to a "source" target, preserving the source alpha;
+        // 2. Draw that source to a "destination" target, multiplying everything (including alpha) by blend factor;
+        // 3. Draw the intermediate "destination" to the actual back buffer or parent render target, again using normal
+        //    alpha blending that preserves the source alpha.
+        //
+        // The intermediate step is necessary because we are effectively having to apply the same "math" on the
+        // destination side, i.e. we cannot specify that the destination should be the product of both inverse blend
+        // factor AND inverse source alpha, we instead need one intermediate target that has both already applied.
+        SetupRenderTarget(b, ref opacitySourceTarget);
+        SetupRenderTarget(b, ref opacityDestinationTarget);
+        using (b.SetRenderTarget(opacitySourceTarget, Color.Transparent))
         {
-            floatingElement.Draw(b);
+            DrawContent();
+        }
+        using (b.SetRenderTarget(opacityDestinationTarget, Color.Transparent))
+        {
+            using var _blend = b.Blend(
+                new BlendState()
+                {
+                    ColorSourceBlend = Blend.BlendFactor,
+                    AlphaSourceBlend = Blend.BlendFactor,
+                    ColorDestinationBlend = Blend.Zero,
+                    AlphaDestinationBlend = Blend.Zero,
+                    BlendFactor = Color.White * Opacity,
+                }
+            );
+            b.Draw(opacitySourceTarget, Vector2.Zero, null);
+        }
+        b.Draw(opacityDestinationTarget, Vector2.Zero, null);
+
+        void DrawContent()
+        {
+            b.Translate(Margin.Left, Margin.Top);
+            using (b.SaveTransform())
+            {
+                OnDrawBorder(b);
+                var borderThickness = GetBorderThickness();
+                b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
+                OnDrawContent(b);
+            }
+            foreach (var floatingElement in FloatingElements)
+            {
+                floatingElement.Draw(b);
+            }
         }
     }
 
@@ -505,7 +607,7 @@ public abstract class View : IView
     /// <inheritdoc />
     public ViewChild? GetChildAt(Vector2 position)
     {
-        return GetChildrenAt(position).FirstOrDefault();
+        return GetChildrenAt(position).ZOrderDescending().FirstOrDefault();
     }
 
     /// <inheritdoc />
@@ -638,6 +740,14 @@ public abstract class View : IView
         }
     }
 
+    /// <summary>
+    /// Performs additional cleanup when <see cref="Dispose"/> is called.
+    /// </summary>
+    /// <remarks>
+    /// The default implementation is a stub. Subclasses may override this if they require separate cleanup.
+    /// </remarks>
+    protected virtual void OnDispose() { }
+
     /// <inheritdoc/>
     public virtual void OnDrag(PointerEventArgs e)
     {
@@ -733,9 +843,16 @@ public abstract class View : IView
         // For self checks, don't adjust previous position, as offset should only apply to inner content.
         var wasPointerInBounds = ContainsPoint(e.PreviousPosition);
         var isPointerInBounds = ContainsPoint(e.Position);
-        if (isPointerInBounds && !wasPointerInBounds)
+        if (isPointerInBounds)
         {
-            PointerEnter?.Invoke(this, e);
+            if (wasPointerInBounds)
+            {
+                PointerMove?.Invoke(this, e);
+            }
+            else
+            {
+                PointerEnter?.Invoke(this, e);
+            }
         }
         else if (!isPointerInBounds && wasPointerInBounds)
         {
@@ -865,13 +982,10 @@ public abstract class View : IView
     /// </remarks>
     /// <param name="contentPosition">The search position, relative to where this view's content starts (after applying
     /// margin, borders and padding).</param>
-    /// <returns>The views at the specified <paramref name="contentPosition"/>, sorted in reverse order of their
-    /// <see cref="IView.ZIndex"/>.</returns>
+    /// <returns>The views at the specified <paramref name="contentPosition"/>, in original layout order.</returns>
     protected virtual IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
-        return GetLocalChildren()
-            .Where(child => child.ContainsPoint(contentPosition))
-            .OrderByDescending(child => child.View.ZIndex);
+        return GetLocalChildren().Where(child => child.ContainsPoint(contentPosition));
     }
 
     /// <summary>
@@ -1011,7 +1125,7 @@ public abstract class View : IView
     private void DispatchPointerEvent<T>(T eventArgs, Action<IView, T> dispatch)
         where T : PointerEventArgs, IOffsettable<T>
     {
-        foreach (var child in GetChildrenAt(eventArgs.Position))
+        foreach (var child in GetChildrenAt(eventArgs.Position).ZOrderDescending())
         {
             if (child.View.PointerEventsEnabled)
             {
@@ -1107,7 +1221,7 @@ public abstract class View : IView
             return childPosition is not null ? new(draggingView, childPosition.Value) : null;
         }
 
-        foreach (var child in GetChildrenAt(position))
+        foreach (var child in GetChildrenAt(position).ZOrderDescending())
         {
             if (child.View.PointerEventsEnabled)
             {
@@ -1116,5 +1230,13 @@ public abstract class View : IView
             }
         }
         return null;
+    }
+
+    private void SetupRenderTarget(ISpriteBatch batch, [NotNull] ref RenderTarget2D? target)
+    {
+        var bounds = FloatingBounds.Aggregate(ActualBounds, (acc, bounds) => acc.Union(bounds));
+        int width = (int)MathF.Ceiling(bounds.Size.X);
+        int height = (int)MathF.Ceiling(bounds.Size.Y);
+        batch.InitializeRenderTarget(ref target, width, height);
     }
 }

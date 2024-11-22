@@ -38,4 +38,5 @@ public enum AttributeValueType
 | <a id="onetimebinding">OneTimeBinding</a> | 4 | A special type of [InputBinding](attributevaluetype.md#inputbinding) that only reads the value a single time, and does not update subsequently afterward. | 
 | <a id="outputbinding">OutputBinding</a> | 5 | A one-way data binding which obtains the value from the view and assigns it to the context data. | 
 | <a id="twowaybinding">TwoWayBinding</a> | 6 | A two-way data binding which both assigns the context data's value to the view, and the view's value to the context data, depending on which one was most recently changed. | 
+| <a id="templatebinding">TemplateBinding</a> | 7 | Binds to the attribute value of the containing template; only valid within a template node. | 
 

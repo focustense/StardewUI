@@ -1,10 +1,5 @@
-﻿using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using PropertyChanged.SourceGenerator;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewUI;
 using StardewUI.Framework;
 using StardewUITest.Examples;
 using StardewValley;
@@ -13,6 +8,8 @@ namespace StardewUITest;
 
 internal sealed partial class ModEntry : Mod
 {
+    private readonly GalleryApi api = new();
+
     // Initialized in Entry
     private ModConfig config = null!;
 
@@ -27,7 +24,6 @@ internal sealed partial class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         I18n.Init(helper.Translation);
-        UI.Initialize(helper, Monitor);
         config = helper.ReadConfig<ModConfig>();
         viewAssetPrefix = $"Mods/{ModManifest.UniqueID}/Views";
 
@@ -35,6 +31,11 @@ internal sealed partial class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
         helper.Events.Input.ButtonPressed += Input_ButtonPressed;
+    }
+
+    public override object? GetApi()
+    {
+        return api;
     }
 
     private void Display_RenderedHud(object? sender, RenderedHudEventArgs e)
@@ -73,87 +74,78 @@ internal sealed partial class ModEntry : Mod
                 }
                 else
                 {
-                    ShowExampleMenu3();
-                }
-                break;
-            case SButton.F9:
-                if (e.IsDown(SButton.LeftShift))
-                {
-                    ShowBestiary();
-                }
-                else
-                {
-                    ShowExampleMenu2();
+                    ShowGallery();
                 }
                 break;
         }
+    }
+
+    private void OpenExample(string assetName, object? context)
+    {
+        viewEngine.CreateMenuControllerFromAsset(assetName, context).Launch();
     }
 
     private void ShowBestiary()
     {
         var bestiary = BestiaryViewModel.LoadFromGameData();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Bestiary", bestiary);
+        OpenExample($"{viewAssetPrefix}/Example-Bestiary", bestiary);
     }
 
-    private void ShowExampleMenu1()
-    {
-        var context = new { HeaderText = "Example Menu Title", ItemData = ItemRegistry.GetData("(O)117") };
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/TestView", context);
-    }
-
-    private void ShowExampleMenu2()
-    {
-        var context = EdiblesViewModel.LoadFromGameData();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
-            $"{viewAssetPrefix}/Example-ScrollingItemGrid",
-            context
-        );
-    }
-
-    partial class Example3Model : INotifyPropertyChanged
-    {
-        [Notify]
-        private bool enableTurboBoost = true;
-
-        [Notify]
-        private float speedMultiplier = 25;
-    }
-
-    private void ShowExampleMenu3()
-    {
-        var context = new Example3Model();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Form", context);
-    }
-
-    private void ShowCropsGridExample()
+    private void ShowCropsGrid()
     {
         cropsGrid = new();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-CropsGrid", cropsGrid);
+        OpenExample($"{viewAssetPrefix}/Example-CropsGrid", cropsGrid);
     }
 
-    partial class TabData(string name, Texture2D texture, Rectangle sourceRect) : INotifyPropertyChanged
+    private void ShowForm()
     {
-        public string Name { get; } = name;
-        public Tuple<Texture2D, Rectangle> Sprite { get; } = Tuple.Create(texture, sourceRect);
-
-        [Notify]
-        private bool active;
-    }
-
-    partial class TabsViewModel
-    {
-        public IReadOnlyList<TabData> Tabs { get; set; } = [];
-
-        public void OnTabActivated(string name)
+        var context = new FormViewModel();
+        var controller = viewEngine.CreateMenuControllerFromAsset($"{viewAssetPrefix}/Example-Form", context);
+        controller.EnableCloseButton();
+        controller.CanClose = () => context.AllowClose;
+        controller.Closing += () => Monitor.Log("Menu Closing", LogLevel.Info);
+        controller.Closed += () => Monitor.Log("Menu Closed", LogLevel.Info);
+        if (Helper.Input.IsDown(SButton.RightShift))
         {
-            foreach (var tab in Tabs)
-            {
-                if (tab.Name != name)
-                {
-                    tab.Active = false;
-                }
-            }
+            var position = Game1.getMousePosition(true);
+            controller.PositionSelector = () => position;
         }
+        controller.Launch();
+    }
+
+    private void ShowGallery()
+    {
+        var context = new GalleryViewModel(
+            [
+                new(
+                    I18n.Gallery_Example_ItemGrid_Title(),
+                    I18n.Gallery_Example_ItemGrid_Description(),
+                    "(BC)232",
+                    ShowItemGrid
+                ),
+                new(
+                    I18n.Gallery_Example_Bestiary_Title(),
+                    I18n.Gallery_Example_Bestiary_Description(),
+                    "(O)Book_Void",
+                    ShowBestiary
+                ),
+                new(
+                    I18n.Gallery_Example_CropCalendar_Title(),
+                    I18n.Gallery_Example_CropCalendar_Description(),
+                    "(O)24",
+                    ShowCropsGrid
+                ),
+                new(I18n.Gallery_Example_Form_Title(), I18n.Gallery_Example_Form_Description(), "(O)867", ShowForm),
+                .. api.Registrations.Select(register => register()),
+            ]
+        );
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Gallery", context);
+    }
+
+    private void ShowItemGrid()
+    {
+        var context = EdiblesViewModel.LoadFromGameData();
+        OpenExample($"{viewAssetPrefix}/Example-ScrollingItemGrid", context);
     }
 
     private void ShowTabsExample()

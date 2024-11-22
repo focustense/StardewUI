@@ -75,7 +75,7 @@ The object type.
 Gets the singleton descriptor instance for the current object/property type.
 
 ```cs
-public static readonly StardewUI.Framework.Descriptors.ThisPropertyDescriptor`1 Instance;
+public static readonly StardewUI.Framework.Descriptors.ThisPropertyDescriptor<T> Instance;
 ```
 
 ##### Field Value

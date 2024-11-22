@@ -44,7 +44,7 @@ public enum TokenType
 | <a id="quote">Quote</a> | 10 | Double quote character (`"`) used to start or terminate a [Literal](tokentype.md#literal) string. | 
 | <a id="bindingstart">BindingStart</a> | 11 | A pair of opening braces (`{{`), used to start a binding expression for an attribute value. | 
 | <a id="bindingend">BindingEnd</a> | 12 | A pair of closing braces (`}}`), used to end a binding expression for an attribute value. | 
-| <a id="bindingmodifier">BindingModifier</a> | 13 | An explicit binding modifier; one of `@` (asset), `<` (input only), `>` (output only) or `<>` (two-way). | 
+| <a id="bindingmodifier">BindingModifier</a> | 13 | An explicit binding modifier; one of `@` (asset), `#` (translation), `&` (template), `<` (input only), `>` (output only) or `<>` (two-way). | 
 | <a id="contextparent">ContextParent</a> | 14 | A caret (`^`) used in a binding expression, indicating a walk up to the parent context. | 
 | <a id="contextancestor">ContextAncestor</a> | 15 | A tilde (`~`) used in a binding expression, indicating traversal up to a parent with a named type. | 
 | <a id="pipe">Pipe</a> | 16 | The pipe (`|`) character, which is used to start and end event bindings. | 

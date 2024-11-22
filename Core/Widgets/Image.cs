@@ -7,7 +7,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A view that draws a sprite, scaled to the layout size.
 /// </summary>
-public class Image : View
+public partial class Image : View
 {
     /// <summary>
     /// How to fit the image in the content area, if sizes differ.

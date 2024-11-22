@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2024-11-22
+
+### Added
+
+- [Templates](https://focustense.github.io/StardewUI/framework/) are a lightweight alternative to Included Views, which support attribute substitution and require no extra assets.
+- [Menu Controllers](https://focustense.github.io/StardewUI/getting-started/displaying-ui/#menu-controllers), available via the new `CreateMenuController` APIs, enable additional customization of the menu shell. Customize a menu's position, screen dimming, whether it is allowed to close, and more.
+- Menus can now display a top-right close button (red "X") similar to the game's main menu.
+- All views now have a `pointer-move` event.
+- All views now have an `opacity` property that controls transparency of the entire view/layout.
+- Specific item sprites can now be referenced as asset bindings, e.g. `<image sprite={@Item/(O)152} />`.
+- Several additional common sprites added to `UiSprites`, including the uncolored menu tiles, and a white pixel for background shading.
+
+### Changed
+
+- Performance improvements, leading to initial load times reduced by 60-70%.
+- All `tooltip` attributes are now `TooltipData` and support all extended vanilla tooltip features: item images, recovery stats, cost/currency, etc.
+  - Includes implicit conversion from `string`, so views already using string-based tooltips will continue to function as before.
+- Implicit z-ordering now works the same as explicit `z-index`; whichever view draws on top will receive pointer events first.
+- Hot-reload system is now also aware of [.NET Hot Reload](https://learn.microsoft.com/en-us/visualstudio/debugger/hot-reload?view=vs-2022) ("Edit and Continue"), and it is now possible for hot-reloaded assets (i.e. changed `.sml`) to access hot-reloaded fields, properties and other members.
+- Test mod rewritten as a full example gallery/demo.
+
+### Fixed
+
+- Drop-down lists respect the `option-min-width` attribute again.
+- No more error log spam when the game is using a language other than English.
+- Named colors, e.g. as in `color="Blue"`, are parsed correctly.
+- Cursor location snaps back to original position after exiting on-screen keyboard (via gamepad).
+- Empty attributes such as `text=""` are correctly interpreted as empty strings instead of breaking the parser.
+- Exponential backoff error-handling behavior, which was implemented in 0.2.0 and regressed in 0.3.0, is working again.
+
 ## [0.3.0] - 2024-11-10
 
 ### Added
@@ -87,7 +117,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Initial documentation site based on material-mkdocs; many pages are stubs.
 - Syntax highlighting for Visual Studio, VSCode and Notepad++.
 
-[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/focustense/StardewUI/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/focustense/StardewUI/compare/v0.2.5...v0.3.0
 [0.2.5]: https://github.com/focustense/StardewUI/compare/v0.2.0...v0.2.5
 [0.2.0]: https://github.com/focustense/StardewUI/compare/v0.1.0...v0.2.0

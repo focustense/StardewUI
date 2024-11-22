@@ -127,7 +127,15 @@ public ref struct DocumentReader(Lexer lexer)
                 Argument = new(ArgumentExpressionType.Literal, quotedExpression, 0, []);
                 return true;
             case TokenType.ArgumentPrefix:
-                defaultExpressionType = ArgumentExpressionType.EventBinding;
+                defaultExpressionType = lexer.Current.Text switch
+                {
+                    "$" => ArgumentExpressionType.EventBinding,
+                    "&" => ArgumentExpressionType.TemplateBinding,
+                    _ => throw ParserException.ForCurrentToken(
+                        lexer,
+                        $"Invalid prefix '{lexer.Current.Text}' found for method argument."
+                    ),
+                };
                 lexer.ReadRequiredToken(TokenType.Name);
                 goto default;
             default:
@@ -272,6 +280,7 @@ public ref struct DocumentReader(Lexer lexer)
             ">" => AttributeValueType.OutputBinding,
             "@" => AttributeValueType.AssetBinding,
             "#" => AttributeValueType.TranslationBinding,
+            "&" => AttributeValueType.TemplateBinding,
             _ => throw new ArgumentException($"Invalid binding modifier: {token}", nameof(token)),
         };
     }
@@ -327,8 +336,14 @@ public ref struct DocumentReader(Lexer lexer)
             TokenType.BindingModifier,
             TokenType.ContextParent,
             TokenType.ContextAncestor,
-            TokenType.Literal
+            TokenType.Literal,
+            TokenType.Quote
         );
+        if (lexer.Current.Type == TokenType.Quote)
+        {
+            Attribute = new(name, type, valueType, "", 0, "");
+            return;
+        }
         if (lexer.Current.Type == TokenType.BindingModifier)
         {
             valueType = GetBindingType(lexer.Current.Text);

@@ -74,8 +74,8 @@ public enum TokenType
     BindingEnd,
 
     /// <summary>
-    /// An explicit binding modifier; one of <c>@</c> (asset), <c>&lt;</c> (input only), <c>&gt;</c> (output only) or
-    /// <c>&lt;&gt;</c> (two-way).
+    /// An explicit binding modifier; one of <c>@</c> (asset), <c>#</c> (translation), <c>&amp;</c> (template),
+    /// <c>&lt;</c> (input only), <c>&gt;</c> (output only) or <c>&lt;&gt;</c> (two-way).
     /// </summary>
     BindingModifier,
 
@@ -329,6 +329,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['>', ..] => new(TokenType.BindingModifier, 1),
                 ['@', ..] => new(TokenType.BindingModifier, 1),
                 ['#', ..] => new(TokenType.BindingModifier, 1),
+                ['&', ..] => new(TokenType.BindingModifier, 1),
                 _ => nameSeparatorEnabled ? ReadLiteralStringUntil("}", ".") : ReadLiteralStringUntil("}"),
             },
             Mode.Event => text switch
@@ -349,6 +350,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 [',', ..] => new(TokenType.ArgumentSeparator, 1),
                 ['"', ..] => new(TokenType.Quote, 1),
                 ['$', ..] => new(TokenType.ArgumentPrefix, 1),
+                ['&', ..] => new(TokenType.ArgumentPrefix, 1),
                 _ => ReadName(),
             },
             _ => text switch

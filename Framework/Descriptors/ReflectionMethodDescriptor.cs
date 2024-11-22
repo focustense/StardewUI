@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -13,24 +15,49 @@ public static class ReflectionMethodDescriptor
         nameof(CreateDescriptorFactory),
         BindingFlags.Static | BindingFlags.NonPublic
     )!;
-    private static readonly Dictionary<MethodInfo, IMethodDescriptor> descriptorCache = [];
-    private static readonly Dictionary<Type, DescriptorFactory> factoryCache = [];
+    private static readonly ConcurrentDictionary<MethodInfo, IMethodDescriptor> descriptorCache = [];
+    private static readonly ConcurrentDictionary<Type, DescriptorFactory> factoryCache = [];
 
     /// <summary>
     /// Creates or retrieves a descriptor for a given method.
     /// </summary>
     /// <param name="method">The method info.</param>
     /// <returns>The descriptor for the specified <paramref name="method"/>.</returns>
-    public static IMethodDescriptor FromMethodInfo(MethodInfo method)
+    internal static IMethodDescriptor FromMethodInfo(MethodInfo method)
     {
         using var _ = Trace.Begin(nameof(ReflectionMethodDescriptor), nameof(FromMethodInfo));
-        if (!descriptorCache.TryGetValue(method, out var descriptor))
-        {
-            var descriptorFactory = GetDescriptorFactory(method.ReturnType);
-            descriptor = descriptorFactory(method);
-            descriptorCache.Add(method, descriptor);
-        }
+        var descriptor = descriptorCache.GetOrAdd(
+            method,
+            static method =>
+            {
+                var descriptorFactory = GetDescriptorFactory(method.ReturnType);
+                return descriptorFactory(method);
+            }
+        );
         return descriptor;
+    }
+
+    /// <summary>
+    /// Checks if a method is supported for view binding.
+    /// </summary>
+    /// <param name="method">The method info.</param>
+    /// <returns><c>true</c> if a <see cref="ReflectionMethodDescriptor{TResult}"/> can be created for the specified
+    /// <paramref name="method"/>, otherwise <c>false</c>.</returns>
+    public static bool IsSupported(MethodInfo method)
+    {
+        return method.DeclaringType is not null
+            && !method.IsGenericMethod
+            && !method.IsGenericMethodDefinition
+            && method.GetParameters().All(p => !p.IsIn && !p.IsOut && !p.ParameterType.IsByRef);
+    }
+
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        ReflectionMethodDescriptor<object>.Warmup();
+        ReflectionMethodDescriptor<bool>.Warmup();
     }
 
     private static IMethodDescriptor CreateDescriptorFactory<TResult>(MethodInfo method)
@@ -101,12 +128,11 @@ public static class ReflectionMethodDescriptor
         {
             returnType = typeof(object);
         }
-        if (!factoryCache.TryGetValue(returnType, out var factory))
-        {
-            factory = createDescriptorFactoryMethod.MakeGenericMethod(returnType).CreateDelegate<DescriptorFactory>();
-            factoryCache.Add(returnType, factory);
-        }
-        return factory;
+        return factoryCache.GetOrAdd(
+            returnType,
+            static returnType =>
+                createDescriptorFactoryMethod.MakeGenericMethod(returnType).CreateDelegate<DescriptorFactory>()
+        );
     }
 }
 
@@ -132,6 +158,19 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
     private readonly IInvoker<TResult> invoker;
     private readonly MethodInfo method;
     private readonly Dictionary<int, IInvoker<TResult>> optionalInvokers = [];
+
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        for (int i = 1; i < 9; i++)
+        {
+            var argumentTypes = new Type[i];
+            Array.Fill(argumentTypes, typeof(object));
+            GetInvokerType(argumentTypes);
+        }
+    }
 
     /// <summary>
     /// Initializes a new instance of <see cref="ReflectionMethodDescriptor{TResult}"/>.
@@ -199,7 +238,15 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
     private IInvoker<TResult> CreateInvoker(Type[] argumentTypes)
     {
         using var _ = Trace.Begin(this, nameof(CreateInvoker));
-        var invokerType = argumentTypes.Length switch
+        var invokerType = GetInvokerType(argumentTypes);
+        return invokerType is not null
+            ? (IInvoker<TResult>)invokerType.GetConstructor([typeof(MethodInfo)])!.Invoke([method])
+            : new ReflectionInvoker<TResult>(method);
+    }
+
+    private static Type? GetInvokerType(Type[] argumentTypes)
+    {
+        return argumentTypes.Length switch
         {
             1 => typeof(Invoker<>).MakeGenericType(argumentTypes),
             2 => typeof(Invoker<,>).MakeGenericType(argumentTypes),
@@ -212,9 +259,6 @@ internal class ReflectionMethodDescriptor<TResult> : IMethodDescriptor<TResult>
             9 => typeof(Invoker<,,,,,,,,>).MakeGenericType(argumentTypes),
             _ => null,
         };
-        return invokerType is not null
-            ? (IInvoker<TResult>)invokerType.GetConstructor([typeof(MethodInfo)])!.Invoke([method])
-            : new ReflectionInvoker<TResult>(method);
     }
 }
 
@@ -267,9 +311,10 @@ file class ReflectionInvoker<TResult>(MethodInfo method) : IInvoker<TResult>
 // slower DefaultInvoker implementation using reflection instead of delegates.
 file class Invoker<TResult>(MethodInfo method) : IInvoker<TResult>
 {
-    private readonly Action? invokeAction = method.ReturnType == typeof(void) ? method.CreateDelegate<Action>() : null;
+    private readonly Action? invokeAction =
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action>() : null;
     private readonly Func<TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -285,9 +330,9 @@ file class Invoker<TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0>>() : null;
     private readonly Func<T0, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -304,9 +349,9 @@ file class Invoker<T0, TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, T1, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1>>() : null;
     private readonly Func<T0, T1, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -324,9 +369,9 @@ file class Invoker<T0, T1, TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, T1, T2, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2>>() : null;
     private readonly Func<T0, T1, T2, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -345,9 +390,9 @@ file class Invoker<T0, T1, T2, TResult>(MethodInfo method) : IInvoker<TResult>
 file class Invoker<T0, T1, T2, T3, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3>>() : null;
     private readonly Func<T0, T1, T2, T3, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -367,9 +412,9 @@ file class Invoker<T0, T1, T2, T3, TResult>(MethodInfo method) : IInvoker<TResul
 file class Invoker<T0, T1, T2, T3, T4, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -390,9 +435,9 @@ file class Invoker<T0, T1, T2, T3, T4, TResult>(MethodInfo method) : IInvoker<TR
 file class Invoker<T0, T1, T2, T3, T4, T5, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4, T5>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4, T5>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4, T5>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, T5, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, T5, TResult>>() : null;
+        method.ReturnType != typeof(void) ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, T5, TResult>>() : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -414,9 +459,11 @@ file class Invoker<T0, T1, T2, T3, T4, T5, TResult>(MethodInfo method) : IInvoke
 file class Invoker<T0, T1, T2, T3, T4, T5, T6, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4, T5, T6>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, T5, T6, TResult>? invokeFunc =
-        method.ReturnType != typeof(void) ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, TResult>>() : null;
+        method.ReturnType != typeof(void)
+            ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, TResult>>()
+            : null;
 
     public TResult Invoke(object? target, object?[] args)
     {
@@ -439,10 +486,10 @@ file class Invoker<T0, T1, T2, T3, T4, T5, T6, TResult>(MethodInfo method) : IIn
 file class Invoker<T0, T1, T2, T3, T4, T5, T6, T7, TResult>(MethodInfo method) : IInvoker<TResult>
 {
     private readonly Action<T0, T1, T2, T3, T4, T5, T6, T7>? invokeAction =
-        method.ReturnType == typeof(void) ? method.CreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6, T7>>() : null;
+        method.ReturnType == typeof(void) ? method.SafeCreateDelegate<Action<T0, T1, T2, T3, T4, T5, T6, T7>>() : null;
     private readonly Func<T0, T1, T2, T3, T4, T5, T6, T7, TResult>? invokeFunc =
         method.ReturnType != typeof(void)
-            ? method.CreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, T7, TResult>>()
+            ? method.SafeCreateDelegate<Func<T0, T1, T2, T3, T4, T5, T6, T7, TResult>>()
             : null;
 
     public TResult Invoke(object? target, object?[] args)
@@ -474,5 +521,34 @@ file static class ArgumentExtensions
                 : args[argIndex - 1]
             : args[argIndex];
         return (T)argObject!;
+    }
+}
+
+file static class MethodInfoExtensions
+{
+    public static T SafeCreateDelegate<T>(this MethodInfo method)
+        where T : Delegate
+    {
+        if (
+            method.IsStatic
+            || method.DeclaringType is null
+            || (!method.DeclaringType.IsValueType && method.DeclaringType != typeof(ValueType))
+        )
+        {
+            return method.CreateDelegate<T>();
+        }
+        // Compiling an expression here is substantially slower than MethodInfo.CreateDelegate, but it is the only
+        // mechanism (other than IL emit, which is even worse) that seems to work correctly for value types.
+        var instanceType = method.DeclaringType == typeof(ValueType) ? method.ReflectedType! : method.DeclaringType;
+        var instanceParam = Expression.Parameter(instanceType, "instance");
+        var parameters = method.GetParameters();
+        var arguments = new Expression[parameters.Length];
+        var argumentsWithInstance = new ParameterExpression[parameters.Length + 1];
+        argumentsWithInstance[0] = instanceParam;
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            arguments[i] = argumentsWithInstance[i + 1] = Expression.Parameter(parameters[i].ParameterType, "arg" + i);
+        }
+        return Expression.Lambda<T>(Expression.Call(instanceParam, method, arguments), argumentsWithInstance).Compile();
     }
 }

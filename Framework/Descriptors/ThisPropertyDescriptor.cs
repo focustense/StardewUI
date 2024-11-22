@@ -22,6 +22,14 @@ public static class ThisPropertyDescriptor
                 .GetField(nameof(ThisPropertyDescriptor<object>.Instance), BindingFlags.Public | BindingFlags.Static)!
                 .GetValue(null)!;
     }
+
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    internal static void Warmup()
+    {
+        typeof(ThisPropertyDescriptor<>).MakeGenericType(typeof(object));
+    }
 }
 
 /// <summary>

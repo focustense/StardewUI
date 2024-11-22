@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 
 namespace StardewUI.Framework.Descriptors;
 
@@ -7,7 +8,7 @@ namespace StardewUI.Framework.Descriptors;
 /// </summary>
 public static class ReflectionPropertyDescriptor
 {
-    private static readonly Dictionary<PropertyInfo, IPropertyDescriptor> cache = [];
+    private static readonly ConcurrentDictionary<PropertyInfo, IPropertyDescriptor> cache = [];
     private static readonly Type reflectionPropertyType = typeof(ReflectionPropertyDescriptor<,>);
 
     /// <summary>
@@ -21,17 +22,17 @@ public static class ReflectionPropertyDescriptor
     public static IPropertyDescriptor FromPropertyInfo(PropertyInfo propertyInfo)
     {
         using var _ = Trace.Begin(nameof(ReflectionPropertyDescriptor), nameof(FromPropertyInfo));
-        if (!cache.TryGetValue(propertyInfo, out var descriptor))
-        {
-            var genericType = reflectionPropertyType.MakeGenericType(
-                propertyInfo.DeclaringType!,
-                propertyInfo.PropertyType
-            );
-            descriptor = (IPropertyDescriptor)
-                genericType.GetConstructor([typeof(PropertyInfo)])!.Invoke([propertyInfo]);
-            cache.Add(propertyInfo, descriptor);
-        }
-        return descriptor;
+        return cache.GetOrAdd(
+            propertyInfo,
+            static propertyInfo =>
+            {
+                var genericType = reflectionPropertyType.MakeGenericType(
+                    propertyInfo.DeclaringType!,
+                    propertyInfo.PropertyType
+                );
+                return (IPropertyDescriptor)genericType.GetConstructor([typeof(PropertyInfo)])!.Invoke([propertyInfo]);
+            }
+        );
     }
 }
 
@@ -175,27 +176,17 @@ public class ReflectionPropertyDescriptor<T, TValue> : IPropertyDescriptor<TValu
     private static int GetFieldMetadataToken(MethodBody body, bool isStatic)
     {
         var il = body.GetILAsByteArray() ?? [];
+        // csharpier-ignore
         return isStatic switch
         {
             true => il.Length == 6
-            && il[0]
-                != /* ldsfld */
-                0x7e
-            && il[5]
-                != /* ret */
-                0x2a
-                ? BitConverter.ToInt32(il, 1)
-                : 0,
+                && il[0] != /* ldsfld */ 0x7e
+                && il[5] != /* ret */ 0x2a
+                ? BitConverter.ToInt32(il, 1) : 0,
             false => il.Length == 7
-            && il[0]
-                == /* ldarg.0 */
-                0x02
-            && il[1]
-                == /* ldfld */
-                0x7b
-            && il[6]
-                == /* ret */
-                0x2a
+                && il[0] == /* ldarg.0 */ 0x02
+                && il[1] == /* ldfld */ 0x7b
+                && il[6] == /* ret */ 0x2a
                 ? BitConverter.ToInt32(il, 2)
                 : 0,
         };

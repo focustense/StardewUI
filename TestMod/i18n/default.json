@@ -1,4 +1,26 @@
 {
-  "ExampleForm.TurboBoost.Title": "Enable turbo boost",
-  "ExampleForm.SpeedMultiplier.Title": "Speed multiplier"
+  "Example.Form.Profile.Heading": "Farmer Info",
+  "Example.Form.Name.Title": "First Name",
+  "Example.Form.PetType.Title": "Preferred Pet",
+  "Example.Form.TomatoType.Title": "Tomatoes are a",
+  "Example.Form.UI.Heading": "User Interface",
+  "Example.Form.ColorTheme.Title": "Color Theme",
+  "Example.Form.Opacity.Title": "Menu Opacity",
+  "Example.Form.Keybind.Title": "Hotkeys",
+  "Example.Form.Keybind.Add": "Add",
+  "Example.Form.Keybind.Empty": "Not set",
+  "Example.Form.AllowClose.Title": "Allow Closing",
+  "Example.Form.Button.Cancel": "Cancel",
+  "Example.Form.Button.OK": "OK",
+
+  "Gallery.Title": "Stardew UI Gallery",
+  "Gallery.Welcome": "Welcome to StardewUI's example gallery! To get started, click on any of the examples below to see it in action.",
+  "Gallery.Example.ItemGrid.Title": "Item Grid",
+  "Gallery.Example.ItemGrid.Description": "'Intro to Stardew UI': A simple grid of items, showing their names and tooltips, like you might see in an inventory menu.",
+  "Gallery.Example.Bestiary.Title": "Bestiary",
+  "Gallery.Example.Bestiary.Description": "A tiny interactive monster guide. Shows animations, combat stats and loot tables in a tabbed view.",
+  "Gallery.Example.CropCalendar.Title": "Crop Calendar",
+  "Gallery.Example.CropCalendar.Description": "Idea for an interactive crop planner: view seeds, blooms, produce and harvest timing for any growable item.",
+  "Gallery.Example.Form.Title": "Settings Form",
+  "Gallery.Example.Form.Description": "Generic Mod Config Menu is great, but what if you're looking to build something a little less generic?"
 }

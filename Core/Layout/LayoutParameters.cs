@@ -173,16 +173,18 @@ public readonly struct LayoutParameters : IEquatable<LayoutParameters>
         // but have its height match the content; here we will get a valid value for constrainedWidth and an invalid
         // value for constrainedHeight, which will be translated into a constrained size having the computed width and
         // original (container-available) height.
-        var constrainedWidth = Math.Min(
+        var constrainedWidth = Math.Clamp(
             // Despite the odd, seemingly-redundant look of this code, it's doing the correct thing:
             // - Always constrain to the max width/height, no matter what else happens;
             // - If the length is not content-dependent, then use it;
             // - Otherwise, set the limit to the maximum size available (which is subsequently constrained by max).
             Width.Resolve(availableSize.X, () => availableSize.X),
+            MinWidth ?? 0,
             MaxWidth ?? float.PositiveInfinity
         );
-        var constrainedHeight = Math.Min(
+        var constrainedHeight = Math.Clamp(
             Height.Resolve(availableSize.Y, () => availableSize.Y),
+            MinHeight ?? 0,
             MaxHeight ?? float.PositiveInfinity
         );
         return new Vector2(constrainedWidth, constrainedHeight);

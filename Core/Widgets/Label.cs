@@ -10,7 +10,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A view that renders a read-only text string.
 /// </summary>
-public class Label : View
+public partial class Label : View
 {
     /// <summary>
     /// Creates a typical, simple run of 1-line text using content sizing.

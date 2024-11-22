@@ -10,7 +10,11 @@ namespace StardewUI.Events;
 /// </summary>
 /// <inheritdoc cref="PointerEventArgs(Vector2)" path="/param[@name='position']"/>
 /// <param name="button">The specific button that triggered the click.</param>
-public class ClickEventArgs(Vector2 position, SButton button) : PointerEventArgs(position), IOffsettable<ClickEventArgs>
+public class ClickEventArgs(
+#pragma warning disable 1573
+    Vector2 position,
+#pragma warning restore 1573
+    SButton button) : PointerEventArgs(position), IOffsettable<ClickEventArgs>
 {
     /// <summary>
     /// The specific button that triggered the click.

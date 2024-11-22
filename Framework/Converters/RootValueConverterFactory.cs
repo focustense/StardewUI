@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Data;
 using StardewUI.Layout;
+using StardewValley.ItemTypeDefinitions;
 
 namespace StardewUI.Framework.Converters;
 
@@ -53,21 +55,30 @@ internal class RootValueConverterFactory : ValueConverterFactory
 
         // Edges are better to bind as numbers, so we can use tuples and XNA equivalents in some cases.
         TryRegister<int, Edges>(all => new(all));
+        TryRegister<(int, int), Edges>(t => new(t.Item1, t.Item2));
         TryRegister<Tuple<int, int>, Edges>(t => new(t.Item1, t.Item2));
         TryRegister<Point, Edges>(p => new(p.X, p.Y));
         TryRegister<Vector2, Edges>(v => new((int)v.X, (int)v.Y));
+        TryRegister<(int, int, int, int), Edges>(t => new(t.Item1, t.Item2, t.Item3, t.Item4));
         TryRegister<Tuple<int, int, int, int>, Edges>(t => new(t.Item1, t.Item2, t.Item3, t.Item4));
+        TryRegister<(Point, Point), Edges>(t => new(t.Item1.X, t.Item1.Y, t.Item2.X, t.Item2.Y));
         TryRegister<Tuple<Point, Point>, Edges>(t => new(t.Item1.X, t.Item1.Y, t.Item2.X, t.Item2.Y));
+        TryRegister<(Vector2, Vector2), Edges>(t =>
+            new((int)t.Item1.X, (int)t.Item1.Y, (int)t.Item2.X, (int)t.Item2.Y)
+        );
         TryRegister<Tuple<Vector2, Vector2>, Edges>(t =>
             new((int)t.Item1.X, (int)t.Item1.Y, (int)t.Item2.X, (int)t.Item2.Y)
         );
         TryRegister<Vector4, Edges>(v => new((int)v.X, (int)v.Y, (int)v.Z, (int)v.W));
         // And the reverse conversions, where applicable...
+        TryRegister<Edges, (int, int, int, int)>(e => (e.Left, e.Top, e.Right, e.Bottom));
         TryRegister<Edges, Tuple<int, int, int, int>>(e => Tuple.Create(e.Left, e.Top, e.Right, e.Bottom));
         TryRegister<Edges, Vector4>(e => new(e.Left, e.Top, e.Right, e.Bottom));
 
         // Bounds are similar to edges, except we never accept them as inputs, so only need reverse conversions.
+        TryRegister<Bounds, (float, float, float, float)>(b => (b.Left, b.Top, b.Right, b.Bottom));
         TryRegister<Bounds, Tuple<float, float, float, float>>(b => Tuple.Create(b.Left, b.Top, b.Right, b.Bottom));
+        TryRegister<Bounds, (Vector2, Vector2)>(b => (b.Position, b.Size));
         TryRegister<Bounds, Tuple<Vector2, Vector2>>(b => Tuple.Create(b.Position, b.Size));
         TryRegister<Bounds, Vector4>(b => new(b.Left, b.Top, b.Right, b.Bottom));
         TryRegister<Bounds, Rectangle>(b => new(b.Position.ToPoint(), b.Size.ToPoint()));
@@ -77,6 +88,15 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new ItemSpriteConverter());
         TryRegister(new TextureSpriteConverter());
         TryRegister(new TextureRectSpriteConverter());
+
+        // Tooltips have a lot of different parameters; these are some common conversions.
+        TryRegister<string, TooltipData>(text => new(text));
+        TryRegister<(string, string), TooltipData>(t => new(t.Item2, t.Item1));
+        TryRegister<Tuple<string, string>, TooltipData>(t => new(t.Item2, t.Item1));
+        TryRegister<ParsedItemData, TooltipData>(data =>
+            new(data.Description, data.DisplayName, ItemRegistry.Create(data.ItemId))
+        );
+        TryRegister<Item, TooltipData>(item => new(item.getDescription(), item.DisplayName, item));
 
         // Most enums are fine using the standard string-to-enum conversion.
         Register(new EnumNameConverterFactory());

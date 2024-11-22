@@ -10,7 +10,7 @@ namespace StardewUI.Widgets;
 /// The size of the view is entirely controlled by its <see cref="View.Layout"/>; that is, it is considered to have no
 /// content and setting both dimensions to <see cref="Layout.Length.Content"/> will cause it to disappear.
 /// </remarks>
-public class Spacer : View
+public partial class Spacer : View
 {
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b) { }

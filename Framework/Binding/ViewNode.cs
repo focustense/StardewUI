@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using System.Text;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Descriptors;
@@ -58,6 +59,19 @@ public class ViewNode(
 
     /// <inheritdoc />
     public IReadOnlyList<IView> Views => view is not null ? [view] : [];
+
+    /// <summary>
+    /// Pre-initializes some reflection state in order to make future invocations faster.
+    /// </summary>
+    /// <remarks>
+    /// This method uses reflection and should only be invoked during background startup.
+    /// </remarks>
+    /// <typeparam name="TView">The view type.</typeparam>
+    internal static void Warmup<TView>()
+        where TView : IView
+    {
+        ReflectionChildrenBinder.Warmup<TView>();
+    }
 
     private IViewBinding? binding;
     private IValueSource? childContextSource;
@@ -232,7 +246,7 @@ public class ViewNode(
 
     static class ReflectionChildrenBinder
     {
-        private static readonly Dictionary<Type, IChildrenBinder?> cache = [];
+        private static readonly ConcurrentDictionary<Type, IChildrenBinder?> cache = [];
         private static readonly MethodInfo factoryMethodDefinition = typeof(ReflectionChildrenBinder).GetMethod(
             nameof(CreateChildrenBinder),
             BindingFlags.Static | BindingFlags.NonPublic
@@ -241,13 +255,22 @@ public class ViewNode(
         public static IChildrenBinder? FromViewDescriptor(IViewDescriptor viewDescriptor)
         {
             using var _ = Trace.Begin(nameof(ReflectionChildrenBinder), nameof(FromViewDescriptor));
-            if (!cache.TryGetValue(viewDescriptor.TargetType, out var childrenBinder))
-            {
-                var factoryMethod = factoryMethodDefinition.MakeGenericMethod(viewDescriptor.TargetType);
-                childrenBinder = (IChildrenBinder)factoryMethod.Invoke(null, [viewDescriptor])!;
-                cache.Add(viewDescriptor.TargetType, childrenBinder);
-            }
-            return childrenBinder;
+            return cache.GetOrAdd(
+                viewDescriptor.TargetType,
+                _ =>
+                {
+                    var factoryMethod = factoryMethodDefinition.MakeGenericMethod(viewDescriptor.TargetType);
+                    return (IChildrenBinder)factoryMethod.Invoke(null, [viewDescriptor])!;
+                }
+            );
+        }
+
+        /// <summary>
+        /// Pre-initializes some reflection state in order to make future invocations faster.
+        /// </summary>
+        internal static void Warmup<TView>()
+        {
+            FromViewDescriptor(DescriptorFactory.GetViewDescriptor(typeof(TView)));
         }
 
         private static IChildrenBinder CreateChildrenBinder<TView>(IViewDescriptor viewDescriptor)
@@ -260,7 +283,7 @@ public class ViewNode(
     class ReflectionChildrenBinder<TView>(IViewDescriptor viewDescriptor) : IChildrenBinder
         where TView : IView
     {
-        private static readonly Dictionary<string, IOutletBinder?> outletCache =
+        private static readonly ConcurrentDictionary<string, IOutletBinder?> outletCache =
             new(StringComparer.InvariantCultureIgnoreCase);
         private static readonly MethodInfo multipleMethod = typeof(ReflectionChildrenBinder<TView>).GetMethod(
             nameof(Multiple),
@@ -271,19 +294,27 @@ public class ViewNode(
             BindingFlags.Static | BindingFlags.NonPublic
         )!;
 
+        internal static void Warmup()
+        {
+            multipleMethod.MakeGenericMethod(typeof(View), typeof(IView));
+            singleMethod.MakeGenericMethod(typeof(View), typeof(IView));
+        }
+
         public void SetChildren(IView view, string? outletName, IEnumerable<IView> children)
         {
-            if (!outletCache.TryGetValue(outletName ?? "", out var outletBinder))
-            {
-                var childrenProperty = viewDescriptor.GetChildrenProperty(outletName);
-                outletBinder = childrenProperty is not null
-                    ? CreateOutletBinder(
-                        !string.IsNullOrEmpty(outletName) ? outletName : defaultOutletName,
-                        childrenProperty
-                    )
-                    : null;
-                outletCache.Add(outletName ?? "", outletBinder);
-            }
+            var outletBinder = outletCache.GetOrAdd(
+                outletName ?? "",
+                _ =>
+                {
+                    var childrenProperty = viewDescriptor.GetChildrenProperty(outletName);
+                    return childrenProperty is not null
+                        ? CreateOutletBinder(
+                            !string.IsNullOrEmpty(outletName) ? outletName : defaultOutletName,
+                            childrenProperty
+                        )
+                        : null;
+                }
+            );
             if (outletBinder is not null)
             {
                 outletBinder.SetChildren(view, children);

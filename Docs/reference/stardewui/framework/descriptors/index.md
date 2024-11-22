@@ -13,9 +13,13 @@ title: StardewUI.Framework.Descriptors
 | Name | Description |
 | --- | --- |
 | [DescriptorException](descriptorexception.md) | The exception that is thrown when an error occurs while reading or building the metadata for a bound view or one of its data sources. |
+| [DescriptorFactory](descriptorfactory.md) | Factory for obtaining descriptors, encapsulating both dynamic (reflection) and static (precompiled) descriptors. |
 | [ExpressionFieldDescriptor&lt;T, TValue&gt;](expressionfielddescriptor-2.md) | Implementation of a field descriptor using a compiled expression tree. |
 | [LazyExpressionFieldDescriptor](lazyexpressionfielddescriptor.md) | Helper for creating [LazyExpressionFieldDescriptor&lt;TValue&gt;](lazyexpressionfielddescriptor-1.md) with types not known at compile time. |
 | [LazyExpressionFieldDescriptor&lt;TValue&gt;](lazyexpressionfielddescriptor-1.md) | Implementation of a field descriptor that supports a transition between two inner descriptor types. |
+| [PrecompiledEventDescriptor&lt;TTarget, THandler&gt;](precompiledeventdescriptor-2.md) | Statically-typed implementation of an [IEventDescriptor](ieventdescriptor.md) with predefined attributes. |
+| [PrecompiledMethodDescriptor&lt;TTarget, TReturn&gt;](precompiledmethoddescriptor-2.md) | Statically-typed implementation of an [IMethodDescriptor&lt;T&gt;](imethoddescriptor-1.md) with predefined attributes. |
+| [PrecompiledPropertyDescriptor&lt;TTarget, TProperty&gt;](precompiledpropertydescriptor-2.md) | Statically-typed implementation of an [IPropertyDescriptor&lt;T&gt;](ipropertydescriptor-1.md) with predefined attributes. |
 | [ReflectionEventDescriptor](reflectioneventdescriptor.md) | Helper for creating [IEventDescriptor](ieventdescriptor.md) instances using reflection. |
 | [ReflectionEventDescriptor&lt;TTarget, THandler&gt;](reflectioneventdescriptor-2.md) | Reflection-based implementation of an event descriptor. |
 | [ReflectionFieldDescriptor&lt;TValue&gt;](reflectionfielddescriptor-1.md) | Implementation of a field descriptor based on reflection. |

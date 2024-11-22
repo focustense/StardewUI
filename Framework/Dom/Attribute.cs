@@ -64,6 +64,7 @@ public interface IAttribute
             AttributeValueType.TwoWayBinding => ("{<>", "}"),
             AttributeValueType.AssetBinding => ("{@", "}"),
             AttributeValueType.TranslationBinding => ("{#", "}"),
+            AttributeValueType.TemplateBinding => ("{&", "}"),
             _ => throw new ArgumentException($"Invalid attribute value type: {type}", nameof(type)),
         };
     }
@@ -169,4 +170,44 @@ public record SAttribute(
             attribute.ValueType,
             ContextRedirect.FromParts(attribute.ParentDepth, attribute.ParentType)
         ) { }
+
+    /// <summary>
+    /// Creates a method argument that will receive the same value as this attribute when bound.
+    /// </summary>
+    /// <returns>The converted argument.</returns>
+    /// <exception cref="NotSupportedException">Thrown when the attribute's <see cref="Type"/> or
+    /// <see cref="ValueType"/> cannot be used in an <see cref="SArgument"/>, i.e. because there is no equivalent
+    /// argument behavior.</exception>
+    public SArgument AsArgument()
+    {
+        if (Type != AttributeType.Property)
+        {
+            throw new NotSupportedException(
+                $"{Type} Attribute '{Name}' cannot be converted to an Argument; only non-structural Property "
+                    + "Attributes can be used in argument substitutions."
+            );
+        }
+        var argumentType = ValueType switch
+        {
+            AttributeValueType.Literal => ArgumentExpressionType.Literal,
+            AttributeValueType.OneTimeBinding or AttributeValueType.InputBinding or AttributeValueType.TwoWayBinding =>
+                ArgumentExpressionType.ContextBinding,
+            AttributeValueType.TemplateBinding => ArgumentExpressionType.TemplateBinding,
+            _ => throw new NotSupportedException(
+                $"Attribute '{Name}' cannot be converted to an Argument because it has value type {ValueType} "
+                    + "which is not valid for arguments."
+            ),
+        };
+        return new(argumentType, Value, ContextRedirect);
+    }
+
+    /// <summary>
+    /// Creates a copy of this attribute with a different <see cref="Name"/>, and all other properties the same.
+    /// </summary>
+    /// <param name="name">The new attribute name.</param>
+    /// <returns>The renamed attribute.</returns>
+    public SAttribute WithName(string name)
+    {
+        return new(name, Value, Type, ValueType, ContextRedirect);
+    }
 }

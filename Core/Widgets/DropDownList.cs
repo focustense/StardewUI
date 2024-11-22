@@ -11,7 +11,7 @@ namespace StardewUI.Widgets;
 /// Button/text field with a drop-down menu.
 /// </summary>
 /// <typeparam name="T">The type of list item that can be chosen.</typeparam>
-public class DropDownList<T> : ComponentView
+public partial class DropDownList<T> : ComponentView
     where T : notnull
 {
     /// <summary>
@@ -27,9 +27,10 @@ public class DropDownList<T> : ComponentView
         get => optionFormat;
         set
         {
-            if (value != optionFormat)
+            var newFormat = value ?? defaultOptionFormat;
+            if (newFormat != optionFormat)
             {
-                optionFormat = value ?? defaultOptionFormat;
+                optionFormat = newFormat;
                 UpdateOptions();
                 UpdateSelectedOption();
                 OnPropertyChanged(nameof(OptionFormat));
@@ -72,6 +73,12 @@ public class DropDownList<T> : ComponentView
             if (options.SetItems(value))
             {
                 OnPropertyChanged(nameof(Options));
+                if (pendingSelectedOption is not null)
+                {
+                    SelectedIndex = options.IndexOf((T)pendingSelectedOption);
+                    pendingSelectedOption = default;
+                }
+                UpdateSelectedOption();
             }
         }
     }
@@ -89,12 +96,12 @@ public class DropDownList<T> : ComponentView
             {
                 return;
             }
+            pendingSelectedOption = default;
             selectedIndex = validIndex;
-            UpdateSelectedOption();
             Select?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged(nameof(SelectedIndex));
             OnPropertyChanged(nameof(SelectedOption));
-            OnPropertyChanged(nameof(SelectedOptionText));
+            UpdateSelectedOption();
         }
     }
 
@@ -104,7 +111,31 @@ public class DropDownList<T> : ComponentView
     public T? SelectedOption
     {
         get => SelectedIndex >= 0 && SelectedIndex < options.Count ? options[SelectedIndex] : default;
-        set => SelectedIndex = value is not null ? options.IndexOf(value) : -1;
+        set
+        {
+            if (
+                EqualityComparer<T>.Default.Equals(value, SelectedOption)
+                || EqualityComparer<T>.Default.Equals(
+                    value,
+                    pendingSelectedOption is not null ? (T)pendingSelectedOption : default
+                )
+            )
+            {
+                return;
+            }
+            pendingSelectedOption = default;
+            if (value is null)
+            {
+                SelectedIndex = -1;
+                return;
+            }
+            var valueIndex = options.IndexOf(value);
+            SelectedIndex = valueIndex;
+            if (value is not null && SelectedIndex < 0)
+            {
+                pendingSelectedOption = value;
+            }
+        }
     }
 
     /// <summary>
@@ -126,6 +157,7 @@ public class DropDownList<T> : ComponentView
     // Initialized in CreateView
     private Lane optionsLane = null!;
     private DropDownOverlayView overlayView = null!;
+    private object? pendingSelectedOption;
     private Label selectedOptionLabel = null!;
     private Frame selectionFrame = null!;
 
@@ -271,6 +303,7 @@ public class DropDownList<T> : ComponentView
             return;
         }
         selectedOptionLabel.Text = SelectedOption is not null ? optionFormat(SelectedOption) : "";
+        OnPropertyChanged(nameof(SelectedOptionText));
     }
 
     class DropDownOptionView(T value, string text) : ComponentView<Frame>

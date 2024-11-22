@@ -37,7 +37,7 @@ For speedscope purposes, this is always an "EventedProfile". StardewUI does not 
 
  | Name | Description |
 | --- | --- |
-| [TraceProfile()](#traceprofile) |  | 
+| [TraceProfile(string, Int64)](#traceprofilestring-long) | A single profile in a trace. | 
 
 ### Properties
 
@@ -45,7 +45,7 @@ For speedscope purposes, this is always an "EventedProfile". StardewUI does not 
 | --- | --- |
 | [EndValue](#endvalue) | The timestamp when tracing ended, in the specified [Unit](traceprofile.md#unit). | 
 | [Events](#events) | The events recorded for this profile. | 
-| [Name](#name) | Name of the profile. | 
+| [Name](#name) | Name of the profile. Used to identify the thread. | 
 | [StartValue](#startvalue) | The timestamp when tracing was started, in the specified [Unit](traceprofile.md#unit). | 
 | [Type](#type) | Discriminator for the profile type. In StardewUI, this is always `evented`. | 
 | [Unit](#unit) | Unit of measurement for all time values. | 
@@ -54,13 +54,25 @@ For speedscope purposes, this is always an "EventedProfile". StardewUI does not 
 
 ### Constructors
 
-#### TraceProfile()
+#### TraceProfile(string, long)
 
-
+A single profile in a trace.
 
 ```cs
-public TraceProfile();
+public TraceProfile(string name, long startValue);
 ```
+
+##### Parameters
+
+**`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The [Name](traceprofile.md#name) of the profile, used to identify the thread.
+
+**`startValue`** &nbsp; [Int64](https://learn.microsoft.com/en-us/dotnet/api/system.int64)  
+The timestamp when tracing was started, in the specified [Unit](traceprofile.md#unit) (default: microseconds).
+
+##### Remarks
+
+For speedscope purposes, this is always an "EventedProfile". StardewUI does not use sampled profiles.
 
 -----
 
@@ -71,7 +83,7 @@ public TraceProfile();
 The timestamp when tracing ended, in the specified [Unit](traceprofile.md#unit).
 
 ```cs
-public long EndValue { get; }
+public long EndValue { get; set; }
 ```
 
 ##### Property Value
@@ -96,19 +108,15 @@ public System.Collections.Generic.List<StardewUI.Framework.Diagnostics.TraceEven
 
 #### Name
 
-Name of the profile.
+Name of the profile. Used to identify the thread.
 
 ```cs
-public string Name { get; }
+public string Name { get; set; }
 ```
 
 ##### Property Value
 
 [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
-
-##### Remarks
-
-This is an arbitrary string often used to indicate the name of the profile "file" that was used to configure the trace. Since StardewUI only uses a single, hardcoded "profile", this is the literal string `StardewUI`.
 
 -----
 
@@ -117,7 +125,7 @@ This is an arbitrary string often used to indicate the name of the profile "file
 The timestamp when tracing was started, in the specified [Unit](traceprofile.md#unit).
 
 ```cs
-public long StartValue { get; }
+public long StartValue { get; set; }
 ```
 
 ##### Property Value

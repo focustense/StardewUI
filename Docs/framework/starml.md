@@ -90,11 +90,13 @@ These are the standard tags available in the UI framework:
 | `<label>`      | [Label](../library/standard-views.md#label) | Displays single- or multi-line text using a standard `SpriteFont`. |
 | `<lane>`       | [Lane](../library/standard-views.md#lane) | Arranges other views along one axis, either horizontal (left to right) or vertical (top to bottom). |
 | `<marquee>`    | [Marquee](../library/standard-views.md#marquee) | Animates scrolling text or other content horizontally; named after the [HTML Marquee](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/marquee). |
+| `<outlet>`     | N/A | Default or named [template outlet](templates.md#outlets). **Only valid within a `<template>` element.** |
 | `<panel>`      | [Panel](../library/standard-views.md#panel) | Displays all children as layers ordered by z-index. Positions can be adjusted using margins. |
 | `<scrollable>` | [Scrollable View](../library/standard-views.md#scrollable-view) | Shows scroll bars and arrows when content is too large to fit. |
 | `<slider>`     | [Slider](../library/standard-views.md#slider) | A numeric slider that can be moved between a minimum and maximum range. |
 | `<spacer>`     | [Spacer](../library/standard-views.md#spacer) | Draws nothing, but takes up space in the layout; used to "push" siblings to one side. |
 | `<tab>`        | [Tab](../library/standard-views.md#tab) | Push-down tab used to select the active section or page of a larger menu. Can be rotated for side navigation. |
+| `<template>`   | [Template](templates.md) | Defines a custom tag for replacement. **Must be at the document root;** not valid as a child of any other element. |
 | `<textinput>`  | [Text Input](../library/standard-views.md#text-input) | Input box for entering text; includes on-screen keyboard when activated by gamepad. |
 
 ## Attributes
@@ -127,12 +129,13 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `layout` | In/Out | `LayoutParameters` | The intended width and height. See [conversions](#type-conversions) for allowed values. |
 | `margin` | In/Out | `Edges` | Pixel sizes for whitespace outside the border/background. |
 | `name` | In/Out | `string` | For `<include>` elements, the view's asset name; for all other elements, a user-defined name used mainly for logging and troubleshooting. |
+| `opacity` | In/Out | `float` | Opacity (alpha) value of the entire view, from 0.0 (fully transparent/hidden) to 1.0 (fully opaque). |
 | `outer-size` | Out | `Bounds` | Total layout size occupied by the element, including padding, borders and margins. |
 | `padding` | In/Out | `Edges` | Pixel sizes for whitespace inside the border/background. |
 | `pointer-events-enabled` | In/Out | `bool` | Can be set to `false` to prevent receiving clicks, mouseovers, etc. Use when a transparent view is drawn on top of an interactive view. |
 | `scroll-with-children` | In/Out | `Orientation` | Forces the entire view to be visible when navigating in the specified direction. See the [ScrollableView](../library/standard-views.md#scrollable-view) documentation for details. |
 | `tags` | In/Out | `Tags` | Allows arbitrary data to be associated with the view. **Not supported in StarML yet** - may be supported in the future. |
-| `tooltip` | In/Out | `string` | Tooltip to show when hovered with the mouse, or focused on via game controller. |
+| `tooltip` | In/Out | `TooltipData` | Tooltip to show when hovered with the mouse, or focused on via game controller. |
 | `visibility` | In/Out | `Visibility` | Whether to show or hide the view; hiding does *not* remove it from the layout, use `*if` for that. |
 | `z-index` | In/Out | `int` | Drawing order within the parent; higher indices are drawn later (on top). |
 
@@ -181,7 +184,7 @@ To experienced C# programmers, this may look like an ordinary method call, but i
     
     In StarML, the name of an attribute is always the [kebab-case](https://developer.mozilla.org/en-US/docs/Glossary/Kebab_case) version of the event name, e.g. `LeftClick` becomes `left-click`.
 
-<div class="annotate event-table" markdown>
+<div class="annotate event-table no-code-break" markdown>
 
 | Event | Arguments&nbsp;Type&nbsp;(1) | Condition |
 | --------- | -------- | ----------- |
@@ -193,6 +196,7 @@ To experienced C# programmers, this may look like an ordinary method call, but i
 | `left-click` | `ClickEventArgs` | Left mouse button or controller A was pressed. |
 | `pointer-enter` | `PointerEventArgs` | Cursor just moved inside the view's bounds. |
 | `pointer-leave` | `PointerEventArgs` | Cursor just moved outside the view's bounds. |
+| `pointer-move` | `PointerMoveEventArgs` | Cursor moved within a view's bounds after entering. |
 | `right-click` | `ClickEventArgs` | Right mouse button or controller X was pressed. |
 | `wheel` | `WheelEventArgs` | Mouse wheel movement was detected. |
 
@@ -214,6 +218,7 @@ Regular HTML uses quoted attributes; to support the more complex behaviors where
 | `attr={PropertyName}`       | The current value of the specified [context property](binding-context.md). |
 | `attr={@AssetName}`         | The current content of the [named asset](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#What.27s_an_.27asset_name.27.3F). |
 | `attr={#TranslationKey}`    | The translated string for a given [translation key](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation). Can be either unqualified (`foo.bar`) if referring to a translation in the same mod that provided the view, or qualified (`authorname.ModName:foo.bar`) if referring to a translation in any other mod. |
+| `attr={&templateParam}`     | Replace with a [template attribute](templates.md#template-attributes) of the same name. **Only valid in a `<template>` element.** |
 | `attr=|Handler(Arg1, ...)|` | Call the specified [context method](binding-context.md), with the specified arguments; only valid for [event attributes](#events). |
 
 ??? note
@@ -294,6 +299,10 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `SpriteFont` @span       | `"dialogue"` (6)                   | N/A @span                             | N/A @span                               |
 |                          | `"small"` (7)                      |                                       |                                         |
 |                          | `"tiny"` (8)                       |                                       |                                         |
+| `TooltipData` @span      | Any @span                          | `string` (text only)                  | N/A @span                               |
+|                          |                                    | `Tuple<string, string>`<br/>(title + text) |                                    |
+|                          |                                    | `Item`                                |                                         |
+|                          |                                    | `ParsedItemData`                      |                                         |
 | `GridItemLayout` @span   | `"count: n"` (10)                  | N/A @span                             | N/A @span                               |
 |                          | `"length: n"` (11)                 |                                       |                                         |
 

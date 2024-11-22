@@ -39,6 +39,7 @@ public class ModConfig
 
  | Name | Description |
 | --- | --- |
+| [Performance](#performance) | Settings related to performance optimization. | 
 | [Tracing](#tracing) | Settings related to performance tracing. | 
 
 ## Details
@@ -56,6 +57,20 @@ public ModConfig();
 -----
 
 ### Properties
+
+#### Performance
+
+Settings related to performance optimization.
+
+```cs
+public StardewUI.Framework.PerformanceConfig Performance { get; set; }
+```
+
+##### Property Value
+
+[PerformanceConfig](performanceconfig.md)
+
+-----
 
 #### Tracing
 

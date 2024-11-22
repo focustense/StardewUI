@@ -15,6 +15,7 @@ title: StardewUI.Framework
 | [BackoffRule](backoffrule.md) | Defines the rules for exponential backoff. |
 | [BackoffState](backoffstate.md) | State of an exponential backoff, e.g. as used in a `StardewUI.Framework.BackoffTracker<T>`. |
 | [ModConfig](modconfig.md) | Configuration settings for StardewUI.Framework. |
+| [PerformanceConfig](performanceconfig.md) | Configuration sub-settings providing control over performance tweaks. |
 | [UIException](uiexception.md) | Base class for all exceptions specific to StardewUI. |
 
 ## Interfaces
@@ -22,6 +23,7 @@ title: StardewUI.Framework
 | Name | Description |
 | --- | --- |
 | [IAnyCast](ianycast.md) | A marker interface that, when used in place of [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object), forces the framework to attempt an explicit conversion/cast to the expected destination type. |
+| [IMenuController](imenucontroller.md) | Wrapper for a mod-managed IClickableMenu that allows further customization of menu-level properties not accessible to StarML or data binding. |
 | [IViewDrawable](iviewdrawable.md) | Provides methods to update and draw a simple, non-interactive UI component, such as a HUD widget. |
 | [IViewEngine](iviewengine.md) | Public API for StardewUI, abstracting away all implementation details of views and trees. |
 
