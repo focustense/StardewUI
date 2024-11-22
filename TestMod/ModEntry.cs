@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using PropertyChanged.SourceGenerator;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewUI;
 using StardewUI.Framework;
@@ -73,61 +69,46 @@ internal sealed partial class ModEntry : Mod
                 }
                 else
                 {
-                    ShowExampleMenu3();
+                    ShowGallery();
                 }
                 break;
-            case SButton.F9:
-                if (e.IsDown(SButton.LeftShift))
-                {
-                    ShowBestiary();
-                }
-                else
-                {
-                    ShowExampleMenu2();
-                }
-                break;
+        }
+    }
+
+    private void OpenExample(string assetName, object? context)
+    {
+        var controller = viewEngine.CreateMenuControllerFromAsset(assetName, context);
+        OpenExample(controller);
+    }
+
+    private static void OpenExample(IMenuController controller)
+    {
+        if (Game1.activeClickableMenu is not null)
+        {
+            controller.DimmingAmount = 0.88f;
+            Game1.activeClickableMenu.SetChildMenu(controller.Menu);
+        }
+        else
+        {
+            Game1.activeClickableMenu = controller.Menu;
         }
     }
 
     private void ShowBestiary()
     {
         var bestiary = BestiaryViewModel.LoadFromGameData();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-Bestiary", bestiary);
+        OpenExample($"{viewAssetPrefix}/Example-Bestiary", bestiary);
     }
 
-    private void ShowExampleMenu1()
+    private void ShowCropsGrid()
     {
-        var context = new { HeaderText = "Example Menu Title", ItemData = ItemRegistry.GetData("(O)117") };
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/TestView", context);
+        cropsGrid = new();
+        OpenExample($"{viewAssetPrefix}/Example-CropsGrid", cropsGrid);
     }
 
-    private void ShowExampleMenu2()
+    private void ShowForm()
     {
-        var context = EdiblesViewModel.LoadFromGameData();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
-            $"{viewAssetPrefix}/Example-ScrollingItemGrid",
-            context
-        );
-    }
-
-    partial class Example3Model : INotifyPropertyChanged
-    {
-        [Notify]
-        private bool enableTurboBoost = true;
-
-        [Notify]
-        private float speedMultiplier = 25;
-
-        [Notify]
-        private bool allowClose = true;
-
-        [Notify]
-        private float opacity = 1f;
-    }
-
-    private void ShowExampleMenu3()
-    {
-        var context = new Example3Model();
+        var context = new FormViewModel();
         var controller = viewEngine.CreateMenuControllerFromAsset($"{viewAssetPrefix}/Example-Form", context);
         controller.EnableCloseButton();
         controller.CanClose = () => context.AllowClose;
@@ -138,38 +119,47 @@ internal sealed partial class ModEntry : Mod
             var position = Game1.getMousePosition(true);
             controller.PositionSelector = () => position;
         }
-        Game1.activeClickableMenu = controller.Menu;
+        OpenExample(controller);
     }
 
-    private void ShowCropsGridExample()
+    private void ShowGallery()
     {
-        cropsGrid = new();
-        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Example-CropsGrid", cropsGrid);
+        var context = new GalleryViewModel(
+            [
+                new(
+                    I18n.Gallery_Example_ItemGrid_Title(),
+                    I18n.Gallery_Example_ItemGrid_Description(),
+                    "(BC)232",
+                    ShowItemGrid
+                ),
+                new(
+                    I18n.Gallery_Example_Bestiary_Title(),
+                    I18n.Gallery_Example_Bestiary_Description(),
+                    "(O)Book_Void",
+                    ShowBestiary
+                ),
+                new(
+                    I18n.Gallery_Example_CropCalendar_Title(),
+                    I18n.Gallery_Example_CropCalendar_Description(),
+                    "(O)24",
+                    ShowCropsGrid
+                ),
+                new(I18n.Gallery_Example_Form_Title(), I18n.Gallery_Example_Form_Description(), "(O)867", ShowForm),
+                new(
+                    I18n.Gallery_Example_Carousel_Title(),
+                    I18n.Gallery_Example_Carousel_Description(),
+                    "(O)108",
+                    () => { }
+                ),
+            ]
+        );
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset($"{viewAssetPrefix}/Gallery", context);
     }
 
-    partial class TabData(string name, Texture2D texture, Rectangle sourceRect) : INotifyPropertyChanged
+    private void ShowItemGrid()
     {
-        public string Name { get; } = name;
-        public Tuple<Texture2D, Rectangle> Sprite { get; } = Tuple.Create(texture, sourceRect);
-
-        [Notify]
-        private bool active;
-    }
-
-    partial class TabsViewModel
-    {
-        public IReadOnlyList<TabData> Tabs { get; set; } = [];
-
-        public void OnTabActivated(string name)
-        {
-            foreach (var tab in Tabs)
-            {
-                if (tab.Name != name)
-                {
-                    tab.Active = false;
-                }
-            }
-        }
+        var context = EdiblesViewModel.LoadFromGameData();
+        OpenExample($"{viewAssetPrefix}/Example-ScrollingItemGrid", context);
     }
 
     private void ShowTabsExample()
