@@ -41,6 +41,7 @@ This is primarily intended to work by checking if the Subscriber implements this
  | Name | Description |
 | --- | --- |
 | [ReleaseCapture()](#releasecapture) | Stops input capturing from this target. | 
+| [Update(TimeSpan)](#updatetimespan) | Runs on every game update tick while capturing. | 
 
 ## Details
 
@@ -69,6 +70,21 @@ Stops input capturing from this target.
 ```cs
 void ReleaseCapture();
 ```
+
+-----
+
+#### Update(TimeSpan)
+
+Runs on every game update tick while capturing.
+
+```cs
+void Update(System.TimeSpan elapsed);
+```
+
+##### Parameters
+
+**`elapsed`** &nbsp; [TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan)  
+The amount of real time elapsed since the last tick.
 
 -----
 
