@@ -197,6 +197,7 @@ internal class DynamicDropDownList : DecoratorView
         {
             return;
         }
+        float optionMinWidth = adapter.OptionMinWidth;
         if (!adapterFactoryCache.TryGetValue(elementType, out var factory))
         {
             factory = createDropDownAdapterMethodDefinition
@@ -209,6 +210,7 @@ internal class DynamicDropDownList : DecoratorView
         {
             newAdapter.OptionFormat = OptionFormat;
         }
+        newAdapter.OptionMinWidth = optionMinWidth;
         SetInitialAdapterIndex(newAdapter);
         SetAdapter(newAdapter);
     }
