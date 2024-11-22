@@ -33,25 +33,28 @@ public static class DescriptorFactory
 
  | Name | Description |
 | --- | --- |
-| [GetObjectDescriptor(Type)](#getobjectdescriptortype) | Gets a descriptor for an arbitrary object type; typically used for binding targets. | 
+| [GetObjectDescriptor(Type, Boolean)](#getobjectdescriptortype-bool) | Gets a descriptor for an arbitrary object type; typically used for binding targets. | 
 | [GetViewDescriptor(Type)](#getviewdescriptortype) | Gets a descriptor for a type that is assumed to be an [IView](../../iview.md) implementation. | 
 
 ## Details
 
 ### Methods
 
-#### GetObjectDescriptor(Type)
+#### GetObjectDescriptor(Type, bool)
 
 Gets a descriptor for an arbitrary object type; typically used for binding targets.
 
 ```cs
-public static StardewUI.Framework.Descriptors.IObjectDescriptor GetObjectDescriptor(System.Type type);
+public static StardewUI.Framework.Descriptors.IObjectDescriptor GetObjectDescriptor(System.Type type, bool lazy);
 ```
 
 ##### Parameters
 
 **`type`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
 The object type.
+
+**`lazy`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to create the descriptor with lazily-initialized members. Lazy descriptors are faster to create, but may have slower initial access times.
 
 ##### Returns
 
