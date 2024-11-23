@@ -113,6 +113,16 @@ public enum TokenType
     /// The comma (<c>,</c>) character, used to separator arguments in an argument list.
     /// </summary>
     ArgumentSeparator,
+
+    /// <summary>
+    /// Slash followed by asterisk (<c>/*</c>) indicating start of a comment block.
+    /// </summary>
+    CommentStart,
+
+    /// <summary>
+    /// Asterisk followed by slash (<c>*/</c>) indicating end of a comment block.
+    /// </summary>
+    CommentEnd,
 }
 
 /// <summary>
@@ -152,6 +162,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         Binding,
         Event,
         ArgumentList,
+        Comment,
     }
 
     readonly record struct TokenInfo(TokenType Type, int Length);
@@ -245,6 +256,13 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 nameSeparatorEnabled = false;
                 mode = Mode.Event;
                 break;
+            case TokenType.CommentStart:
+                parentMode = mode;
+                mode = Mode.Comment;
+                break;
+            case TokenType.CommentEnd:
+                mode = parentMode;
+                break;
         }
         Current = new(tokenType, text[..tokenLength]);
         text = text[tokenLength..];
@@ -290,7 +308,16 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 previousPosition
             );
         }
-        else if (!expectedTypes.Contains(Current.Type))
+
+        // reached the start of a comment block, step over.
+        if (Current.Type == TokenType.CommentStart)
+        {
+            MoveNext(); // comment literal token
+            MoveNext(); // comment end token
+            MoveNext(); // real next token
+        }
+
+        if (!expectedTypes.Contains(Current.Type))
         {
             throw new LexerException(
                 $"Invalid {Current.Type} token at position {previousPosition}. "
@@ -310,6 +337,11 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     {
         return mode switch
         {
+            Mode.Comment => text switch
+            {
+                ['*', '/', ..] => new(TokenType.CommentEnd, 2),
+                _ => ReadLiteralStringUntil("*/"),
+            },
             Mode.Quoted => text switch
             {
                 ['"', ..] => new(TokenType.Quote, 1),
@@ -365,6 +397,8 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['{', ..] => new(TokenType.BindingStart, 1),
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
                 ['}', ..] => new(TokenType.BindingEnd, 1),
+                ['*', '/', ..] => new(TokenType.CommentEnd, 2),
+                ['/', '*', ..] => new(TokenType.CommentStart, 2),
                 ['*', ..] => new(TokenType.AttributeModifier, 1),
                 ['|', ..] => new(TokenType.Pipe, 1),
                 _ => ReadName(),

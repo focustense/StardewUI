@@ -288,6 +288,44 @@ public class LexerTests
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },
+            {
+                @"<label /*comment body*/ text="""" bold=""true"" />",
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.CommentStart, "/*"),
+                    new(TokenType.Literal, "comment body"),
+                    new(TokenType.CommentEnd, "*/"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Name, "bold"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "true"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
+                @"<label text="""" bold=""/*comment body*/"" /> ",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Name, "bold"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "/*comment body*/"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
         };
 
     [Theory]

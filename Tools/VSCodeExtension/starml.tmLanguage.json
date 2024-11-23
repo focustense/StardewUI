@@ -12,6 +12,9 @@
     },
     {
       "include": "#tag-end"
+    },
+    {
+      "include": "#comment-block"
     }
   ],
   "repository": {
@@ -55,6 +58,10 @@
           "name": "punctuation.definition.tag.sml"
         }
       }
+    },
+    "comment-block": {
+      "name": "comment.block",
+      "match": "\/\\*(?:.|\\n)+\\*\/"
     },
     "attribute": {
       "patterns": [
