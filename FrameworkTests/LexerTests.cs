@@ -289,13 +289,14 @@ public class LexerTests
                 ]
             },
             {
-                @"<label /*comment body*/ text="""" bold=""true"" />",
+                @"<!-- comment body --> <label text="""" bold=""true"" />",
+
                 [
+                    new(TokenType.CommentStart, "<!--"),
+                    new(TokenType.Literal, "comment body "),
+                    new(TokenType.CommentEnd, "-->"),
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
-                    new(TokenType.CommentStart, "/*"),
-                    new(TokenType.Literal, "comment body"),
-                    new(TokenType.CommentEnd, "*/"),
                     new(TokenType.Name, "text"),
                     new(TokenType.Assignment, "="),
                     new(TokenType.Quote, "\""),
@@ -309,7 +310,7 @@ public class LexerTests
                 ]
             },
             {
-                @"<label text="""" bold=""/*comment body*/"" /> ",
+                @"<label text="""" bold=""<!-- comment body -->"" /> ",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
@@ -321,7 +322,7 @@ public class LexerTests
                     new(TokenType.Name, "bold"),
                     new(TokenType.Assignment, "="),
                     new(TokenType.Quote, "\""),
-                    new(TokenType.Literal, "/*comment body*/"),
+                    new(TokenType.Literal, "<!-- comment body -->"),
                     new(TokenType.Quote, "\""),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]

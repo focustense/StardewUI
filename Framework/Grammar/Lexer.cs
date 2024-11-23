@@ -339,8 +339,8 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         {
             Mode.Comment => text switch
             {
-                ['*', '/', ..] => new(TokenType.CommentEnd, 2),
-                _ => ReadLiteralStringUntil("*/"),
+                ['-', '-', '>', ..] => new(TokenType.CommentEnd, 3),
+                _ => ReadLiteralStringUntil("-->"),
             },
             Mode.Quoted => text switch
             {
@@ -387,6 +387,8 @@ public ref struct Lexer(ReadOnlySpan<char> text)
             },
             _ => text switch
             {
+                ['<', '!', '-', '-', ..] => new(TokenType.CommentStart, 4),
+                ['-', '-', '>', ..] => new(TokenType.CommentEnd, 3),
                 ['<', '/', ..] => new(TokenType.ClosingTagStart, 2),
                 ['<', ..] => new(TokenType.OpeningTagStart, 1),
                 ['/', '>', ..] => new(TokenType.SelfClosingTagEnd, 2),
@@ -397,8 +399,6 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['{', ..] => new(TokenType.BindingStart, 1),
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
                 ['}', ..] => new(TokenType.BindingEnd, 1),
-                ['*', '/', ..] => new(TokenType.CommentEnd, 2),
-                ['/', '*', ..] => new(TokenType.CommentStart, 2),
                 ['*', ..] => new(TokenType.AttributeModifier, 1),
                 ['|', ..] => new(TokenType.Pipe, 1),
                 _ => ReadName(),
