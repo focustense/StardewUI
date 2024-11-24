@@ -1,6 +1,7 @@
 <lane orientation="vertical"
       horizontal-content-alignment="middle"
       opacity={Opacity}>
+    <!-- Example Comment -->
     <banner background={@Mods/StardewUI/Sprites/BannerBackground}
             background-border-thickness="48,0"
             padding="12"

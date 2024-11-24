@@ -245,11 +245,20 @@ public ref struct DocumentReader(Lexer lexer)
             wasTagSelfClosed = false;
             return true;
         }
-        if (!lexer.ReadOptionalToken(TokenType.OpeningTagStart, TokenType.ClosingTagStart))
+        do
         {
-            Tag = default;
-            return false;
-        }
+            if (!lexer.ReadOptionalToken(TokenType.OpeningTagStart, TokenType.ClosingTagStart, TokenType.CommentStart))
+            {
+                Tag = default;
+                return false;
+            }
+            if (lexer.Current.Type == TokenType.CommentStart)
+            {
+                // Consume the comment. Currently we don't include these in the parsed document.
+                lexer.ReadRequiredToken(TokenType.Literal);
+                lexer.ReadRequiredToken(TokenType.CommentEnd);
+            }
+        } while (lexer.Current.Type == TokenType.CommentEnd);
         bool isClosingTag = lexer.Current.Type == TokenType.ClosingTagStart;
         lexer.ReadRequiredToken(TokenType.Name);
         var tagName = lexer.Current.Text;

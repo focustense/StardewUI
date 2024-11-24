@@ -289,7 +289,7 @@ public class LexerTests
                 ]
             },
             {
-                @"<!-- comment body --> <label text="""" bold=""true"" />",
+                @"<!-- comment body --> <label text=""foo"" bold=""true"" />",
 
                 [
                     new(TokenType.CommentStart, "<!--"),
@@ -300,6 +300,7 @@ public class LexerTests
                     new(TokenType.Name, "text"),
                     new(TokenType.Assignment, "="),
                     new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "foo"),
                     new(TokenType.Quote, "\""),
                     new(TokenType.Name, "bold"),
                     new(TokenType.Assignment, "="),
@@ -310,7 +311,8 @@ public class LexerTests
                 ]
             },
             {
-                @"<label text="""" bold=""<!-- comment body -->"" /> ",
+                // Comments in arbitrary locations are lexically valid, even though they aren't parseable.
+                @"<label text=""foo"" bold=""<!-- comment body -->"" /> ",
 
                 [
                     new(TokenType.OpeningTagStart, "<"),
@@ -318,6 +320,7 @@ public class LexerTests
                     new(TokenType.Name, "text"),
                     new(TokenType.Assignment, "="),
                     new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "foo"),
                     new(TokenType.Quote, "\""),
                     new(TokenType.Name, "bold"),
                     new(TokenType.Assignment, "="),

@@ -115,12 +115,12 @@ public enum TokenType
     ArgumentSeparator,
 
     /// <summary>
-    /// Slash followed by asterisk (<c>/*</c>) indicating start of a comment block.
+    /// Beginning of a comment block (<c>&lt;!--</c>).
     /// </summary>
     CommentStart,
 
     /// <summary>
-    /// Asterisk followed by slash (<c>*/</c>) indicating end of a comment block.
+    /// End of a comment block (<c>--&gt;</c>).
     /// </summary>
     CommentEnd,
 }
@@ -308,15 +308,6 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 previousPosition
             );
         }
-
-        // reached the start of a comment block, step over.
-        while (Current.Type == TokenType.CommentStart)
-        {
-            MoveNext(); // comment literal token
-            MoveNext(); // comment end token
-            MoveNext(); // real next token, could be a CommentStart though, hence loop
-        }
-
         if (!expectedTypes.Contains(Current.Type))
         {
             throw new LexerException(
