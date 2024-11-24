@@ -310,11 +310,11 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         }
 
         // reached the start of a comment block, step over.
-        if (Current.Type == TokenType.CommentStart)
+        while (Current.Type == TokenType.CommentStart)
         {
             MoveNext(); // comment literal token
             MoveNext(); // comment end token
-            MoveNext(); // real next token
+            MoveNext(); // real next token, could be a CommentStart though, hence loop
         }
 
         if (!expectedTypes.Contains(Current.Type))
