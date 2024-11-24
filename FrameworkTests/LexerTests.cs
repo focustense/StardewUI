@@ -288,6 +288,48 @@ public class LexerTests
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },
+            {
+                @"<!-- comment body --> <label text=""foo"" bold=""true"" />",
+
+                [
+                    new(TokenType.CommentStart, "<!--"),
+                    new(TokenType.Literal, "comment body "),
+                    new(TokenType.CommentEnd, "-->"),
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "foo"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Name, "bold"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "true"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
+                // Comments in arbitrary locations are lexically valid, even though they aren't parseable.
+                @"<label text=""foo"" bold=""<!-- comment body -->"" /> ",
+
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "foo"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Name, "bold"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "<!-- comment body -->"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
         };
 
     [Theory]

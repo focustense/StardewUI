@@ -12,6 +12,11 @@
     },
     {
       "include": "#tag-end"
+    },
+    {
+      "name": "comment.block.dtd",
+      "begin": "(<!--)",
+      "end": "(-->)"
     }
   ],
   "repository": {
