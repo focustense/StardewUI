@@ -30,6 +30,7 @@ namespace StardewUI.Data;
 /// <param name="CraftingRecipe">Crafting recipe to show, if the tooltip is for a craftable item.</param>
 /// <param name="AdditionalCraftingMaterials">List of additional items required for crafting that are not included in
 /// the <see cref="CraftingRecipe"/>.</param>
+[DuckType]
 public record TooltipData(
     string Text,
     string? Title = null,
