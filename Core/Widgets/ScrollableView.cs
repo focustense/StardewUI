@@ -1,4 +1,5 @@
 ﻿using StardewUI.Events;
+using StardewUI.Graphics;
 using StardewUI.Layout;
 using StardewValley;
 
@@ -45,6 +46,49 @@ public partial class ScrollableView : ComponentView<ScrollContainer>, IFloatCont
 
     // Initialized in CreateView
     private Scrollbar scrollbar = null!;
+
+    // Scrollbar pass-through properties
+    /// <inheritdoc cref="Scrollbar.Margin"/>
+    public Edges ScrollbarMargin
+    {
+        get => scrollbar.Margin;
+        set => scrollbar.Margin = value;
+    }
+
+    /// <inheritdoc cref="Scrollbar.OverrideVisibility"/>
+    public Visibility? ScrollbarOverrideVisibility
+    {
+        get => scrollbar.OverrideVisibility;
+        set => scrollbar.OverrideVisibility = value;
+    }
+
+    /// <inheritdoc cref="Scrollbar.UpSprite"/>
+    public Sprite? ScrollbarUpSprite
+    {
+        get => scrollbar.UpSprite;
+        set => scrollbar.UpSprite = value;
+    }
+
+    /// <inheritdoc cref="Scrollbar.DownSprite"/>
+    public Sprite? ScrollbarDownSprite
+    {
+        get => scrollbar.DownSprite;
+        set => scrollbar.DownSprite = value;
+    }
+
+    /// <inheritdoc cref="Scrollbar.ThumbSprite"/>
+    public Sprite? ScrollbarThumbSprite
+    {
+        get => scrollbar.ThumbSprite;
+        set => scrollbar.ThumbSprite = value;
+    }
+
+    /// <inheritdoc cref="Scrollbar.TrackSprite"/>
+    public Sprite? ScrollbarTrackSprite
+    {
+        get => scrollbar.TrackSprite;
+        set => scrollbar.TrackSprite = value;
+    }
 
     /// <inheritdoc />
     public override void OnWheel(WheelEventArgs e)
