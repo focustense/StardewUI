@@ -2086,7 +2086,7 @@ public partial class BindingTests
     }
 
     [Fact]
-    public void WhenTemplateNodeHasStructuralAttributes_AppliesToExpandedNodes()
+    public void WhenTemplateInvocationHasStructuralAttributes_AppliesToExpandedNodes()
     {
         string markup =
             @"<lane>
@@ -2119,6 +2119,37 @@ public partial class BindingTests
                 var label = Assert.IsType<Label>(child);
                 Assert.Equal("ccc", label.Text);
                 Assert.Equal(Color.Blue, label.Color);
+            }
+        );
+    }
+
+    [Fact]
+    public void WhenTemplateHasTemplateBoundStructuralAttribute_ExpandsValue()
+    {
+        string markup =
+            @"<lane>
+                <foo show-baz={ShowBaz} />
+            </lane>
+
+            <template name=""foo"">
+                <label text=""bar"" />
+                <label *if={&show-baz} text=""baz"" />
+            </template>";
+        var model = new { ShowBaz = true };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var lane = Assert.IsType<Lane>(tree.Views.SingleOrDefault());
+        Assert.Collection(
+            lane.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("bar", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("baz", label.Text);
             }
         );
     }
