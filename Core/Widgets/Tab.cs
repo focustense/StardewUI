@@ -194,15 +194,13 @@ public partial class Tab : ComponentView<Panel>
     }
 
     private readonly Image backgroundImage = new() { Layout = LayoutParameters.Fill(), Sprite = UiSprites.TabTopEmpty };
-    private readonly Frame contentFrame =
-        new()
-        {
-            Layout = LayoutParameters.Fill(),
-            Margin =
-                (UiSprites.TabTopEmpty.FixedEdges ?? Edges.NONE) * (UiSprites.TabTopEmpty.SliceSettings?.Scale ?? 1),
-            HorizontalContentAlignment = Alignment.Middle,
-            VerticalContentAlignment = Alignment.Middle,
-        };
+    private readonly Frame contentFrame = new()
+    {
+        Layout = LayoutParameters.Fill(),
+        Margin = (UiSprites.TabTopEmpty.FixedEdges ?? Edges.NONE) * (UiSprites.TabTopEmpty.SliceSettings?.Scale ?? 1),
+        HorizontalContentAlignment = Alignment.Middle,
+        VerticalContentAlignment = Alignment.Middle,
+    };
 
     private Vector2 activeOffset = new(0, 8);
     private bool isActive;
