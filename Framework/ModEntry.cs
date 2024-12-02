@@ -8,6 +8,8 @@ using StardewUI.Framework.Diagnostics;
 using StardewUI.Framework.Patches;
 using StardewUI.Framework.Sources;
 using StardewUI.Graphics;
+using StardewUI.Input;
+using StardewValley.Menus;
 
 namespace StardewUI.Framework;
 
@@ -180,6 +182,28 @@ internal sealed class ModEntry : Mod
         {
             Trace.IsTracing = !Trace.IsTracing;
             Helper.Input.SuppressActiveKeybinds(config.Tracing.ToggleHotkeys);
+        }
+
+        if (
+            Game1.activeClickableMenu is TitleMenu
+            && TitleMenu.subMenu is DocumentViewMenu { CloseAction: not null } viewMenu
+        )
+        {
+            foreach (var button in e.Pressed)
+            {
+                if (ButtonResolver.GetButtonAction(button) != ButtonAction.Cancel)
+                {
+                    continue;
+                }
+                if (button.TryGetKeyboard(out var key))
+                {
+                    viewMenu.receiveKeyPress(key);
+                }
+                else if (button.TryGetController(out var controllerButton))
+                {
+                    viewMenu.receiveGamePadButton(controllerButton);
+                }
+            }
         }
     }
 }
