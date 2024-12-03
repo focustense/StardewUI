@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Buffers.Binary;
+using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -60,7 +61,11 @@ public class ColorConverter : IValueConverter<string, Color>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Color ParseRgba8(ReadOnlySpan<char> hexColor)
     {
-        uint packed = uint.Parse(hexColor, NumberStyles.HexNumber);
-        return new(packed);
+        uint rgba = uint.Parse(hexColor, NumberStyles.HexNumber);
+        if (hexColor.Length == 6)
+        {
+            rgba = rgba << 8 | 0xff;
+        }
+        return new(BinaryPrimitives.ReverseEndianness(rgba));
     }
 }

@@ -268,13 +268,22 @@ public class DecoratorView<T> : IView, IDisposable
     private readonly DecoratedProperty<LayoutParameters> layout = new(x => x.Layout, (x, v) => x.Layout = v, new());
     private readonly DecoratedProperty<string> name = new(x => x.Name, (x, v) => x.Name = v, "");
     private readonly DecoratedProperty<float> opacity = new(x => x.Opacity, (x, v) => x.Opacity = v, 1f);
-    private readonly DecoratedProperty<bool> pointerEventsEnabled =
-        new(x => x.PointerEventsEnabled, (x, v) => x.PointerEventsEnabled = v, true);
-    private readonly DecoratedProperty<Orientation?> scrollWithChildren =
-        new(x => x.ScrollWithChildren, (x, v) => x.ScrollWithChildren = v, null);
+    private readonly DecoratedProperty<bool> pointerEventsEnabled = new(
+        x => x.PointerEventsEnabled,
+        (x, v) => x.PointerEventsEnabled = v,
+        true
+    );
+    private readonly DecoratedProperty<Orientation?> scrollWithChildren = new(
+        x => x.ScrollWithChildren,
+        (x, v) => x.ScrollWithChildren = v,
+        null
+    );
     private readonly DecoratedProperty<TooltipData?> tooltip = new(x => x.Tooltip, (x, v) => x.Tooltip = v, null);
-    private readonly DecoratedProperty<Visibility> visibility =
-        new(x => x.Visibility, (x, v) => x.Visibility = v, Visibility.Visible);
+    private readonly DecoratedProperty<Visibility> visibility = new(
+        x => x.Visibility,
+        (x, v) => x.Visibility = v,
+        Visibility.Visible
+    );
     private readonly DecoratedProperty<int> zIndex = new(x => x.ZIndex, (x, v) => x.ZIndex = v, 0);
 
     private T? view;

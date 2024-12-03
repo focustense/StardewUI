@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewUI.Data;
 using StardewUI.Framework.Converters;
 using StardewUI.Graphics;
 using StardewUI.Layout;
@@ -233,5 +234,21 @@ public class DuckTypeClassConverterFactoryTests
         Assert.Equal(Length.Content(), destination.Height);
         Assert.Equal(20, destination.MinHeight);
         Assert.Null(destination.MaxHeight);
+    }
+
+    record ExternalTooltipData(string Text, string Title, int? CurrencyAmount, int CurrencySymbol = 0);
+
+    [Fact]
+    public void ConvertsTooltipData()
+    {
+        var converter = rootFactory.GetRequiredConverter<ExternalTooltipData, TooltipData>();
+
+        var source = new ExternalTooltipData("tooltip text", "tooltip title", 1234, 1);
+        var destination = converter.Convert(source);
+
+        Assert.Equal("tooltip text", destination.Text);
+        Assert.Equal("tooltip title", destination.Title);
+        Assert.Equal(1234, destination.CurrencyAmount);
+        Assert.Equal(1, destination.CurrencySymbol);
     }
 }

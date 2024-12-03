@@ -58,6 +58,7 @@ public class ParserTests
                             new("text", "DisplayName", ValueType: AttributeValueType.InputBinding),
                         ]
                     ),
+                    new("label", IsClosingTag: true),
                 ]
             },
             {
@@ -75,6 +76,7 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("textinput", IsClosingTag: true),
                 ]
             },
             {
@@ -92,6 +94,7 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("label", IsClosingTag: true),
                 ]
             },
             {
@@ -109,6 +112,7 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("label", IsClosingTag: true),
                 ]
             },
             {
@@ -126,6 +130,7 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("checkbox", IsClosingTag: true),
                 ]
             },
             {
@@ -143,6 +148,7 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("checkbox", IsClosingTag: true),
                 ]
             },
             {
@@ -165,6 +171,7 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("button", IsClosingTag: true),
                 ]
             },
             {
@@ -187,6 +194,7 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("button", IsClosingTag: true),
                 ]
             },
             {
@@ -205,9 +213,13 @@ public class ParserTests
                             ),
                         ]
                     ),
+                    new("button", IsClosingTag: true),
                 ]
             },
-            { @"<label text="""" bold=""true"" />", [new("label", [new("text", ""), new("bold", "true")])] },
+            {
+                @"<label text="""" bold=""true"" />",
+                [new("label", [new("text", ""), new("bold", "true")]), new("label", IsClosingTag: true)]
+            },
             // We don't test or need to test this in the Lexer, but it's useful to have one test combining both
             // attributes and event bindings to make sure the parser doesn't get confused about what the lexer is
             // emitting.
@@ -233,6 +245,24 @@ public class ParserTests
                             new("click", "HandleClick", [], new ContextRedirect.Distance(1)),
                         ]
                     ),
+                    new("checkbox", IsClosingTag: true),
+                ]
+            },
+            {
+                @"<!-- comment 1 -->
+                <frame layout=""50px"">
+                    <!-- comment 2
+                         multiline -->
+                    <label text=""foo"" />
+                    <!-- comment 3 -->
+                </frame>
+                <!-- comment 4 -->",
+
+                [
+                    new("frame", [new("layout", "50px")]),
+                    new("label", [new("text", "foo")]),
+                    new("label", IsClosingTag: true),
+                    new("frame", IsClosingTag: true),
                 ]
             },
             {
@@ -352,6 +382,7 @@ public class ParserTests
                 }
             }
         }
+        Assert.False(reader.NextTag()); // If there are comments before the end of the file, consume them.
         Assert.True(reader.Eof);
     }
 

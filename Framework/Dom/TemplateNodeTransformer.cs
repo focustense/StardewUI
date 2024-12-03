@@ -66,7 +66,7 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
             .Attributes.Select(attr =>
                 attr.ValueType == Grammar.AttributeValueType.TemplateBinding
                     ? sourceAttributes.TryGetValue(attr.Value, out var injectAttr)
-                        ? injectAttr.WithName(attr.Name)
+                        ? injectAttr.WithNameAndType(attr.Name, attr.Type)
                         : null
                     : attr
             )

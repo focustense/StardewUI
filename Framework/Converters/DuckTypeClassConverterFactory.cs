@@ -25,7 +25,7 @@ namespace StardewUI.Framework.Converters;
 public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) : IValueConverterFactory
 {
     /// <summary>
-    /// Whether or not to print MSIL output for generated conversion methods.
+    /// Whether to print MSIL output for generated conversion methods.
     /// </summary>
     /// <remarks>
     /// Use for troubleshooting misbehaving converters or AVE crashes.
@@ -35,15 +35,19 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
     private static readonly MethodInfo valueConverterConvertMethod = typeof(IValueConverter).GetMethod("Convert")!;
 
     [ThreadStatic]
-    private static Stack<(Type, Type)> activeRequests = [];
+    private static readonly Stack<(Type, Type)> activeRequests = [];
 
-    record SourceMember(MemberInfo Member, Type ValueType);
+    private record SourceMember(MemberInfo Member, Type ValueType);
 
     /// <inheritdoc />
     public bool TryGetConverter<TSource, TDestination>(
         [MaybeNullWhen(false)] out IValueConverter<TSource, TDestination> converter
     )
     {
+        Logger.LogOnce(
+            $"Attempting creation of duck-type converter from {typeof(TSource).FullName} to "
+                + $"{typeof(TDestination).FullName}..."
+        );
         converter = null;
         var requestKey = (typeof(TSource), typeof(TDestination));
         if (activeRequests.Contains(requestKey))
@@ -55,12 +59,28 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             );
             return false;
         }
-        if (
-            !IsClassOrStruct(typeof(TSource))
-            || !IsClassOrStruct(typeof(TDestination))
-            || !HasDuckTypeAttribute(typeof(TDestination))
-        )
+        if (!IsClassOrStruct(typeof(TSource)))
         {
+            Logger.LogOnce(
+                $"Excluding source type {typeof(TSource).FullName} from duck-type conversion because it is neither a "
+                    + "class nor a struct type."
+            );
+            return false;
+        }
+        if (!IsClassOrStruct(typeof(TDestination)))
+        {
+            Logger.LogOnce(
+                $"Excluding destination type {typeof(TDestination).FullName} from duck-type conversion because it is "
+                    + "neither a class nor a struct type."
+            );
+            return false;
+        }
+        if (!HasDuckTypeAttribute(typeof(TDestination)))
+        {
+            Logger.LogOnce(
+                $"Excluding destination type {typeof(TDestination).FullName} from duck-type conversion because it is "
+                    + $"not decorated with {nameof(DuckTypeAttribute)}."
+            );
             return false;
         }
         activeRequests.Push(requestKey);
@@ -78,8 +98,8 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
                 x => new SourceMember(x.member, x.valueType),
                 StringComparer.OrdinalIgnoreCase
             );
-            // Always start with the most specific constructor we can. If some arguments don't match/can't be obtained, then
-            // we can widen the search.
+            // Always start with the most specific constructor we can. If some arguments don't match/can't be obtained,
+            // then we can widen the search.
             var destinationConstructors = typeof(TDestination)
                 .GetConstructors()
                 .Select(ctor => MatchesAllParameters(ctor, sourceMembers, out var count) ? (ctor, count) : default)
@@ -90,11 +110,20 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             foreach (var ctor in destinationConstructors)
             {
                 converter = TryCreateConverter<TSource, TDestination>(ctor, sourceMembers);
-                if (converter is not null)
+                if (converter is null)
                 {
-                    return true;
+                    continue;
                 }
+                Logger.LogOnce(
+                    $"Created duck-type converter from {typeof(TSource).FullName} to {typeof(TDestination).FullName}.",
+                    LogLevel.Debug
+                );
+                return true;
             }
+            Logger.LogOnce(
+                $"Failed to create duck-type converter from {typeof(TSource).FullName} to "
+                    + $"{typeof(TDestination).FullName}."
+            );
             return false;
         }
         finally
@@ -155,6 +184,21 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             }
             else if (!parameter.HasDefaultValue)
             {
+                if (sourceMember is not null)
+                {
+                    Logger.LogOnce(
+                        $"Constructor {ctor} is not compatible with the source type because the required parameter "
+                            + $"'{parameter.ParameterType.Name} {parameter.Name}' does not have a conversion from "
+                            + $"source type {sourceMember.ValueType.FullName}."
+                    );
+                }
+                else
+                {
+                    Logger.LogOnce(
+                        $"Constructor {ctor} is not compatible with the source type because the required parameter "
+                            + $"'{parameter.ParameterType.Name} {parameter.Name}' does not match any source properties."
+                    );
+                }
                 return false;
             }
         }
@@ -167,7 +211,7 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
     )
     {
         var ctorParameters = ctor.GetParameters();
-        var ctorSourceMembers = new SourceMember[ctorParameters.Length];
+        var ctorSourceMembers = new SourceMember?[ctorParameters.Length];
         var ctorConverters = new IValueConverter[ctorParameters.Length];
         for (int i = 0; i < ctorParameters.Length; i++)
         {
@@ -182,6 +226,21 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             }
             else if (!parameter.HasDefaultValue)
             {
+                if (sourceMember is not null)
+                {
+                    Logger.LogOnce(
+                        $"Constructor {ctor} is not compatible with the source type because the required parameter "
+                            + $"'{parameter.ParameterType.Name} {parameter.Name}' does not have a conversion from "
+                            + $"source type {sourceMember.ValueType.FullName}."
+                    );
+                }
+                else
+                {
+                    Logger.LogOnce(
+                        $"Constructor {ctor} is not compatible with the source type because the required parameter "
+                            + $"'{parameter.ParameterType.Name} {parameter.Name}' does not match any source properties."
+                    );
+                }
                 return null;
             }
         }
@@ -192,7 +251,7 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
             .Where(m =>
                 // Constructor argument lists shouldn't have dozens of items, so it's likely to be slower here to hash
                 // all the names than it is to just do linear searches.
-                !ctorParameters.Any(cp => cp.Name?.Equals(m.Name, StringComparison.OrdinalIgnoreCase) == true)
+                ctorParameters.All(cp => cp.Name?.Equals(m.Name, StringComparison.OrdinalIgnoreCase) != true)
             )
             .Select(m =>
                 (
@@ -218,6 +277,10 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
 
         if (ctorParameters.Length == 0 && writableFieldsAndProperties.Length == 0)
         {
+            Logger.LogOnce(
+                $"Ignored constructor {ctor} because it is either parameterless or has no parameters matching source "
+                    + "members."
+            );
             return null;
         }
 

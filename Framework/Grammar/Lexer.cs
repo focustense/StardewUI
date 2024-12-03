@@ -113,6 +113,16 @@ public enum TokenType
     /// The comma (<c>,</c>) character, used to separator arguments in an argument list.
     /// </summary>
     ArgumentSeparator,
+
+    /// <summary>
+    /// Beginning of a comment block (<c>&lt;!--</c>).
+    /// </summary>
+    CommentStart,
+
+    /// <summary>
+    /// End of a comment block (<c>--&gt;</c>).
+    /// </summary>
+    CommentEnd,
 }
 
 /// <summary>
@@ -152,6 +162,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
         Binding,
         Event,
         ArgumentList,
+        Comment,
     }
 
     readonly record struct TokenInfo(TokenType Type, int Length);
@@ -245,6 +256,13 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 nameSeparatorEnabled = false;
                 mode = Mode.Event;
                 break;
+            case TokenType.CommentStart:
+                parentMode = mode;
+                mode = Mode.Comment;
+                break;
+            case TokenType.CommentEnd:
+                mode = parentMode;
+                break;
         }
         Current = new(tokenType, text[..tokenLength]);
         text = text[tokenLength..];
@@ -290,7 +308,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 previousPosition
             );
         }
-        else if (!expectedTypes.Contains(Current.Type))
+        if (!expectedTypes.Contains(Current.Type))
         {
             throw new LexerException(
                 $"Invalid {Current.Type} token at position {previousPosition}. "
@@ -310,6 +328,11 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     {
         return mode switch
         {
+            Mode.Comment => text switch
+            {
+                ['-', '-', '>', ..] => new(TokenType.CommentEnd, 3),
+                _ => ReadLiteralStringUntil("-->"),
+            },
             Mode.Quoted => text switch
             {
                 ['"', ..] => new(TokenType.Quote, 1),
@@ -355,6 +378,8 @@ public ref struct Lexer(ReadOnlySpan<char> text)
             },
             _ => text switch
             {
+                ['<', '!', '-', '-', ..] => new(TokenType.CommentStart, 4),
+                ['-', '-', '>', ..] => new(TokenType.CommentEnd, 3),
                 ['<', '/', ..] => new(TokenType.ClosingTagStart, 2),
                 ['<', ..] => new(TokenType.OpeningTagStart, 1),
                 ['/', '>', ..] => new(TokenType.SelfClosingTagEnd, 2),
