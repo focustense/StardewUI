@@ -224,13 +224,14 @@ public static class UiSprites
     /// <summary>
     /// Inset-style background and border, often used to hold an item or represent a slot.
     /// </summary>
-    public static Sprite MenuSlotInset => new(Game1.menuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(9));
+    public static Sprite MenuSlotInset =>
+        new(Game1.menuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(4, 9, 8, 4));
 
     /// <summary>
     /// Colorless inset-style background and border, often used to hold an item or represent a slot.
     /// </summary>
     public static Sprite MenuSlotInsetUncolored =>
-        new(Game1.uncoloredMenuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(9));
+        new(Game1.uncoloredMenuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(4, 9, 8, 4));
 
     /// <summary>
     /// Outset-style background and border, often used to hold an item or represent a slot.

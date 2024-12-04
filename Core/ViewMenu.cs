@@ -195,12 +195,6 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
-        if (IsTitleSubmenu())
-        {
-            Game1.playSound(closeSound);
-            TitleMenu.subMenu = null;
-            return;
-        }
         if (behavior == MenuCloseBehavior.Custom)
         {
             behaviorBeforeCleanup?.Invoke(this);
@@ -213,6 +207,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 exitFunction = null;
                 onExit();
             }
+        }
+        else if (IsTitleSubmenu())
+        {
+            Game1.playSound(closeSound);
+            TitleMenu.subMenu = null;
         }
         else
         {

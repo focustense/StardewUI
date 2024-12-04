@@ -238,43 +238,41 @@ public class PositioningOverlay(ISpriteMap<SButton>? buttonSpriteMap, ISpriteMap
         private static readonly Color KeyTint = new(0.5f, 0.5f, 0.5f, 0.5f);
         private static readonly Color MouseTint = new(0.5f, 0.5f, 0.5f, 0.5f);
 
-        private readonly Frame contentFrame =
-            new()
-            {
-                Layout = LayoutParameters.Fill(),
-                ZIndex = 2,
-                Draggable = true,
-            };
+        private readonly Frame contentFrame = new()
+        {
+            Layout = LayoutParameters.Fill(),
+            ZIndex = 2,
+            Draggable = true,
+        };
 
         private readonly GhostView dragContent = new() { TintColor = Color.Green, Visibility = Visibility.Hidden };
 
-        private readonly Lane dragPrompt =
-            new()
-            {
-                Layout = LayoutParameters.FitContent(),
-                VerticalContentAlignment = Alignment.Middle,
-                Children =
-                [
-                    new Image()
-                    {
-                        Layout = LayoutParameters.FixedSize(64, 64),
-                        Sprite = owner.directionSpriteMap?.Get(Direction.West, out _),
-                        Tint = MouseTint,
-                    },
-                    new Image()
-                    {
-                        Layout = LayoutParameters.FixedSize(100, 100),
-                        Sprite = owner.buttonSpriteMap?.Get(SButton.MouseLeft, out _),
-                        Tint = MouseTint,
-                    },
-                    new Image()
-                    {
-                        Layout = LayoutParameters.FixedSize(64, 64),
-                        Sprite = owner.directionSpriteMap?.Get(Direction.East, out _),
-                        Tint = MouseTint,
-                    },
-                ],
-            };
+        private readonly Lane dragPrompt = new()
+        {
+            Layout = LayoutParameters.FitContent(),
+            VerticalContentAlignment = Alignment.Middle,
+            Children =
+            [
+                new Image()
+                {
+                    Layout = LayoutParameters.FixedSize(64, 64),
+                    Sprite = owner.directionSpriteMap?.Get(Direction.West, out _),
+                    Tint = MouseTint,
+                },
+                new Image()
+                {
+                    Layout = LayoutParameters.FixedSize(100, 100),
+                    Sprite = owner.buttonSpriteMap?.Get(SButton.MouseLeft, out _),
+                    Tint = MouseTint,
+                },
+                new Image()
+                {
+                    Layout = LayoutParameters.FixedSize(64, 64),
+                    Sprite = owner.directionSpriteMap?.Get(Direction.East, out _),
+                    Tint = MouseTint,
+                },
+            ],
+        };
 
         private bool wasGamepadControls = Game1.options.gamepadControls;
 

@@ -202,12 +202,14 @@ public record SAttribute(
     }
 
     /// <summary>
-    /// Creates a copy of this attribute with a different <see cref="Name"/>, and all other properties the same.
+    /// Creates a copy of this attribute with a different <see cref="Name"/> and <see cref="Type"/>, and all other
+    /// properties the same.
     /// </summary>
     /// <param name="name">The new attribute name.</param>
+    /// <param name="type">The new attribute type.</param>
     /// <returns>The renamed attribute.</returns>
-    public SAttribute WithName(string name)
+    public SAttribute WithNameAndType(string name, AttributeType type)
     {
-        return new(name, Value, Type, ValueType, ContextRedirect);
+        return new(name, Value, type, ValueType, ContextRedirect);
     }
 }

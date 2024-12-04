@@ -45,7 +45,7 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
     )
     {
         Logger.LogOnce(
-            $"Attempting creation of duck-type converter from {typeof(SourceMember).FullName} to "
+            $"Attempting creation of duck-type converter from {typeof(TSource).FullName} to "
                 + $"{typeof(TDestination).FullName}..."
         );
         converter = null;

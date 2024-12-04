@@ -118,14 +118,13 @@ public class KeybindOverlay(ISpriteMap<SButton>? spriteMap) : FullScreenOverlay
 
     private readonly HashSet<SButton> capturedButtons = [];
 
-    private readonly Image horizontalDivider =
-        new()
-        {
-            Layout = LayoutParameters.AutoRow(),
-            Margin = new(0, 16),
-            Fit = ImageFit.Stretch,
-            Sprite = UiSprites.GenericHorizontalDivider,
-        };
+    private readonly Image horizontalDivider = new()
+    {
+        Layout = LayoutParameters.AutoRow(),
+        Margin = new(0, 16),
+        Fit = ImageFit.Stretch,
+        Sprite = UiSprites.GenericHorizontalDivider,
+    };
 
     private KeybindList keybindList = new();
     private string deleteButtonTooltip = "";
