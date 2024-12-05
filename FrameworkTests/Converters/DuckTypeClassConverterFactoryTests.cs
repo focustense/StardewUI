@@ -7,7 +7,7 @@ using StardewUI.Layout;
 using StardewValley;
 using Xunit.Abstractions;
 
-namespace StardewUI.Framework.Tests;
+namespace StardewUI.Framework.Tests.Converters;
 
 public class DuckTypeClassConverterFactoryTests
 {
