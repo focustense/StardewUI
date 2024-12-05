@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using StardewUI.Framework.Converters;
 
-namespace StardewUI.Framework.Tests;
+namespace StardewUI.Framework.Tests.Converters;
 
 public class ColorConverterTests
 {

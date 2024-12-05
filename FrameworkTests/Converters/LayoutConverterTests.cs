@@ -1,7 +1,7 @@
 ﻿using StardewUI.Framework.Converters;
 using StardewUI.Layout;
 
-namespace StardewUI.Framework.Tests;
+namespace StardewUI.Framework.Tests.Converters;
 
 public class LayoutConverterTests
 {
