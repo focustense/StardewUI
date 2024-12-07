@@ -452,6 +452,34 @@ If there is a real need to have multiple views in the outlet, then this can also
     </expander>
     ```
 
+## Comments
+
+[HTML-style block comments](https://developer.mozilla.org/en-US/docs/Web/HTML/Comments) may be used in StarML documents, using the same syntax.
+
+`<!--` begins a comment and `-->` ends a comment; the content of a comment can be a single line or multiple lines.
+
+!!! example
+    ```html
+    <--! My Menu -->
+    <lane orientation="vertical" horizontal-content-alignment="middle">
+        <banner text="Menu Title" />
+
+        <!-- Nav Bar -->
+        <lane layout="200px content">...</lane>
+
+        <!-- Main Content -->
+        <frame>...</frame>
+        
+        <!--
+            Spacer is added at the end of the lane to re-center the
+            main content after having it pushed right by the nav bar.
+        -->
+        <spacer layout="200px 0px" />
+    </lane>
+    ```
+
+Unlike code comments, StarML comments _will_ be visible to users of your mod if they open your `.sml` directly, since those files are simply ordinary content files. However, they are ignored after parsing and are not shown on screen or held in memory.
+
 ## Why not HTML?
 
 Some web frameworks, like Vue, are a subset of HTML; their templates are syntactically valid HTML, constructed in such a way that any special behavior can be understood using special tags, attributes with unusual but valid prefixes like `:class`, and so on. So, why not simply pull in an HTML (or XHTML) parser and use that?
