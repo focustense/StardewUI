@@ -7,7 +7,7 @@
     <BundleExtraAssemblies>All</BundleExtraAssemblies>
   </PropertyGroup>
 
-  <Import Project="..\StardewUI.props"/>
+  <Import Project="..\StardewUI.props" />
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -41,5 +41,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Framework\StardewUI.Framework.csproj" />
   </ItemGroup>
+
+  <Target Name="SetGamePath" BeforeTargets="CoreBuild">
+    <Message Text="Test task" Importance="high" />
+    <WriteLinesToFile
+      File="$(OutputPath)\GameSettings.json"
+      Lines="{&quot;GamePath&quot;: &quot;$(GamePath.Replace(&quot;\&quot;, &quot;\\&quot;))&quot;}"
+      Overwrite="true"/>
+  </Target>
 
 </Project>
