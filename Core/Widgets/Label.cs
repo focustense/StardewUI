@@ -395,7 +395,7 @@ public partial class Label : View
                 }
                 else
                 {
-                    if (!AppendCurrentLine(ref maxLineWidth))
+                    if (!AppendCurrentLine(ref maxLineWidth, true))
                     {
                         return;
                     }
@@ -426,9 +426,9 @@ public partial class Label : View
                 remainingWidth -= wordWidth;
                 isFirstWord = false;
             }
-            AppendCurrentLine(ref maxLineWidth);
+            AppendCurrentLine(ref maxLineWidth, false);
 
-            bool AppendCurrentLine(ref float maxLineWidth)
+            bool AppendCurrentLine(ref float maxLineWidth, bool ellipsize)
             {
                 var fittedLine = sb.ToString();
                 // It might seem mathematically that we can use "availableWidth - remainingWidth" as the line width
@@ -439,12 +439,15 @@ public partial class Label : View
                 // to be a lot less noticeable of an issue than having a wrong final content size on single-line
                 // text (where the more spaces are added, the bigger a "phantom margin" appears between the text and
                 // whatever follows it in the layout).
-                maxLineWidth = MathF.Max(maxLineWidth, Font.MeasureString(fittedLine).X);
+                var lineWidth = Font.MeasureString(fittedLine).X * Scale;
+                maxLineWidth = MathF.Max(maxLineWidth, lineWidth);
                 lines.Add(fittedLine);
                 if (MaxLines > 0 && lines.Count == MaxLines)
                 {
-                    lines[^1] = Ellipsize(lines[^1], availableWidth);
-                    maxLineWidth *= Scale;
+                    if (ellipsize)
+                    {
+                        lines[^1] = Ellipsize(lines[^1], availableWidth);
+                    }
                     return false;
                 }
                 sb.Clear();

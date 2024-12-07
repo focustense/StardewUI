@@ -8,6 +8,59 @@ namespace StardewUI.Framework.Tests.Widgets;
 public class LabelTests
 {
     [Fact]
+    public void WhenTextFitsOnSingleLine_DoesNotAppendEllipsis()
+    {
+        var label = new Label()
+        {
+            Layout = LayoutParameters.FixedSize(200, 200),
+            Font = Game1.smallFont,
+            Color = Color.Black,
+            MaxLines = 1,
+            Text = "Bacon ipsum",
+        };
+
+        var spriteBatch = new FakeSpriteBatch();
+        label.Measure(new(1000, 1000));
+        label.Draw(spriteBatch);
+
+        Assert.Equal(
+            [
+                .. ViewBoilerplate.ZeroMarginAndBorderStart,
+                new DrawStringInfo(Game1.smallFont, "Bacon ipsum", new(0, 0), Color.Black),
+                .. ViewBoilerplate.ZeroMarginAndBorderEnd,
+            ],
+            spriteBatch.History
+        );
+    }
+
+    [Fact]
+    public void WhenTextFitsOnMultipleLine_DoesNotAppendEllipsis()
+    {
+        var label = new Label()
+        {
+            Layout = LayoutParameters.FixedSize(450, 200),
+            Font = Game1.smallFont,
+            Color = Color.Black,
+            MaxLines = 2,
+            Text = "Bacon ipsum dolor amet incididunt shank rump hamburger elit",
+        };
+
+        var spriteBatch = new FakeSpriteBatch();
+        label.Measure(new(1000, 1000));
+        label.Draw(spriteBatch);
+
+        Assert.Equal(
+            [
+                .. ViewBoilerplate.ZeroMarginAndBorderStart,
+                new DrawStringInfo(Game1.smallFont, "Bacon ipsum dolor amet incididunt", new(0, 0), Color.Black),
+                new DrawStringInfo(Game1.smallFont, "shank rump hamburger elit", new(0, 28), Color.Black),
+                .. ViewBoilerplate.ZeroMarginAndBorderEnd,
+            ],
+            spriteBatch.History
+        );
+    }
+
+    [Fact]
     public void WhenTextIsLongParagraphWithSpaces_AppliesWordBreaking()
     {
         var label = new Label()
