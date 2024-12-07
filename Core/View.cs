@@ -411,10 +411,12 @@ public abstract class View : IView
     private RenderTarget2D? opacityDestinationTarget;
     private bool pointerEventsEnabled = true;
     private Vector2 previousLayoutOffset;
+    private WeakViewChild? previousPointerTarget;
     private Orientation? scrollWithChildren;
     private Tags tags = new();
     private TooltipData? tooltip = null;
     private Visibility visibility;
+    private bool wasPointerInBounds;
     private int zIndex;
 
     /// <summary>
@@ -820,8 +822,10 @@ public abstract class View : IView
                 ? new(e.PreviousPosition - previousLayoutOffset + LayoutOffset, e.Position)
                 : e;
         previousLayoutOffset = LayoutOffset;
-        var previousTarget = GetChildAt(dispatchArgs.PreviousPosition);
         var currentTarget = GetChildAt(e.Position);
+        ViewChild? previousTarget = null;
+        previousPointerTarget?.TryResolve(out previousTarget);
+        previousPointerTarget = currentTarget?.AsWeak();
         if (currentTarget != previousTarget && previousTarget is not null)
         {
             DispatchPointerEvent(previousTarget, dispatchArgs, (view, args) => view.OnPointerMove(args));
@@ -841,7 +845,6 @@ public abstract class View : IView
         }
 
         // For self checks, don't adjust previous position, as offset should only apply to inner content.
-        var wasPointerInBounds = ContainsPoint(e.PreviousPosition);
         var isPointerInBounds = ContainsPoint(e.Position);
         if (isPointerInBounds)
         {
@@ -858,6 +861,7 @@ public abstract class View : IView
         {
             PointerLeave?.Invoke(this, e);
         }
+        wasPointerInBounds = isPointerInBounds;
     }
 
     /// <inheritdoc/>
