@@ -1,6 +1,8 @@
 ---
 title: ContextRedirect.Type
 description: Redirects to the nearest ancestor matching a specified type.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

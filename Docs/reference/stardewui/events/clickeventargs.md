@@ -1,6 +1,8 @@
 ---
 title: ClickEventArgs
 description: Event arguments for a controller or mouse click.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

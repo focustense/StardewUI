@@ -1,6 +1,8 @@
 ---
 title: TranslationValueSource
 description: Value source that reads the localized string from a translation key.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

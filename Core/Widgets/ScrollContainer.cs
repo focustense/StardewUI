@@ -277,8 +277,7 @@ public partial class ScrollContainer : View
         {
             return;
         }
-        // Note, `ContentSize` is the content "viewport" in this case, it is not `Content.OuterSize`.
-        var clipRect = new Rectangle(Point.Zero, ContentSize.ToPoint());
+        var clipRect = new Rectangle(ActualBounds.Position.ToPoint(), ActualBounds.Size.ToPoint());
         using var _ = b.Clip(clipRect);
         var origin = GetScrollOrigin();
         b.Translate(-origin);

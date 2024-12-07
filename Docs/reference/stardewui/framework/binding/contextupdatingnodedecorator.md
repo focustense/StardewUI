@@ -1,6 +1,8 @@
 ---
 title: ContextUpdatingNodeDecorator
 description: A transparent binding node that propagates IViewNode.Update ticks to an eligible context.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

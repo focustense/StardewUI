@@ -1,6 +1,8 @@
 ---
 title: DecoratorView&lt;T&gt;
 description: A view that owns and delegates to an inner view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: IValueSourceFactory
 description: Provides methods to look up runtime value types and build appropriate sources based on their binding information.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

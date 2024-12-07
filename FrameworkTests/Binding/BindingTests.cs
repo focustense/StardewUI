@@ -17,7 +17,7 @@ using StardewUI.Widgets;
 using StardewValley;
 using Xunit.Abstractions;
 
-namespace StardewUI.Framework.Tests;
+namespace StardewUI.Framework.Tests.Binding;
 
 public partial class BindingTests
 {

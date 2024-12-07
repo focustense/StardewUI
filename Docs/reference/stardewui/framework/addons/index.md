@@ -1,5 +1,7 @@
 ---
 title: StardewUI.Framework.Addons
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

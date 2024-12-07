@@ -1,6 +1,8 @@
 ---
 title: GridItemLayoutConverter
 description: String converter for a GridItemLayout.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: TemplateNodeTransformer
 description: Transforms a template node based on the structure (attributes, children, etc.) of the instantiating node.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

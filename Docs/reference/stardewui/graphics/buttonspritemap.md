@@ -1,6 +1,8 @@
 ---
 title: ButtonSpriteMap
 description: Base class for a ISpriteMap&lt;T&gt; for controller/keyboard bindings.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

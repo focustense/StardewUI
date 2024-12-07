@@ -1,6 +1,8 @@
 ---
 title: HoverScale
 description: Standalone scaling behavior that can be attached to any Image, causing it to scale up to a specified amount when hovered by the pointer.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

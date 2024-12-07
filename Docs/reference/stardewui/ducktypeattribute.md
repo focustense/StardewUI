@@ -1,6 +1,8 @@
 ---
 title: DuckTypeAttribute
 description: Specifies that a type is eligible for duck-type conversions in data bindings.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

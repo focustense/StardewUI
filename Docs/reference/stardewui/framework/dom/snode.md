@@ -1,6 +1,8 @@
 ---
 title: SNode
 description: A node in a StarML document, encapsulating the tag, its attributes, and all child nodes.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

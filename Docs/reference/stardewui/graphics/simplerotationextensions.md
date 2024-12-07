@@ -1,6 +1,8 @@
 ---
 title: SimpleRotationExtensions
 description: Helper extensions for the SimpleRotation type.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: BackoffRule
 description: Defines the rules for exponential backoff.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

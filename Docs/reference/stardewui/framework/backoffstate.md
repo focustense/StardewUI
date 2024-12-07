@@ -1,6 +1,8 @@
 ---
 title: BackoffState
 description: State of an exponential backoff, e.g. as used in a BackoffTracker&lt;T&gt;.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Graphics;
@@ -250,7 +252,24 @@ public partial class Label : View
         }
     }
 
-    private static readonly ShadowLayers[] shadowLayerOrder =
+    private record HyphenationOptions(string Hyphen, float Width, Regex? NoBreakRegex);
+
+    private static readonly Regex CjkCharacterRegex = new(
+        @"\p{IsHangulJamo}|"
+            + @"\p{IsCJKRadicalsSupplement}|"
+            + @"\p{IsCJKSymbolsandPunctuation}|"
+            + @"\p{IsEnclosedCJKLettersandMonths}|"
+            + @"\p{IsCJKCompatibility}|"
+            + @"\p{IsCJKUnifiedIdeographsExtensionA}|"
+            + @"\p{IsCJKUnifiedIdeographs}|"
+            + @"\p{IsHangulSyllables}|"
+            + @"\p{IsCJKCompatibilityForms}",
+        RegexOptions.Compiled
+    );
+
+    private static readonly Regex PunctuationRegex = new(@"\p{P}", RegexOptions.Compiled);
+
+    private static readonly ShadowLayers[] ShadowLayerOrder =
     [
         ShadowLayers.Diagonal,
         ShadowLayers.Vertical,
@@ -277,7 +296,7 @@ public partial class Label : View
         if (ShadowAlpha > 0 && ShadowLayers > 0)
         {
             var shadowAlphaColor = ShadowColor * ShadowAlpha;
-            foreach (var layer in shadowLayerOrder)
+            foreach (var layer in ShadowLayerOrder)
             {
                 if ((ShadowLayers & layer) == 0)
                 {
@@ -350,7 +369,8 @@ public partial class Label : View
         // Greedy breaking algorithm. Knuth *probably* isn't necessary in a use case like this?
         maxLineWidth = 0.0f;
         lines = [];
-        var spacing = Font.MeasureString(" ").X;
+        var spaceWidth = Font.MeasureString(" ").X;
+        HyphenationOptions? hyphenationOptions = null;
         foreach (var line in rawLines)
         {
             var sb = new StringBuilder();
@@ -358,53 +378,134 @@ public partial class Label : View
             // Track isFirstWord explicitly instead of checking sb.Length == 0 because the first "word" can be empty when
             // there is a leading space - and leading spaces should actually render, it's not our job to trim here.
             bool isFirstWord = true;
-            foreach (var word in line)
+            var wordEnumerator = line.GetEnumerator();
+            string? continuedWord = null;
+            while (!string.IsNullOrEmpty(continuedWord) || wordEnumerator.MoveNext())
             {
+                string word = !string.IsNullOrEmpty(continuedWord) ? continuedWord : (string)wordEnumerator.Current;
+                continuedWord = null;
                 var wordWidth = Font.MeasureString(word).X;
-                if (isFirstWord || remainingWidth >= wordWidth + spacing)
+                if (isFirstWord || remainingWidth >= wordWidth + spaceWidth)
                 {
                     if (!isFirstWord)
                     {
                         sb.Append(' ');
-                        remainingWidth -= spacing;
+                        remainingWidth -= spaceWidth;
                     }
                 }
                 else
                 {
-                    var fittedLine = sb.ToString();
-                    // It might seem mathematically that we can use "availableWidth - remainingWidth" as the line width
-                    // here, but in fact this is inaccurate because of kerning. Instead we need to re-measure the entire
-                    // line in order to get an accurate width.
-                    // Technically, this means a line with many spaces might get broken earlier than it needs to be,
-                    // possibly with the resulting label using more lines than it needs to use. In practice, this tends
-                    // to be a lot less noticeable of an issue than having a wrong final content size on single-line
-                    // text (where the more spaces are added, the bigger a "phantom margin" appears between the text and
-                    // whatever follows it in the layout).
-                    maxLineWidth = MathF.Max(maxLineWidth, Font.MeasureString(fittedLine).X);
-                    lines.Add(fittedLine);
-                    if (MaxLines > 0 && lines.Count == MaxLines)
+                    if (!AppendCurrentLine(ref maxLineWidth, true))
                     {
-                        // There's a chance that adding the ellipsis could make the line too long; we're ignoring that
-                        // for the time being. If it causes serious issues later on, the fix would be to trim 1-2
-                        // characters at a time and re-measure until the line is short enough.
-                        // In practice, this is unlikely to happen because of the previous issue - any line that
-                        // actually spaces will break slightly sooner than the true formatted width dictates.
-                        lines[^1] += " ...";
-                        maxLineWidth *= Scale;
                         return;
                     }
-                    sb.Clear();
-                    remainingWidth = availableWidth;
+                }
+                if (isFirstWord && wordWidth > remainingWidth)
+                {
+                    // Most strings should hopefully not require word-breaking, so we can defer the (expensive) regex
+                    // until it's definitely going to happen.
+                    hyphenationOptions ??= ContainsCjkCharacters(Text)
+                        ? new("", 0, PunctuationRegex)
+                        : new HyphenationOptions("-", Font.MeasureString("-").X, PunctuationRegex);
+                    string brokenWord = BreakWord(ref word, ref wordWidth, remainingWidth, hyphenationOptions);
+                    continuedWord = word;
+                    word = brokenWord;
+                    // Only append the hyphen if it's not going to be ellipsized later. We should add a hyphen OR
+                    // ellipsis, not both. Also, only hyphenate if breaking succeeded.
+                    if (
+                        continuedWord.Length > 0
+                        && hyphenationOptions.Hyphen.Length > 0
+                        && (MaxLines == 0 || lines.Count < (MaxLines - 1))
+                    )
+                    {
+                        word += hyphenationOptions.Hyphen;
+                        wordWidth += hyphenationOptions.Width;
+                    }
                 }
                 sb.Append(word);
                 remainingWidth -= wordWidth;
                 isFirstWord = false;
             }
-            var lastLine = sb.ToString();
-            maxLineWidth = MathF.Max(maxLineWidth, Font.MeasureString(lastLine).X);
-            lines.Add(lastLine);
+            AppendCurrentLine(ref maxLineWidth, false);
+
+            bool AppendCurrentLine(ref float maxLineWidth, bool ellipsize)
+            {
+                var fittedLine = sb.ToString();
+                // It might seem mathematically that we can use "availableWidth - remainingWidth" as the line width
+                // here, but in fact this is inaccurate because of kerning. Instead we need to re-measure the entire
+                // line in order to get an accurate width.
+                // Technically, this means a line with many spaces might get broken earlier than it needs to be,
+                // possibly with the resulting label using more lines than it needs to use. In practice, this tends
+                // to be a lot less noticeable of an issue than having a wrong final content size on single-line
+                // text (where the more spaces are added, the bigger a "phantom margin" appears between the text and
+                // whatever follows it in the layout).
+                var lineWidth = Font.MeasureString(fittedLine).X * Scale;
+                maxLineWidth = MathF.Max(maxLineWidth, lineWidth);
+                lines.Add(fittedLine);
+                if (MaxLines > 0 && lines.Count == MaxLines)
+                {
+                    if (ellipsize)
+                    {
+                        lines[^1] = Ellipsize(lines[^1], availableWidth);
+                    }
+                    return false;
+                }
+                sb.Clear();
+                remainingWidth = availableWidth;
+                isFirstWord = true;
+                return true;
+            }
         }
         maxLineWidth *= Scale;
+    }
+
+    private string BreakWord(ref string word, ref float wordWidth, float availableWidth, HyphenationOptions options)
+    {
+        var runes = word.EnumerateRunes().ToArray().AsSpan();
+        string result = runes[0].ToString();
+        int minLength = 1;
+        int maxLength = runes.Length;
+        int nextLength;
+        wordWidth = 0;
+        do
+        {
+            nextLength = Math.Max(1, (minLength + maxLength) / 2);
+            if (nextLength < maxLength && options.NoBreakRegex is Regex noBreakRegex)
+            {
+                while (nextLength >= minLength && noBreakRegex.IsMatch(runes[nextLength].ToString()))
+                {
+                    nextLength--;
+                }
+            }
+            string brokenWord = Encoding.UTF32.GetString(MemoryMarshal.Cast<Rune, byte>(runes[..nextLength]));
+            float brokenWordWidth = Font.MeasureString(brokenWord).X;
+            if (brokenWordWidth < availableWidth - options.Width)
+            {
+                minLength = Math.Max(nextLength, minLength + 1);
+                result = brokenWord;
+                wordWidth = brokenWordWidth;
+            }
+            else
+            {
+                maxLength = Math.Min(nextLength, maxLength - 1);
+            }
+        } while (maxLength > minLength);
+        if (wordWidth == 0)
+        {
+            wordWidth = Font.MeasureString(result).X;
+        }
+        word = word[result.Length..];
+        return result;
+    }
+
+    private static string Ellipsize(string text, float maxWidth)
+    {
+        // There's a chance that adding the ellipsis could make the line too long; we're ignoring that
+        // for the time being. If it causes serious issues later on, the fix would be to trim 1-2
+        // characters at a time and re-measure until the line is short enough.
+        // In practice, this is unlikely to happen because of the previous issue - any line that
+        // actually spaces will break slightly sooner than the true formatted width dictates.
+        return text + " ...";
     }
 
     private float GetAlignedLeft(string text)
@@ -422,5 +523,10 @@ public partial class Label : View
             default:
                 throw new NotImplementedException($"Invalid alignment type: {HorizontalAlignment}");
         }
+    }
+
+    private static bool ContainsCjkCharacters(string text)
+    {
+        return CjkCharacterRegex.IsMatch(text);
     }
 }

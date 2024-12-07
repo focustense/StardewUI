@@ -1,6 +1,8 @@
 ---
 title: AssetCache
 description: Standard in-game implementation of the asset cache based on SMAPI's helpers and events.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

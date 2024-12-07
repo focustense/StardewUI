@@ -1,6 +1,8 @@
 ---
 title: RectangleConverter
 description: String converter for the XNA Rectangle type.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

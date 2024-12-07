@@ -1,6 +1,8 @@
 ---
 title: IAddon
 description: Entry point for a UI add-on.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

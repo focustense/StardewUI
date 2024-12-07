@@ -1,6 +1,8 @@
 ---
 title: TinyNumberLabel
 description: Renders a single-line numeric label using custom digit sprites.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

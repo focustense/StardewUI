@@ -1,6 +1,8 @@
 ---
 title: IPropertyDescriptor&lt;T&gt;
 description: Describes a single property on a bindable object (i.e. a view) and provides methods to read or write the value.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

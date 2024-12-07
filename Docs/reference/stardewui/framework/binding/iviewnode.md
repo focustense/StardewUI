@@ -1,6 +1,8 @@
 ---
 title: IViewNode
 description: Encapsulates a single bound node in a view tree.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

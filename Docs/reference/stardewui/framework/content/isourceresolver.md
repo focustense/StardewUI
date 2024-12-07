@@ -1,6 +1,8 @@
 ---
 title: ISourceResolver
 description: Provides a method to connect a parsed Document back to the mod that provided it.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

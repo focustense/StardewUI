@@ -1,6 +1,8 @@
 ---
 title: IEventBinding
 description: Binding instance for a single event on a single view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

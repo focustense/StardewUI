@@ -1,6 +1,8 @@
 ---
 title: ViewFactory
 description: A view factory based on per-tag delegates. Can be used as a base class for other view factories.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

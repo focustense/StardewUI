@@ -1,6 +1,8 @@
 ---
 title: ValueSourceFactory
 description: Default implementation of the IValueSourceFactory supporting all binding types.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: ICaptureTarget
 description: Denotes a view or other UI element that can be the active IKeyboardSubscriber. Allows view hosts to provide deterministic release, e.g. when the mouse is clicked outside the target.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: ButtonResolver
 description: Helper for resolving button state reported by vanilla menu code.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: Panel
 description: A layout view whose children all overlap the same boundaries.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

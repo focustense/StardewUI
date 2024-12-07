@@ -1,6 +1,8 @@
 ---
 title: ParserException
 description: The exception that is thrown when a DocumentReader encounters invalid content.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

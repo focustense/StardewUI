@@ -1,6 +1,8 @@
 ---
 title: IArgument
 description: An argument to a method call, e.g. as used in an IEvent.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

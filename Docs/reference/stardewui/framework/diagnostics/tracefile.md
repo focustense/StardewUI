@@ -1,6 +1,8 @@
 ---
 title: TraceFile
 description: Format of a trace file compatible with speedscope.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

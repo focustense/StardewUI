@@ -81,7 +81,7 @@ public partial class TextInput : View
     /// </remarks>
     public int CaretPosition
     {
-        get => labelBeforeCursor.Text.Length;
+        get => TextBeforeCursor.Length;
         set
         {
             if (SetCaretPosition(value))
@@ -116,13 +116,12 @@ public partial class TextInput : View
     /// </summary>
     public SpriteFont Font
     {
-        get => labelAfterCursor.Font;
+        get => label.Font;
         set
         {
-            if (value != labelAfterCursor.Font || value != labelBeforeCursor.Font)
+            if (value != label.Font)
             {
-                labelAfterCursor.Font = value;
-                labelBeforeCursor.Font = value;
+                label.Font = value;
                 OnPropertyChanged(nameof(Font));
             }
         }
@@ -184,13 +183,12 @@ public partial class TextInput : View
     /// </summary>
     public Color TextColor
     {
-        get => labelBeforeCursor.Color;
+        get => label.Color;
         set
         {
-            if (value != labelBeforeCursor.Color)
+            if (value != label.Color)
             {
-                labelBeforeCursor.Color = value;
-                labelAfterCursor.Color = value;
+                label.Color = value;
                 caret.Tint = value;
                 OnPropertyChanged(nameof(TextColor));
             }
@@ -205,9 +203,33 @@ public partial class TextInput : View
     /// </remarks>
     public string Text
     {
-        get => labelBeforeCursor.Text + labelAfterCursor.Text;
+        get => TextBeforeCursor + TextAfterCursor;
         set => SetText(value);
     }
+
+    private string TextAfterCursor
+    {
+        get => textAfterCursor;
+        set
+        {
+            textAfterCursor = value;
+            label.Text = Text;
+        }
+    }
+
+    private string TextBeforeCursor
+    {
+        get => textBeforeCursor;
+        set
+        {
+            textBeforeCursor = value;
+            label.Text = Text;
+        }
+    }
+
+    // Extra space to leave between the nominal caret position (exactly at the beginning of a character) and the actual
+    // drawn caret position, which should ideally be shown within the whitespace.
+    private const int CARET_POSITION_OFFSET = 2;
 
     // A very small positive offset we add to the search position when trying to move the caret to the mouse cursor.
     // In general, the caret should always move BEFORE the character that was clicked on; however, this has a tendency
@@ -218,16 +240,23 @@ public partial class TextInput : View
     // is bigger or almost as big as the actual character width, we'll just miss it entirely.
     private const float CARET_SEARCH_OFFSET = 4.0f;
 
+    // Tries to always keep a few characters to the left/right of the caret position in view.
+    // This is similar to the ScrollContainer's own peeking, but we can't use that because the text is a single view.
+    private const int SCROLL_PEEKING_PX = 30;
+
     private readonly Image caret;
     private readonly Animator<Image, Visibility> caretBlinkAnimator;
     private readonly Frame frame;
-    private readonly Label labelAfterCursor;
-    private readonly Label labelBeforeCursor;
+    private readonly Label label;
+    private readonly ScrollContainer scrollContainer;
     private readonly TextBoxInterceptor textBoxInterceptor;
     private readonly TextInputSubscriber textInputSubscriber;
+    private readonly Panel textPanel;
 
     private bool isTextEntryMenuShown;
     private int maxLength;
+    private string textAfterCursor = "";
+    private string textBeforeCursor = "";
 
     /// <summary>
     /// Initializes a new <see cref="TextInput"/>.
@@ -240,7 +269,6 @@ public partial class TextInput : View
         {
             Name = "TextInputCursor",
             Layout = new() { Width = Length.Px(2), Height = Length.Stretch() },
-            Margin = new(-2, 0),
             Fit = ImageFit.Stretch,
             Sprite = new(Game1.staminaRect),
             Tint = Game1.textColor,
@@ -253,32 +281,38 @@ public partial class TextInput : View
             (i, v) => i.Visibility = v
         );
         caretBlinkAnimator.Loop = true;
-        labelBeforeCursor = new()
+        label = new()
         {
-            Name = "TextInputBeforeCursor",
+            Name = "TextInputLabel",
             Layout = LayoutParameters.FitContent(),
+            // Right margin allows scrolling past end; this is similar to peeking, but intended for typing strings that
+            // are longer than text box width can fit.
+            Margin = new(Right: SCROLL_PEEKING_PX),
             MaxLines = 1,
         };
-        labelAfterCursor = new()
+        textPanel = new Panel()
         {
-            Name = "TextInputAfterCursor",
-            Layout = LayoutParameters.FitContent(),
-            MaxLines = 1,
-        };
-        var textLane = new Lane()
-        {
-            Name = "TextInputContentLane",
             Layout = LayoutParameters.Fill(),
             VerticalContentAlignment = Alignment.Middle,
-            Children = [labelBeforeCursor, caret, labelAfterCursor],
+            Children = [label, caret],
+        };
+        scrollContainer = new()
+        {
+            Name = "TextInputScrollContainer",
+            Layout = LayoutParameters.AutoRow(),
+            Margin = new(Left: -CARET_POSITION_OFFSET, Top: -4, Bottom: -4),
+            Padding = new(Left: CARET_POSITION_OFFSET, Top: 4, Bottom: 4),
+            Orientation = Orientation.Horizontal,
+            Content = textPanel,
         };
         var textBoxSprite = UiSprites.TextBox;
         frame = new()
         {
             Layout = LayoutParameters.Fill(),
             Padding = textBoxSprite.FixedEdges ?? new(4),
+            VerticalContentAlignment = Alignment.Middle,
             Background = textBoxSprite,
-            Content = textLane,
+            Content = scrollContainer,
         };
         textBoxInterceptor = new(this);
         textInputSubscriber = new(this, Game1.keyboardFocusInstance.Window);
@@ -338,7 +372,10 @@ public partial class TextInput : View
         }
         else
         {
-            var searchOrigin = new Vector2(BorderThickness.Left - CARET_SEARCH_OFFSET, BorderThickness.Top);
+            var searchOrigin = new Vector2(
+                BorderThickness.Left - CARET_SEARCH_OFFSET - scrollContainer.ScrollOffset,
+                BorderThickness.Top
+            );
             MoveCaretToCursor(cursorPosition - searchOrigin);
             caretBlinkAnimator.Start(Visibility.Visible, Visibility.Hidden, TimeSpan.FromSeconds(1));
             Game1.keyboardDispatcher.Subscriber = textInputSubscriber;
@@ -362,9 +399,10 @@ public partial class TextInput : View
                 CaretPosition = Text.Length;
                 break;
             case Keys.Delete:
-                if (labelAfterCursor.Text.Length > 0)
+                if (TextAfterCursor.Length > 0)
                 {
-                    labelAfterCursor.Text = labelAfterCursor.Text[1..];
+                    TextAfterCursor = TextAfterCursor[1..];
+                    label.Text = Text;
                     OnTextChanged();
                 }
                 break;
@@ -376,9 +414,9 @@ public partial class TextInput : View
         switch (c)
         {
             case '\b':
-                if (labelBeforeCursor.Text.Length > 0)
+                if (TextBeforeCursor.Length > 0)
                 {
-                    labelBeforeCursor.Text = labelBeforeCursor.Text[..^1];
+                    TextBeforeCursor = TextBeforeCursor[..^1];
                     OnTextChanged();
                 }
                 break;
@@ -391,7 +429,7 @@ public partial class TextInput : View
                 {
                     if (MaxLength == 0 || Text.Length < MaxLength)
                     {
-                        labelBeforeCursor.Text += c;
+                        TextBeforeCursor += c;
                         OnTextChanged();
                     }
                 }
@@ -411,32 +449,43 @@ public partial class TextInput : View
         }
         if (text.Length > 0)
         {
-            labelBeforeCursor.Text += text;
+            TextBeforeCursor += text;
             OnTextChanged();
         }
     }
 
     private void MoveCaretToCursor(Vector2 position)
     {
-        if (position.X < 0 || position.X > ContentSize.X || Text.Length == 0)
+        if (Text.Length == 0)
         {
+            return;
+        }
+        if (position.X < 0)
+        {
+            CaretPosition = 0;
+            return;
+        }
+        if (position.X > ContentSize.X)
+        {
+            CaretPosition = textBeforeCursor.Length + textAfterCursor.Length;
             return;
         }
         // Taking into account proportional widths, bearings, kernings, etc., we know very little about the relationship
         // of pixel positions to character positions and don't want to reimplement the entire font system.
         // A reasonably (?) fast solution should be to actually measure partial strings, using a binary search on the
         // length of the before/after string.
+        float textBeforeCursorWidth = Font.MeasureString(TextBeforeCursor).X;
         var (previousCharacterCount, labelText, labelOffset) =
-            position.X < labelBeforeCursor.OuterSize.X
-                ? (0, labelBeforeCursor.Text, position.X)
-                : (labelBeforeCursor.Text.Length, labelAfterCursor.Text, position.X - labelBeforeCursor.OuterSize.X);
+            position.X < textBeforeCursorWidth
+                ? (0, TextBeforeCursor, position.X)
+                : (TextBeforeCursor.Length, TextAfterCursor, position.X - textBeforeCursorWidth);
         var searchStart = 0;
         var searchEnd = labelText.Length;
         while (searchStart < searchEnd)
         {
             int searchMid = (int)(MathF.Ceiling((searchStart + searchEnd) / 2.0f));
             var searchText = labelText[0..searchMid];
-            var textWidth = Font.MeasureString(searchText).X;
+            var textWidth = Font.MeasureString(searchText).X - Font.MeasureString(searchText[^1..]).X / 2;
             if (labelOffset < textWidth)
             {
                 searchEnd = Math.Min(searchEnd - 1, searchMid);
@@ -452,6 +501,7 @@ public partial class TextInput : View
 
     private void OnTextChanged()
     {
+        UpdateRealCaretPosition();
         TextChanged?.Invoke(this, EventArgs.Empty);
         OnPropertyChanged(nameof(Text));
     }
@@ -474,8 +524,9 @@ public partial class TextInput : View
         {
             return false;
         }
-        labelBeforeCursor.Text = position > 0 ? fullText[0..position] : "";
-        labelAfterCursor.Text = position < fullText.Length ? fullText[position..] : "";
+        TextBeforeCursor = position > 0 ? fullText[0..position] : "";
+        TextAfterCursor = position < fullText.Length ? fullText[position..] : "";
+        UpdateRealCaretPosition();
         return true;
     }
 
@@ -489,9 +540,24 @@ public partial class TextInput : View
         {
             text = text[..maxLength];
         }
-        labelBeforeCursor.Text = text;
-        labelAfterCursor.Text = "";
+        TextBeforeCursor = text;
+        TextAfterCursor = "";
         OnTextChanged();
+    }
+
+    private void UpdateRealCaretPosition()
+    {
+        float textBeforeCursorWidth = Font.MeasureString(TextBeforeCursor).X;
+        int x = (int)MathF.Round(textBeforeCursorWidth) - CARET_POSITION_OFFSET;
+        caret.Margin = new(Left: x);
+        if (x < scrollContainer.ScrollOffset + SCROLL_PEEKING_PX)
+        {
+            scrollContainer.ScrollOffset = x - SCROLL_PEEKING_PX;
+        }
+        else if (x > scrollContainer.ScrollOffset + scrollContainer.OuterSize.X - SCROLL_PEEKING_PX)
+        {
+            scrollContainer.ScrollOffset = x - scrollContainer.OuterSize.X + SCROLL_PEEKING_PX;
+        }
     }
 
     private class TextBoxInterceptor(TextInput owner)

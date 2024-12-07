@@ -1,6 +1,8 @@
 ---
 title: TraceFrame
 description: Represents a single captured frame, or slice.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

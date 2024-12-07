@@ -1,6 +1,8 @@
 ---
 title: IResolutionScope
 description: Defines a scope in which certain types of external and potentially ambiguous binding attributes may be resolved.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

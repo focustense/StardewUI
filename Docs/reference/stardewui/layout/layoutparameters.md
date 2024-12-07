@@ -1,6 +1,8 @@
 ---
 title: LayoutParameters
 description: Layout parameters for an IView.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

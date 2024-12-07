@@ -1,6 +1,8 @@
 ---
 title: ReflectionEventDescriptor
 description: Helper for creating IEventDescriptor instances using reflection.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

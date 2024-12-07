@@ -1,6 +1,8 @@
 ---
 title: Tags
 description: Typesafe heterogeneous container for associating arbitrary data with a view or other UI object.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: Animator&lt;T, V&gt;
 description: Animates a single property of a single class.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

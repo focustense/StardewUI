@@ -1,6 +1,8 @@
 ---
 title: PointerEventArgs
 description: Base class for any event involving the cursor/pointer, e.g. clicks.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

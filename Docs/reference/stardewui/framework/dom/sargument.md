@@ -1,6 +1,8 @@
 ---
 title: SArgument
 description: Record implementation of an IArgument.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: TraceEvent
 description: Defines a single trace event.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

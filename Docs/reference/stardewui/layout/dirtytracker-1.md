@@ -1,6 +1,8 @@
 ---
 title: DirtyTracker&lt;T&gt;
 description: Convenience class for tracking properties that have changed, i.e. for layout dirty checking.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

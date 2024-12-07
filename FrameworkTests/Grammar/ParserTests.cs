@@ -1,7 +1,7 @@
 ﻿using StardewUI.Framework.Dom;
 using StardewUI.Framework.Grammar;
 
-namespace StardewUI.Framework.Tests;
+namespace StardewUI.Framework.Tests.Grammar;
 
 public class ParserTests
 {

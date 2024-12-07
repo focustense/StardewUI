@@ -1,6 +1,8 @@
 ---
 title: Tab
 description: A view with tab appearance, used to navigate sections of a larger complex menu.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

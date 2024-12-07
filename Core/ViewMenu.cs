@@ -905,7 +905,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         width = (int)MathF.Round(view.OuterSize.X);
         height = (int)MathF.Round(view.OuterSize.Y);
         (xPositionOnScreen, yPositionOnScreen) = GetOriginPosition(viewportSize, new(gutterOffsetX, gutterOffsetY));
-        Refocus();
+        if (Game1.keyboardDispatcher.Subscriber is not ICaptureTarget)
+        {
+            Refocus();
+        }
     }
 
     private OverlayLayoutData MeasureAndPositionOverlay(IOverlay overlay)

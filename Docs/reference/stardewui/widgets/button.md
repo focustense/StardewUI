@@ -1,6 +1,8 @@
 ---
 title: Button
 description: Simple button with optional hover background.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

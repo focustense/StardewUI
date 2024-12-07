@@ -1,6 +1,8 @@
 ---
 title: AssetValueSource&lt;T&gt;
 description: Value source that looks up an asset registered with SMAPI's content manager.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

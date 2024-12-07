@@ -1,6 +1,8 @@
 ---
 title: ThisPropertyDescriptor&lt;T&gt;
 description: Special descriptor used for "this" references in argument/attribute bindings, allowing them to reference the current context instead of a property on it.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

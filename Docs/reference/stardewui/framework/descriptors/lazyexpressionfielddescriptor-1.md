@@ -1,6 +1,8 @@
 ---
 title: LazyExpressionFieldDescriptor&lt;TValue&gt;
 description: Implementation of a field descriptor that supports a transition between two inner descriptor types.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

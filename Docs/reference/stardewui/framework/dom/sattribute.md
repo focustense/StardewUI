@@ -1,6 +1,8 @@
 ---
 title: SAttribute
 description: Record implementation of a StarML IAttribute.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
@@ -60,7 +62,7 @@ Must be separate from the grammar's [Attribute](../grammar/attribute.md) since `
  | Name | Description |
 | --- | --- |
 | [AsArgument()](#asargument) | Creates a method argument that will receive the same value as this attribute when bound. | 
-| [WithName(string)](#withnamestring) | Creates a copy of this attribute with a different [Name](sattribute.md#name), and all other properties the same. | 
+| [WithNameAndType(string, AttributeType)](#withnameandtypestring-attributetype) | Creates a copy of this attribute with a different [Name](sattribute.md#name) and [Type](sattribute.md#type), and all other properties the same. | 
 
 ## Details
 
@@ -216,18 +218,21 @@ public StardewUI.Framework.Dom.SArgument AsArgument();
 
 -----
 
-#### WithName(string)
+#### WithNameAndType(string, AttributeType)
 
-Creates a copy of this attribute with a different [Name](sattribute.md#name), and all other properties the same.
+Creates a copy of this attribute with a different [Name](sattribute.md#name) and [Type](sattribute.md#type), and all other properties the same.
 
 ```cs
-public StardewUI.Framework.Dom.SAttribute WithName(string name);
+public StardewUI.Framework.Dom.SAttribute WithNameAndType(string name, StardewUI.Framework.Grammar.AttributeType type);
 ```
 
 ##### Parameters
 
 **`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
 The new attribute name.
+
+**`type`** &nbsp; [AttributeType](../grammar/attributetype.md)  
+The new attribute type.
 
 ##### Returns
 

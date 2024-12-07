@@ -1,6 +1,8 @@
 ---
 title: ReflectionViewBinder
 description: An IViewBinder implementation using reflected view descriptors.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

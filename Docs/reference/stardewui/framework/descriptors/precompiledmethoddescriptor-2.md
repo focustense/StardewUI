@@ -1,6 +1,8 @@
 ---
 title: PrecompiledMethodDescriptor&lt;TTarget, TReturn&gt;
 description: Statically-typed implementation of an IMethodDescriptor&lt;T&gt; with predefined attributes.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

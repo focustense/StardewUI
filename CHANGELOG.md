@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.2] - 2024-12-07
+
+### Changed
+
+- `Label` can now break single words that are too long to fit in a single line, instead of overflowing. Non-CJK languages will hyphenate.
+- `ScrollableContainer` adjusts for its own margins (including negative margins) and allows content to draw inside its padding.
+- `TextInput` scrolls the current text instead of truncating/eliding it.
+- Clicking to position the caret in a `TextInput` is slightly more accurate.
+
+### Fixed
+
+- Pointer enter/leave events (e.g. hover effects) fire correctly when menus are opened with a view already under the cursor.
+- Text no longer wiggles inside `TextInput` when moving the caret.
+
 ## [0.4.1] - 2024-12-03
 
 ### Added
@@ -135,7 +149,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Initial documentation site based on material-mkdocs; many pages are stubs.
 - Syntax highlighting for Visual Studio, VSCode and Notepad++.
 
-[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/focustense/StardewUI/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/focustense/StardewUI/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/focustense/StardewUI/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/focustense/StardewUI/compare/v0.2.5...v0.3.0

@@ -1,6 +1,8 @@
 ---
 title: IAnyCast
 description: A marker interface that, when used in place of Object, forces the framework to attempt an explicit conversion/cast to the expected destination type.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

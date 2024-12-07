@@ -1,6 +1,8 @@
 ---
 title: ScrollContainer
 description: Renders inner content clipped to a boundary and with a modifiable scroll offset.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

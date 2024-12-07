@@ -1,6 +1,8 @@
 ---
 title: IValueSource
 description: Holds the type-independent data of an IValueSource&lt;T&gt;.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

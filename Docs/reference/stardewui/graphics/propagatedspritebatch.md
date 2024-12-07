@@ -1,6 +1,8 @@
 ---
 title: PropagatedSpriteBatch
 description: Sprite batch wrapper with transform propagation.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

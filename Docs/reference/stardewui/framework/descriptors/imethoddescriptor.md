@@ -1,6 +1,8 @@
 ---
 title: IMethodDescriptor
 description: Describes a single method on some type.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

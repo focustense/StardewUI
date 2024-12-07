@@ -1,6 +1,8 @@
 ---
 title: AnyCastConverterFactory
 description: Factory supporting conversions to and from IAnyCast.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

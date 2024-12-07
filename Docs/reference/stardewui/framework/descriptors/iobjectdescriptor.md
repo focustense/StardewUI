@@ -1,6 +1,8 @@
 ---
 title: IObjectDescriptor
 description: Describes a type of object that participates in view binding, either as the target or the source.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

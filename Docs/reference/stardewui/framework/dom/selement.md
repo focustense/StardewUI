@@ -1,6 +1,8 @@
 ---
 title: SElement
 description: Record implementation of a StarML IElement.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

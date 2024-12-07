@@ -1,6 +1,8 @@
 ---
 title: AttributeValueType
 description: Types allowed for the value of an Attribute.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

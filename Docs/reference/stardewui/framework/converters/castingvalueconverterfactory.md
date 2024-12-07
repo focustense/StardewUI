@@ -1,6 +1,8 @@
 ---
 title: CastingValueConverterFactory
 description: Factory that automatically implements casting conversions, where the source type can be assigned directly to the destination type.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

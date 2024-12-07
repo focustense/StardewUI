@@ -1578,6 +1578,9 @@ static void WriteFrontMatter(StringBuilder sb, string title, string? description
     {
         sb.AppendLine($"description: {description}");
     }
+    // Downrank all reference docs so that they appear below guide pages in search results.
+    sb.AppendLine("search:");
+    sb.AppendLine("    boost: 0.002");
     sb.AppendLine("---");
     sb.AppendLine();
 }

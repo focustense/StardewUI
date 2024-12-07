@@ -1,6 +1,8 @@
 ---
 title: ButtonEventArgs
 description: Event arguments for an event relating to a button (or key) of some input device.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

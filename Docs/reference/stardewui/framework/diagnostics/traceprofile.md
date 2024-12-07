@@ -1,6 +1,8 @@
 ---
 title: TraceProfile
 description: A single profile in a trace.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

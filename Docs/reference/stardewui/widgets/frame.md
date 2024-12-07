@@ -1,6 +1,8 @@
 ---
 title: Frame
 description: A view that holds another view, typically for the purpose of adding a border or background, or in some cases swapping out the content.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

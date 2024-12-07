@@ -1,6 +1,8 @@
 ---
 title: IdentityValueConverterFactory
 description: Factory that automatically implements identity conversions, where the source and destination type are the same.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

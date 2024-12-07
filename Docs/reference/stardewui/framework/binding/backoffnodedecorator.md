@@ -1,6 +1,8 @@
 ---
 title: BackoffNodeDecorator
 description: A transparent binding node whose purpose is to throttle failed updates and log any errors.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

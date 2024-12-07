@@ -1,6 +1,8 @@
 ---
 title: ITraceWriter
 description: Abstract output writer for performance traces.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: ImageFit
 description: Specifies how an image should be scaled to fit the content area when the available size is different from the image size, and especially when it has a different aspect ratio.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

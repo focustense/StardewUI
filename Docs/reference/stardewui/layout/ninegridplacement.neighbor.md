@@ -1,6 +1,8 @@
 ---
 title: NineGridPlacement.Neighbor
 description: Represents an adjacent placement; the result of NineGridPlacement.GetNeighbors.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

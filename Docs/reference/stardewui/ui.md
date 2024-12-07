@@ -1,6 +1,8 @@
 ---
 title: UI
 description: Entry point for Stardew UI. Must be called from Mod.Entry.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

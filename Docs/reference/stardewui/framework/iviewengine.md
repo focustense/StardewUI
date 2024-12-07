@@ -1,6 +1,8 @@
 ---
 title: IViewEngine
 description: Public API for StardewUI, abstracting away all implementation details of views and trees.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

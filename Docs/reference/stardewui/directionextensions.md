@@ -1,6 +1,8 @@
 ---
 title: DirectionExtensions
 description: Helpers for working with Direction.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
