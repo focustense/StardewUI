@@ -277,7 +277,7 @@ public partial class ScrollContainer : View
         {
             return;
         }
-        var clipRect = new Rectangle(ActualBounds.Position.ToPoint(), InnerSize.ToPoint());
+        var clipRect = new Rectangle(ActualBounds.Position.ToPoint(), ActualBounds.Size.ToPoint());
         using var _ = b.Clip(clipRect);
         var origin = GetScrollOrigin();
         b.Translate(-origin);
