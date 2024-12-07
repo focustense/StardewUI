@@ -1,6 +1,8 @@
 ---
 title: ReflectionEventDescriptor&lt;TTarget, THandler&gt;
 description: Reflection-based implementation of an event descriptor.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: IMemberDescriptor
 description: Describes a single member (property, method, or event) of a bindable object, such as a view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

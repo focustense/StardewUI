@@ -1,6 +1,8 @@
 ---
 title: ScrollableFrameView
 description: Layout widget for a sectioned menu including a scrollable content area.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

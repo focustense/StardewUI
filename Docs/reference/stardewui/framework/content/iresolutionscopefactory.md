@@ -1,6 +1,8 @@
 ---
 title: IResolutionScopeFactory
 description: Factory for creating IResolutionScope instances.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

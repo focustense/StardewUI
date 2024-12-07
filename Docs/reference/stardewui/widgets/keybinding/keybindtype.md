@@ -1,6 +1,8 @@
 ---
 title: KeybindType
 description: Specifies the exact type of keybind supported by a widget using a KeybindList.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: IEvent
 description: Event wire-up in a StarML element.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

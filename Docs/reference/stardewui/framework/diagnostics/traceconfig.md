@@ -1,6 +1,8 @@
 ---
 title: TraceConfig
 description: Configures the tracing behavior for StardewUI.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

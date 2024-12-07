@@ -1,6 +1,8 @@
 ---
 title: NamedFontConverter
 description: Converter for fonts that are already built into the game, i.e. found on Game1.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

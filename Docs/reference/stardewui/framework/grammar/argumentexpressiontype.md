@@ -1,6 +1,8 @@
 ---
 title: ArgumentExpressionType
 description: Defines the possible types of an Argument, which specifies how to resolve its value at runtime.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

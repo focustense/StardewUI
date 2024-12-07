@@ -1,6 +1,8 @@
 ---
 title: DuckTypeClassConverterFactory
 description: Factory that creates duck-typing converters for class and struct types.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
@@ -53,7 +55,7 @@ For the conversion to be allowed:
 
  | Name | Description |
 | --- | --- |
-| [EnableDebugOutput](#enabledebugoutput) | Whether or not to print MSIL output for generated conversion methods. | 
+| [EnableDebugOutput](#enabledebugoutput) | Whether to print MSIL output for generated conversion methods. | 
 
 ### Methods
 
@@ -94,7 +96,7 @@ For the conversion to be allowed:
 
 #### EnableDebugOutput
 
-Whether or not to print MSIL output for generated conversion methods.
+Whether to print MSIL output for generated conversion methods.
 
 ```cs
 public bool EnableDebugOutput { get; set; }

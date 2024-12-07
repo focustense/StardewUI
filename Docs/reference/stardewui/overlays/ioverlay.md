@@ -1,6 +1,8 @@
 ---
 title: IOverlay
 description: Definition of an overlay - i.e. a UI element that displays over all other UI.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

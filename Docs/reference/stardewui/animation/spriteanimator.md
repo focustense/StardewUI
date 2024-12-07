@@ -1,6 +1,8 @@
 ---
 title: SpriteAnimator
 description: Animates the sprite of an Image, using equal duration for all frames in a list.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

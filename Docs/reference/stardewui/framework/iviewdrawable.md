@@ -1,6 +1,8 @@
 ---
 title: IViewDrawable
 description: Provides methods to update and draw a simple, non-interactive UI component, such as a HUD widget.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

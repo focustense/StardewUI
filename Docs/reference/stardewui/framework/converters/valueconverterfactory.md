@@ -1,6 +1,8 @@
 ---
 title: ValueConverterFactory
 description: Standard implementation of IValueConverterFactory that allows registering new converters.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: TooltipData
 description: Provides data for all known variants of a menu tooltip.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
@@ -21,6 +23,7 @@ Assembly: StardewUI.dll
 Provides data for all known variants of a menu tooltip.
 
 ```cs
+[StardewUI.DuckType]
 public record TooltipData : IEquatable<StardewUI.Data.TooltipData>
 ```
 

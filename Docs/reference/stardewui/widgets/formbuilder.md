@@ -1,6 +1,8 @@
 ---
 title: FormBuilder
 description: Fluent builder style API for creating form-like tables within a view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: DirtyTrackingList&lt;T&gt;
 description: List wrapper that tracks whether changes have been made.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

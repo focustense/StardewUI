@@ -1,6 +1,8 @@
 ---
 title: NineGridPlacement
 description: Model for content placement along a nine-segment grid, i.e. all possible combinations of horizontal and vertical Alignment.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

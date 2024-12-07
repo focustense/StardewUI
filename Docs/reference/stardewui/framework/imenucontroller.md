@@ -1,6 +1,8 @@
 ---
 title: IMenuController
 description: Wrapper for a mod-managed IClickableMenu that allows further customization of menu-level properties not accessible to StarML or data binding.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

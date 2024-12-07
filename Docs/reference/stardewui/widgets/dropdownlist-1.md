@@ -1,6 +1,8 @@
 ---
 title: DropDownList&lt;T&gt;
 description: Button/text field with a drop-down menu.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

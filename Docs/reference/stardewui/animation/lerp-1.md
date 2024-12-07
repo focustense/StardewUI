@@ -1,6 +1,8 @@
 ---
 title: Lerp&lt;T&gt;
 description: Performs linear interpolation between two values.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

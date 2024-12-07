@@ -1,6 +1,8 @@
 ---
 title: PerformanceConfig
 description: Configuration sub-settings providing control over performance tweaks.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

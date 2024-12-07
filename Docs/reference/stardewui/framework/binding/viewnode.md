@@ -1,6 +1,8 @@
 ---
 title: ViewNode
 description: Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

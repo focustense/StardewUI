@@ -1,6 +1,8 @@
 ---
 title: ConstantValueSource&lt;T&gt;
 description: Value source with a constant value, generally used to hold the literal (text) value of an attribute.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

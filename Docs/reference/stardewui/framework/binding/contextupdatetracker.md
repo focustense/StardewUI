@@ -1,6 +1,8 @@
 ---
 title: ContextUpdateTracker
 description: Tracks context instances that already had updates dispatched this frame, to prevent duplication.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

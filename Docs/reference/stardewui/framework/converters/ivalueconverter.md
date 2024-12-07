@@ -1,6 +1,8 @@
 ---
 title: IValueConverter
 description: Provides a method to convert between arbitrary types.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: IViewBinding
 description: Represents the binding state of an entire view; provides a single method to perform a once-per-frame update.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: DocumentReader
 description: Reads elements and associated attributes from a StarML document (content string).
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

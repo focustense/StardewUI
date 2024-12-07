@@ -1,6 +1,8 @@
 ---
 title: Banner
 description: Draws banner-style text with an optional background.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: TextInput
 description: A text input field that allows typing from a physical or virtual keyboard.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

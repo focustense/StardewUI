@@ -1,6 +1,8 @@
 ---
 title: TagMember
 description: The type of tag member read, resulting from a call to DocumentReader.NextMember.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: BindingDirection
 description: The direction of data flow in a data binding.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

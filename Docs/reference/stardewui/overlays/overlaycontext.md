@@ -1,6 +1,8 @@
 ---
 title: OverlayContext
 description: The context of an overlay, e.g. the active overlays for a particular menu or other non-overlay UI.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

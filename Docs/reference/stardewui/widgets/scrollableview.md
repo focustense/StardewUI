@@ -1,6 +1,8 @@
 ---
 title: ScrollableView
 description: Provides a content container and accompanying scrollbar.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

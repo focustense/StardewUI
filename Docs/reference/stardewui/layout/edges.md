@@ -1,6 +1,8 @@
 ---
 title: Edges
 description: Describes a set of edge dimensions, e.g. for margin or padding.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

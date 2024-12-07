@@ -1,6 +1,8 @@
 ---
 title: SliceCenterPosition
 description: Specifies which side the center position of a SliceSettings instance is on.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

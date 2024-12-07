@@ -1,6 +1,8 @@
 ---
 title: Length
 description: Specifies how to calculate the length of a single dimension (width or height).
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

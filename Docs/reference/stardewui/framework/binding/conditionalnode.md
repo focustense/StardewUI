@@ -1,6 +1,8 @@
 ---
 title: ConditionalNode
 description: A structural node that only passes through its child node when some condition passes.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: Event
 description: An event handler parsed from StarML.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

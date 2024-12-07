@@ -1,6 +1,8 @@
 ---
 title: Image
 description: A view that draws a sprite, scaled to the layout size.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

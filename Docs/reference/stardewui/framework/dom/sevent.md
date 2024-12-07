@@ -1,6 +1,8 @@
 ---
 title: SEvent
 description: An event attribute in a StarML document.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

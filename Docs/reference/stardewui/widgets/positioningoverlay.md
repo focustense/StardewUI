@@ -1,6 +1,8 @@
 ---
 title: PositioningOverlay
 description: An overlay that can be used to edit the position of some arbitrary content.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

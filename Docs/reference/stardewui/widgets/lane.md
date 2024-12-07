@@ -1,6 +1,8 @@
 ---
 title: Lane
 description: Simple unidirectional layout that draws multiple child views in a row or column arrangement.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

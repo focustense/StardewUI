@@ -1,6 +1,8 @@
 ---
 title: IOffsettable&lt;T&gt;
 description: Provides a method to clone the current instance with an offset applied.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

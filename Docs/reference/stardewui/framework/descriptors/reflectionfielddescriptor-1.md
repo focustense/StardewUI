@@ -1,6 +1,8 @@
 ---
 title: ReflectionFieldDescriptor&lt;TValue&gt;
 description: Implementation of a field descriptor based on reflection.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

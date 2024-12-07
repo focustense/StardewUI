@@ -1,6 +1,8 @@
 ---
 title: Expander
 description: A widget that can be clicked to expand/collapse with additional content.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

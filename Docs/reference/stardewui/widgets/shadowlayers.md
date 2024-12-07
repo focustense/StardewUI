@@ -1,6 +1,8 @@
 ---
 title: ShadowLayers
 description: Describes which shadow layers will be drawn, for widgets such as Label that support layered shadows.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

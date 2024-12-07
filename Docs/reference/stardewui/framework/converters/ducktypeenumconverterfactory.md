@@ -1,6 +1,8 @@
 ---
 title: DuckTypeEnumConverterFactory
 description: Factory that automatically implements duck-typing conversions between enum types that share the same names.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

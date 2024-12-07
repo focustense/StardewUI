@@ -1,6 +1,8 @@
 ---
 title: PositioningOverlay.ControlScheme
 description: Configures the mapping of buttons to positioning actions in a PositioningOverlay.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

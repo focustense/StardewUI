@@ -1,6 +1,8 @@
 ---
 title: BindingException
 description: The exception that is thrown when an unrecoverable error happens during data binding for a view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

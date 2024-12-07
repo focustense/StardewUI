@@ -1,6 +1,8 @@
 ---
 title: BindingContext
 description: Context, or scope, of a bound view, providing the backing data and tools for accessing its properties.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

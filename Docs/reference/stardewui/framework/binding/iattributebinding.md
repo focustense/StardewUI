@@ -1,6 +1,8 @@
 ---
 title: IAttributeBinding
 description: Binding instance for a single attribute on a single view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

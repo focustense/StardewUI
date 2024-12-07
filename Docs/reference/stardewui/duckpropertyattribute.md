@@ -1,6 +1,8 @@
 ---
 title: DuckPropertyAttribute
 description: Specifies a property name to use for duck-type conversions, if different from the member name.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

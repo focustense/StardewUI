@@ -1,6 +1,8 @@
 ---
 title: ISpriteBatch
 description: Abstraction for the SpriteBatch providing sprite-drawing methods.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

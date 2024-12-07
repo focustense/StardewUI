@@ -1,6 +1,8 @@
 ---
 title: PositioningOverlay.GamepadControlScheme
 description: Configures the mapping of buttons to positioning actions in a PositioningOverlay. Includes the generic PositioningOverlay.ControlScheme settings as well as grid-movement settings specific to gamepads.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: ButtonAction
 description: The actions that a given button can trigger in a UI context. For details see ButtonResolver.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

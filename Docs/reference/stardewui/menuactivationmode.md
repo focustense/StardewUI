@@ -1,6 +1,8 @@
 ---
 title: MenuActivationMode
 description: Available behaviors for opening a ViewMenu&lt;T&gt;.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

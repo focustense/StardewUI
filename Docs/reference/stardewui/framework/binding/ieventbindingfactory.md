@@ -1,6 +1,8 @@
 ---
 title: IEventBindingFactory
 description: Service for creating IEventBinding instances for a view's events, and subscribing the handlers.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

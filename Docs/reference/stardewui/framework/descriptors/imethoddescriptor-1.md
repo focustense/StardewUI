@@ -1,6 +1,8 @@
 ---
 title: IMethodDescriptor&lt;T&gt;
 description: Describes a single method on some type, and provides a wrapper method to invoke it.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

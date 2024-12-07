@@ -1,6 +1,8 @@
 ---
 title: GridItemLayout.Length
 description: A GridItemLayout specifying that each item is to have the same fixed length (width or height, depending on the grid's Orientation) and to wrap to the next row/column afterward.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

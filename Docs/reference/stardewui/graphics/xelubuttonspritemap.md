@@ -1,6 +1,8 @@
 ---
 title: XeluButtonSpriteMap
 description: Controller/keyboard sprite map based on Xelu's CC0 pack.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

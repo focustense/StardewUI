@@ -1,6 +1,8 @@
 ---
 title: Transform
 description: Global transform applied to an ISpriteBatch.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

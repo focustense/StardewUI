@@ -1,6 +1,8 @@
 ---
 title: PrecompiledEventDescriptor&lt;TTarget, THandler&gt;
 description: Statically-typed implementation of an IEventDescriptor with predefined attributes.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

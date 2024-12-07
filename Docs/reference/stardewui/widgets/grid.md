@@ -1,6 +1,8 @@
 ---
 title: Grid
 description: A uniform grid containing other views.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

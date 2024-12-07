@@ -1,6 +1,8 @@
 ---
 title: Slider
 description: A horizontal track with draggable thumb (button) for choosing a numeric value in a range.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

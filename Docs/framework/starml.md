@@ -1,3 +1,8 @@
+---
+search:
+    boost: 5
+---
+
 # Stardew Markup Language (StarML)
 
 StarML is the markup language used by the [UI Framework](index.md). It is an HTML-like syntax based on a tree of [elements](#elements), each corresponding to a [view](../concepts.md#views).
@@ -466,7 +471,7 @@ If there is a real need to have multiple views in the outlet, then this can also
 
         <!-- Nav Bar -->
         <lane layout="200px content">...</lane>
-
+    
         <!-- Main Content -->
         <frame>...</frame>
         

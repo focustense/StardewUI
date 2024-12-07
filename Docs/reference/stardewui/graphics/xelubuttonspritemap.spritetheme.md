@@ -1,6 +1,8 @@
 ---
 title: XeluButtonSpriteMap.SpriteTheme
 description: Available theme variants for certain sprites.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

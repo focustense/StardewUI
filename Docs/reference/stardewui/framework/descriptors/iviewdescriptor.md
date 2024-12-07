@@ -1,6 +1,8 @@
 ---
 title: IViewDescriptor
 description: Describes a type of view that can be used in a view binding.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
