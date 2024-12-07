@@ -1,6 +1,8 @@
 ---
 title: IValueConverter&lt;TSource, TDestination&gt;
 description: Provides a method to convert between value types.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

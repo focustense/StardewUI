@@ -1,6 +1,8 @@
 ---
 title: ContextPropertyValueSource&lt;T&gt;
 description: Value source that obtains its value from a context (or "model") property.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

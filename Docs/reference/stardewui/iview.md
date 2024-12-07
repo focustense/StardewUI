@@ -1,6 +1,8 @@
 ---
 title: IView
 description: Represents some arbitrary UI element or layout.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

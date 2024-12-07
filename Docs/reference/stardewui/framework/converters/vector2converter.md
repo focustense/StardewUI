@@ -1,6 +1,8 @@
 ---
 title: Vector2Converter
 description: String converter for the XNA Vector2 type.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

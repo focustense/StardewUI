@@ -1,6 +1,8 @@
 ---
 title: IPageable
 description: Signals that an IView implements paging controls.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

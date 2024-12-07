@@ -1,6 +1,8 @@
 ---
 title: RepeaterNode
 description: A structural node that accepts a collection (IEnumerable&lt;T&gt;) valued attribute and repeats its inner elements with each child bound to a collection element, in the same order as the collection.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

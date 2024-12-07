@@ -1,6 +1,8 @@
 ---
 title: UnaryCondition
 description: A condition based on a single value that is convertible to a Boolean.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

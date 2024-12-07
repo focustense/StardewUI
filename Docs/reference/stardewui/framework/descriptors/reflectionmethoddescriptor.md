@@ -1,6 +1,8 @@
 ---
 title: ReflectionMethodDescriptor
 description: Helper for creating IMethodDescriptor instances using reflection.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

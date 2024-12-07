@@ -1,6 +1,8 @@
 ---
 title: DescriptorException
 description: The exception that is thrown when an error occurs while reading or building the metadata for a bound view or one of its data sources.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

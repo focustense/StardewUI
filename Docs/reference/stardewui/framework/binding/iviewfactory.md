@@ -1,6 +1,8 @@
 ---
 title: IViewFactory
 description: Factory for creating views from tags.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

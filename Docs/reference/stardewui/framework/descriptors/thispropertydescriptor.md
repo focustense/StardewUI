@@ -1,6 +1,8 @@
 ---
 title: ThisPropertyDescriptor
 description: Helper for obtaining a ThisPropertyDescriptor&lt;T&gt; using a type known only at runtime.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

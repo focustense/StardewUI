@@ -1,6 +1,8 @@
 ---
 title: ItemSpriteConverter
 description: Converts data from a game item to its corresponding sprite.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

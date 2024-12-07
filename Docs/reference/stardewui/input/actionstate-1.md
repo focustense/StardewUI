@@ -1,6 +1,8 @@
 ---
 title: ActionState&lt;T&gt;
 description: Translates raw input to semantic actions.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

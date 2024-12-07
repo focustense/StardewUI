@@ -1,6 +1,8 @@
 ---
 title: INodeTransformer
 description: Provides a method to transform nodes into other nodes.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

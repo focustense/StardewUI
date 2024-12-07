@@ -1,6 +1,8 @@
 ---
 title: Lexer
 description: Consumes raw StarML content as a token stream.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: SimpleRotation
 description: Types of rotations that are considered to be "simple", i.e. those that only transpose pixels and are therefore fast and non-deforming.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

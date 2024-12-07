@@ -1,6 +1,8 @@
 ---
 title: NineSlice
 description: Draws sprites according to a nine-slice scale.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

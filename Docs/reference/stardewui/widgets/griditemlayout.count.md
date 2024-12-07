@@ -1,6 +1,8 @@
 ---
 title: GridItemLayout.Count
 description: A GridItemLayout specifying the maximum divisions - rows or columns, depending on the grid's Orientation; items will be sized distributed uniformly along that axis.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

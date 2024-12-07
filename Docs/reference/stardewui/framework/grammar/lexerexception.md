@@ -1,6 +1,8 @@
 ---
 title: LexerException
 description: The exception that is thrown when a Lexer fails to process the markup it is given.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

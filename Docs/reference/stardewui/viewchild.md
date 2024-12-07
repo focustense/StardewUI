@@ -1,6 +1,8 @@
 ---
 title: ViewChild
 description: Provides information about a view that is the child of another view. Used for interactions.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

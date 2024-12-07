@@ -1,6 +1,8 @@
 ---
 title: FullScreenOverlay
 description: Base class for an overlay meant to take up the full screen.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: Direction
 description: Cardinal directions used in UI, matching gamepad stick/button directions for navigation.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

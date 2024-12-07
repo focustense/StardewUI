@@ -1,6 +1,8 @@
 ---
 title: OffsettableExtensions
 description: Extensions for the IOffsettable&lt;T&gt; interface.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

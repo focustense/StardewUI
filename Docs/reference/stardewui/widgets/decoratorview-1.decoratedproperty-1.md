@@ -1,6 +1,8 @@
 ---
 title: DecoratorView&lt;T&gt;.DecoratedProperty&lt;T, TValue&gt;
 description: Helper for propagating a single property to and from the inner view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

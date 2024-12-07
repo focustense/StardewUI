@@ -1,6 +1,8 @@
 ---
 title: IValueSource&lt;T&gt;
 description: Abstract representation of the source of any value, generally as used in a data binding.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: TokenType
 description: Types of tokens allowed in StarML.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
@@ -52,4 +54,6 @@ public enum TokenType
 | <a id="argumentlistend">ArgumentListEnd</a> | 18 | The right parenthesis (`(`) character, used to end an argument list. | 
 | <a id="argumentprefix">ArgumentPrefix</a> | 19 | Prefix character for an argument, e.g. `$` to refer to an event property. | 
 | <a id="argumentseparator">ArgumentSeparator</a> | 20 | The comma (`,`) character, used to separator arguments in an argument list. | 
+| <a id="commentstart">CommentStart</a> | 21 | Beginning of a comment block (`<!--`). | 
+| <a id="commentend">CommentEnd</a> | 22 | End of a comment block (`-->`). | 
 

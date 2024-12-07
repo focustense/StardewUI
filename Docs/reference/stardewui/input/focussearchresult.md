@@ -1,6 +1,8 @@
 ---
 title: FocusSearchResult
 description: The result of a IView.FocusSearch. Identifies the specific view/position found, as well as the path to that view from the search root.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

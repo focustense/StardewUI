@@ -1,6 +1,8 @@
 ---
 title: KeybindOverlay
 description: Overlay control for editing a keybinding, or list of bindings.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

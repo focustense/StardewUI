@@ -1,6 +1,8 @@
 ---
 title: ActionRepeat
 description: Configures the repeat rate of an action used in an ActionState&lt;T&gt;.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

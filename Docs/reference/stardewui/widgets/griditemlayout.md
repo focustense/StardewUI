@@ -1,6 +1,8 @@
 ---
 title: GridItemLayout
 description: Describes the layout of all items in a Grid.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

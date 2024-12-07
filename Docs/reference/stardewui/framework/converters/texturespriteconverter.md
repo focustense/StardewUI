@@ -1,6 +1,8 @@
 ---
 title: TextureSpriteConverter
 description: Converts a texture to a sprite record, using the texture's entire bounds as the source rectangle.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

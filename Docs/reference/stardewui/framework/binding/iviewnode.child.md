@@ -1,6 +1,8 @@
 ---
 title: IViewNode.Child
 description: Child of an IViewNode, specifying the node data and the view outlet in which it should appear.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

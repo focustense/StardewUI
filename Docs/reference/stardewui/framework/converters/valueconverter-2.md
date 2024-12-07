@@ -1,6 +1,8 @@
 ---
 title: ValueConverter&lt;TSource, TDestination&gt;
 description: Generic delegating converter, accepting a conversion function.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

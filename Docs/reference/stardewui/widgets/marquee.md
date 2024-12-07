@@ -1,6 +1,8 @@
 ---
 title: Marquee
 description: A scrolling marquee supporting any inner content.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

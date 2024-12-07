@@ -1,6 +1,8 @@
 ---
 title: SpriteMap&lt;T&gt;
 description: General implementation of an ISpriteMap&lt;T&gt; that can be prepared in a variety of ways.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: BindingDirectionExtensions
 description: Extension methods for the BindingDirection enum.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

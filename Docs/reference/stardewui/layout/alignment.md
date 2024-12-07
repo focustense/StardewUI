@@ -1,6 +1,8 @@
 ---
 title: Alignment
 description: Specifies an alignment (horizontal or vertical) for text or other layout.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

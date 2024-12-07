@@ -1,6 +1,8 @@
 ---
 title: BubbleEventArgs
 description: Base class for events that can bubble up to parents from descendant views.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

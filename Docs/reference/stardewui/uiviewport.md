@@ -1,6 +1,8 @@
 ---
 title: UiViewport
 description: Utilities relating to the game's UI viewport.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: IncludedViewNode
 description: Quasi-structural node that loads its content from a shared game asset.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

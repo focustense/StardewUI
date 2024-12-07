@@ -1,6 +1,8 @@
 ---
 title: UiSprites
 description: Included game sprites that are required for many UI/menu widgets.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: Label
 description: A view that renders a read-only text string.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

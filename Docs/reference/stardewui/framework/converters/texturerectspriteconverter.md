@@ -1,6 +1,8 @@
 ---
 title: TextureRectSpriteConverter
 description: Converts a tuple with a texture and source rectangle (within the texture) to a sprite record.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

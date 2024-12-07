@@ -1,6 +1,8 @@
 ---
 title: ISpriteMap&lt;T&gt;
 description: Provides a single method to obtain a sprite for some key, such as SButton.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

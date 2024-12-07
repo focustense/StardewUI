@@ -1,6 +1,8 @@
 ---
 title: StringConverterFactory
 description: Provides conversions from any type to string.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

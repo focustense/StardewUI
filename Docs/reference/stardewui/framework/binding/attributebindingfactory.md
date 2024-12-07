@@ -1,6 +1,8 @@
 ---
 title: AttributeBindingFactory
 description: A general IAttributeBindingFactory implementation using dependency injection for all resolution.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

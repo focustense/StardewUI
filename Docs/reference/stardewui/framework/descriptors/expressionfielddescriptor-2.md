@@ -1,6 +1,8 @@
 ---
 title: ExpressionFieldDescriptor&lt;T, TValue&gt;
 description: Implementation of a field descriptor using a compiled expression tree.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

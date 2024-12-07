@@ -1,6 +1,8 @@
 ---
 title: EnumNameConverterFactory
 description: Factory that automatically implements string-to-enum conversions based on the case-insensitive enum names.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: ConvertedValueSource&lt;TSource, T&gt;
 description: A value source that wraps another IValueSource&lt;T&gt; and performs automatic conversion.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

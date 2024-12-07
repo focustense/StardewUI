@@ -1,6 +1,8 @@
 ---
 title: Attribute
 description: A complete attribute assignment parsed from StarML.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: Animation&lt;T&gt;
 description: Defines a single animation.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: SelectionGroup
 description: Provides a single selection key with change notifications.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

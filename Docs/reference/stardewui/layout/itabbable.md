@@ -1,6 +1,8 @@
 ---
 title: ITabbable
 description: Signals that an IView implements tab controls.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

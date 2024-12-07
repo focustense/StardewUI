@@ -1,6 +1,8 @@
 ---
 title: AttributeType
 description: The different types of an Attribute, independent of its value.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

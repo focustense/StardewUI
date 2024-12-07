@@ -1,6 +1,8 @@
 ---
 title: Animator
 description: Helpers for creating typed Animator&lt;T, V&gt; instances.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

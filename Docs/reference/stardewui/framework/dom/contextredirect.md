@@ -1,6 +1,8 @@
 ---
 title: ContextRedirect
 description: Describes how to redirect the target context of any IAttribute whose IAttribute.ValueType is one of the AttributeValueTypeExtensions.IsContextBinding matching types.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

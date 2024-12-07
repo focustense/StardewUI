@@ -1,6 +1,8 @@
 ---
 title: ViewNodeFactory
 description: Default in-game view engine.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

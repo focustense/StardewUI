@@ -1,6 +1,8 @@
 ---
 title: Trace
 description: Provides methods to toggle tracing and write to the current trace.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

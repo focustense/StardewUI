@@ -1,6 +1,8 @@
 ---
 title: ViewExtensions
 description: Commonly-used extensions for the IView interface and related types.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

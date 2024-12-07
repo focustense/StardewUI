@@ -1,6 +1,8 @@
 ---
 title: NineGridPlacementEditor
 description: Editor widget for a NineGridPlacement, which brings up a PositioningOverlay on click.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

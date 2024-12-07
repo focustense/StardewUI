@@ -1,6 +1,8 @@
 ---
 title: Bounds
 description: A bounding rectangle using floating-point dimensions.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

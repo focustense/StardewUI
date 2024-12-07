@@ -1,6 +1,8 @@
 ---
 title: IViewNodeFactory
 description: High-level abstraction for translating node trees into bound view trees.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

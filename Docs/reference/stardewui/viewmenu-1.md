@@ -1,6 +1,8 @@
 ---
 title: ViewMenu&lt;T&gt;
 description: Generic menu implementation based on a root IView.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

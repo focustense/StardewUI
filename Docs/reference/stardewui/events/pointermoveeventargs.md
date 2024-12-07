@@ -1,6 +1,8 @@
 ---
 title: PointerMoveEventArgs
 description: Event arguments for pointer movement relative to some view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

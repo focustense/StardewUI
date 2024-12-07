@@ -1,6 +1,8 @@
 ---
 title: IElement
 description: Element in a StarML document, including the tag and all enclosed attributes.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />

@@ -1,6 +1,8 @@
 ---
 title: ComponentView
 description: Base class for custom widgets and "app views" with potentially complex hierarchy using a single root view.
+search:
+    boost: 0.002
 ---
 
 <link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" />
