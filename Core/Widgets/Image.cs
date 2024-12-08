@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Graphics;
 using StardewUI.Layout;
 
@@ -84,6 +84,26 @@ public partial class Image : View
             if (scale.SetIfChanged(value))
             {
                 OnPropertyChanged(nameof(Scale));
+            }
+        }
+    }
+
+
+    /// <summary>
+    /// Sprite flip to apply, horizontal (<see cref="SpriteEffects.FlipHorizontally"/>) or vertical (<see cref="SpriteEffects.FlipVertically"/>)
+    /// </summary>
+    /// <remarks>
+    /// Sprite flip will not alter layout.
+    /// </remarks>
+    public SpriteEffects Flip
+    {
+        get => flip;
+        set
+        {
+            if (value != flip)
+            {
+                flip = value;
+                OnPropertyChanged(nameof(flip));
             }
         }
     }
@@ -184,6 +204,7 @@ public partial class Image : View
     private NineSlice? slice = null;
     private Color tint = Color.White;
     private Alignment verticalAlignment = Alignment.Start;
+    private SpriteEffects flip = SpriteEffects.None;
 
     /// <inheritdoc />
     protected override bool IsContentDirty()
@@ -206,10 +227,10 @@ public partial class Image : View
             using var _transform = b.SaveTransform();
             b.Translate(ShadowOffset);
             using var _shadowClip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-            slice.Draw(b, new(Color.Black, ShadowAlpha));
+            slice.Draw(b, new(Color.Black, ShadowAlpha), Flip);
         }
         using var _clip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-        slice?.Draw(b, Tint);
+        slice?.Draw(b, Tint, Flip);
     }
 
     /// <inheritdoc />

@@ -49,6 +49,16 @@ internal partial record CropInfoboxModel(ParsedItemData Seed, CropData Crop) : I
     [Notify]
     private Tuple<Texture2D, Rectangle> phase = null!;
 
+    /// <summary>
+    /// This model uses SMAPI OneSecondUpdateTicked evemt instead of StardewUI context Update to animate.
+    /// <code>
+    /// helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
+    /// private void GameLoop_OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+    /// {
+    ///     cropsGrid?.SelectedCrop.NextPhase();
+    /// }
+    /// </code>
+    /// </summary>
     internal void NextPhase()
     {
         Phase = new Tuple<Texture2D, Rectangle>(
