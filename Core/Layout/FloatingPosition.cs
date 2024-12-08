@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
 using StardewUI.Framework.Converters;
-using System.Diagnostics.CodeAnalysis;
 
 namespace StardewUI.Layout;
 
@@ -36,7 +36,6 @@ public class FloatingPosition(Func<Vector2, Vector2, Vector2> offsetSelector)
     /// </summary>
     public static readonly FloatingPosition BelowParent = BelowParentWithOffset(Vector2.Zero);
 
-
     /// <summary>
     /// Parses a <see cref="FloatingPosition"/> from its string representation.
     /// </summary>
@@ -48,8 +47,9 @@ public class FloatingPosition(Func<Vector2, Vector2, Vector2> offsetSelector)
         return TryParse(text, out var result)
             ? result
             : throw new FormatException(
-                $"Invalid floating position string '{text}'. Must be one of 'top', 'bottom', left' or 'right', " +
-                "optionally followed by a semicolon and 2D coordinate in 'X, Y' format.");
+                $"Invalid floating position string '{text}'. Must be one of 'top', 'bottom', left' or 'right', "
+                    + "optionally followed by a semicolon and 2D coordinate in 'X, Y' format."
+            );
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ public class FloatingPosition(Func<Vector2, Vector2, Vector2> offsetSelector)
             ['A' or 'a', 'F' or 'f', 'T' or 't', 'E' or 'e', 'R' or 'r'] => AfterParentWithOffset(offset),
             ['B' or 'b', 'E' or 'e', 'F' or 'f', 'O' or 'o', 'R' or 'r', 'E' or 'e'] => BeforeParentWithOffset(offset),
             ['B' or 'b', 'E' or 'e', 'L' or 'l', 'O' or 'o', 'W' or 'w'] => BelowParentWithOffset(offset),
-            _ => null
+            _ => null,
         };
         return result is not null;
     }
