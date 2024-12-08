@@ -17,7 +17,7 @@ namespace StardewUI.Widgets;
 /// Currently supports only vertically-scrolling content.
 /// </para>
 /// </remarks>
-public partial class ScrollableView : ComponentView<ScrollContainer>
+public partial class ScrollableView : ComponentView<ScrollContainer>, IFloatContainer
 {
     /// <summary>
     /// The content to make scrollable.
@@ -26,6 +26,13 @@ public partial class ScrollableView : ComponentView<ScrollContainer>
     {
         get => View.Content;
         set => View.Content = value;
+    }
+
+    /// <inheritdoc />
+    public IList<FloatingElement> FloatingElements
+    {
+        get => View.FloatingElements;
+        set => View.FloatingElements = value;
     }
 
     /// <summary>

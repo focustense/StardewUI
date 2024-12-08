@@ -17,11 +17,8 @@ public interface IValueConverterFactory
     /// or <c>null</c> if the conversion is not supported.</returns>
     IValueConverter<TSource, TDestination>? GetConverter<TSource, TDestination>()
     {
-        return TryGetConverter<TSource, TDestination>(out var converter)
-            ? converter
-            : throw new NotSupportedException(
-                $"No value converter registered for {typeof(TSource).Name} -> {typeof(TDestination).Name}."
-            );
+        TryGetConverter<TSource, TDestination>(out var converter);
+        return converter;
     }
 
     /// <summary>

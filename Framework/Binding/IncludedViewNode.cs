@@ -3,6 +3,7 @@ using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Binding;
 
@@ -35,6 +36,9 @@ public class IncludedViewNode(
             }
         }
     }
+
+    /// <inheritdoc />
+    public IReadOnlyList<FloatingElement> FloatingElements => child?.Node.FloatingElements ?? [];
 
     /// <inheritdoc />
     public IReadOnlyList<IView> Views => child?.Node.Views ?? [];
@@ -115,7 +119,7 @@ public class IncludedViewNode(
             {
                 wasChanged = true;
                 child?.Dispose();
-                child = childNode is not null ? new(childNode, null) : null;
+                child = childNode is not null ? new(childNode) : null;
             }
         }
         childContextSource?.Update();
