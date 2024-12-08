@@ -46,7 +46,7 @@ public class NineSlice(Sprite sprite)
                 {
                     continue;
                 }
-                var (destX, destY) = RotateGridIndices(sourceX, sourceY, rotation);
+                var (destX, destY) = RotateGridIndices(sourceX, sourceY, rotation, flip);
                 var sourceRect = sourceGrid[sourceY, sourceX];
                 if (sourceRect.Width == 0 || sourceRect.Height == 0)
                 {
@@ -162,8 +162,14 @@ public class NineSlice(Sprite sprite)
         };
     }
 
-    private static (int x, int y) RotateGridIndices(int x, int y, SimpleRotation? rotation)
+    private static (int x, int y) RotateGridIndices(int x, int y, SimpleRotation? rotation, SpriteEffects flip = SpriteEffects.None)
     {
+        (x, y) = flip switch
+        {
+            SpriteEffects.FlipVertically => (x, 2 - y),
+            SpriteEffects.FlipHorizontally => (2 - x, y),
+            _ => (x, y)
+        };
         return rotation switch
         {
             SimpleRotation.QuarterClockwise => (2 - y, x),
@@ -171,5 +177,6 @@ public class NineSlice(Sprite sprite)
             SimpleRotation.Half => (2 - x, 2 - y),
             _ => (x, y),
         };
+
     }
 }
