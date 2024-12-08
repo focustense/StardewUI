@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Layout;
 
 namespace StardewUI.Graphics;
@@ -28,7 +29,8 @@ public class NineSlice(Sprite sprite)
     /// </summary>
     /// <param name="b">Output sprite batch.</param>
     /// <param name="tint">Optional tint multiplier color.</param>
-    public void Draw(ISpriteBatch b, Color? tint = null)
+    /// <param name="flip">Sprite effect to apply, for drawing a flipped sprite</param>
+    public void Draw(ISpriteBatch b, Color? tint = null, SpriteEffects flip = SpriteEffects.None)
     {
         if (destinationGrid is null)
         {
@@ -68,11 +70,11 @@ public class NineSlice(Sprite sprite)
                         destinationRect.X + destinationRect.Width / 2f,
                         destinationRect.Y + destinationRect.Height / 2f
                     );
-                    b.Draw(Sprite.Texture, center, sourceRect, tint, rotationAngle, rotationOrigin, scale);
+                    b.Draw(Sprite.Texture, center, sourceRect, tint, rotationAngle, rotationOrigin, scale, flip);
                 }
                 else
                 {
-                    b.Draw(Sprite.Texture, destinationRect, sourceRect, tint);
+                    b.Draw(Sprite.Texture, destinationRect, sourceRect, tint, effects: flip);
                 }
             }
         }
