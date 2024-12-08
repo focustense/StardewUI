@@ -24,11 +24,15 @@ Provides a content container and accompanying scrollbar.
 
 ```cs
 [StardewUI.GenerateDescriptor]
-public class ScrollableView : StardewUI.Widgets.ComponentView<T>
+public class ScrollableView : StardewUI.Widgets.ComponentView<T>, 
+    StardewUI.Layout.IFloatContainer
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ [DecoratorView&lt;T&gt;](decoratorview-1.md) ⇦ [ComponentView&lt;T&gt;](componentview-1.md) ⇦ ScrollableView
+
+**Implements**  
+[IFloatContainer](../layout/ifloatcontainer.md)
 
 ## Remarks
 
@@ -52,6 +56,7 @@ This does not add any extra UI elements aside from the scrollbar, like [Scrollab
 | [Content](#content) | The content to make scrollable. | 
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [FloatingElements](#floatingelements) | The floating elements to display relative to this view. | 
 | [IsFocusable](decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Layout](decoratorview-1.md#layout) | The current layout parameters, which determine how [Measure(Vector2)](../iview.md#measurevector2) will behave.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Name](decoratorview-1.md#name) | Simple name for this view, used in log/debug output; does not affect behavior.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
@@ -140,6 +145,20 @@ public StardewUI.IView Content { get; set; }
 ##### Property Value
 
 [IView](../iview.md)
+
+-----
+
+#### FloatingElements
+
+The floating elements to display relative to this view.
+
+```cs
+public System.Collections.Generic.IList<StardewUI.Layout.FloatingElement> FloatingElements { get; set; }
+```
+
+##### Property Value
+
+[IList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ilist-1)<[FloatingElement](../layout/floatingelement.md)>
 
 -----
 

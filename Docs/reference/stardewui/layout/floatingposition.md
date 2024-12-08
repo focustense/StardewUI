@@ -52,6 +52,9 @@ public class FloatingPosition
  | Name | Description |
 | --- | --- |
 | [GetOffset(IView, View)](#getoffsetiview-view) | Calculates the final position of the floating view. | 
+| [GetOffset(Vector2, Vector2)](#getoffsetvector2-vector2) | Calculates the relative origin position of a floating view based on its size and the size of its parent. | 
+| [Parse(string)](#parsestring) | Parses a [FloatingPosition](floatingposition.md) from its string representation. | 
+| [TryParse(string, FloatingPosition)](#tryparsestring-floatingposition) | Attempts to parse a [FloatingPosition](floatingposition.md) from its string representation. | 
 
 ## Details
 
@@ -153,6 +156,75 @@ The parent relative to which the floating view is being positioned.
 [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
 
   The final position where the `view` should be drawn.
+
+-----
+
+#### GetOffset(Vector2, Vector2)
+
+Calculates the relative origin position of a floating view based on its size and the size of its parent.
+
+```cs
+public Microsoft.Xna.Framework.Vector2 GetOffset(Microsoft.Xna.Framework.Vector2 viewSize, Microsoft.Xna.Framework.Vector2 parentViewSize);
+```
+
+##### Parameters
+
+**`viewSize`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
+The size of the floating view.
+
+**`parentViewSize`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
+The size of the parent against which the floating element is positioned.
+
+##### Returns
+
+[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+  The final position where the floating element should be drawn.
+
+-----
+
+#### Parse(string)
+
+Parses a [FloatingPosition](floatingposition.md) from its string representation.
+
+```cs
+public static StardewUI.Layout.FloatingPosition Parse(string text);
+```
+
+##### Parameters
+
+**`text`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The string value to parse.
+
+##### Returns
+
+[FloatingPosition](floatingposition.md)
+
+  The parsed position.
+
+-----
+
+#### TryParse(string, FloatingPosition)
+
+Attempts to parse a [FloatingPosition](floatingposition.md) from its string representation.
+
+```cs
+public static bool TryParse(string text, out StardewUI.Layout.FloatingPosition result);
+```
+
+##### Parameters
+
+**`text`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The string value to parse.
+
+**`result`** &nbsp; [FloatingPosition](floatingposition.md)  
+If the method returns `true`, holds the parsed position; otherwise `null`.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if the `text` was successfully parsed into a position; `false` if the input was not in a valid format.
 
 -----
 

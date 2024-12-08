@@ -24,14 +24,14 @@ Base class for typical widgets wanting to implement [IView](iview.md).
 
 ```cs
 public class View : StardewUI.IView, System.IDisposable, 
-    System.ComponentModel.INotifyPropertyChanged
+    System.ComponentModel.INotifyPropertyChanged, StardewUI.Layout.IFloatContainer
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ View
 
 **Implements**  
-[IView](iview.md), [IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable), [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged)
+[IView](iview.md), [IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable), [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged), [IFloatContainer](layout/ifloatcontainer.md)
 
 ## Remarks
 
