@@ -164,12 +164,10 @@ public class NineSlice(Sprite sprite)
 
     private static (int x, int y) RotateGridIndices(int x, int y, SimpleRotation? rotation, SpriteEffects flip = SpriteEffects.None)
     {
-        (x, y) = flip switch
-        {
-            SpriteEffects.FlipVertically => (x, 2 - y),
-            SpriteEffects.FlipHorizontally => (2 - x, y),
-            _ => (x, y)
-        };
+        if ((flip & SpriteEffects.FlipHorizontally) != 0)
+            x = 2 - x;
+        if ((flip & SpriteEffects.FlipVertically) != 0)
+            y = 2 - y;
         return rotation switch
         {
             SimpleRotation.QuarterClockwise => (2 - y, x),
