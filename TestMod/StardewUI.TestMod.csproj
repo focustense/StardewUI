@@ -8,7 +8,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <Import Project="..\StardewUI.props"/>
+  <Import Project="..\StardewUI.props" />
 
   <PropertyGroup>
     <Description>Test mod and example gallery for StardewUI</Description>

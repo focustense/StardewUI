@@ -11,7 +11,7 @@
     </NoWarn>
   </PropertyGroup>
 
-  <Import Project="..\StardewUI.props"/>
+  <Import Project="..\StardewUI.props" />
 
   <PropertyGroup>
     <Name>StardewUI</Name>

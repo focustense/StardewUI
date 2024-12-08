@@ -25,7 +25,6 @@ public class LexerTests
                     <label font=""dialogue"" text={{HeaderText}} />
                     <checkbox is-checked={<>Checked}/>
                 </lane>",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "lane"),
@@ -84,7 +83,6 @@ public class LexerTests
             },
             {
                 @"<label font=""small"" *repeat={<Items} text={{DisplayName}} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -110,7 +108,6 @@ public class LexerTests
             },
             {
                 @"<textinput text={<>^Name} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "textinput"),
@@ -126,7 +123,6 @@ public class LexerTests
             },
             {
                 @"<label text={{<^^^Name}} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -144,7 +140,6 @@ public class LexerTests
             },
             {
                 @"<label text={{<:^^Name}} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -161,7 +156,6 @@ public class LexerTests
             },
             {
                 @"<checkbox is-checked={>~Foo.Enabled} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "checkbox"),
@@ -179,7 +173,6 @@ public class LexerTests
             },
             {
                 @"<checkbox is-checked={:~Foo.Enabled} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "checkbox"),
@@ -197,7 +190,6 @@ public class LexerTests
             },
             {
                 @"<button click=|HandleClick(Foo, ""Bar"", ^^Baz, ~Quux.Abc)| />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "button"),
@@ -227,7 +219,6 @@ public class LexerTests
             },
             {
                 @"<button click=|^^HandleClick(Foo, $Bar, &Baz)| />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "button"),
@@ -252,7 +243,6 @@ public class LexerTests
             },
             {
                 @"<button click=|~Foo.HandleClick(Bar)| />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "button"),
@@ -272,7 +262,6 @@ public class LexerTests
             },
             {
                 @"<label text="""" bold=""true"" />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -290,7 +279,6 @@ public class LexerTests
             },
             {
                 @"<!-- comment body --> <label text=""foo"" bold=""true"" />",
-
                 [
                     new(TokenType.CommentStart, "<!--"),
                     new(TokenType.Literal, "comment body "),
@@ -313,7 +301,6 @@ public class LexerTests
             {
                 // Comments in arbitrary locations are lexically valid, even though they aren't parseable.
                 @"<label text=""foo"" bold=""<!-- comment body -->"" /> ",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),

@@ -9,10 +9,12 @@ namespace StardewUITestAddon;
 
 internal class ModEntry : Mod
 {
-    private static readonly KeybindList menuHotkey1 =
-        new(new Keybind(SButton.LeftControl, SButton.LeftShift, SButton.Divide));
-    private static readonly KeybindList menuHotkey2 =
-        new(new Keybind(SButton.LeftControl, SButton.LeftShift, SButton.Multiply));
+    private static readonly KeybindList menuHotkey1 = new(
+        new Keybind(SButton.LeftControl, SButton.LeftShift, SButton.Divide)
+    );
+    private static readonly KeybindList menuHotkey2 = new(
+        new Keybind(SButton.LeftControl, SButton.LeftShift, SButton.Multiply)
+    );
 
     // Initialized in GameLaunched
     private IGalleryApi? galleryApi;
