@@ -2732,9 +2732,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#withnamestring" class="md-nav__link">
+  <a href="#withnameandtypestring-attributetype" class="md-nav__link">
     <span class="md-ellipsis">
-      WithName(string)
+      WithNameAndType(string, AttributeType)
     </span>
   </a>
   
@@ -3731,9 +3731,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#withnamestring" class="md-nav__link">
+  <a href="#withnameandtypestring-attributetype" class="md-nav__link">
     <span class="md-ellipsis">
-      WithName(string)
+      WithNameAndType(string, AttributeType)
     </span>
   </a>
   
@@ -3854,8 +3854,8 @@ Assembly: StardewUI.dll  </p>
 <td>Creates a method argument that will receive the same value as this attribute when bound.</td>
 </tr>
 <tr>
-<td><a href="#withnamestring">WithName(string)</a></td>
-<td>Creates a copy of this attribute with a different <a href="./#name">Name</a>, and all other properties the same.</td>
+<td><a href="#withnameandtypestring-attributetype">WithNameAndType(string, AttributeType)</a></td>
+<td>Creates a copy of this attribute with a different <a href="./#name">Name</a> and <a href="./#type">Type</a>, and all other properties the same.</td>
 </tr>
 </tbody>
 </table>
@@ -3938,13 +3938,15 @@ The parsed attribute.</p>
 <p><a href="../sargument/">SArgument</a></p>
 <p>The converted argument.</p>
 <hr />
-<h4 id="withnamestring">WithName(string)<a class="headerlink" href="#withnamestring" title="Permanent link"></a></h4>
-<p>Creates a copy of this attribute with a different <a href="./#name">Name</a>, and all other properties the same.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SAttribute</span><span class="w"> </span><span class="n">WithName</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<h4 id="withnameandtypestring-attributetype">WithNameAndType(string, AttributeType)<a class="headerlink" href="#withnameandtypestring-attributetype" title="Permanent link"></a></h4>
+<p>Creates a copy of this attribute with a different <a href="./#name">Name</a> and <a href="./#type">Type</a>, and all other properties the same.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Dom</span><span class="p">.</span><span class="n">SAttribute</span><span class="w"> </span><span class="n">WithNameAndType</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Grammar</span><span class="p">.</span><span class="n">AttributeType</span><span class="w"> </span><span class="n">type</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
 The new attribute name.</p>
+<p><strong><code>type</code></strong> &nbsp; <a href="../../grammar/attributetype/">AttributeType</a><br />
+The new attribute type.</p>
 <h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="./">SAttribute</a></p>
 <p>The renamed attribute.</p>
