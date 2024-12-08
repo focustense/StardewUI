@@ -45,6 +45,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
         TryRegister<string, Edges>(Edges.Parse);
+        TryRegister<string, FloatingPosition>(FloatingPosition.Parse);
         TryRegister(new GridItemLayoutConverter());
         TryRegister(new LayoutConverter());
         TryRegister<string, Length>(Length.Parse);
@@ -97,6 +98,9 @@ internal class RootValueConverterFactory : ValueConverterFactory
             new(data.Description, data.DisplayName, ItemRegistry.Create(data.ItemId))
         );
         TryRegister<Item, TooltipData>(item => new(item.getDescription(), item.DisplayName, item));
+
+        // Extra conversions for floats.
+        TryRegister<Func<Vector2, Vector2, Vector2>, FloatingPosition>(f => new(f));
 
         // Most enums are fine using the standard string-to-enum conversion.
         Register(new EnumNameConverterFactory());
