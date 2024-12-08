@@ -76,6 +76,12 @@ public partial class Scrollbar : ComponentView<Lane>
         set => upButton.Sprite = value;
     }
 
+    /// <summary>
+    /// By default scrollbar visibility depends on whether the content need to be scrolled.
+    /// SEtting this property will make scrollbar always visible or always hidden.
+    /// </summary>
+    public Visibility? OverrideVisibility { get; set; } = null;
+
     private ScrollContainer? container;
     private Edges margin = new();
 
@@ -298,7 +304,10 @@ public partial class Scrollbar : ComponentView<Lane>
 
     private void SyncVisibility(Lane root)
     {
-        root.Visibility = Container?.ScrollSize > 0 ? Visibility.Visible : Visibility.Hidden;
+        if (OverrideVisibility != null)
+            root.Visibility = (Visibility)OverrideVisibility;
+        else
+            root.Visibility = Container?.ScrollSize > 0 ? Visibility.Visible : Visibility.Hidden;
     }
 
     private void Update(Lane root)
