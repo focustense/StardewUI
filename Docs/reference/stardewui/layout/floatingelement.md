@@ -23,11 +23,14 @@ Assembly: StardewUI.dll
 Provides independent layout for an [IView](../iview.md) relative to its parent.
 
 ```cs
-public class FloatingElement
+public class FloatingElement : IEquatable<StardewUI.Layout.FloatingElement>
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ FloatingElement
+
+**Implements**  
+[IEquatable](https://learn.microsoft.com/en-us/dotnet/api/system.iequatable-1)<[FloatingElement](floatingelement.md)>
 
 ## Remarks
 
@@ -58,6 +61,9 @@ Floating elements do not participate in the normal layout ([Measure(Vector2)](..
 | --- | --- |
 | [AsViewChild()](#asviewchild) | Creates a [ViewChild](../viewchild.md) with the floating element's view and current position. | 
 | [Draw(ISpriteBatch)](#drawispritebatch) | Draws the element at its current position. | 
+| [Equals(FloatingElement)](#equalsfloatingelement) |  | 
+| [Equals(Object)](#equalsobject) | <span class="muted" markdown>(Overrides [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object).`Equals(Object)`)</span> | 
+| [GetHashCode()](#gethashcode) | <span class="muted" markdown>(Overrides [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object).`GetHashCode()`)</span> | 
 | [MeasureAndPosition(View, Boolean)](#measureandpositionview-bool) | Measures the view's content and repositions the entire floating element if necessary. | 
 
 ## Details
@@ -154,6 +160,56 @@ public void Draw(StardewUI.Graphics.ISpriteBatch spriteBatch);
 
 **`spriteBatch`** &nbsp; [ISpriteBatch](../graphics/ispritebatch.md)  
 Sprite batch to hold the drawing output.
+
+-----
+
+#### Equals(FloatingElement)
+
+
+
+```cs
+public bool Equals(StardewUI.Layout.FloatingElement other);
+```
+
+##### Parameters
+
+**`other`** &nbsp; [FloatingElement](floatingelement.md)
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+-----
+
+#### Equals(Object)
+
+
+
+```cs
+public override bool Equals(System.Object obj);
+```
+
+##### Parameters
+
+**`obj`** &nbsp; [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+-----
+
+#### GetHashCode()
+
+
+
+```cs
+public override int GetHashCode();
+```
+
+##### Returns
+
+[Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32)
 
 -----
 

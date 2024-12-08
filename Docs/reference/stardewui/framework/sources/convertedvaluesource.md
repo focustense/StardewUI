@@ -35,19 +35,19 @@ public static class ConvertedValueSource
 
  | Name | Description |
 | --- | --- |
-| [Create(IValueSource, Type, IValueConverterFactory)](#createivaluesource-type-ivalueconverterfactory) | Creates a converted source with a specified output type, using an original source with unknown value type. | 
-| [Create&lt;T&gt;(IValueSource, IValueConverterFactory)](#createtivaluesource-ivalueconverterfactory) | Creates a converted source with a specified output type, using an original source with unknown value type. | 
+| [Create(IValueSource, Type, IValueConverterFactory, Boolean)](#createivaluesource-type-ivalueconverterfactory-bool) | Creates a converted source with a specified output type, using an original source with unknown value type. | 
+| [Create&lt;T&gt;(IValueSource, IValueConverterFactory, Boolean)](#createtivaluesource-ivalueconverterfactory-bool) | Creates a converted source with a specified output type, using an original source with unknown value type. | 
 
 ## Details
 
 ### Methods
 
-#### Create(IValueSource, Type, IValueConverterFactory)
+#### Create(IValueSource, Type, IValueConverterFactory, bool)
 
 Creates a converted source with a specified output type, using an original source with unknown value type.
 
 ```cs
-public static StardewUI.Framework.Sources.IValueSource Create(StardewUI.Framework.Sources.IValueSource original, System.Type destinationType, StardewUI.Framework.Converters.IValueConverterFactory converterFactory);
+public static StardewUI.Framework.Sources.IValueSource Create(StardewUI.Framework.Sources.IValueSource original, System.Type destinationType, StardewUI.Framework.Converters.IValueConverterFactory converterFactory, bool twoWay);
 ```
 
 ##### Parameters
@@ -61,18 +61,21 @@ The type to convert to.
 **`converterFactory`** &nbsp; [IValueConverterFactory](../converters/ivalueconverterfactory.md)  
 Factory for creating instances of [IValueConverter&lt;TSource, TDestination&gt;](../converters/ivalueconverter-2.md).
 
+**`twoWay`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether the resulting [IValueSource](ivaluesource.md) should be able to convert in the reverse direction, i.e. for two-way bindings, by setting [Value](ivaluesource.md#value).
+
 ##### Returns
 
 [IValueSource](ivaluesource.md)
 
 -----
 
-#### Create&lt;T&gt;(IValueSource, IValueConverterFactory)
+#### Create&lt;T&gt;(IValueSource, IValueConverterFactory, bool)
 
 Creates a converted source with a specified output type, using an original source with unknown value type.
 
 ```cs
-public static StardewUI.Framework.Sources.IValueSource<T> Create<T>(StardewUI.Framework.Sources.IValueSource original, StardewUI.Framework.Converters.IValueConverterFactory converterFactory);
+public static StardewUI.Framework.Sources.IValueSource<T> Create<T>(StardewUI.Framework.Sources.IValueSource original, StardewUI.Framework.Converters.IValueConverterFactory converterFactory, bool twoWay);
 ```
 
 ##### Parameters
@@ -82,6 +85,9 @@ The original value source.
 
 **`converterFactory`** &nbsp; [IValueConverterFactory](../converters/ivalueconverterfactory.md)  
 Factory for creating instances of [IValueConverter&lt;TSource, TDestination&gt;](../converters/ivalueconverter-2.md).
+
+**`twoWay`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether the resulting [IValueSource](ivaluesource.md) should be able to convert in the reverse direction, i.e. for two-way bindings, by setting [Value](ivaluesource.md#value).
 
 ##### Returns
 

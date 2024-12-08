@@ -24,11 +24,15 @@ A widget that can be clicked to expand/collapse with additional content.
 
 ```cs
 [StardewUI.GenerateDescriptor]
-public class Expander : StardewUI.Widgets.ComponentView
+public class Expander : StardewUI.Widgets.ComponentView, 
+    StardewUI.Layout.IFloatContainer
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ [DecoratorView&lt;T&gt;](decoratorview-1.md) ⇦ [ComponentView&lt;T&gt;](componentview-1.md) ⇦ [ComponentView](componentview.md) ⇦ Expander
+
+**Implements**  
+[IFloatContainer](../layout/ifloatcontainer.md)
 
 ## Members
 
@@ -48,6 +52,7 @@ public class Expander : StardewUI.Widgets.ComponentView
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [ExpandedSprite](#expandedsprite) | Sprite to show next to the header when expanded. | 
 | [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [FloatingElements](#floatingelements) | The floating elements to display relative to this view. | 
 | [Header](#header) | The primary content, which displays inside the menu frame and is clipped/scrollable. | 
 | [HeaderBackground](#headerbackground) | Background sprite to display around the [Header](expander.md#header) and expansion indicator. | 
 | [HeaderBackgroundTint](#headerbackgroundtint) | Tint color for the [HeaderBackground](expander.md#headerbackground). | 
@@ -175,6 +180,20 @@ public StardewUI.Graphics.Sprite ExpandedSprite { get; set; }
 ##### Remarks
 
 If this is `null`, and [CollapsedSprite](expander.md#collapsedsprite) is not null, then the [CollapsedSprite](expander.md#collapsedsprite) will be rotated clockwise on expansion.
+
+-----
+
+#### FloatingElements
+
+The floating elements to display relative to this view.
+
+```cs
+public System.Collections.Generic.IList<StardewUI.Layout.FloatingElement> FloatingElements { get; set; }
+```
+
+##### Property Value
+
+[IList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ilist-1)<[FloatingElement](../layout/floatingelement.md)>
 
 -----
 

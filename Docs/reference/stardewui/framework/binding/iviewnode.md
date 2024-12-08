@@ -37,6 +37,7 @@ public interface IViewNode : System.IDisposable
 | --- | --- |
 | [Children](#children) | The children of this node. | 
 | [Context](#context) | The currently-bound context data, used as the source for any [InputBinding](../grammar/attributevaluetype.md#inputbinding), [OneTimeBinding](../grammar/attributevaluetype.md#onetimebinding), [OutputBinding](../grammar/attributevaluetype.md#outputbinding) or [TwoWayBinding](../grammar/attributevaluetype.md#twowaybinding) attributes. | 
+| [FloatingElements](#floatingelements) | The floating elements for this node, if any have been created. | 
 | [Views](#views) | The views for this node, if any have been created. | 
 
 ### Methods
@@ -80,6 +81,20 @@ StardewUI.Framework.Binding.BindingContext Context { get; set; }
 ##### Property Value
 
 [BindingContext](bindingcontext.md)
+
+-----
+
+#### FloatingElements
+
+The floating elements for this node, if any have been created.
+
+```cs
+System.Collections.Generic.IReadOnlyList<StardewUI.Layout.FloatingElement> FloatingElements { get; }
+```
+
+##### Property Value
+
+[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[FloatingElement](../../layout/floatingelement.md)>
 
 -----
 

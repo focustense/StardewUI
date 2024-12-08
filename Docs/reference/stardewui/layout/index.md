@@ -37,6 +37,7 @@ search:
 
 | Name | Description |
 | --- | --- |
+| [IFloatContainer](ifloatcontainer.md) | Provides access to a UI element's floating elements. |
 | [IOffsettable&lt;T&gt;](ioffsettable-1.md) | Provides a method to clone the current instance with an offset applied. |
 | [IPageable](ipageable.md) | Signals that an [IView](../iview.md) implements paging controls. |
 | [ITabbable](itabbable.md) | Signals that an [IView](../iview.md) implements tab controls. |
