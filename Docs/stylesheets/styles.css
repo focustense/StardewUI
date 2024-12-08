@@ -114,3 +114,12 @@ table .md-tooltip {
     color: var(--md-default-fg-color--light);
     font-style: italic;
 }
+
+.md-typeset .no-header table thead {
+    display: none;
+}
+
+.md-typeset .vertical-center table td
+{
+    vertical-align: middle;
+}
