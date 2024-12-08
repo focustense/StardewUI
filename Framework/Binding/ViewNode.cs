@@ -351,8 +351,9 @@ public class ViewNode(
     class ReflectionChildrenBinder<TView>(IViewDescriptor viewDescriptor) : IChildrenBinder
         where TView : IView
     {
-        private static readonly ConcurrentDictionary<string, IOutletBinder?> outletCache =
-            new(StringComparer.InvariantCultureIgnoreCase);
+        private static readonly ConcurrentDictionary<string, IOutletBinder?> outletCache = new(
+            StringComparer.InvariantCultureIgnoreCase
+        );
         private static readonly MethodInfo multipleMethod = typeof(ReflectionChildrenBinder<TView>).GetMethod(
             nameof(Multiple),
             BindingFlags.Static | BindingFlags.NonPublic

@@ -34,17 +34,29 @@ internal class SpriteMaps(IModHelper helper)
     /// </summary>
     public Texture2D PromptArrows => promptArrowsTexture.Asset;
 
-    private readonly LazyAsset<Texture2D> keybindButtonsTexture =
-        new(helper, $"Mods/{helper.ModContent.ModID}/KeybindButtons", "assets/XboxButtons.png");
+    private readonly LazyAsset<Texture2D> keybindButtonsTexture = new(
+        helper,
+        $"Mods/{helper.ModContent.ModID}/KeybindButtons",
+        "assets/XboxButtons.png"
+    );
 
-    private readonly LazyAsset<Texture2D> keybindKeysTexture =
-        new(helper, $"Mods/{helper.ModContent.ModID}/KeybindKeys", "assets/KeyboardKeys.png");
+    private readonly LazyAsset<Texture2D> keybindKeysTexture = new(
+        helper,
+        $"Mods/{helper.ModContent.ModID}/KeybindKeys",
+        "assets/KeyboardKeys.png"
+    );
 
-    private readonly LazyAsset<Texture2D> mouseButtonsTexture =
-        new(helper, $"Mods/{helper.ModContent.ModID}/MouseButtons", "assets/MouseButtons.png");
+    private readonly LazyAsset<Texture2D> mouseButtonsTexture = new(
+        helper,
+        $"Mods/{helper.ModContent.ModID}/MouseButtons",
+        "assets/MouseButtons.png"
+    );
 
-    private readonly LazyAsset<Texture2D> promptArrowsTexture =
-        new(helper, $"Mods/{helper.ModContent.ModID}/PromptArrows", "assets/PromptArrows.png");
+    private readonly LazyAsset<Texture2D> promptArrowsTexture = new(
+        helper,
+        $"Mods/{helper.ModContent.ModID}/PromptArrows",
+        "assets/PromptArrows.png"
+    );
 
     /// <summary>
     /// Gets the sprite map for gamepad buttons/keyboard keys used in keybinds/button prompts.

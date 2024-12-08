@@ -47,7 +47,7 @@
     <WriteLinesToFile
       File="$(OutputPath)\GameSettings.json"
       Lines="{&quot;GamePath&quot;: &quot;$(GamePath.Replace(&quot;\&quot;, &quot;\\&quot;))&quot;}"
-      Overwrite="true"/>
+      Overwrite="true" />
   </Target>
 
 </Project>

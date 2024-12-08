@@ -33,36 +33,35 @@ internal class AssetRegistry : ISourceResolver
 
     // The game loads these on startup, and its content manager WILL try to reload them again from disk when requested
     // by asset path directly, unless we intercept the request and redirect it to the static field.
-    private static readonly Dictionary<string, Func<Texture2D>> staticTextures =
-        new(StringComparer.OrdinalIgnoreCase)
-        {
-            { "LooseSprites\\Birds", () => Game1.birdsSpriteSheet },
-            { "LooseSprites\\Lighting\\greenLight", () => Game1.cauldronLight },
-            { "LooseSprites\\Lighting\\indoorWindowLight", () => Game1.indoorWindowLight },
-            { "LooseSprites\\Lighting\\Lantern", () => Game1.lantern },
-            { "LooseSprites\\Lighting\\sconceLight", () => Game1.sconceLight },
-            { "LooseSprites\\Lighting\\windowLight", () => Game1.windowLight },
-            { "LooseSprites\\shadow", () => Game1.shadowTexture },
-            { "Maps\\MenuTiles", () => Game1.menuTexture },
-            { "Maps\\MenuTilesUncolored", () => Game1.uncoloredMenuTexture },
-            { "TileSheets\\BuffsIcon", () => Game1.buffsIcons },
-            { "TileSheets\\emotes", () => Game1.emoteSpriteSheet },
-            { "TileSheets\\Objects2", () => Game1.objectSpriteSheet_2 },
-            { "TileSheets\\rain", () => Game1.rainTexture },
-            { "TileSheets\\weapons", () => Tool.weaponsTexture },
-            { Game1.animationsName, () => Game1.animations },
-            { Game1.bigCraftableSpriteSheetName, () => Game1.bigCraftableSpriteSheet },
-            { Game1.bobbersTextureName, () => Game1.bobbersTexture },
-            { Game1.concessionsSpriteSheetName, () => Game1.concessionsSpriteSheet },
-            { Game1.cropSpriteSheetName, () => Game1.cropSpriteSheet },
-            { Game1.debrisSpriteSheetName, () => Game1.debrisSpriteSheet },
-            { Game1.giftboxName, () => Game1.giftboxTexture },
-            { Game1.mouseCursors1_6Name, () => Game1.mouseCursors_1_6 },
-            { Game1.mouseCursors2Name, () => Game1.mouseCursors2 },
-            { Game1.mouseCursorsName, () => Game1.mouseCursors },
-            { Game1.objectSpriteSheetName, () => Game1.objectSpriteSheet },
-            { Game1.toolSpriteSheetName, () => Game1.toolSpriteSheet },
-        };
+    private static readonly Dictionary<string, Func<Texture2D>> staticTextures = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "LooseSprites\\Birds", () => Game1.birdsSpriteSheet },
+        { "LooseSprites\\Lighting\\greenLight", () => Game1.cauldronLight },
+        { "LooseSprites\\Lighting\\indoorWindowLight", () => Game1.indoorWindowLight },
+        { "LooseSprites\\Lighting\\Lantern", () => Game1.lantern },
+        { "LooseSprites\\Lighting\\sconceLight", () => Game1.sconceLight },
+        { "LooseSprites\\Lighting\\windowLight", () => Game1.windowLight },
+        { "LooseSprites\\shadow", () => Game1.shadowTexture },
+        { "Maps\\MenuTiles", () => Game1.menuTexture },
+        { "Maps\\MenuTilesUncolored", () => Game1.uncoloredMenuTexture },
+        { "TileSheets\\BuffsIcon", () => Game1.buffsIcons },
+        { "TileSheets\\emotes", () => Game1.emoteSpriteSheet },
+        { "TileSheets\\Objects2", () => Game1.objectSpriteSheet_2 },
+        { "TileSheets\\rain", () => Game1.rainTexture },
+        { "TileSheets\\weapons", () => Tool.weaponsTexture },
+        { Game1.animationsName, () => Game1.animations },
+        { Game1.bigCraftableSpriteSheetName, () => Game1.bigCraftableSpriteSheet },
+        { Game1.bobbersTextureName, () => Game1.bobbersTexture },
+        { Game1.concessionsSpriteSheetName, () => Game1.concessionsSpriteSheet },
+        { Game1.cropSpriteSheetName, () => Game1.cropSpriteSheet },
+        { Game1.debrisSpriteSheetName, () => Game1.debrisSpriteSheet },
+        { Game1.giftboxName, () => Game1.giftboxTexture },
+        { Game1.mouseCursors1_6Name, () => Game1.mouseCursors_1_6 },
+        { Game1.mouseCursors2Name, () => Game1.mouseCursors2 },
+        { Game1.mouseCursorsName, () => Game1.mouseCursors },
+        { Game1.objectSpriteSheetName, () => Game1.objectSpriteSheet },
+        { Game1.toolSpriteSheetName, () => Game1.toolSpriteSheet },
+    };
 
     private readonly IModHelper helper;
     private readonly List<DirectoryMapping> spriteDirectories = [];
