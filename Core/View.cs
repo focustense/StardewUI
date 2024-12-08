@@ -20,7 +20,7 @@ namespace StardewUI;
 /// Use of this class isn't required, but provides some useful behaviors so that view types don't need to keep
 /// re-implementing them, such as a standard <see cref="Measure"/> implementation that skips unnecessary layouts.
 /// </remarks>
-public abstract class View : IView
+public abstract class View : IView, IFloatContainer
 {
     /// <summary>
     /// Event raised when any button on any input device is pressed.
@@ -136,9 +136,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
 
-    /// <summary>
-    /// The floating elements to display relative to this view.
-    /// </summary>
+    /// <inheritdoc />
     public IList<FloatingElement> FloatingElements
     {
         get => floatingElements;

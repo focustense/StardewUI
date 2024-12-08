@@ -27,7 +27,7 @@ namespace StardewUI.Layout;
 /// <param name="view">The floating view to display/interact with.</param>
 /// <param name="position">Specifies how to position the <paramref name="view"/> relative to the parent and its own
 /// measured size.</param>
-public class FloatingElement(IView view, FloatingPosition position)
+public class FloatingElement(IView view, FloatingPosition position) : IEquatable<FloatingElement>
 {
     /// <summary>
     /// The element's defined position.
@@ -63,6 +63,27 @@ public class FloatingElement(IView view, FloatingPosition position)
         using var _ = spriteBatch.SaveTransform();
         spriteBatch.Translate(offset);
         View.Draw(spriteBatch);
+    }
+
+    /// <inheritdoc />
+    public bool Equals(FloatingElement? other)
+    {
+        return other?.View == View && other.Position == Position;
+    }
+
+    /// <inheritdoc />
+    public override bool Equals(object? obj)
+    {
+        return obj is FloatingElement fe && fe.View == View && fe.Position == Position;
+    }
+
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        var hashCode = new HashCode();
+        hashCode.Add(View);
+        hashCode.Add(Position);
+        return hashCode.ToHashCode();
     }
 
     /// <summary>

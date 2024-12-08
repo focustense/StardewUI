@@ -8,7 +8,7 @@ namespace StardewUI.Widgets;
 /// <summary>
 /// A widget that can be clicked to expand/collapse with additional content.
 /// </summary>
-public partial class Expander : ComponentView
+public partial class Expander : ComponentView, IFloatContainer
 {
     /// <summary>
     /// Event that fires when the <see cref="IsExpanded"/> property is changed, either externally
@@ -67,6 +67,13 @@ public partial class Expander : ComponentView
                 OnPropertyChanged(nameof(ExpandedSprite));
             }
         }
+    }
+
+    /// <inheritdoc />
+    public IList<FloatingElement> FloatingElements
+    {
+        get => layout.FloatingElements;
+        set => layout.FloatingElements = value;
     }
 
     /// <summary>

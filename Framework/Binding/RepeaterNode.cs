@@ -6,6 +6,7 @@ using System.Text;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Binding;
 
@@ -41,6 +42,9 @@ public class RepeaterNode(
             }
         }
     }
+
+    /// <inheritdoc />
+    public IReadOnlyList<FloatingElement> FloatingElements { get; private set; } = [];
 
     /// <inheritdoc />
     public IReadOnlyList<IView> Views { get; private set; } = [];
@@ -145,6 +149,7 @@ public class RepeaterNode(
         if (result)
         {
             Views = children.SelectMany(child => child.Node.Views).ToList();
+            FloatingElements = children.SelectMany(child => child.Node.FloatingElements).ToList();
         }
         return result;
     }

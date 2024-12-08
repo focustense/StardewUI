@@ -10,7 +10,11 @@ namespace StardewUI.Framework.Sources;
 /// </summary>
 public static class ConvertedValueSource
 {
-    delegate IValueSource CreateValueSourceDelegate(IValueSource original, IValueConverterFactory converterFactory);
+    delegate IValueSource CreateValueSourceDelegate(
+        IValueSource original,
+        IValueConverterFactory converterFactory,
+        bool twoWay
+    );
 
     private static readonly MethodInfo createInternalMethod = typeof(ConvertedValueSource).GetMethod(
         nameof(CreateInternal),
@@ -25,14 +29,17 @@ public static class ConvertedValueSource
     /// <param name="destinationType">The type to convert to.</param>
     /// <param name="converterFactory">Factory for creating instances of
     /// <see cref="IValueConverter{TSource, TDestination}"/>.</param>
+    /// <param name="twoWay">Whether the resulting <see cref="IValueSource"/> should be able to convert in the reverse
+    /// direction, i.e. for two-way bindings, by setting <see cref="IValueSource.Value"/>.</param>
     public static IValueSource Create(
         IValueSource original,
         Type destinationType,
-        IValueConverterFactory converterFactory
+        IValueConverterFactory converterFactory,
+        bool twoWay = false
     )
     {
         var creator = GetCreatorDelegate(original.ValueType, destinationType);
-        return creator(original, converterFactory);
+        return creator(original, converterFactory, twoWay);
     }
 
     /// <summary>
@@ -42,9 +49,15 @@ public static class ConvertedValueSource
     /// <param name="original">The original value source.</param>
     /// <param name="converterFactory">Factory for creating instances of
     /// <see cref="IValueConverter{TSource, TDestination}"/>.</param>
-    public static IValueSource<T> Create<T>(IValueSource original, IValueConverterFactory converterFactory)
+    /// <param name="twoWay">Whether the resulting <see cref="IValueSource"/> should be able to convert in the reverse
+    /// direction, i.e. for two-way bindings, by setting <see cref="IValueSource.Value"/>.</param>
+    public static IValueSource<T> Create<T>(
+        IValueSource original,
+        IValueConverterFactory converterFactory,
+        bool twoWay = false
+    )
     {
-        return (IValueSource<T>)Create(original, typeof(T), converterFactory);
+        return (IValueSource<T>)Create(original, typeof(T), converterFactory, twoWay);
     }
 
     /// <summary>
@@ -69,11 +82,12 @@ public static class ConvertedValueSource
 
     private static IValueSource CreateInternal<TSource, T>(
         IValueSource original,
-        IValueConverterFactory converterFactory
+        IValueConverterFactory converterFactory,
+        bool twoWay
     )
     {
         var inputConverter = converterFactory.GetConverter<TSource, T>();
-        var outputConverter = converterFactory.GetConverter<T, TSource>();
+        var outputConverter = twoWay ? converterFactory.GetConverter<T, TSource>() : null;
         return new ConvertedValueSource<TSource, T>((IValueSource<TSource>)original, inputConverter, outputConverter);
     }
 

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using StardewUI.Framework.Descriptors;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Binding;
 
@@ -29,6 +30,9 @@ public class ContextUpdatingNodeDecorator(IViewNode node, ContextUpdateTracker t
             AttachToContext(value);
         }
     }
+
+    /// <inheritdoc />
+    public IReadOnlyList<FloatingElement> FloatingElements => node.FloatingElements;
 
     /// <inheritdoc />
     public IReadOnlyList<IView> Views => node.Views;

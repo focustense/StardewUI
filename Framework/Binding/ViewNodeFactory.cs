@@ -88,11 +88,13 @@ public class ViewNodeFactory(
         {
             return new ViewNode(
                 valueSourceFactory,
+                valueConverterFactory,
                 viewFactory,
                 viewBinder,
                 node.Element,
                 resolutionScope,
-                contextAttribute: structuralAttributes.Context
+                contextAttribute: structuralAttributes.Context,
+                floatAttribute: structuralAttributes.Float
             );
         }
 
@@ -189,6 +191,7 @@ public class ViewNodeFactory(
     {
         public IAttribute? Case { get; set; }
         public IAttribute? Context { get; set; }
+        public IAttribute? Float { get; set; }
         public IAttribute? If { get; set; }
         public IAttribute? Outlet { get; set; }
         public IAttribute? Repeat { get; set; }
@@ -206,6 +209,9 @@ public class ViewNodeFactory(
                         break;
                     case "context":
                         result.Context = attribute;
+                        break;
+                    case "float":
+                        result.Float = attribute;
                         break;
                     case "if":
                         result.If = attribute;
