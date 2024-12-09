@@ -181,7 +181,7 @@ public StardewUI.Framework.Grammar.TagInfo Tag { get; private set; }
 
 ##### Remarks
 
-The tag remains valid as attributes are read; i.e. `ReadNextAttribute(AttributeType, ReadOnlySpan<Char>)` will never change this value.
+The tag remains valid as attributes are read; i.e. `ReadNextAttribute(AttributeType, ReadOnlySpan<Char>, Boolean)` will never change this value.
 
 -----
 

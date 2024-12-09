@@ -164,15 +164,27 @@ Structural attributes look like regular attributes, but with a `*` prefix. Inste
 
 | Attribute  | Expected Type | Description |
 | ---------- | ---------------- | ----------- |
-| `*case`    | Any              | Removes the element unless the value is equal to the most recent `*switch`. The types of `*switch` and `*case` must either match exactly or be [convertible](#type-conversions). |
+| `*case`    | Any              | Removes the element unless the value is equal to the most recent `*switch`. The types of `*switch` and `*case` must either match exactly or be [convertible](#type-conversions).<p>_Can be [negated](#negation)._ |
 | `*context` | Any              | Changes the [context](binding-context.md) that all child nodes bind to; used for heavily-nested data models. |
-| `*if`      | `bool`           | Removes the element unless the specified condition is met. |
+| `*if`      | `bool`           | Removes the element unless the specified condition is met.<p>_Can be [negated](#negation)._ |
 | `*float`   | [`FloatingPosition`](../reference/stardewui/layout/floatingposition.md) | Makes the element a [floating element](../library/floating-elements.md). |
 | `*outlet`  | `string`         | Specifies which of the parent node's [outlets](#outlets) will receive this node.<br>**Does not support bindings.** The attribute value must be a quoted string. |
 | `*repeat`  | `IEnumerable` | Repeats the element over a collection, creating a new view for every item and setting its [context](binding-context.md) to that item. Applies to both regular and structural attributes; e.g. if `*repeat` and `*if` are both specified, then `*repeat` applies first. |
 | `*switch`  | Any              | Sets the object that any subsequent `*case` attributes must match in order for their elements to show. |
 
 ///
+
+#### Negation
+
+Structural attributes linked to conditional behavior can be negated, by placing a `!` before the assignment. For example:
+
+```html
+<label *!if={Condition} ... />
+```
+
+The above would cause the label to only be displayed when the condition is **`false`**, rather than `true`. Similarly, negating a `*case` attribute as `*!case` would cause it to only display its content when the value does _not_ match.
+
+Negation is only allowed for specific conditional attributes, such as `*if` and `*case`. Consult the [structural attributes](#structural-attributes) table above for  the attributes that say "can be negated".
 
 ### Events
 
