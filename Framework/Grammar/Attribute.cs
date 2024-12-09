@@ -6,6 +6,7 @@
 /// <param name="name">The attribute name.</param>
 /// <param name="type">The type of the attribute itself, i.e. how its <paramref name="name"/> should be
 /// interpreted.</param>
+/// <param name="isNegated">Whether the attribute has a negation (<c>!</c>) operator before assignment.</param>
 /// <param name="valueType">The type of the value expression, defining how the <paramref name="value"/> should be
 /// interpreted.</param>
 /// <param name="value">The literal value text.</param>
@@ -18,12 +19,21 @@
 public readonly ref struct Attribute(
     ReadOnlySpan<char> name,
     AttributeType type,
+    bool isNegated,
     AttributeValueType valueType,
     ReadOnlySpan<char> value,
     uint parentDepth,
     ReadOnlySpan<char> parentType
 )
 {
+    /// <summary>
+    /// Whether the attribute has a negation (<c>!</c>) operator before assignment.
+    /// </summary>
+    /// <remarks>
+    /// Negation behavior is specific to the exact attribute and is not supported for many/most attributes.
+    /// </remarks>
+    public bool IsNegated { get; } = isNegated;
+
     /// <summary>
     /// The attribute name.
     /// </summary>

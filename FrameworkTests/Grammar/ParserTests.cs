@@ -60,6 +60,25 @@ public class ParserTests
                 ]
             },
             {
+                @"<label *!if={Condition} text=""foo"" />",
+                [
+                    new(
+                        "label",
+                        [
+                            new(
+                                "if",
+                                "Condition",
+                                AttributeType.Structural,
+                                AttributeValueType.InputBinding,
+                                IsNegated: true
+                            ),
+                            new("text", "foo"),
+                        ]
+                    ),
+                    new("label", IsClosingTag: true),
+                ]
+            },
+            {
                 @"<textinput text={<>^Name} />",
                 [
                     new(
