@@ -309,6 +309,8 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `SpriteFont` @span       | `"dialogue"` (6)                   | N/A @span                             | N/A @span                               |
 |                          | `"small"` (7)                      |                                       |                                         |
 |                          | `"tiny"` (8)                       |                                       |                                         |
+| `Visibility` @span       | "Visible"                          | `bool` @span                          | N/A @span                               |
+|                          | "Hidden"                           |                                       |                                         |
 | `TooltipData` @span      | Any @span                          | `string` (text only)                  | N/A @span                               |
 |                          |                                    | `Tuple<string, string>`<br/>(title + text) |                                    |
 |                          |                                    | `Item`                                |                                         |

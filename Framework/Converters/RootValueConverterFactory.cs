@@ -102,6 +102,9 @@ internal class RootValueConverterFactory : ValueConverterFactory
         // Extra conversions for floats.
         TryRegister<Func<Vector2, Vector2, Vector2>, FloatingPosition>(f => new(f));
 
+        // Only two types of visibility, so boolean conversions are common.
+        TryRegister<bool, Visibility>(b => b ? Visibility.Visible : Visibility.Hidden);
+
         // Most enums are fine using the standard string-to-enum conversion.
         Register(new EnumNameConverterFactory());
 
