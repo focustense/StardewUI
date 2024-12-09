@@ -30,6 +30,28 @@ public partial class Grid : View
     }
 
     /// <summary>
+    /// Specifies how to align the entire grid when the combined length of all columns is not exactly equal to the
+    /// grid's layout length.
+    /// </summary>
+    /// <remarks>
+    /// Applies only to the grid's <see cref="PrimaryOrientation"/> axis, which is the axis affected by
+    /// <see cref="ItemLayout"/>; the secondary axis does not require or support grid-level alignment because it can
+    /// already be made <see cref="Length.Content"/>-sized.
+    /// </remarks>
+    public Alignment GridAlignment
+    {
+        get => gridAlignment;
+        set
+        {
+            if (value != gridAlignment)
+            {
+                gridAlignment = value;
+                OnPropertyChanged(nameof(GridAlignment));
+            }
+        }
+    }
+
+    /// <summary>
     /// Specifies how to align each child <see cref="IView"/> horizontally within its respective cell, i.e. if the view
     /// is narrower than the cell's width.
     /// </summary>
@@ -148,8 +170,12 @@ public partial class Grid : View
     private readonly DirtyTracker<Orientation> primaryOrientation = new(Orientation.Horizontal);
 
     // Regular backing fields
+    private Alignment gridAlignment = Alignment.Start;
     private Alignment horizontalItemAlignment = Alignment.Start;
     private Alignment verticalItemAlignment = Alignment.Start;
+
+    // For grid-level alignment.
+    private float primaryLength;
 
     // These are useful to cache for focus searches. Since the grid is uniform along the primary orientation, we can
     // determine from the coordinates exactly which cell the cursor is sitting in, including its index in the child list
@@ -226,6 +252,9 @@ public partial class Grid : View
     /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
+        var origin = Vector2.Zero;
+        PrimaryOrientation.Set(ref origin, GridAlignment.Align(primaryLength, ContentSize.X));
+        b.Translate(origin);
         foreach (var (child, position) in childPositions.ZOrder())
         {
             using var _ = b.SaveTransform();
@@ -308,6 +337,7 @@ public partial class Grid : View
         secondaryUsed += maxSecondary;
         var accumulatedSize = limits;
         secondaryOrientation.Set(ref accumulatedSize, secondaryUsed);
+        primaryLength = (itemLength + primarySpacing) * (countBeforeWrap - 1) + itemLength;
         ContentSize = Layout.Resolve(availableSize, () => accumulatedSize);
     }
 
