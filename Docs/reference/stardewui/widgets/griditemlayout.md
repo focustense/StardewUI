@@ -45,6 +45,7 @@ public record GridItemLayout : IEquatable<StardewUI.Widgets.GridItemLayout>
  | Name | Description |
 | --- | --- |
 | [GetItemCountAndLength(Single, Single)](#getitemcountandlengthfloat-float) | Computes the length (along the grid's [PrimaryOrientation](grid.md#primaryorientation) axis) of a single item, and the number of items that can fit before wrapping. | 
+| [Parse(string)](#parsestring) | Converts the string representation of an item layout to an equivalent [GridItemLayout](griditemlayout.md). | 
 
 ## Details
 
@@ -87,6 +88,27 @@ Spacing between items, to adjust count-based layouts.
 [ValueTuple](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple-2)<[Single](https://learn.microsoft.com/en-us/dotnet/api/system.single), [Int32](https://learn.microsoft.com/en-us/dotnet/api/system.int32)>
 
   The length to apply to each item.
+
+-----
+
+#### Parse(string)
+
+Converts the string representation of an item layout to an equivalent [GridItemLayout](griditemlayout.md).
+
+```cs
+public static StardewUI.Widgets.GridItemLayout Parse(string value);
+```
+
+##### Parameters
+
+**`value`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+String containing the item layout to convert.
+
+##### Returns
+
+[GridItemLayout](griditemlayout.md)
+
+  The converted layout information.
 
 -----
 

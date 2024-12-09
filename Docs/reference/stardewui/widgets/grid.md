@@ -55,6 +55,7 @@ Can be configured to use either a fixed cell size, and therefore a variable numb
 | [FloatingBounds](../view.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [FloatingElements](../view.md#floatingelements) | The floating elements to display relative to this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Focusable](../view.md#focusable) | Whether or not the view should be able to receive focus. Applies only to this specific view, not its children.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [GridAlignment](#gridalignment) | Specifies how to align the entire grid when the combined length of all columns is not exactly equal to the grid's layout length. | 
 | [HorizontalItemAlignment](#horizontalitemalignment) | Specifies how to align each child [IView](../iview.md) horizontally within its respective cell, i.e. if the view is narrower than the cell's width. | 
 | [InnerSize](../view.md#innersize) | The size allocated to the entire area inside the border, i.e. [ContentSize](../view.md#contentsize) plus any [Padding](../view.md#padding). Does not include border or [Margin](../view.md#margin).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [IsFocusable](../view.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -160,6 +161,24 @@ public System.Collections.Generic.IList<StardewUI.IView> Children { get; set; }
 ##### Property Value
 
 [IList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ilist-1)<[IView](../iview.md)>
+
+-----
+
+#### GridAlignment
+
+Specifies how to align the entire grid when the combined length of all columns is not exactly equal to the grid's layout length.
+
+```cs
+public StardewUI.Layout.Alignment GridAlignment { get; set; }
+```
+
+##### Property Value
+
+[Alignment](../layout/alignment.md)
+
+##### Remarks
+
+Applies only to the grid's [PrimaryOrientation](grid.md#primaryorientation) axis, which is the axis affected by [ItemLayout](grid.md#itemlayout); the secondary axis does not require or support grid-level alignment because it can already be made [Content()](../layout/length.md#content)-sized.
 
 -----
 

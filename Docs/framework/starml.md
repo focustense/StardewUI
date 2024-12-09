@@ -317,6 +317,7 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 |                          |                                    | `ParsedItemData`                      |                                         |
 | `GridItemLayout` @span   | `"count: n"` (10)                  | N/A @span                             | N/A @span                               |
 |                          | `"length: n"` (11)                 |                                       |                                         |
+|                          | `"length: n+"`                     |                                       |                                         |
 | `FloatingPosition` @span | `"above"`                          | `Func<Vector2, Vector2, Vector2>`<br /><br/>See [`offsetSelector`](../reference/stardewui/layout/floatingposition.md#floatingpositionfuncvector2-vector2-vector2) @span | N/A @span                               |
 |                          | `"below"`                          |                                       |                                         |
 |                          | `"before"`                         |                                       |                                         |
@@ -337,7 +338,7 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 8.  Reference to `Game1.tinyFont`
 9.  Sprites can be bound to model properties, but should only be done for sprites that _must_ be dynamic. In the majority of cases, you should use [sprite assets](../getting-started/adding-ui-assets.md) instead.
 10.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using _n_ items per row/column and adjusts their size accordingly.
-11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.
+11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.<p>If the value ends with a `+`, the size will be expanded so that the total space used by all rows/columns is exactly equal to the grid's layout width/height.
 12.  Any `Length` (width, height or both) can have a range appended to it specifying the min and/or max, such as `50%[100..800]`, meaning "prefer 50% of container, but constrained between 100px and 800px". Use open ranges to specify only a minimum, or only a maximum.
 13.  Any of the edges (`above`, `below`, `before` or `after`) can have a `Vector2`-compatible offset appended to it, e.g. `above; 5, 8` which adds the specified offset to the computed edge position. This can be used in place of margins to add more space between floating elements and their parents.
 

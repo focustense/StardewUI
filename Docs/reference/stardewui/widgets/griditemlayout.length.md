@@ -39,13 +39,14 @@ public record GridItemLayout.Length : StardewUI.Widgets.GridItemLayout,
 
  | Name | Description |
 | --- | --- |
-| [Length(Single)](#lengthfloat) | A [GridItemLayout](griditemlayout.md) specifying that each item is to have the same fixed length (width or height, depending on the grid's [Orientation](../layout/orientation.md)) and to wrap to the next row/column afterward. | 
+| [Length(Single, Boolean)](#lengthfloat-bool) | A [GridItemLayout](griditemlayout.md) specifying that each item is to have the same fixed length (width or height, depending on the grid's [Orientation](../layout/orientation.md)) and to wrap to the next row/column afterward. | 
 
 ### Properties
 
  | Name | Description |
 | --- | --- |
 | [EqualityContract](#equalitycontract) | <span class="muted" markdown>(Overrides [GridItemLayout](griditemlayout.md).`get_EqualityContract()`)</span> | 
+| [Expandable](#expandable) | Whether the length of cells should expand (uniformly) to fill the grid's primary layout size, i.e. when that size is not an exact multiple of the total size of all cells that can fit. | 
 | [Px](#px) | The length, in pixels, of each item along the grid's orientation axis. | 
 
 ### Methods
@@ -58,18 +59,21 @@ public record GridItemLayout.Length : StardewUI.Widgets.GridItemLayout,
 
 ### Constructors
 
-#### Length(float)
+#### Length(float, bool)
 
 A [GridItemLayout](griditemlayout.md) specifying that each item is to have the same fixed length (width or height, depending on the grid's [Orientation](../layout/orientation.md)) and to wrap to the next row/column afterward.
 
 ```cs
-public Length(float Px);
+public Length(float Px, bool Expandable);
 ```
 
 ##### Parameters
 
 **`Px`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
 The length, in pixels, of each item along the grid's orientation axis.
+
+**`Expandable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether the length of cells should expand (uniformly) to fill the grid's primary layout size, i.e. when that size is not an exact multiple of the total size of all cells that can fit.
 
 -----
 
@@ -86,6 +90,20 @@ protected System.Type EqualityContract { get; }
 ##### Property Value
 
 [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)
+
+-----
+
+#### Expandable
+
+Whether the length of cells should expand (uniformly) to fill the grid's primary layout size, i.e. when that size is not an exact multiple of the total size of all cells that can fit.
+
+```cs
+public bool Expandable { get; set; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
 -----
 
