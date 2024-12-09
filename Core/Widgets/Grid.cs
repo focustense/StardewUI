@@ -449,7 +449,9 @@ public abstract record GridItemLayout
     /// depending on the grid's <see cref="Orientation"/>) and to wrap to the next row/column afterward.
     /// </summary>
     /// <param name="Px">The length, in pixels, of each item along the grid's orientation axis.</param>
-    public sealed record Length(float Px) : GridItemLayout
+    /// <param name="Expandable">Whether the length of cells should expand (uniformly) to fill the grid's primary layout
+    /// size, i.e. when that size is not an exact multiple of the total size of all cells that can fit.</param>
+    public sealed record Length(float Px, bool Expandable = false) : GridItemLayout
     {
         /// <inheritdoc />
         public override (float, int) GetItemCountAndLength(float available, float spacing)
@@ -462,8 +464,38 @@ public abstract record GridItemLayout
             // Rounding this wouldn't be good, since that could overflow; but we also don't want tiny floating-point
             // errors to cause premature wrapping. OK solution is to truncate after adding some epsilon.
             var approximateCount = Math.Max((int)(exactCount + 4 * float.Epsilon), 1);
-            return (Px, approximateCount);
+            var length = Expandable ? (int)Math.Max((available + spacing) / approximateCount - spacing, Px) : Px;
+            return (length, approximateCount);
         }
+    }
+
+    /// <summary>
+    /// Converts the string representation of an item layout to an equivalent <see cref="GridItemLayout"/>.
+    /// </summary>
+    /// <param name="value">String containing the item layout to convert.</param>
+    /// <returns>The converted layout information.</returns>
+    /// <exception cref="FormatException">Thrown when <paramref name="value"/> is not in the correct format.</exception>
+    public static GridItemLayout Parse(string value)
+    {
+        var valueAsSpan = value.ToLower().AsSpan();
+        int separatorIndex = valueAsSpan.IndexOf(':');
+        if (separatorIndex < 0)
+        {
+            throw new FormatException($"Invalid grid layout '{value}'; must have the format 'type: value'.");
+        }
+        var variantName = valueAsSpan[0..separatorIndex];
+        var variantValue = valueAsSpan[(separatorIndex + 1)..];
+        return variantName.Trim() switch
+        {
+            "count" => new Count(int.Parse(variantValue)),
+            "length" => variantValue.EndsWith("+")
+                ? new Length(int.Parse(variantValue[..^1]), true)
+                : new Length(int.Parse(variantValue)),
+            _ => throw new FormatException(
+                $"Invalid variant type '{variantName}' for {typeof(GridItemLayout).Name}. "
+                    + "Supported variants are 'count' or 'length'."
+            ),
+        };
     }
 
     private GridItemLayout() { }

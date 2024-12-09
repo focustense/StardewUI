@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewUI.Data;
 using StardewUI.Layout;
+using StardewUI.Widgets;
 using StardewValley.ItemTypeDefinitions;
 
 namespace StardewUI.Framework.Converters;
@@ -46,7 +47,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new ColorConverter());
         TryRegister<string, Edges>(Edges.Parse);
         TryRegister<string, FloatingPosition>(FloatingPosition.Parse);
-        TryRegister(new GridItemLayoutConverter());
+        TryRegister<string, GridItemLayout>(GridItemLayout.Parse);
         TryRegister(new LayoutConverter());
         TryRegister<string, Length>(Length.Parse);
         TryRegister(new NamedFontConverter());
