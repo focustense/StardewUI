@@ -36,12 +36,13 @@ public readonly ref struct Attribute
 
  | Name | Description |
 | --- | --- |
-| [Attribute(ReadOnlySpan&lt;Char&gt;, AttributeType, AttributeValueType, ReadOnlySpan&lt;Char&gt;, UInt32, ReadOnlySpan&lt;Char&gt;)](#attributereadonlyspanchar-attributetype-attributevaluetype-readonlyspanchar-uint-readonlyspanchar) | A complete attribute assignment parsed from StarML. | 
+| [Attribute(ReadOnlySpan&lt;Char&gt;, AttributeType, Boolean, AttributeValueType, ReadOnlySpan&lt;Char&gt;, UInt32, ReadOnlySpan&lt;Char&gt;)](#attributereadonlyspanchar-attributetype-bool-attributevaluetype-readonlyspanchar-uint-readonlyspanchar) | A complete attribute assignment parsed from StarML. | 
 
 ### Properties
 
  | Name | Description |
 | --- | --- |
+| [IsNegated](#isnegated) | Whether the attribute has a negation (`!`) operator before assignment. | 
 | [Name](#name) | The attribute name. | 
 | [ParentDepth](#parentdepth) | The depth to walk - i.e. number of parents to traverse - to find the context on which to evaluate a context binding. Exclusive with [ParentType](attribute.md#parenttype) and only valid if the [ValueType](attribute.md#valuetype) is a type that matches [IsContextBinding(AttributeValueType)](attributevaluetypeextensions.md#iscontextbindingattributevaluetype). | 
 | [ParentType](#parenttype) | The type name of the parent to walk up to for a context redirect. Exclusive with [ParentDepth](attribute.md#parentdepth) and only valid if the [ValueType](attribute.md#valuetype) is a type that matches [IsContextBinding(AttributeValueType)](attributevaluetypeextensions.md#iscontextbindingattributevaluetype). | 
@@ -61,12 +62,12 @@ public readonly ref struct Attribute
 
 ### Constructors
 
-#### Attribute(ReadOnlySpan&lt;Char&gt;, AttributeType, AttributeValueType, ReadOnlySpan&lt;Char&gt;, uint, ReadOnlySpan&lt;Char&gt;)
+#### Attribute(ReadOnlySpan&lt;Char&gt;, AttributeType, bool, AttributeValueType, ReadOnlySpan&lt;Char&gt;, uint, ReadOnlySpan&lt;Char&gt;)
 
 A complete attribute assignment parsed from StarML.
 
 ```cs
-public Attribute(ReadOnlySpan<System.Char> name, StardewUI.Framework.Grammar.AttributeType type, StardewUI.Framework.Grammar.AttributeValueType valueType, ReadOnlySpan<System.Char> value, uint parentDepth, ReadOnlySpan<System.Char> parentType);
+public Attribute(ReadOnlySpan<System.Char> name, StardewUI.Framework.Grammar.AttributeType type, bool isNegated, StardewUI.Framework.Grammar.AttributeValueType valueType, ReadOnlySpan<System.Char> value, uint parentDepth, ReadOnlySpan<System.Char> parentType);
 ```
 
 ##### Parameters
@@ -76,6 +77,9 @@ The attribute name.
 
 **`type`** &nbsp; [AttributeType](attributetype.md)  
 The type of the attribute itself, i.e. how its `name` should be interpreted.
+
+**`isNegated`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether the attribute has a negation (`!`) operator before assignment.
 
 **`valueType`** &nbsp; [AttributeValueType](attributevaluetype.md)  
 The type of the value expression, defining how the `value` should be interpreted.
@@ -92,6 +96,24 @@ The type name of the parent to search for, to find the the context on which to e
 -----
 
 ### Properties
+
+#### IsNegated
+
+Whether the attribute has a negation (`!`) operator before assignment.
+
+```cs
+public bool IsNegated { get; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+Negation behavior is specific to the exact attribute and is not supported for many/most attributes.
+
+-----
 
 #### Name
 
