@@ -51,6 +51,7 @@ Must be associated with a [ScrollContainer](scrollcontainer.md) in order to work
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [DownSprite](#downsprite) | Sprite to draw for the down arrow, or right arrow in horizontal orientation. | 
 | [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [ForcedVisibility](#forcedvisibility) | Forces the scrollbar to be always visible or always hidden, depending on the value. | 
 | [IsFocusable](decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Layout](decoratorview-1.md#layout) | The current layout parameters, which determine how [Measure(Vector2)](../iview.md#measurevector2) will behave.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Margin](#margin) | Margins for this view. See [Margin](../view.md#margin). | 
@@ -157,6 +158,24 @@ public StardewUI.Graphics.Sprite DownSprite { get; set; }
 ##### Property Value
 
 [Sprite](../graphics/sprite.md)
+
+-----
+
+#### ForcedVisibility
+
+Forces the scrollbar to be always visible or always hidden, depending on the value.
+
+```cs
+public StardewUI.Layout.Visibility? ForcedVisibility { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Visibility](../layout/visibility.md)>
+
+##### Remarks
+
+If not set, the [Visibility](../layout/visibility.md) will change according to whether the [ScrollContainer](scrollcontainer.md) has content large enough to be scrolled.
 
 -----
 
