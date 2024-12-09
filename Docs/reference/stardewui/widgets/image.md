@@ -69,6 +69,7 @@ public class Image : StardewUI.View
 | [ShadowAlpha](#shadowalpha) | Alpha value for the shadow. If set to the default of zero, no shadow will be drawn. | 
 | [ShadowOffset](#shadowoffset) | Offset to draw the sprite shadow, which is a second copy of the [Sprite](image.md#sprite) drawn entirely black. Shadows will not be visible unless [ShadowAlpha](image.md#shadowalpha) is non-zero. | 
 | [Sprite](#sprite) | The sprite to draw. | 
+| [SpriteEffects](#spriteeffects) | Sprite effects to apply, such as horizontal or vertical flipping. | 
 | [Tags](../view.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Tint](#tint) | Tint color (multiplier) to apply when drawing. | 
 | [Tooltip](../view.md#tooltip) | Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -259,6 +260,24 @@ public StardewUI.Graphics.Sprite Sprite { get; set; }
 ##### Remarks
 
 If [LayoutParameters](../layout/layoutparameters.md) uses [Content](../layout/lengthtype.md#content) for either dimension, then changing the sprite can affect layout depending on [Fit](image.md#fit).
+
+-----
+
+#### SpriteEffects
+
+Sprite effects to apply, such as horizontal or vertical flipping.
+
+```cs
+public Microsoft.Xna.Framework.Graphics.SpriteEffects SpriteEffects { get; set; }
+```
+
+##### Property Value
+
+[SpriteEffects](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html)
+
+##### Remarks
+
+Effects are applied only during [Draw(ISpriteBatch)](../iview.md#drawispritebatch) and do not affect layout.
 
 -----
 
