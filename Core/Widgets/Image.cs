@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Graphics;
 using StardewUI.Layout;
 
@@ -141,6 +141,25 @@ public partial class Image : View
     }
 
     /// <summary>
+    /// Sprite effects to apply, such as horizontal or vertical flipping.
+    /// </summary>
+    /// <remarks>
+    /// Effects are applied only during <see cref="IView.Draw(ISpriteBatch)"/> and do not affect layout.
+    /// </remarks>
+    public SpriteEffects SpriteEffects
+    {
+        get => spriteEffects;
+        set
+        {
+            if (value != spriteEffects)
+            {
+                spriteEffects = value;
+                OnPropertyChanged(nameof(SpriteEffects));
+            }
+        }
+    }
+
+    /// <summary>
     /// Tint color (multiplier) to apply when drawing.
     /// </summary>
     public Color Tint
@@ -182,6 +201,7 @@ public partial class Image : View
     private float shadowAlpha;
     private Vector2 shadowOffset;
     private NineSlice? slice = null;
+    private SpriteEffects spriteEffects = SpriteEffects.None;
     private Color tint = Color.White;
     private Alignment verticalAlignment = Alignment.Start;
 
@@ -206,10 +226,10 @@ public partial class Image : View
             using var _transform = b.SaveTransform();
             b.Translate(ShadowOffset);
             using var _shadowClip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-            slice.Draw(b, new(Color.Black, ShadowAlpha));
+            slice.Draw(b, new(Color.Black, ShadowAlpha), SpriteEffects);
         }
         using var _clip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-        slice?.Draw(b, Tint);
+        slice?.Draw(b, Tint, SpriteEffects);
     }
 
     /// <inheritdoc />
