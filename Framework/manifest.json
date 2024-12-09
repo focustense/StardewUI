@@ -12,7 +12,7 @@
   "Author": "focustense",
   "Version": "0.4.2",
   "Description": "Declarative UI framework",
-  "MinimumApiVersion": "4.1.8",
+  "MinimumApiVersion": "4.1.7",
   "MinimumGameVersion": "1.6.14",
   "EntryDll": "StardewUI.dll",
   "UpdateKeys": [
