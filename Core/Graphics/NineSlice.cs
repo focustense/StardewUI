@@ -29,8 +29,8 @@ public class NineSlice(Sprite sprite)
     /// </summary>
     /// <param name="b">Output sprite batch.</param>
     /// <param name="tint">Optional tint multiplier color.</param>
-    /// <param name="flip">Sprite effect to apply, for drawing a flipped sprite</param>
-    public void Draw(ISpriteBatch b, Color? tint = null, SpriteEffects flip = SpriteEffects.None)
+    /// <param name="effects">Sprite effect to apply, e.g. for drawing flipped.</param>
+    public void Draw(ISpriteBatch b, Color? tint = null, SpriteEffects effects = SpriteEffects.None)
     {
         if (destinationGrid is null)
         {
@@ -46,7 +46,7 @@ public class NineSlice(Sprite sprite)
                 {
                     continue;
                 }
-                var (destX, destY) = RotateGridIndices(sourceX, sourceY, rotation, flip);
+                var (destX, destY) = RotateGridIndices(sourceX, sourceY, rotation, effects);
                 var sourceRect = sourceGrid[sourceY, sourceX];
                 if (sourceRect.Width == 0 || sourceRect.Height == 0)
                 {
@@ -70,11 +70,11 @@ public class NineSlice(Sprite sprite)
                         destinationRect.X + destinationRect.Width / 2f,
                         destinationRect.Y + destinationRect.Height / 2f
                     );
-                    b.Draw(Sprite.Texture, center, sourceRect, tint, rotationAngle, rotationOrigin, scale, flip);
+                    b.Draw(Sprite.Texture, center, sourceRect, tint, rotationAngle, rotationOrigin, scale, effects);
                 }
                 else
                 {
-                    b.Draw(Sprite.Texture, destinationRect, sourceRect, tint, effects: flip);
+                    b.Draw(Sprite.Texture, destinationRect, sourceRect, tint, effects: effects);
                 }
             }
         }
@@ -162,12 +162,21 @@ public class NineSlice(Sprite sprite)
         };
     }
 
-    private static (int x, int y) RotateGridIndices(int x, int y, SimpleRotation? rotation, SpriteEffects flip = SpriteEffects.None)
+    private static (int x, int y) RotateGridIndices(
+        int x,
+        int y,
+        SimpleRotation? rotation,
+        SpriteEffects effects = SpriteEffects.None
+    )
     {
-        if ((flip & SpriteEffects.FlipHorizontally) != 0)
+        if ((effects & SpriteEffects.FlipHorizontally) != 0)
+        {
             x = 2 - x;
-        if ((flip & SpriteEffects.FlipVertically) != 0)
+        }
+        if ((effects & SpriteEffects.FlipVertically) != 0)
+        {
             y = 2 - y;
+        }
         return rotation switch
         {
             SimpleRotation.QuarterClockwise => (2 - y, x),
@@ -175,6 +184,5 @@ public class NineSlice(Sprite sprite)
             SimpleRotation.Half => (2 - x, 2 - y),
             _ => (x, y),
         };
-
     }
 }
