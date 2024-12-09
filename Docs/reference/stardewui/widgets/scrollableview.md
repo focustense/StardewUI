@@ -64,6 +64,12 @@ This does not add any extra UI elements aside from the scrollbar, like [Scrollab
 | [OuterSize](decoratorview-1.md#outersize) | The true computed layout size resulting from a single [Measure(Vector2)](../iview.md#measurevector2) pass.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Peeking](#peeking) | Amount of extra distance above/below scrolled content; see [Peeking](scrollcontainer.md#peeking). | 
 | [PointerEventsEnabled](decoratorview-1.md#pointereventsenabled) | Whether this view should receive pointer events like [Click](../iview.md#click) or [Drag](../iview.md#drag).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [ScrollbarDownSprite](#scrollbardownsprite) | The [DownSprite](scrollbar.md#downsprite) used for the scrollbar. | 
+| [ScrollbarMargin](#scrollbarmargin) | The [Margin](scrollbar.md#margin) of the scrollbar. | 
+| [ScrollbarThumbSprite](#scrollbarthumbsprite) | The [ThumbSprite](scrollbar.md#thumbsprite) used for the scrollbar. | 
+| [ScrollbarTrackSprite](#scrollbartracksprite) | The [TrackSprite](scrollbar.md#tracksprite) used for the scrollbar. | 
+| [ScrollbarUpSprite](#scrollbarupsprite) | The [UpSprite](scrollbar.md#upsprite) used for the scrollbar. | 
+| [ScrollbarVisibility](#scrollbarvisibility) | The [ForcedVisibility](scrollbar.md#forcedvisibility) of the scrollbar. | 
 | [ScrollWithChildren](decoratorview-1.md#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Tags](decoratorview-1.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Tooltip](decoratorview-1.md#tooltip) | Tooltip data to display on hover, if any.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
@@ -173,6 +179,90 @@ public float Peeking { get; set; }
 ##### Property Value
 
 [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
+
+-----
+
+#### ScrollbarDownSprite
+
+The [DownSprite](scrollbar.md#downsprite) used for the scrollbar.
+
+```cs
+public StardewUI.Graphics.Sprite ScrollbarDownSprite { get; set; }
+```
+
+##### Property Value
+
+[Sprite](../graphics/sprite.md)
+
+-----
+
+#### ScrollbarMargin
+
+The [Margin](scrollbar.md#margin) of the scrollbar.
+
+```cs
+public StardewUI.Layout.Edges ScrollbarMargin { get; set; }
+```
+
+##### Property Value
+
+[Edges](../layout/edges.md)
+
+-----
+
+#### ScrollbarThumbSprite
+
+The [ThumbSprite](scrollbar.md#thumbsprite) used for the scrollbar.
+
+```cs
+public StardewUI.Graphics.Sprite ScrollbarThumbSprite { get; set; }
+```
+
+##### Property Value
+
+[Sprite](../graphics/sprite.md)
+
+-----
+
+#### ScrollbarTrackSprite
+
+The [TrackSprite](scrollbar.md#tracksprite) used for the scrollbar.
+
+```cs
+public StardewUI.Graphics.Sprite ScrollbarTrackSprite { get; set; }
+```
+
+##### Property Value
+
+[Sprite](../graphics/sprite.md)
+
+-----
+
+#### ScrollbarUpSprite
+
+The [UpSprite](scrollbar.md#upsprite) used for the scrollbar.
+
+```cs
+public StardewUI.Graphics.Sprite ScrollbarUpSprite { get; set; }
+```
+
+##### Property Value
+
+[Sprite](../graphics/sprite.md)
+
+-----
+
+#### ScrollbarVisibility
+
+The [ForcedVisibility](scrollbar.md#forcedvisibility) of the scrollbar.
+
+```cs
+public StardewUI.Layout.Visibility? ScrollbarVisibility { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Visibility](../layout/visibility.md)>
 
 -----
 
