@@ -539,6 +539,30 @@ public partial class BindingTests
         );
     }
 
+    [Fact]
+    public void WhenConditionalBindingIsNegated_InvertsCondition()
+    {
+        string markup =
+            @"<lane>
+                <label *!if={FirstLineVisible} text=""First Line"" />
+                <label *!if={SecondLineVisible} text=""Second Line"" />
+            </lane>";
+        var model = new ConditionalBindingTestModel { FirstLineVisible = true, SecondLineVisible = false };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        var label = (Label)Assert.Single(rootView.Children);
+        Assert.Equal("Second Line", label.Text);
+
+        model.FirstLineVisible = false;
+        model.SecondLineVisible = true;
+        tree.Update();
+
+        label = (Label)Assert.Single(rootView.Children);
+        Assert.Equal("First Line", label.Text);
+    }
+
     partial class SwitchCaseLiteralTestModel : INotifyPropertyChanged
     {
         [Notify]
