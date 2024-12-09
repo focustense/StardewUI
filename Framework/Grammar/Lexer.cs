@@ -59,6 +59,11 @@ public enum TokenType
     Assignment,
 
     /// <summary>
+    /// The <c>!</c> character, sometimes used to negate the value of an attribute, e.g. for conditional attributes.
+    /// </summary>
+    Negation,
+
+    /// <summary>
     /// Double quote character (<c>"</c>) used to start or terminate a <see cref="Literal"/> string.
     /// </summary>
     Quote,
@@ -392,6 +397,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['}', ..] => new(TokenType.BindingEnd, 1),
                 ['*', ..] => new(TokenType.AttributeModifier, 1),
                 ['|', ..] => new(TokenType.Pipe, 1),
+                ['!', ..] => new(TokenType.Negation, 1),
                 _ => ReadName(),
             },
         };

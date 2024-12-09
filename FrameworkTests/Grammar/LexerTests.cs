@@ -107,6 +107,26 @@ public class LexerTests
                 ]
             },
             {
+                @"<label *!if={Condition} text=""foo"" />",
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.AttributeModifier, "*"),
+                    new(TokenType.Negation, "!"),
+                    new(TokenType.Name, "if"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{"),
+                    new(TokenType.Literal, "Condition"),
+                    new(TokenType.BindingEnd, "}"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "foo"),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
                 @"<textinput text={<>^Name} />",
                 [
                     new(TokenType.OpeningTagStart, "<"),

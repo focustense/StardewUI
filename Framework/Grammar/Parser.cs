@@ -190,11 +190,17 @@ public ref struct DocumentReader(Lexer lexer)
         Attribute = default;
         Event = default;
         var attributeType = AttributeType.Property;
+        bool isNegated = false;
         switch (lexer.Current.Type)
         {
             case TokenType.AttributeModifier:
                 attributeType = GetAttributeType(lexer.Current.Text);
-                lexer.ReadRequiredToken(TokenType.Name);
+                lexer.ReadRequiredToken(TokenType.Name, TokenType.Negation);
+                if (lexer.Current.Type == TokenType.Negation)
+                {
+                    isNegated = true;
+                    lexer.ReadRequiredToken(TokenType.Name);
+                }
                 goto case TokenType.Name;
             case TokenType.Name:
                 var attributeName = lexer.Current.Text;
@@ -215,7 +221,7 @@ public ref struct DocumentReader(Lexer lexer)
                 }
                 else
                 {
-                    ReadNextAttribute(attributeType, attributeName);
+                    ReadNextAttribute(attributeType, attributeName, isNegated);
                     return TagMember.Attribute;
                 }
             case TokenType.SelfClosingTagEnd:
@@ -337,7 +343,7 @@ public ref struct DocumentReader(Lexer lexer)
         return valueType;
     }
 
-    private void ReadNextAttribute(AttributeType type, ReadOnlySpan<char> name)
+    private void ReadNextAttribute(AttributeType type, ReadOnlySpan<char> name, bool isNegated)
     {
         var valueType =
             lexer.Current.Type == TokenType.BindingStart ? AttributeValueType.InputBinding : AttributeValueType.Literal;
@@ -350,7 +356,7 @@ public ref struct DocumentReader(Lexer lexer)
         );
         if (lexer.Current.Type == TokenType.Quote)
         {
-            Attribute = new(name, type, valueType, "", 0, "");
+            Attribute = new(name, type, isNegated, valueType, "", 0, "");
             return;
         }
         if (lexer.Current.Type == TokenType.BindingModifier)
@@ -363,7 +369,7 @@ public ref struct DocumentReader(Lexer lexer)
         // We don't bother trying to enforce that the end token matches the start token because the Lexer will
         // have already failed to parse the literal if it doesn't match.
         lexer.ReadRequiredToken(TokenType.Quote, TokenType.BindingEnd);
-        Attribute = new(name, type, valueType, attributeValue, parentDepth, parentType);
+        Attribute = new(name, type, isNegated, valueType, attributeValue, parentDepth, parentType);
     }
 
     private void ReadNextEvent(ReadOnlySpan<char> name)
