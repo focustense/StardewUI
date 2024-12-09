@@ -34,6 +34,26 @@ public partial class Scrollbar : ComponentView<Lane>
     }
 
     /// <summary>
+    /// Forces the scrollbar to be always visible or always hidden, depending on the value.
+    /// </summary>
+    /// <remarks>
+    /// If not set, the <see cref="Visibility"/> will change according to whether the <see cref="ScrollContainer"/> has
+    /// content large enough to be scrolled.
+    /// </remarks>
+    public Visibility? ForcedVisibility
+    {
+        get => forcedVisibility;
+        set
+        {
+            if (value != forcedVisibility)
+            {
+                forcedVisibility = value;
+            }
+            SyncVisibility(View);
+        }
+    }
+
+    /// <summary>
     /// Margins for this view. See <see cref="View.Margin"/>.
     /// </summary>
     public Edges Margin
@@ -76,13 +96,8 @@ public partial class Scrollbar : ComponentView<Lane>
         set => upButton.Sprite = value;
     }
 
-    /// <summary>
-    /// By default scrollbar visibility depends on whether the content need to be scrolled.
-    /// SEtting this property will make scrollbar always visible or always hidden.
-    /// </summary>
-    public Visibility? OverrideVisibility { get; set; } = null;
-
     private ScrollContainer? container;
+    private Visibility? forcedVisibility;
     private Edges margin = new();
 
     // Initialized in CreateView
@@ -304,10 +319,14 @@ public partial class Scrollbar : ComponentView<Lane>
 
     private void SyncVisibility(Lane root)
     {
-        if (OverrideVisibility != null)
-            root.Visibility = (Visibility)OverrideVisibility;
+        if (ForcedVisibility.HasValue)
+        {
+            root.Visibility = ForcedVisibility.Value;
+        }
         else
+        {
             root.Visibility = Container?.ScrollSize > 0 ? Visibility.Visible : Visibility.Hidden;
+        }
     }
 
     private void Update(Lane root)

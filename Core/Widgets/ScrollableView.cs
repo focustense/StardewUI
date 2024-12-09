@@ -44,51 +44,62 @@ public partial class ScrollableView : ComponentView<ScrollContainer>, IFloatCont
         set => View.Peeking = value;
     }
 
-    // Initialized in CreateView
-    private Scrollbar scrollbar = null!;
-
-    // Scrollbar pass-through properties
-    /// <inheritdoc cref="Scrollbar.Margin"/>
-    public Edges ScrollbarMargin
-    {
-        get => scrollbar.Margin;
-        set => scrollbar.Margin = value;
-    }
-
-    /// <inheritdoc cref="Scrollbar.OverrideVisibility"/>
-    public Visibility? ScrollbarOverrideVisibility
-    {
-        get => scrollbar.OverrideVisibility;
-        set => scrollbar.OverrideVisibility = value;
-    }
-
-    /// <inheritdoc cref="Scrollbar.UpSprite"/>
-    public Sprite? ScrollbarUpSprite
-    {
-        get => scrollbar.UpSprite;
-        set => scrollbar.UpSprite = value;
-    }
-
-    /// <inheritdoc cref="Scrollbar.DownSprite"/>
+    /// <summary>
+    /// The <see cref="Scrollbar.DownSprite" /> used for the scrollbar.
+    /// </summary>
     public Sprite? ScrollbarDownSprite
     {
         get => scrollbar.DownSprite;
         set => scrollbar.DownSprite = value;
     }
 
-    /// <inheritdoc cref="Scrollbar.ThumbSprite"/>
+    /// <summary>
+    /// The <see cref="Scrollbar.Margin" /> of the scrollbar.
+    /// </summary>
+    public Edges ScrollbarMargin
+    {
+        get => scrollbar.Margin;
+        set => scrollbar.Margin = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.ForcedVisibility" /> of the scrollbar.
+    /// </summary>
+    public Visibility? ScrollbarVisibility
+    {
+        get => scrollbar.ForcedVisibility;
+        set => scrollbar.ForcedVisibility = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.ThumbSprite" /> used for the scrollbar.
+    /// </summary>
     public Sprite? ScrollbarThumbSprite
     {
         get => scrollbar.ThumbSprite;
         set => scrollbar.ThumbSprite = value;
     }
 
-    /// <inheritdoc cref="Scrollbar.TrackSprite"/>
+    /// <summary>
+    /// The <see cref="Scrollbar.TrackSprite" /> used for the scrollbar.
+    /// </summary>
     public Sprite? ScrollbarTrackSprite
     {
         get => scrollbar.TrackSprite;
         set => scrollbar.TrackSprite = value;
     }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.UpSprite" /> used for the scrollbar.
+    /// </summary>
+    public Sprite? ScrollbarUpSprite
+    {
+        get => scrollbar.UpSprite;
+        set => scrollbar.UpSprite = value;
+    }
+
+    // Initialized in CreateView
+    private Scrollbar scrollbar = null!;
 
     /// <inheritdoc />
     public override void OnWheel(WheelEventArgs e)
