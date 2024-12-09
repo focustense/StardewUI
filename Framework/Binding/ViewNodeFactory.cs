@@ -149,7 +149,7 @@ public class ViewNodeFactory(
                 )
                 {
                     LeftContextSelector = () => switchContext.Node.Context,
-                };
+                }.NegateIf(caseAttr.IsNegated);
                 result = new ConditionalNode(viewNode, condition);
             }
             if (structuralAttributes.If is not null)
@@ -159,7 +159,7 @@ public class ViewNodeFactory(
                     valueConverterFactory,
                     resolutionScope,
                     structuralAttributes.If
-                );
+                ).NegateIf(structuralAttributes.If.IsNegated);
                 result = new ConditionalNode(result, condition);
             }
             var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
@@ -208,26 +208,42 @@ public class ViewNodeFactory(
                         result.Case = attribute;
                         break;
                     case "context":
+                        ThrowIfNegated(attribute);
                         result.Context = attribute;
                         break;
                     case "float":
+                        ThrowIfNegated(attribute);
                         result.Float = attribute;
                         break;
                     case "if":
                         result.If = attribute;
                         break;
                     case "outlet":
+                        ThrowIfNegated(attribute);
                         result.Outlet = attribute;
                         break;
                     case "repeat":
+                        ThrowIfNegated(attribute);
                         result.Repeat = attribute;
                         break;
                     case "switch":
+                        ThrowIfNegated(attribute);
                         result.Switch = attribute;
                         break;
                 }
             }
             return result;
+        }
+
+        private static void ThrowIfNegated(IAttribute attribute)
+        {
+            if (attribute.IsNegated)
+            {
+                throw new BindingException(
+                    $"Invalid negation for structural attribute '{attribute.Name}'. Only conditional attributes such "
+                        + "as *if and *case may be negated."
+                );
+            }
         }
     }
 }

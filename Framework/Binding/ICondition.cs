@@ -20,3 +20,21 @@ public interface ICondition : IDisposable
     /// </summary>
     void Update();
 }
+
+/// <summary>
+/// Extensions for the <see cref="ICondition"/> interface.
+/// </summary>
+public static class ConditionExtensions
+{
+    /// <summary>
+    /// Checks a negation flag, and returns a negated version of the <paramref name="condition"/> if set.
+    /// </summary>
+    /// <param name="condition">The original condition.</param>
+    /// <param name="isNegated">Whether or not to negate the <paramref name="condition"/>.</param>
+    /// <returns>A negated version of the <paramref name="condition"/>, if <paramref name="isNegated"/> is <c>true</c>;
+    /// otherwise, the original <paramref name="condition"/>.</returns>
+    public static ICondition NegateIf(this ICondition condition, bool isNegated)
+    {
+        return isNegated ? new NegatedCondition(condition) : condition;
+    }
+}
