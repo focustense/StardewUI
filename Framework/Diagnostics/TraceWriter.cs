@@ -13,12 +13,11 @@ internal class TraceWriter(IManifest mod, Func<TraceConfig> configSelector) : St
     /// <inheritdoc />
     public bool IsTracing => currentTrace is not null;
 
-    private static readonly JsonSerializer serializer =
-        new()
-        {
-            ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy() },
-            Formatting = Formatting.None,
-        };
+    private static readonly JsonSerializer serializer = new()
+    {
+        ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy() },
+        Formatting = Formatting.None,
+    };
 
     private readonly string exporter = $"{mod.UniqueID}@{mod.Version}";
 

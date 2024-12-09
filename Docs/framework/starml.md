@@ -160,14 +160,19 @@ There are also [structural attributes](#structural-attributes) which are a separ
 
 Structural attributes look like regular attributes, but with a `*` prefix. Instead of binding to properties or events, they control aspects of how the view tree is constructed.
 
-| Attribute  | <div style="width: 120px">Expected Type</div>    | Description |
+/// html | div.no-code-break
+
+| Attribute  | Expected Type | Description |
 | ---------- | ---------------- | ----------- |
 | `*case`    | Any              | Removes the element unless the value is equal to the most recent `*switch`. The types of `*switch` and `*case` must either match exactly or be [convertible](#type-conversions). |
 | `*context` | Any              | Changes the [context](binding-context.md) that all child nodes bind to; used for heavily-nested data models. |
 | `*if`      | `bool`           | Removes the element unless the specified condition is met. |
+| `*float`   | [`FloatingPosition`](../reference/stardewui/layout/floatingposition.md) | Makes the element a [floating element](../library/floating-elements.md). |
 | `*outlet`  | `string`         | Specifies which of the parent node's [outlets](#outlets) will receive this node.<br>**Does not support bindings.** The attribute value must be a quoted string. |
 | `*repeat`  | `IEnumerable` | Repeats the element over a collection, creating a new view for every item and setting its [context](binding-context.md) to that item. Applies to both regular and structural attributes; e.g. if `*repeat` and `*if` are both specified, then `*repeat` applies first. |
 | `*switch`  | Any              | Sets the object that any subsequent `*case` attributes must match in order for their elements to show. |
+
+///
 
 ### Events
 
@@ -304,12 +309,19 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `SpriteFont` @span       | `"dialogue"` (6)                   | N/A @span                             | N/A @span                               |
 |                          | `"small"` (7)                      |                                       |                                         |
 |                          | `"tiny"` (8)                       |                                       |                                         |
+| `Visibility` @span       | "Visible"                          | `bool` @span                          | N/A @span                               |
+|                          | "Hidden"                           |                                       |                                         |
 | `TooltipData` @span      | Any @span                          | `string` (text only)                  | N/A @span                               |
 |                          |                                    | `Tuple<string, string>`<br/>(title + text) |                                    |
 |                          |                                    | `Item`                                |                                         |
 |                          |                                    | `ParsedItemData`                      |                                         |
 | `GridItemLayout` @span   | `"count: n"` (10)                  | N/A @span                             | N/A @span                               |
 |                          | `"length: n"` (11)                 |                                       |                                         |
+| `FloatingPosition` @span | `"above"`                          | `Func<Vector2, Vector2, Vector2>`<br /><br/>See [`offsetSelector`](../reference/stardewui/layout/floatingposition.md#floatingpositionfuncvector2-vector2-vector2) @span | N/A @span                               |
+|                          | `"below"`                          |                                       |                                         |
+|                          | `"before"`                         |                                       |                                         |
+|                          | `"after"`                          |                                       |                                         |
+|                          | `"<edge>; X, Y"`(13)               |                                       |                                         |
 
 ::end-spantable::
 
@@ -327,6 +339,7 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 10.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using _n_ items per row/column and adjusts their size accordingly.
 11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.
 12.  Any `Length` (width, height or both) can have a range appended to it specifying the min and/or max, such as `50%[100..800]`, meaning "prefer 50% of container, but constrained between 100px and 800px". Use open ranges to specify only a minimum, or only a maximum.
+13.  Any of the edges (`above`, `below`, `before` or `after`) can have a `Vector2`-compatible offset appended to it, e.g. `above; 5, 8` which adds the specified offset to the computed edge position. This can be used in place of margins to add more space between floating elements and their parents.
 
 If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from `string` to be used in literal attributes.
 

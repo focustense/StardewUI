@@ -510,7 +510,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             return;
         }
         // receiveGamePadButton also initiates this, so ignore it if it appears to be from a controller source.
-        if (!realButton.TryGetController(out var _) && !Game1.isAnyGamePadButtonBeingHeld())
+        var isController = realButton.TryGetController(out var _);
+        if (!isController && !Game1.isAnyGamePadButtonBeingHeld())
         {
             InitiateButtonPress(realButton);
         }
@@ -530,7 +531,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             || Game1.isAnyGamePadButtonBeingHeld()
         )
         {
-            if (ShouldForceCloseOnMenuButton() && Game1.options.menuButton.Any(b => b.key == key))
+            if (ShouldForceCloseOnMenuButton() && !isController && Game1.options.menuButton.Any(b => b.key == key))
             {
                 Close();
             }
