@@ -85,7 +85,7 @@
     "conditional": {
       "patterns": [
         {
-          "match": "(?:^|\\s+)([\\*](?:case|context|if|float|outlet|repeat|switch))=",
+          "match": "(?:^|\\s+)([\\*]!?(?:case|context|if|float|outlet|repeat|switch))=",
           "captures": {
             "1": {
               "name": "keyword.control"
