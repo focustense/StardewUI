@@ -20,7 +20,6 @@ search:
 | [DuckTypeClassConverterFactory](ducktypeclassconverterfactory.md) | Factory that creates duck-typing converters for `class` and `struct` types. |
 | [DuckTypeEnumConverterFactory](ducktypeenumconverterfactory.md) | Factory that automatically implements duck-typing conversions between enum types that share the same names. |
 | [EnumNameConverterFactory](enumnameconverterfactory.md) | Factory that automatically implements string-to-enum conversions based on the case-insensitive enum names. |
-| [GridItemLayoutConverter](griditemlayoutconverter.md) | String converter for a [GridItemLayout](../../widgets/griditemlayout.md). |
 | [IdentityValueConverterFactory](identityvalueconverterfactory.md) | Factory that automatically implements identity conversions, where the source and destination type are the same. |
 | [ItemSpriteConverter](itemspriteconverter.md) | Converts data from a game item to its corresponding sprite. |
 | [LayoutConverter](layoutconverter.md) | String converter for the [LayoutParameters](../../layout/layoutparameters.md) type. |
