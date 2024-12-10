@@ -1,5 +1,6 @@
 site_name: StardewUI Documentation
 site_url: https://focustense.github.io/StardewUI
+repo_name: focustense/StardewUI
 repo_url: https://github.com/focustense/StardewUI
 theme:
   name: material
