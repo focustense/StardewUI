@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Graphics;
 using StardewUI.Layout;
 using StardewUI.Widgets;
 using StardewValley;
@@ -200,9 +201,9 @@ public class LabelTests
 
         public static readonly IReadOnlyList<ISpriteBatchLogEntry> ZeroMarginAndBorderStart =
         [
-            new TranslateInfo(Vector2.Zero),
+            new TransformInfo(Transform.FromTranslation(Vector2.Zero)),
             new SaveTransformInfo(),
-            new TranslateInfo(Vector2.Zero),
+            new TransformInfo(Transform.FromTranslation(Vector2.Zero)),
         ];
     }
 }

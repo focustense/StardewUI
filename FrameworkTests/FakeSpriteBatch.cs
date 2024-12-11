@@ -40,7 +40,7 @@ internal record RevertInfo(ISpriteBatchLogEntry State) : ISpriteBatchLogEntry;
 
 internal record SaveTransformInfo() : ISpriteBatchLogEntry;
 
-internal record TranslateInfo(Vector2 Translation) : ISpriteBatchLogEntry;
+internal record TransformInfo(Transform Transform) : ISpriteBatchLogEntry;
 
 internal class FakeSpriteBatch : ISpriteBatch
 {
@@ -65,6 +65,11 @@ internal class FakeSpriteBatch : ISpriteBatch
     public void DelegateDraw(Action<SpriteBatch, Vector2> draw)
     {
         throw new NotImplementedException();
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
     }
 
     public void Draw(
@@ -184,9 +189,9 @@ internal class FakeSpriteBatch : ISpriteBatch
         throw new NotImplementedException();
     }
 
-    public void Translate(Vector2 translation)
+    public void Transform(Transform transform)
     {
-        history.Add(new TranslateInfo(translation));
+        history.Add(new TransformInfo(transform));
     }
 
     private class StateReverter(FakeSpriteBatch owner, ISpriteBatchLogEntry state) : IDisposable
