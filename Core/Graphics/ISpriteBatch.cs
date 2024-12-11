@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace StardewUI.Graphics;
 
+using LocalTransform = Transform;
+
 /// <summary>
 /// Abstraction for the <see cref="SpriteBatch"/> providing sprite-drawing methods.
 /// </summary>
@@ -11,7 +13,7 @@ namespace StardewUI.Graphics;
 /// Importantly, this interface represents a "local" sprite batch with inherited transforms, so that views using it do
 /// not need to be given explicit information about global coordinates.
 /// </remarks>
-public interface ISpriteBatch
+public interface ISpriteBatch : IDisposable
 {
     /// <summary>
     /// Sets up subsequent draw calls to use the designated blending settings.
@@ -110,6 +112,15 @@ public interface ISpriteBatch
     void InitializeRenderTarget([NotNull] ref RenderTarget2D? target, int width, int height);
 
     /// <summary>
+    /// Applies a rotation transformation to subsequent operations.
+    /// </summary>
+    /// <param name="angle">The rotation angle, in radians.</param>
+    void Rotate(float angle)
+    {
+        Transform(LocalTransform.FromRotation(angle));
+    }
+
+    /// <summary>
     /// Saves the current transform, so that it can later be restored to its current state.
     /// </summary>
     /// <remarks>
@@ -121,6 +132,35 @@ public interface ISpriteBatch
     /// <returns>A disposable instance which, when disposed, restores the transform of this <see cref="ISpriteBatch"/>
     /// to the same state it was in before <c>SaveTransform</c> was called.</returns>
     IDisposable SaveTransform();
+
+    /// <summary>
+    /// Applies a uniform scale transformation to subsequent operations.
+    /// </summary>
+    /// <param name="scale">Amount to scale, both horizontally and vertically. <c>1</c> is unity scale.</param>
+    void Scale(float scale)
+    {
+        Transform(LocalTransform.FromScale(new(scale, scale)));
+    }
+
+    /// <summary>
+    /// Applies a scale transformation to subsequent operations.
+    /// </summary>
+    /// <param name="x">Amount of horizontal scaling. <c>1</c> is unity scale.</param>
+    /// <param name="y">Amount of vertical scaling. <c>1</c> is unity scale.</param>
+    void Scale(float x, float y)
+    {
+        Transform(LocalTransform.FromScale(new(x, y)));
+    }
+
+    /// <summary>
+    /// Applies a scale transformation to subsequent operations.
+    /// </summary>
+    /// <param name="scale">Scaling vector containing the horizontal (<see cref="Vector2.X"/>) and vertical
+    /// (<see cref="Vector2.Y"/>) scaling amounts.</param>
+    void Scale(Vector2 scale)
+    {
+        Transform(LocalTransform.FromScale(scale));
+    }
 
     /// <summary>
     /// Sets up subsequent draw calls to use a custom render target.
@@ -137,18 +177,27 @@ public interface ISpriteBatch
     IDisposable SetRenderTarget(RenderTarget2D renderTarget, Color? clearColor = null);
 
     /// <summary>
-    /// Applies a translation offset to subsequent operations.
+    /// Applies an arbitrary transformation to subsequent operations.
     /// </summary>
-    /// <param name="translation">The translation vector.</param>
-    void Translate(Vector2 translation);
+    /// <param name="transform">The transform properties (scale, rotation and translation).</param>
+    void Transform(LocalTransform transform);
 
     /// <summary>
-    /// Applies a translation offset to subsequent operations.
+    /// Applies a translation transformation to subsequent operations.
+    /// </summary>
+    /// <param name="translation">The translation vector.</param>
+    void Translate(Vector2 translation)
+    {
+        Transform(LocalTransform.FromTranslation(translation));
+    }
+
+    /// <summary>
+    /// Applies a translation transformation to subsequent operations.
     /// </summary>
     /// <param name="x">The translation's X component.</param>
     /// <param name="y">The translation's Y component.</param>
     void Translate(float x, float y)
     {
-        Translate(new(x, y));
+        Transform(LocalTransform.FromTranslation(new(x, y)));
     }
 }

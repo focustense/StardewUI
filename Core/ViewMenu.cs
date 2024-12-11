@@ -252,7 +252,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         MeasureAndCenterView();
 
         var origin = new Point(xPositionOnScreen, yPositionOnScreen);
-        var viewBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(origin.ToVector2()));
+        using ISpriteBatch viewBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(origin.ToVector2()));
         using (viewBatch.SaveTransform())
         {
             view.Draw(viewBatch);
@@ -268,11 +268,13 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             }
         }
 
+        viewBatch.Dispose(); // Clear any lazy state, like transforms.
+
         foreach (var overlay in overlayContext.BackToFront())
         {
             b.Draw(Game1.fadeToBlackRect, viewportBounds, Color.Black * overlay.DimmingAmount);
             var overlayData = MeasureAndPositionOverlay(overlay);
-            var overlayBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(overlayData.Position));
+            using var overlayBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(overlayData.Position));
             overlay.View.Draw(overlayBatch);
         }
 
