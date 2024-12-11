@@ -53,6 +53,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new NamedFontConverter());
         TryRegister(new PointConverter());
         TryRegister(new RectangleConverter());
+        TryRegister(new TransformConverter());
         TryRegister(new Vector2Converter());
 
         // Edges are better to bind as numbers, so we can use tuples and XNA equivalents in some cases.
