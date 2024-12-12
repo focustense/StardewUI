@@ -178,7 +178,6 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
                 color ?? Color.White,
                 rotation + transform.Local.Rotation,
                 origin ?? Vector2.Zero,
-                // TODO: How to handle scale?
                 effects,
                 layerDepth
             );
