@@ -185,6 +185,11 @@ public interface IView : IDisposable, INotifyPropertyChanged
     TooltipData? Tooltip { get; set; }
 
     /// <summary>
+    /// Local transformation to apply to this view, including any children and floating elements.
+    /// </summary>
+    Transform? Transform { get; set; }
+
+    /// <summary>
     /// Drawing visibility for this view.
     /// </summary>
     Visibility Visibility { get; set; }

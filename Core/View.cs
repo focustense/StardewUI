@@ -322,6 +322,22 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <summary>
+    /// Local transformation to apply to this view, including any children and floating elements.
+    /// </summary>
+    public Transform? Transform
+    {
+        get => transform;
+        set
+        {
+            if (value != transform)
+            {
+                transform = value;
+                OnPropertyChanged(nameof(Transform));
+            }
+        }
+    }
+
+    /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
     public TooltipData? Tooltip
@@ -413,6 +429,7 @@ public abstract class View : IView, IFloatContainer
     private Orientation? scrollWithChildren;
     private Tags tags = new();
     private TooltipData? tooltip = null;
+    private Transform? transform;
     private Visibility visibility;
     private bool wasPointerInBounds;
     private int zIndex;
@@ -517,6 +534,10 @@ public abstract class View : IView, IFloatContainer
 
         void DrawContent()
         {
+            if (Transform is not null)
+            {
+                b.Transform(Transform);
+            }
             b.Translate(Margin.Left, Margin.Top);
             using (b.SaveTransform())
             {
