@@ -12,7 +12,7 @@
   "Author": "focustense",
   "Version": "0.4.2",
   "Description": "Test mod and example gallery for StardewUI",
-  "MinimumApiVersion": "4.1.7",
+  "MinimumApiVersion": "4.1.9",
   "MinimumGameVersion": "1.6.14",
   "EntryDll": "StardewUITest.dll",
   "Dependencies": [
