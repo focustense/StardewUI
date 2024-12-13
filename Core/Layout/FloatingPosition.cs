@@ -47,7 +47,7 @@ public class FloatingPosition(Func<Vector2, Vector2, Vector2> offsetSelector)
         return TryParse(text, out var result)
             ? result
             : throw new FormatException(
-                $"Invalid floating position string '{text}'. Must be one of 'top', 'bottom', left' or 'right', "
+                $"Invalid floating position string '{text}'. Must be one of 'above', 'below', 'before' or 'after', "
                     + "optionally followed by a semicolon and 2D coordinate in 'X, Y' format."
             );
     }
