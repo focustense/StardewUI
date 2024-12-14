@@ -158,6 +158,14 @@ public record Transform(Vector2 Scale, float Rotation, Vector2 Translation)
     }
 
     /// <summary>
+    /// Checks if this transform represents a single rectangular area of the parent, i.e. not rotated or skewed.
+    /// </summary>
+    public bool IsRectangular()
+    {
+        return !HasRotation;
+    }
+
+    /// <summary>
     /// Creates a transformation matrix from the properties of this transform.
     /// </summary>
     /// <remarks>
