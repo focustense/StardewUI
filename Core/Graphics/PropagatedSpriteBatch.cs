@@ -10,10 +10,19 @@ namespace StardewUI.Graphics;
 /// </summary>
 /// <param name="spriteBatch">The XNA/MonoGame sprite batch.</param>
 /// <param name="transform">Transformation to apply.</param>
-public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform transform) : ISpriteBatch
+/// <param name="renderTargetPool">Shared pool of <see cref="RenderTarget2D"/> instances to use for creating internal
+/// targets, such as those used for transformed clipping regions. The batch does not take ownership of the pool, nor do
+/// any targets explicitly provided (e.g. via <see cref="InitializeRenderTarget"/> or <see cref="SetRenderTarget"/>) get
+/// automatically pooled.</param>
+public class PropagatedSpriteBatch(
+    SpriteBatch spriteBatch,
+    GlobalTransform transform,
+    RenderTargetPool? renderTargetPool = null
+) : ISpriteBatch
 {
     private readonly GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
     private readonly GraphicsState initialState = new(spriteBatch);
+    private readonly RenderTargetPool renderTargetPool = renderTargetPool ?? new(spriteBatch.GraphicsDevice);
     private readonly SpriteBatch spriteBatch = spriteBatch;
 
     // To improve performance, it's best not to immediately cycle the internal SpriteBatch simply because we received
@@ -47,9 +56,9 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
     /// <inheritdoc />
     public IDisposable Clip(Rectangle clipRect)
     {
-        var reverter = new GraphicsReverter(this);
         if (transform.IsRectangular())
         {
+            var reverter = new GraphicsReverter(this, new TransformReverter(this));
             // Collapsing the transform isn't always strictly necessary, but since we have to begin a new SpriteBatch
             // anyway in order to create the scissor rectangle, the added cost is not significant and it makes the math
             // below a lot simpler.
@@ -64,17 +73,12 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
             spriteBatch.End();
             BeginSpriteBatch(new() { ScissorTestEnable = true });
             spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(reverter.ScissorRect, transformedClipRect);
+            return reverter;
         }
-        else
-        {
-            // FIXME: Scissor rects are screen-relative so this is always wrong whenever there is any global transform.
-            // Probably need to switch to a RenderTarget-based implementation, at least when a global transform is detected.a
-            var location = (clipRect.Location.ToVector2() + transform.Local.Translation).ToPoint();
-            spriteBatch.End();
-            BeginSpriteBatch(new() { ScissorTestEnable = true });
-            spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(reverter.ScissorRect, new(location, clipRect.Size));
-        }
-        return reverter;
+        var targetReleaser = renderTargetPool.Acquire(clipRect.Width, clipRect.Height, out var clipTarget);
+        // We don't actually need a scissor rectangle for this, since the render target itself constrains the bounds.
+        var targetReverter = SetRenderTarget(clipTarget, Color.Transparent);
+        return new TransformedClipReverter(this, clipTarget, targetReleaser, targetReverter);
     }
 
     /// <inheritdoc />
@@ -263,17 +267,16 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
     /// <inheritdoc />
     public IDisposable SetRenderTarget(RenderTarget2D renderTarget, Color? clearColor = null)
     {
-        var graphicsReverter = new GraphicsReverter(this);
-        var transformReverter = new TransformReverter(this);
+        var graphicsReverter = new GraphicsReverter(this, new TransformReverter(this));
         spriteBatch.End();
         graphicsDevice.SetRenderTarget(renderTarget);
         if (clearColor.HasValue)
         {
             graphicsDevice.Clear(clearColor.Value);
         }
-        BeginSpriteBatch(graphicsReverter.RasterizerState, graphicsReverter.BlendState);
         transform = GlobalTransform.Default;
-        return new RenderTargetReverter(graphicsReverter, transformReverter);
+        BeginSpriteBatch(graphicsReverter.RasterizerState, graphicsReverter.BlendState);
+        return new RenderTargetReverter(graphicsReverter);
     }
 
     /// <inheritdoc />
@@ -374,7 +377,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
         )!;
     }
 
-    private class GraphicsReverter(PropagatedSpriteBatch owner) : IDisposable
+    private class GraphicsReverter(PropagatedSpriteBatch owner, IDisposable? innerReverter = null) : IDisposable
     {
         public BlendState? BlendState => previousState.BlendState;
         public RasterizerState RasterizerState => previousState.RasterizerState;
@@ -383,9 +386,10 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
 
         private readonly GraphicsState previousState = new(owner.spriteBatch);
 
-        public static void Revert(PropagatedSpriteBatch target, GraphicsState previousState)
+        public static void Revert(PropagatedSpriteBatch target, GraphicsState previousState, IDisposable? inner = null)
         {
             target.spriteBatch.End();
+            inner?.Dispose();
             target.graphicsDevice.SetRenderTargets(previousState.RenderTargets);
             target.BeginSpriteBatch(previousState.RasterizerState, previousState.BlendState);
             target.graphicsDevice.ScissorRectangle = previousState.ScissorRect;
@@ -393,18 +397,32 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
 
         public void Dispose()
         {
-            Revert(owner, previousState);
+            Revert(owner, previousState, innerReverter);
             GC.SuppressFinalize(this);
         }
     }
 
-    private class RenderTargetReverter(GraphicsReverter graphicsReverter, TransformReverter transformReverter)
-        : IDisposable
+    private class RenderTargetReverter(GraphicsReverter graphicsReverter) : IDisposable
     {
         public void Dispose()
         {
             graphicsReverter.Dispose();
-            transformReverter.Dispose();
+            GC.SuppressFinalize(this);
+        }
+    }
+
+    private class TransformedClipReverter(
+        PropagatedSpriteBatch owner,
+        RenderTarget2D target,
+        IDisposable targetReleaser,
+        IDisposable targetReverter
+    ) : IDisposable
+    {
+        public void Dispose()
+        {
+            targetReverter.Dispose();
+            owner.Draw(target, Vector2.Zero, null);
+            targetReleaser.Dispose();
             GC.SuppressFinalize(this);
         }
     }

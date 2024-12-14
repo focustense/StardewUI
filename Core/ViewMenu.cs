@@ -82,6 +82,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly ConditionalWeakTable<IOverlay, WeakViewChild[]> overlayActivationPaths = [];
     private readonly OverlayContext overlayContext = new();
     private readonly ConditionalWeakTable<IOverlay, OverlayLayoutData> overlayCache = [];
+    private readonly RenderTargetPool renderTargetPool = new(Game1.graphics.GraphicsDevice, slack: 2);
     private readonly T view;
     private readonly bool wasHudDisplayed;
 
@@ -230,6 +231,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         Game1.displayHUD = wasHudDisplayed;
         OnClosed(EventArgs.Empty);
         view.Dispose();
+        renderTargetPool.Dispose();
         GC.SuppressFinalize(this);
     }
 
@@ -252,7 +254,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         MeasureAndCenterView();
 
         var origin = new Point(xPositionOnScreen, yPositionOnScreen);
-        using ISpriteBatch viewBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(origin.ToVector2()));
+        using ISpriteBatch viewBatch = new PropagatedSpriteBatch(b, GlobalTransform.Default, renderTargetPool);
+        viewBatch.Translate(origin.ToVector2());
         using (viewBatch.SaveTransform())
         {
             view.Draw(viewBatch);
@@ -274,7 +277,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             b.Draw(Game1.fadeToBlackRect, viewportBounds, Color.Black * overlay.DimmingAmount);
             var overlayData = MeasureAndPositionOverlay(overlay);
-            using var overlayBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(overlayData.Position));
+            using ISpriteBatch overlayBatch = new PropagatedSpriteBatch(b, GlobalTransform.Default, renderTargetPool);
+            overlayBatch.Translate(overlayData.Position);
             overlay.View.Draw(overlayBatch);
         }
 
