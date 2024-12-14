@@ -92,6 +92,34 @@ public record GlobalTransform(Matrix Matrix, Transform Local, TransformOrigin Lo
         return Local != Transform.Default ? new(MergeLocal(), Transform.Default, TransformOrigin.Default) : this;
     }
 
+    /// <summary>
+    /// Checks if this transform represents a single rectangular area of the viewport, i.e. not rotated or skewed.
+    /// </summary>
+    /// <remarks>
+    /// Does not ascertain whether the <see cref="Local"/> part of the transform would make a non-rectangular
+    /// <see cref="Matrix"/> rectangular again; i.e. this returns <c>false</c> if <b>either</b> the global or local
+    /// components are non-rectangular, regardless of their combined effect.
+    /// </remarks>
+    internal bool IsRectangular()
+    {
+        return Local.IsRectangular()
+            // A matrix is a pure scale/stretch transform if each of its values are multiples of the same values of the
+            // identity matrix, i.e. the 3D part of the matrix has zeroes in every position but the first diagonal.
+            && Matrix[0, 1] == 0
+            && Matrix[0, 2] == 0
+            && Matrix[1, 0] == 0
+            && Matrix[1, 2] == 0
+            && Matrix[2, 0] == 0
+            && Matrix[2, 1] == 0
+            // The 4th column is for translation, which can be ignored as it does not affect shape.
+            // Any non-identity values in the last row, however, imply something like a projection matrix, which is more
+            // difficult to handle and also very rare, so just treat it as automatically non-rectangular.
+            && Matrix[0, 3] == 0
+            && Matrix[1, 3] == 0
+            && Matrix[2, 3] == 0
+            && Matrix[3, 3] == 1;
+    }
+
     private Matrix MergeLocal()
     {
         bool hasNonDefaultOrigin = LocalOrigin.Absolute != Vector2.Zero;

@@ -48,12 +48,32 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
     public IDisposable Clip(Rectangle clipRect)
     {
         var reverter = new GraphicsReverter(this);
-        // FIXME: Scissor rects are screen-relative so this is always wrong whenever there is any global transform.
-        // Probably need to switch to a RenderTarget-based implementation, at least when a global transform is detected.a
-        var location = (clipRect.Location.ToVector2() + transform.Local.Translation).ToPoint();
-        spriteBatch.End();
-        BeginSpriteBatch(new() { ScissorTestEnable = true });
-        spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(reverter.ScissorRect, new(location, clipRect.Size));
+        if (transform.IsRectangular())
+        {
+            // Collapsing the transform isn't always strictly necessary, but since we have to begin a new SpriteBatch
+            // anyway in order to create the scissor rectangle, the added cost is not significant and it makes the math
+            // below a lot simpler.
+            transform = transform.Collapse();
+            var clipPosition = Vector2.Transform(clipRect.Location.ToVector2(), transform.Matrix);
+            // Unsure if it's faster to compute the opposite corner location using the same matrix and subtract to get
+            // the size, or create a size-only matrix (excluding translation) to compute the size directly. Probably not
+            // worth worrying about the difference.
+            var clipEnd = Vector2.Transform((clipRect.Location + clipRect.Size).ToVector2(), transform.Matrix);
+            var clipSize = Vector2.Ceiling((clipEnd - clipPosition));
+            var transformedClipRect = new Rectangle(clipPosition.ToPoint(), clipSize.ToPoint());
+            spriteBatch.End();
+            BeginSpriteBatch(new() { ScissorTestEnable = true });
+            spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(reverter.ScissorRect, transformedClipRect);
+        }
+        else
+        {
+            // FIXME: Scissor rects are screen-relative so this is always wrong whenever there is any global transform.
+            // Probably need to switch to a RenderTarget-based implementation, at least when a global transform is detected.a
+            var location = (clipRect.Location.ToVector2() + transform.Local.Translation).ToPoint();
+            spriteBatch.End();
+            BeginSpriteBatch(new() { ScissorTestEnable = true });
+            spriteBatch.GraphicsDevice.ScissorRectangle = Intersection(reverter.ScissorRect, new(location, clipRect.Size));
+        }
         return reverter;
     }
 
