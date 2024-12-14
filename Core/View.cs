@@ -337,6 +337,20 @@ public abstract class View : IView, IFloatContainer
         }
     }
 
+    /// <inheritdoc />
+    public Vector2? TransformOrigin
+    {
+        get => transformOrigin;
+        set
+        {
+            if (value != transformOrigin)
+            {
+                transformOrigin = value;
+                OnPropertyChanged(nameof(TransformOrigin));
+            }
+        }
+    }
+
     /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
@@ -430,6 +444,7 @@ public abstract class View : IView, IFloatContainer
     private Tags tags = new();
     private TooltipData? tooltip = null;
     private Transform? transform;
+    private Vector2? transformOrigin;
     private Visibility visibility;
     private bool wasPointerInBounds;
     private int zIndex;
@@ -534,11 +549,14 @@ public abstract class View : IView, IFloatContainer
 
         void DrawContent()
         {
+            b.Translate(Margin.Left, Margin.Top);
             if (Transform is not null)
             {
-                b.Transform(Transform);
+                var origin = TransformOrigin.HasValue
+                    ? new TransformOrigin(TransformOrigin.Value, TransformOrigin.Value * OuterSize)
+                    : null;
+                b.Transform(Transform, origin);
             }
-            b.Translate(Margin.Left, Margin.Top);
             using (b.SaveTransform())
             {
                 OnDrawBorder(b);
@@ -557,7 +575,7 @@ public abstract class View : IView, IFloatContainer
     /// <remarks>
     /// This will first call <see cref="FindFocusableDescendant"/> to see if the specific view type wants to implement
     /// its own focus search. If there is no focusable descendant, then this will return a reference to the current view
-    /// if <see cref="IsFocusable"/> is <c>true</c> and the position is <i>not</i> already within the view's bounds -
+    /// if <see cref="Focusable"/> is <c>true</c> and the position is <i>not</i> already within the view's bounds -
     /// meaning, any focusable view can accept focus from any direction, but will not consider itself a result if it is
     /// already focused (since we are trying to "move" focus).
     /// </remarks>

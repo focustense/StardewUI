@@ -190,6 +190,21 @@ public interface IView : IDisposable, INotifyPropertyChanged
     Transform? Transform { get; set; }
 
     /// <summary>
+    /// Relative origin position for any <see cref="Transform"/> on this view.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Expects a value that represents the fraction of the view's computed layout size. For example, <c>(0, 0)</c> is
+    /// the top left, <c>(0.5, 0.5)</c> is the center, and <c>1, 1</c> is the bottom right. <c>null</c> values are
+    /// equivalent to <see cref="Vector2.Zero"/>.
+    /// </para>
+    /// <para>
+    /// Origins are not inherited; each view defines its own origin for its specific transform.
+    /// </para>
+    /// </remarks>
+    Vector2? TransformOrigin { get; set; }
+
+    /// <summary>
     /// Drawing visibility for this view.
     /// </summary>
     Visibility Visibility { get; set; }
