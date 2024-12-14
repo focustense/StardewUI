@@ -400,6 +400,21 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <summary>
+    /// Whether the specific view type handles its own opacity.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Subclasses can override this to provide their own, typically better optimized version of opacity; i.e. a basic
+    /// text or image view could simply multiply its own background/foreground colors without requiring multiple render
+    /// targets to handle the blending.
+    /// </para>
+    /// <para>
+    /// Any <see cref="FloatingElements"/> will still use the default opacity implementation.
+    /// </para>
+    /// </remarks>
+    protected virtual bool HandlesOpacity => false;
+
+    /// <summary>
     /// Pixel offset of the view's content, which is applied to all pointer events and child queries.
     /// </summary>
     /// <remarks>
@@ -501,10 +516,33 @@ public abstract class View : IView, IFloatContainer
             return;
         }
 
+        // Local transforms can be applied before or after creating the render target, it makes no difference. However,
+        // doing it before makes it simpler to separate the main content logic from floating element logic.
+        b.Translate(Margin.Left, Margin.Top);
+        if (Transform is not null)
+        {
+            var origin = TransformOrigin.HasValue
+                ? new TransformOrigin(TransformOrigin.Value, TransformOrigin.Value * OuterSize)
+                : null;
+            b.Transform(Transform, origin);
+        }
+
         if (Opacity == 1)
         {
             DrawContent();
             return;
+        }
+
+        // When the view type wants to use its own opacity implementation, we can skip the render target shenanigans
+        // below for the main content and MAY be able to skip them entirely, but it depends on the presence of floating
+        // elements, as nothing prevents e.g. a Label or Image from having them, unusual as that might be.
+        if (HandlesOpacity)
+        {
+            DrawContent(includeFloatingElements: false);
+            if (FloatingElements.Count == 0)
+            {
+                return;
+            }
         }
 
         // The extremely limited and frankly obtuse blending system in XNA/MonoGame seems to make this effectively
@@ -529,7 +567,7 @@ public abstract class View : IView, IFloatContainer
         SetupRenderTarget(b, ref opacityDestinationTarget);
         using (b.SetRenderTarget(opacitySourceTarget, Color.Transparent))
         {
-            DrawContent();
+            DrawContent(includeMainContent: !HandlesOpacity);
         }
         using (b.SetRenderTarget(opacityDestinationTarget, Color.Transparent))
         {
@@ -547,26 +585,24 @@ public abstract class View : IView, IFloatContainer
         }
         b.Draw(opacityDestinationTarget, Vector2.Zero, null);
 
-        void DrawContent()
+        void DrawContent(bool includeMainContent = true, bool includeFloatingElements = true)
         {
-            b.Translate(Margin.Left, Margin.Top);
-            if (Transform is not null)
+            if (includeMainContent)
             {
-                var origin = TransformOrigin.HasValue
-                    ? new TransformOrigin(TransformOrigin.Value, TransformOrigin.Value * OuterSize)
-                    : null;
-                b.Transform(Transform, origin);
+                using (b.SaveTransform())
+                {
+                    OnDrawBorder(b);
+                    var borderThickness = GetBorderThickness();
+                    b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
+                    OnDrawContent(b);
+                }
             }
-            using (b.SaveTransform())
+            if (includeFloatingElements)
             {
-                OnDrawBorder(b);
-                var borderThickness = GetBorderThickness();
-                b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
-                OnDrawContent(b);
-            }
-            foreach (var floatingElement in FloatingElements)
-            {
-                floatingElement.Draw(b);
+                foreach (var floatingElement in FloatingElements)
+                {
+                    floatingElement.Draw(b);
+                }
             }
         }
     }

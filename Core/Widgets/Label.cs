@@ -252,6 +252,9 @@ public partial class Label : View
         }
     }
 
+    /// <inheritdoc />
+    protected override bool HandlesOpacity => true;
+
     private record HyphenationOptions(string Hyphen, float Width, Regex? NoBreakRegex);
 
     private static readonly Regex CjkCharacterRegex = new(
@@ -295,7 +298,7 @@ public partial class Label : View
     {
         if (ShadowAlpha > 0 && ShadowLayers > 0)
         {
-            var shadowAlphaColor = ShadowColor * ShadowAlpha;
+            var shadowAlphaColor = ShadowColor * ShadowAlpha * Opacity;
             foreach (var layer in ShadowLayerOrder)
             {
                 if ((ShadowLayers & layer) == 0)
@@ -315,7 +318,7 @@ public partial class Label : View
                 DrawText(shadowAlphaColor);
             }
         }
-        DrawText(Color);
+        DrawText(Color * Opacity);
 
         void DrawText(Color color)
         {

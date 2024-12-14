@@ -171,7 +171,7 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
-    public float Opacity
+    public virtual float Opacity
     {
         get => opacity;
         set => opacity.Set(value);

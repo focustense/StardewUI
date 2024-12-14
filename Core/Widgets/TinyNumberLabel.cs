@@ -74,6 +74,9 @@ public partial class TinyNumberLabel : View
         }
     }
 
+    /// <inheritdoc />
+    protected override bool HandlesOpacity => true;
+
     private readonly DirtyTracker<IReadOnlyList<Sprite>> digitSprites = new(UiSprites.Digits);
     private readonly DirtyTracker<int> number = new(0);
     private readonly DirtyTracker<float> scale = new(2.0f);
@@ -91,11 +94,12 @@ public partial class TinyNumberLabel : View
     protected override void OnDrawContent(ISpriteBatch b)
     {
         var digitSprites = this.digitSprites.Value;
+        var color = Color.White * Opacity;
         for (int i = 0; i < digits.Length; i++)
         {
             var digitSprite = digitSprites[digits[i]];
             var destinationRect = digitRects[i];
-            b.Draw(digitSprite.Texture, destinationRect, digitSprite.SourceRect, Color.White);
+            b.Draw(digitSprite.Texture, destinationRect, digitSprite.SourceRect, color);
         }
     }
 

@@ -191,6 +191,9 @@ public partial class Image : View
         }
     }
 
+    /// <inheritdoc />
+    protected override bool HandlesOpacity => true;
+
     private readonly DirtyTracker<SimpleRotation?> rotation = new(null);
     private readonly DirtyTracker<float> scale = new(1.0f);
     private readonly DirtyTracker<Sprite?> sprite = new(null);
@@ -226,10 +229,10 @@ public partial class Image : View
             using var _transform = b.SaveTransform();
             b.Translate(ShadowOffset);
             using var _shadowClip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-            slice.Draw(b, new(Color.Black, ShadowAlpha), SpriteEffects);
+            slice.Draw(b, Color.Black * ShadowAlpha * Opacity, SpriteEffects);
         }
         using var _clip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-        slice?.Draw(b, Tint, SpriteEffects);
+        slice?.Draw(b, Tint * Opacity, SpriteEffects);
     }
 
     /// <inheritdoc />
