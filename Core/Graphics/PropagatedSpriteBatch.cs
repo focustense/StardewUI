@@ -33,7 +33,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
     /// <param name="spriteBatch">The XNA/MonoGame sprite batch.</param>
     /// <param name="transform">Transformation to apply.</param>
     public PropagatedSpriteBatch(SpriteBatch spriteBatch, Transform transform)
-        : this(spriteBatch, GlobalTransform.Default.Apply(transform, out _)) { }
+        : this(spriteBatch, GlobalTransform.Default.Apply(transform, TransformOrigin.Default, out _)) { }
 
     /// <inheritdoc />
     public IDisposable Blend(BlendState blendState)
@@ -90,20 +90,20 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
         Rectangle? sourceRectangle,
         Color? color = null,
         float rotation = 0,
-        Vector2? origin = null,
         float scale = 1.0f,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
     )
     {
         ApplyPendingTransform(position, new Vector2(scale, scale), rotation);
+        var (location, origin) = ComputeLocationAndOrigin(texture, sourceRectangle, position, scale: new(scale, scale));
         spriteBatch.Draw(
             texture,
-            position + transform.Local.Translation,
+            location,
             sourceRectangle,
             color ?? Color.White,
             rotation + transform.Local.Rotation,
-            origin ?? Vector2.Zero,
+            origin,
             new Vector2(scale, scale) * transform.Local.Scale,
             effects,
             layerDepth
@@ -117,20 +117,20 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
         Rectangle? sourceRectangle,
         Color? color,
         float rotation,
-        Vector2? origin,
         Vector2? scale,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
     )
     {
         ApplyPendingTransform(position, scale, rotation);
+        var (location, origin) = ComputeLocationAndOrigin(texture, sourceRectangle, position, scale: scale);
         spriteBatch.Draw(
             texture,
-            position + transform.Local.Translation,
+            location,
             sourceRectangle,
             color ?? Color.White,
             rotation + transform.Local.Rotation,
-            origin ?? Vector2.Zero,
+            origin,
             scale ?? Vector2.One * transform.Local.Scale,
             effects,
             layerDepth
@@ -144,27 +144,31 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
         Rectangle? sourceRectangle,
         Color? color = null,
         float rotation = 0,
-        Vector2? origin = null,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
     )
     {
         ApplyPendingTransform(destinationRectangle.Location.ToVector2(), Vector2.One, rotation);
-        var location = (destinationRectangle.Location.ToVector2() + transform.Local.Translation);
+        var (location, origin) = ComputeLocationAndOrigin(
+            texture,
+            sourceRectangle,
+            destinationRectangle.Location.ToVector2(),
+            size: destinationRectangle.Size.ToVector2()
+        );
         if (transform.Local.HasScale)
         {
-            float sourceWidth = sourceRectangle?.Width ?? texture.Width;
-            float scaleX = destinationRectangle.Width / sourceWidth;
-            float height = sourceRectangle?.Height ?? texture.Height;
-            float scaleY = destinationRectangle.Height / height;
+            var sourceSize = (sourceRectangle?.Size ?? texture.Bounds.Size).ToVector2();
+            float scaleX = destinationRectangle.Width / sourceSize.X;
+            float scaleY = destinationRectangle.Height / sourceSize.Y;
+            var scale = new Vector2(scaleX, scaleY) * transform.Local.Scale;
             spriteBatch.Draw(
                 texture,
                 location,
                 sourceRectangle,
                 color ?? Color.White,
                 rotation + transform.Local.Rotation,
-                origin ?? Vector2.Zero,
-                new Vector2(scaleX, scaleY) * transform.Local.Scale,
+                origin,
+                scale,
                 effects,
                 layerDepth
             );
@@ -177,7 +181,7 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
                 sourceRectangle,
                 color ?? Color.White,
                 rotation + transform.Local.Rotation,
-                origin ?? Vector2.Zero,
+                origin,
                 effects,
                 layerDepth
             );
@@ -191,20 +195,20 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
         Vector2 position,
         Color color,
         float rotation = 0,
-        Vector2? origin = null,
         float scale = 1,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
     )
     {
         ApplyPendingTransform(position, new Vector2(scale, scale), rotation);
+        var (location, origin) = ComputeLocationAndOrigin(position, () => spriteFont.MeasureString(text));
         spriteBatch.DrawString(
             spriteFont,
             text,
-            position + transform.Local.Translation,
+            location,
             color,
             rotation + transform.Local.Rotation,
-            origin ?? Vector2.Zero,
+            origin,
             new Vector2(scale, scale) * transform.Local.Scale,
             effects,
             layerDepth
@@ -253,9 +257,9 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
     }
 
     /// <inheritdoc />
-    public void Transform(Transform transform)
+    public void Transform(Transform transform, TransformOrigin? origin = null)
     {
-        this.transform = this.transform.Apply(transform, out var isNewMatrix);
+        this.transform = this.transform.Apply(transform, origin ?? TransformOrigin.Default, out var isNewMatrix);
         hasPendingTransform |= isNewMatrix;
     }
 
@@ -286,6 +290,40 @@ public class PropagatedSpriteBatch(SpriteBatch spriteBatch, GlobalTransform tran
             transformMatrix: transform.Matrix
         );
         hasPendingTransform = false;
+    }
+
+    private (Vector2 location, Vector2 origin) ComputeLocationAndOrigin(
+        Texture2D texture,
+        Rectangle? sourceRectangle,
+        Vector2 location,
+        Vector2? size = null,
+        Vector2? scale = null
+    )
+    {
+        if (transform.LocalOrigin == TransformOrigin.Default)
+        {
+            return (location + transform.Local.Translation, Vector2.Zero);
+        }
+        var sourceSize = (sourceRectangle?.Size ?? texture.Bounds.Size).ToVector2();
+        var destSize = size ?? sourceSize * (scale ?? Vector2.One);
+        return ComputeLocationAndOrigin(location, () => sourceSize, () => destSize);
+    }
+
+    private (Vector2 location, Vector2 origin) ComputeLocationAndOrigin(
+        Vector2 location,
+        Func<Vector2> sourceSize,
+        Func<Vector2>? destSize = null
+    )
+    {
+        if (transform.LocalOrigin == TransformOrigin.Default)
+        {
+            return (location + transform.Local.Translation, Vector2.Zero);
+        }
+        var relativeOrigin = destSize is not null
+            ? transform.LocalOrigin.Absolute / destSize() * sourceSize()
+            : transform.LocalOrigin.Absolute;
+        var adjustedLocation = location + transform.Local.Translation + transform.LocalOrigin.Absolute;
+        return (adjustedLocation, relativeOrigin);
     }
 
     private static Rectangle Intersection(Rectangle r1, Rectangle r2)

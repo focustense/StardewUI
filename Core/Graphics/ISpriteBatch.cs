@@ -54,7 +54,6 @@ public interface ISpriteBatch : IDisposable
         Rectangle? sourceRectangle,
         Color? color = null,
         float rotation = 0.0f,
-        Vector2? origin = null,
         float scale = 1.0f,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0.0f
@@ -67,7 +66,6 @@ public interface ISpriteBatch : IDisposable
         Rectangle? sourceRectangle,
         Color? color,
         float rotation,
-        Vector2? origin,
         Vector2? scale,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0.0f
@@ -80,7 +78,6 @@ public interface ISpriteBatch : IDisposable
         Rectangle? sourceRectangle,
         Color? color = null,
         float rotation = 0.0f,
-        Vector2? origin = null,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0.0f
     );
@@ -92,7 +89,6 @@ public interface ISpriteBatch : IDisposable
         Vector2 position,
         Color color,
         float rotation = 0.0f,
-        Vector2? origin = null,
         float scale = 1.0f,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0.0f
@@ -115,9 +111,11 @@ public interface ISpriteBatch : IDisposable
     /// Applies a rotation transformation to subsequent operations.
     /// </summary>
     /// <param name="angle">The rotation angle, in radians.</param>
-    void Rotate(float angle)
+    /// <param name="origin">The center of the rotation, or <c>null</c> to use the <see cref="TransformOrigin.Default"/>
+    /// origin.</param>
+    void Rotate(float angle, TransformOrigin? origin = null)
     {
-        Transform(LocalTransform.FromRotation(angle));
+        Transform(LocalTransform.FromRotation(angle), origin);
     }
 
     /// <summary>
@@ -137,9 +135,11 @@ public interface ISpriteBatch : IDisposable
     /// Applies a uniform scale transformation to subsequent operations.
     /// </summary>
     /// <param name="scale">Amount to scale, both horizontally and vertically. <c>1</c> is unity scale.</param>
-    void Scale(float scale)
+    /// <param name="origin">The center of the scaling, or <c>null</c> to use the <see cref="TransformOrigin.Default"/>
+    /// origin.</param>
+    void Scale(float scale, TransformOrigin? origin = null)
     {
-        Transform(LocalTransform.FromScale(new(scale, scale)));
+        Transform(LocalTransform.FromScale(new(scale, scale)), origin);
     }
 
     /// <summary>
@@ -147,9 +147,11 @@ public interface ISpriteBatch : IDisposable
     /// </summary>
     /// <param name="x">Amount of horizontal scaling. <c>1</c> is unity scale.</param>
     /// <param name="y">Amount of vertical scaling. <c>1</c> is unity scale.</param>
-    void Scale(float x, float y)
+    /// <param name="origin">The center of the scaling, or <c>null</c> to use the <see cref="TransformOrigin.Default"/>
+    /// origin.</param>
+    void Scale(float x, float y, TransformOrigin? origin = null)
     {
-        Transform(LocalTransform.FromScale(new(x, y)));
+        Transform(LocalTransform.FromScale(new(x, y)), origin);
     }
 
     /// <summary>
@@ -157,9 +159,11 @@ public interface ISpriteBatch : IDisposable
     /// </summary>
     /// <param name="scale">Scaling vector containing the horizontal (<see cref="Vector2.X"/>) and vertical
     /// (<see cref="Vector2.Y"/>) scaling amounts.</param>
-    void Scale(Vector2 scale)
+    /// <param name="origin">The center of the scaling, or <c>null</c> to use the <see cref="TransformOrigin.Default"/>
+    /// origin.</param>
+    void Scale(Vector2 scale, TransformOrigin? origin = null)
     {
-        Transform(LocalTransform.FromScale(scale));
+        Transform(LocalTransform.FromScale(scale), origin);
     }
 
     /// <summary>
@@ -180,7 +184,9 @@ public interface ISpriteBatch : IDisposable
     /// Applies an arbitrary transformation to subsequent operations.
     /// </summary>
     /// <param name="transform">The transform properties (scale, rotation and translation).</param>
-    void Transform(LocalTransform transform);
+    /// <param name="origin">The origin (i.e. center) of the transformation, or <c>null</c> to use the
+    /// <see cref="TransformOrigin.Default"/> origin.</param>
+    void Transform(LocalTransform transform, TransformOrigin? origin = null);
 
     /// <summary>
     /// Applies a translation transformation to subsequent operations.

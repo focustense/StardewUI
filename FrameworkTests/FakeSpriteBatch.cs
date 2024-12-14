@@ -17,7 +17,6 @@ internal record DrawStringInfo(
     Vector2 Position,
     Color Color,
     float Rotation = 0,
-    Vector2? Origin = null,
     float Scale = 1,
     SpriteEffects Effects = SpriteEffects.None,
     float LayerDepth = 0
@@ -30,7 +29,6 @@ internal record DrawTextureInfo(
     Rectangle? SourceRectangle = null,
     Color? Color = null,
     float Rotation = 1,
-    Vector2? Origin = null,
     Vector2? Scale = null,
     SpriteEffects Effects = SpriteEffects.None,
     float LayerDepth = 0
@@ -40,7 +38,7 @@ internal record RevertInfo(ISpriteBatchLogEntry State) : ISpriteBatchLogEntry;
 
 internal record SaveTransformInfo() : ISpriteBatchLogEntry;
 
-internal record TransformInfo(Transform Transform) : ISpriteBatchLogEntry;
+internal record TransformInfo(Transform Transform, TransformOrigin? Origin = null) : ISpriteBatchLogEntry;
 
 internal class FakeSpriteBatch : ISpriteBatch
 {
@@ -78,7 +76,6 @@ internal class FakeSpriteBatch : ISpriteBatch
         Rectangle? sourceRectangle,
         Color? color = null,
         float rotation = 0,
-        Vector2? origin = null,
         float scale = 1,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
@@ -92,7 +89,6 @@ internal class FakeSpriteBatch : ISpriteBatch
                 sourceRectangle,
                 color,
                 rotation,
-                origin,
                 new(scale, scale),
                 effects,
                 layerDepth
@@ -106,25 +102,13 @@ internal class FakeSpriteBatch : ISpriteBatch
         Rectangle? sourceRectangle,
         Color? color,
         float rotation,
-        Vector2? origin,
         Vector2? scale,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
     )
     {
         history.Add(
-            new DrawTextureInfo(
-                texture,
-                position,
-                null,
-                sourceRectangle,
-                color,
-                rotation,
-                origin,
-                scale,
-                effects,
-                layerDepth
-            )
+            new DrawTextureInfo(texture, position, null, sourceRectangle, color, rotation, scale, effects, layerDepth)
         );
     }
 
@@ -134,7 +118,6 @@ internal class FakeSpriteBatch : ISpriteBatch
         Rectangle? sourceRectangle,
         Color? color = null,
         float rotation = 0,
-        Vector2? origin = null,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
     )
@@ -147,7 +130,6 @@ internal class FakeSpriteBatch : ISpriteBatch
                 sourceRectangle,
                 color,
                 rotation,
-                origin,
                 null,
                 effects,
                 layerDepth
@@ -161,15 +143,12 @@ internal class FakeSpriteBatch : ISpriteBatch
         Vector2 position,
         Color color,
         float rotation = 0,
-        Vector2? origin = null,
         float scale = 1,
         SpriteEffects effects = SpriteEffects.None,
         float layerDepth = 0
     )
     {
-        history.Add(
-            new DrawStringInfo(spriteFont, text, position, color, rotation, origin, scale, effects, layerDepth)
-        );
+        history.Add(new DrawStringInfo(spriteFont, text, position, color, rotation, scale, effects, layerDepth));
     }
 
     public void InitializeRenderTarget([NotNull] ref RenderTarget2D? target, int width, int height)
@@ -189,9 +168,9 @@ internal class FakeSpriteBatch : ISpriteBatch
         throw new NotImplementedException();
     }
 
-    public void Transform(Transform transform)
+    public void Transform(Transform transform, TransformOrigin? origin = null)
     {
-        history.Add(new TransformInfo(transform));
+        history.Add(new TransformInfo(transform, origin));
     }
 
     private class StateReverter(FakeSpriteBatch owner, ISpriteBatchLogEntry state) : IDisposable

@@ -52,6 +52,15 @@ public record Transform(Vector2 Scale, float Rotation, Vector2 Translation)
     public bool HasTranslation => Translation != Vector2.Zero;
 
     /// <summary>
+    /// Whether the current transform is affected by transform origin.
+    /// </summary>
+    /// <remarks>
+    /// Some types of transformations, specifically translation, have outcomes independent of the transformation origin
+    /// and should therefore not attempt to use it or pass it on to global transforms.
+    /// </remarks>
+    public bool IsOriginRelative => HasRotation || HasScale;
+
+    /// <summary>
     /// Creates a new <see cref="Transform"/> that applies a specific 2D rotation.
     /// </summary>
     /// <param name="angle">The rotation angle, in radians.</param>

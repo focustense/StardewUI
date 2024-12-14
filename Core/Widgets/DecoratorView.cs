@@ -212,6 +212,13 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public Vector2? TransformOrigin
+    {
+        get => transformOrigin;
+        set => transformOrigin.Set(value);
+    }
+
+    /// <inheritdoc />
     public Visibility Visibility
     {
         get => visibility;
@@ -287,6 +294,11 @@ public class DecoratorView<T> : IView, IDisposable
     );
     private readonly DecoratedProperty<TooltipData?> tooltip = new(x => x.Tooltip, (x, v) => x.Tooltip = v, null);
     private readonly DecoratedProperty<Transform?> transform = new(x => x.Transform, (x, v) => x.Transform = v, null);
+    private readonly DecoratedProperty<Vector2?> transformOrigin = new(
+        x => x.TransformOrigin,
+        (x, v) => x.TransformOrigin = v,
+        null
+    );
     private readonly DecoratedProperty<Visibility> visibility = new(
         x => x.Visibility,
         (x, v) => x.Visibility = v,
@@ -308,6 +320,7 @@ public class DecoratorView<T> : IView, IDisposable
         RegisterDecoratedProperty(scrollWithChildren);
         RegisterDecoratedProperty(tooltip);
         RegisterDecoratedProperty(transform);
+        RegisterDecoratedProperty(transformOrigin);
         RegisterDecoratedProperty(visibility);
         RegisterDecoratedProperty(zIndex);
     }
