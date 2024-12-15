@@ -131,7 +131,7 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `draggable` | In/Out | `bool` | Allows this view to receive [drag events](#events) (`drag`, `drag-start` and `drag-end`). |
 | `focusable` | In/Out | `bool` | Allows this view to receive focus, or "snap", when using a gamepad. Automatically enabled for most interactive elements like `button` or `dropdown`. |
 | `inner-size` | Out | `Vector2` | Size of the view's content and padding, excluding borders and margins. |
-| `layout` | In/Out | `LayoutParameters` | The intended width and height. See [conversions](#type-conversions) for allowed values. |
+| `layout` | In/Out | [`LayoutParameters`](../reference/stardewui/layout/layoutparameters.md) | The intended width and height. See [conversions](#type-conversions) for allowed values. |
 | `margin` | In/Out | `Edges` | Pixel sizes for whitespace outside the border/background. |
 | `name` | In/Out | `string` | For `<include>` elements, the view's asset name; for all other elements, a user-defined name used mainly for logging and troubleshooting. |
 | `opacity` | In/Out | `float` | Opacity (alpha) value of the entire view, from 0.0 (fully transparent/hidden) to 1.0 (fully opaque). |
@@ -141,6 +141,8 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `scroll-with-children` | In/Out | `Orientation` | Forces the entire view to be visible when navigating in the specified direction. See the [ScrollableView](../library/standard-views.md#scrollable-view) documentation for details. |
 | `tags` | In/Out | `Tags` | Allows arbitrary data to be associated with the view. **Not supported in StarML yet** - may be supported in the future. |
 | `tooltip` | In/Out | `TooltipData` | Tooltip to show when hovered with the mouse, or focused on via game controller. |
+| `transform` | In/Out | [`Transform`](../reference/stardewui/graphics/transform.md) | [Local transform](../library/transforms.md) to apply to the view. |
+| `transform-origin` | In/Out | `Vector2` | Relative origin position for the `transform`; see [Transform Origin](../library/transforms.md#transform-origin). |
 | `visibility` | In/Out | `Visibility` | Whether to show or hide the view; hiding does *not* remove it from the layout, use `*if` for that. |
 | `z-index` | In/Out | `int` | Drawing order within the parent; higher indices are drawn later (on top). |
 
@@ -321,6 +323,7 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `SpriteFont` @span       | `"dialogue"` (6)                   | N/A @span                             | N/A @span                               |
 |                          | `"small"` (7)                      |                                       |                                         |
 |                          | `"tiny"` (8)                       |                                       |                                         |
+| `Transform`              | See [Transforms](../library/transforms.md) | N/A                           | N/A                                     |
 | `Visibility` @span       | "Visible"                          | `bool` @span                          | N/A @span                               |
 |                          | "Hidden"                           |                                       |                                         |
 | `TooltipData` @span      | Any @span                          | `string` (text only)                  | N/A @span                               |

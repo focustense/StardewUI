@@ -51,6 +51,7 @@ public class Image : StardewUI.View
 | [FloatingBounds](../view.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [FloatingElements](../view.md#floatingelements) | The floating elements to display relative to this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Focusable](../view.md#focusable) | Whether or not the view should be able to receive focus. Applies only to this specific view, not its children.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [HandlesOpacity](#handlesopacity) | Whether the specific view type handles its own opacity.<br><span class="muted" markdown>(Overrides [View](../view.md).`get_HandlesOpacity()`)</span> | 
 | [HorizontalAlignment](#horizontalalignment) | Specifies where to align the image horizontally if the image width is different from the final layout width. | 
 | [InnerSize](../view.md#innersize) | The size allocated to the entire area inside the border, i.e. [ContentSize](../view.md#contentsize) plus any [Padding](../view.md#padding). Does not include border or [Margin](../view.md#margin).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [IsFocusable](../view.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -73,6 +74,8 @@ public class Image : StardewUI.View
 | [Tags](../view.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Tint](#tint) | Tint color (multiplier) to apply when drawing. | 
 | [Tooltip](../view.md#tooltip) | Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [Transform](../view.md#transform) | Local transformation to apply to this view, including any children and floating elements.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [TransformOrigin](../view.md#transformorigin) | Relative origin position for any [Transform](../iview.md#transform) on this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [VerticalAlignment](#verticalalignment) | Specifies where to align the image vertically if the image height is different from the final layout height. | 
 | [Visibility](../view.md#visibility) | Visibility for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [ZIndex](../view.md#zindex) | Z order for this view within its direct parent. Higher indices draw later (on top).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -164,6 +167,26 @@ public StardewUI.Widgets.ImageFit Fit { get; set; }
 ##### Remarks
 
 The fit setting is always ignored when _both_ the [Width](../layout/layoutparameters.md#width) and [Height](../layout/layoutparameters.md#height) use [Content](../layout/lengthtype.md#content), because that combination of settings will cause the exact [SourceRect](../graphics/sprite.md#sourcerect) (or texture bounds, if not specified) as the layout size. At least one dimension must be content-independent (fixed or container size) for this to have any effect.
+
+-----
+
+#### HandlesOpacity
+
+Whether the specific view type handles its own opacity.
+
+```cs
+protected bool HandlesOpacity { get; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+Subclasses can override this to provide their own, typically better optimized version of opacity; i.e. a basic text or image view could simply multiply its own background/foreground colors without requiring multiple render targets to handle the blending. 
+
+ Any [FloatingElements](../view.md#floatingelements) will still use the default opacity implementation.
 
 -----
 

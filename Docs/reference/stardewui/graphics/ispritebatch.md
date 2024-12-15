@@ -23,8 +23,11 @@ Assembly: StardewUI.dll
 Abstraction for the [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html) providing sprite-drawing methods.
 
 ```cs
-public interface ISpriteBatch
+public interface ISpriteBatch : System.IDisposable
 ```
+
+**Implements**  
+[IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable)
 
 ## Remarks
 
@@ -39,15 +42,20 @@ Importantly, this interface represents a "local" sprite batch with inherited tra
 | [Blend(BlendState)](#blendblendstate) | Sets up subsequent draw calls to use the designated blending settings. | 
 | [Clip(Rectangle)](#cliprectangle) | Sets up subsequent draw calls to clip contents within the specified bounds. | 
 | [DelegateDraw(Action&lt;SpriteBatch, Vector2&gt;)](#delegatedrawactionspritebatch-vector2) | Draws using a delegate action on a concrete [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html). | 
-| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Vector2?, Single, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-vector2-float-spriteeffects-float) |  | 
-| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Vector2?, Vector2?, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-vector2-vector2-spriteeffects-float) |  | 
-| [Draw(Texture2D, Rectangle, Rectangle?, Color?, Single, Vector2?, SpriteEffects, Single)](#drawtexture2d-rectangle-rectangle-color-float-vector2-spriteeffects-float) |  | 
-| [DrawString(SpriteFont, string, Vector2, Color, Single, Vector2?, Single, SpriteEffects, Single)](#drawstringspritefont-string-vector2-color-float-vector2-float-spriteeffects-float) |  | 
+| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Single, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-float-spriteeffects-float) |  | 
+| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Vector2?, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-vector2-spriteeffects-float) |  | 
+| [Draw(Texture2D, Rectangle, Rectangle?, Color?, Single, SpriteEffects, Single)](#drawtexture2d-rectangle-rectangle-color-float-spriteeffects-float) |  | 
+| [DrawString(SpriteFont, string, Vector2, Color, Single, Single, SpriteEffects, Single)](#drawstringspritefont-string-vector2-color-float-float-spriteeffects-float) |  | 
 | [InitializeRenderTarget(RenderTarget2D, Int32, Int32)](#initializerendertargetrendertarget2d-int-int) | Initializes a [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html) for use with [SetRenderTarget(RenderTarget2D, Color?)](ispritebatch.md#setrendertargetrendertarget2d-color). | 
+| [Rotate(Single, TransformOrigin)](#rotatefloat-transformorigin) | Applies a rotation transformation to subsequent operations. | 
 | [SaveTransform()](#savetransform) | Saves the current transform, so that it can later be restored to its current state. | 
+| [Scale(Single, TransformOrigin)](#scalefloat-transformorigin) | Applies a uniform scale transformation to subsequent operations. | 
+| [Scale(Single, Single, TransformOrigin)](#scalefloat-float-transformorigin) | Applies a scale transformation to subsequent operations. | 
+| [Scale(Vector2, TransformOrigin)](#scalevector2-transformorigin) | Applies a scale transformation to subsequent operations. | 
 | [SetRenderTarget(RenderTarget2D, Color?)](#setrendertargetrendertarget2d-color) | Sets up subsequent draw calls to use a custom render target. | 
-| [Translate(Vector2)](#translatevector2) | Applies a translation offset to subsequent operations. | 
-| [Translate(Single, Single)](#translatefloat-float) | Applies a translation offset to subsequent operations. | 
+| [Transform(Transform, TransformOrigin)](#transformtransform-transformorigin) | Applies an arbitrary transformation to subsequent operations. | 
+| [Translate(Vector2)](#translatevector2) | Applies a translation transformation to subsequent operations. | 
+| [Translate(Single, Single)](#translatefloat-float) | Applies a translation transformation to subsequent operations. | 
 
 ## Details
 
@@ -116,12 +124,12 @@ Delegation is provided as a fallback for game-specific "utilities" that require 
 
 -----
 
-#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, float, SpriteEffects, float)
+#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, float, SpriteEffects, float)
 
 
 
 ```cs
-void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? origin, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -135,8 +143,6 @@ void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Fram
 **`color`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)>
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
-
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
 
 **`scale`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
@@ -146,12 +152,12 @@ void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Fram
 
 -----
 
-#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, SpriteEffects, float)
+#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, SpriteEffects, float)
 
 
 
 ```cs
-void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? origin, Microsoft.Xna.Framework.Vector2? scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -166,8 +172,6 @@ void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Fram
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
-
 **`scale`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
 
 **`effects`** &nbsp; [SpriteEffects](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html)
@@ -176,12 +180,12 @@ void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Fram
 
 -----
 
-#### Draw(Texture2D, Rectangle, Rectangle?, Color?, float, Vector2?, SpriteEffects, float)
+#### Draw(Texture2D, Rectangle, Rectangle?, Color?, float, SpriteEffects, float)
 
 
 
 ```cs
-void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Rectangle destinationRectangle, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? origin, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Rectangle destinationRectangle, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -196,20 +200,18 @@ void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Fram
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
-
 **`effects`** &nbsp; [SpriteEffects](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html)
 
 **`layerDepth`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
 -----
 
-#### DrawString(SpriteFont, string, Vector2, Color, float, Vector2?, float, SpriteEffects, float)
+#### DrawString(SpriteFont, string, Vector2, Color, float, float, SpriteEffects, float)
 
 
 
 ```cs
-void DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont spriteFont, string text, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Color color, float rotation, Microsoft.Xna.Framework.Vector2? origin, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+void DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont spriteFont, string text, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Color color, float rotation, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -223,8 +225,6 @@ void DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont spriteFont, string t
 **`color`** &nbsp; [Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
-
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
 
 **`scale`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
@@ -259,6 +259,24 @@ This will reuse an existing render target if available, i.e. if `target` is not 
 
 -----
 
+#### Rotate(float, TransformOrigin)
+
+Applies a rotation transformation to subsequent operations.
+
+```cs
+void Rotate(float angle, StardewUI.Graphics.TransformOrigin origin);
+```
+
+##### Parameters
+
+**`angle`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
+The rotation angle, in radians.
+
+**`origin`** &nbsp; [TransformOrigin](transformorigin.md)  
+The center of the rotation, or `null` to use the [Default](transformorigin.md#default) origin.
+
+-----
+
 #### SaveTransform()
 
 Saves the current transform, so that it can later be restored to its current state.
@@ -276,6 +294,63 @@ System.IDisposable SaveTransform();
 ##### Remarks
 
 This is typically used in hierarchical layout; i.e. a view with children would apply a transform before handing the canvas or sprite batch down to any of those children, and then restore it after the child is done with it. This enables a single [ISpriteBatch](ispritebatch.md) instance to be used for the entire layout rather than having to create a tree.
+
+-----
+
+#### Scale(float, TransformOrigin)
+
+Applies a uniform scale transformation to subsequent operations.
+
+```cs
+void Scale(float scale, StardewUI.Graphics.TransformOrigin origin);
+```
+
+##### Parameters
+
+**`scale`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
+Amount to scale, both horizontally and vertically. `1` is unity scale.
+
+**`origin`** &nbsp; [TransformOrigin](transformorigin.md)  
+The center of the scaling, or `null` to use the [Default](transformorigin.md#default) origin.
+
+-----
+
+#### Scale(float, float, TransformOrigin)
+
+Applies a scale transformation to subsequent operations.
+
+```cs
+void Scale(float x, float y, StardewUI.Graphics.TransformOrigin origin);
+```
+
+##### Parameters
+
+**`x`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
+Amount of horizontal scaling. `1` is unity scale.
+
+**`y`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
+Amount of vertical scaling. `1` is unity scale.
+
+**`origin`** &nbsp; [TransformOrigin](transformorigin.md)  
+The center of the scaling, or `null` to use the [Default](transformorigin.md#default) origin.
+
+-----
+
+#### Scale(Vector2, TransformOrigin)
+
+Applies a scale transformation to subsequent operations.
+
+```cs
+void Scale(Microsoft.Xna.Framework.Vector2 scale, StardewUI.Graphics.TransformOrigin origin);
+```
+
+##### Parameters
+
+**`scale`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
+Scaling vector containing the horizontal ([X](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2)) and vertical ([Y](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2)) scaling amounts.
+
+**`origin`** &nbsp; [TransformOrigin](transformorigin.md)  
+The center of the scaling, or `null` to use the [Default](transformorigin.md#default) origin.
 
 -----
 
@@ -307,9 +382,27 @@ This will also reset any active transforms for the new render target, e.g. those
 
 -----
 
+#### Transform(Transform, TransformOrigin)
+
+Applies an arbitrary transformation to subsequent operations.
+
+```cs
+void Transform(StardewUI.Graphics.Transform transform, StardewUI.Graphics.TransformOrigin origin);
+```
+
+##### Parameters
+
+**`transform`** &nbsp; [Transform](transform.md)  
+The transform properties (scale, rotation and translation).
+
+**`origin`** &nbsp; [TransformOrigin](transformorigin.md)  
+The origin (i.e. center) of the transformation, or `null` to use the [Default](transformorigin.md#default) origin.
+
+-----
+
 #### Translate(Vector2)
 
-Applies a translation offset to subsequent operations.
+Applies a translation transformation to subsequent operations.
 
 ```cs
 void Translate(Microsoft.Xna.Framework.Vector2 translation);
@@ -324,7 +417,7 @@ The translation vector.
 
 #### Translate(float, float)
 
-Applies a translation offset to subsequent operations.
+Applies a translation transformation to subsequent operations.
 
 ```cs
 void Translate(float x, float y);
