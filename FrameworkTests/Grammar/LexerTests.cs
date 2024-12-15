@@ -82,7 +82,7 @@ public class LexerTests
                 ]
             },
             {
-                @"<label font=""small"" *repeat={<Items} text={{DisplayName}} />",
+                @"<label font=""small"" *repeat={<Items} text={{DisplayName}} +tween:opacity={Fade} />",
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -103,6 +103,12 @@ public class LexerTests
                     new(TokenType.BindingStart, "{{"),
                     new(TokenType.Literal, "DisplayName"),
                     new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.AttributeModifier, "+"),
+                    new(TokenType.Name, "tween:opacity"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{"),
+                    new(TokenType.Literal, "Fade"),
+                    new(TokenType.BindingEnd, "}"),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },

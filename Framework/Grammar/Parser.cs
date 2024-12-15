@@ -281,6 +281,7 @@ public ref struct DocumentReader(Lexer lexer)
         return token switch
         {
             "*" => AttributeType.Structural,
+            "+" => AttributeType.Behavior,
             _ => throw new ArgumentException($"Invalid attribute modifier: {token}", nameof(token)),
         };
     }

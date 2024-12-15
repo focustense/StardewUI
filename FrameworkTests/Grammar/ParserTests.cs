@@ -46,7 +46,7 @@ public class ParserTests
                 ]
             },
             {
-                @"<label font=""small"" *repeat={<>Items} text={{DisplayName}} />",
+                @"<label font=""small"" *repeat={<>Items} text={{DisplayName}} +tween:opacity={Fade} />",
                 [
                     new(
                         "label",
@@ -54,6 +54,7 @@ public class ParserTests
                             new("font", "small"),
                             new("repeat", "Items", AttributeType.Structural, AttributeValueType.TwoWayBinding),
                             new("text", "DisplayName", ValueType: AttributeValueType.InputBinding),
+                            new("tween:opacity", "Fade", AttributeType.Behavior, AttributeValueType.InputBinding),
                         ]
                     ),
                     new("label", IsClosingTag: true),
