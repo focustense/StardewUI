@@ -53,6 +53,7 @@ public class Label : StardewUI.View
 | [FloatingElements](../view.md#floatingelements) | The floating elements to display relative to this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Focusable](../view.md#focusable) | Whether or not the view should be able to receive focus. Applies only to this specific view, not its children.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Font](#font) | The font that will be used to render the text. | 
+| [HandlesOpacity](#handlesopacity) | Whether the specific view type handles its own opacity.<br><span class="muted" markdown>(Overrides [View](../view.md).`get_HandlesOpacity()`)</span> | 
 | [HorizontalAlignment](#horizontalalignment) | How to align the text horizontally. | 
 | [InnerSize](../view.md#innersize) | The size allocated to the entire area inside the border, i.e. [ContentSize](../view.md#contentsize) plus any [Padding](../view.md#padding). Does not include border or [Margin](../view.md#margin).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [IsFocusable](../view.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
@@ -75,6 +76,8 @@ public class Label : StardewUI.View
 | [Tags](../view.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Text](#text) | The text string to display. | 
 | [Tooltip](../view.md#tooltip) | Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [Transform](../view.md#transform) | Local transformation to apply to this view, including any children and floating elements.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [TransformOrigin](../view.md#transformorigin) | Relative origin position for any [Transform](../iview.md#transform) on this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Visibility](../view.md#visibility) | Visibility for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [ZIndex](../view.md#zindex) | Z order for this view within its direct parent. Higher indices draw later (on top).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 
@@ -194,6 +197,26 @@ public Microsoft.Xna.Framework.Graphics.SpriteFont Font { get; set; }
 ##### Property Value
 
 [SpriteFont](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteFont.html)
+
+-----
+
+#### HandlesOpacity
+
+Whether the specific view type handles its own opacity.
+
+```cs
+protected bool HandlesOpacity { get; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+Subclasses can override this to provide their own, typically better optimized version of opacity; i.e. a basic text or image view could simply multiply its own background/foreground colors without requiring multiple render targets to handle the blending. 
+
+ Any [FloatingElements](../view.md#floatingelements) will still use the default opacity implementation.
 
 -----
 

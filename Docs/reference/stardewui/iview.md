@@ -48,6 +48,8 @@ public interface IView : System.IDisposable,
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
 | [Tooltip](#tooltip) | Tooltip data to display on hover, if any. | 
+| [Transform](#transform) | Local transformation to apply to this view, including any children and floating elements. | 
+| [TransformOrigin](#transformorigin) | Relative origin position for any [Transform](iview.md#transform) on this view. | 
 | [Visibility](#visibility) | Drawing visibility for this view. | 
 | [ZIndex](#zindex) | Z order for this view within its direct parent. Higher indices draw later (on top). | 
 
@@ -284,6 +286,40 @@ StardewUI.Data.TooltipData Tooltip { get; set; }
 ##### Property Value
 
 [TooltipData](data/tooltipdata.md)
+
+-----
+
+#### Transform
+
+Local transformation to apply to this view, including any children and floating elements.
+
+```cs
+StardewUI.Graphics.Transform Transform { get; set; }
+```
+
+##### Property Value
+
+[Transform](graphics/transform.md)
+
+-----
+
+#### TransformOrigin
+
+Relative origin position for any [Transform](iview.md#transform) on this view.
+
+```cs
+Microsoft.Xna.Framework.Vector2? TransformOrigin { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
+
+##### Remarks
+
+Expects a value that represents the fraction of the view's computed layout size. For example, `(0, 0)` is the top left, `(0.5, 0.5)` is the center, and `1, 1` is the bottom right. `null` values are equivalent to [Zero](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2). 
+
+ Origins are not inherited; each view defines its own origin for its specific transform.
 
 -----
 

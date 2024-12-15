@@ -64,6 +64,8 @@ Must be associated with a [ScrollContainer](scrollcontainer.md) in order to work
 | [ThumbSprite](#thumbsprite) | Sprite to draw for the thumb, which moves within the track and indicates the current scroll position and can be dragged to scroll. | 
 | [Tooltip](decoratorview-1.md#tooltip) | Tooltip data to display on hover, if any.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [TrackSprite](#tracksprite) | Sprite to draw for the track area, within which the thumb can move. | 
+| [Transform](decoratorview-1.md#transform) | Local transformation to apply to this view, including any children and floating elements.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [TransformOrigin](decoratorview-1.md#transformorigin) | Relative origin position for any [Transform](../iview.md#transform) on this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [UpSprite](#upsprite) | Sprite to draw for the up arrow, or left arrow in horizontal orientation. | 
 | [View](componentview-1.md#view) | <span class="muted" markdown>(Inherited from [ComponentView&lt;T&gt;](componentview-1.md))</span> | 
 | [Visibility](decoratorview-1.md#visibility) | Drawing visibility for this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 

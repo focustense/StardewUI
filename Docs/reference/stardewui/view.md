@@ -57,6 +57,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [FloatingBounds](#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants. | 
 | [FloatingElements](#floatingelements) | The floating elements to display relative to this view. | 
 | [Focusable](#focusable) | Whether or not the view should be able to receive focus. Applies only to this specific view, not its children. | 
+| [HandlesOpacity](#handlesopacity) | Whether the specific view type handles its own opacity. | 
 | [InnerSize](#innersize) | The size allocated to the entire area inside the border, i.e. [ContentSize](view.md#contentsize) plus any [Padding](view.md#padding). Does not include border or [Margin](view.md#margin). | 
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
 | [LastAvailableSize](#lastavailablesize) | The most recent size used in a [Measure(Vector2)](view.md#measurevector2) pass. Used for additional dirty checks. | 
@@ -71,6 +72,8 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](view.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
 | [Tooltip](#tooltip) | Localized tooltip to display on hover, if any. | 
+| [Transform](#transform) | Local transformation to apply to this view, including any children and floating elements. | 
+| [TransformOrigin](#transformorigin) | Relative origin position for any [Transform](iview.md#transform) on this view. | 
 | [Visibility](#visibility) | Visibility for this view. | 
 | [ZIndex](#zindex) | Z order for this view within its direct parent. Higher indices draw later (on top). | 
 
@@ -269,6 +272,26 @@ public bool Focusable { get; set; }
 ##### Remarks
 
 All views are non-focusable by default and must have their focus enabled explicitly. Subclasses may choose to override the default value if they should always be focusable.
+
+-----
+
+#### HandlesOpacity
+
+Whether the specific view type handles its own opacity.
+
+```cs
+protected bool HandlesOpacity { get; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+Subclasses can override this to provide their own, typically better optimized version of opacity; i.e. a basic text or image view could simply multiply its own background/foreground colors without requiring multiple render targets to handle the blending. 
+
+ Any [FloatingElements](view.md#floatingelements) will still use the default opacity implementation.
 
 -----
 
@@ -492,6 +515,40 @@ public StardewUI.Data.TooltipData Tooltip { get; set; }
 
 -----
 
+#### Transform
+
+Local transformation to apply to this view, including any children and floating elements.
+
+```cs
+public StardewUI.Graphics.Transform Transform { get; set; }
+```
+
+##### Property Value
+
+[Transform](graphics/transform.md)
+
+-----
+
+#### TransformOrigin
+
+Relative origin position for any [Transform](iview.md#transform) on this view.
+
+```cs
+public Microsoft.Xna.Framework.Vector2? TransformOrigin { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
+
+##### Remarks
+
+Expects a value that represents the fraction of the view's computed layout size. For example, `(0, 0)` is the top left, `(0.5, 0.5)` is the center, and `1, 1` is the bottom right. `null` values are equivalent to [Zero](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2). 
+
+ Origins are not inherited; each view defines its own origin for its specific transform.
+
+-----
+
 #### Visibility
 
 Visibility for this view.
@@ -620,7 +677,7 @@ The direction of cursor movement.
 
 ##### Remarks
 
-This will first call [FindFocusableDescendant(Vector2, Direction)](view.md#findfocusabledescendantvector2-direction) to see if the specific view type wants to implement its own focus search. If there is no focusable descendant, then this will return a reference to the current view if [IsFocusable](view.md#isfocusable) is `true` and the position is _not_ already within the view's bounds - meaning, any focusable view can accept focus from any direction, but will not consider itself a result if it is already focused (since we are trying to "move" focus).
+This will first call [FindFocusableDescendant(Vector2, Direction)](view.md#findfocusabledescendantvector2-direction) to see if the specific view type wants to implement its own focus search. If there is no focusable descendant, then this will return a reference to the current view if [Focusable](view.md#focusable) is `true` and the position is _not_ already within the view's bounds - meaning, any focusable view can accept focus from any direction, but will not consider itself a result if it is already focused (since we are trying to "move" focus).
 
 -----
 
