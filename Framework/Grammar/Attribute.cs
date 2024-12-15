@@ -83,6 +83,11 @@ public enum AttributeType
     /// Affects the structure or hierarchy of the view tree, e.g. by making a node conditional or repeated.
     /// </summary>
     Structural,
+
+    /// <summary>
+    /// Invokes a standard or custom <see cref="Behaviors.IViewBehavior"/> that attaches to the view.
+    /// </summary>
+    Behavior,
 }
 
 /// <summary>

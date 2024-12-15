@@ -44,7 +44,7 @@ public enum TokenType
     NameSeparator,
 
     /// <summary>
-    /// Modifier token designating the type of an attribute; the <c>*</c> character (structural).
+    /// Modifier token designating the type of an attribute; the <c>*</c> character (structural) or <c>+</c> (behavior).
     /// </summary>
     AttributeModifier,
 
@@ -188,6 +188,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     /// </summary>
     public readonly int Position => position;
 
+    private static readonly Rune COLON = new(':');
     private static readonly Rune HYPHEN = new('-');
     private static readonly Rune UNDERSCORE = new('_');
 
@@ -352,12 +353,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['.', ..] => new(TokenType.NameSeparator, 1),
                 ['<', '>', ..] => new(TokenType.BindingModifier, 2),
                 ['<', ':', ..] => new(TokenType.BindingModifier, 2),
-                [':', ..] => new(TokenType.BindingModifier, 1),
-                ['<', ..] => new(TokenType.BindingModifier, 1),
-                ['>', ..] => new(TokenType.BindingModifier, 1),
-                ['@', ..] => new(TokenType.BindingModifier, 1),
-                ['#', ..] => new(TokenType.BindingModifier, 1),
-                ['&', ..] => new(TokenType.BindingModifier, 1),
+                [':' or '<' or '>' or '@' or '#' or '&', ..] => new(TokenType.BindingModifier, 1),
                 _ => nameSeparatorEnabled ? ReadLiteralStringUntil("}", ".") : ReadLiteralStringUntil("}"),
             },
             Mode.Event => text switch
@@ -377,8 +373,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['.', ..] => new(TokenType.NameSeparator, 1),
                 [',', ..] => new(TokenType.ArgumentSeparator, 1),
                 ['"', ..] => new(TokenType.Quote, 1),
-                ['$', ..] => new(TokenType.ArgumentPrefix, 1),
-                ['&', ..] => new(TokenType.ArgumentPrefix, 1),
+                ['$' or '&', ..] => new(TokenType.ArgumentPrefix, 1),
                 _ => ReadName(),
             },
             _ => text switch
@@ -395,7 +390,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
                 ['{', ..] => new(TokenType.BindingStart, 1),
                 ['}', '}', ..] => new(TokenType.BindingEnd, 2),
                 ['}', ..] => new(TokenType.BindingEnd, 1),
-                ['*', ..] => new(TokenType.AttributeModifier, 1),
+                ['*' or '+', ..] => new(TokenType.AttributeModifier, 1),
                 ['|', ..] => new(TokenType.Pipe, 1),
                 ['!', ..] => new(TokenType.Negation, 1),
                 _ => ReadName(),
@@ -451,7 +446,7 @@ public ref struct Lexer(ReadOnlySpan<char> text)
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool IsValidForName(Rune rune)
     {
-        return Rune.IsLetterOrDigit(rune) || rune == HYPHEN || rune == UNDERSCORE;
+        return Rune.IsLetterOrDigit(rune) || rune == HYPHEN || rune == UNDERSCORE || rune == COLON;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
