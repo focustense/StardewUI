@@ -15,6 +15,12 @@
 /// Implementers should always use these hooks to handle changes and <b>never</b> save their own copy of either, in
 /// whole or in part, to avoid memory or resource leaks.
 /// </para>
+/// <para>
+/// This type is not thread-safe. The <see cref="Data"/> and <see cref="View"/> properties are guaranteed to be non-null
+/// when <see cref="Update"/> runs, and are typed accordingly, because the framework will skip executing behaviors that
+/// have null data or no attached view; however, if a behavior is accessed from a different context, especially on a
+/// different thread, these properties may transiently contain null values.
+/// </para>
 /// </remarks>
 /// <typeparam name="TView">Base type for all views that support this behavior.</typeparam>
 /// <typeparam name="TData">Type of data provided to this behavior as an argument/binding.</typeparam>
@@ -69,6 +75,12 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
     private TData? data;
     private TView? view;
     private bool isDisposed;
+
+    /// <inheritdoc />
+    public bool CanUpdate()
+    {
+        return view is not null && data is not null;
+    }
 
     /// <inheritdoc />
     public void Dispose()
@@ -131,13 +143,37 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
     /// <param name="previousData"></param>
     protected virtual void OnNewData(TData? previousData) { }
 
-    void IViewBehavior.SetData(object data)
+    void IViewBehavior.SetData(object? data)
     {
-        Data = (TData)data;
+        if (data is not null && !data.GetType().IsAssignableTo(typeof(TData)))
+        {
+            Logger.Log(
+                $"Behavior type {GetType().FullName} cannot accept a data type of {data.GetType().FullName} (requires "
+                    + $"{typeof(TData).FullName} or a subtype). The behavior will be disabled until it receives data with "
+                    + "a supported type.",
+                LogLevel.Warn
+            );
+            Data = default!;
+            return;
+        }
+        // These null-forgiving assignments are valid because the actual implementations of the properties handle null
+        // values implicitly, and because the framework is required to honor the result CanUpdate.
+        Data = (TData)data!;
     }
 
-    void IViewBehavior.SetView(IView view)
+    void IViewBehavior.SetView(IView? view)
     {
-        View = (TView)view;
+        if (view is not null && !view.GetType().IsAssignableTo(typeof(TView)))
+        {
+            Logger.Log(
+                $"Behavior type {GetType().FullName} cannot accept a view type of {view.GetType().FullName} (requires "
+                    + $"{typeof(TView).FullName} or a subtype). The behavior will be disabled until it receives a view "
+                    + "with a supported type.",
+                LogLevel.Warn
+            );
+            View = default!;
+            return;
+        }
+        View = (TView)view!;
     }
 }

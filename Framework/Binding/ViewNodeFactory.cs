@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Content;
+﻿using StardewUI.Framework.Behaviors;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -19,13 +20,15 @@ namespace StardewUI.Framework.Binding;
 /// <param name="assetCache">Cache for obtaining document assets. Used for included views.</param>
 /// <param name="resolutionScopeFactory">Factory for creating <see cref="IResolutionScope"/> instances responsible for
 /// resolving external symbols such as translation keys.</param>
+/// <param name="behaviorFactory">Factory for creating behavior extensions.</param>
 public class ViewNodeFactory(
     IViewFactory viewFactory,
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
     IViewBinder viewBinder,
     IAssetCache assetCache,
-    IResolutionScopeFactory resolutionScopeFactory
+    IResolutionScopeFactory resolutionScopeFactory,
+    IBehaviorFactory behaviorFactory
 ) : IViewNodeFactory
 {
     /// <inheritdoc />
@@ -86,6 +89,14 @@ public class ViewNodeFactory(
 
         IViewNode CreateDefaultViewNode()
         {
+            var behaviorAttributes = node.Attributes.Where(attr => attr.Type == Grammar.AttributeType.Behavior);
+            var behaviors = new ViewBehaviors(
+                behaviorAttributes,
+                behaviorFactory,
+                valueSourceFactory,
+                valueConverterFactory,
+                resolutionScope
+            );
             return new ViewNode(
                 valueSourceFactory,
                 valueConverterFactory,
@@ -93,6 +104,7 @@ public class ViewNodeFactory(
                 viewBinder,
                 node.Element,
                 resolutionScope,
+                behaviors,
                 contextAttribute: structuralAttributes.Context,
                 floatAttribute: structuralAttributes.Float
             );

@@ -20,16 +20,26 @@ public interface IViewBehavior : IDisposable
     Type ViewType { get; }
 
     /// <summary>
+    /// Checks whether the behavior is allowed to <see cref="Update"/>.
+    /// </summary>
+    /// <remarks>
+    /// Implementations can override this in order to selectively disable updates. Typically, updates will be disabled
+    /// when the behavior cannot run due to not having an attached view or data.
+    /// </remarks>
+    /// <returns><c>true</c> to continue running <see cref="Update"/> ticks, <c>false</c> to skip updates.</returns>
+    bool CanUpdate();
+
+    /// <summary>
     /// Updates the behavior's current data.
     /// </summary>
     /// <param name="data">The new data.</param>
-    void SetData(object data);
+    void SetData(object? data);
 
     /// <summary>
     /// Updates the behavior's attached view.
     /// </summary>
     /// <param name="view">The new view.</param>
-    void SetView(IView view);
+    void SetView(IView? view);
 
     /// <summary>
     /// Runs on every update tick.
