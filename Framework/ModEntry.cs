@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI.Events;
 using StardewUI.Framework.Api;
+using StardewUI.Framework.Behaviors;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
@@ -136,6 +137,12 @@ internal sealed class ModEntry : Mod
         var attributeBindingFactory = new AttributeBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, rootValueConverterFactory);
         var viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
+        var addonBehaviorFactories = loadOrder
+            .Reverse()
+            .Select(addon => addon.BehaviorFactory)
+            .Where(factory => factory is not null)
+            .Cast<IBehaviorFactory>();
+        var rootBehaviorFactory = new RootBehaviorFactory(addonBehaviorFactories);
         resolutionScopeFactory = new(Helper.ModRegistry);
         if (config.Performance.EnableReflectionWarmup)
         {
@@ -147,7 +154,8 @@ internal sealed class ModEntry : Mod
             rootValueConverterFactory,
             viewBinder,
             assetCache,
-            resolutionScopeFactory
+            resolutionScopeFactory,
+            rootBehaviorFactory
         );
     }
 

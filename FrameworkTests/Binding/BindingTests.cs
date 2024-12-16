@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using PropertyChanged.SourceGenerator;
 using StardewModdingAPI;
 using StardewUI.Events;
+using StardewUI.Framework.Behaviors;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
@@ -14,7 +15,6 @@ using StardewUI.Framework.Views;
 using StardewUI.Graphics;
 using StardewUI.Layout;
 using StardewUI.Widgets;
-using StardewValley;
 using Xunit.Abstractions;
 
 namespace StardewUI.Framework.Tests.Binding;
@@ -106,6 +106,7 @@ public partial class BindingTests
     }
 
     private readonly FakeAssetCache assetCache;
+    private readonly BehaviorFactory behaviorFactory;
     private readonly FakeResolutionScopeFactory resolutionScopeFactory;
     private readonly FakeResolutionScope resolutionScope;
     private readonly IValueConverterFactory valueConverterFactory;
@@ -124,6 +125,7 @@ public partial class BindingTests
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         resolutionScopeFactory = new FakeResolutionScopeFactory();
         resolutionScope = resolutionScopeFactory.DefaultScope;
+        behaviorFactory = new();
         viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
     }
 
@@ -292,13 +294,21 @@ public partial class BindingTests
 
         ViewNode CreateViewNode(SElement element, IViewNode.Child[]? children = null)
         {
+            var dummyBehaviors = new ViewBehaviors(
+                [],
+                behaviorFactory,
+                valueSourceFactory,
+                valueConverterFactory,
+                resolutionScope
+            );
             return new ViewNode(
                 valueSourceFactory,
                 valueConverterFactory,
                 viewFactory,
                 viewBinder,
                 element,
-                resolutionScope
+                resolutionScope,
+                dummyBehaviors
             )
             {
                 Children = children ?? [],
@@ -315,7 +325,8 @@ public partial class BindingTests
             valueConverterFactory,
             viewBinder,
             assetCache,
-            resolutionScopeFactory
+            resolutionScopeFactory,
+            behaviorFactory
         );
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
@@ -2364,6 +2375,86 @@ public partial class BindingTests
         }
     }
 
+    class FreshMaker : ViewBehavior<Label, int?>
+    {
+        private string freshness = "";
+        private string originalText = "";
+
+        public override void Update(TimeSpan elapsed)
+        {
+            if (!string.IsNullOrEmpty(freshness) && !View.Text.StartsWith(freshness))
+            {
+                View.Text = freshness + ' ' + originalText;
+            }
+        }
+
+        // This is very much a simplified test implementation that isn't meant to resemble the real thing.
+        // A real behavior would have to be a lot more careful about the text being changed *after* attaching, and be
+        // able to revert to the "most recent" view properties prior to the behavior actually taking effect.
+        protected override void OnAttach(Label view)
+        {
+            originalText = View.Text;
+        }
+
+        protected override void OnNewData(int? previousData)
+        {
+            freshness = Data switch
+            {
+                1 => "Fresh",
+                2 => "Fresher",
+                3 => "Freshest",
+                _ => "",
+            };
+        }
+    }
+
+    [Fact]
+    public void WhenBehaviorCreatedWithLiteral_InvokesBehavior()
+    {
+        behaviorFactory.Register<FreshMaker>("fresh");
+
+        string markup = @"<label text=""Artichoke"" +fresh=""1"" />";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var label = Assert.IsType<Label>(tree.Views.SingleOrDefault());
+        Assert.Equal("Fresh Artichoke", label.Text);
+    }
+
+    partial class BehaviorTestModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private int freshness;
+    }
+
+    [Fact]
+    public void WhenBehaviorCreatedWithBinding_AndBoundValueUpdates_UpdatesBehaviorData()
+    {
+        behaviorFactory.Register<FreshMaker>("fresh");
+
+        string markup = @"<label text=""Clam"" +fresh={{Freshness}} />";
+        var model = new BehaviorTestModel() { Freshness = 2 };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var label = Assert.IsType<Label>(tree.Views.SingleOrDefault());
+        Assert.Equal("Fresher Clam", label.Text);
+
+        model.Freshness = 3;
+        tree.Update();
+        Assert.Equal("Freshest Clam", label.Text);
+    }
+
+    [Fact]
+    public void WhenBehaviorAddedToUnsupportedViewType_IgnoresBehavior()
+    {
+        behaviorFactory.Register<FreshMaker>("fresh");
+
+        string markup = @"<button text=""Hello"" +fresh=""1"" />";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var button = Assert.IsType<Button>(tree.Views.SingleOrDefault());
+        Assert.Equal("Hello", button.Text);
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
         var viewNodeFactory = new ViewNodeFactory(
@@ -2372,7 +2463,8 @@ public partial class BindingTests
             valueConverterFactory,
             viewBinder,
             assetCache,
-            resolutionScopeFactory
+            resolutionScopeFactory,
+            behaviorFactory
         );
         var document = Document.Parse(markup);
         var tree = viewNodeFactory.CreateNode(document);

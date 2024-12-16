@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Binding;
+﻿using StardewUI.Framework.Behaviors;
+using StardewUI.Framework.Binding;
 using StardewUI.Framework.Converters;
 
 namespace StardewUI.Framework.Addons;
@@ -29,6 +30,17 @@ public interface IAddon
     /// A depends on B which depends on A again) then the addon will be prevented from loading.
     /// </remarks>
     IReadOnlyList<string> Dependencies => [];
+
+    /// <summary>
+    /// Provides user-defined behavior extensions that run on existing view types.
+    /// </summary>
+    /// <remarks>
+    /// All user-defined behaviors have lower priority than the built-in behaviors; a UI add-on is not allowed to remap
+    /// an existing behavior name to its own implementation. Within the set of user-defined behaviors, the priority is
+    /// based on inverted load order; the <em>last</em> add-on to associate a particular name with some behavior type
+    /// will be the one to always handle that name, as long as it is not a standard behavior name.
+    /// </remarks>
+    IBehaviorFactory? BehaviorFactory => null;
 
     /// <summary>
     /// Provides user-defined type conversions in addition to the standard conversions.

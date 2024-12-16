@@ -23,6 +23,7 @@ namespace StardewUI.Framework.Binding;
 /// data or assets and propagate them to the bound <see cref="IView"/>.</param>
 /// <param name="element">Element data for this node.</param>
 /// <param name="resolutionScope">Scope for resolving externalized attributes, such as translation keys.</param>
+/// <param name="behaviors">Behavior extensions for this node.</param>
 /// <param name="contextAttribute">Optional attribute specifying how to resolve the context for child nodes based on
 /// this node's assigned <see cref="Context"/>.</param>
 /// <param name="floatAttribute">Optional attribute designating that the node should be a <see cref="FloatingElement"/>
@@ -34,6 +35,7 @@ public class ViewNode(
     IViewBinder viewBinder,
     SElement element,
     IResolutionScope resolutionScope,
+    ViewBehaviors behaviors,
     IAttribute? contextAttribute = null,
     IAttribute? floatAttribute = null
 ) : IViewNode
@@ -100,6 +102,7 @@ public class ViewNode(
     public void Dispose()
     {
         Reset();
+        behaviors.Dispose();
         foreach (var child in Children)
         {
             child.Dispose();
@@ -148,6 +151,7 @@ public class ViewNode(
         binding = null;
         childrenBinder = null;
         view = null;
+        behaviors.SetView(null);
         wasContextChanged = false;
     }
 
@@ -164,11 +168,13 @@ public class ViewNode(
     {
         using var _ = Trace.Begin(this, nameof(Update));
         bool wasChanged = false;
+        bool wasViewCreated = false;
         if (view is null)
         {
             view ??= viewFactory.CreateView(element.Tag);
             var viewDescriptor = viewBinder.GetDescriptor(view);
             childrenBinder = ReflectionChildrenBinder.FromViewDescriptor(viewDescriptor);
+            wasViewCreated = true;
         }
         bool wasChildContextChanged = false;
         if (wasContextChanged)
@@ -220,6 +226,14 @@ public class ViewNode(
             binding = viewBinder.Bind(view, element, context, resolutionScope);
             wasChanged = true;
         }
+        if (wasViewCreated)
+        {
+            behaviors.SetView(view);
+        }
+        if (wasContextChanged)
+        {
+            behaviors.SetContext(context);
+        }
         if (childContextSource is not null)
         {
             wasChildContextChanged |= childContextSource.Update();
@@ -255,6 +269,7 @@ public class ViewNode(
             UpdateViewChildren();
             wasChanged = true;
         }
+        behaviors.Update(elapsed);
         wasContextChanged = false;
         return wasChanged;
     }

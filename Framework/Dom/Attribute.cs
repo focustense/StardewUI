@@ -49,6 +49,10 @@ public interface IAttribute
         {
             sb.Append('*');
         }
+        else if (Type == AttributeType.Behavior)
+        {
+            sb.Append('+');
+        }
         sb.Append(Name);
         sb.Append('=');
         var (openChars, closeChars) = GetValueTypePair(ValueType);
