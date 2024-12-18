@@ -25,6 +25,24 @@ public interface IAttributeBinding : IDisposable
     BindingDirection Direction { get; }
 
     /// <summary>
+    /// Gets the current value bound for this attribute, regardless of the view's actual value.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This method performs conversion (if necessary) from the source type to the destination type, but does not look
+    /// at the destination view itself. It can be used to determine what the view's value "should be", which is part of
+    /// the behavior system.
+    /// </para>
+    /// <para>
+    /// Alternatively, this can be thought of as the value that the view would have after calling
+    /// <see cref="UpdateView"/> with the <c>force</c> argument set to <c>true</c>.
+    /// </para>
+    /// </remarks>
+    /// <returns>The currently bound value, or <c>null</c> if the value does not exist or cannot be determined, for
+    /// example in the case of an <see cref="Grammar.AttributeValueType.OutputBinding"/>.</returns>
+    object? GetBoundValue();
+
+    /// <summary>
     /// Updates the source to match the view's current value.
     /// </summary>
     /// <remarks>

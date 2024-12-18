@@ -7,10 +7,15 @@
 /// are considered after the standard behavior names.</param>
 internal class RootBehaviorFactory(IEnumerable<IBehaviorFactory> addonFactories) : IBehaviorFactory
 {
+    private readonly IBehaviorFactory[] defaultFactories = [];
+
     /// <inheritdoc />
-    public IViewBehavior CreateBehavior(string name, string argument)
+    public IViewBehavior CreateBehavior(Type viewType, string name, string argument)
     {
-        return addonFactories.FirstOrDefault(factory => factory.SupportsName(name))?.CreateBehavior(name, argument)
+        return defaultFactories
+                .Concat(addonFactories)
+                .FirstOrDefault(factory => factory.SupportsName(name))
+                ?.CreateBehavior(viewType, name, argument)
             ?? throw new ArgumentException($"Unsupported behavior name: {name}", nameof(name));
     }
 

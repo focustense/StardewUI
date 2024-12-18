@@ -8,6 +8,15 @@ namespace StardewUI.Framework.Binding;
 public interface IViewBinding : IDisposable
 {
     /// <summary>
+    /// The specific attributes bound for the attached view.
+    /// </summary>
+    /// <remarks>
+    /// Per-attribute updates are encapsulated in the <see cref="Update"/> method, so this is normally only needed for
+    /// inspecting the state of bindings, e.g. to build a <see cref="BoundViewDefaults"/> instance.
+    /// </remarks>
+    IReadOnlyList<IAttributeBinding> Attributes { get; }
+
+    /// <summary>
     /// Updates the view, including all bound attributes.
     /// </summary>
     /// <returns><c>true</c> if any updates were performed; <c>false</c> if there was no update due to having no
@@ -21,6 +30,8 @@ public interface IViewBinding : IDisposable
 /// </summary>
 internal class ViewBinding : IViewBinding
 {
+    public IReadOnlyList<IAttributeBinding> Attributes => attributeBindings;
+
     private readonly IReadOnlyList<IAttributeBinding> attributeBindings;
     private readonly IReadOnlyList<IEventBinding> eventBindings;
     private readonly HashSet<string> viewPropertiesChanged = [];
