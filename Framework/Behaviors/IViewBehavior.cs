@@ -15,11 +15,6 @@ public interface IViewBehavior : IDisposable
     Type DataType { get; }
 
     /// <summary>
-    /// The type of view that the behavior accepts in <see cref="SetView(IView)"/>.
-    /// </summary>
-    Type ViewType { get; }
-
-    /// <summary>
     /// Checks whether the behavior is allowed to <see cref="Update"/>.
     /// </summary>
     /// <remarks>
@@ -30,16 +25,20 @@ public interface IViewBehavior : IDisposable
     bool CanUpdate();
 
     /// <summary>
+    /// Initializes the target (view, state overrides, etc.) for the behavior.
+    /// </summary>
+    /// <remarks>
+    /// The framework guarantees that <see cref="Update"/> will never be called before <c>Initialize</c>, so views may
+    /// be implemented with default parameterless constructors and perform initialization in this method.
+    /// </remarks>
+    /// <param name="target">The target of the behavior.</param>
+    void Initialize(BehaviorTarget target);
+
+    /// <summary>
     /// Updates the behavior's current data.
     /// </summary>
     /// <param name="data">The new data.</param>
     void SetData(object? data);
-
-    /// <summary>
-    /// Updates the behavior's attached view.
-    /// </summary>
-    /// <param name="view">The new view.</param>
-    void SetView(IView? view);
 
     /// <summary>
     /// Runs on every update tick.

@@ -2391,7 +2391,7 @@ public partial class BindingTests
         // This is very much a simplified test implementation that isn't meant to resemble the real thing.
         // A real behavior would have to be a lot more careful about the text being changed *after* attaching, and be
         // able to revert to the "most recent" view properties prior to the behavior actually taking effect.
-        protected override void OnAttach(Label view)
+        protected override void OnInitialize()
         {
             originalText = View.Text;
         }

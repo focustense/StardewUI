@@ -31,10 +31,15 @@ public class ViewBehaviors(
         public IViewBehavior? Behavior { get; set; }
         public IValueSource? DataSource { get; set; }
 
-        public void Dispose()
+        public void Detach()
         {
             Behavior?.Dispose();
             Behavior = null;
+        }
+
+        public void Dispose()
+        {
+            Detach();
             DataSource = null;
             GC.SuppressFinalize(this);
         }
@@ -43,7 +48,7 @@ public class ViewBehaviors(
     private readonly List<Binding> bindings = behaviorAttributes.Select(attr => new Binding(attr)).ToList();
 
     private BindingContext? context;
-    private bool hasAttachedView;
+    private bool hasTarget;
 
     /// <inheritdoc />
     public void Dispose()
@@ -53,7 +58,7 @@ public class ViewBehaviors(
             binding.Dispose();
         }
         context = null;
-        hasAttachedView = false;
+        hasTarget = false;
         GC.SuppressFinalize(this);
     }
 
@@ -74,23 +79,29 @@ public class ViewBehaviors(
     }
 
     /// <summary>
-    /// Updates the attached view for all managed behaviors.
+    /// Updates the attached target (view and state) for all managed behaviors.
     /// </summary>
     /// <remarks>
-    /// Most behaviors will not run unless a view is attached.
+    /// If the target is <c>null</c> then all behaviors will be disabled/removed.
     /// </remarks>
-    /// <param name="view">The attached view.</param>
-    public void SetView(IView? view)
+    /// <param name="target">The new behavior target, or <c>null</c> to remove behaviors.</param>
+    public void SetTarget(BehaviorTarget? target)
     {
-        hasAttachedView = view is not null;
+        hasTarget = target is not null;
         foreach (var binding in bindings)
         {
             if (binding.Behavior is null)
             {
-                binding.Behavior = CreateBehavior(binding.Attribute);
+                if (target is null)
+                {
+                    binding.Detach();
+                }
+                else
+                {
+                    binding.Behavior = CreateBehavior(target, binding.Attribute);
+                }
                 UpdateDataSource(binding);
             }
-            binding.Behavior.SetView(view);
         }
     }
 
@@ -100,7 +111,7 @@ public class ViewBehaviors(
     /// <param name="elapsed">Time elapsed since last tick.</param>
     public void Update(TimeSpan elapsed)
     {
-        if (!hasAttachedView)
+        if (!hasTarget)
         {
             return;
         }
@@ -121,14 +132,16 @@ public class ViewBehaviors(
         }
     }
 
-    private IViewBehavior CreateBehavior(IAttribute attribute)
+    private IViewBehavior CreateBehavior(BehaviorTarget target, IAttribute attribute)
     {
         var argumentIndex = attribute.Name.IndexOf(':');
         var (name, argument) =
             argumentIndex >= 0
                 ? (attribute.Name[..argumentIndex], attribute.Name[(argumentIndex + 1)..])
                 : (attribute.Name, "");
-        return behaviorFactory.CreateBehavior(name, argument);
+        var behavior = behaviorFactory.CreateBehavior(target.View.GetType(), name, argument);
+        behavior.Initialize(target);
+        return behavior;
     }
 
     private void UpdateDataSource(Binding binding)

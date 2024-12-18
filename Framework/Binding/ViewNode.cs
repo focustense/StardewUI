@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;
+using StardewUI.Framework.Behaviors;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Descriptors;
@@ -87,6 +88,8 @@ public class ViewNode(
         ReflectionChildrenBinder.Warmup<TView>();
     }
 
+    private static readonly ConcurrentDictionary<string, IViewDefaults> viewDefaultsByTag = [];
+
     private IViewBinding? binding;
     private IValueSource? childContextSource;
     private IReadOnlyList<IViewNode.Child> children = [];
@@ -96,6 +99,7 @@ public class ViewNode(
     private FloatingElement? floatingElement;
     private IValueSource<FloatingPosition>? floatingPositionSource;
     private IView? view;
+    private IViewState? viewState;
     private bool wasContextChanged;
 
     /// <inheritdoc />
@@ -151,7 +155,7 @@ public class ViewNode(
         binding = null;
         childrenBinder = null;
         view = null;
-        behaviors.SetView(null);
+        behaviors.SetTarget(null);
         wasContextChanged = false;
     }
 
@@ -169,10 +173,11 @@ public class ViewNode(
         using var _ = Trace.Begin(this, nameof(Update));
         bool wasChanged = false;
         bool wasViewCreated = false;
+        IViewDescriptor? viewDescriptor = null;
         if (view is null)
         {
-            view ??= viewFactory.CreateView(element.Tag);
-            var viewDescriptor = viewBinder.GetDescriptor(view);
+            view = viewFactory.CreateView(element.Tag);
+            viewDescriptor = viewBinder.GetDescriptor(view);
             childrenBinder = ReflectionChildrenBinder.FromViewDescriptor(viewDescriptor);
             wasViewCreated = true;
         }
@@ -224,11 +229,20 @@ public class ViewNode(
         {
             // Don't require explicit update because IViewBinder.Bind always does an initial forced update.
             binding = viewBinder.Bind(view, element, context, resolutionScope);
+            // N.B. This intentionally makes a second call to viewFactory.CreateView instead of using the `view`.
+            // The instance provided to ReferenceViewDefaults should be effectively read-only.
+            var tagViewDefaults = viewDefaultsByTag.GetOrAdd(
+                element.Tag,
+                _ => new ReferenceViewDefaults(viewFactory.CreateView(element.Tag))
+            );
+            var boundViewDefaults = new BoundViewDefaults(tagViewDefaults, binding.Attributes);
+            viewDescriptor ??= viewBinder.GetDescriptor(view);
+            viewState = new ViewState(viewDescriptor, boundViewDefaults);
             wasChanged = true;
         }
         if (wasViewCreated)
         {
-            behaviors.SetView(view);
+            behaviors.SetTarget(new(view, viewState!));
         }
         if (wasContextChanged)
         {
@@ -270,6 +284,7 @@ public class ViewNode(
             wasChanged = true;
         }
         behaviors.Update(elapsed);
+        viewState?.Write(view);
         wasContextChanged = false;
         return wasChanged;
     }

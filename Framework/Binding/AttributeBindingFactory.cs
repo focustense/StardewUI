@@ -52,85 +52,97 @@ public class AttributeBindingFactory(
         IResolutionScope resolutionScope
     );
 
-    record AttributeBinding<TSource, TDest>(
-        IValueSource<TSource> Source,
-        IValueConverter<TSource, TDest> InputConverter,
-        IValueConverter<TDest, TSource> OutputConverter,
-        IPropertyDescriptor<TDest> Destination,
-        BindingDirection Direction
+    class AttributeBinding<TSource, TDest>(
+        IValueSource<TSource> source,
+        IValueConverter<TSource, TDest> inputConverter,
+        IValueConverter<TDest, TSource> outputConverter,
+        IPropertyDescriptor<TDest> destination,
+        BindingDirection direction
     ) : IAttributeBinding, IDisposable
     {
-        public string DestinationPropertyName => Destination.Name;
+        public string DestinationPropertyName => destination.Name;
+
+        public BindingDirection Direction => direction;
+
+        private TDest? lastBoundValue;
 
         public void Dispose()
         {
-            if (Source is IDisposable sourceDisposable)
+            if (source is IDisposable sourceDisposable)
             {
                 sourceDisposable.Dispose();
             }
-            if (InputConverter is IDisposable inputConverterDisposable)
+            if (inputConverter is IDisposable inputConverterDisposable)
             {
                 inputConverterDisposable.Dispose();
             }
-            if (OutputConverter is IDisposable outputConverterDisposable)
+            if (outputConverter is IDisposable outputConverterDisposable)
             {
                 outputConverterDisposable.Dispose();
             }
             GC.SuppressFinalize(this);
         }
 
+        public object? GetBoundValue()
+        {
+            return lastBoundValue;
+        }
+
         public void UpdateSource(IView target)
         {
             using var _ = Trace.Begin(this, nameof(UpdateSource));
-            if (!Destination.CanRead)
+            if (!destination.CanRead)
             {
                 throw new BindingException(
-                    $"Cannot read value from non-readable property {Destination.DeclaringType.Name}."
-                        + $"{Destination.Name} for writing back to {Source.DisplayName}."
+                    $"Cannot read value from non-readable property {destination.DeclaringType.Name}."
+                        + $"{destination.Name} for writing back to {source.DisplayName}."
                 );
             }
-            if (!Source.CanWrite)
+            if (!source.CanWrite)
             {
-                throw new BindingException($"Cannot write a value back to non-writable source {Source.DisplayName}.");
+                throw new BindingException($"Cannot write a value back to non-writable source {source.DisplayName}.");
             }
-            var destValue = Destination.GetValue(target);
+            var destValue = destination.GetValue(target);
+            lastBoundValue = destValue;
             if (destValue is not null)
             {
-                Source.Value = OutputConverter.Convert(destValue);
+                source.Value = outputConverter.Convert(destValue);
             }
             else
             {
-                Source.Value = default;
+                source.Value = default;
             }
         }
 
         public bool UpdateView(IView target, bool force)
         {
             using var _ = Trace.Begin(this, nameof(UpdateView));
-            if (!Source.CanRead)
+            if (!source.CanRead)
             {
-                throw new BindingException($"Cannot read a value from non-readable source {Source.DisplayName}.");
+                throw new BindingException($"Cannot read a value from non-readable source {source.DisplayName}.");
             }
-            if (!Destination.CanWrite)
+            if (!destination.CanWrite)
             {
                 throw new BindingException(
                     $"Cannot write a value to non-writable property "
-                        + $"{Destination.DeclaringType.Name}.{Destination.Name}."
+                        + $"{destination.DeclaringType.Name}.{destination.Name}."
                 );
             }
-            var previousValue = Source.Value;
-            if (!(Source.Update() || force))
+            var previousValue = source.Value;
+            if (!(source.Update() || force))
             {
                 return false;
             }
-            if (Source.Value is not null)
+            if (source.Value is not null)
             {
-                var destValue = InputConverter.Convert(Source.Value);
-                Destination.SetValue(target, destValue);
+                var destValue = inputConverter.Convert(source.Value);
+                destination.SetValue(target, destValue);
+                lastBoundValue = destValue;
             }
             else
             {
-                Destination.SetValue(target, default!);
+                destination.SetValue(target, default!);
+                lastBoundValue = default;
             }
             return true;
         }

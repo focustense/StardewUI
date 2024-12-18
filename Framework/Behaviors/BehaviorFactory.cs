@@ -5,16 +5,33 @@
 /// </summary>
 public class BehaviorFactory : IBehaviorFactory
 {
+    private readonly List<IBehaviorFactory> delegateFactories = [];
+
     private readonly Dictionary<string, Func<string, IViewBehavior>> nameFactories = new(
         StringComparer.OrdinalIgnoreCase
     );
 
-    /// <inheritdoc />
-    public IViewBehavior CreateBehavior(string name, string argument)
+    /// <summary>
+    /// Adds a new delegate factory which this factory will be allowed to use as a fallback for any behavior names not
+    /// handled directly.
+    /// </summary>
+    /// <param name="factory">The delegate factory.</param>
+    public void Add(IBehaviorFactory factory)
     {
-        return nameFactories.TryGetValue(name, out var factory)
-            ? factory(argument)
-            : throw new ArgumentException($"Unsupported behavior type: {name}", nameof(name));
+        delegateFactories.Add(factory);
+    }
+
+    /// <inheritdoc />
+    public IViewBehavior CreateBehavior(Type viewType, string name, string argument)
+    {
+        if (nameFactories.TryGetValue(name, out var factory))
+        {
+            return factory(argument);
+        }
+        return delegateFactories
+                .Where(factory => factory.SupportsName(name))
+                .Select(factory => factory.CreateBehavior(viewType, name, argument))
+                .FirstOrDefault() ?? throw new ArgumentException($"Unsupported behavior type: {name}", nameof(name));
     }
 
     /// <summary>
@@ -45,6 +62,6 @@ public class BehaviorFactory : IBehaviorFactory
     /// <inheritdoc />
     public bool SupportsName(string name)
     {
-        return nameFactories.ContainsKey(name);
+        return nameFactories.ContainsKey(name) || delegateFactories.Any(factory => factory.SupportsName(name));
     }
 }
