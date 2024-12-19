@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Animation;
 using StardewUI.Data;
 using StardewUI.Layout;
 using StardewUI.Widgets;
@@ -45,6 +46,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
 
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
+        TryRegister<string, Easing>(Easings.Parse);
         TryRegister<string, Edges>(Edges.Parse);
         TryRegister<string, FloatingPosition>(FloatingPosition.Parse);
         TryRegister<string, GridItemLayout>(GridItemLayout.Parse);
@@ -54,6 +56,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new PointConverter());
         TryRegister(new RectangleConverter());
         TryRegister(new TransformConverter());
+        TryRegister<string, Transition>(Transition.Parse);
         TryRegister(new Vector2Converter());
 
         // Edges are better to bind as numbers, so we can use tuples and XNA equivalents in some cases.

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace StardewUI.Framework.Behaviors;
 
@@ -15,12 +16,17 @@ namespace StardewUI.Framework.Behaviors;
 /// lists but, similar to removals, may be inefficient for very large ones.
 /// </remarks>
 /// <typeparam name="T">The property value type.</typeparam>
-public class PropertyStateList<T> : IPropertyStates<T>
+public class PropertyStateList<T> : IPropertyStates<T>, IReadOnlyList<KeyValuePair<string, T>>
 {
     class Entry(string stateName, T initialValue)
     {
         public string StateName { get; } = stateName;
         public T Value { get; set; } = initialValue;
+
+        public KeyValuePair<string, T> AsKeyValuePair()
+        {
+            return new(StateName, Value);
+        }
 
         public bool IsNamed(string stateName)
         {
@@ -28,7 +34,19 @@ public class PropertyStateList<T> : IPropertyStates<T>
         }
     }
 
+    /// <inheritdoc />
+    public int Count => entries.Count;
+
+    /// <inheritdoc />
+    public KeyValuePair<string, T> this[int index] => entries[index].AsKeyValuePair();
+
     private readonly List<Entry> entries = [];
+
+    /// <inheritdoc />
+    public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
+    {
+        return entries.Select(entry => entry.AsKeyValuePair()).GetEnumerator();
+    }
 
     /// <inheritdoc />
     public void Push(string stateName, T value)
@@ -70,5 +88,10 @@ public class PropertyStateList<T> : IPropertyStates<T>
         }
         value = default;
         return false;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

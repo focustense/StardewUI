@@ -18,7 +18,7 @@ namespace StardewUI.Framework.Behaviors;
 /// </para>
 /// </remarks>
 /// <typeparam name="T">The property value type.</typeparam>
-public interface IPropertyStates<T>
+public interface IPropertyStates<T> : IEnumerable<KeyValuePair<string, T>>
 {
     /// <summary>
     /// Pushes a new state to the top of the stack, making it the active override.

@@ -7,7 +7,7 @@
 /// are considered after the standard behavior names.</param>
 internal class RootBehaviorFactory(IEnumerable<IBehaviorFactory> addonFactories) : IBehaviorFactory
 {
-    private readonly IBehaviorFactory[] defaultFactories = [];
+    private readonly IBehaviorFactory[] defaultFactories = [new StateBehaviorFactory()];
 
     /// <inheritdoc />
     public IViewBehavior CreateBehavior(Type viewType, string name, string argument)

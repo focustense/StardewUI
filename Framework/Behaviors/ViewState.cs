@@ -13,6 +13,12 @@ public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefault
     private readonly Dictionary<string, IPropertyEntry> properties = new(StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc />
+    public T GetDefaultValue<T>(string propertyName)
+    {
+        return viewDefaults.GetDefaultValue<T>(propertyName);
+    }
+
+    /// <inheritdoc />
     public IPropertyStates<T> GetOrAddProperty<T>(string propertyName)
     {
         if (!properties.TryGetValue(propertyName, out var entry))
