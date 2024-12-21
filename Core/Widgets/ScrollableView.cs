@@ -131,7 +131,7 @@ public partial class ScrollableView : ComponentView<ScrollContainer>, IFloatCont
         var container = new ScrollContainer() { Peeking = 16, ScrollStep = 64 };
         scrollbar = new Scrollbar()
         {
-            Layout = new() { Width = Length.Px(32), Height = Length.Stretch() },
+            Layout = new() { Height = Length.Stretch() },
             Margin = new(Left: 32, Bottom: -8),
             Container = container,
         };
