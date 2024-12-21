@@ -25,6 +25,9 @@ public class StateBehaviorFactory : IBehaviorFactory
     private static readonly MethodInfo CreateTransitionBehaviorMethod = GetFactoryMethod(
         nameof(CreateTransitionBehavior)
     )!;
+    private static readonly MethodInfo CreateVisibilityBehaviorMethod = GetFactoryMethod(
+        nameof(CreateVisibilityBehavior)
+    )!;
 
     private static readonly ConcurrentDictionary<BehaviorPropertyKey, BehaviorCreator> creatorsByProperty = [];
     private static readonly ConcurrentDictionary<BehaviorViewKey, BehaviorCreator> creatorsByViewArg = [];
@@ -60,6 +63,7 @@ public class StateBehaviorFactory : IBehaviorFactory
     {
         // Keep in sync with GetCreatorDelegate.
         return name.Equals("hover", StringComparison.OrdinalIgnoreCase)
+            || name.Equals("show", StringComparison.OrdinalIgnoreCase)
             || name.Equals("transition", StringComparison.OrdinalIgnoreCase);
     }
 
@@ -69,6 +73,7 @@ public class StateBehaviorFactory : IBehaviorFactory
         var method = stateName.ToLowerInvariant() switch
         {
             "hover" => CreateHoverBehaviorMethod.MakeGenericMethod(valueType),
+            "show" => CreateVisibilityBehaviorMethod.MakeGenericMethod(valueType),
             "transition" => CreateTransitionBehaviorMethod.MakeGenericMethod(valueType),
             _ => throw new ArgumentException($"Unrecognized state name '{stateName}'.", nameof(stateName)),
         };
@@ -89,5 +94,10 @@ public class StateBehaviorFactory : IBehaviorFactory
                     + "does not have a defined interpolation (Lerp) function."
             );
         return new TransitionBehavior<TValue>(propertyName, lerp);
+    }
+
+    private static IViewBehavior CreateVisibilityBehavior<TValue>(string propertyName)
+    {
+        return new VisibilityStateBehavior<TValue>(propertyName);
     }
 }
