@@ -188,6 +188,22 @@ The above would cause the label to only be displayed when the condition is **`fa
 
 Negation is only allowed for specific conditional attributes, such as `*if` and `*case`. Consult the [structural attributes](#structural-attributes) table above for  the attributes that say "can be negated".
 
+### Behavior Attributes
+
+Attributes beginning with a `+` character are [Behaviors](behaviors.md), which are independent entities able to act on some view, similar to the way a C# [extension method](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods) acts on its target.
+
+The behavior system is designed to be extensible through add-ons, so unlike [structural attributes](#structural-attributes), there is not necessarily a universal list of valid behaviors. The table below covers the behaviors that are available in "vanilla" StardewUI, without any add-ons. Behaviors generally take an _argument_ in addition to their attribute value, following a `:` separator in the attribute name.
+
+/// html | div.no-code-break
+
+| Behavior | Argument | Value Type | Description |
+| --- | --- | --- | --- |
+| `hover:<arg>` | Any [regular attribute](#common-attributes) | Same as `<arg>` attribute | Changes the `<arg>` property to a new value when the pointer enters the view, and reverts it when the pointer leaves the view. |
+| `show:<arg>` | Any [regular attribute](#common-attributes) | Same as `<arg>` attribute | Changes the `<arg>` property to a new value when the view becomes visible, including when first created e.g. as the result of an `*if`; reverts it when the view is hidden. |
+| `transition:<arg>` | Any [regular attribute](#common-attributes) | [Transition](../reference/stardewui/animation/transition.md) | Applies a transition to the `<arg>` property when its value changes, causing it to animate gradually from its current value to the new value instead of changing immediately. |
+
+///
+
 ### Events
 
 Event attributes look similar to property attributes, but deal specifically with .NET [events](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/event) raised by views. More generally, they are one of the two ways it is possible for the UI to communicate something **back** to your mod (the other being [output/two-way bindings](#binding-modifiers)).
@@ -324,6 +340,7 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 |                          | `"small"` (7)                      |                                       |                                         |
 |                          | `"tiny"` (8)                       |                                       |                                         |
 | `Transform`              | See [Transforms](../library/transforms.md) | N/A                           | N/A                                     |
+| `Transition`             | `[duration] [delay] [easing]` (14) | N/A @span                             | N/A @span                               |
 | `Visibility` @span       | "Visible"                          | `bool` @span                          | N/A @span                               |
 |                          | "Hidden"                           |                                       |                                         |
 | `TooltipData` @span      | Any @span                          | `string` (text only)                  | N/A @span                               |
@@ -356,10 +373,20 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.<p>If the value ends with a `+`, the size will be expanded so that the total space used by all rows/columns is exactly equal to the grid's layout width/height.
 12.  Any `Length` (width, height or both) can have a range appended to it specifying the min and/or max, such as `50%[100..800]`, meaning "prefer 50% of container, but constrained between 100px and 800px". Use open ranges to specify only a minimum, or only a maximum.
 13.  Any of the edges (`above`, `below`, `before` or `after`) can have a `Vector2`-compatible offset appended to it, e.g. `above; 5, 8` which adds the specified offset to the computed edge position. This can be used in place of margins to add more space between floating elements and their parents.
+14.  All fields are optional, but any that are present must appear in the specified order.
+     - Duration and delay are numbers that end with either "s" (seconds) or "ms" (milliseconds), such as `1200ms` or `1.2s`.
+     - Easing can be a named function, including any of the functions on [easings.net](https://easings.net/), or a custom easing of the form `CubicBezier: x1, y1, x2, y2`. For more information on cubic béziers, refer to the [CSS reference](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier).
+     
+     Examples:
+
+     - `300ms` (defaults to linear easing, no delay)
+     - `300ms EaseOutCubic`
+     - `300ms 50ms EaseOutCubic`
+     - `EaseOutCubic` (defaults to 1 sec, no delay)
 
 If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from `string` to be used in literal attributes.
 
-### Duck Typing :material-test-tube:{ title="Experimental" }
+### Duck Typing
 
 If a particular type conversion is not in the table above, it may be available for automatic implicit conversion. See the page on [duck typing](duck-typing.md) for rules and additional information on when and how this occurs.
 
