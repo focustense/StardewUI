@@ -709,13 +709,14 @@ public abstract class View : IView, IFloatContainer
     public IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(GetChildrenAt));
-        var offset = GetContentOffset();
-        var directChildren = GetLocalChildrenAt(position - offset)
+        var contentOffset = GetContentOffset();
+        var directChildren = GetLocalChildrenAt(position - contentOffset)
             .Where(child => child.View.Visibility == Visibility.Visible);
         foreach (var child in directChildren)
         {
-            yield return child.Offset(offset);
+            yield return child.Offset(contentOffset);
         }
+        position -= GetFloatingOffset();
         foreach (var floatingElement in FloatingElements)
         {
             var floatingChild = floatingElement.AsViewChild();
@@ -1276,8 +1277,10 @@ public abstract class View : IView, IFloatContainer
 
     private IEnumerable<Bounds> GetFloatingBounds()
     {
+        var localFloatingOffset = GetFloatingOffset();
         return FloatingElements
             .SelectMany(GetFloatingElementBounds)
+            .Select(bounds => bounds.Offset(localFloatingOffset))
             .Concat(GetChildren().SelectMany(child => child.GetFloatingBounds()));
     }
 
@@ -1285,6 +1288,11 @@ public abstract class View : IView, IFloatContainer
     {
         var floatingChild = fe.AsViewChild();
         return floatingChild.GetFloatingBounds().Prepend(floatingChild.GetActualBounds());
+    }
+
+    private Vector2 GetFloatingOffset()
+    {
+        return new Vector2(Margin.Left, Margin.Top);
     }
 
     private ViewChild? GetOrUpdateDraggingChild(Vector2 position)
