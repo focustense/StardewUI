@@ -39,7 +39,7 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
  | Name | Description |
 | --- | --- |
-| [ViewNode(IValueSourceFactory, IValueConverterFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute, IAttribute)](#viewnodeivaluesourcefactory-ivalueconverterfactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
+| [ViewNode(IValueSourceFactory, IValueConverterFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, ViewBehaviors, IAttribute, IAttribute)](#viewnodeivaluesourcefactory-ivalueconverterfactory-iviewfactory-iviewbinder-selement-iresolutionscope-viewbehaviors-iattribute-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
 
 ### Properties
 
@@ -64,12 +64,12 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
 ### Constructors
 
-#### ViewNode(IValueSourceFactory, IValueConverterFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute, IAttribute)
+#### ViewNode(IValueSourceFactory, IValueConverterFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, ViewBehaviors, IAttribute, IAttribute)
 
 Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.
 
 ```cs
-public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, StardewUI.Framework.Content.IResolutionScope resolutionScope, StardewUI.Framework.Dom.IAttribute contextAttribute, StardewUI.Framework.Dom.IAttribute floatAttribute);
+public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, StardewUI.Framework.Content.IResolutionScope resolutionScope, StardewUI.Framework.Binding.ViewBehaviors behaviors, StardewUI.Framework.Dom.IAttribute contextAttribute, StardewUI.Framework.Dom.IAttribute floatAttribute);
 ```
 
 ##### Parameters
@@ -91,6 +91,9 @@ Element data for this node.
 
 **`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
 Scope for resolving externalized attributes, such as translation keys.
+
+**`behaviors`** &nbsp; [ViewBehaviors](viewbehaviors.md)  
+Behavior extensions for this node.
 
 **`contextAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 Optional attribute specifying how to resolve the context for child nodes based on this node's assigned [Context](viewnode.md#context).

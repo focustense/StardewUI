@@ -22,6 +22,7 @@ search:
 | [PrecompiledEventDescriptor&lt;TTarget, THandler&gt;](precompiledeventdescriptor-2.md) | Statically-typed implementation of an [IEventDescriptor](ieventdescriptor.md) with predefined attributes. |
 | [PrecompiledMethodDescriptor&lt;TTarget, TReturn&gt;](precompiledmethoddescriptor-2.md) | Statically-typed implementation of an [IMethodDescriptor&lt;T&gt;](imethoddescriptor-1.md) with predefined attributes. |
 | [PrecompiledPropertyDescriptor&lt;TTarget, TProperty&gt;](precompiledpropertydescriptor-2.md) | Statically-typed implementation of an [IPropertyDescriptor&lt;T&gt;](ipropertydescriptor-1.md) with predefined attributes. |
+| [ReferenceViewDefaults](referenceviewdefaults.md) | View defaults based on a reference view. |
 | [ReflectionEventDescriptor](reflectioneventdescriptor.md) | Helper for creating [IEventDescriptor](ieventdescriptor.md) instances using reflection. |
 | [ReflectionEventDescriptor&lt;TTarget, THandler&gt;](reflectioneventdescriptor-2.md) | Reflection-based implementation of an event descriptor. |
 | [ReflectionFieldDescriptor&lt;TValue&gt;](reflectionfielddescriptor-1.md) | Implementation of a field descriptor based on reflection. |
@@ -44,5 +45,6 @@ search:
 | [IObjectDescriptor](iobjectdescriptor.md) | Describes a type of object that participates in view binding, either as the target or the source. |
 | [IPropertyDescriptor](ipropertydescriptor.md) | Describes a single property on a bindable object (i.e. a view). |
 | [IPropertyDescriptor&lt;T&gt;](ipropertydescriptor-1.md) | Describes a single property on a bindable object (i.e. a view) and provides methods to read or write the value. |
+| [IViewDefaults](iviewdefaults.md) | Provides access to the default values of a view's properties. |
 | [IViewDescriptor](iviewdescriptor.md) | Describes a type of view that can be used in a view binding. |
 

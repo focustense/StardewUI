@@ -40,7 +40,7 @@ public enum TokenType
 | <a id="selfclosingtagend">SelfClosingTagEnd</a> | 4 | End of a self-closing tag, i.e. the `/>` character sequence. | 
 | <a id="name">Name</a> | 5 | A valid name, i.e. of an element (tag) or attribute. | 
 | <a id="nameseparator">NameSeparator</a> | 6 | The dot (`.`) character used to separate components of a name. | 
-| <a id="attributemodifier">AttributeModifier</a> | 7 | Modifier token designating the type of an attribute; the `*` character (structural). | 
+| <a id="attributemodifier">AttributeModifier</a> | 7 | Modifier token designating the type of an attribute; the `*` character (structural) or `+` (behavior). | 
 | <a id="literal">Literal</a> | 8 | A string of literal text, as found within a quoted or bound attribute. | 
 | <a id="assignment">Assignment</a> | 9 | The `=` character, as used in an attribute syntax such as `attr="value"`. | 
 | <a id="negation">Negation</a> | 10 | The `!` character, sometimes used to negate the value of an attribute, e.g. for conditional attributes. | 

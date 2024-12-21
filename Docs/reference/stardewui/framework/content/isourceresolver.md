@@ -51,7 +51,7 @@ bool TryGetProvidingModId(StardewUI.Framework.Dom.Document document, out System.
 **`document`** &nbsp; [Document](../dom/document.md)  
 The markup document.
 
-**`modId`** &nbsp; [String](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+**`modId`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
 Holds the `StardewModdingAPI.IManifest.UniqueID` of the originating mod, if the method returns `true`, otherwise `null`.
 
 ##### Returns
