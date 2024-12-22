@@ -279,7 +279,6 @@ public partial class NineGridPlacementEditor : View
             Placement = overlay.ContentPlacement;
         }
         overlay = null;
-        isHovering = false;
     }
 
     private Color Tint(Color color)
