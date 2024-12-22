@@ -503,7 +503,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 OnPageable(p => p.NextPage());
                 break;
             case SButton.ControllerB:
-                if (ShouldForceCloseOnMenuButton())
+                if (ShouldForceCloseOnMenuButton() && overlayContext.Pop() is null)
                 {
                     Close();
                 }
@@ -525,12 +525,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             return;
         }
         var action = ButtonResolver.GetButtonAction(realButton);
-        if (action == ButtonAction.Cancel && overlayContext.Pop() is not null)
+        // Key presses "fall through" from receiveGamepadButton. Both handlers are invoked, first gamepad and then
+        // keyboard, the latter with the "mapped" key. Here we try to dedupe it and skip actions that would have already
+        // been performed in the gamepad handler.
+        var isController = realButton.TryGetController(out var _);
+        if (
+            action == ButtonAction.Cancel
+            // This intentionally skips the entire keyboard event, and not just the overlay pop, if it "should have"
+            // been handled by the gamepad event. Some follow-up logic is probably wrong to do even when there is no
+            // active overlay.
+            && ((isController && ShouldForceCloseOnMenuButton()) || overlayContext.Pop() is not null)
+        )
         {
             return;
         }
-        // receiveGamePadButton also initiates this, so ignore it if it appears to be from a controller source.
-        var isController = realButton.TryGetController(out var _);
         if (!isController && !Game1.isAnyGamePadButtonBeingHeld())
         {
             InitiateButtonPress(realButton);
