@@ -252,9 +252,12 @@ internal static class DescriptorCodeGenerator
             {
                 if (param.IsOptional)
                 {
-                    string defaultValueExpression = param.DefaultValue is string s
-                        ? "\"" + s + "\""
-                        : param.DefaultValue?.ToString() ?? "null";
+                    string defaultValueExpression = param.DefaultValue switch
+                    {
+                        bool b => b ? "true" : "false",
+                        string s => "\"" + s + "\"",
+                        _ => param.DefaultValue?.ToString() ?? "null",
+                    };
                     sb.AppendLine(6, defaultValueExpression + ",");
                 }
             }
