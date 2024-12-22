@@ -108,7 +108,7 @@ public partial class Lane : View
                 + $"[{nearestChild.Position}, {nearestChild.View.OuterSize}]"
         );
         var nearestResult = nearestChild.FocusSearch(contentPosition, direction);
-        var nearestTarget = nearestResult?.Target;
+        var nearestTarget = nearestResult?.AbsoluteTarget();
         if (nearestTarget is not null)
         {
             LogFocusSearch(
