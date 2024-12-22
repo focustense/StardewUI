@@ -680,9 +680,9 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
-    public ViewChild? GetChildAt(Vector2 position)
+    public ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
     {
-        return GetChildrenAt(position).ZOrderDescending().FirstOrDefault();
+        return GetChildrenAt(position).ZOrderDescending(preferFocusable).FirstOrDefault();
     }
 
     /// <inheritdoc />

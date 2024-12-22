@@ -74,6 +74,13 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private static readonly Edges DefaultGutter = new(100, 50);
 
+    // SMAPI intercepts calls to the MouseState, but only syncs it on the update tick, meaning if we call
+    // Game1.setMousePosition followed by Game1.getMousePosition in the same frame, we get the old position.
+    // As a workaround, we track this separately each frame, on the assumption that it gets cleared in
+    // performHoverAction which should only run for the topmost menu (thus multiple menus won't interfere with each
+    // other).
+    private static Point? mousePositionOverride;
+
     private readonly Image closeButton = new();
 
     // For tracking activation paths, we not only want a weak table for the overlay itself (to prevent overlays from
@@ -86,6 +93,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly T view;
     private readonly bool wasHudDisplayed;
 
+    private ViewChild[] focusableHoverPath = [];
     private Edges? gutter;
     private ViewChild[] hoverPath = [];
     private bool isRehoverScheduled;
@@ -153,7 +161,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         using var trace = Diagnostics.Trace.Begin(this, nameof(applyMovementKey));
         using var _ = OverlayContext.PushContext(overlayContext);
         var direction = (Direction)directionValue;
-        var mousePosition = Game1.getMousePosition(true);
+        var mousePosition = GetMousePosition();
         OnViewOrOverlay(
             (view, origin) =>
             {
@@ -297,7 +305,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             if (defaultFocusPosition.HasValue)
             {
                 var overlayData = GetOverlayLayoutData(frontOverlay);
-                Game1.setMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint(), true);
+                SetMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint());
             }
         }
         justPushedOverlay = false;
@@ -407,11 +415,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void performHoverAction(int x, int y)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(performHoverAction));
+        mousePositionOverride = null;
         bool rehover = isRehoverScheduled || rehoverRequestTick.HasValue;
         if (rehover || (previousHoverPosition.X != x || previousHoverPosition.Y != y))
         {
             using var _ = OverlayContext.PushContext(overlayContext);
-            OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin, x, y));
+            OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin));
         }
 
         // We use two flags for this in order to repeat the re-hover after one frame, because (a) input events won't
@@ -751,12 +760,17 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             nextMousePosition -= distance.ToPoint();
         }
-        Game1.setMousePosition(nextMousePosition, true);
+        SetMousePosition(nextMousePosition);
     }
 
     private Vector2 GetCloseButtonTranslation()
     {
         return new(view.OuterSize.X + CloseButtonOffset.X, CloseButtonOffset.Y);
+    }
+
+    private static Point GetMousePosition()
+    {
+        return mousePositionOverride ?? Game1.getMousePosition(ui_scale: true);
     }
 
     private OverlayLayoutData GetOverlayLayoutData(IOverlay overlay)
@@ -781,14 +795,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         return null;
     }
 
-    private void HandleChildMenuClosed()
+    private bool HandleChildMenuClosed()
     {
         if (!wasChildMenuAttached)
         {
-            return;
+            return false;
         }
         Refocus(allowIfLayoutUnchanged: true);
         wasChildMenuAttached = false;
+        return true;
     }
 
     private void HandleKeyboardCaptureChange()
@@ -802,7 +817,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             if (isKeyboardCaptured)
             {
-                keyboardCaptureActivationPath = hoverPath.Select(child => child.AsWeak()).ToArray();
+                keyboardCaptureActivationPath = focusableHoverPath.Select(child => child.AsWeak()).ToArray();
             }
             else if (Game1.options.gamepadControls)
             {
@@ -814,7 +829,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void InitiateButtonPress(SButton button)
     {
-        var mousePosition = Game1.getMousePosition(true);
+        var mousePosition = GetMousePosition();
         OnViewOrOverlay(
             (view, origin) =>
             {
@@ -823,7 +838,6 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 {
                     return;
                 }
-                var pathBeforeScroll = view.GetPathToPosition(localPosition).ToList();
                 var args = new ButtonEventArgs(localPosition, button);
                 view.OnButtonPress(args);
             }
@@ -875,12 +889,12 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void InitiateWheel(Direction direction)
     {
-        var mousePosition = Game1.getMousePosition(true);
+        var mousePosition = GetMousePosition();
         OnViewOrOverlay(
             (view, origin) =>
             {
                 var localPosition = mousePosition.ToVector2() - origin;
-                var pathBeforeScroll = view.GetPathToPosition(localPosition).ToList();
+                var pathBeforeScroll = view.GetPathToPosition(localPosition, preferFocusable: true).ToList();
                 var args = new WheelEventArgs(localPosition, direction);
                 view.OnWheel(args);
                 if (!args.Handled)
@@ -968,6 +982,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             RestoreFocusToOverlayActivation(overlay);
         }
+        RequestRehover();
     }
 
     private void OnPageable(Action<IPageable> action)
@@ -1011,19 +1026,31 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private void OverlayContext_Pushed(object? sender, EventArgs e)
     {
         var overlay = overlayContext.Front!;
-        overlayActivationPaths.AddOrUpdate(overlay, hoverPath.Select(child => child.AsWeak()).ToArray());
+        overlayActivationPaths.AddOrUpdate(overlay, focusableHoverPath.Select(child => child.AsWeak()).ToArray());
         overlay.Close += Overlay_Close;
         justPushedOverlay = true;
     }
 
-    private void PerformHoverAction(IView rootView, Vector2 viewPosition, int mouseX, int mouseY)
+    private void PerformHoverAction(IView rootView, Vector2 viewPosition)
     {
-        HandleChildMenuClosed();
-        var mousePosition = new Vector2(mouseX, mouseY);
-        var localPosition = mousePosition - viewPosition;
         var previousLocalPosition = previousHoverPosition.ToVector2() - viewPosition;
-        previousHoverPosition = new(mouseX, mouseY);
-        hoverPath = rootView.GetPathToPosition(localPosition).ToArray();
+        HandleChildMenuClosed();
+        var mousePosition = GetMousePosition();
+        var localPosition = mousePosition.ToVector2() - viewPosition;
+        var previousFocusableHoverPath = focusableHoverPath;
+        SetHoverPath(rootView, localPosition);
+        if (Game1.options.gamepadControls && focusableHoverPath.Length == 0)
+        {
+            Refocus(rootView, viewPosition, previousHoverPosition.ToVector2(), previousFocusableHoverPath, null);
+            var newMousePosition = GetMousePosition();
+            if (newMousePosition != mousePosition)
+            {
+                mousePosition = newMousePosition;
+                localPosition = mousePosition.ToVector2() - viewPosition;
+                SetHoverPath(rootView, localPosition);
+            }
+        }
+        previousHoverPosition = mousePosition;
         var args = new PointerMoveEventArgs(previousLocalPosition, localPosition);
         rootView.OnPointerMove(args);
         if (!args.Handled && hoverPath.Length == 0 && view.Equals(rootView) && closeButton.Sprite is not null)
@@ -1040,16 +1067,19 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void Refocus(Direction? searchDirection = null, bool allowIfLayoutUnchanged = false)
     {
-        if (hoverPath.Length == 0 || !Game1.options.gamepadControls)
+        if (!Game1.options.gamepadControls)
         {
             return;
         }
-        var previousLeaf = hoverPath.FocusablePath().ToGlobalPositions().Last();
+        var previousLeaf = focusableHoverPath.ToGlobalPositions().LastOrDefault();
+        if (previousLeaf is null)
+        {
+            return;
+        }
         OnViewOrOverlay(
             (view, origin) =>
             {
-                var newLeaf = view.ResolveChildPath(hoverPath.Select(x => x.View))
-                    .FocusablePath()
+                var newLeaf = view.ResolveChildPath(focusableHoverPath.Select(x => x.View))
                     .ToGlobalPositions()
                     .LastOrDefault();
                 if (
@@ -1063,7 +1093,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                     )
                 )
                 {
-                    Refocus(view, origin, previousHoverPosition.ToVector2(), hoverPath, searchDirection);
+                    Refocus(view, origin, previousHoverPosition.ToVector2(), focusableHoverPath, searchDirection);
                 }
             }
         );
@@ -1082,18 +1112,18 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
-        var pathAfterScroll = root.ResolveChildPath(previousPath.Select(child => child.View)).FocusablePath();
+        var pathAfterScroll = root.ResolveChildPath(previousPath.FocusablePath().Select(child => child.View));
         var (targetView, bounds) = pathAfterScroll.Aggregate(
             (root as IView, bounds: Bounds.Empty),
             (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize))
         );
-        var focusedViewChild = root.GetPathToPosition(bounds.Center())
+        var focusedViewChild = root.GetPathToPosition(bounds.Center(), preferFocusable: true)
             .FocusablePath()
             .ToGlobalPositions()
             .LastOrDefault();
         if (focusedViewChild?.View == targetView)
         {
-            Game1.setMousePosition((origin + focusedViewChild.Center()).ToPoint(), true);
+            SetMousePosition((origin + focusedViewChild.Center()).ToPoint());
             return;
         }
         if (searchDirection.HasValue)
@@ -1115,7 +1145,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 ReleaseCaptureTarget();
                 var pathWithTarget = validResult.Path.Append(validResult.Target);
                 var nextMousePosition = origin + pathWithTarget.ToGlobalPositions().Last().Center();
-                Game1.setMousePosition(nextMousePosition.ToPoint(), true);
+                SetMousePosition(nextMousePosition.ToPoint());
             }
             return;
         }
@@ -1150,7 +1180,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         var defaultFocusPosition = overlay.Parent?.GetDefaultFocusPath().ToGlobalPositions().LastOrDefault()?.Center();
         if (defaultFocusPosition.HasValue)
         {
-            Game1.setMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint(), true);
+            SetMousePosition((overlayData.Position + defaultFocusPosition.Value).ToPoint());
         }
     }
 
@@ -1166,8 +1196,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             var rootPosition = GetRootViewPosition(strongActivationPath[0]!.View);
             if (rootPosition is not null)
             {
-                var position = strongActivationPath!.ToGlobalPositions().Last().Center();
-                Game1.setMousePosition((rootPosition.Value + position).ToPoint(), true);
+                var localPosition = strongActivationPath!.ToGlobalPositions().Last().Center();
+                var mousePosition = (rootPosition.Value + localPosition).ToPoint();
+                SetMousePosition(mousePosition);
+                using var _ = OverlayContext.PushContext(overlayContext);
+                OnViewOrOverlay((view, origin) => PerformHoverAction(view, origin));
                 return true;
             }
         }
@@ -1180,10 +1213,22 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         if (focusPosition.HasValue)
         {
             var nextMousePosition = origin + focusPosition.Value;
-            Game1.setMousePosition(nextMousePosition.ToPoint(), true);
+            SetMousePosition(nextMousePosition.ToPoint());
             return true;
         }
         return false;
+    }
+
+    private void SetHoverPath(IView rootView, Vector2 localPosition)
+    {
+        hoverPath = rootView.GetPathToPosition(localPosition).ToArray();
+        focusableHoverPath = rootView.GetPathToPosition(localPosition, preferFocusable: true).FocusablePath().ToArray();
+    }
+
+    private static void SetMousePosition(Point mousePosition)
+    {
+        Game1.setMousePosition(mousePosition, ui_scale: true);
+        mousePositionOverride = mousePosition;
     }
 
     private bool ShouldForceCloseOnMenuButton()
