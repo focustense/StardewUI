@@ -207,10 +207,6 @@ internal sealed class ModEntry : Mod
                 {
                     viewMenu.receiveKeyPress(key);
                 }
-                else if (button.TryGetController(out var controllerButton))
-                {
-                    viewMenu.receiveGamePadButton(controllerButton);
-                }
             }
         }
     }
