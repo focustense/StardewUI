@@ -21,18 +21,18 @@
             </form-row>
             <form-row title={#Example.Form.PetType.Title}>
                 <dropdown option-min-width="200"
-                          options={PetTypes}
-                          selected-option={SelectedPetType} />
+                          options={:PetTypes}
+                          selected-option={<>SelectedPetType} />
             </form-row>
             <form-row title={#Example.Form.TomatoType.Title}>
                 <dropdown option-min-width="200"
-                          options={TomatoTypes}
-                          selected-option={SelectedTomatoType} />
+                          options={:TomatoTypes}
+                          selected-option={<>SelectedTomatoType} />
             </form-row>
             
             <form-heading text={#Example.Form.UI.Heading} />
             <form-row title={#Example.Form.ColorTheme.Title}>
-                <theme-picker *repeat={Themes} />
+                <theme-picker *repeat={:Themes} />
             </form-row>
             <form-row title={#Example.Form.Opacity.Title}>
                 <slider track-width="240"
@@ -40,7 +40,7 @@
                         max="1"
                         interval="0.05"
                         value={<>Opacity}
-                        value-format={FormatOpacity} />
+                        value-format={:FormatOpacity} />
             </form-row>
             <form-row title={#Example.Form.Keybind.Title}>
                 <keybind-editor button-height="64"
@@ -92,7 +92,7 @@
                fit="stretch"
                margin="8"
                sprite={@Mods/StardewUI/Sprites/White}
-               tint={Color}
+               tint={:Color}
                focusable="true"
                left-click=|^SetTheme(this)| />
         <image *if={Selected}
