@@ -38,7 +38,7 @@ public class ViewNodeFactory : StardewUI.Framework.Binding.IViewNodeFactory
 
  | Name | Description |
 | --- | --- |
-| [ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)](#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory) | Default in-game view engine. | 
+| [ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory, IBehaviorFactory)](#viewnodefactoryiviewfactory-ivaluesourcefactory-ivalueconverterfactory-iviewbinder-iassetcache-iresolutionscopefactory-ibehaviorfactory) | Default in-game view engine. | 
 
 ### Methods
 
@@ -51,12 +51,12 @@ public class ViewNodeFactory : StardewUI.Framework.Binding.IViewNodeFactory
 
 ### Constructors
 
-#### ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory)
+#### ViewNodeFactory(IViewFactory, IValueSourceFactory, IValueConverterFactory, IViewBinder, IAssetCache, IResolutionScopeFactory, IBehaviorFactory)
 
 Default in-game view engine.
 
 ```cs
-public ViewNodeFactory(StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Content.IAssetCache assetCache, StardewUI.Framework.Content.IResolutionScopeFactory resolutionScopeFactory);
+public ViewNodeFactory(StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Content.IAssetCache assetCache, StardewUI.Framework.Content.IResolutionScopeFactory resolutionScopeFactory, StardewUI.Framework.Behaviors.IBehaviorFactory behaviorFactory);
 ```
 
 ##### Parameters
@@ -78,6 +78,9 @@ Cache for obtaining document assets. Used for included views.
 
 **`resolutionScopeFactory`** &nbsp; [IResolutionScopeFactory](../content/iresolutionscopefactory.md)  
 Factory for creating [IResolutionScope](../content/iresolutionscope.md) instances responsible for resolving external symbols such as translation keys.
+
+**`behaviorFactory`** &nbsp; [IBehaviorFactory](../behaviors/ibehaviorfactory.md)  
+Factory for creating behavior extensions.
 
 -----
 

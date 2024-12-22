@@ -29,6 +29,12 @@ public class HoverStateBehavior<TValue>(string propertyName) : ViewBehavior<IVie
         View.PointerLeave += View_PointerLeave;
     }
 
+    /// <inheritdoc />
+    protected override void OnNewData(TValue? previousData)
+    {
+        ViewState.GetProperty<TValue>(propertyName)?.Replace("hover", Data);
+    }
+
     private void View_PointerEnter(object? sender, PointerEventArgs e)
     {
         ViewState.GetOrAddProperty<TValue>(propertyName).Push("hover", Data);

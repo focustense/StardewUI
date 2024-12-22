@@ -2,7 +2,7 @@
 title: Duck Typing
 ---
 
-# Duck Typing :material-test-tube:{ title="Experimental" }
+# Duck Typing
 
 When attempting a [data type conversion](starml.md#type-conversions) and no explicit conversion is available, StardewUI will attempt a [duck typing](https://en.wikipedia.org/wiki/Duck_typing) conversion, allowing you to provide your own data types in your [context](binding-context.md) data that have no direct knowledge of (or dependency on) StardewUI's internal types but simply have the same or similar structure.
 
@@ -38,7 +38,7 @@ All of the following conversions to `Edges` will succeed:
 === ":material-check-bold: Identical"
 
     !!! success "Valid"
-
+    
         ```cs
         public record MyEdges(int Left, int Top, int Bottom, int Left);
         ```
@@ -48,23 +48,23 @@ All of the following conversions to `Edges` will succeed:
 === ":material-check-bold: Renamed"
 
     !!! success "Valid"
-
+    
         ```cs
         public struct MyEdges
         {
             [DuckProperty("Left")]
             public int X;
-
+    
             [DuckProperty("Top")]
             public int Y;
-
+    
             public int Width { get; set; }
-
+    
             public int Height { get; set; }
-
+    
             [DuckProperty("Right")]
             public int X2 => X + Width;
-
+    
             [DuckProperty("Bottom")]
             public int Y2 => Y + Height;
         }
@@ -75,7 +75,7 @@ All of the following conversions to `Edges` will succeed:
 === ":material-check-bold: Partial"
 
     !!! success "Valid"
-
+    
         ```cs
         public record MyEdges(int Left, int Right);
         ```
@@ -85,17 +85,17 @@ All of the following conversions to `Edges` will succeed:
 === ":material-check-bold: Alternate"
 
     !!! success "Valid"
-
+    
         ```cs
         public record MyEdges(int Horizontal, int Vertical);
         ```
-
+    
         Here we don't have any of the original properties, but `Edges` has a [different constructor](../reference/stardewui/layout/edges.md#edgesint-int) that does match. The converted result will be the same as if it had been created using `new Edges(Horizontal: x, Vertical: y)`.
 
 === ":material-check-bold: Convertible"
 
     !!! success "Valid"
-
+    
         ```cs
         public class MyEdges
         {
@@ -113,7 +113,7 @@ These types are _not_ allowed to be converted to `Edges`. You won't receive a sp
 === ":material-bug: Missing"
 
     !!! failure "Broken"
-
+    
         ```cs
         public record MyEdges(int Horizontal);
         ```
@@ -125,7 +125,7 @@ These types are _not_ allowed to be converted to `Edges`. You won't receive a sp
 === ":material-bug: Incompatible"
 
     !!! failure "Broken"
-
+    
         ```cs
         public record MyEdges(int Left, int Top, int Right, bool Bottom);
         ```
@@ -139,7 +139,7 @@ These types are _not_ allowed to be converted to `Edges`. You won't receive a sp
 === ":material-bug: Insufficient"
 
     !!! failure "Broken"
-
+    
         ```cs
         public class MyEdges
         {
@@ -155,7 +155,7 @@ These types are _not_ allowed to be converted to `Edges`. You won't receive a sp
 === ":material-bug: Prickly Priority"
 
     !!! failure "Broken"
-
+    
         ```cs
         public class MyEdges
         {
@@ -164,7 +164,7 @@ These types are _not_ allowed to be converted to `Edges`. You won't receive a sp
             public bool Vertical { get; set; }
         }
         ```
-
+    
         This final example is designed to be a little tricky. We have `Left`, so that should match the default constructor: `Edges(int Left = 0, int Top = 0, int Right = 0, int Bottom = 0)`, shouldn't it?
         
         Unfortunately, the existence of `Horizontal` and `Vertical` also matches a different constructor whose parameters have incompatible types. But more importantly, recalling that constructors are _matched by_ argument names and only then _validated by_ their argument types, the `Edges(int horizontal, int vertical)` constructor is considered a _better_ match here, despite ultimately proving incompatible, because it matches _more_ properties than the 4-argument version. StardewUI won't backtrack; once it decides on the best constructor, it will stick to that constructor even if some argument conversions fail.
@@ -213,7 +213,7 @@ You can use this feature to incorporate strongly-typed equivalents to enums such
         MyAlignment VerticalAlignment,
         Point Offset);
     ```
-    
+
 This type will fully convert to a `NineGridPlacement` without any additional logic.
 
 ## Reverse Conversion

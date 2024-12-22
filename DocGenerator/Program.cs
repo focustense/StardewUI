@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using LoxSmoke.DocXml;
 using StardewUI;
+using StardewUI.Framework.Behaviors;
 
 const BindingFlags visibleBindingFlags =
     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
@@ -146,6 +147,12 @@ static void AppendWithInheritance(
     }
     else if (originalMember?.DeclaringTypeOrDefinition() is Type originalType && referringType != originalType)
     {
+        // Re-acquiring the original member here helps work around some strange issues with renamed generics getting
+        // "stuck". For example if a base class is Base<TFoo>, and declares a method M(TFoo foo), and a subclass has the
+        // definition Derived<TBar> : Base<TFoo> and overrides M(TBar bar); this is of course totally valid C# but
+        // calling MethodInfo.GetBaseDefinition() doesn't revert the generic param names from "TBar" back to "TFoo".
+        // If we don't fix this, the hyperlink will be invalid.
+        originalMember = originalType.GetMemberWithSameMetadataDefinitionAs(originalMember);
         if (!string.IsNullOrWhiteSpace(text))
         {
             sb.Append("<br>");
@@ -593,6 +600,11 @@ static string FormatTypeLink(
     bool includeOuterClasses = false
 )
 {
+    if (type.IsByRef)
+    {
+        type = type.GetElementType()!;
+    }
+
     string rootNamespace = typeof(UI).Namespace!;
     if (type.IsArray)
     {

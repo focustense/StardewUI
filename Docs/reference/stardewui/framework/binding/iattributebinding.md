@@ -48,6 +48,7 @@ Encapsulates the source of the value and provides a method to update the target 
 
  | Name | Description |
 | --- | --- |
+| [GetBoundValue()](#getboundvalue) | Gets the current value bound for this attribute, regardless of the view's actual value. | 
 | [UpdateSource(IView)](#updatesourceiview) | Updates the source to match the view's current value. | 
 | [UpdateView(IView, Boolean)](#updateviewiview-bool) | Updates a target view with the most recent source value. | 
 
@@ -84,6 +85,28 @@ StardewUI.Framework.Binding.BindingDirection Direction { get; }
 -----
 
 ### Methods
+
+#### GetBoundValue()
+
+Gets the current value bound for this attribute, regardless of the view's actual value.
+
+```cs
+System.Object GetBoundValue();
+```
+
+##### Returns
+
+[Object](https://learn.microsoft.com/en-us/dotnet/api/system.object)
+
+  The currently bound value, or `null` if the value does not exist or cannot be determined, for example in the case of an [OutputBinding](../grammar/attributevaluetype.md#outputbinding).
+
+##### Remarks
+
+This method performs conversion (if necessary) from the source type to the destination type, but does not look at the destination view itself. It can be used to determine what the view's value "should be", which is part of the behavior system. 
+
+ Alternatively, this can be thought of as the value that the view would have after calling [UpdateView(IView, Boolean)](iattributebinding.md#updateviewiview-bool) with the `force` argument set to `true`.
+
+-----
 
 #### UpdateSource(IView)
 

@@ -35,4 +35,5 @@ public enum AttributeType
 | --- | --- | --- |
 | <a id="property">Property</a> | 0 | Sets or binds a property on the target view. | 
 | <a id="structural">Structural</a> | 1 | Affects the structure or hierarchy of the view tree, e.g. by making a node conditional or repeated. | 
+| <a id="behavior">Behavior</a> | 2 | Invokes a standard or custom [IViewBehavior](../behaviors/iviewbehavior.md) that attaches to the view. | 
 

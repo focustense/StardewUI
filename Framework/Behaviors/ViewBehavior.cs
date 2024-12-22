@@ -28,7 +28,10 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
             }
             var previousData = data;
             data = value;
-            OnNewData(previousData);
+            if (value is not null)
+            {
+                OnNewData(previousData);
+            }
         }
     }
 
