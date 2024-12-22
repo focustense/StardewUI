@@ -268,11 +268,14 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// Finds the child at a given position.
     /// </summary>
     /// <remarks>
-    /// If multiple children overlap the same position, then this returns the topmost child.
+    /// If multiple children overlap the same position, then this returns the topmost child, i.e. with the highest
+    /// <see cref="ZIndex"/>.
     /// </remarks>
     /// <param name="position">The search position, relative to the view's top-left coordinate.</param>
+    /// <param name="preferFocusable"><c>true</c> to prioritize a focusable child over a non-focusable child with a higher
+    /// z-index in case of overlap; <c>false</c> to always use the topmost child.</param>
     /// <returns>The view at <paramref name="position"/>, or <c>null</c> if there is no match.</returns>
-    ViewChild? GetChildAt(Vector2 position);
+    ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false);
 
     /// <summary>
     /// Computes or retrieves the position of a given direct child.
