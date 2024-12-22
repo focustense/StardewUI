@@ -242,10 +242,6 @@ public partial class KeybindListEditor : ComponentView
             return;
         }
         KeybindList = overlay.KeybindList;
-        // We generally won't receive the PointerLeave event after a full-screen overlay was open.
-        // Known issue due to dependency on recursive PointerMove, hard to resolve.
-        UpdateTint(Color.White);
-        UpdateEmptyText(EmptyTextColor);
     }
 
     private void RootLane_LeftClick(object? sender, ClickEventArgs e)
