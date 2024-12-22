@@ -90,6 +90,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private ViewChild[] hoverPath = [];
     private bool isRehoverScheduled;
     private int? rehoverRequestTick;
+    private bool wasChildMenuAttached;
 
     // When clearing the activeClickableMenu, the game will call its Dispose method BEFORE actually changing the field
     // value to null or the new menu. If a Close handler then tries to open a different menu (which is really the
@@ -123,11 +124,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
         if (forceDefaultFocus || Game1.options.gamepadControls)
         {
-            var focusPosition = view.GetDefaultFocusPath().ToGlobalPositions().LastOrDefault()?.CenterPoint();
-            if (focusPosition.HasValue)
-            {
-                Game1.setMousePosition(new Point(xPositionOnScreen, yPositionOnScreen) + focusPosition.Value, true);
-            }
+            SetDefaultFocus(view, new(xPositionOnScreen, yPositionOnScreen));
         }
 
         wasHudDisplayed = Game1.displayHUD;
@@ -242,6 +239,14 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void draw(SpriteBatch b)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(draw));
+
+        // Hack: We can't intercept the child menu assignment without a Harmony patch, and to add insult to injury,
+        // menus with child menus don't even receive Update ticks. However, they do receive draw calls, so as long as
+        // the logic is kept very simple, we can approximate the result with relatively low cost.
+        if (GetChildMenu() is not null)
+        {
+            wasChildMenuAttached = true;
+        }
 
         var viewportBounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
         if (!Game1.options.showClearBackgrounds && DimmingAmount > 0)
@@ -647,6 +652,10 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void update(GameTime time)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(update));
+        // In real event loops the child menu close detection will have already happened in performHoverAction, making
+        // this instance moot, but it is technically possible for a child menu to be opened and closed without the
+        // pointer ever having moved.
+        HandleChildMenuClosed();
         View.OnUpdate(time.ElapsedGameTime);
         foreach (var overlay in overlayContext.FrontToBack())
         {
@@ -770,6 +779,16 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             }
         }
         return null;
+    }
+
+    private void HandleChildMenuClosed()
+    {
+        if (!wasChildMenuAttached)
+        {
+            return;
+        }
+        Refocus(allowIfLayoutUnchanged: true);
+        wasChildMenuAttached = false;
     }
 
     private void HandleKeyboardCaptureChange()
@@ -999,6 +1018,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
 
     private void PerformHoverAction(IView rootView, Vector2 viewPosition, int mouseX, int mouseY)
     {
+        HandleChildMenuClosed();
         var mousePosition = new Vector2(mouseX, mouseY);
         var localPosition = mousePosition - viewPosition;
         var previousLocalPosition = previousHoverPosition.ToVector2() - viewPosition;
@@ -1018,22 +1038,28 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
-    private void Refocus(Direction searchDirection = Direction.South)
+    private void Refocus(Direction? searchDirection = null, bool allowIfLayoutUnchanged = false)
     {
-        if (hoverPath.Length == 0 || !Game1.options.gamepadControls || !Game1.options.gamepadControls)
+        if (hoverPath.Length == 0 || !Game1.options.gamepadControls)
         {
             return;
         }
-        var previousLeaf = hoverPath.ToGlobalPositions().Last();
+        var previousLeaf = hoverPath.FocusablePath().ToGlobalPositions().Last();
         OnViewOrOverlay(
             (view, origin) =>
             {
-                var newLeaf = view.ResolveChildPath(hoverPath.Select(x => x.View)).ToGlobalPositions().LastOrDefault();
+                var newLeaf = view.ResolveChildPath(hoverPath.Select(x => x.View))
+                    .FocusablePath()
+                    .ToGlobalPositions()
+                    .LastOrDefault();
                 if (
                     newLeaf?.View == previousLeaf.View
                     && (
-                        newLeaf.Position != previousLeaf.Position
-                        || newLeaf.View.OuterSize != previousLeaf.View.OuterSize
+                        allowIfLayoutUnchanged
+                        || (
+                            newLeaf.Position != previousLeaf.Position
+                            || newLeaf.View.OuterSize != previousLeaf.View.OuterSize
+                        )
                     )
                 )
                 {
@@ -1048,7 +1074,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         Vector2 origin,
         Vector2 previousPosition,
         IReadOnlyList<ViewChild> previousPath,
-        Direction searchDirection
+        Direction? searchDirection
     )
     {
         using var _ = Diagnostics.Trace.Begin(nameof(ViewMenu<T>), nameof(Refocus));
@@ -1056,17 +1082,21 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
-        var pathAfterScroll = root.ResolveChildPath(previousPath.Select(child => child.View));
+        var pathAfterScroll = root.ResolveChildPath(previousPath.Select(child => child.View)).FocusablePath();
         var (targetView, bounds) = pathAfterScroll.Aggregate(
             (root as IView, bounds: Bounds.Empty),
             (acc, child) => (child.View, new(acc.bounds.Position + child.Position, child.View.OuterSize))
         );
-        var focusedViewChild = root.GetPathToPosition(bounds.Center()).ToGlobalPositions().LastOrDefault();
+        var focusedViewChild = root.GetPathToPosition(bounds.Center())
+            .FocusablePath()
+            .ToGlobalPositions()
+            .LastOrDefault();
         if (focusedViewChild?.View == targetView)
         {
             Game1.setMousePosition((origin + focusedViewChild.Center()).ToPoint(), true);
+            return;
         }
-        else
+        if (searchDirection.HasValue)
         {
             // Can happen if the target view is no longer reachable, i.e. outside the scroll bounds.
             //
@@ -1079,7 +1109,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 previousPath.Count > 0
                     ? bounds.Position - previousPath.ToGlobalPositions().Last().Position
                     : Vector2.Zero;
-            var validResult = root.FocusSearch(previousPosition + focusOffset, searchDirection);
+            var validResult = root.FocusSearch(previousPosition + focusOffset, searchDirection.Value);
             if (validResult is not null)
             {
                 ReleaseCaptureTarget();
@@ -1087,6 +1117,13 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 var nextMousePosition = origin + pathWithTarget.ToGlobalPositions().Last().Center();
                 Game1.setMousePosition(nextMousePosition.ToPoint(), true);
             }
+            return;
+        }
+        // As a last resort, if the focus is now on nothing *and* the focus search turned up nothing (or we didn't do a
+        // focus search because there was no direction) then reset to the default focus for the whole menu.
+        if (focusedViewChild is null && SetDefaultFocus(root, origin))
+        {
+            ReleaseCaptureTarget();
         }
     }
 
@@ -1133,6 +1170,18 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                 Game1.setMousePosition((rootPosition.Value + position).ToPoint(), true);
                 return true;
             }
+        }
+        return false;
+    }
+
+    private static bool SetDefaultFocus(IView root, Vector2 origin)
+    {
+        var focusPosition = root.GetDefaultFocusPath().ToGlobalPositions().LastOrDefault()?.Center();
+        if (focusPosition.HasValue)
+        {
+            var nextMousePosition = origin + focusPosition.Value;
+            Game1.setMousePosition(nextMousePosition.ToPoint(), true);
+            return true;
         }
         return false;
     }

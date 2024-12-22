@@ -8,6 +8,26 @@ namespace StardewUI;
 public static class ViewExtensions
 {
     /// <summary>
+    /// Returns the focusable component of the path to a view, typically a cursor target.
+    /// </summary>
+    /// <param name="path">The view path.</param>
+    /// <returns>The sequence of <paramref name="path"/> elements ending with the last view for which
+    /// <see cref="IView.IsFocusable"/> is <c>true</c>. If there are no focusable views in the path, returns an empty
+    /// sequence.</returns>
+    public static IEnumerable<ViewChild> FocusablePath(this IEnumerable<ViewChild> path)
+    {
+        var list = path as IReadOnlyList<ViewChild> ?? path.ToArray();
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (list[i].View.IsFocusable)
+            {
+                return list.Take(i + 1);
+            }
+        }
+        return [];
+    }
+
+    /// <summary>
     /// Retrieves a path to the default focus child/descendant of a view.
     /// </summary>
     /// <param name="view">The view at which to start the search.</param>
