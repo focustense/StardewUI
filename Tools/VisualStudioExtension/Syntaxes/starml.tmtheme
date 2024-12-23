@@ -44,7 +44,7 @@
       </dict>
       <dict>
         <key>scope</key>
-        <string>keyword.control.sml</string>
+        <string>keyword.control.sml, keyword.control.negatable.sml</string>
         <key>settings</key>
         <dict>
           <key>vsclassificationtype</key>
