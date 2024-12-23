@@ -8,6 +8,26 @@ namespace StardewUI;
 public static class ViewExtensions
 {
     /// <summary>
+    /// Returns the focusable component of the path to a view, typically a cursor target.
+    /// </summary>
+    /// <param name="path">The view path.</param>
+    /// <returns>The sequence of <paramref name="path"/> elements ending with the last view for which
+    /// <see cref="IView.IsFocusable"/> is <c>true</c>. If there are no focusable views in the path, returns an empty
+    /// sequence.</returns>
+    public static IEnumerable<ViewChild> FocusablePath(this IEnumerable<ViewChild> path)
+    {
+        var list = path as IReadOnlyList<ViewChild> ?? path.ToArray();
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (list[i].View.IsFocusable)
+            {
+                return list.Take(i + 1);
+            }
+        }
+        return [];
+    }
+
+    /// <summary>
     /// Retrieves a path to the default focus child/descendant of a view.
     /// </summary>
     /// <param name="view">The view at which to start the search.</param>
@@ -45,11 +65,17 @@ public static class ViewExtensions
     /// <param name="view">The view at which to start the search.</param>
     /// <param name="position">The position to search for, in coordinates relative to the
     /// <paramref name="view"/>.</param>
+    /// <param name="preferFocusable"><c>true</c> to prioritize a focusable child over a non-focusable child with a higher
+    /// z-index in case of overlap; <c>false</c> to always use the topmost child.</param>
     /// <returns>A sequence of <see cref="ViewChild"/> elements with the <see cref="IView"/> and position (relative to
     /// parent) at each level, starting with the specified <paramref name="view"/> and ending with the lowest-level
     /// <see cref="IView"/> that still overlaps with the specified <paramref name="position"/>.
     /// If no match is found, returns an empty sequence.</returns>
-    public static IEnumerable<ViewChild> GetPathToPosition(this IView view, Vector2 position)
+    public static IEnumerable<ViewChild> GetPathToPosition(
+        this IView view,
+        Vector2 position,
+        bool preferFocusable = false
+    )
     {
         if (!view.ContainsPoint(position))
         {
@@ -60,7 +86,7 @@ public static class ViewExtensions
         {
             position -= child.Position;
             yield return child;
-            child = child.View.GetChildAt(position);
+            child = child.View.GetChildAt(position, preferFocusable);
         } while (child is not null);
     }
 
@@ -87,7 +113,7 @@ public static class ViewExtensions
     /// </summary>
     /// <param name="view">The root view.</param>
     /// <param name="path">The path from root down to some descendant, such as the path returned by
-    /// <see cref="GetPathToPosition(IView, Vector2)"/>.</param>
+    /// <see cref="GetPathToPosition(IView, Vector2, bool)"/>.</param>
     /// <returns>A sequence of <see cref="ViewChild"/> elements, starting at the <paramref name="view"/>, where each
     /// child's <see cref="ViewChild.Position"/> is the child's most current location within its parent.</returns>
     public static IEnumerable<ViewChild> ResolveChildPath(this IView view, IEnumerable<IView> path)
@@ -137,12 +163,16 @@ public static class ViewExtensions
     /// the correct order for drawing views.
     /// </remarks>
     /// <param name="children">The view children.</param>
+    /// <param name="focusPriority"><c>true</c> to sort focusable children first regardless of z-index; <c>false</c> to
+    /// ignore <see cref="IView.IsFocusable"/>.</param>
     /// <returns>The <paramref name="children"/> ordered by the view's <see cref="IView.ZIndex"/> and original sequence
     /// order.</returns>
-    public static IEnumerable<ViewChild> ZOrder(this IEnumerable<ViewChild> children)
+    public static IEnumerable<ViewChild> ZOrder(this IEnumerable<ViewChild> children, bool focusPriority = false)
     {
         // OrderBy is a stable sort so we don't need to do anything extra to preserve original sequence order.
-        return children.OrderBy(child => child.View.ZIndex);
+        return focusPriority
+            ? children.OrderByDescending(child => child.View.IsFocusable).ThenBy(child => child.View.ZIndex)
+            : children.OrderBy(child => child.View.ZIndex);
     }
 
     /// <summary>
@@ -154,17 +184,24 @@ public static class ViewExtensions
     /// correct order for handling cursor events and any other actions that need to operate on the "topmost" view first.
     /// </remarks>
     /// <param name="children">The view children.</param>
+    /// <param name="focusPriority"><c>true</c> to sort focusable children first regardless of z-index; <c>false</c> to
+    /// ignore <see cref="IView.IsFocusable"/>.</param>
     /// <returns></returns>
-    public static IEnumerable<ViewChild> ZOrderDescending(this IEnumerable<ViewChild> children)
+    public static IEnumerable<ViewChild> ZOrderDescending(
+        this IEnumerable<ViewChild> children,
+        bool focusPriority = false
+    )
     {
         // With OrderByDescending, the stable sort works against us here, because it reverses the order of the key but
         // does NOT reverse the original sequence order. To get the correct result, we have to be explicit about the
         // sequence order.
-        return children
-            .Select((child, index) => (child, index))
-            .OrderByDescending(x => x.child.View.ZIndex)
-            .ThenByDescending(x => x.index)
-            .Select(x => x.child);
+        var indexedChildren = children.Select((child, index) => (child, index));
+        var priorityChildren = focusPriority
+            ? indexedChildren
+                .OrderByDescending(x => x.child.View.IsFocusable)
+                .ThenByDescending(x => x.child.View.ZIndex)
+            : indexedChildren.OrderByDescending(x => x.child.View.ZIndex);
+        return priorityChildren.ThenByDescending(x => x.index).Select(x => x.child);
     }
 
     private static IEnumerable<ViewChild>? GetPathToView(ViewChild parent, IView descendant)

@@ -94,6 +94,15 @@ public abstract class View : IView, IFloatContainer
     public Bounds ContentBounds => GetContentBounds();
 
     /// <summary>
+    /// Indicates whether a UI-initiated drawing operation is in progress, from any view.
+    /// </summary>
+    /// <remarks>
+    /// This state is primarily used by Framework patches as a way to limit their effective scope and avoid interfering
+    /// with vanilla or 3P draws.
+    /// </remarks>
+    internal static bool IsDrawing { get; private set; }
+
+    /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
     /// <see cref="Margin"/>.
@@ -516,6 +525,8 @@ public abstract class View : IView, IFloatContainer
             return;
         }
 
+        using var _drawing = new DrawingState();
+
         // Local transforms can be applied before or after creating the render target, it makes no difference. However,
         // doing it before makes it simpler to separate the main content logic from floating element logic.
         b.Translate(Margin.Left, Margin.Top);
@@ -680,9 +691,9 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
-    public ViewChild? GetChildAt(Vector2 position)
+    public ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
     {
-        return GetChildrenAt(position).ZOrderDescending().FirstOrDefault();
+        return GetChildrenAt(position).ZOrderDescending(preferFocusable).FirstOrDefault();
     }
 
     /// <inheritdoc />
@@ -1323,5 +1334,21 @@ public abstract class View : IView, IFloatContainer
         int width = (int)MathF.Ceiling(bounds.Size.X);
         int height = (int)MathF.Ceiling(bounds.Size.Y);
         batch.InitializeRenderTarget(ref target, width, height);
+    }
+
+    private readonly ref struct DrawingState : IDisposable
+    {
+        private readonly bool wasDrawing;
+
+        public DrawingState()
+        {
+            wasDrawing = IsDrawing;
+            IsDrawing = true;
+        }
+
+        public readonly void Dispose()
+        {
+            IsDrawing = wasDrawing;
+        }
     }
 }

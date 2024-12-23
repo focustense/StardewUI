@@ -349,11 +349,11 @@ public class DecoratorView<T> : IView, IDisposable
     /// <inheritdoc />
     public virtual FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
-        return view?.FocusSearch(position, direction);
+        return view?.FocusSearch(position, direction)?.AsChild(this, Vector2.Zero);
     }
 
     /// <inheritdoc />
-    public virtual ViewChild? GetChildAt(Vector2 position)
+    public virtual ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
     {
         return view?.ContainsPoint(position) == true ? new(view, Vector2.Zero) : null;
     }
