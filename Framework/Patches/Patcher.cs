@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using StardewValley.BellsAndWhistles;
 
 namespace StardewUI.Framework.Patches;
 
@@ -25,5 +26,39 @@ internal static class Patcher
             AccessTools.Method(modContentManagerType, "HandleUnknownFileType"),
             prefix: new(typeof(ModContentManagerPatches), nameof(ModContentManagerPatches.HandleUnknownFileType_Prefix))
         );
+
+        // Workarounds for broken Stardew-specific drawing functions.
+        harmony.TryPatch(
+            typeof(SpriteText),
+            nameof(SpriteText.drawString),
+            transpiler: new(typeof(SpriteTextPatches), nameof(SpriteTextPatches.DrawString_Transpiler))
+        );
+    }
+
+    private static void TryPatch(
+        this Harmony harmony,
+        Type type,
+        string methodName,
+        HarmonyMethod? prefix = null,
+        HarmonyMethod? postfix = null,
+        HarmonyMethod? transpiler = null,
+        HarmonyMethod? finalizer = null
+    )
+    {
+        try
+        {
+            var original =
+                AccessTools.Method(type, methodName)
+                ?? throw new MissingMethodException($"Couldn't find method named '{methodName}' on type {type.Name}.");
+            harmony.Patch(original, prefix, postfix, transpiler, finalizer);
+        }
+        catch (Exception ex)
+        {
+            Logger.Log(
+                $"Failed to patch on {type.FullName}.{methodName}. This is a recoverable error, but some aspects of UI "
+                    + "may display incorrectly.\n\nDetails:\n"
+                    + ex.ToString()
+            );
+        }
     }
 }
