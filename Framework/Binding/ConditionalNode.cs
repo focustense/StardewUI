@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Binding;
 
@@ -18,6 +19,9 @@ public class ConditionalNode(IViewNode innerNode, ICondition condition) : IViewN
         get => condition.Context;
         set => innerNode.Context = condition.Context = value;
     }
+
+    /// <inheritdoc />
+    public IReadOnlyList<FloatingElement> FloatingElements => wasMatched ? innerNode.FloatingElements : [];
 
     // In general, child nodes shouldn't have any views when the condition didn't match, because we'll reset them when
     // that happens, but in case of a buggy reset, rechecking here guarantees we won't accidentally show any descendant

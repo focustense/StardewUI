@@ -25,7 +25,6 @@ public class LexerTests
                     <label font=""dialogue"" text={{HeaderText}} />
                     <checkbox is-checked={<>Checked}/>
                 </lane>",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "lane"),
@@ -83,8 +82,7 @@ public class LexerTests
                 ]
             },
             {
-                @"<label font=""small"" *repeat={<Items} text={{DisplayName}} />",
-
+                @"<label font=""small"" *repeat={<Items} text={{DisplayName}} +tween:opacity={Fade} />",
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -105,12 +103,37 @@ public class LexerTests
                     new(TokenType.BindingStart, "{{"),
                     new(TokenType.Literal, "DisplayName"),
                     new(TokenType.BindingEnd, "}}"),
+                    new(TokenType.AttributeModifier, "+"),
+                    new(TokenType.Name, "tween:opacity"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{"),
+                    new(TokenType.Literal, "Fade"),
+                    new(TokenType.BindingEnd, "}"),
+                    new(TokenType.SelfClosingTagEnd, "/>"),
+                ]
+            },
+            {
+                @"<label *!if={Condition} text=""foo"" />",
+                [
+                    new(TokenType.OpeningTagStart, "<"),
+                    new(TokenType.Name, "label"),
+                    new(TokenType.AttributeModifier, "*"),
+                    new(TokenType.Negation, "!"),
+                    new(TokenType.Name, "if"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.BindingStart, "{"),
+                    new(TokenType.Literal, "Condition"),
+                    new(TokenType.BindingEnd, "}"),
+                    new(TokenType.Name, "text"),
+                    new(TokenType.Assignment, "="),
+                    new(TokenType.Quote, "\""),
+                    new(TokenType.Literal, "foo"),
+                    new(TokenType.Quote, "\""),
                     new(TokenType.SelfClosingTagEnd, "/>"),
                 ]
             },
             {
                 @"<textinput text={<>^Name} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "textinput"),
@@ -126,7 +149,6 @@ public class LexerTests
             },
             {
                 @"<label text={{<^^^Name}} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -144,7 +166,6 @@ public class LexerTests
             },
             {
                 @"<label text={{<:^^Name}} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -161,7 +182,6 @@ public class LexerTests
             },
             {
                 @"<checkbox is-checked={>~Foo.Enabled} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "checkbox"),
@@ -179,7 +199,6 @@ public class LexerTests
             },
             {
                 @"<checkbox is-checked={:~Foo.Enabled} />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "checkbox"),
@@ -197,7 +216,6 @@ public class LexerTests
             },
             {
                 @"<button click=|HandleClick(Foo, ""Bar"", ^^Baz, ~Quux.Abc)| />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "button"),
@@ -227,7 +245,6 @@ public class LexerTests
             },
             {
                 @"<button click=|^^HandleClick(Foo, $Bar, &Baz)| />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "button"),
@@ -252,7 +269,6 @@ public class LexerTests
             },
             {
                 @"<button click=|~Foo.HandleClick(Bar)| />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "button"),
@@ -272,7 +288,6 @@ public class LexerTests
             },
             {
                 @"<label text="""" bold=""true"" />",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),
@@ -290,7 +305,6 @@ public class LexerTests
             },
             {
                 @"<!-- comment body --> <label text=""foo"" bold=""true"" />",
-
                 [
                     new(TokenType.CommentStart, "<!--"),
                     new(TokenType.Literal, "comment body "),
@@ -313,7 +327,6 @@ public class LexerTests
             {
                 // Comments in arbitrary locations are lexically valid, even though they aren't parseable.
                 @"<label text=""foo"" bold=""<!-- comment body -->"" /> ",
-
                 [
                     new(TokenType.OpeningTagStart, "<"),
                     new(TokenType.Name, "label"),

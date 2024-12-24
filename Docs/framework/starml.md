@@ -131,7 +131,7 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `draggable` | In/Out | `bool` | Allows this view to receive [drag events](#events) (`drag`, `drag-start` and `drag-end`). |
 | `focusable` | In/Out | `bool` | Allows this view to receive focus, or "snap", when using a gamepad. Automatically enabled for most interactive elements like `button` or `dropdown`. |
 | `inner-size` | Out | `Vector2` | Size of the view's content and padding, excluding borders and margins. |
-| `layout` | In/Out | `LayoutParameters` | The intended width and height. See [conversions](#type-conversions) for allowed values. |
+| `layout` | In/Out | [`LayoutParameters`](../reference/stardewui/layout/layoutparameters.md) | The intended width and height. See [conversions](#type-conversions) for allowed values. |
 | `margin` | In/Out | `Edges` | Pixel sizes for whitespace outside the border/background. |
 | `name` | In/Out | `string` | For `<include>` elements, the view's asset name; for all other elements, a user-defined name used mainly for logging and troubleshooting. |
 | `opacity` | In/Out | `float` | Opacity (alpha) value of the entire view, from 0.0 (fully transparent/hidden) to 1.0 (fully opaque). |
@@ -141,6 +141,8 @@ There are also [structural attributes](#structural-attributes) which are a separ
 | `scroll-with-children` | In/Out | `Orientation` | Forces the entire view to be visible when navigating in the specified direction. See the [ScrollableView](../library/standard-views.md#scrollable-view) documentation for details. |
 | `tags` | In/Out | `Tags` | Allows arbitrary data to be associated with the view. **Not supported in StarML yet** - may be supported in the future. |
 | `tooltip` | In/Out | `TooltipData` | Tooltip to show when hovered with the mouse, or focused on via game controller. |
+| `transform` | In/Out | [`Transform`](../reference/stardewui/graphics/transform.md) | [Local transform](../library/transforms.md) to apply to the view. |
+| `transform-origin` | In/Out | `Vector2` | Relative origin position for the `transform`; see [Transform Origin](../library/transforms.md#transform-origin). |
 | `visibility` | In/Out | `Visibility` | Whether to show or hide the view; hiding does *not* remove it from the layout, use `*if` for that. |
 | `z-index` | In/Out | `int` | Drawing order within the parent; higher indices are drawn later (on top). |
 
@@ -160,14 +162,47 @@ There are also [structural attributes](#structural-attributes) which are a separ
 
 Structural attributes look like regular attributes, but with a `*` prefix. Instead of binding to properties or events, they control aspects of how the view tree is constructed.
 
-| Attribute  | <div style="width: 120px">Expected Type</div>    | Description |
+/// html | div.no-code-break
+
+| Attribute  | Expected Type | Description |
 | ---------- | ---------------- | ----------- |
-| `*case`    | Any              | Removes the element unless the value is equal to the most recent `*switch`. The types of `*switch` and `*case` must either match exactly or be [convertible](#type-conversions). |
+| `*case`    | Any              | Removes the element unless the value is equal to the most recent `*switch`. The types of `*switch` and `*case` must either match exactly or be [convertible](#type-conversions).<p>_Can be [negated](#negation)._ |
 | `*context` | Any              | Changes the [context](binding-context.md) that all child nodes bind to; used for heavily-nested data models. |
-| `*if`      | `bool`           | Removes the element unless the specified condition is met. |
+| `*if`      | `bool`           | Removes the element unless the specified condition is met.<p>_Can be [negated](#negation)._ |
+| `*float`   | [`FloatingPosition`](../reference/stardewui/layout/floatingposition.md) | Makes the element a [floating element](../library/floating-elements.md). |
 | `*outlet`  | `string`         | Specifies which of the parent node's [outlets](#outlets) will receive this node.<br>**Does not support bindings.** The attribute value must be a quoted string. |
 | `*repeat`  | `IEnumerable` | Repeats the element over a collection, creating a new view for every item and setting its [context](binding-context.md) to that item. Applies to both regular and structural attributes; e.g. if `*repeat` and `*if` are both specified, then `*repeat` applies first. |
 | `*switch`  | Any              | Sets the object that any subsequent `*case` attributes must match in order for their elements to show. |
+
+///
+
+#### Negation
+
+Structural attributes linked to conditional behavior can be negated, by placing a `!` before the assignment. For example:
+
+```html
+<label *!if={Condition} ... />
+```
+
+The above would cause the label to only be displayed when the condition is **`false`**, rather than `true`. Similarly, negating a `*case` attribute as `*!case` would cause it to only display its content when the value does _not_ match.
+
+Negation is only allowed for specific conditional attributes, such as `*if` and `*case`. Consult the [structural attributes](#structural-attributes) table above for  the attributes that say "can be negated".
+
+### Behavior Attributes
+
+Attributes beginning with a `+` character are [Behaviors](behaviors.md), which are independent entities able to act on some view, similar to the way a C# [extension method](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods) acts on its target.
+
+The behavior system is designed to be extensible through add-ons, so unlike [structural attributes](#structural-attributes), there is not necessarily a universal list of valid behaviors. The table below covers the behaviors that are available in "vanilla" StardewUI, without any add-ons. Behaviors generally take an _argument_ in addition to their attribute value, following a `:` separator in the attribute name.
+
+/// html | div.no-code-break
+
+| Behavior | Argument | Value Type | Description |
+| --- | --- | --- | --- |
+| `hover:<arg>` | Any [regular attribute](#common-attributes) | Same as `<arg>` attribute | Changes the `<arg>` property to a new value when the pointer enters the view, and reverts it when the pointer leaves the view. |
+| `show:<arg>` | Any [regular attribute](#common-attributes) | Same as `<arg>` attribute | Changes the `<arg>` property to a new value when the view becomes visible, including when first created e.g. as the result of an `*if`; reverts it when the view is hidden. |
+| `transition:<arg>` | Any [regular attribute](#common-attributes) | [Transition](../reference/stardewui/animation/transition.md) | Applies a transition to the `<arg>` property when its value changes, causing it to animate gradually from its current value to the new value instead of changing immediately. |
+
+///
 
 ### Events
 
@@ -304,12 +339,22 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 | `SpriteFont` @span       | `"dialogue"` (6)                   | N/A @span                             | N/A @span                               |
 |                          | `"small"` (7)                      |                                       |                                         |
 |                          | `"tiny"` (8)                       |                                       |                                         |
+| `Transform`              | See [Transforms](../library/transforms.md) | N/A                           | N/A                                     |
+| `Transition`             | `[duration] [delay] [easing]` (14) | N/A @span                             | N/A @span                               |
+| `Visibility` @span       | "Visible"                          | `bool` @span                          | N/A @span                               |
+|                          | "Hidden"                           |                                       |                                         |
 | `TooltipData` @span      | Any @span                          | `string` (text only)                  | N/A @span                               |
 |                          |                                    | `Tuple<string, string>`<br/>(title + text) |                                    |
 |                          |                                    | `Item`                                |                                         |
 |                          |                                    | `ParsedItemData`                      |                                         |
 | `GridItemLayout` @span   | `"count: n"` (10)                  | N/A @span                             | N/A @span                               |
 |                          | `"length: n"` (11)                 |                                       |                                         |
+|                          | `"length: n+"`                     |                                       |                                         |
+| `FloatingPosition` @span | `"above"`                          | `Func<Vector2, Vector2, Vector2>`<br /><br/>See [`offsetSelector`](../reference/stardewui/layout/floatingposition.md#floatingpositionfuncvector2-vector2-vector2) @span | N/A @span                               |
+|                          | `"below"`                          |                                       |                                         |
+|                          | `"before"`                         |                                       |                                         |
+|                          | `"after"`                          |                                       |                                         |
+|                          | `"<edge>; X, Y"`(13)               |                                       |                                         |
 
 ::end-spantable::
 
@@ -325,12 +370,23 @@ In the table below, the _String Format_ is what you can put in a [literal attrib
 8.  Reference to `Game1.tinyFont`
 9.  Sprites can be bound to model properties, but should only be done for sprites that _must_ be dynamic. In the majority of cases, you should use [sprite assets](../getting-started/adding-ui-assets.md) instead.
 10.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using _n_ items per row/column and adjusts their size accordingly.
-11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.
+11.  `n` is any positive integer; lays out the [grid](../library/standard-views.md#grid) using a fixed width/height of `n` per item, and wraps to the next row/column when reaching the end.<p>If the value ends with a `+`, the size will be expanded so that the total space used by all rows/columns is exactly equal to the grid's layout width/height.
 12.  Any `Length` (width, height or both) can have a range appended to it specifying the min and/or max, such as `50%[100..800]`, meaning "prefer 50% of container, but constrained between 100px and 800px". Use open ranges to specify only a minimum, or only a maximum.
+13.  Any of the edges (`above`, `below`, `before` or `after`) can have a `Vector2`-compatible offset appended to it, e.g. `above; 5, 8` which adds the specified offset to the computed edge position. This can be used in place of margins to add more space between floating elements and their parents.
+14.  All fields are optional, but any that are present must appear in the specified order.
+     - Duration and delay are numbers that end with either "s" (seconds) or "ms" (milliseconds), such as `1200ms` or `1.2s`.
+     - Easing can be a named function, including any of the functions on [easings.net](https://easings.net/), or a custom easing of the form `CubicBezier: x1, y1, x2, y2`. For more information on cubic béziers, refer to the [CSS reference](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier).
+     
+     Examples:
+
+     - `300ms` (defaults to linear easing, no delay)
+     - `300ms EaseOutCubic`
+     - `300ms 50ms EaseOutCubic`
+     - `EaseOutCubic` (defaults to 1 sec, no delay)
 
 If a type shows "N/A" for conversions, that means no conversion is available, either because it is not meant to be used in that scenario, or because it is already a shared type. Shared types such as any of the XNA/MonoGame types can be used directly in your model and therefore don't require any conversions, except from `string` to be used in literal attributes.
 
-### Duck Typing :material-test-tube:{ title="Experimental" }
+### Duck Typing
 
 If a particular type conversion is not in the table above, it may be available for automatic implicit conversion. See the page on [duck typing](duck-typing.md) for rules and additional information on when and how this occurs.
 

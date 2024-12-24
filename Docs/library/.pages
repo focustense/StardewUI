@@ -2,6 +2,8 @@ nav:
     - index.md
     - standard-views.md
     - custom-views.md
+    - floating-elements.md
     - overlays.md
+    - transforms.md
     - animation.md
     - ...

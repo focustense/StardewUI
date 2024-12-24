@@ -21,7 +21,6 @@ public class ParserTests
                     <label font=""dialogue"" text={{HeaderText}} />
                     <checkbox is-checked={<>Checked}/>
                 </lane>",
-
                 [
                     new("lane", [new("orientation", "vertical"), new("align-content", "middle end")]),
                     new(
@@ -47,8 +46,7 @@ public class ParserTests
                 ]
             },
             {
-                @"<label font=""small"" *repeat={<>Items} text={{DisplayName}} />",
-
+                @"<label font=""small"" *repeat={<>Items} text={{DisplayName}} +tween:opacity={Fade} />",
                 [
                     new(
                         "label",
@@ -56,6 +54,26 @@ public class ParserTests
                             new("font", "small"),
                             new("repeat", "Items", AttributeType.Structural, AttributeValueType.TwoWayBinding),
                             new("text", "DisplayName", ValueType: AttributeValueType.InputBinding),
+                            new("tween:opacity", "Fade", AttributeType.Behavior, AttributeValueType.InputBinding),
+                        ]
+                    ),
+                    new("label", IsClosingTag: true),
+                ]
+            },
+            {
+                @"<label *!if={Condition} text=""foo"" />",
+                [
+                    new(
+                        "label",
+                        [
+                            new(
+                                "if",
+                                "Condition",
+                                AttributeType.Structural,
+                                AttributeValueType.InputBinding,
+                                IsNegated: true
+                            ),
+                            new("text", "foo"),
                         ]
                     ),
                     new("label", IsClosingTag: true),
@@ -63,7 +81,6 @@ public class ParserTests
             },
             {
                 @"<textinput text={<>^Name} />",
-
                 [
                     new(
                         "textinput",
@@ -81,7 +98,6 @@ public class ParserTests
             },
             {
                 @"<label text={{<^^^Name}} />",
-
                 [
                     new(
                         "label",
@@ -99,7 +115,6 @@ public class ParserTests
             },
             {
                 @"<label text={{<:^^Name}} />",
-
                 [
                     new(
                         "label",
@@ -117,7 +132,6 @@ public class ParserTests
             },
             {
                 @"<checkbox is-checked={>~Foo.Enabled} />",
-
                 [
                     new(
                         "checkbox",
@@ -135,7 +149,6 @@ public class ParserTests
             },
             {
                 @"<checkbox is-checked={:~Foo.Enabled} />",
-
                 [
                     new(
                         "checkbox",
@@ -153,7 +166,6 @@ public class ParserTests
             },
             {
                 @"<button click=|HandleClick(Foo, ""Bar"", ^^Baz, ~Quux.Abc)| />",
-
                 [
                     new(
                         "button",
@@ -176,7 +188,6 @@ public class ParserTests
             },
             {
                 @"<button click=|^^HandleClick(Foo, $Bar, &Baz)| />",
-
                 [
                     new(
                         "button",
@@ -199,7 +210,6 @@ public class ParserTests
             },
             {
                 @"<button click=|~Foo.HandleClick(Bar)| />",
-
                 [
                     new(
                         "button",
@@ -225,7 +235,6 @@ public class ParserTests
             // emitting.
             {
                 @"<checkbox layout=""stretch"" change=|HandleChange(""Foo"", Bar)| label-text={<>Baz} click=|^HandleClick()| />",
-
                 [
                     new(
                         "checkbox",
@@ -257,7 +266,6 @@ public class ParserTests
                     <!-- comment 3 -->
                 </frame>
                 <!-- comment 4 -->",
-
                 [
                     new("frame", [new("layout", "50px")]),
                     new("label", [new("text", "foo")]),
@@ -283,7 +291,6 @@ public class ParserTests
                         <outlet />
                     </lane>
                 </template>",
-
                 [
                     new("template", [new("name", "heading")]),
                     new(

@@ -10,15 +10,15 @@
   "UniqueID": "focustense.StardewUITestAddon",
   "Name": "Stardew UI Test Addon",
   "Author": "focustense",
-  "Version": "0.4.2",
+  "Version": "0.5.0",
   "Description": "Example add-on mod for Stardew UI.",
-  "MinimumApiVersion": "4.1.7",
+  "MinimumApiVersion": "4.1.9",
   "MinimumGameVersion": "1.6.14",
   "EntryDll": "StardewUITestAddon.dll",
   "Dependencies": [
     {
       "UniqueID": "focustense.StardewUI",
-      "MinimumVersion": "0.4.2"
+      "MinimumVersion": "0.5.0"
     }
   ],
   "UpdateKeys": [

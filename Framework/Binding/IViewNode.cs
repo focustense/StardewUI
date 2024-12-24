@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using StardewUI.Framework.Grammar;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Binding;
 
@@ -38,6 +39,11 @@ public interface IViewNode : IDisposable
     /// <see cref="AttributeValueType.TwoWayBinding"/> attributes.
     /// </summary>
     BindingContext? Context { get; set; }
+
+    /// <summary>
+    /// The floating elements for this node, if any have been created.
+    /// </summary>
+    IReadOnlyList<FloatingElement> FloatingElements { get; }
 
     /// <summary>
     /// The views for this node, if any have been created.

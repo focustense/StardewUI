@@ -20,7 +20,7 @@ namespace StardewUI;
 /// Use of this class isn't required, but provides some useful behaviors so that view types don't need to keep
 /// re-implementing them, such as a standard <see cref="Measure"/> implementation that skips unnecessary layouts.
 /// </remarks>
-public abstract class View : IView
+public abstract class View : IView, IFloatContainer
 {
     /// <summary>
     /// Event raised when any button on any input device is pressed.
@@ -94,6 +94,15 @@ public abstract class View : IView
     public Bounds ContentBounds => GetContentBounds();
 
     /// <summary>
+    /// Indicates whether a UI-initiated drawing operation is in progress, from any view.
+    /// </summary>
+    /// <remarks>
+    /// This state is primarily used by Framework patches as a way to limit their effective scope and avoid interfering
+    /// with vanilla or 3P draws.
+    /// </remarks>
+    internal static bool IsDrawing { get; private set; }
+
+    /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
     /// <see cref="Margin"/>.
@@ -136,9 +145,7 @@ public abstract class View : IView
     /// <inheritdoc/>
     public IEnumerable<Bounds> FloatingBounds => GetFloatingBounds();
 
-    /// <summary>
-    /// The floating elements to display relative to this view.
-    /// </summary>
+    /// <inheritdoc />
     public IList<FloatingElement> FloatingElements
     {
         get => floatingElements;
@@ -324,6 +331,36 @@ public abstract class View : IView
     }
 
     /// <summary>
+    /// Local transformation to apply to this view, including any children and floating elements.
+    /// </summary>
+    public Transform? Transform
+    {
+        get => transform;
+        set
+        {
+            if (value != transform)
+            {
+                transform = value;
+                OnPropertyChanged(nameof(Transform));
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    public Vector2? TransformOrigin
+    {
+        get => transformOrigin;
+        set
+        {
+            if (value != transformOrigin)
+            {
+                transformOrigin = value;
+                OnPropertyChanged(nameof(TransformOrigin));
+            }
+        }
+    }
+
+    /// <summary>
     /// Localized tooltip to display on hover, if any.
     /// </summary>
     public TooltipData? Tooltip
@@ -372,6 +409,21 @@ public abstract class View : IView
     }
 
     /// <summary>
+    /// Whether the specific view type handles its own opacity.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Subclasses can override this to provide their own, typically better optimized version of opacity; i.e. a basic
+    /// text or image view could simply multiply its own background/foreground colors without requiring multiple render
+    /// targets to handle the blending.
+    /// </para>
+    /// <para>
+    /// Any <see cref="FloatingElements"/> will still use the default opacity implementation.
+    /// </para>
+    /// </remarks>
+    protected virtual bool HandlesOpacity => false;
+
+    /// <summary>
     /// Pixel offset of the view's content, which is applied to all pointer events and child queries.
     /// </summary>
     /// <remarks>
@@ -415,6 +467,8 @@ public abstract class View : IView
     private Orientation? scrollWithChildren;
     private Tags tags = new();
     private TooltipData? tooltip = null;
+    private Transform? transform;
+    private Vector2? transformOrigin;
     private Visibility visibility;
     private bool wasPointerInBounds;
     private int zIndex;
@@ -471,10 +525,35 @@ public abstract class View : IView
             return;
         }
 
+        using var _drawing = new DrawingState();
+
+        // Local transforms can be applied before or after creating the render target, it makes no difference. However,
+        // doing it before makes it simpler to separate the main content logic from floating element logic.
+        b.Translate(Margin.Left, Margin.Top);
+        if (Transform is not null)
+        {
+            var origin = TransformOrigin.HasValue
+                ? new TransformOrigin(TransformOrigin.Value, TransformOrigin.Value * OuterSize)
+                : null;
+            b.Transform(Transform, origin);
+        }
+
         if (Opacity == 1)
         {
             DrawContent();
             return;
+        }
+
+        // When the view type wants to use its own opacity implementation, we can skip the render target shenanigans
+        // below for the main content and MAY be able to skip them entirely, but it depends on the presence of floating
+        // elements, as nothing prevents e.g. a Label or Image from having them, unusual as that might be.
+        if (HandlesOpacity)
+        {
+            DrawContent(includeFloatingElements: false);
+            if (FloatingElements.Count == 0)
+            {
+                return;
+            }
         }
 
         // The extremely limited and frankly obtuse blending system in XNA/MonoGame seems to make this effectively
@@ -499,7 +578,7 @@ public abstract class View : IView
         SetupRenderTarget(b, ref opacityDestinationTarget);
         using (b.SetRenderTarget(opacitySourceTarget, Color.Transparent))
         {
-            DrawContent();
+            DrawContent(includeMainContent: !HandlesOpacity);
         }
         using (b.SetRenderTarget(opacityDestinationTarget, Color.Transparent))
         {
@@ -517,19 +596,24 @@ public abstract class View : IView
         }
         b.Draw(opacityDestinationTarget, Vector2.Zero, null);
 
-        void DrawContent()
+        void DrawContent(bool includeMainContent = true, bool includeFloatingElements = true)
         {
-            b.Translate(Margin.Left, Margin.Top);
-            using (b.SaveTransform())
+            if (includeMainContent)
             {
-                OnDrawBorder(b);
-                var borderThickness = GetBorderThickness();
-                b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
-                OnDrawContent(b);
+                using (b.SaveTransform())
+                {
+                    OnDrawBorder(b);
+                    var borderThickness = GetBorderThickness();
+                    b.Translate(borderThickness.Left + Padding.Left, borderThickness.Top + Padding.Top);
+                    OnDrawContent(b);
+                }
             }
-            foreach (var floatingElement in FloatingElements)
+            if (includeFloatingElements)
             {
-                floatingElement.Draw(b);
+                foreach (var floatingElement in FloatingElements)
+                {
+                    floatingElement.Draw(b);
+                }
             }
         }
     }
@@ -538,7 +622,7 @@ public abstract class View : IView
     /// <remarks>
     /// This will first call <see cref="FindFocusableDescendant"/> to see if the specific view type wants to implement
     /// its own focus search. If there is no focusable descendant, then this will return a reference to the current view
-    /// if <see cref="IsFocusable"/> is <c>true</c> and the position is <i>not</i> already within the view's bounds -
+    /// if <see cref="Focusable"/> is <c>true</c> and the position is <i>not</i> already within the view's bounds -
     /// meaning, any focusable view can accept focus from any direction, but will not consider itself a result if it is
     /// already focused (since we are trying to "move" focus).
     /// </remarks>
@@ -607,9 +691,9 @@ public abstract class View : IView
     }
 
     /// <inheritdoc />
-    public ViewChild? GetChildAt(Vector2 position)
+    public ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
     {
-        return GetChildrenAt(position).ZOrderDescending().FirstOrDefault();
+        return GetChildrenAt(position).ZOrderDescending(preferFocusable).FirstOrDefault();
     }
 
     /// <inheritdoc />
@@ -636,13 +720,14 @@ public abstract class View : IView
     public IEnumerable<ViewChild> GetChildrenAt(Vector2 position)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(GetChildrenAt));
-        var offset = GetContentOffset();
-        var directChildren = GetLocalChildrenAt(position - offset)
+        var contentOffset = GetContentOffset();
+        var directChildren = GetLocalChildrenAt(position - contentOffset)
             .Where(child => child.View.Visibility == Visibility.Visible);
         foreach (var child in directChildren)
         {
-            yield return child.Offset(offset);
+            yield return child.Offset(contentOffset);
         }
+        position -= GetFloatingOffset();
         foreach (var floatingElement in FloatingElements)
         {
             var floatingChild = floatingElement.AsViewChild();
@@ -1203,8 +1288,10 @@ public abstract class View : IView
 
     private IEnumerable<Bounds> GetFloatingBounds()
     {
+        var localFloatingOffset = GetFloatingOffset();
         return FloatingElements
             .SelectMany(GetFloatingElementBounds)
+            .Select(bounds => bounds.Offset(localFloatingOffset))
             .Concat(GetChildren().SelectMany(child => child.GetFloatingBounds()));
     }
 
@@ -1212,6 +1299,11 @@ public abstract class View : IView
     {
         var floatingChild = fe.AsViewChild();
         return floatingChild.GetFloatingBounds().Prepend(floatingChild.GetActualBounds());
+    }
+
+    private Vector2 GetFloatingOffset()
+    {
+        return new Vector2(Margin.Left, Margin.Top);
     }
 
     private ViewChild? GetOrUpdateDraggingChild(Vector2 position)
@@ -1242,5 +1334,21 @@ public abstract class View : IView
         int width = (int)MathF.Ceiling(bounds.Size.X);
         int height = (int)MathF.Ceiling(bounds.Size.Y);
         batch.InitializeRenderTarget(ref target, width, height);
+    }
+
+    private readonly ref struct DrawingState : IDisposable
+    {
+        private readonly bool wasDrawing;
+
+        public DrawingState()
+        {
+            wasDrawing = IsDrawing;
+            IsDrawing = true;
+        }
+
+        public readonly void Dispose()
+        {
+            IsDrawing = wasDrawing;
+        }
     }
 }

@@ -33,7 +33,7 @@ To create an initially-empty add-on:
             public override void Entry(IModHelper helper)
             {
                 UI.RegisterAddon(new MyAddon(ModManifest.UniqueID));
-    
+        
                 // Other mod initialization code
             }
         }
@@ -198,3 +198,60 @@ Once a custom view is registered, it can be used in a [StarML](starml.md) docume
     <!-- Carousel Contents -->
 </carousel>
 ```
+
+## Behaviors
+
+The original name for [behaviors](behaviors.md) was "extension attributes", named after their similarity to [extension methods](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods). They enable new functionality to be added (or "attached") to an existing view from within [StarML](starml.md) *without* having to create a [custom view](#custom-views) or modify the source of [View](../reference/stardewui/view.md) or any other low-level type.
+
+### Registering Behaviors
+
+To register a behavior for use as a [behavior attribute](starml.md#behavior-attributes), create and register a new [`IBehaviorFactory`](../reference/stardewui/framework/behaviors/ibehaviorfactory.md) implementation. Behavior registration uses an API that is almost identical to that of [converters](#registering-converters) and [views](#registering-custom-views).
+
+```cs
+internal class ExampleAddon(string id) : IAddon
+{
+    public string Id { get; } = id;
+    
+    // --- Other addon features ---
+    
+    public IBehaviorFactory BehaviorFactory => behaviorFactory.Value;
+    
+    private readonly Lazy<IBehaviorFactory> behaviorFactory = new(() =>
+    {
+        var factory = new BehaviorFactory();
+
+        // Behaviors with a default constructor (i.e. not taking any arguments)
+        // can be registered using just their name and type.
+        factory.Register<SimpleBehavior>("simple");
+
+        // Argument-dependent behaviors can use a delegate registration instead.
+        factory.Register("complex", arg => new ComplexBehavior(arg));
+
+        return factory;
+    });
+}
+```
+
+The main wrinkle is that behaviors can take an [argument](behaviors.md#arguments), so a separate overload is available for those that do so.
+
+### Using Behaviors
+
+To attach a registered behavior to a view, use the `+` prefix with the behavior name. Given the previous registration example, usage might look as follows:
+
+```html
+<label text="Example text"
+       +simple={Foo}
+       +complex={Bar}
+       +complex:baz="Quux" />
+```
+
+In the example above:
+
+- `+complex={Bar}` passes an _empty_ argument to the delegate, e.g. calling `new ComplexBehavior("")`
+- `+complex:baz="Quux"` passes the argument `baz`, as in `new ComplexBehavior("baz")`
+
+!!! info
+
+    A behavior's [argument](behaviors.md#arguments) is **not** the same as its attribute value. The argument is a constant value that is either a string appended to the attribute name—such as `baz` in the case of `+complex:baz`—or is empty. By contrast, the attribute value is the behavior's [data](behaviors.md#data) which is not provided to the behavior until _after_ it is created, and may change over time.
+
+Behaviors are designed to look and feel like other attribute types in common usage, but the semantics and lifecycle of behaviors are quite different from those of other attribute types. Refer to the [behaviors page](behaviors.md) for details.

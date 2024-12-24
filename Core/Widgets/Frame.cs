@@ -205,7 +205,9 @@ public partial class Frame : View
     /// <inheritdoc />
     protected override FocusSearchResult? FindFocusableDescendant(Vector2 contentPosition, Direction direction)
     {
-        return Content?.FocusSearch(contentPosition, direction);
+        return Content is not null
+            ? new ViewChild(Content, this.contentPosition).FocusSearch(contentPosition, direction)
+            : null;
     }
 
     /// <inheritdoc />

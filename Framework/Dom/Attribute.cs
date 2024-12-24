@@ -15,6 +15,11 @@ public interface IAttribute
     ContextRedirect? ContextRedirect { get; }
 
     /// <summary>
+    /// Whether the attribute has a negation. Validity and behavior depend on the specific attribute.
+    /// </summary>
+    bool IsNegated { get; }
+
+    /// <summary>
     /// The attribute name.
     /// </summary>
     string Name { get; }
@@ -43,6 +48,10 @@ public interface IAttribute
         if (Type == AttributeType.Structural)
         {
             sb.Append('*');
+        }
+        else if (Type == AttributeType.Behavior)
+        {
+            sb.Append('+');
         }
         sb.Append(Name);
         sb.Append('=');
@@ -148,6 +157,8 @@ public abstract record ContextRedirect
 /// interpreted.</param>
 /// <param name="ValueType">The type of the value expression, defining how the <paramref name="Value"/> should be
 /// interpreted.</param>
+/// <param name="IsNegated">Whether the attribute has a negation. Validity and behavior depend on the specific
+/// attribute.</param>
 /// <param name="ContextRedirect">Specifies the redirect to use for a context binding, if applicable and if the
 /// <paramref name="ValueType"/> is one of the context binding types.</param>
 public record SAttribute(
@@ -155,6 +166,7 @@ public record SAttribute(
     string Value,
     AttributeType Type = AttributeType.Property,
     AttributeValueType ValueType = AttributeValueType.Literal,
+    bool IsNegated = false,
     ContextRedirect? ContextRedirect = null
 ) : IAttribute
 {
@@ -168,6 +180,7 @@ public record SAttribute(
             attribute.Value.ToString(),
             attribute.Type,
             attribute.ValueType,
+            attribute.IsNegated,
             ContextRedirect.FromParts(attribute.ParentDepth, attribute.ParentType)
         ) { }
 
@@ -210,6 +223,6 @@ public record SAttribute(
     /// <returns>The renamed attribute.</returns>
     public SAttribute WithNameAndType(string name, AttributeType type)
     {
-        return new(name, Value, type, ValueType, ContextRedirect);
+        return new(name, Value, type, ValueType, IsNegated, ContextRedirect);
     }
 }

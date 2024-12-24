@@ -20,7 +20,6 @@ search:
 | [DuckTypeClassConverterFactory](ducktypeclassconverterfactory.md) | Factory that creates duck-typing converters for `class` and `struct` types. |
 | [DuckTypeEnumConverterFactory](ducktypeenumconverterfactory.md) | Factory that automatically implements duck-typing conversions between enum types that share the same names. |
 | [EnumNameConverterFactory](enumnameconverterfactory.md) | Factory that automatically implements string-to-enum conversions based on the case-insensitive enum names. |
-| [GridItemLayoutConverter](griditemlayoutconverter.md) | String converter for a [GridItemLayout](../../widgets/griditemlayout.md). |
 | [IdentityValueConverterFactory](identityvalueconverterfactory.md) | Factory that automatically implements identity conversions, where the source and destination type are the same. |
 | [ItemSpriteConverter](itemspriteconverter.md) | Converts data from a game item to its corresponding sprite. |
 | [LayoutConverter](layoutconverter.md) | String converter for the [LayoutParameters](../../layout/layoutparameters.md) type. |
@@ -31,6 +30,7 @@ search:
 | [StringConverterFactory](stringconverterfactory.md) | Provides conversions from any type to [string](https://learn.microsoft.com/en-us/dotnet/api/system.string). |
 | [TextureRectSpriteConverter](texturerectspriteconverter.md) | Converts a tuple with a texture and source rectangle (within the texture) to a sprite record. |
 | [TextureSpriteConverter](texturespriteconverter.md) | Converts a texture to a sprite record, using the texture's entire bounds as the source rectangle. |
+| [TransformConverter](transformconverter.md) | String converter for the [Transform](../../graphics/transform.md) type. |
 | [ValueConverter&lt;TSource, TDestination&gt;](valueconverter-2.md) | Generic delegating converter, accepting a conversion function. |
 | [ValueConverterFactory](valueconverterfactory.md) | Standard implementation of [IValueConverterFactory](ivalueconverterfactory.md) that allows registering new converters. |
 | [Vector2Converter](vector2converter.md) | String converter for the XNA [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) type. |

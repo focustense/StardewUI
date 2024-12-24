@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Graphics;
 using StardewUI.Layout;
 
@@ -137,6 +138,26 @@ public partial class Image : View
             {
                 OnPropertyChanged(nameof(Sprite));
             }
+            spriteSize.SetIfChanged(value?.Size ?? Point.Zero);
+        }
+    }
+
+    /// <summary>
+    /// Sprite effects to apply, such as horizontal or vertical flipping.
+    /// </summary>
+    /// <remarks>
+    /// Effects are applied only during <see cref="IView.Draw(ISpriteBatch)"/> and do not affect layout.
+    /// </remarks>
+    public SpriteEffects SpriteEffects
+    {
+        get => spriteEffects;
+        set
+        {
+            if (value != spriteEffects)
+            {
+                spriteEffects = value;
+                OnPropertyChanged(nameof(SpriteEffects));
+            }
         }
     }
 
@@ -172,9 +193,16 @@ public partial class Image : View
         }
     }
 
+    /// <inheritdoc />
+    protected override bool HandlesOpacity => true;
+
     private readonly DirtyTracker<SimpleRotation?> rotation = new(null);
     private readonly DirtyTracker<float> scale = new(1.0f);
     private readonly DirtyTracker<Sprite?> sprite = new(null);
+
+    // Sprite size is an internal-only tracker that is not used in layout; instead it helps distinguish between whether
+    // an update to the sprite itself can affect layout.
+    private readonly DirtyTracker<Point> spriteSize = new(Point.Zero);
 
     private Rectangle destinationRect = Rectangle.Empty;
     private ImageFit fit = ImageFit.Contain;
@@ -182,15 +210,32 @@ public partial class Image : View
     private float shadowAlpha;
     private Vector2 shadowOffset;
     private NineSlice? slice = null;
+    private SpriteEffects spriteEffects = SpriteEffects.None;
     private Color tint = Color.White;
     private Alignment verticalAlignment = Alignment.Start;
+
+    /// <inheritdoc />
+    public override void OnUpdate(TimeSpan elapsed)
+    {
+        base.OnUpdate(elapsed);
+        // Updates run after the measure pass, if the measure pass runs for us at all. The only reason the sprite should
+        // be dirty here is if it was detected as a non-layout-affecting sprite animation. In this case, we don't need
+        // to change any of the dimensions (e.g. destinationRect), only recreate the nine-patch and apply the same
+        // layout we had before.
+        if (sprite.IsDirty)
+        {
+            slice = sprite.Value is not null ? new(sprite.Value) : null;
+            UpdateSlice();
+            sprite.ResetDirty();
+        }
+    }
 
     /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         // We intentionally don't check scale here, as scale doesn't affect layout size.
         // Instead, that is checked (and reset) in the draw method.
-        return sprite.IsDirty || rotation.IsDirty;
+        return spriteSize.IsDirty || rotation.IsDirty;
     }
 
     /// <inheritdoc />
@@ -206,10 +251,10 @@ public partial class Image : View
             using var _transform = b.SaveTransform();
             b.Translate(ShadowOffset);
             using var _shadowClip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-            slice.Draw(b, new(Color.Black, ShadowAlpha));
+            slice.Draw(b, Color.Black * ShadowAlpha * Opacity, SpriteEffects);
         }
         using var _clip = clipRect.HasValue ? b.Clip(clipRect.Value) : null;
-        slice?.Draw(b, Tint);
+        slice?.Draw(b, Tint * Opacity, SpriteEffects);
     }
 
     /// <inheritdoc />
@@ -236,6 +281,7 @@ public partial class Image : View
     {
         rotation.ResetDirty();
         sprite.ResetDirty();
+        spriteSize.ResetDirty();
     }
 
     private Vector2 GetImageSize(Vector2 limits)

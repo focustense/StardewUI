@@ -89,6 +89,17 @@ public partial class CheckBox : ComponentView<Lane>
         }
     }
 
+    /// <inheritdoc />
+    public override float Opacity
+    {
+        get => label.Opacity;
+        set
+        {
+            label.Opacity = value;
+            checkImage.Opacity = value;
+        }
+    }
+
     /// <summary>
     /// Sprite to display when the box is unchecked, if not using the default.
     /// </summary>

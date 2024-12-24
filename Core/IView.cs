@@ -185,6 +185,26 @@ public interface IView : IDisposable, INotifyPropertyChanged
     TooltipData? Tooltip { get; set; }
 
     /// <summary>
+    /// Local transformation to apply to this view, including any children and floating elements.
+    /// </summary>
+    Transform? Transform { get; set; }
+
+    /// <summary>
+    /// Relative origin position for any <see cref="Transform"/> on this view.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Expects a value that represents the fraction of the view's computed layout size. For example, <c>(0, 0)</c> is
+    /// the top left, <c>(0.5, 0.5)</c> is the center, and <c>1, 1</c> is the bottom right. <c>null</c> values are
+    /// equivalent to <see cref="Vector2.Zero"/>.
+    /// </para>
+    /// <para>
+    /// Origins are not inherited; each view defines its own origin for its specific transform.
+    /// </para>
+    /// </remarks>
+    Vector2? TransformOrigin { get; set; }
+
+    /// <summary>
     /// Drawing visibility for this view.
     /// </summary>
     Visibility Visibility { get; set; }
@@ -248,11 +268,14 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// Finds the child at a given position.
     /// </summary>
     /// <remarks>
-    /// If multiple children overlap the same position, then this returns the topmost child.
+    /// If multiple children overlap the same position, then this returns the topmost child, i.e. with the highest
+    /// <see cref="ZIndex"/>.
     /// </remarks>
     /// <param name="position">The search position, relative to the view's top-left coordinate.</param>
+    /// <param name="preferFocusable"><c>true</c> to prioritize a focusable child over a non-focusable child with a higher
+    /// z-index in case of overlap; <c>false</c> to always use the topmost child.</param>
     /// <returns>The view at <paramref name="position"/>, or <c>null</c> if there is no match.</returns>
-    ViewChild? GetChildAt(Vector2 position);
+    ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false);
 
     /// <summary>
     /// Computes or retrieves the position of a given direct child.

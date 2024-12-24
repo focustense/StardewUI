@@ -171,7 +171,7 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
-    public float Opacity
+    public virtual float Opacity
     {
         get => opacity;
         set => opacity.Set(value);
@@ -202,6 +202,20 @@ public class DecoratorView<T> : IView, IDisposable
     {
         get => tooltip;
         set => tooltip.Set(value);
+    }
+
+    /// <inheritdoc />
+    public Transform? Transform
+    {
+        get => transform;
+        set => transform.Set(value);
+    }
+
+    /// <inheritdoc />
+    public Vector2? TransformOrigin
+    {
+        get => transformOrigin;
+        set => transformOrigin.Set(value);
     }
 
     /// <inheritdoc />
@@ -279,6 +293,12 @@ public class DecoratorView<T> : IView, IDisposable
         null
     );
     private readonly DecoratedProperty<TooltipData?> tooltip = new(x => x.Tooltip, (x, v) => x.Tooltip = v, null);
+    private readonly DecoratedProperty<Transform?> transform = new(x => x.Transform, (x, v) => x.Transform = v, null);
+    private readonly DecoratedProperty<Vector2?> transformOrigin = new(
+        x => x.TransformOrigin,
+        (x, v) => x.TransformOrigin = v,
+        null
+    );
     private readonly DecoratedProperty<Visibility> visibility = new(
         x => x.Visibility,
         (x, v) => x.Visibility = v,
@@ -299,6 +319,8 @@ public class DecoratorView<T> : IView, IDisposable
         RegisterDecoratedProperty(pointerEventsEnabled);
         RegisterDecoratedProperty(scrollWithChildren);
         RegisterDecoratedProperty(tooltip);
+        RegisterDecoratedProperty(transform);
+        RegisterDecoratedProperty(transformOrigin);
         RegisterDecoratedProperty(visibility);
         RegisterDecoratedProperty(zIndex);
     }
@@ -327,11 +349,11 @@ public class DecoratorView<T> : IView, IDisposable
     /// <inheritdoc />
     public virtual FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
-        return view?.FocusSearch(position, direction);
+        return view?.FocusSearch(position, direction)?.AsChild(this, Vector2.Zero);
     }
 
     /// <inheritdoc />
-    public virtual ViewChild? GetChildAt(Vector2 position)
+    public virtual ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
     {
         return view?.ContainsPoint(position) == true ? new(view, Vector2.Zero) : null;
     }

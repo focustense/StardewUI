@@ -46,6 +46,10 @@ Choose from either type of `item-layout`:
 - Fixed length (`length: nn`), where the width (or height, in vertical orientation) is constant and the grid wraps whenever it reaches the end of the row; or
 - Fixed count (`count: nn`), where the number of items per row (or column, in vertical orientation) is constant and the grid automatically adjusts their size to fit.
 
+When using the `length` variant, a `+` can be added to the end (e.g. `length: 64+`) to request that column/row sizes be increased so that the cells fill the entire width/height available for layout; this allows for fluid layouts that can adapt to different screen sizes without leaving awkward white space before or after the content.
+
+The `+` modifier cannot be used with the `count` variant because count-based layouts already use a dynamic cell size.
+
 !!! note
 
     Grids must have a size independent of their content in the direction of their orientation; i.e. a grid with horizontal orientation must have a width **other than** `content`, and a grid with vertical orientation must have a height other than `content`.
@@ -697,14 +701,14 @@ When using the default sprite, the background will stretch and any inner content
         public string Name { get; } = name;
         public Tuple<Texture2D, Rectangle> Sprite { get; } =
             Tuple.Create(texture, sourceRect);
-
+    
         [Notify] private bool active;
     }
-   
+       
     partial class TabsViewModel
     {
         public IReadOnlyList<TabData> Tabs { get; set; } = [];
-
+    
         public void OnTabActivated(string name)
         {
             foreach (var tab in Tabs)
@@ -716,7 +720,7 @@ When using the default sprite, the background will stretch and any inner content
             }
         }
     }
-
+    
     private void ShowTabsExample()
     {
         var context = new TabsViewModel()

@@ -33,6 +33,7 @@ public interface IAttribute
  | Name | Description |
 | --- | --- |
 | [ContextRedirect](#contextredirect) | Specifies the redirect to use for a context binding, if applicable and if the [ValueType](iattribute.md#valuetype) is one of the context binding types. | 
+| [IsNegated](#isnegated) | Whether the attribute has a negation. Validity and behavior depend on the specific attribute. | 
 | [Name](#name) | The attribute name. | 
 | [Type](#type) | The type of the attribute itself, defining how the [Name](iattribute.md#name) should be interpreted. | 
 | [Value](#value) | The literal value text. | 
@@ -59,6 +60,20 @@ StardewUI.Framework.Dom.ContextRedirect ContextRedirect { get; }
 ##### Property Value
 
 [ContextRedirect](contextredirect.md)
+
+-----
+
+#### IsNegated
+
+Whether the attribute has a negation. Validity and behavior depend on the specific attribute.
+
+```cs
+bool IsNegated { get; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
 -----
 

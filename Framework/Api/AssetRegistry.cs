@@ -24,8 +24,11 @@ internal class AssetRegistry : ISourceResolver
     // which is essentially how helpers like UiSprites behave.
     record SpriteCacheEntry(string TextureAssetName, Func<Texture2D, Sprite> Selector);
 
+    // Sliding timeout per file when hot reloading. Helps prevent spam due to repeated writes on some OSes.
+    private static readonly TimeSpan HotReloadDebounceDelay = TimeSpan.FromMilliseconds(50);
+
     // Error codes that are considered transient, likely to go away after a retry.
-    private static readonly uint[] retryableHResults =
+    private static readonly uint[] RetryableHResults =
     [
         0x80070020, // ERROR_SHARING_VIOLATION
         0x80070021, // ERROR_LOCK_VIOLATION
@@ -33,36 +36,35 @@ internal class AssetRegistry : ISourceResolver
 
     // The game loads these on startup, and its content manager WILL try to reload them again from disk when requested
     // by asset path directly, unless we intercept the request and redirect it to the static field.
-    private static readonly Dictionary<string, Func<Texture2D>> staticTextures =
-        new(StringComparer.OrdinalIgnoreCase)
-        {
-            { "LooseSprites\\Birds", () => Game1.birdsSpriteSheet },
-            { "LooseSprites\\Lighting\\greenLight", () => Game1.cauldronLight },
-            { "LooseSprites\\Lighting\\indoorWindowLight", () => Game1.indoorWindowLight },
-            { "LooseSprites\\Lighting\\Lantern", () => Game1.lantern },
-            { "LooseSprites\\Lighting\\sconceLight", () => Game1.sconceLight },
-            { "LooseSprites\\Lighting\\windowLight", () => Game1.windowLight },
-            { "LooseSprites\\shadow", () => Game1.shadowTexture },
-            { "Maps\\MenuTiles", () => Game1.menuTexture },
-            { "Maps\\MenuTilesUncolored", () => Game1.uncoloredMenuTexture },
-            { "TileSheets\\BuffsIcon", () => Game1.buffsIcons },
-            { "TileSheets\\emotes", () => Game1.emoteSpriteSheet },
-            { "TileSheets\\Objects2", () => Game1.objectSpriteSheet_2 },
-            { "TileSheets\\rain", () => Game1.rainTexture },
-            { "TileSheets\\weapons", () => Tool.weaponsTexture },
-            { Game1.animationsName, () => Game1.animations },
-            { Game1.bigCraftableSpriteSheetName, () => Game1.bigCraftableSpriteSheet },
-            { Game1.bobbersTextureName, () => Game1.bobbersTexture },
-            { Game1.concessionsSpriteSheetName, () => Game1.concessionsSpriteSheet },
-            { Game1.cropSpriteSheetName, () => Game1.cropSpriteSheet },
-            { Game1.debrisSpriteSheetName, () => Game1.debrisSpriteSheet },
-            { Game1.giftboxName, () => Game1.giftboxTexture },
-            { Game1.mouseCursors1_6Name, () => Game1.mouseCursors_1_6 },
-            { Game1.mouseCursors2Name, () => Game1.mouseCursors2 },
-            { Game1.mouseCursorsName, () => Game1.mouseCursors },
-            { Game1.objectSpriteSheetName, () => Game1.objectSpriteSheet },
-            { Game1.toolSpriteSheetName, () => Game1.toolSpriteSheet },
-        };
+    private static readonly Dictionary<string, Func<Texture2D>> StaticTextures = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { "LooseSprites\\Birds", () => Game1.birdsSpriteSheet },
+        { "LooseSprites\\Lighting\\greenLight", () => Game1.cauldronLight },
+        { "LooseSprites\\Lighting\\indoorWindowLight", () => Game1.indoorWindowLight },
+        { "LooseSprites\\Lighting\\Lantern", () => Game1.lantern },
+        { "LooseSprites\\Lighting\\sconceLight", () => Game1.sconceLight },
+        { "LooseSprites\\Lighting\\windowLight", () => Game1.windowLight },
+        { "LooseSprites\\shadow", () => Game1.shadowTexture },
+        { "Maps\\MenuTiles", () => Game1.menuTexture },
+        { "Maps\\MenuTilesUncolored", () => Game1.uncoloredMenuTexture },
+        { "TileSheets\\BuffsIcon", () => Game1.buffsIcons },
+        { "TileSheets\\emotes", () => Game1.emoteSpriteSheet },
+        { "TileSheets\\Objects2", () => Game1.objectSpriteSheet_2 },
+        { "TileSheets\\rain", () => Game1.rainTexture },
+        { "TileSheets\\weapons", () => Tool.weaponsTexture },
+        { Game1.animationsName, () => Game1.animations },
+        { Game1.bigCraftableSpriteSheetName, () => Game1.bigCraftableSpriteSheet },
+        { Game1.bobbersTextureName, () => Game1.bobbersTexture },
+        { Game1.concessionsSpriteSheetName, () => Game1.concessionsSpriteSheet },
+        { Game1.cropSpriteSheetName, () => Game1.cropSpriteSheet },
+        { Game1.debrisSpriteSheetName, () => Game1.debrisSpriteSheet },
+        { Game1.giftboxName, () => Game1.giftboxTexture },
+        { Game1.mouseCursors1_6Name, () => Game1.mouseCursors_1_6 },
+        { Game1.mouseCursors2Name, () => Game1.mouseCursors2 },
+        { Game1.mouseCursorsName, () => Game1.mouseCursors },
+        { Game1.objectSpriteSheetName, () => Game1.objectSpriteSheet },
+        { Game1.toolSpriteSheetName, () => Game1.toolSpriteSheet },
+    };
 
     private readonly IModHelper helper;
     private readonly List<DirectoryMapping> spriteDirectories = [];
@@ -112,7 +114,7 @@ internal class AssetRegistry : ISourceResolver
         }
         helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
         hotReloadWatcher = new FileSystemWatcher(helper.DirectoryPath) { IncludeSubdirectories = true };
-        hotReloadWatcher.Changed += HotReloadWatcher_Changed;
+        hotReloadWatcher.Changed += Debounce(HotReloadWatcher_Changed, HotReloadDebounceDelay);
         hotReloadWatcher.EnableRaisingEvents = true;
         fileRetryTimer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(100));
         Logger.Log($"[Hot Reload] Watching {helper.DirectoryPath}...", LogLevel.Debug);
@@ -126,7 +128,7 @@ internal class AssetRegistry : ISourceResolver
             return;
         }
         sourceSyncWatcher = new FileSystemWatcher(sourceDirectory) { IncludeSubdirectories = true };
-        sourceSyncWatcher.Changed += SourceSyncWatcher_Changed;
+        sourceSyncWatcher.Changed += Debounce(SourceSyncWatcher_Changed, HotReloadDebounceDelay);
         sourceSyncWatcher.EnableRaisingEvents = true;
         Logger.Log($"[Hot Reload] Syncing changes from {sourceDirectory} to {helper.DirectoryPath}...", LogLevel.Debug);
     }
@@ -223,6 +225,32 @@ internal class AssetRegistry : ISourceResolver
         }
     }
 
+    private FileSystemEventHandler Debounce(FileSystemEventHandler handler, TimeSpan delay)
+    {
+        var pending = new ConcurrentDictionary<string, Timer>();
+        return (sender, e) =>
+        {
+            if (pending.TryGetValue(e.FullPath, out var timer))
+            {
+                timer.Change(delay, Timeout.InfiniteTimeSpan);
+            }
+            else
+            {
+                pending.TryAdd(e.FullPath, new(TimerCallback, e.FullPath, delay, Timeout.InfiniteTimeSpan));
+            }
+
+            void TimerCallback(object? arg)
+            {
+                var fullPath = (string)arg!;
+                if (pending.TryRemove(fullPath, out var doneTimer))
+                {
+                    doneTimer.Dispose();
+                    handler(sender, e);
+                }
+            }
+        };
+    }
+
     private void FileRetryTimerCallback(object? _)
     {
         var changedModFiles = this.changedModFiles;
@@ -286,7 +314,7 @@ internal class AssetRegistry : ISourceResolver
         Texture2D texture;
         try
         {
-            texture = staticTextures.TryGetValue(assetName.Replace('/', '\\'), out var staticTexture)
+            texture = StaticTextures.TryGetValue(assetName.Replace('/', '\\'), out var staticTexture)
                 ? staticTexture()
                 : helper.GameContent.Load<Texture2D>(assetName);
         }
@@ -337,7 +365,7 @@ internal class AssetRegistry : ISourceResolver
 
     private static bool IsRetryable(Exception ex)
     {
-        return ex is IOException io && retryableHResults.Contains((uint)io.HResult);
+        return ex is IOException io && RetryableHResults.Contains((uint)io.HResult);
     }
 
     // Performs scheduled tasks that must be run on the main thread.

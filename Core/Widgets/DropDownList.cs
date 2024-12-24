@@ -115,9 +115,9 @@ public partial class DropDownList<T> : ComponentView
         {
             if (
                 EqualityComparer<T>.Default.Equals(value, SelectedOption)
-                || EqualityComparer<T>.Default.Equals(
-                    value,
-                    pendingSelectedOption is not null ? (T)pendingSelectedOption : default
+                || (
+                    pendingSelectedOption is not null
+                    && EqualityComparer<T>.Default.Equals(value, (T)pendingSelectedOption)
                 )
             )
             {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewUI.Layout;
 
 namespace StardewUI.Graphics;
@@ -28,7 +29,8 @@ public class NineSlice(Sprite sprite)
     /// </summary>
     /// <param name="b">Output sprite batch.</param>
     /// <param name="tint">Optional tint multiplier color.</param>
-    public void Draw(ISpriteBatch b, Color? tint = null)
+    /// <param name="effects">Sprite effect to apply, e.g. for drawing flipped.</param>
+    public void Draw(ISpriteBatch b, Color? tint = null, SpriteEffects effects = SpriteEffects.None)
     {
         if (destinationGrid is null)
         {
@@ -36,6 +38,8 @@ public class NineSlice(Sprite sprite)
             return;
         }
         var rotationAngle = rotation?.Angle() ?? 0;
+        var rotationCenter = new Vector2(0.5f, 0.5f);
+        using var _transform = b.SaveTransform();
         for (int sourceY = 0; sourceY < sourceGrid.GetLength(0); sourceY++)
         {
             for (int sourceX = 0; sourceX < sourceGrid.GetLength(1); sourceX++)
@@ -44,7 +48,7 @@ public class NineSlice(Sprite sprite)
                 {
                     continue;
                 }
-                var (destX, destY) = RotateGridIndices(sourceX, sourceY, rotation);
+                var (destX, destY) = RotateGridIndices(sourceX, sourceY, rotation, effects);
                 var sourceRect = sourceGrid[sourceY, sourceX];
                 if (sourceRect.Width == 0 || sourceRect.Height == 0)
                 {
@@ -55,24 +59,33 @@ public class NineSlice(Sprite sprite)
                 var destinationRect = destinationGrid[destY, destX];
                 if (rotation.HasValue)
                 {
-                    var rotationOrigin = sourceRect.Size.ToVector2() / 2;
-                    // DestinationRect behaves in very confusing ways when rotation is involved, so
-                    // for these cases, it's easier to place using the point overload after
-                    // computing the scale from src:dest.
-                    var destinationSizeInSourceOrientation = rotation.Value.IsQuarter()
-                        ? new Point(destinationRect.Height, destinationRect.Width)
-                        : destinationRect.Size;
-                    var scale = destinationSizeInSourceOrientation.ToVector2() / sourceRect.Size.ToVector2();
-                    // Don't use .Center.ToVector2() because it truncates and we get 1-pixel offsets.
-                    var center = new Vector2(
-                        destinationRect.X + destinationRect.Width / 2f,
-                        destinationRect.Y + destinationRect.Height / 2f
+                    var location = destinationRect.Location.ToVector2();
+                    var transformOrigin = new TransformOrigin(
+                        rotationCenter,
+                        rotationCenter * destinationRect.Size.ToVector2()
                     );
-                    b.Draw(Sprite.Texture, center, sourceRect, tint, rotationAngle, rotationOrigin, scale);
+                    b.Translate(location);
+                    b.Rotate(rotationAngle, transformOrigin);
+                    b.Draw(
+                        Sprite.Texture,
+                        new Rectangle(Point.Zero, destinationRect.Size),
+                        sourceRect,
+                        tint,
+                        0,
+                        effects
+                    );
+                    // We reverse the transformations explicitly instead of using SaveTransform() in this loop in order
+                    // to avoid the possibility of repeatedly restoring a partially-local transform that needs to be
+                    // collapsed and trigger a new sprite batch each time. If the negative rotation reverts the local
+                    // rotation back to 0 - which is what should usually happen - then the subsequent translation is
+                    // "free" in that it won't force a new global transform, but will also preserve any global transform
+                    // that may have been lazily created after the very first translate/rotate.
+                    b.Rotate(-rotationAngle, transformOrigin);
+                    b.Translate(-location);
                 }
                 else
                 {
-                    b.Draw(Sprite.Texture, destinationRect, sourceRect, tint);
+                    b.Draw(Sprite.Texture, destinationRect, sourceRect, tint, effects: effects);
                 }
             }
         }
@@ -160,8 +173,21 @@ public class NineSlice(Sprite sprite)
         };
     }
 
-    private static (int x, int y) RotateGridIndices(int x, int y, SimpleRotation? rotation)
+    private static (int x, int y) RotateGridIndices(
+        int x,
+        int y,
+        SimpleRotation? rotation,
+        SpriteEffects effects = SpriteEffects.None
+    )
     {
+        if ((effects & SpriteEffects.FlipHorizontally) != 0)
+        {
+            x = 2 - x;
+        }
+        if ((effects & SpriteEffects.FlipVertically) != 0)
+        {
+            y = 2 - y;
+        }
         return rotation switch
         {
             SimpleRotation.QuarterClockwise => (2 - y, x),

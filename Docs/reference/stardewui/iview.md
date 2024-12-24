@@ -48,6 +48,8 @@ public interface IView : System.IDisposable,
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
 | [Tooltip](#tooltip) | Tooltip data to display on hover, if any. | 
+| [Transform](#transform) | Local transformation to apply to this view, including any children and floating elements. | 
+| [TransformOrigin](#transformorigin) | Relative origin position for any [Transform](iview.md#transform) on this view. | 
 | [Visibility](#visibility) | Drawing visibility for this view. | 
 | [ZIndex](#zindex) | Z order for this view within its direct parent. Higher indices draw later (on top). | 
 
@@ -58,7 +60,7 @@ public interface IView : System.IDisposable,
 | [ContainsPoint(Vector2)](#containspointvector2) | Checks if a given point, relative to the view's origin, is within its bounds. | 
 | [Draw(ISpriteBatch)](#drawispritebatch) | Draws the content for this view. | 
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
-| [GetChildAt(Vector2)](#getchildatvector2) | Finds the child at a given position. | 
+| [GetChildAt(Vector2, Boolean)](#getchildatvector2-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
 | [GetChildren()](#getchildren) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
@@ -287,6 +289,40 @@ StardewUI.Data.TooltipData Tooltip { get; set; }
 
 -----
 
+#### Transform
+
+Local transformation to apply to this view, including any children and floating elements.
+
+```cs
+StardewUI.Graphics.Transform Transform { get; set; }
+```
+
+##### Property Value
+
+[Transform](graphics/transform.md)
+
+-----
+
+#### TransformOrigin
+
+Relative origin position for any [Transform](iview.md#transform) on this view.
+
+```cs
+Microsoft.Xna.Framework.Vector2? TransformOrigin { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
+
+##### Remarks
+
+Expects a value that represents the fraction of the view's computed layout size. For example, `(0, 0)` is the top left, `(0.5, 0.5)` is the center, and `1, 1` is the bottom right. `null` values are equivalent to [Zero](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2). 
+
+ Origins are not inherited; each view defines its own origin for its specific transform.
+
+-----
+
 #### Visibility
 
 Drawing visibility for this view.
@@ -391,18 +427,21 @@ If `position` is out of bounds, it does not necessarily mean that the view shoul
 
 -----
 
-#### GetChildAt(Vector2)
+#### GetChildAt(Vector2, bool)
 
 Finds the child at a given position.
 
 ```cs
-StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position);
+StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
 ```
 
 ##### Parameters
 
 **`position`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
 The search position, relative to the view's top-left coordinate.
+
+**`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+`true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
 
 ##### Returns
 
@@ -412,7 +451,7 @@ The search position, relative to the view's top-left coordinate.
 
 ##### Remarks
 
-If multiple children overlap the same position, then this returns the topmost child.
+If multiple children overlap the same position, then this returns the topmost child, i.e. with the highest [ZIndex](iview.md#zindex).
 
 -----
 

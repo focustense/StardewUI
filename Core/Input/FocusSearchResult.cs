@@ -11,8 +11,22 @@ namespace StardewUI.Input;
 /// <param name="Path">The path from root to <see cref="Target"/>, in top-down order; each element's
 /// <see cref="ViewChild.Position"/> is relative to the parent, <b>not</b> the search root as <paramref name="Target"/>
 /// is.</param>
-public record FocusSearchResult(ViewChild Target, IEnumerable<ViewChild> Path)
+public record FocusSearchResult(ViewChild Target, IReadOnlyList<ViewChild> Path)
 {
+    /// <summary>
+    /// Gets the <see cref="Target"/> in coordinates relative to the root of the <see cref="Path"/>.
+    /// </summary>
+    /// <remarks>
+    /// These are not necessarily "global" coordinates because the <see cref="Path"/> may itself be relative.
+    /// </remarks>
+    /// <returns>A new <see cref="ViewChild"/> pointing to the same <see cref="ViewChild.View"/> as the
+    /// <see cref="Target"/> and having its <see cref="ViewChild.Position"/> adjusted to the offsets in the
+    /// <see cref="Path"/>.</returns>
+    public ViewChild AbsoluteTarget()
+    {
+        return Path.Append(Target).ToGlobalPositions().Last();
+    }
+
     /// <summary>
     /// Returns a transformed <see cref="FocusSearchResult"/> that adds a view (generally the caller) to the beginning
     /// of the <see cref="Path"/>, and applies its content offset to either the first element of the current
@@ -29,7 +43,7 @@ public record FocusSearchResult(ViewChild Target, IEnumerable<ViewChild> Path)
     {
         var root = new ViewChild(parent, Vector2.Zero);
         var (target, path) = OffsetTargetOrPath(position);
-        return new(target, path.Prepend(root));
+        return new(target, path.Prepend(root).ToArray());
     }
 
     /// <summary>
@@ -48,7 +62,7 @@ public record FocusSearchResult(ViewChild Target, IEnumerable<ViewChild> Path)
     public FocusSearchResult Offset(Vector2 distance)
     {
         var (target, path) = OffsetTargetOrPath(distance);
-        return new(target, path);
+        return new(target, path.ToArray());
     }
 
     private (ViewChild target, IEnumerable<ViewChild> path) OffsetTargetOrPath(Vector2 distance)

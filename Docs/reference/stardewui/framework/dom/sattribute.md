@@ -43,7 +43,7 @@ Must be separate from the grammar's [Attribute](../grammar/attribute.md) since `
 
  | Name | Description |
 | --- | --- |
-| [SAttribute(string, string, AttributeType, AttributeValueType, ContextRedirect)](#sattributestring-string-attributetype-attributevaluetype-contextredirect) | Record implementation of a StarML [IAttribute](iattribute.md). | 
+| [SAttribute(string, string, AttributeType, AttributeValueType, Boolean, ContextRedirect)](#sattributestring-string-attributetype-attributevaluetype-bool-contextredirect) | Record implementation of a StarML [IAttribute](iattribute.md). | 
 | [SAttribute(Attribute)](#sattributeattribute) | Initializes a new [SAttribute](sattribute.md) from the data of a parsed attribute. | 
 
 ### Properties
@@ -52,6 +52,7 @@ Must be separate from the grammar's [Attribute](../grammar/attribute.md) since `
 | --- | --- |
 | [ContextRedirect](#contextredirect) | Specifies the redirect to use for a context binding, if applicable and if the `ValueType` is one of the context binding types. | 
 | [EqualityContract](#equalitycontract) |  | 
+| [IsNegated](#isnegated) | Whether the attribute has a negation. Validity and behavior depend on the specific attribute. | 
 | [Name](#name) | The attribute name. | 
 | [Type](#type) | The type of the attribute itself, defining how the `Name` should be interpreted. | 
 | [Value](#value) | The literal value text. | 
@@ -68,12 +69,12 @@ Must be separate from the grammar's [Attribute](../grammar/attribute.md) since `
 
 ### Constructors
 
-#### SAttribute(string, string, AttributeType, AttributeValueType, ContextRedirect)
+#### SAttribute(string, string, AttributeType, AttributeValueType, bool, ContextRedirect)
 
 Record implementation of a StarML [IAttribute](iattribute.md).
 
 ```cs
-public SAttribute(string Name, string Value, StardewUI.Framework.Grammar.AttributeType Type, StardewUI.Framework.Grammar.AttributeValueType ValueType, StardewUI.Framework.Dom.ContextRedirect ContextRedirect);
+public SAttribute(string Name, string Value, StardewUI.Framework.Grammar.AttributeType Type, StardewUI.Framework.Grammar.AttributeValueType ValueType, bool IsNegated, StardewUI.Framework.Dom.ContextRedirect ContextRedirect);
 ```
 
 ##### Parameters
@@ -89,6 +90,9 @@ The type of the attribute itself, defining how the `Name` should be interpreted.
 
 **`ValueType`** &nbsp; [AttributeValueType](../grammar/attributevaluetype.md)  
 The type of the value expression, defining how the `Value` should be interpreted.
+
+**`IsNegated`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether the attribute has a negation. Validity and behavior depend on the specific attribute.
 
 **`ContextRedirect`** &nbsp; [ContextRedirect](contextredirect.md)  
 Specifies the redirect to use for a context binding, if applicable and if the `ValueType` is one of the context binding types.
@@ -141,6 +145,20 @@ protected System.Type EqualityContract { get; }
 ##### Property Value
 
 [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)
+
+-----
+
+#### IsNegated
+
+Whether the attribute has a negation. Validity and behavior depend on the specific attribute.
+
+```cs
+public bool IsNegated { get; set; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
 -----
 

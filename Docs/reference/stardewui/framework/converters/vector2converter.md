@@ -47,6 +47,7 @@ public class Vector2Converter :
  | Name | Description |
 | --- | --- |
 | [Convert(string)](#convertstring) | Converts a value from the source type to the destination type. | 
+| [Parse(ReadOnlySpan&lt;Char&gt;)](#parsereadonlyspanchar) | Parses a [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) from a comma-separated value pair. | 
 
 ## Details
 
@@ -80,6 +81,27 @@ The value to convert.
 ##### Returns
 
 [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+-----
+
+#### Parse(ReadOnlySpan&lt;Char&gt;)
+
+Parses a [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) from a comma-separated value pair.
+
+```cs
+public static Microsoft.Xna.Framework.Vector2 Parse(ReadOnlySpan<System.Char> value);
+```
+
+##### Parameters
+
+**`value`** &nbsp; [ReadOnlySpan](https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1)<[Char](https://learn.microsoft.com/en-us/dotnet/api/system.char)>  
+The string value.
+
+##### Returns
+
+[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+  The parsed [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html).
 
 -----
 

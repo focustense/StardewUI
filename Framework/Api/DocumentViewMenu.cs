@@ -71,7 +71,9 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     protected override DocumentView CreateView()
     {
         var context = data is not null ? BindingContext.Create(data) : null;
-        return new(viewNodeFactory, documentSource) { Context = context };
+        var view = new DocumentView(viewNodeFactory, documentSource) { Context = context };
+        view.InitialUpdate();
+        return view;
     }
 
     /// <inheritdoc />

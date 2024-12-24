@@ -32,6 +32,8 @@ internal class ViewDrawable(DocumentView view) : IViewDrawable, IUpdatable
     /// <inheritdoc />
     public Vector2? MaxSize { get; set; }
 
+    private readonly RenderTargetPool renderTargetPool = new(Game1.graphics.GraphicsDevice);
+
     /// <inheritdoc />
     public void Dispose()
     {
@@ -40,6 +42,7 @@ internal class ViewDrawable(DocumentView view) : IViewDrawable, IUpdatable
             return;
         }
         view.Dispose();
+        renderTargetPool.Dispose();
         IsDisposed = true;
         GC.SuppressFinalize(this);
     }
@@ -47,7 +50,8 @@ internal class ViewDrawable(DocumentView view) : IViewDrawable, IUpdatable
     /// <inheritdoc />
     public void Draw(SpriteBatch b, Vector2 position)
     {
-        var drawableBatch = new PropagatedSpriteBatch(b, Transform.FromTranslation(position));
+        using ISpriteBatch drawableBatch = new PropagatedSpriteBatch(b, GlobalTransform.Default, renderTargetPool);
+        drawableBatch.Translate(position);
         view.Draw(drawableBatch);
     }
 

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewUI.Animation;
 using StardewUI.Data;
 using StardewUI.Layout;
+using StardewUI.Widgets;
 using StardewValley.ItemTypeDefinitions;
 
 namespace StardewUI.Framework.Converters;
@@ -44,13 +46,17 @@ internal class RootValueConverterFactory : ValueConverterFactory
 
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
+        TryRegister<string, Easing>(Easings.Parse);
         TryRegister<string, Edges>(Edges.Parse);
-        TryRegister(new GridItemLayoutConverter());
+        TryRegister<string, FloatingPosition>(FloatingPosition.Parse);
+        TryRegister<string, GridItemLayout>(GridItemLayout.Parse);
         TryRegister(new LayoutConverter());
         TryRegister<string, Length>(Length.Parse);
         TryRegister(new NamedFontConverter());
         TryRegister(new PointConverter());
         TryRegister(new RectangleConverter());
+        TryRegister(new TransformConverter());
+        TryRegister<string, Transition>(Transition.Parse);
         TryRegister(new Vector2Converter());
 
         // Edges are better to bind as numbers, so we can use tuples and XNA equivalents in some cases.
@@ -97,6 +103,12 @@ internal class RootValueConverterFactory : ValueConverterFactory
             new(data.Description, data.DisplayName, ItemRegistry.Create(data.ItemId))
         );
         TryRegister<Item, TooltipData>(item => new(item.getDescription(), item.DisplayName, item));
+
+        // Extra conversions for floats.
+        TryRegister<Func<Vector2, Vector2, Vector2>, FloatingPosition>(f => new(f));
+
+        // Only two types of visibility, so boolean conversions are common.
+        TryRegister<bool, Visibility>(b => b ? Visibility.Visible : Visibility.Hidden);
 
         // Most enums are fine using the standard string-to-enum conversion.
         Register(new EnumNameConverterFactory());

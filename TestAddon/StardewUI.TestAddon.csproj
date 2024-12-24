@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <Import Project="..\StardewUI.props"/>
+  <Import Project="..\StardewUI.props" />
 
   <PropertyGroup>
     <ModFolderName>StardewUITestAddon</ModFolderName>
@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <SMAPIDependency Include="focustense.StardewUI" Version="0.4.0" Reference="true" />
+    <SMAPIDependency Include="focustense.StardewUI" Version="0.4.2" Reference="true" />
   </ItemGroup>
 
   <ItemGroup>

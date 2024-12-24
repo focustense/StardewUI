@@ -65,10 +65,13 @@
       "name": "meta.attribute.sml",
       "patterns": [
         {
-          "match": "(?:^|\\s+)([-\\w]+)=",
+          "match": "(?:^|\\s+)(\\+?[-:\\w]+)(=)",
           "captures": {
             "1": {
               "name": "entity.name.attribute.sml"
+            },
+            "2": {
+              "name": "punctuation.definition.attribute.sml"
             }
           }
         },
@@ -86,10 +89,24 @@
     "conditional": {
       "patterns": [
         {
-          "match": "(?:^|\\s+)([\\*](?:case|context|if|outlet|repeat|switch))=",
+          "match": "(?:^|\\s+)([\\*](?:context|float|outlet|repeat|switch))(=)",
           "captures": {
             "1": {
               "name": "keyword.control.sml"
+            },
+            "2": {
+              "name": "punctuation.definition.control.sml"
+            }
+          }
+        },
+        {
+          "match": "(?:^|\\s+)([\\*]!?(?:case|if))(=)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.negatable.sml"
+            },
+            "2": {
+              "name": "punctuation.definition.control.sml"
             }
           }
         }
@@ -131,17 +148,39 @@
       },
       "patterns": [
         {
-          "match": "((?:[\\^~@#&])|(?:<?>?))?([^}]+)",
-          "captures": {
-            "1": {
-              "name": "keyword.operator.sml"
-            },
-            "2": {
-              "name": "variable.name.sml"
-            }
-          }
+          "include": "#binding-constant"
+        },
+        {
+          "include": "#binding-property"
         }
       ]
+    },
+    "binding-constant": {
+      "name": "variable.other.constant.sml",
+      "match": "([@#&])([\\w\\.\\/:]+)",
+      "captures": {
+        "1": {
+          "name": "keyword.operator.sml"
+        }
+      }
+    },
+    "binding-property": {
+      "name": "variable.other.property.sml",
+      "match": "(<?>?\\:?\\^*)?(~(\\w+)\\.)?(\\w+)",
+      "captures": {
+        "1": {
+          "name": "keyword.operator.sml"
+        },
+        "2": {
+          "name": "keyword.operator.sml"
+        },
+        "3": {
+          "name": "entity.name.type.class.sml"
+        },
+        "4": {
+          "name": "variable.other.property.sml"
+        }
+      }
     },
     "event": {
       "name": "attribute.value.piped.sml",
@@ -159,16 +198,42 @@
       },
       "patterns": [
         {
-          "name": "support.function.sml",
-          "match": "([\\^~])?[^\"|(]+(?:\\(([^\"|)]+)\\))?",
-          "captures": {
+          "begin": "(<?>?\\:?\\^*)?(~(\\w+)\\.)?(\\w+)(\\()",
+          "beginCaptures": {
             "1": {
               "name": "keyword.operator.sml"
             },
             "2": {
-              "name": "constant.language"
+              "name": "keyword.operator.sml"
+            },
+            "3": {
+              "name": "entity.name.type.class.sml"
+            },
+            "4": {
+              "name": "support.function.sml"
+            },
+            "5": {
+              "name": "punctuation.function.open.sml"
             }
-          }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.function.close.sml"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.language.function.sml",
+              "match": "\\$\\w+"
+            },
+            {
+              "include": "#string"
+            },
+            {
+              "include": "#binding-property"
+            }
+          ]
         }
       ]
     }

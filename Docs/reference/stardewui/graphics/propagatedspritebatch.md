@@ -23,14 +23,15 @@ Assembly: StardewUI.dll
 Sprite batch wrapper with transform propagation.
 
 ```cs
-public class PropagatedSpriteBatch : StardewUI.Graphics.ISpriteBatch
+public class PropagatedSpriteBatch : StardewUI.Graphics.ISpriteBatch, 
+    System.IDisposable
 ```
 
 **Inheritance**  
 [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object) ⇦ PropagatedSpriteBatch
 
 **Implements**  
-[ISpriteBatch](ispritebatch.md)
+[ISpriteBatch](ispritebatch.md), [IDisposable](https://learn.microsoft.com/en-us/dotnet/api/system.idisposable)
 
 ## Members
 
@@ -38,7 +39,8 @@ public class PropagatedSpriteBatch : StardewUI.Graphics.ISpriteBatch
 
  | Name | Description |
 | --- | --- |
-| [PropagatedSpriteBatch(SpriteBatch, Transform)](#propagatedspritebatchspritebatch-transform) | Sprite batch wrapper with transform propagation. | 
+| [PropagatedSpriteBatch(SpriteBatch, GlobalTransform, RenderTargetPool)](#propagatedspritebatchspritebatch-globaltransform-rendertargetpool) | Sprite batch wrapper with transform propagation. | 
+| [PropagatedSpriteBatch(SpriteBatch, Transform)](#propagatedspritebatchspritebatch-transform) | Initializes a new [PropagatedSpriteBatch](propagatedspritebatch.md) using a local transform interpreted as global. | 
 
 ### Methods
 
@@ -47,23 +49,44 @@ public class PropagatedSpriteBatch : StardewUI.Graphics.ISpriteBatch
 | [Blend(BlendState)](#blendblendstate) | Sets up subsequent draw calls to use the designated blending settings. | 
 | [Clip(Rectangle)](#cliprectangle) | Sets up subsequent draw calls to clip contents within the specified bounds. | 
 | [DelegateDraw(Action&lt;SpriteBatch, Vector2&gt;)](#delegatedrawactionspritebatch-vector2) | Draws using a delegate action on a concrete [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html). | 
-| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Vector2?, Single, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-vector2-float-spriteeffects-float) |  | 
-| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Vector2?, Vector2?, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-vector2-vector2-spriteeffects-float) |  | 
-| [Draw(Texture2D, Rectangle, Rectangle?, Color?, Single, Vector2?, SpriteEffects, Single)](#drawtexture2d-rectangle-rectangle-color-float-vector2-spriteeffects-float) |  | 
-| [DrawString(SpriteFont, string, Vector2, Color, Single, Vector2?, Single, SpriteEffects, Single)](#drawstringspritefont-string-vector2-color-float-vector2-float-spriteeffects-float) |  | 
+| [Dispose()](#dispose) |  | 
+| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Single, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-float-spriteeffects-float) |  | 
+| [Draw(Texture2D, Vector2, Rectangle?, Color?, Single, Vector2?, SpriteEffects, Single)](#drawtexture2d-vector2-rectangle-color-float-vector2-spriteeffects-float) |  | 
+| [Draw(Texture2D, Rectangle, Rectangle?, Color?, Single, SpriteEffects, Single)](#drawtexture2d-rectangle-rectangle-color-float-spriteeffects-float) |  | 
+| [DrawString(SpriteFont, string, Vector2, Color, Single, Single, SpriteEffects, Single)](#drawstringspritefont-string-vector2-color-float-float-spriteeffects-float) |  | 
 | [InitializeRenderTarget(RenderTarget2D, Int32, Int32)](#initializerendertargetrendertarget2d-int-int) | Initializes a [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html) for use with [SetRenderTarget(RenderTarget2D, Color?)](ispritebatch.md#setrendertargetrendertarget2d-color). | 
 | [SaveTransform()](#savetransform) | Saves the current transform, so that it can later be restored to its current state. | 
 | [SetRenderTarget(RenderTarget2D, Color?)](#setrendertargetrendertarget2d-color) | Sets up subsequent draw calls to use a custom render target. | 
-| [Translate(Single, Single)](#translatefloat-float) | Applies a translation offset to subsequent operations. | 
-| [Translate(Vector2)](#translatevector2) | Applies a translation offset to subsequent operations. | 
+| [Transform(Transform, TransformOrigin)](#transformtransform-transformorigin) | Applies an arbitrary transformation to subsequent operations. | 
 
 ## Details
 
 ### Constructors
 
-#### PropagatedSpriteBatch(SpriteBatch, Transform)
+#### PropagatedSpriteBatch(SpriteBatch, GlobalTransform, RenderTargetPool)
 
 Sprite batch wrapper with transform propagation.
+
+```cs
+public PropagatedSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, StardewUI.Graphics.GlobalTransform transform, StardewUI.Graphics.RenderTargetPool renderTargetPool);
+```
+
+##### Parameters
+
+**`spriteBatch`** &nbsp; [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html)  
+The XNA/MonoGame sprite batch.
+
+**`transform`** &nbsp; [GlobalTransform](globaltransform.md)  
+Transformation to apply.
+
+**`renderTargetPool`** &nbsp; [RenderTargetPool](rendertargetpool.md)  
+Shared pool of [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html) instances to use for creating internal targets, such as those used for transformed clipping regions. The batch does not take ownership of the pool, nor do any targets explicitly provided (e.g. via [InitializeRenderTarget(RenderTarget2D, Int32, Int32)](propagatedspritebatch.md#initializerendertargetrendertarget2d-int-int) or [SetRenderTarget(RenderTarget2D, Color?)](propagatedspritebatch.md#setrendertargetrendertarget2d-color)) get automatically pooled.
+
+-----
+
+#### PropagatedSpriteBatch(SpriteBatch, Transform)
+
+Initializes a new [PropagatedSpriteBatch](propagatedspritebatch.md) using a local transform interpreted as global.
 
 ```cs
 public PropagatedSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, StardewUI.Graphics.Transform transform);
@@ -71,9 +94,15 @@ public PropagatedSpriteBatch(Microsoft.Xna.Framework.Graphics.SpriteBatch sprite
 
 ##### Parameters
 
-**`spriteBatch`** &nbsp; [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html)
+**`spriteBatch`** &nbsp; [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html)  
+The XNA/MonoGame sprite batch.
 
-**`transform`** &nbsp; [Transform](transform.md)
+**`transform`** &nbsp; [Transform](transform.md)  
+Transformation to apply.
+
+##### Remarks
+
+Provided for legacy compatibility; assumes that the local transform is the outermost transform and converts it directly to a global transform.
 
 -----
 
@@ -142,12 +171,22 @@ Delegation is provided as a fallback for game-specific "utilities" that require 
 
 -----
 
-#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, float, SpriteEffects, float)
+#### Dispose()
 
 
 
 ```cs
-public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? origin, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+public void Dispose();
+```
+
+-----
+
+#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, float, SpriteEffects, float)
+
+
+
+```cs
+public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -161,8 +200,6 @@ public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.X
 **`color`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)>
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
-
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
 
 **`scale`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
@@ -172,12 +209,12 @@ public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.X
 
 -----
 
-#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, Vector2?, SpriteEffects, float)
+#### Draw(Texture2D, Vector2, Rectangle?, Color?, float, Vector2?, SpriteEffects, float)
 
 
 
 ```cs
-public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? origin, Microsoft.Xna.Framework.Vector2? scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -192,8 +229,6 @@ public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.X
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
-
 **`scale`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
 
 **`effects`** &nbsp; [SpriteEffects](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html)
@@ -202,12 +237,12 @@ public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.X
 
 -----
 
-#### Draw(Texture2D, Rectangle, Rectangle?, Color?, float, Vector2?, SpriteEffects, float)
+#### Draw(Texture2D, Rectangle, Rectangle?, Color?, float, SpriteEffects, float)
 
 
 
 ```cs
-public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Rectangle destinationRectangle, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Vector2? origin, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Rectangle destinationRectangle, Microsoft.Xna.Framework.Rectangle? sourceRectangle, Microsoft.Xna.Framework.Color? color, float rotation, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -222,20 +257,18 @@ public void Draw(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.X
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
-
 **`effects`** &nbsp; [SpriteEffects](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteEffects.html)
 
 **`layerDepth`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
 -----
 
-#### DrawString(SpriteFont, string, Vector2, Color, float, Vector2?, float, SpriteEffects, float)
+#### DrawString(SpriteFont, string, Vector2, Color, float, float, SpriteEffects, float)
 
 
 
 ```cs
-public void DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont spriteFont, string text, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Color color, float rotation, Microsoft.Xna.Framework.Vector2? origin, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
+public void DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont spriteFont, string text, Microsoft.Xna.Framework.Vector2 position, Microsoft.Xna.Framework.Color color, float rotation, float scale, Microsoft.Xna.Framework.Graphics.SpriteEffects effects, float layerDepth);
 ```
 
 ##### Parameters
@@ -249,8 +282,6 @@ public void DrawString(Microsoft.Xna.Framework.Graphics.SpriteFont spriteFont, s
 **`color`** &nbsp; [Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)
 
 **`rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
-
-**`origin`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>
 
 **`scale`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)
 
@@ -333,36 +364,21 @@ This will also reset any active transforms for the new render target, e.g. those
 
 -----
 
-#### Translate(float, float)
+#### Transform(Transform, TransformOrigin)
 
-Applies a translation offset to subsequent operations.
+Applies an arbitrary transformation to subsequent operations.
 
 ```cs
-public void Translate(float x, float y);
+public void Transform(StardewUI.Graphics.Transform transform, StardewUI.Graphics.TransformOrigin origin);
 ```
 
 ##### Parameters
 
-**`x`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
-The translation's X component.
+**`transform`** &nbsp; [Transform](transform.md)  
+The transform properties (scale, rotation and translation).
 
-**`y`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
-The translation's Y component.
-
------
-
-#### Translate(Vector2)
-
-Applies a translation offset to subsequent operations.
-
-```cs
-public void Translate(Microsoft.Xna.Framework.Vector2 translation);
-```
-
-##### Parameters
-
-**`translation`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
-The translation vector.
+**`origin`** &nbsp; [TransformOrigin](transformorigin.md)  
+The origin (i.e. center) of the transformation, or `null` to use the [Default](transformorigin.md#default) origin.
 
 -----
 

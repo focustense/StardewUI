@@ -6,6 +6,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.0] - 2024-12-23
+
+### Added
+
+- [Floating Elements](https://focustense.github.io/StardewUI/library/floating-elements/) are now supported in StarML via the `*float` structural attribute.
+- [Transforms](https://focustense.github.io/StardewUI/library/transforms/) have been added and can be used on all views, including layout views.
+  - Views also have a `transform-origin` property which is layout-wide, e.g. an entire menu can be scaled or rotated around its center.
+
+- [Behaviors](https://focustense.github.io/StardewUI/framework/behaviors/) enable self-contained functionality to be attached to views. [Built-in behaviors](https://focustense.github.io/StardewUI/framework/starml/#behavior-attributes) include:
+  - State modifiers that change a view's property when the view enters certain states (currently `hover:` for hovered and `show:` for visible)
+  - Transitions that animate property changes according to some timing and easing settings, à la [CSS transitions](https://developer.mozilla.org/en-US/docs/Web/CSS/transition).
+
+- `Grid` views using `length`-based item layout can append a `+` to the end (e.g. `item-layout="length: 64+"`) in order to fill the available layout size and eliminate leading/trailing whitespace.
+- Structural attributes that apply conditional behavior, such as `*if` and `*case`, can now be [negated](https://focustense.github.io/StardewUI/framework/starml/#negation) using the negation operator, e.g. `*!if={Condition}`.
+- `Image` views can now specify `SpriteEffects`, i.e. to flip horizontally or vertically.
+
+### Changed
+
+- Menus will automatically watch for loss of focus—i.e. when the gamepad cursor is no longer on a valid target—and attempt to restore focus to either the previous target or to the default element, which is important for "in-place" pagination or multi-step flows.
+- Menus now support focus restore for vanilla child menus (via `IClickableMenu.SetChildMenu`) as well as the Overlay focus support that already existed.
+- Images no longer require a layout pass when their `Sprite` changes to a value with the same dimensions; this typically eliminates the entire recursive layout operation and makes sprite animation more efficient.
+- Most `Scrollbar` behavior and appearance can now be customized through the `ScrollableView` (`<scrollable>` element).
+- `Visibility` properties can be bound to `bool` properties.
+- Minor optimization of the `Opacity` property to reduce render target requirements in simple views such as `Label` and `Image`.
+
+### Fixed
+
+- Menus with custom close actions should no longer close prematurely when the controller B button is pressed to dismiss an overlay.
+- `Frame` views will use the correct boundaries for focus searches, and will not fail or land the cursor in the wrong place when moving a large distance to/from a much smaller element.
+- `Lane` views now handle inner `ScrollableView`s correctly and will not not break focus searching when scrolling with the right thumbstick.
+- Value-typed `<dropdown>` views can be set back to their default values again.
+- Keybind and nine-grid editors no longer lose their hover states when their overlays are closed.
+- Hot reload will no longer spam reloads and SMAPI console messages when updated via source sync.
+
 ## [0.4.2] - 2024-12-07
 
 ### Changed
@@ -40,7 +74,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- [Templates](https://focustense.github.io/StardewUI/framework/) are a lightweight alternative to Included Views, which support attribute substitution and require no extra assets.
+- [Templates](https://focustense.github.io/StardewUI/framework/templates/) are a lightweight alternative to Included Views, which support attribute substitution and require no extra assets.
 - [Menu Controllers](https://focustense.github.io/StardewUI/getting-started/displaying-ui/#menu-controllers), available via the new `CreateMenuController` APIs, enable additional customization of the menu shell. Customize a menu's position, screen dimming, whether it is allowed to close, and more.
 - Menus can now display a top-right close button (red "X") similar to the game's main menu.
 - All views now have a `pointer-move` event.
@@ -149,7 +183,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Initial documentation site based on material-mkdocs; many pages are stubs.
 - Syntax highlighting for Visual Studio, VSCode and Notepad++.
 
-[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.4.2...HEAD
+[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/focustense/StardewUI/compare/v0.4.2...v0.5.0
 [0.4.2]: https://github.com/focustense/StardewUI/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/focustense/StardewUI/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/focustense/StardewUI/compare/v0.3.0...v0.4.0

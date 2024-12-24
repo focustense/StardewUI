@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using StardewUI.Layout;
 
 namespace StardewUI.Framework.Binding;
 
@@ -20,6 +21,9 @@ public class BackoffNodeDecorator(IViewNode node, BackoffRule backoffRule) : IVi
         get => node.Context;
         set => node.Context = value;
     }
+
+    /// <inheritdoc />
+    public IReadOnlyList<FloatingElement> FloatingElements => node.FloatingElements;
 
     /// <inheritdoc />
     public IReadOnlyList<IView> Views => node.Views;

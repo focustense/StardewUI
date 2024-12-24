@@ -1,4 +1,5 @@
 ﻿using StardewUI.Events;
+using StardewUI.Graphics;
 using StardewUI.Layout;
 using StardewValley;
 
@@ -16,7 +17,7 @@ namespace StardewUI.Widgets;
 /// Currently supports only vertically-scrolling content.
 /// </para>
 /// </remarks>
-public partial class ScrollableView : ComponentView<ScrollContainer>
+public partial class ScrollableView : ComponentView<ScrollContainer>, IFloatContainer
 {
     /// <summary>
     /// The content to make scrollable.
@@ -27,6 +28,13 @@ public partial class ScrollableView : ComponentView<ScrollContainer>
         set => View.Content = value;
     }
 
+    /// <inheritdoc />
+    public IList<FloatingElement> FloatingElements
+    {
+        get => View.FloatingElements;
+        set => View.FloatingElements = value;
+    }
+
     /// <summary>
     /// Amount of extra distance above/below scrolled content; see <see cref="ScrollContainer.Peeking"/>.
     /// </summary>
@@ -34,6 +42,60 @@ public partial class ScrollableView : ComponentView<ScrollContainer>
     {
         get => View.Peeking;
         set => View.Peeking = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.DownSprite" /> used for the scrollbar.
+    /// </summary>
+    public Sprite? ScrollbarDownSprite
+    {
+        get => scrollbar.DownSprite;
+        set => scrollbar.DownSprite = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.Margin" /> of the scrollbar.
+    /// </summary>
+    public Edges ScrollbarMargin
+    {
+        get => scrollbar.Margin;
+        set => scrollbar.Margin = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.ForcedVisibility" /> of the scrollbar.
+    /// </summary>
+    public Visibility? ScrollbarVisibility
+    {
+        get => scrollbar.ForcedVisibility;
+        set => scrollbar.ForcedVisibility = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.ThumbSprite" /> used for the scrollbar.
+    /// </summary>
+    public Sprite? ScrollbarThumbSprite
+    {
+        get => scrollbar.ThumbSprite;
+        set => scrollbar.ThumbSprite = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.TrackSprite" /> used for the scrollbar.
+    /// </summary>
+    public Sprite? ScrollbarTrackSprite
+    {
+        get => scrollbar.TrackSprite;
+        set => scrollbar.TrackSprite = value;
+    }
+
+    /// <summary>
+    /// The <see cref="Scrollbar.UpSprite" /> used for the scrollbar.
+    /// </summary>
+    public Sprite? ScrollbarUpSprite
+    {
+        get => scrollbar.UpSprite;
+        set => scrollbar.UpSprite = value;
     }
 
     // Initialized in CreateView
@@ -69,7 +131,7 @@ public partial class ScrollableView : ComponentView<ScrollContainer>
         var container = new ScrollContainer() { Peeking = 16, ScrollStep = 64 };
         scrollbar = new Scrollbar()
         {
-            Layout = new() { Width = Length.Px(32), Height = Length.Stretch() },
+            Layout = new() { Height = Length.Stretch() },
             Margin = new(Left: 32, Bottom: -8),
             Container = container,
         };

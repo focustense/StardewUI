@@ -94,6 +94,16 @@ internal class DocumentView : DecoratorView, IDescriptorDependent, IDisposable
         base.OnUpdate(elapsed);
     }
 
+    // InitialUpdate is used by the DocumentView to ensure that the view hierarchy is created. Otherwise, the real view
+    // tree may not exist until the end of the frame, which is too late for certain menu tasks.
+    internal void InitialUpdate()
+    {
+        documentSource.Update();
+        CreateViewNode();
+        rootNode?.Update(TimeSpan.Zero);
+        View = rootNode?.Views.FirstOrDefault();
+    }
+
     private void CreateViewNode()
     {
         using var _ = Trace.Begin(this, nameof(CreateViewNode));

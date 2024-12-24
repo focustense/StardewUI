@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using PropertyChanged.SourceGenerator;
 using StardewModdingAPI;
 using StardewUI.Events;
+using StardewUI.Framework.Behaviors;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
@@ -14,7 +15,6 @@ using StardewUI.Framework.Views;
 using StardewUI.Graphics;
 using StardewUI.Layout;
 using StardewUI.Widgets;
-using StardewValley;
 using Xunit.Abstractions;
 
 namespace StardewUI.Framework.Tests.Binding;
@@ -106,6 +106,7 @@ public partial class BindingTests
     }
 
     private readonly FakeAssetCache assetCache;
+    private readonly BehaviorFactory behaviorFactory;
     private readonly FakeResolutionScopeFactory resolutionScopeFactory;
     private readonly FakeResolutionScope resolutionScope;
     private readonly IValueConverterFactory valueConverterFactory;
@@ -124,6 +125,7 @@ public partial class BindingTests
         var eventBindingFactory = new EventBindingFactory(valueSourceFactory, valueConverterFactory);
         resolutionScopeFactory = new FakeResolutionScopeFactory();
         resolutionScope = resolutionScopeFactory.DefaultScope;
+        behaviorFactory = new();
         viewBinder = new ReflectionViewBinder(attributeBindingFactory, eventBindingFactory);
     }
 
@@ -260,14 +262,7 @@ public partial class BindingTests
             ],
             []
         );
-        var tree = new ViewNode(valueSourceFactory, viewFactory, viewBinder, root, resolutionScope)
-        {
-            Children =
-            [
-                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child1, resolutionScope)),
-                new(new ViewNode(valueSourceFactory, viewFactory, viewBinder, child2, resolutionScope)),
-            ],
-        };
+        var tree = CreateViewNode(root, [new(CreateViewNode(child1)), new(CreateViewNode(child2))]);
         tree.Update();
 
         var rootView = tree.Views.SingleOrDefault() as Lane;
@@ -296,6 +291,29 @@ public partial class BindingTests
         tree.Update();
 
         Assert.Equal("Some text", ((Label)rootView.Children[1]).Text);
+
+        ViewNode CreateViewNode(SElement element, IViewNode.Child[]? children = null)
+        {
+            var dummyBehaviors = new ViewBehaviors(
+                [],
+                behaviorFactory,
+                valueSourceFactory,
+                valueConverterFactory,
+                resolutionScope
+            );
+            return new ViewNode(
+                valueSourceFactory,
+                valueConverterFactory,
+                viewFactory,
+                viewBinder,
+                element,
+                resolutionScope,
+                dummyBehaviors
+            )
+            {
+                Children = children ?? [],
+            };
+        }
     }
 
     [Fact]
@@ -307,7 +325,8 @@ public partial class BindingTests
             valueConverterFactory,
             viewBinder,
             assetCache,
-            resolutionScopeFactory
+            resolutionScopeFactory,
+            behaviorFactory
         );
         assetCache.Put("Mods/TestMod/TestSprite", UiSprites.SmallTrashCan);
 
@@ -529,6 +548,30 @@ public partial class BindingTests
                 Assert.Equal("Second Line", label.Text);
             }
         );
+    }
+
+    [Fact]
+    public void WhenConditionalBindingIsNegated_InvertsCondition()
+    {
+        string markup =
+            @"<lane>
+                <label *!if={FirstLineVisible} text=""First Line"" />
+                <label *!if={SecondLineVisible} text=""Second Line"" />
+            </lane>";
+        var model = new ConditionalBindingTestModel { FirstLineVisible = true, SecondLineVisible = false };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var rootView = tree.Views.SingleOrDefault() as Lane;
+        Assert.NotNull(rootView);
+        var label = (Label)Assert.Single(rootView.Children);
+        Assert.Equal("Second Line", label.Text);
+
+        model.FirstLineVisible = false;
+        model.SecondLineVisible = true;
+        tree.Update();
+
+        label = (Label)Assert.Single(rootView.Children);
+        Assert.Equal("First Line", label.Text);
     }
 
     partial class SwitchCaseLiteralTestModel : INotifyPropertyChanged
@@ -1448,6 +1491,134 @@ public partial class BindingTests
         Assert.Equal("Collapse", headerLabel.Text);
     }
 
+    [Fact]
+    public void WhenSimpleNodeHasFloatAttribute_AddsFloatingElement()
+    {
+        string markup =
+            @"<panel>
+                <label text=""foo"" />
+                <label *float=""above"" text=""bar"" />
+                <label text=""baz"" />
+                <label *float=""before; -10, 4"" text=""quux"" />
+            </panel>";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var panel = Assert.IsType<Panel>(tree.Views.SingleOrDefault());
+        Assert.Collection(
+            panel.Children,
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("foo", label.Text);
+            },
+            child =>
+            {
+                var label = Assert.IsType<Label>(child);
+                Assert.Equal("baz", label.Text);
+            }
+        );
+        Assert.Collection(
+            panel.FloatingElements,
+            fe =>
+            {
+                // Floating positions end up as function delegates, so the only way to verify them is to actually
+                // compute the final position against some dummy sizes.
+                Assert.Equal(new Vector2(0, -24), fe.Position.GetOffset(new Vector2(80, 24), new Vector2(200, 50)));
+                var label = Assert.IsType<Label>(fe.View);
+                Assert.Equal("bar", label.Text);
+            },
+            fe =>
+            {
+                Assert.Equal(new Vector2(-90, 4), fe.Position.GetOffset(new Vector2(80, 24), new Vector2(200, 50)));
+                var label = Assert.IsType<Label>(fe.View);
+                Assert.Equal("quux", label.Text);
+            }
+        );
+    }
+
+    partial class ConditionalFloatModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private bool showFloat;
+    }
+
+    [Fact]
+    public void WhenConditionalNodeHasFloatAttribute_AddsOrRemovesFloatingElement()
+    {
+        string markup =
+            @"<panel>
+                <label *float=""after"" *if={ShowFloat} text=""foo"" />
+            </panel>";
+        var model = new ConditionalFloatModel();
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var panel = Assert.IsType<Panel>(tree.Views.SingleOrDefault());
+        Assert.Empty(panel.Children);
+        Assert.Empty(panel.FloatingElements);
+
+        model.ShowFloat = true;
+        tree.Update();
+
+        Assert.Empty(panel.Children);
+        var fe = Assert.Single(panel.FloatingElements);
+        Assert.Equal(new Vector2(200, 0), fe.Position.GetOffset(new Vector2(80, 24), new Vector2(200, 50)));
+        var label = Assert.IsType<Label>(fe.View);
+        Assert.Equal("foo", label.Text);
+    }
+
+    class RepeatingFloatModel
+    {
+        public IReadOnlyList<Badge> Badges { get; set; } = [];
+
+        public class Badge(string text, Func<Vector2, Vector2, Vector2> position)
+        {
+            public Func<Vector2, Vector2, Vector2> Position => position;
+            public string Text => text;
+        }
+    }
+
+    [Fact]
+    public void WhenRepeatingNodeHasFloatAttribute_AddsAllAsFloatingElements()
+    {
+        string markup =
+            @"<panel>
+                <label *repeat={Badges} *float={Position} text={Text} />
+            </panel>";
+        var model = new RepeatingFloatModel()
+        {
+            Badges =
+            [
+                new("foo", (floatSize, parentSize) => new(parentSize.X - floatSize.X, 0)),
+                new("bar", (floatSize, parentSize) => new(parentSize.X - floatSize.X, 20)),
+                new("baz", (floatSize, parentSize) => new(parentSize.X - floatSize.X, 40)),
+            ],
+        };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var panel = Assert.IsType<Panel>(tree.Views.SingleOrDefault());
+        Assert.Collection(
+            panel.FloatingElements,
+            fe =>
+            {
+                Assert.Equal(new Vector2(120, 0), fe.Position.GetOffset(new Vector2(80, 24), new Vector2(200, 50)));
+                var label = Assert.IsType<Label>(fe.View);
+                Assert.Equal("foo", label.Text);
+            },
+            fe =>
+            {
+                Assert.Equal(new Vector2(120, 20), fe.Position.GetOffset(new Vector2(80, 24), new Vector2(200, 50)));
+                var label = Assert.IsType<Label>(fe.View);
+                Assert.Equal("bar", label.Text);
+            },
+            fe =>
+            {
+                Assert.Equal(new Vector2(120, 40), fe.Position.GetOffset(new Vector2(80, 24), new Vector2(200, 50)));
+                var label = Assert.IsType<Label>(fe.View);
+                Assert.Equal("baz", label.Text);
+            }
+        );
+    }
+
     class EventTestModel
     {
         public int Delta { get; } = 5;
@@ -2204,6 +2375,86 @@ public partial class BindingTests
         }
     }
 
+    class FreshMaker : ViewBehavior<Label, int?>
+    {
+        private string freshness = "";
+        private string originalText = "";
+
+        public override void Update(TimeSpan elapsed)
+        {
+            if (!string.IsNullOrEmpty(freshness) && !View.Text.StartsWith(freshness))
+            {
+                View.Text = freshness + ' ' + originalText;
+            }
+        }
+
+        // This is very much a simplified test implementation that isn't meant to resemble the real thing.
+        // A real behavior would have to be a lot more careful about the text being changed *after* attaching, and be
+        // able to revert to the "most recent" view properties prior to the behavior actually taking effect.
+        protected override void OnInitialize()
+        {
+            originalText = View.Text;
+        }
+
+        protected override void OnNewData(int? previousData)
+        {
+            freshness = Data switch
+            {
+                1 => "Fresh",
+                2 => "Fresher",
+                3 => "Freshest",
+                _ => "",
+            };
+        }
+    }
+
+    [Fact]
+    public void WhenBehaviorCreatedWithLiteral_InvokesBehavior()
+    {
+        behaviorFactory.Register<FreshMaker>("fresh");
+
+        string markup = @"<label text=""Artichoke"" +fresh=""1"" />";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var label = Assert.IsType<Label>(tree.Views.SingleOrDefault());
+        Assert.Equal("Fresh Artichoke", label.Text);
+    }
+
+    partial class BehaviorTestModel : INotifyPropertyChanged
+    {
+        [Notify]
+        private int freshness;
+    }
+
+    [Fact]
+    public void WhenBehaviorCreatedWithBinding_AndBoundValueUpdates_UpdatesBehaviorData()
+    {
+        behaviorFactory.Register<FreshMaker>("fresh");
+
+        string markup = @"<label text=""Clam"" +fresh={{Freshness}} />";
+        var model = new BehaviorTestModel() { Freshness = 2 };
+        var tree = BuildTreeFromMarkup(markup, model);
+
+        var label = Assert.IsType<Label>(tree.Views.SingleOrDefault());
+        Assert.Equal("Fresher Clam", label.Text);
+
+        model.Freshness = 3;
+        tree.Update();
+        Assert.Equal("Freshest Clam", label.Text);
+    }
+
+    [Fact]
+    public void WhenBehaviorAddedToUnsupportedViewType_IgnoresBehavior()
+    {
+        behaviorFactory.Register<FreshMaker>("fresh");
+
+        string markup = @"<button text=""Hello"" +fresh=""1"" />";
+        var tree = BuildTreeFromMarkup(markup, new());
+
+        var button = Assert.IsType<Button>(tree.Views.SingleOrDefault());
+        Assert.Equal("Hello", button.Text);
+    }
+
     private IViewNode BuildTreeFromMarkup(string markup, object model)
     {
         var viewNodeFactory = new ViewNodeFactory(
@@ -2212,7 +2463,8 @@ public partial class BindingTests
             valueConverterFactory,
             viewBinder,
             assetCache,
-            resolutionScopeFactory
+            resolutionScopeFactory,
+            behaviorFactory
         );
         var document = Document.Parse(markup);
         var tree = viewNodeFactory.CreateNode(document);

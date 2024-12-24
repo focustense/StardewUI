@@ -39,7 +39,7 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
  | Name | Description |
 | --- | --- |
-| [ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)](#viewnodeivaluesourcefactory-iviewfactory-iviewbinder-selement-iresolutionscope-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
+| [ViewNode(IValueSourceFactory, IValueConverterFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, ViewBehaviors, IAttribute, IAttribute)](#viewnodeivaluesourcefactory-ivalueconverterfactory-iviewfactory-iviewbinder-selement-iresolutionscope-viewbehaviors-iattribute-iattribute) | Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates. | 
 
 ### Properties
 
@@ -47,6 +47,7 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 | --- | --- |
 | [Children](#children) | The children of this node. | 
 | [Context](#context) | The currently-bound context data, used as the source for any [InputBinding](../grammar/attributevaluetype.md#inputbinding), [OneTimeBinding](../grammar/attributevaluetype.md#onetimebinding), [OutputBinding](../grammar/attributevaluetype.md#outputbinding) or [TwoWayBinding](../grammar/attributevaluetype.md#twowaybinding) attributes. | 
+| [FloatingElements](#floatingelements) | The floating elements for this node, if any have been created. | 
 | [Views](#views) | The views for this node, if any have been created. | 
 
 ### Methods
@@ -63,18 +64,21 @@ public class ViewNode : StardewUI.Framework.Binding.IViewNode,
 
 ### Constructors
 
-#### ViewNode(IValueSourceFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, IAttribute)
+#### ViewNode(IValueSourceFactory, IValueConverterFactory, IViewFactory, IViewBinder, SElement, IResolutionScope, ViewBehaviors, IAttribute, IAttribute)
 
 Internal structure of a view node, encapsulating dependencies required for data binding and lazy creation/updates.
 
 ```cs
-public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, StardewUI.Framework.Content.IResolutionScope resolutionScope, StardewUI.Framework.Dom.IAttribute contextAttribute);
+public ViewNode(StardewUI.Framework.Sources.IValueSourceFactory valueSourceFactory, StardewUI.Framework.Converters.IValueConverterFactory valueConverterFactory, StardewUI.Framework.Binding.IViewFactory viewFactory, StardewUI.Framework.Binding.IViewBinder viewBinder, StardewUI.Framework.Dom.SElement element, StardewUI.Framework.Content.IResolutionScope resolutionScope, StardewUI.Framework.Binding.ViewBehaviors behaviors, StardewUI.Framework.Dom.IAttribute contextAttribute, StardewUI.Framework.Dom.IAttribute floatAttribute);
 ```
 
 ##### Parameters
 
 **`valueSourceFactory`** &nbsp; [IValueSourceFactory](../sources/ivaluesourcefactory.md)  
 The factory responsible for creating [IValueSource&lt;T&gt;](../sources/ivaluesource-1.md) instances from attribute data.
+
+**`valueConverterFactory`** &nbsp; [IValueConverterFactory](../converters/ivalueconverterfactory.md)  
+The factory responsible for creating [IValueConverter&lt;TSource, TDestination&gt;](../converters/ivalueconverter-2.md) instances, used to convert bound values to the types required by the target view.
 
 **`viewFactory`** &nbsp; [IViewFactory](iviewfactory.md)  
 Factory for creating views, based on their tag names.
@@ -88,8 +92,14 @@ Element data for this node.
 **`resolutionScope`** &nbsp; [IResolutionScope](../content/iresolutionscope.md)  
 Scope for resolving externalized attributes, such as translation keys.
 
+**`behaviors`** &nbsp; [ViewBehaviors](viewbehaviors.md)  
+Behavior extensions for this node.
+
 **`contextAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
 Optional attribute specifying how to resolve the context for child nodes based on this node's assigned [Context](viewnode.md#context).
+
+**`floatAttribute`** &nbsp; [IAttribute](../dom/iattribute.md)  
+Optional attribute designating that the node should be a [FloatingElement](../../layout/floatingelement.md) and specifying how to resolve its [Position](../../layout/floatingelement.md#position).
 
 -----
 
@@ -124,6 +134,20 @@ public StardewUI.Framework.Binding.BindingContext Context { get; set; }
 ##### Property Value
 
 [BindingContext](bindingcontext.md)
+
+-----
+
+#### FloatingElements
+
+The floating elements for this node, if any have been created.
+
+```cs
+public System.Collections.Generic.IReadOnlyList<StardewUI.Layout.FloatingElement> FloatingElements { get; }
+```
+
+##### Property Value
+
+[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[FloatingElement](../../layout/floatingelement.md)>
 
 -----
 

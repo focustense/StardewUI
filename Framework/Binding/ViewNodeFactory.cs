@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Content;
+﻿using StardewUI.Framework.Behaviors;
+using StardewUI.Framework.Content;
 using StardewUI.Framework.Converters;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
@@ -19,13 +20,15 @@ namespace StardewUI.Framework.Binding;
 /// <param name="assetCache">Cache for obtaining document assets. Used for included views.</param>
 /// <param name="resolutionScopeFactory">Factory for creating <see cref="IResolutionScope"/> instances responsible for
 /// resolving external symbols such as translation keys.</param>
+/// <param name="behaviorFactory">Factory for creating behavior extensions.</param>
 public class ViewNodeFactory(
     IViewFactory viewFactory,
     IValueSourceFactory valueSourceFactory,
     IValueConverterFactory valueConverterFactory,
     IViewBinder viewBinder,
     IAssetCache assetCache,
-    IResolutionScopeFactory resolutionScopeFactory
+    IResolutionScopeFactory resolutionScopeFactory,
+    IBehaviorFactory behaviorFactory
 ) : IViewNodeFactory
 {
     /// <inheritdoc />
@@ -86,13 +89,24 @@ public class ViewNodeFactory(
 
         IViewNode CreateDefaultViewNode()
         {
+            var behaviorAttributes = node.Attributes.Where(attr => attr.Type == Grammar.AttributeType.Behavior);
+            var behaviors = new ViewBehaviors(
+                behaviorAttributes,
+                behaviorFactory,
+                valueSourceFactory,
+                valueConverterFactory,
+                resolutionScope
+            );
             return new ViewNode(
                 valueSourceFactory,
+                valueConverterFactory,
                 viewFactory,
                 viewBinder,
                 node.Element,
                 resolutionScope,
-                contextAttribute: structuralAttributes.Context
+                behaviors,
+                contextAttribute: structuralAttributes.Context,
+                floatAttribute: structuralAttributes.Float
             );
         }
 
@@ -147,7 +161,7 @@ public class ViewNodeFactory(
                 )
                 {
                     LeftContextSelector = () => switchContext.Node.Context,
-                };
+                }.NegateIf(caseAttr.IsNegated);
                 result = new ConditionalNode(viewNode, condition);
             }
             if (structuralAttributes.If is not null)
@@ -157,7 +171,7 @@ public class ViewNodeFactory(
                     valueConverterFactory,
                     resolutionScope,
                     structuralAttributes.If
-                );
+                ).NegateIf(structuralAttributes.If.IsNegated);
                 result = new ConditionalNode(result, condition);
             }
             var nextSwitchContext = structuralAttributes.Switch is IAttribute switchAttr
@@ -189,6 +203,7 @@ public class ViewNodeFactory(
     {
         public IAttribute? Case { get; set; }
         public IAttribute? Context { get; set; }
+        public IAttribute? Float { get; set; }
         public IAttribute? If { get; set; }
         public IAttribute? Outlet { get; set; }
         public IAttribute? Repeat { get; set; }
@@ -205,23 +220,42 @@ public class ViewNodeFactory(
                         result.Case = attribute;
                         break;
                     case "context":
+                        ThrowIfNegated(attribute);
                         result.Context = attribute;
+                        break;
+                    case "float":
+                        ThrowIfNegated(attribute);
+                        result.Float = attribute;
                         break;
                     case "if":
                         result.If = attribute;
                         break;
                     case "outlet":
+                        ThrowIfNegated(attribute);
                         result.Outlet = attribute;
                         break;
                     case "repeat":
+                        ThrowIfNegated(attribute);
                         result.Repeat = attribute;
                         break;
                     case "switch":
+                        ThrowIfNegated(attribute);
                         result.Switch = attribute;
                         break;
                 }
             }
             return result;
+        }
+
+        private static void ThrowIfNegated(IAttribute attribute)
+        {
+            if (attribute.IsNegated)
+            {
+                throw new BindingException(
+                    $"Invalid negation for structural attribute '{attribute.Name}'. Only conditional attributes such "
+                        + "as *if and *case may be negated."
+                );
+            }
         }
     }
 }

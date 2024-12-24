@@ -36,6 +36,7 @@ Add-ons are a plugin-like system that allow mods to extend the UI capabilities t
 
  | Name | Description |
 | --- | --- |
+| [BehaviorFactory](#behaviorfactory) | Provides user-defined behavior extensions that run on existing view types. | 
 | [Dependencies](#dependencies) | List of dependencies, each corresponding to another [Id](iaddon.md#id), required by this addon. | 
 | [Id](#id) | Unique ID for this addon. | 
 | [ValueConverterFactory](#valueconverterfactory) | Provides user-defined type conversions in addition to the standard conversions. | 
@@ -44,6 +45,24 @@ Add-ons are a plugin-like system that allow mods to extend the UI capabilities t
 ## Details
 
 ### Properties
+
+#### BehaviorFactory
+
+Provides user-defined behavior extensions that run on existing view types.
+
+```cs
+StardewUI.Framework.Behaviors.IBehaviorFactory BehaviorFactory { get; }
+```
+
+##### Property Value
+
+[IBehaviorFactory](../behaviors/ibehaviorfactory.md)
+
+##### Remarks
+
+All user-defined behaviors have lower priority than the built-in behaviors; a UI add-on is not allowed to remap an existing behavior name to its own implementation. Within the set of user-defined behaviors, the priority is based on inverted load order; the _last_ add-on to associate a particular name with some behavior type will be the one to always handle that name, as long as it is not a standard behavior name.
+
+-----
 
 #### Dependencies
 
