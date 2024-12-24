@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Product>StardewUI</Product>
     <Authors>focustense</Authors>
-    <Version>0.4.2</Version>
+    <Version>0.5.0</Version>
   </PropertyGroup>
   
   <!-- Build settings -->

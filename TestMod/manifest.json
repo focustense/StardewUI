@@ -10,7 +10,7 @@
   "UniqueID": "focustense.StardewUITest",
   "Name": "StardewUITest",
   "Author": "focustense",
-  "Version": "0.4.2",
+  "Version": "0.5.0",
   "Description": "Test mod and example gallery for StardewUI",
   "MinimumApiVersion": "4.1.9",
   "MinimumGameVersion": "1.6.14",
@@ -18,7 +18,7 @@
   "Dependencies": [
     {
       "UniqueID": "focustense.StardewUI",
-      "MinimumVersion": "0.4.2"
+      "MinimumVersion": "0.5.0"
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",

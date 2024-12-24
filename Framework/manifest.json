@@ -10,7 +10,7 @@
   "UniqueID": "focustense.StardewUI",
   "Name": "StardewUI",
   "Author": "focustense",
-  "Version": "0.4.2",
+  "Version": "0.5.0",
   "Description": "Declarative UI framework",
   "MinimumApiVersion": "4.1.9",
   "MinimumGameVersion": "1.6.14",

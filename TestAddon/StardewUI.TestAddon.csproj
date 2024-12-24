@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <SMAPIDependency Include="focustense.StardewUI" Version="0.4.0" Reference="true" />
+    <SMAPIDependency Include="focustense.StardewUI" Version="0.4.2" Reference="true" />
   </ItemGroup>
 
   <ItemGroup>
