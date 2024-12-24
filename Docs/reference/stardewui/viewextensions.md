@@ -35,17 +35,39 @@ public static class ViewExtensions
 
  | Name | Description |
 | --- | --- |
+| [FocusablePath(IEnumerable&lt;ViewChild&gt;)](#focusablepathienumerableviewchild) | Returns the focusable component of the path to a view, typically a cursor target. | 
 | [GetDefaultFocusPath(IView)](#getdefaultfocuspathiview) | Retrieves a path to the default focus child/descendant of a view. | 
-| [GetPathToPosition(IView, Vector2)](#getpathtopositioniview-vector2) | Retrieves a path to the view at a given position. | 
+| [GetPathToPosition(IView, Vector2, Boolean)](#getpathtopositioniview-vector2-bool) | Retrieves a path to the view at a given position. | 
 | [GetPathToView(IView, IView)](#getpathtoviewiview-iview) | Retrieves the path to a descendant view. | 
 | [ResolveChildPath(IView, IEnumerable&lt;IView&gt;)](#resolvechildpathiview-ienumerableiview) | Takes an existing view path and resolves it with child coordinates for the view at each level. | 
-| [ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)](#toglobalpositionsienumerableviewchild) | Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2)](viewextensions.md#getpathtopositioniview-vector2) and transforms each element to have an absolute [Position](viewchild.md#position). | 
-| [ZOrder(IEnumerable&lt;ViewChild&gt;)](#zorderienumerableviewchild) | Sorts a sequence of children in ascending z-order. | 
-| [ZOrderDescending(IEnumerable&lt;ViewChild&gt;)](#zorderdescendingienumerableviewchild) | Sorts a sequence of children in descending z-order. | 
+| [ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)](#toglobalpositionsienumerableviewchild) | Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool) and transforms each element to have an absolute [Position](viewchild.md#position). | 
+| [ZOrder(IEnumerable&lt;ViewChild&gt;, Boolean)](#zorderienumerableviewchild-bool) | Sorts a sequence of children in ascending z-order. | 
+| [ZOrderDescending(IEnumerable&lt;ViewChild&gt;, Boolean)](#zorderdescendingienumerableviewchild-bool) | Sorts a sequence of children in descending z-order. | 
 
 ## Details
 
 ### Methods
+
+#### FocusablePath(IEnumerable&lt;ViewChild&gt;)
+
+Returns the focusable component of the path to a view, typically a cursor target.
+
+```cs
+public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> FocusablePath(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> path);
+```
+
+##### Parameters
+
+**`path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
+The view path.
+
+##### Returns
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>
+
+  The sequence of `path` elements ending with the last view for which [IsFocusable](iview.md#isfocusable) is `true`. If there are no focusable views in the path, returns an empty sequence.
+
+-----
 
 #### GetDefaultFocusPath(IView)
 
@@ -68,12 +90,12 @@ The view at which to start the search.
 
 -----
 
-#### GetPathToPosition(IView, Vector2)
+#### GetPathToPosition(IView, Vector2, bool)
 
 Retrieves a path to the view at a given position.
 
 ```cs
-public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetPathToPosition(StardewUI.IView view, Microsoft.Xna.Framework.Vector2 position);
+public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetPathToPosition(StardewUI.IView view, Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
 ```
 
 ##### Parameters
@@ -83,6 +105,9 @@ The view at which to start the search.
 
 **`position`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
 The position to search for, in coordinates relative to the `view`.
+
+**`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+`true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
 
 ##### Returns
 
@@ -134,7 +159,7 @@ public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> Resolv
 The root view.
 
 **`path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[IView](iview.md)>  
-The path from root down to some descendant, such as the path returned by [GetPathToPosition(IView, Vector2)](viewextensions.md#getpathtopositioniview-vector2).
+The path from root down to some descendant, such as the path returned by [GetPathToPosition(IView, Vector2, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool).
 
 ##### Returns
 
@@ -146,7 +171,7 @@ The path from root down to some descendant, such as the path returned by [GetPat
 
 #### ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)
 
-Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2)](viewextensions.md#getpathtopositioniview-vector2) and transforms each element to have an absolute [Position](viewchild.md#position).
+Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool) and transforms each element to have an absolute [Position](viewchild.md#position).
 
 ```cs
 public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ToGlobalPositions(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> path);
@@ -169,18 +194,21 @@ Since [ViewChild](viewchild.md) does not specify whether the position is local (
 
 -----
 
-#### ZOrder(IEnumerable&lt;ViewChild&gt;)
+#### ZOrder(IEnumerable&lt;ViewChild&gt;, bool)
 
 Sorts a sequence of children in ascending z-order.
 
 ```cs
-public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ZOrder(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> children);
+public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ZOrder(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> children, bool focusPriority);
 ```
 
 ##### Parameters
 
 **`children`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
 The view children.
+
+**`focusPriority`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+`true` to sort focusable children first regardless of z-index; `false` to ignore [IsFocusable](iview.md#isfocusable).
 
 ##### Returns
 
@@ -194,18 +222,21 @@ Order is preserved between views with the same [ZIndex](iview.md#zindex), so the
 
 -----
 
-#### ZOrderDescending(IEnumerable&lt;ViewChild&gt;)
+#### ZOrderDescending(IEnumerable&lt;ViewChild&gt;, bool)
 
 Sorts a sequence of children in descending z-order.
 
 ```cs
-public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ZOrderDescending(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> children);
+public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ZOrderDescending(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> children, bool focusPriority);
 ```
 
 ##### Parameters
 
 **`children`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](viewchild.md)>  
 The view children.
+
+**`focusPriority`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+`true` to sort focusable children first regardless of z-index; `false` to ignore [IsFocusable](iview.md#isfocusable).
 
 ##### Returns
 

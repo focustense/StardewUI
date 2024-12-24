@@ -38,7 +38,7 @@ public record FocusSearchResult : IEquatable<StardewUI.Input.FocusSearchResult>
 
  | Name | Description |
 | --- | --- |
-| [FocusSearchResult(ViewChild, IEnumerable&lt;ViewChild&gt;)](#focussearchresultviewchild-ienumerableviewchild) | The result of a [FocusSearch(Vector2, Direction)](../iview.md#focussearchvector2-direction). Identifies the specific view/position found, as well as the path to that view from the search root. | 
+| [FocusSearchResult(ViewChild, IReadOnlyList&lt;ViewChild&gt;)](#focussearchresultviewchild-ireadonlylistviewchild) | The result of a [FocusSearch(Vector2, Direction)](../iview.md#focussearchvector2-direction). Identifies the specific view/position found, as well as the path to that view from the search root. | 
 
 ### Properties
 
@@ -52,6 +52,7 @@ public record FocusSearchResult : IEquatable<StardewUI.Input.FocusSearchResult>
 
  | Name | Description |
 | --- | --- |
+| [AbsoluteTarget()](#absolutetarget) | Gets the [Target](focussearchresult.md#target) in coordinates relative to the root of the [Path](focussearchresult.md#path). | 
 | [AsChild(IView, Vector2)](#aschildiview-vector2) | Returns a transformed [FocusSearchResult](focussearchresult.md) that adds a view (generally the caller) to the beginning of the [Path](focussearchresult.md#path), and applies its content offset to either the first element of the current [Path](focussearchresult.md#path) (if non-empty) or the [Target](focussearchresult.md#target) (if the path is empty). | 
 | [Offset(Vector2)](#offsetvector2) | Applies a local offset to a search result. | 
 
@@ -59,12 +60,12 @@ public record FocusSearchResult : IEquatable<StardewUI.Input.FocusSearchResult>
 
 ### Constructors
 
-#### FocusSearchResult(ViewChild, IEnumerable&lt;ViewChild&gt;)
+#### FocusSearchResult(ViewChild, IReadOnlyList&lt;ViewChild&gt;)
 
 The result of a [FocusSearch(Vector2, Direction)](../iview.md#focussearchvector2-direction). Identifies the specific view/position found, as well as the path to that view from the search root.
 
 ```cs
-public FocusSearchResult(StardewUI.ViewChild Target, System.Collections.Generic.IEnumerable<StardewUI.ViewChild> Path);
+public FocusSearchResult(StardewUI.ViewChild Target, System.Collections.Generic.IReadOnlyList<StardewUI.ViewChild> Path);
 ```
 
 ##### Parameters
@@ -72,7 +73,7 @@ public FocusSearchResult(StardewUI.ViewChild Target, System.Collections.Generic.
 **`Target`** &nbsp; [ViewChild](../viewchild.md)  
 The specific view that can/will be focused, with a [Position](../viewchild.md#position) relative to the search root.
 
-**`Path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](../viewchild.md)>  
+**`Path`** &nbsp; [IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[ViewChild](../viewchild.md)>  
 The path from root to [Target](focussearchresult.md#target), in top-down order; each element's [Position](../viewchild.md#position) is relative to the parent, **not** the search root as `Target` is.
 
 -----
@@ -98,12 +99,12 @@ protected System.Type EqualityContract { get; }
 The path from root to [Target](focussearchresult.md#target), in top-down order; each element's [Position](../viewchild.md#position) is relative to the parent, **not** the search root as `Target` is.
 
 ```cs
-public System.Collections.Generic.IEnumerable<StardewUI.ViewChild> Path { get; set; }
+public System.Collections.Generic.IReadOnlyList<StardewUI.ViewChild> Path { get; set; }
 ```
 
 ##### Property Value
 
-[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[ViewChild](../viewchild.md)>
+[IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[ViewChild](../viewchild.md)>
 
 -----
 
@@ -122,6 +123,26 @@ public StardewUI.ViewChild Target { get; set; }
 -----
 
 ### Methods
+
+#### AbsoluteTarget()
+
+Gets the [Target](focussearchresult.md#target) in coordinates relative to the root of the [Path](focussearchresult.md#path).
+
+```cs
+public StardewUI.ViewChild AbsoluteTarget();
+```
+
+##### Returns
+
+[ViewChild](../viewchild.md)
+
+  A new [ViewChild](../viewchild.md) pointing to the same [View](../viewchild.md#view) as the [Target](focussearchresult.md#target) and having its [Position](../viewchild.md#position) adjusted to the offsets in the [Path](focussearchresult.md#path).
+
+##### Remarks
+
+These are not necessarily "global" coordinates because the [Path](focussearchresult.md#path) may itself be relative.
+
+-----
 
 #### AsChild(IView, Vector2)
 

@@ -87,7 +87,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [FindFocusableDescendant(Vector2, Direction)](#findfocusabledescendantvector2-direction) | Searches for a focusable child within this view that is reachable in the specified `direction`, and returns a result containing the view and search path if found. | 
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
 | [GetBorderThickness()](#getborderthickness) | Measures the thickness of each edge of the border, if the view has a border. | 
-| [GetChildAt(Vector2)](#getchildatvector2) | Finds the child at a given position. | 
+| [GetChildAt(Vector2, Boolean)](#getchildatvector2-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
 | [GetChildren()](#getchildren) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
@@ -703,18 +703,21 @@ Used only by views that will implement a border via [OnDrawBorder(ISpriteBatch)]
 
 -----
 
-#### GetChildAt(Vector2)
+#### GetChildAt(Vector2, bool)
 
 Finds the child at a given position.
 
 ```cs
-public StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position);
+public StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
 ```
 
 ##### Parameters
 
 **`position`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
 The search position, relative to the view's top-left coordinate.
+
+**`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+`true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
 
 ##### Returns
 
@@ -724,7 +727,7 @@ The search position, relative to the view's top-left coordinate.
 
 ##### Remarks
 
-If multiple children overlap the same position, then this returns the topmost child.
+If multiple children overlap the same position, then this returns the topmost child, i.e. with the highest [ZIndex](iview.md#zindex).
 
 -----
 

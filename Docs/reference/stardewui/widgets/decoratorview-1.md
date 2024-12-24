@@ -83,7 +83,7 @@ Decorator views, while not abstract, are used as a base type for other composite
 | [Dispose()](#dispose) |  | 
 | [Draw(ISpriteBatch)](#drawispritebatch) | Draws the content for this view. | 
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
-| [GetChildAt(Vector2)](#getchildatvector2) | Finds the child at a given position. | 
+| [GetChildAt(Vector2, Boolean)](#getchildatvector2-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
 | [GetChildren()](#getchildren) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
@@ -491,18 +491,21 @@ If `position` is out of bounds, it does not necessarily mean that the view shoul
 
 -----
 
-#### GetChildAt(Vector2)
+#### GetChildAt(Vector2, bool)
 
 Finds the child at a given position.
 
 ```cs
-public virtual StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position);
+public virtual StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
 ```
 
 ##### Parameters
 
 **`position`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
 The search position, relative to the view's top-left coordinate.
+
+**`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+`true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
 
 ##### Returns
 
@@ -512,7 +515,7 @@ The search position, relative to the view's top-left coordinate.
 
 ##### Remarks
 
-If multiple children overlap the same position, then this returns the topmost child.
+If multiple children overlap the same position, then this returns the topmost child, i.e. with the highest [ZIndex](../iview.md#zindex).
 
 -----
 
