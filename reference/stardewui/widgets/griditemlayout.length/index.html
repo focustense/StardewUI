@@ -234,7 +234,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    focustense/StardewUI
   </div>
 </a>
       </div>
@@ -423,7 +423,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    focustense/StardewUI
   </div>
 </a>
     </div>
@@ -571,6 +571,8 @@
       
         
       
+        
+      
     
     
       
@@ -619,6 +621,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -1147,6 +1153,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1407,6 +1421,8 @@
       
         
       
+        
+      
     
     
       
@@ -1456,6 +1472,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -1602,6 +1624,8 @@
       
         
           
+        
+      
         
       
         
@@ -2320,9 +2344,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lengthfloat" class="md-nav__link">
+  <a href="#lengthfloat-bool" class="md-nav__link">
     <span class="md-ellipsis">
-      Length(float)
+      Length(float, bool)
     </span>
   </a>
   
@@ -2347,6 +2371,15 @@
   <a href="#equalitycontract" class="md-nav__link">
     <span class="md-ellipsis">
       EqualityContract
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expandable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expandable
     </span>
   </a>
   
@@ -3127,9 +3160,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#lengthfloat" class="md-nav__link">
+  <a href="#lengthfloat-bool" class="md-nav__link">
     <span class="md-ellipsis">
-      Length(float)
+      Length(float, bool)
     </span>
   </a>
   
@@ -3154,6 +3187,15 @@
   <a href="#equalitycontract" class="md-nav__link">
     <span class="md-ellipsis">
       EqualityContract
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#expandable" class="md-nav__link">
+    <span class="md-ellipsis">
+      Expandable
     </span>
   </a>
   
@@ -3247,7 +3289,7 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
-<td><a href="#lengthfloat">Length(Single)</a></td>
+<td><a href="#lengthfloat-bool">Length(Single, Boolean)</a></td>
 <td>A <a href="../griditemlayout/">GridItemLayout</a> specifying that each item is to have the same fixed length (width or height, depending on the grid's <a href="../../layout/orientation/">Orientation</a>) and to wrap to the next row/column afterward.</td>
 </tr>
 </tbody>
@@ -3264,6 +3306,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="#equalitycontract">EqualityContract</a></td>
 <td><span class="muted" markdown>(Overrides <a href="../griditemlayout/">GridItemLayout</a>.<code>get_EqualityContract()</code>)</span></td>
+</tr>
+<tr>
+<td><a href="#expandable">Expandable</a></td>
+<td>Whether the length of cells should expand (uniformly) to fill the grid's primary layout size, i.e. when that size is not an exact multiple of the total size of all cells that can fit.</td>
 </tr>
 <tr>
 <td><a href="#px">Px</a></td>
@@ -3288,13 +3334,15 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
-<h4 id="lengthfloat">Length(float)<a class="headerlink" href="#lengthfloat" title="Permanent link"></a></h4>
+<h4 id="lengthfloat-bool">Length(float, bool)<a class="headerlink" href="#lengthfloat-bool" title="Permanent link"></a></h4>
 <p>A <a href="../griditemlayout/">GridItemLayout</a> specifying that each item is to have the same fixed length (width or height, depending on the grid's <a href="../../layout/orientation/">Orientation</a>) and to wrap to the next row/column afterward.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">Length</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">Px</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">Length</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">Px</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">Expandable</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>Px</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The length, in pixels, of each item along the grid's orientation axis.</p>
+<p><strong><code>Expandable</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
+Whether the length of cells should expand (uniformly) to fill the grid's primary layout size, i.e. when that size is not an exact multiple of the total size of all cells that can fit.</p>
 <hr />
 <h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
 <h4 id="equalitycontract">EqualityContract<a class="headerlink" href="#equalitycontract" title="Permanent link"></a></h4>
@@ -3303,17 +3351,24 @@ The length, in pixels, of each item along the grid's orientation axis.</p>
 <h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
-<h4 id="px">Px<a class="headerlink" href="#px" title="Permanent link"></a></h4>
-<p>The length, in pixels, of each item along the grid's orientation axis.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Px</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="expandable">Expandable<a class="headerlink" href="#expandable" title="Permanent link"></a></h4>
+<p>Whether the length of cells should expand (uniformly) to fill the grid's primary layout size, i.e. when that size is not an exact multiple of the total size of all cells that can fit.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">Expandable</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<hr />
+<h4 id="px">Px<a class="headerlink" href="#px" title="Permanent link"></a></h4>
+<p>The length, in pixels, of each item along the grid's orientation axis.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Px</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="getitemcountandlengthfloat-float">GetItemCountAndLength(float, float)<a class="headerlink" href="#getitemcountandlengthfloat-float" title="Permanent link"></a></h4>
 <p>Computes the length (along the grid's <a href="../grid/#primaryorientation">PrimaryOrientation</a> axis) of a single item, and the number of items that can fit before wrapping.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">ValueTuple</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Int32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetItemCountAndLength</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">available</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">spacing</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">ValueTuple</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">Single</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Int32</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetItemCountAndLength</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">available</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">spacing</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>available</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />

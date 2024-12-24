@@ -234,7 +234,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    focustense/StardewUI
   </div>
 </a>
       </div>
@@ -423,7 +423,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
-    GitHub
+    focustense/StardewUI
   </div>
 </a>
     </div>
@@ -571,6 +571,8 @@
       
         
       
+        
+      
     
     
       
@@ -619,6 +621,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -1147,6 +1153,14 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1407,6 +1421,8 @@
       
         
       
+        
+      
     
     
       
@@ -1456,6 +1472,12 @@
       
         
           
+        
+      
+        
+      
+        
+      
         
       
         
@@ -1602,6 +1624,8 @@
       
         
           
+        
+      
         
       
         
@@ -2323,6 +2347,15 @@
   <a href="#children" class="md-nav__link">
     <span class="md-ellipsis">
       Children
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gridalignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      GridAlignment
     </span>
   </a>
   
@@ -3286,6 +3319,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#gridalignment" class="md-nav__link">
+    <span class="md-ellipsis">
+      GridAlignment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#horizontalitemalignment" class="md-nav__link">
     <span class="md-ellipsis">
       HorizontalItemAlignment
@@ -3514,6 +3556,14 @@ Assembly: StardewUI.dll  </p>
 <td>Whether or not the view should be able to receive focus. Applies only to this specific view, not its children.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
+<td><a href="#gridalignment">GridAlignment</a></td>
+<td>Specifies how to align the entire grid when the combined length of all columns is not exactly equal to the grid's layout length.</td>
+</tr>
+<tr>
+<td><a href="../../view/#handlesopacity">HandlesOpacity</a></td>
+<td>Whether the specific view type handles its own opacity.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
 <td><a href="#horizontalitemalignment">HorizontalItemAlignment</a></td>
 <td>Specifies how to align each child <a href="../../iview/">IView</a> horizontally within its respective cell, i.e. if the view is narrower than the cell's width.</td>
 </tr>
@@ -3586,6 +3636,14 @@ Assembly: StardewUI.dll  </p>
 <td>Localized tooltip to display on hover, if any.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
+<td><a href="../../view/#transform">Transform</a></td>
+<td>Local transformation to apply to this view, including any children and floating elements.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#transformorigin">TransformOrigin</a></td>
+<td>Relative origin position for any <a href="../../iview/#transform">Transform</a> on this view.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
 <td><a href="#verticalitemalignment">VerticalItemAlignment</a></td>
 <td>Specifies how to align each child <a href="../../iview/">IView</a> vertically within its respective cell, i.e. if the view is shorter than the cell's height.</td>
 </tr>
@@ -3633,7 +3691,7 @@ Assembly: StardewUI.dll  </p>
 <td>Measures the thickness of each edge of the border, if the view has a border.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
-<td><a href="../../view/#getchildatvector2">GetChildAt(Vector2)</a></td>
+<td><a href="../../view/#getchildatvector2-bool">GetChildAt(Vector2, Boolean)</a></td>
 <td>Finds the child at a given position.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
@@ -3819,53 +3877,62 @@ Assembly: StardewUI.dll  </p>
 <h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a href="../../iview/">IView</a>&gt;</p>
 <hr />
-<h4 id="horizontalitemalignment">HorizontalItemAlignment<a class="headerlink" href="#horizontalitemalignment" title="Permanent link"></a></h4>
-<p>Specifies how to align each child <a href="../../iview/">IView</a> horizontally within its respective cell, i.e. if the view is narrower than the cell's width.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">HorizontalItemAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="gridalignment">GridAlignment<a class="headerlink" href="#gridalignment" title="Permanent link"></a></h4>
+<p>Specifies how to align the entire grid when the combined length of all columns is not exactly equal to the grid's layout length.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">GridAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
+<p><a href="../../layout/alignment/">Alignment</a></p>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
+<p>Applies only to the grid's <a href="./#primaryorientation">PrimaryOrientation</a> axis, which is the axis affected by <a href="./#itemlayout">ItemLayout</a>; the secondary axis does not require or support grid-level alignment because it can already be made <a href="../../layout/length/#content">Content()</a>-sized.</p>
+<hr />
+<h4 id="horizontalitemalignment">HorizontalItemAlignment<a class="headerlink" href="#horizontalitemalignment" title="Permanent link"></a></h4>
+<p>Specifies how to align each child <a href="../../iview/">IView</a> horizontally within its respective cell, i.e. if the view is narrower than the cell's width.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">HorizontalItemAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="../../layout/alignment/">Alignment</a></p>
 <hr />
 <h4 id="itemlayout">ItemLayout<a class="headerlink" href="#itemlayout" title="Permanent link"></a></h4>
 <p>The layout for items (cells) in this grid.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Widgets</span><span class="p">.</span><span class="n">GridItemLayout</span><span class="w"> </span><span class="n">ItemLayout</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Widgets</span><span class="p">.</span><span class="n">GridItemLayout</span><span class="w"> </span><span class="n">ItemLayout</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="../griditemlayout/">GridItemLayout</a></p>
-<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
 <p>Layouts are relative to the <a href="./#primaryorientation">PrimaryOrientation</a>. <a href="../griditemlayout.count/">Count</a> specifies the number of columns when <a href="../../layout/orientation/#horizontal">Horizontal</a>, and number of rows when <a href="../../layout/orientation/#vertical">Vertical</a>; similarly, <a href="../griditemlayout.length/">Length</a> specifies the column width when horizontal and row height when vertical. The other dimension is determined by the individual item's own <a href="../../layout/layoutparameters/">LayoutParameters</a>. </p>
 <p>Note that this affects the <em>limits</em> for individual items, not necessarily their exact size. Children may be smaller than the cells that contain them, and if so are positioned according to the <a href="./#horizontalitemalignment">HorizontalItemAlignment</a> and <a href="./#verticalitemalignment">VerticalItemAlignment</a>.</p>
 <hr />
 <h4 id="itemspacing">ItemSpacing<a class="headerlink" href="#itemspacing" title="Permanent link"></a></h4>
 <p>Spacing between the edges of adjacent columns (<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2">X</a>) and rows (<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2">Y</a>).</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">ItemSpacing</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">ItemSpacing</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
-<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>Setting this is roughly equivalent to specifying the same <a href="../../view/#margin">Margin</a> on each child, except that it will not add extra space before the first item or after the last item.</p>
 <hr />
 <h4 id="primaryorientation">PrimaryOrientation<a class="headerlink" href="#primaryorientation" title="Permanent link"></a></h4>
 <p>Specifies the axis that items are added to before wrapping.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Orientation</span><span class="w"> </span><span class="n">PrimaryOrientation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Orientation</span><span class="w"> </span><span class="n">PrimaryOrientation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="../../layout/orientation/">Orientation</a></p>
-<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
 <p><a href="../../layout/orientation/#horizontal">Horizontal</a> means children are added from left to right, and when reaching the edge or max column count, start over at the beginning of the next row. <a href="../../layout/orientation/#vertical">Vertical</a> means children flow from top to bottom, and when reaching the bottom, wrap to the top of the next column. </p>
 <p>Also affects which dimension is fixed and which is potentially unbounded. Horizontally-oriented grids have a fixed width and can grow to any height (if <a href="../../layout/layoutparameters/#height">Height</a> is set to <a href="../../layout/length/#content">Content()</a>). Vertically-oriented grids are the opposite, having a fixed height and growing to an arbitrary width.</p>
 <hr />
 <h4 id="verticalitemalignment">VerticalItemAlignment<a class="headerlink" href="#verticalitemalignment" title="Permanent link"></a></h4>
 <p>Specifies how to align each child <a href="../../iview/">IView</a> vertically within its respective cell, i.e. if the view is shorter than the cell's height.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">VerticalItemAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Alignment</span><span class="w"> </span><span class="n">VerticalItemAlignment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
+<h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
 <p><a href="../../layout/alignment/">Alignment</a></p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="findfocusabledescendantvector2-direction">FindFocusableDescendant(Vector2, Direction)<a class="headerlink" href="#findfocusabledescendantvector2-direction" title="Permanent link"></a></h4>
 <p>Searches for a focusable child within this view that is reachable in the specified <code>direction</code>, and returns a result containing the view and search path if found.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FindFocusableDescendant</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">FocusSearchResult</span><span class="w"> </span><span class="n">FindFocusableDescendant</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">,</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>contentPosition</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3874,22 +3941,22 @@ The search position, relative to where this view's content starts (after applyin
 The search direction.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="../../input/focussearchresult/">FocusSearchResult</a></p>
-<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
+<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
 <p>This is the same as <a href="../../view/#focussearchvector2-direction">FocusSearch(Vector2, Direction)</a> but in pre-transformed content coordinates, and does not require checking for "self-focus" as <a href="../../view/#focussearchvector2-direction">FocusSearch(Vector2, Direction)</a> already does this. The default implementation simply returns <code>null</code> as most views do not have children; subclasses with children must override this.</p>
 <hr />
 <h4 id="getlocalchildren">GetLocalChildren()<a class="headerlink" href="#getlocalchildren" title="Permanent link"></a></h4>
 <p>Gets the view's children with positions relative to the content area.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildren</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildren</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../../viewchild/">ViewChild</a>&gt;</p>
-<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
+<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
 <p>This has the same signature as <a href="../../view/#getchildren">GetChildren()</a> but assumes that coordinates are in the same space as those used in <a href="../../view/#ondrawcontentispritebatch">OnDrawContent(ISpriteBatch)</a>, i.e. not accounting for margin/border/padding. These coordinates are automatically adjusted in the <a href="../../view/#getchildren">GetChildren()</a> to be relative to the entire view. </p>
 <p>The default implementation returns an empty sequence. Composite views must override this method in order for user interactions to behave correctly.</p>
 <hr />
 <h4 id="getlocalchildrenatvector2">GetLocalChildrenAt(Vector2)<a class="headerlink" href="#getlocalchildrenatvector2" title="Permanent link"></a></h4>
 <p>Searches for all views at a given position relative to the content area.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildrenAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetLocalChildrenAt</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentPosition</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>contentPosition</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
@@ -3897,45 +3964,45 @@ The search position, relative to where this view's content starts (after applyin
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../../viewchild/">ViewChild</a>&gt;</p>
 <p>The views at the specified <code>contentPosition</code>, in original layout order.</p>
-<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
+<h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
 <p>The default implementation performs a linear search on all children and returns all whose bounds overlap the specified <code>contentPosition</code>. Views can override this to provide optimized implementations for their layout, or handle overlapping views.</p>
 <hr />
 <h4 id="iscontentdirty">IsContentDirty()<a class="headerlink" href="#iscontentdirty" title="Permanent link"></a></h4>
 <p>Checks whether or not the internal content/layout has changed.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsContentDirty</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsContentDirty</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if content has changed; otherwise <code>false</code>.</p>
-<h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
+<h5 id="remarks_8">Remarks<a class="headerlink" href="#remarks_8" title="Permanent link"></a></h5>
 <p>The base implementation of <a href="../../view/#isdirty">IsDirty()</a> only checks if the base layout attributes have changed, i.e. <a href="../../view/#layout">Layout</a>, <a href="../../view/#margin">Margin</a>, <a href="../../view/#padding">Padding</a>, etc. It does not know about content/data in any subclasses; those that accept content parameters (like text) will typically use <a href="../../layout/dirtytracker-1/">DirtyTracker&lt;T&gt;</a> to hold that content and should implement this method to check their <a href="../../layout/dirtytracker-1/#isdirty">IsDirty</a> states.</p>
 <hr />
 <h4 id="ondrawcontentispritebatch">OnDrawContent(ISpriteBatch)<a class="headerlink" href="#ondrawcontentispritebatch" title="Permanent link"></a></h4>
 <p>Draws the inner content of this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnDrawContent</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnDrawContent</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">ISpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>b</code></strong> &nbsp; <a href="../../graphics/ispritebatch/">ISpriteBatch</a><br />
 Sprite batch to hold the drawing output.</p>
-<h5 id="remarks_8">Remarks<a class="headerlink" href="#remarks_8" title="Permanent link"></a></h5>
+<h5 id="remarks_9">Remarks<a class="headerlink" href="#remarks_9" title="Permanent link"></a></h5>
 <p>This is called from <a href="../../view/#drawispritebatch">Draw(ISpriteBatch)</a> after applying both <a href="../../view/#margin">Margin</a> and <a href="../../view/#padding">Padding</a>.</p>
 <hr />
 <h4 id="onmeasurevector2">OnMeasure(Vector2)<a class="headerlink" href="#onmeasurevector2" title="Permanent link"></a></h4>
 <p>Performs the internal layout.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnMeasure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnMeasure</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">availableSize</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>availableSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 Size available in the container, after applying padding, margin and borders.</p>
-<h5 id="remarks_9">Remarks<a class="headerlink" href="#remarks_9" title="Permanent link"></a></h5>
+<h5 id="remarks_10">Remarks<a class="headerlink" href="#remarks_10" title="Permanent link"></a></h5>
 <p>This is called from <a href="../../view/#measurevector2">Measure(Vector2)</a> only when the layout is dirty (layout parameters or content changed) and a new layout is actually required. Subclasses must implement this and set <a href="../../view/#contentsize">ContentSize</a> once layout is complete. Typically, <a href="../../layout/layoutparameters/#resolvevector2-funcvector2">Resolve(Vector2, Func&lt;Vector2&gt;)</a> should be used in order to ensure that the original <a href="../../layout/layoutparameters/">LayoutParameters</a> are respected (e.g. if the actual content size is smaller than the configured size). </p>
 <p>The <code>availableSize</code> provided to the method is pre-adjusted for <a href="../../view/#margin">Margin</a>, <a href="../../view/#padding">Padding</a>, and any border determined by <a href="../../view/#getborderthickness">GetBorderThickness()</a>.</p>
 <hr />
 <h4 id="resetdirty">ResetDirty()<a class="headerlink" href="#resetdirty" title="Permanent link"></a></h4>
 <p>Resets any dirty state associated with this view.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ResetDirty</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">ResetDirty</span><span class="p">();</span>
 </span></code></pre></div>
-<h5 id="remarks_10">Remarks<a class="headerlink" href="#remarks_10" title="Permanent link"></a></h5>
+<h5 id="remarks_11">Remarks<a class="headerlink" href="#remarks_11" title="Permanent link"></a></h5>
 <p>This is called at the end of <a href="../../view/#measurevector2">Measure(Vector2)</a>, so that on the next pass, all state appears clean unless it was marked dirty after the last pass completed. The default implementation is a no-op; subclasses should use it to clear any private dirty state, e.g. via <a href="../../layout/dirtytracker-1/#resetdirty">ResetDirty()</a>.</p>
 <hr />
 </div>
