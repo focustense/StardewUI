@@ -63,11 +63,14 @@ public class PropagatedSpriteBatch(
             // anyway in order to create the scissor rectangle, the added cost is not significant and it makes the math
             // below a lot simpler.
             transform = transform.Collapse();
-            var clipPosition = Vector2.Transform(clipRect.Location.ToVector2(), transform.Matrix) + transform.Local.Translation;
+            var clipPosition =
+                Vector2.Transform(clipRect.Location.ToVector2(), transform.Matrix) + transform.Local.Translation;
             // Unsure if it's faster to compute the opposite corner location using the same matrix and subtract to get
             // the size, or create a size-only matrix (excluding translation) to compute the size directly. Probably not
             // worth worrying about the difference.
-            var clipEnd = Vector2.Transform((clipRect.Location + clipRect.Size).ToVector2(), transform.Matrix) + transform.Local.Translation;
+            var clipEnd =
+                Vector2.Transform((clipRect.Location + clipRect.Size).ToVector2(), transform.Matrix)
+                + transform.Local.Translation;
             var clipSize = Vector2.Ceiling((clipEnd - clipPosition));
             var transformedClipRect = new Rectangle(clipPosition.ToPoint(), clipSize.ToPoint());
             spriteBatch.End();
