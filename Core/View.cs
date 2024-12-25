@@ -90,6 +90,36 @@ public abstract class View : IView, IFloatContainer
     /// <inheritdoc/>
     public Bounds ActualBounds => GetActualBounds();
 
+    /// <inheritdoc />
+    public NineGridPlacement? ClipOrigin
+    {
+        get => clipOrigin;
+        set
+        {
+            if (value != clipOrigin)
+            {
+                clipOrigin = value;
+                clipBounds = null; // Recalculate on next draw
+                OnPropertyChanged(nameof(ClipOrigin));
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    public LayoutParameters? ClipSize
+    {
+        get => clipSize;
+        set
+        {
+            if (value != clipSize)
+            {
+                clipSize = value;
+                clipBounds = null; // Recalculate on next draw
+                OnPropertyChanged(nameof(ClipSize));
+            }
+        }
+    }
+
     /// <inheritdoc/>
     public Bounds ContentBounds => GetContentBounds();
 
@@ -449,6 +479,9 @@ public abstract class View : IView, IFloatContainer
     private readonly DirtyTracker<Edges> margin = new(Edges.NONE);
     private readonly DirtyTracker<Edges> padding = new(Edges.NONE);
 
+    private Bounds? clipBounds;
+    private NineGridPlacement? clipOrigin;
+    private LayoutParameters? clipSize;
     private Vector2 contentSize;
     private bool draggable;
     private IView? draggingView;
@@ -526,6 +559,12 @@ public abstract class View : IView, IFloatContainer
         }
 
         using var _drawing = new DrawingState();
+
+        if (clipBounds is null && clipSize is not null)
+        {
+            UpdateClipBounds();
+        }
+        using var _clip = clipBounds is not null ? b.Clip(clipBounds.Truncate()) : null;
 
         // Local transforms can be applied before or after creating the render target, it makes no difference. However,
         // doing it before makes it simpler to separate the main content logic from floating element logic.
@@ -786,6 +825,7 @@ public abstract class View : IView, IFloatContainer
         {
             floatingElement.MeasureAndPosition(this, wasParentDirty: true);
         }
+        UpdateClipBounds();
         return true;
     }
 
@@ -1334,6 +1374,20 @@ public abstract class View : IView, IFloatContainer
         int width = (int)MathF.Ceiling(bounds.Size.X);
         int height = (int)MathF.Ceiling(bounds.Size.Y);
         batch.InitializeRenderTarget(ref target, width, height);
+    }
+
+    private void UpdateClipBounds()
+    {
+        if (this.clipSize is not LayoutParameters clipSize)
+        {
+            clipBounds = null;
+            return;
+        }
+        var actualSize = clipSize.Resolve(OuterSize, () => OuterSize);
+        var clipPosition = this.clipOrigin is { } clipOrigin
+            ? clipOrigin.GetPosition(actualSize, OuterSize)
+            : Vector2.Zero;
+        clipBounds = new(clipPosition, actualSize);
     }
 
     private readonly ref struct DrawingState : IDisposable

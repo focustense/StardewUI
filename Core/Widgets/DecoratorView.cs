@@ -148,6 +148,20 @@ public class DecoratorView<T> : IView, IDisposable
     public Bounds ActualBounds => view?.ActualBounds ?? Bounds.Empty;
 
     /// <inheritdoc />
+    public NineGridPlacement? ClipOrigin
+    {
+        get => clipOrigin;
+        set => clipOrigin.Set(value);
+    }
+
+    /// <inheritdoc />
+    public LayoutParameters? ClipSize
+    {
+        get => clipSize;
+        set => clipSize.Set(value);
+    }
+
+    /// <inheritdoc />
     public Bounds ContentBounds => view?.ContentBounds ?? Bounds.Empty;
 
     /// <inheritdoc />
@@ -279,6 +293,16 @@ public class DecoratorView<T> : IView, IDisposable
 
     private readonly List<IDecoratedProperty> decoratedProperties = [];
 
+    private readonly DecoratedProperty<NineGridPlacement?> clipOrigin = new(
+        x => x.ClipOrigin,
+        (x, v) => x.ClipOrigin = v,
+        null
+    );
+    private readonly DecoratedProperty<LayoutParameters?> clipSize = new(
+        x => x.ClipSize,
+        (x, v) => x.ClipSize = v,
+        null
+    );
     private readonly DecoratedProperty<LayoutParameters> layout = new(x => x.Layout, (x, v) => x.Layout = v, new());
     private readonly DecoratedProperty<string> name = new(x => x.Name, (x, v) => x.Name = v, "");
     private readonly DecoratedProperty<float> opacity = new(x => x.Opacity, (x, v) => x.Opacity = v, 1f);
@@ -313,6 +337,8 @@ public class DecoratorView<T> : IView, IDisposable
     /// </summary>
     public DecoratorView()
     {
+        RegisterDecoratedProperty(clipOrigin);
+        RegisterDecoratedProperty(clipSize);
         RegisterDecoratedProperty(layout);
         RegisterDecoratedProperty(name);
         RegisterDecoratedProperty(opacity);

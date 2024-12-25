@@ -106,6 +106,40 @@ public interface IView : IDisposable, INotifyPropertyChanged
     Bounds ActualBounds { get; }
 
     /// <summary>
+    /// Origin position for the <see cref="ClipSize"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// If clipping is enabled by specifying a <see cref="ClipSize"/>, and the computed size of the clipping rectangle
+    /// is not exactly equal to the view's <see cref="OuterSize"/>, then this determines how it will be aligned relative
+    /// to this view's boundaries.
+    /// </para>
+    /// <para>
+    /// The default origin is the view's top-left corner (0, 0). This property has no effect unless the view's
+    /// <see cref="ClipSize"/> is also defined.
+    /// </para>
+    /// </remarks>
+    NineGridPlacement? ClipOrigin { get; set; }
+
+    /// <summary>
+    /// Size of the clipping rectangle, outside which content will not be displayed.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This is defined as a layout, but unlike the view's <see cref="Layout"/>, it is not computed against the
+    /// available size provided by the parent; instead, its reference size is the view's <see cref="OuterSize"/>.
+    /// </para>
+    /// <para>
+    /// A common scenario is to set this to <see cref="LayoutParameters.Fill"/> in order to prevent drawing outside the
+    /// view's own boundaries, i.e. as an equivalent to CSS <c>overflow: hidden</c>. Note however that clipping occurs
+    /// during the drawing phase, so a smaller clip region does not result in a smaller layout; the view will still have
+    /// the same size it would have had without any clipping, but only part of it will actually get drawn. This can also
+    /// be used intentionally to create some animated visual effects such as slides and wipes.
+    /// </para>
+    /// </remarks>
+    LayoutParameters? ClipSize { get; set; }
+
+    /// <summary>
     /// The true bounds of this view's content; i.e. <see cref="ActualBounds"/> excluding margins.
     /// </summary>
     Bounds ContentBounds { get; }

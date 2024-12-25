@@ -53,11 +53,12 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new LayoutConverter());
         TryRegister<string, Length>(Length.Parse);
         TryRegister(new NamedFontConverter());
+        TryRegister<string, NineGridPlacement>(NineGridPlacement.Parse);
         TryRegister(new PointConverter());
         TryRegister(new RectangleConverter());
         TryRegister(new TransformConverter());
         TryRegister<string, Transition>(Transition.Parse);
-        TryRegister(new Vector2Converter());
+        TryRegister<string, Vector2>(Parsers.ParseVector2);
 
         // Edges are better to bind as numbers, so we can use tuples and XNA equivalents in some cases.
         TryRegister<int, Edges>(all => new(all));

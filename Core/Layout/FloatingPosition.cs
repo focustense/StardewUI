@@ -66,7 +66,7 @@ public class FloatingPosition(Func<Vector2, Vector2, Vector2> offsetSelector)
         var separatorIndex = span.IndexOf(';');
         var edgeSpan = (separatorIndex >= 0 ? span[..separatorIndex] : span).Trim();
         var offsetSpan = (separatorIndex >= 0) ? span[(separatorIndex + 1)..].Trim() : [];
-        var offset = !offsetSpan.IsEmpty ? Vector2Converter.Parse(offsetSpan) : Vector2.Zero;
+        var offset = !offsetSpan.IsEmpty ? Parsers.ParseVector2(offsetSpan) : Vector2.Zero;
         result = edgeSpan switch
         {
             ['A' or 'a', 'B' or 'b', 'O' or 'o', 'V' or 'v', 'E' or 'e'] => AboveParentWithOffset(offset),

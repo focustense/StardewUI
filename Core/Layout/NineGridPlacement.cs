@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 
 namespace StardewUI.Layout;
@@ -56,9 +57,65 @@ public record NineGridPlacement(Alignment HorizontalAlignment, Alignment Vertica
         Alignment verticalAlignment
     )
     {
-        var basePosition = GetPosition(size, horizontalAlignment, verticalAlignment);
+        var basePosition = GetPositionComponent(size, horizontalAlignment, verticalAlignment);
         var offset = position - basePosition;
         return new(horizontalAlignment, verticalAlignment, offset.ToPoint());
+    }
+
+    /// <summary>
+    /// Parses a <see cref="NineGridPlacement"/> from its string representation.
+    /// </summary>
+    /// <param name="value">The string value to parse.</param>
+    /// <returns>The parsed placement.</returns>
+    /// <exception cref="FormatException">Thrown when the <paramref name="value"/> is not in a valid format.</exception>
+    public static NineGridPlacement Parse(string value)
+    {
+        return TryParse(value, out var result)
+            ? result
+            : throw new FormatException(
+                $"Invalid {nameof(NineGridPlacement)} string '{value}'. Placement strings must be two space-separated "
+                    + $"{nameof(Alignment)} values, optionally followed by a semicolon and 2D coordinate in 'X, Y' "
+                    + "format."
+            );
+    }
+
+    /// <summary>
+    /// Attempts to parse a <see cref="NineGridPlacement"/> from its string representation.
+    /// </summary>
+    /// <param name="value">The string value to parse.</param>
+    /// <param name="result">If the method returns <c>true</c>, holds the parsed placement; otherwise
+    /// <c>null</c>.</param>
+    /// <returns><c>true</c> if the <paramref name="value"/> was successfully parsed; <c>false</c> if the input was not
+    /// in a valid format.</returns>
+    public static bool TryParse(string value, [MaybeNullWhen(false)] out NineGridPlacement result)
+    {
+        result = null;
+        var valueAsSpan = value.AsSpan().Trim();
+        var separatorIndex = valueAsSpan.IndexOf(' ');
+        if (separatorIndex < 0)
+        {
+            return false;
+        }
+        var horizontalSpan = valueAsSpan[..separatorIndex];
+        if (!Enum.TryParse<Alignment>(horizontalSpan, true, out var horizontalAlignment))
+        {
+            return false;
+        }
+        valueAsSpan = valueAsSpan[(separatorIndex + 1)..].TrimStart();
+        separatorIndex = valueAsSpan.IndexOf(";");
+        var verticalSpan = separatorIndex < 0 ? valueAsSpan : valueAsSpan[..separatorIndex];
+        if (!Enum.TryParse<Alignment>(verticalSpan, true, out var verticalAlignment))
+        {
+            return false;
+        }
+        var offset = Vector2.Zero;
+        var offsetSpan = separatorIndex > 0 ? valueAsSpan[(separatorIndex + 1)..].TrimStart() : [];
+        if (!offsetSpan.IsEmpty && !Parsers.TryParseVector2(offsetSpan, out offset))
+        {
+            return false;
+        }
+        result = new(horizontalAlignment, verticalAlignment, offset.ToPoint());
+        return true;
     }
 
     private static readonly Direction[] neighborDirections =
@@ -138,13 +195,16 @@ public record NineGridPlacement(Alignment HorizontalAlignment, Alignment Vertica
     }
 
     /// <summary>
-    /// Computes the aligned pixel position relative to a bounded size.
+    /// Computes the position of some content within its container bounds.
     /// </summary>
-    /// <param name="size">The size of the container.</param>
-    /// <returns>The aligned position, relative to the container.</returns>
-    public Vector2 GetPosition(Vector2 size)
+    /// <param name="contentSize">Size of the content to be positioned.</param>
+    /// <param name="containerSize">Size of the container in which the content will be positioned.</param>
+    /// <returns>The aligned content position, relative to the container.</returns>
+    public Vector2 GetPosition(Vector2 contentSize, Vector2 containerSize)
     {
-        return GetPosition(size, HorizontalAlignment, VerticalAlignment) + Offset.ToVector2();
+        var contentPosition = GetPositionComponent(containerSize);
+        var contentOffset = GetPositionComponent(contentSize);
+        return contentPosition - contentOffset + Offset.ToVector2();
     }
 
     /// <summary>
@@ -241,7 +301,16 @@ public record NineGridPlacement(Alignment HorizontalAlignment, Alignment Vertica
             : null;
     }
 
-    private static Vector2 GetPosition(Vector2 size, Alignment horizontalAlignment, Alignment verticalAlignment)
+    private Vector2 GetPositionComponent(Vector2 size)
+    {
+        return GetPositionComponent(size, HorizontalAlignment, VerticalAlignment);
+    }
+
+    private static Vector2 GetPositionComponent(
+        Vector2 size,
+        Alignment horizontalAlignment,
+        Alignment verticalAlignment
+    )
     {
         var x = horizontalAlignment switch
         {
