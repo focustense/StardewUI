@@ -69,7 +69,8 @@ Internally uses a [List&lt;T&gt;](https://learn.microsoft.com/en-us/dotnet/api/s
 | [GetEnumerator()](#getenumerator) |  | 
 | [Push(string, T)](#pushstring-t) | Pushes a new state to the top of the stack, making it the active override. | 
 | [Replace(string, T)](#replacestring-t) | Replaces the value associated with a specified state. | 
-| [TryPeek(T&&lt;&gt;)](#trypeekt) | Gets the value with highest priority, i.e. on top of the stack. | 
+| [TryPeek(ValueTuple&lt;string, T&gt;)](#trypeekvaluetuplestring-t) | Gets the state name and value with highest priority, i.e. on top of the stack. | 
+| [TryPeekValue(T&&lt;&gt;)](#trypeekvaluet) | Gets the value with highest priority, i.e. on top of the stack. | 
 | [TryRemove(string, T&&lt;&gt;)](#tryremovestring-t) | Removes a specified state override, if one exists. | 
 
 ## Details
@@ -159,7 +160,7 @@ If a state with the specified `stateName` already exists on the stack, then this
 Replaces the value associated with a specified state.
 
 ```cs
-public void Replace(string stateName, T value);
+public bool Replace(string stateName, T value);
 ```
 
 ##### Parameters
@@ -170,18 +171,41 @@ The name of the state on the stack.
 **`value`** &nbsp; T  
 The new value to associate with the specified `stateName`.
 
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
 ##### Remarks
 
 If no state with the specified `stateName` is on the stack, then this does nothing. It will not push a new state.
 
 -----
 
-#### TryPeek(T&&lt;&gt;)
+#### TryPeek(ValueTuple&lt;string, T&gt;)
+
+Gets the state name and value with highest priority, i.e. on top of the stack.
+
+```cs
+public bool TryPeek(out ValueTuple<string, T> result);
+```
+
+##### Parameters
+
+**`result`** &nbsp; [ValueTuple&lt;string, T&gt;](https://learn.microsoft.com/en-us/dotnet/api/system.valuetuple-2)  
+The state name and value of the active override, or the default for `T` if the function returned `false`.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+-----
+
+#### TryPeekValue(T&&lt;&gt;)
 
 Gets the value with highest priority, i.e. on top of the stack.
 
 ```cs
-public bool TryPeek(out T&<> value);
+public bool TryPeekValue(out T&<> value);
 ```
 
 ##### Parameters

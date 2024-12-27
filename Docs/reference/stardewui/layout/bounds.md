@@ -70,6 +70,7 @@ public record Bounds : StardewUI.Layout.IOffsettable<StardewUI.Layout.Bounds>,
 | [Intersection(Bounds)](#intersectionbounds) | Computes the intersection of this [Bounds](bounds.md) with another instance. | 
 | [IntersectsWith(Bounds)](#intersectswithbounds) | Checks if this [Bounds](bounds.md) intersects with another instance, without computing the intersection. | 
 | [Offset(Vector2)](#offsetvector2) | Offsets a [Bounds](bounds.md) by a given distance. | 
+| [Truncate()](#truncate) | Converts the bounds to an integer [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html), truncating any fractional values. | 
 | [Union(Bounds)](#unionbounds) | Computes the union of this [Bounds](bounds.md) with another instance. | 
 
 ## Details
@@ -328,6 +329,24 @@ The offset distance.
 [Bounds](bounds.md)
 
   A new [Bounds](bounds.md) with the same size as this instance and a [Position](bounds.md#position) offset by the specified `distance`.
+
+-----
+
+#### Truncate()
+
+Converts the bounds to an integer [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html), truncating any fractional values.
+
+```cs
+public Microsoft.Xna.Framework.Rectangle Truncate();
+```
+
+##### Returns
+
+[Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html)
+
+##### Remarks
+
+Truncating is the same behavior used in [ToPoint()](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2), making this consistent with the equivalent component-by-component translation to XNA.
 
 -----
 

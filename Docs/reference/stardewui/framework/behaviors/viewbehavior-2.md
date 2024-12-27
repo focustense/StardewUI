@@ -69,9 +69,11 @@ Behaviors receive the [View](viewbehavior-2.md#view) which is decorated by the b
 | [CanUpdate()](#canupdate) | Checks whether the behavior is allowed to [Update(TimeSpan)](iviewbehavior.md#updatetimespan). | 
 | [Dispose()](#dispose) |  | 
 | [Initialize(BehaviorTarget)](#initializebehaviortarget) | Initializes the target (view, state overrides, etc.) for the behavior. | 
+| [OnAttached()](#onattached) | Runs after the behavior is attached to a target. | 
+| [OnDetached(IView)](#ondetachediview) | Runs when the behavior is detached from a target. | 
 | [OnDispose()](#ondispose) | Runs when the behavior is being disposed. | 
-| [OnInitialize()](#oninitialize) | Runs after the behavior has been initialized. | 
 | [OnNewData(TData)](#onnewdatatdata) | Runs when the [Data](viewbehavior-2.md#data) of this behavior is changed. | 
+| [PreUpdate(TimeSpan)](#preupdatetimespan) | Runs on every update tick, before any bindings or views update. | 
 | [Update(TimeSpan)](#updatetimespan) | Runs on every update tick. | 
 
 ## Details
@@ -183,6 +185,43 @@ The framework guarantees that [Update(TimeSpan)](iviewbehavior.md#updatetimespan
 
 -----
 
+#### OnAttached()
+
+Runs after the behavior is attached to a target.
+
+```cs
+protected virtual void OnAttached();
+```
+
+##### Remarks
+
+Setup code should go in this method to ensure that the values of [View](viewbehavior-2.md#view) and [ViewState](viewbehavior-2.md#viewstate) are actually assigned. If code runs in the behavior's constructor, these are not guaranteed to be populated.
+
+-----
+
+#### OnDetached(IView)
+
+Runs when the behavior is detached from a target.
+
+```cs
+protected virtual void OnDetached(StardewUI.IView view);
+```
+
+##### Parameters
+
+**`view`** &nbsp; [IView](../../iview.md)  
+The view that was previously attached.
+
+##### Remarks
+
+Behaviors may receive new views as part of a "rebind", if the old view is destroyed and recreated, for example as the result of a conditional binding changing states. 
+
+`OnDetached` is always immediately followed by [OnAttached()](viewbehavior-2.md#onattached). A behavior cannot remain in a detached state; however, overriding this method gives behaviors the opportunity to clean up state from the old view (e.g. remove event handlers) before the new one is attached. 
+
+ Also runs when the behavior is disposed, so detach logic does not need to be duplicated in [OnDispose()](viewbehavior-2.md#ondispose).
+
+-----
+
 #### OnDispose()
 
 Runs when the behavior is being disposed.
@@ -194,20 +233,6 @@ protected virtual void OnDispose();
 ##### Remarks
 
 The default implementation does nothing. Overriding this allows subclasses to perform their own cleanup, if required by the specific feature.
-
------
-
-#### OnInitialize()
-
-Runs after the behavior has been initialized.
-
-```cs
-protected virtual void OnInitialize();
-```
-
-##### Remarks
-
-Setup code should go in this method to ensure that the values of [View](viewbehavior-2.md#view) and [ViewState](viewbehavior-2.md#viewstate) are actually assigned. If code runs in the behavior's constructor, these are not guaranteed to be populated.
 
 -----
 
@@ -226,6 +251,24 @@ protected virtual void OnNewData(TData previousData);
 ##### Remarks
 
 At the time this method runs, [Data](viewbehavior-2.md#data) has already been assigned to the new value. After the method completes, the `previousData` will no longer be accessible to this behavior.
+
+-----
+
+#### PreUpdate(TimeSpan)
+
+Runs on every update tick, before any bindings or views update.
+
+```cs
+public virtual void PreUpdate(System.TimeSpan elapsed);
+```
+
+##### Parameters
+
+**`elapsed`** &nbsp; [TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan)
+
+##### Remarks
+
+Typically used to read information about the underlying view as it existed at the beginning of the frame, e.g. to handle a transition.
 
 -----
 

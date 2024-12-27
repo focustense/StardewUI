@@ -51,6 +51,8 @@ Tabs activate when clicked; multiple tabs can be assigned to the same [Group](ta
 | [ActualBounds](decoratorview-1.md#actualbounds) | The bounds of this view relative to the origin (0, 0).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Background](#background) | Background image to draw behind the tab's [Content](tab.md#content), which provides the tab appearance. | 
 | [BackgroundRotation](#backgroundrotation) | Rotation of the [Background](tab.md#background); does not apply to [Content](tab.md#content). | 
+| [ClipOrigin](decoratorview-1.md#cliporigin) | Origin position for the [ClipSize](../iview.md#clipsize).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [ClipSize](decoratorview-1.md#clipsize) | Size of the clipping rectangle, outside which content will not be displayed.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Content](#content) | Content to draw inside the tab's border. | 
 | [ContentBounds](decoratorview-1.md#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [ContentMargin](#contentmargin) | Margin to apply to the frame containing the [Content](tab.md#content), i.e. distance between the tab's visual border and the inner image, text, etc. | 
@@ -81,7 +83,7 @@ Tabs activate when clicked; multiple tabs can be assigned to the same [Group](ta
 | [Dispose()](#dispose) | <span class="muted" markdown>(Overrides [DecoratorView&lt;T&gt;](decoratorview-1.md).[Dispose()](decoratorview-1.md#dispose))</span> | 
 | [Draw(ISpriteBatch)](#drawispritebatch) | Draws the content for this view.<br><span class="muted" markdown>(Overrides [DecoratorView&lt;T&gt;](decoratorview-1.md).[Draw(ISpriteBatch)](decoratorview-1.md#drawispritebatch))</span> | 
 | [FocusSearch(Vector2, Direction)](decoratorview-1.md#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
-| [GetChildAt(Vector2, Boolean)](decoratorview-1.md#getchildatvector2-bool) | Finds the child at a given position.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [GetChildAt(Vector2, Boolean, Boolean)](decoratorview-1.md#getchildatvector2-bool-bool) | Finds the child at a given position.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [GetChildPosition(IView)](decoratorview-1.md#getchildpositioniview) | Computes or retrieves the position of a given direct child.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [GetChildren()](decoratorview-1.md#getchildren) | Gets the current children of this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [GetChildrenAt(Vector2)](decoratorview-1.md#getchildrenatvector2) | Finds all children at a given position.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 

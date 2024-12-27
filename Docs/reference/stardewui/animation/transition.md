@@ -23,6 +23,7 @@ Assembly: StardewUI.dll
 Describes the transition behavior of a single property.
 
 ```cs
+[StardewUI.DuckType]
 public record Transition : IEquatable<StardewUI.Animation.Transition>
 ```
 

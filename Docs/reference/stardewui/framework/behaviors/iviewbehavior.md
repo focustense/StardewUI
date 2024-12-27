@@ -47,6 +47,7 @@ Add-ons should normally not use this interface directly, and instead derive from
 | --- | --- |
 | [CanUpdate()](#canupdate) | Checks whether the behavior is allowed to [Update(TimeSpan)](iviewbehavior.md#updatetimespan). | 
 | [Initialize(BehaviorTarget)](#initializebehaviortarget) | Initializes the target (view, state overrides, etc.) for the behavior. | 
+| [PreUpdate(TimeSpan)](#preupdatetimespan) | Runs on every update tick, before any bindings or views update. | 
 | [SetData(Object)](#setdataobject) | Updates the behavior's current data. | 
 | [Update(TimeSpan)](#updatetimespan) | Runs on every update tick. | 
 
@@ -106,6 +107,24 @@ The target of the behavior.
 ##### Remarks
 
 The framework guarantees that [Update(TimeSpan)](iviewbehavior.md#updatetimespan) will never be called before `Initialize`, so views may be implemented with default parameterless constructors and perform initialization in this method.
+
+-----
+
+#### PreUpdate(TimeSpan)
+
+Runs on every update tick, before any bindings or views update.
+
+```cs
+void PreUpdate(System.TimeSpan elapsed);
+```
+
+##### Parameters
+
+**`elapsed`** &nbsp; [TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan)
+
+##### Remarks
+
+Typically used to read information about the underlying view as it existed at the beginning of the frame, e.g. to handle a transition.
 
 -----
 

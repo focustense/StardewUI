@@ -38,7 +38,7 @@ public class ViewState : StardewUI.Framework.Behaviors.IViewState
 
  | Name | Description |
 | --- | --- |
-| [ViewState(IViewDescriptor, IViewDefaults)](#viewstateiviewdescriptor-iviewdefaults) | View state manager based on the view's runtime descriptor and defaults. | 
+| [ViewState(IViewDescriptor, IViewDefaults, ViewState)](#viewstateiviewdescriptor-iviewdefaults-viewstate) | View state manager based on the view's runtime descriptor and defaults. | 
 
 ### Methods
 
@@ -53,12 +53,12 @@ public class ViewState : StardewUI.Framework.Behaviors.IViewState
 
 ### Constructors
 
-#### ViewState(IViewDescriptor, IViewDefaults)
+#### ViewState(IViewDescriptor, IViewDefaults, ViewState)
 
 View state manager based on the view's runtime descriptor and defaults.
 
 ```cs
-public ViewState(StardewUI.Framework.Descriptors.IViewDescriptor viewDescriptor, StardewUI.Framework.Descriptors.IViewDefaults viewDefaults);
+public ViewState(StardewUI.Framework.Descriptors.IViewDescriptor viewDescriptor, StardewUI.Framework.Descriptors.IViewDefaults viewDefaults, StardewUI.Framework.Behaviors.ViewState previousState);
 ```
 
 ##### Parameters
@@ -68,6 +68,9 @@ Descriptor for the managed view type, providing property accessors.
 
 **`viewDefaults`** &nbsp; [IViewDefaults](../descriptors/iviewdefaults.md)  
 Default values for the managed view type.
+
+**`previousState`** &nbsp; [ViewState](viewstate.md)  
+The previous state from which to restore the transient property values.
 
 -----
 

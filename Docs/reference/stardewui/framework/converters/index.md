@@ -33,7 +33,6 @@ search:
 | [TransformConverter](transformconverter.md) | String converter for the [Transform](../../graphics/transform.md) type. |
 | [ValueConverter&lt;TSource, TDestination&gt;](valueconverter-2.md) | Generic delegating converter, accepting a conversion function. |
 | [ValueConverterFactory](valueconverterfactory.md) | Standard implementation of [IValueConverterFactory](ivalueconverterfactory.md) that allows registering new converters. |
-| [Vector2Converter](vector2converter.md) | String converter for the XNA [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) type. |
 
 ## Interfaces
 

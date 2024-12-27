@@ -58,6 +58,8 @@ Decorator views, while not abstract, are used as a base type for other composite
  | Name | Description |
 | --- | --- |
 | [ActualBounds](#actualbounds) | The bounds of this view relative to the origin (0, 0). | 
+| [ClipOrigin](#cliporigin) | Origin position for the [ClipSize](../iview.md#clipsize). | 
+| [ClipSize](#clipsize) | Size of the clipping rectangle, outside which content will not be displayed. | 
 | [ContentBounds](#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](../iview.md#actualbounds) excluding margins. | 
 | [FloatingBounds](#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants. | 
 | [IsFocusable](#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls. | 
@@ -83,7 +85,7 @@ Decorator views, while not abstract, are used as a base type for other composite
 | [Dispose()](#dispose) |  | 
 | [Draw(ISpriteBatch)](#drawispritebatch) | Draws the content for this view. | 
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
-| [GetChildAt(Vector2, Boolean)](#getchildatvector2-bool) | Finds the child at a given position. | 
+| [GetChildAt(Vector2, Boolean, Boolean)](#getchildatvector2-bool-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
 | [GetChildren()](#getchildren) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
@@ -154,6 +156,46 @@ public StardewUI.Layout.Bounds ActualBounds { get; }
 Typically, a view's bounds is the rectangle from (0, 0) having size of [OuterSize](../iview.md#outersize), but there may be a difference especially in the case of negative margins. The various sizes affect layout flow and can even be negative - for example, in a left-to-right layout, a view with left margin -100, right margin 20 and inner width 30 (no padding) has an X size of -50, indicating that it actually (correctly) causes adjacent views to be pulled left along with it. However, `ActualBounds` always has a positive [Size](../layout/bounds.md#size), and if an implicit content offset is being applied (e.g. because of negative margins) then it will be reflected in [Position](../layout/bounds.md#position) and not affect the [Size](../layout/bounds.md#size); the previous example would have position X = -100 and size X = 50 (30 content + 20 right margin). 
 
  In terms of usage, [OuterSize](../iview.md#outersize) is generally used for the layout itself ([Measure(Vector2)](../iview.md#measurevector2) and [OnMeasure(Vector2)](../view.md#onmeasurevector2) of parent views) whereas [ActualBounds](../iview.md#actualbounds) is preferred for click and focus targeting.
+
+-----
+
+#### ClipOrigin
+
+Origin position for the [ClipSize](../iview.md#clipsize).
+
+```cs
+public StardewUI.Layout.NineGridPlacement ClipOrigin { get; set; }
+```
+
+##### Property Value
+
+[NineGridPlacement](../layout/ninegridplacement.md)
+
+##### Remarks
+
+If clipping is enabled by specifying a [ClipSize](../iview.md#clipsize), and the computed size of the clipping rectangle is not exactly equal to the view's [OuterSize](../iview.md#outersize), then this determines how it will be aligned relative to this view's boundaries. 
+
+ The default origin is the view's top-left corner (0, 0). This property has no effect unless the view's [ClipSize](../iview.md#clipsize) is also defined.
+
+-----
+
+#### ClipSize
+
+Size of the clipping rectangle, outside which content will not be displayed.
+
+```cs
+public StardewUI.Layout.LayoutParameters? ClipSize { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[LayoutParameters](../layout/layoutparameters.md)>
+
+##### Remarks
+
+This is defined as a layout, but unlike the view's [Layout](../iview.md#layout), it is not computed against the available size provided by the parent; instead, its reference size is the view's [OuterSize](../iview.md#outersize). 
+
+ A common scenario is to set this to [Fill()](../layout/layoutparameters.md#fill) in order to prevent drawing outside the view's own boundaries, i.e. as an equivalent to CSS `overflow: hidden`. Note however that clipping occurs during the drawing phase, so a smaller clip region does not result in a smaller layout; the view will still have the same size it would have had without any clipping, but only part of it will actually get drawn. This can also be used intentionally to create some animated visual effects such as slides and wipes.
 
 -----
 
@@ -491,12 +533,12 @@ If `position` is out of bounds, it does not necessarily mean that the view shoul
 
 -----
 
-#### GetChildAt(Vector2, bool)
+#### GetChildAt(Vector2, bool, bool)
 
 Finds the child at a given position.
 
 ```cs
-public virtual StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
+public virtual StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable, bool requirePointerEvents);
 ```
 
 ##### Parameters
@@ -506,6 +548,9 @@ The search position, relative to the view's top-left coordinate.
 
 **`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
 `true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
+
+**`requirePointerEvents`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to exclude views whose [PointerEventsEnabled](../iview.md#pointereventsenabled) is currently `false`.
 
 ##### Returns
 

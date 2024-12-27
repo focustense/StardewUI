@@ -51,6 +51,8 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | --- | --- |
 | [ActualBounds](#actualbounds) | The bounds of this view relative to the origin (0, 0). | 
 | [BorderSize](#bordersize) | The layout size (not edge thickness) of the entire drawn area including the border, i.e. the [InnerSize](view.md#innersize) plus any borders defined in [GetBorderThickness()](view.md#getborderthickness). Does not include the [Margin](view.md#margin). | 
+| [ClipOrigin](#cliporigin) | Origin position for the [ClipSize](iview.md#clipsize). | 
+| [ClipSize](#clipsize) | Size of the clipping rectangle, outside which content will not be displayed. | 
 | [ContentBounds](#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](iview.md#actualbounds) excluding margins. | 
 | [ContentSize](#contentsize) | The size of the view's content, which is drawn inside the padding. Subclasses set this in their [OnMeasure(Vector2)](view.md#onmeasurevector2) method and padding, margins, etc. are handled automatically. | 
 | [Draggable](#draggable) | Whether or not this view should fire drag events such as [DragStart](view.md#dragstart) and [Drag](view.md#drag). | 
@@ -87,7 +89,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [FindFocusableDescendant(Vector2, Direction)](#findfocusabledescendantvector2-direction) | Searches for a focusable child within this view that is reachable in the specified `direction`, and returns a result containing the view and search path if found. | 
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
 | [GetBorderThickness()](#getborderthickness) | Measures the thickness of each edge of the border, if the view has a border. | 
-| [GetChildAt(Vector2, Boolean)](#getchildatvector2-bool) | Finds the child at a given position. | 
+| [GetChildAt(Vector2, Boolean, Boolean)](#getchildatvector2-bool-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
 | [GetChildren()](#getchildren) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
@@ -184,6 +186,46 @@ public Microsoft.Xna.Framework.Vector2 BorderSize { get; }
 ##### Property Value
 
 [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+-----
+
+#### ClipOrigin
+
+Origin position for the [ClipSize](iview.md#clipsize).
+
+```cs
+public StardewUI.Layout.NineGridPlacement ClipOrigin { get; set; }
+```
+
+##### Property Value
+
+[NineGridPlacement](layout/ninegridplacement.md)
+
+##### Remarks
+
+If clipping is enabled by specifying a [ClipSize](iview.md#clipsize), and the computed size of the clipping rectangle is not exactly equal to the view's [OuterSize](iview.md#outersize), then this determines how it will be aligned relative to this view's boundaries. 
+
+ The default origin is the view's top-left corner (0, 0). This property has no effect unless the view's [ClipSize](iview.md#clipsize) is also defined.
+
+-----
+
+#### ClipSize
+
+Size of the clipping rectangle, outside which content will not be displayed.
+
+```cs
+public StardewUI.Layout.LayoutParameters? ClipSize { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[LayoutParameters](layout/layoutparameters.md)>
+
+##### Remarks
+
+This is defined as a layout, but unlike the view's [Layout](iview.md#layout), it is not computed against the available size provided by the parent; instead, its reference size is the view's [OuterSize](iview.md#outersize). 
+
+ A common scenario is to set this to [Fill()](layout/layoutparameters.md#fill) in order to prevent drawing outside the view's own boundaries, i.e. as an equivalent to CSS `overflow: hidden`. Note however that clipping occurs during the drawing phase, so a smaller clip region does not result in a smaller layout; the view will still have the same size it would have had without any clipping, but only part of it will actually get drawn. This can also be used intentionally to create some animated visual effects such as slides and wipes.
 
 -----
 
@@ -703,12 +745,12 @@ Used only by views that will implement a border via [OnDrawBorder(ISpriteBatch)]
 
 -----
 
-#### GetChildAt(Vector2, bool)
+#### GetChildAt(Vector2, bool, bool)
 
 Finds the child at a given position.
 
 ```cs
-public StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
+public StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable, bool requirePointerEvents);
 ```
 
 ##### Parameters
@@ -718,6 +760,9 @@ The search position, relative to the view's top-left coordinate.
 
 **`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
 `true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
+
+**`requirePointerEvents`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to exclude views whose [PointerEventsEnabled](iview.md#pointereventsenabled) is currently `false`.
 
 ##### Returns
 

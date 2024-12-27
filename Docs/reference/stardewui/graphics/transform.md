@@ -23,6 +23,7 @@ Assembly: StardewUI.dll
 Global transform applied to an [ISpriteBatch](ispritebatch.md).
 
 ```cs
+[StardewUI.DuckType]
 public record Transform : IEquatable<StardewUI.Graphics.Transform>
 ```
 
