@@ -3,7 +3,7 @@
 namespace StardewUI;
 
 /// <summary>
-/// Available behaviors for closing a <see cref="ViewMenu{T}"/>.
+/// Available behaviors for closing a <see cref="ViewMenu"/>.
 /// </summary>
 public enum MenuCloseBehavior
 {
@@ -20,11 +20,11 @@ public enum MenuCloseBehavior
 
     /// <summary>
     /// Block the game's default closing logic, but allow the menu to be closed explicitly via its
-    /// <see cref="ViewMenu{T}.Close"/> method.
+    /// <see cref="ViewMenu.Close"/> method.
     /// </summary>
     /// <remarks>
     /// Causes <see cref="IClickableMenu.readyToClose"/> to return <c>false</c> at all times so that the game's own
-    /// update loop will never close the menu; instead, the menu's <see cref="ViewMenu{T}.CustomClose"/> method will be
+    /// update loop will never close the menu; instead, the menu's <see cref="ViewMenu.CustomClose"/> method will be
     /// called whenever a menu button is pressed, which becomes fully responsible for the menu's removal.
     /// </remarks>
     Custom,

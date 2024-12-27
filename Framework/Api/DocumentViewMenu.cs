@@ -9,13 +9,13 @@ using StardewValley.Menus;
 namespace StardewUI.Framework.Api;
 
 /// <summary>
-/// <see cref="ViewMenu{T}"/> implementation based on a StarML <see cref="Document"/>.
+/// <see cref="ViewMenu"/> implementation based on a StarML <see cref="Document"/>.
 /// </summary>
 /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
 /// <param name="documentSource">Source providing the StarML document describing the view.</param>
 /// <param name="data">Data to be bound to the view.</param>
 internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<Document> documentSource, object? data)
-    : ViewMenu<DocumentView>,
+    : ViewMenu,
         IMenuController
 {
     /// <inheritdoc />

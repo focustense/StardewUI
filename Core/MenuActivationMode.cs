@@ -1,7 +1,7 @@
 ﻿namespace StardewUI;
 
 /// <summary>
-/// Available behaviors for opening a <see cref="ViewMenu{T}"/>.
+/// Available behaviors for opening a <see cref="ViewMenu"/>.
 /// </summary>
 public enum MenuActivationMode
 {

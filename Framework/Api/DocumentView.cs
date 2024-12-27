@@ -11,7 +11,7 @@ namespace StardewUI.Framework.Api;
 /// A view based on a <see cref="Document"/>.
 /// </summary>
 /// <remarks>
-/// This view type mainly exists as glue for the API, to be used in a <see cref="ViewMenu{T}"/>.
+/// This view type mainly exists as glue for the API, to be used in a <see cref="ViewMenu"/>.
 /// </remarks>
 internal class DocumentView : DecoratorView, IDescriptorDependent, IDisposable
 {

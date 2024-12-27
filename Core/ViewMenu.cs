@@ -21,8 +21,7 @@ namespace StardewUI;
 /// <summary>
 /// Generic menu implementation based on a root <see cref="IView"/>.
 /// </summary>
-public abstract class ViewMenu<T> : IClickableMenu, IDisposable
-    where T : IView
+public abstract class ViewMenu : IClickableMenu, IDisposable
 {
     /// <summary>
     /// Event raised when the menu is closed.
@@ -56,7 +55,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <summary>
     /// The view to display with this menu.
     /// </summary>
-    public T View => view;
+    public IView View => view;
 
     /// <summary>
     /// Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu
@@ -90,7 +89,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly OverlayContext overlayContext = new();
     private readonly ConditionalWeakTable<IOverlay, OverlayLayoutData> overlayCache = [];
     private readonly RenderTargetPool renderTargetPool = new(Game1.graphics.GraphicsDevice, slack: 2);
-    private readonly T view;
+    private readonly IView view;
     private readonly bool wasHudDisplayed;
 
     private ViewChild[] focusableHoverPath = [];
@@ -113,7 +112,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private bool wasKeyboardCaptured;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ViewMenu{T}"/>.
+    /// Initializes a new instance of <see cref="ViewMenu"/>.
     /// </summary>
     /// <param name="gutter">Gutter edges, in which no content should be drawn. Used for overscan, or general
     /// aesthetics.</param>
@@ -149,7 +148,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// require content updates.
     /// </remarks>
     /// <returns>The created view.</returns>
-    protected abstract T CreateView();
+    protected abstract IView CreateView();
 
     /// <summary>
     /// Initiates a focus search in the specified direction.
@@ -1115,7 +1114,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         Direction? searchDirection
     )
     {
-        using var _ = Diagnostics.Trace.Begin(nameof(ViewMenu<T>), nameof(Refocus));
+        using var _ = Diagnostics.Trace.Begin(nameof(ViewMenu), nameof(Refocus));
         if (!Game1.options.gamepadControls)
         {
             return;
