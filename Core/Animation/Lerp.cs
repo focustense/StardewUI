@@ -38,6 +38,8 @@ public static class Lerps
         Add<Rectangle>(LerpRectangle);
         Add<Vector2>(LerpVector2);
         Add<Edges>(LerpEdges);
+        Add<LayoutParameters>(LerpLayoutParameters);
+        Add<LayoutParameters?>(LerpLayoutParametersNullable);
         Add<Transform?>(LerpTransform);
         Add<Color>(Color.Lerp);
     }
@@ -79,6 +81,71 @@ public static class Lerps
     private static int LerpInt(int x, int y, float a)
     {
         return (int)MathF.Round(x * (1 - a) + y * a);
+    }
+
+    private static LayoutParameters LerpLayoutParameters(LayoutParameters x, LayoutParameters y, float amount)
+    {
+        if (x.Width.Type != y.Width.Type)
+        {
+            throw new ArgumentException(
+                $"Interpolation of {nameof(LayoutParameters)} can only be performed on instances using the same "
+                    + $"width types. The first instance has type {x.Width.Type} and the second has {y.Width.Type}.",
+                nameof(y)
+            );
+        }
+        if (x.Height.Type != y.Height.Type)
+        {
+            throw new ArgumentException(
+                $"Interpolation of {nameof(LayoutParameters)} can only be performed on instances using the same "
+                    + $"height types. The first instance has type {x.Height.Type} and the second has {y.Height.Type}.",
+                nameof(y)
+            );
+        }
+        var widthValue = MathHelper.Lerp(x.Width.Value, y.Width.Value, amount);
+        var width = new Length(x.Width.Type, widthValue);
+        var heightValue = MathHelper.Lerp(x.Height.Value, y.Height.Value, amount);
+        var height = new Length(x.Height.Type, heightValue);
+        float? minWidth =
+            amount >= 1 ? y.MinWidth
+            : x.MinWidth.HasValue || y.MinWidth.HasValue ? MathHelper.Lerp(x.MinWidth ?? 0, y.MinWidth ?? 0, amount)
+            : null;
+        float? maxWidth =
+            amount >= 1 ? y.MaxWidth
+            : x.MaxWidth.HasValue && y.MaxWidth.HasValue ? MathHelper.Lerp(x.MaxWidth.Value, y.MaxWidth.Value, amount)
+            : (x.MaxWidth ?? y.MaxWidth);
+        float? minHeight =
+            amount >= 1 ? y.MinHeight
+            : x.MinHeight.HasValue || y.MinHeight.HasValue ? MathHelper.Lerp(x.MinHeight ?? 0, y.MinHeight ?? 0, amount)
+            : null;
+        float? maxHeight =
+            amount >= 1 ? y.MaxHeight
+            : x.MaxHeight.HasValue && y.MaxHeight.HasValue
+                ? MathHelper.Lerp(x.MaxHeight.Value, y.MaxHeight.Value, amount)
+            : (x.MaxHeight ?? y.MaxHeight);
+        return new()
+        {
+            Width = width,
+            Height = height,
+            MinWidth = minWidth,
+            MaxWidth = maxWidth,
+            MinHeight = minHeight,
+            MaxHeight = maxHeight,
+        };
+    }
+
+    private static LayoutParameters? LerpLayoutParametersNullable(
+        LayoutParameters? a,
+        LayoutParameters? b,
+        float amount
+    )
+    {
+        if (a is null && b is null)
+        {
+            return null;
+        }
+        a ??= new LayoutParameters();
+        b ??= new LayoutParameters();
+        return LerpLayoutParameters(a.Value, b.Value, amount);
     }
 
     private static Point LerpPoint(Point p1, Point p2, float a)
