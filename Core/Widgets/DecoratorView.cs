@@ -379,8 +379,16 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
-    public virtual ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
+    public virtual ViewChild? GetChildAt(
+        Vector2 position,
+        bool preferFocusable = false,
+        bool requirePointerEvents = false
+    )
     {
+        if (view?.PointerEventsEnabled == false && requirePointerEvents)
+        {
+            return null;
+        }
         return view?.ContainsPoint(position) == true ? new(view, Vector2.Zero) : null;
     }
 

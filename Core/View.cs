@@ -730,9 +730,12 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
-    public ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
+    public ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false, bool requirePointerEvents = false)
     {
-        return GetChildrenAt(position).ZOrderDescending(preferFocusable).FirstOrDefault();
+        return GetChildrenAt(position)
+            .Where(child => !requirePointerEvents || child.View.PointerEventsEnabled)
+            .ZOrderDescending(preferFocusable)
+            .FirstOrDefault();
     }
 
     /// <inheritdoc />
@@ -947,7 +950,7 @@ public abstract class View : IView, IFloatContainer
                 ? new(e.PreviousPosition - previousLayoutOffset + LayoutOffset, e.Position)
                 : e;
         previousLayoutOffset = LayoutOffset;
-        var currentTarget = GetChildAt(e.Position);
+        var currentTarget = GetChildAt(e.Position, requirePointerEvents: true);
         ViewChild? previousTarget = null;
         previousPointerTarget?.TryResolve(out previousTarget);
         previousPointerTarget = currentTarget?.AsWeak();

@@ -308,8 +308,10 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// <param name="position">The search position, relative to the view's top-left coordinate.</param>
     /// <param name="preferFocusable"><c>true</c> to prioritize a focusable child over a non-focusable child with a higher
     /// z-index in case of overlap; <c>false</c> to always use the topmost child.</param>
+    /// <param name="requirePointerEvents">Whether to exclude views whose <see cref="PointerEventsEnabled"/> is
+    /// currently <c>false</c>.</param>
     /// <returns>The view at <paramref name="position"/>, or <c>null</c> if there is no match.</returns>
-    ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false);
+    ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false, bool requirePointerEvents = false);
 
     /// <summary>
     /// Computes or retrieves the position of a given direct child.
