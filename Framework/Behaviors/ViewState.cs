@@ -8,9 +8,13 @@ namespace StardewUI.Framework.Behaviors;
 /// </summary>
 /// <param name="viewDescriptor">Descriptor for the managed view type, providing property accessors.</param>
 /// <param name="viewDefaults">Default values for the managed view type.</param>
-public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefaults) : IViewState
+/// <param name="previousState">The previous state from which to restore the transient property values.</param>
+public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefaults, ViewState? previousState = null)
+    : IViewState
 {
-    private readonly Dictionary<string, IPropertyEntry> properties = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, IPropertyEntry> properties = previousState is not null
+        ? previousState.properties.ToDictionary(p => p.Key, p => p.Value.WithDefaults(viewDefaults))
+        : new(StringComparer.OrdinalIgnoreCase);
 
     /// <inheritdoc />
     public T GetDefaultValue<T>(string propertyName)
@@ -51,6 +55,7 @@ public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefault
 
     interface IPropertyEntry
     {
+        IPropertyEntry WithDefaults(IViewDefaults newDefaults);
         void Write(IView view);
     }
 
@@ -60,6 +65,11 @@ public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefault
         public IPropertyStates<T> States => states;
 
         private T? lastValue;
+
+        public IPropertyEntry WithDefaults(IViewDefaults viewDefaults)
+        {
+            return new PropertyEntry<T>(descriptor, states, () => viewDefaults.GetDefaultValue<T>(descriptor.Name));
+        }
 
         public void Write(IView view)
         {

@@ -56,7 +56,7 @@ public class TransitionBehavior<TValue>(string propertyName, Lerp<TValue> lerp) 
     }
 
     /// <inheritdoc />
-    protected override void OnInitialize()
+    protected override void OnAttached()
     {
         property =
             (IPropertyDescriptor<TValue>)DescriptorFactory.GetViewDescriptor(View.GetType()).GetProperty(propertyName);

@@ -56,16 +56,17 @@ public class PropertyStateList<T> : IPropertyStates<T>, IReadOnlyList<KeyValuePa
     }
 
     /// <inheritdoc />
-    public void Replace(string stateName, T value)
+    public bool Replace(string stateName, T value)
     {
         foreach (var entry in entries)
         {
             if (entry.IsNamed(stateName))
             {
                 entry.Value = value;
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     /// <inheritdoc />

@@ -40,7 +40,21 @@ public interface IPropertyStates<T> : IEnumerable<KeyValuePair<string, T>>
     /// </remarks>
     /// <param name="stateName">The name of the state on the stack.</param>
     /// <param name="value">The new value to associate with the specified <paramref name="stateName"/>.</param>
-    void Replace(string stateName, T value);
+    bool Replace(string stateName, T value);
+
+    /// <summary>
+    /// Replaces any existing value associated with a specified state, or pushes a new state to the top of the stack if
+    /// a previous state does not already exist.
+    /// </summary>
+    /// <param name="stateName">The name of the new state.</param>
+    /// <param name="value">The property value to associate with the specified <paramref name="stateName"/>.</param>
+    void ReplaceOrPush(string stateName, T value)
+    {
+        if (!Replace(stateName, value))
+        {
+            Push(stateName, value);
+        }
+    }
 
     /// <summary>
     /// Removes a specified state override, if one exists.

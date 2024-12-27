@@ -221,6 +221,7 @@ public class ViewNode(
             binding?.Dispose();
             binding = null;
         }
+        bool wasViewStateCreated = false;
         if (binding is not null)
         {
             wasChanged |= binding.Update();
@@ -237,10 +238,11 @@ public class ViewNode(
             );
             var boundViewDefaults = new BoundViewDefaults(tagViewDefaults, binding.Attributes);
             viewDescriptor ??= viewBinder.GetDescriptor(view);
-            viewState = new ViewState(viewDescriptor, boundViewDefaults);
+            viewState = new ViewState(viewDescriptor, boundViewDefaults, viewState as ViewState);
+            wasViewStateCreated = true;
             wasChanged = true;
         }
-        if (wasViewCreated)
+        if (wasViewCreated || wasViewStateCreated)
         {
             behaviors.SetTarget(new(view, viewState!));
         }
@@ -253,7 +255,7 @@ public class ViewNode(
             wasChildContextChanged |= childContextSource.Update();
             wasChanged |= wasChildContextChanged;
         }
-        if (floatingPositionSource is not null && floatingPositionSource.Update())
+        if (floatingPositionSource is not null && (floatingPositionSource.Update() || wasViewCreated))
         {
             floatingElement = floatingPositionSource.Value is not null ? new(view, floatingPositionSource.Value) : null;
             wasChanged = true;

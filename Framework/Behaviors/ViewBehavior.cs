@@ -65,6 +65,10 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
             return;
         }
         isDisposed = true;
+        if (target is not null)
+        {
+            OnDetached(target.View);
+        }
         OnDispose();
         target = null;
         GC.SuppressFinalize(this);
@@ -81,12 +85,51 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
                 nameof(target)
             );
         }
+        var previousView = this.target?.View;
         this.target = target;
-        OnInitialize();
+        if (target.View == previousView)
+        {
+            return;
+        }
+        if (previousView is not null)
+        {
+            OnDetached(previousView);
+        }
+        OnAttached();
     }
 
     /// <inheritdoc />
     public abstract void Update(TimeSpan elapsed);
+
+    /// <summary>
+    /// Runs after the behavior is attached to a target.
+    /// </summary>
+    /// <remarks>
+    /// Setup code should go in this method to ensure that the values of <see cref="View"/> and <see cref="ViewState"/>
+    /// are actually assigned. If code runs in the behavior's constructor, these are not guaranteed to be populated.
+    /// </remarks>
+    protected virtual void OnAttached() { }
+
+    /// <summary>
+    /// Runs when the behavior is detached from a target.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Behaviors may receive new views as part of a "rebind", if the old view is destroyed and recreated, for example
+    /// as the result of a conditional binding changing states.
+    /// </para>
+    /// <para>
+    /// <c>OnDetached</c> is always immediately followed by <see cref="OnAttached"/>. A behavior cannot remain in a
+    /// detached state; however, overriding this method gives behaviors the opportunity to clean up state from the old
+    /// view (e.g. remove event handlers) before the new one is attached.
+    /// </para>
+    /// <para>
+    /// Also runs when the behavior is disposed, so detach logic does not need to be duplicated in
+    /// <see cref="OnDispose"/>.
+    /// </para>
+    /// </remarks>
+    /// <param name="view">The view that was previously attached.</param>
+    protected virtual void OnDetached(IView view) { }
 
     /// <summary>
     /// Runs when the behavior is being disposed.
@@ -96,15 +139,6 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
     /// required by the specific feature.
     /// </remarks>
     protected virtual void OnDispose() { }
-
-    /// <summary>
-    /// Runs after the behavior has been initialized.
-    /// </summary>
-    /// <remarks>
-    /// Setup code should go in this method to ensure that the values of <see cref="View"/> and <see cref="ViewState"/>
-    /// are actually assigned. If code runs in the behavior's constructor, these are not guaranteed to be populated.
-    /// </remarks>
-    protected virtual void OnInitialize() { }
 
     /// <summary>
     /// Runs when the <see cref="Data"/> of this behavior is changed.

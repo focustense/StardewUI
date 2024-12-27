@@ -90,18 +90,22 @@ public class ViewBehaviors(
         hasTarget = target is not null;
         foreach (var binding in bindings)
         {
-            if (binding.Behavior is null)
+            if (target is null)
             {
-                if (target is null)
+                binding.Detach();
+            }
+            else
+            {
+                if (binding.Behavior is not null)
                 {
-                    binding.Detach();
+                    binding.Behavior.Initialize(target);
                 }
                 else
                 {
                     binding.Behavior = CreateBehavior(target, binding.Attribute);
                 }
-                UpdateDataSource(binding);
             }
+            UpdateDataSource(binding);
         }
     }
 
