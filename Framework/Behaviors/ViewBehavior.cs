@@ -99,7 +99,10 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
     }
 
     /// <inheritdoc />
-    public abstract void Update(TimeSpan elapsed);
+    public virtual void PreUpdate(TimeSpan elapsed) { }
+
+    /// <inheritdoc />
+    public virtual void Update(TimeSpan elapsed) { }
 
     /// <summary>
     /// Runs after the behavior is attached to a target.

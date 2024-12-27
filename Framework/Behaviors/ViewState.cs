@@ -64,6 +64,7 @@ public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefault
     {
         public IPropertyStates<T> States => states;
 
+        private string? lastStateName;
         private T? lastValue;
 
         public IPropertyEntry WithDefaults(IViewDefaults viewDefaults)
@@ -73,10 +74,11 @@ public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefault
 
         public void Write(IView view)
         {
-            var value = States.TryPeek(out var stateValue) ? stateValue : defaultValue();
-            if (!EqualityComparer<T>.Default.Equals(value, lastValue))
+            var (stateName, value) = States.TryPeek(out var state) ? state : (null, defaultValue());
+            if (!EqualityComparer<T>.Default.Equals(value, lastValue) || stateName != lastStateName)
             {
                 descriptor.SetValue(view, value);
+                lastStateName = stateName;
                 lastValue = value;
             }
         }

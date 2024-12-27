@@ -70,7 +70,15 @@ public class PropertyStateList<T> : IPropertyStates<T>, IReadOnlyList<KeyValuePa
     }
 
     /// <inheritdoc />
-    public bool TryPeek([MaybeNullWhen(false)] out T value)
+    public bool TryPeek([MaybeNullWhen(false)] out (string stateName, T value) result)
+    {
+        var entry = entries.Count > 0 ? entries[^1] : null;
+        result = entry is not null ? (entry.StateName, entry.Value) : default;
+        return entry is not null;
+    }
+
+    /// <inheritdoc />
+    public bool TryPeekValue([MaybeNullWhen(false)] out T value)
     {
         var entry = entries.Count > 0 ? entries[^1] : null;
         value = entry is not null ? entry.Value : default;

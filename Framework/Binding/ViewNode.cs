@@ -171,6 +171,7 @@ public class ViewNode(
     public bool Update(TimeSpan elapsed)
     {
         using var _ = Trace.Begin(this, nameof(Update));
+        behaviors.PreUpdate(elapsed);
         bool wasChanged = false;
         bool wasViewCreated = false;
         IViewDescriptor? viewDescriptor = null;

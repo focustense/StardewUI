@@ -110,6 +110,33 @@ public class ViewBehaviors(
     }
 
     /// <summary>
+    /// Runs on every update tick, before any bindings or views update.
+    /// </summary>
+    /// <param name="elapsed">Time elapsed since last tick.</param>
+    public void PreUpdate(TimeSpan elapsed)
+    {
+        if (!hasTarget)
+        {
+            return;
+        }
+        foreach (var binding in bindings)
+        {
+            if (binding.Behavior is not IViewBehavior behavior)
+            {
+                continue;
+            }
+            if (binding.DataSource?.Update() == true)
+            {
+                behavior.SetData(binding.DataSource.Value);
+            }
+            if (behavior.CanUpdate())
+            {
+                binding.Behavior.PreUpdate(elapsed);
+            }
+        }
+    }
+
+    /// <summary>
     /// Runs on every update tick.
     /// </summary>
     /// <param name="elapsed">Time elapsed since last tick.</param>

@@ -35,6 +35,16 @@ public interface IViewBehavior : IDisposable
     void Initialize(BehaviorTarget target);
 
     /// <summary>
+    /// Runs on every update tick, before any bindings or views update.
+    /// </summary>
+    /// <remarks>
+    /// Typically used to read information about the underlying view as it existed at the beginning of the frame, e.g.
+    /// to handle a transition.
+    /// </remarks>
+    /// <param name="elapsed"></param>
+    void PreUpdate(TimeSpan elapsed) { }
+
+    /// <summary>
     /// Updates the behavior's current data.
     /// </summary>
     /// <param name="data">The new data.</param>
@@ -44,5 +54,5 @@ public interface IViewBehavior : IDisposable
     /// Runs on every update tick.
     /// </summary>
     /// <param name="elapsed">Time elapsed since the last update.</param>
-    void Update(TimeSpan elapsed);
+    void Update(TimeSpan elapsed) { }
 }

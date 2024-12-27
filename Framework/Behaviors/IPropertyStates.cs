@@ -57,14 +57,13 @@ public interface IPropertyStates<T> : IEnumerable<KeyValuePair<string, T>>
     }
 
     /// <summary>
-    /// Removes a specified state override, if one exists.
+    /// Gets the state name and value with highest priority, i.e. on top of the stack.
     /// </summary>
-    /// <param name="stateName">The name of the state on the stack.</param>
-    /// <param name="value">The value associated with the specified <paramref name="stateName"/>, if there was an
-    /// existing override, or <c>null</c> if there was no instance of that state.</param>
-    /// <returns><c>true</c> if an override for the specified <paramref name="stateName"/> was removed from the stack;
-    /// <c>false</c> if no such state was on the stack.</returns>
-    bool TryRemove(string stateName, [MaybeNullWhen(false)] out T value);
+    /// <param name="result">The state name and value of the active override, or the default for
+    /// <typeparamref name="T"/> if the function returned <c>false</c>.</param>
+    /// <returns><c>true</c> if there was at least one active override for this property; <c>false</c> if the stack is
+    /// currently empty.</returns>
+    bool TryPeek([MaybeNullWhen(false)] out (string stateName, T value) result);
 
     /// <summary>
     /// Gets the value with highest priority, i.e. on top of the stack.
@@ -73,5 +72,15 @@ public interface IPropertyStates<T> : IEnumerable<KeyValuePair<string, T>>
     /// function returned <c>false</c>.</param>
     /// <returns><c>true</c> if there was at least one active override for this property; <c>false</c> if the stack is
     /// currently empty.</returns>
-    bool TryPeek([MaybeNullWhen(false)] out T value);
+    bool TryPeekValue([MaybeNullWhen(false)] out T value);
+
+    /// <summary>
+    /// Removes a specified state override, if one exists.
+    /// </summary>
+    /// <param name="stateName">The name of the state on the stack.</param>
+    /// <param name="value">The value associated with the specified <paramref name="stateName"/>, if there was an
+    /// existing override, or <c>null</c> if there was no instance of that state.</param>
+    /// <returns><c>true</c> if an override for the specified <paramref name="stateName"/> was removed from the stack;
+    /// <c>false</c> if no such state was on the stack.</returns>
+    bool TryRemove(string stateName, [MaybeNullWhen(false)] out T value);
 }
