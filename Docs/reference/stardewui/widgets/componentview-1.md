@@ -41,7 +41,7 @@ This implements all the boilerplate of an [IView](../iview.md) without having to
 
  The typical use case is for what is often called "Components", "Layouts", "User Controls", etc., in which a class defines both the view hierarchy and an API for interacting with the view and underlying data at the same time. The top-level layout is created in [CreateView()](componentview-1.md#createview), and child views can be added on creation or at any later time. More importantly, since the subclass decides what children to create, it can also store references to those children for the purposes of updating the UI, responding to events, etc. 
 
- Component views can be composed like any other views, or used in a [ViewMenu&lt;T&gt;](../viewmenu-1.md).
+ Component views can be composed like any other views, or used in a [ViewMenu](../viewmenu.md).
 
 ## Members
 
