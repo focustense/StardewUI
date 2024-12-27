@@ -380,6 +380,7 @@ public class RepeaterNode(
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 pendingEvents.Clear();
+                pendingEvents.Add(resetEvent);
             }
             else if (pendingEvents.Count == 0 || pendingEvents[0].Action != NotifyCollectionChangedAction.Reset)
             {
