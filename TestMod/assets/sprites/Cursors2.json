@@ -1,0 +1,10 @@
+﻿{
+  "Texture": "LooseSprites/Cursors2",
+  "Sprites": {
+      "ButtonUncolored": {
+          "SourceRect": "97, 145, 14, 14",
+          "FixedEdges": "3, 2, 2, 3",
+          "Scale": 4
+      }
+  }
+}

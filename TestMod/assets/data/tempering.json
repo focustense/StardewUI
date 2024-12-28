@@ -1,0 +1,178 @@
+﻿{
+  "Axe": {
+    "EnergyReduction": {
+      "Name": "energy reduction",
+      "Description": "Reduces the energy consumed per swing",
+      "Materials": {
+        "(O)561": 0.05
+      }
+    },
+    "InstantChop": {
+      "Name": "instant-chop chance",
+      "Description": "Chance to fell an entire tree and stump in one hit",
+      "Materials": {
+        "(O)547": 0.03
+      }
+    },
+    "ExtraWood": {
+      "Name": "extra wood collected",
+      "Description": "Increases wood from chopped trees by the specified amount, rounded up",
+      "Materials": {
+        "(O)86": 0.015,
+        "(O)546": 0.075
+      }
+    },
+    "Regrowth": {
+      "Name": "regrowth chance",
+      "Description": "Fully-chopped trees have a chance to automatically re-plant and re-fertilize",
+      "Materials": {
+        "(O)548": 0.03
+      }
+    }
+  },
+  "Hoe": {
+    "EnergyReduction": {
+      "Name": "energy reduction",
+      "Description": "Reduces the energy consumed per swing",
+      "Materials": {
+        "(O)561": 0.05
+      }
+    },
+    "RandomForage": {
+      "Name": "forage item chance",
+      "Description": "Chance per tilled tile to dig up a random forage item from any season",
+      "Materials": {
+        "(O)543": 0.005
+      }
+    },
+    "ExtraClay": {
+      "Name": "extra clay",
+      "Description": "Increases quantity of clay drops by the specified amount, rounded up",
+      "Materials": {
+        "(O)574": 0.05,
+        "(O)565": 0.15
+      }
+    },
+    "RandomClay": {
+      "Name": "higher clay chance",
+      "Description": "Clay appears more frequently; stacks with profession and enchantment bonuses",
+      "Materials": {
+        "(O)539": 0.025
+      }
+    },
+    "UniqueArtifacts": {
+      "Name": "artifact swap chance",
+      "Description": "Chance to swap an already-donated artifact with a new artifact when digging artifact spots",
+      "Materials": {
+        "(O)566": 0.1
+      }
+    }
+  },
+  "Pan": {
+    "UpgradedOre": {
+      "Name": "ore upgrade chance",
+      "Description": "Chance to upgrade the quality of any ore received by one tier (copper -> iron -> gold -> iridium -> radioactive)",
+      "Materials": {
+        "(O)559": 0.05,
+        "(O)577": 0.1
+      }
+    },
+    "MoreItems": {
+      "Name": "extra item chance",
+      "Description": "Chance to receive special items increased; multiplicative with base chance",
+      "Materials": {
+        "(O)562": 0.1,
+        "(O)578": 0.2
+      }
+    }
+  },
+  "Pickaxe": {
+    "EnergyReduction": {
+      "Name": "energy reduction",
+      "Description": "Reduces the energy consumed per swing",
+      "Materials": {
+        "(O)561": 0.05
+      }
+    },
+    "InstantBreak": {
+      "Name": "instant-break chance",
+      "Description": "Chance to break up any node in one hit, regardless of its type",
+      "Materials": {
+        "(O)547": 0.06
+      }
+    },
+    "Explode": {
+      "Name": "explosion chance",
+      "Description": "Chance for each swing to cause a small explosion (will not damage the player)",
+      "Materials": {
+        "(O)558": 0.01,
+        "(O)565": 0.02
+      }
+    },
+    "DoubleOre": {
+      "Name": "double ore chance",
+      "Description": "Chance to receive double the usual amount of ore when cracking a node; stacks with profession bonuses",
+      "Materials": {
+        "(O)552": 0.02,
+        "(O)546": 0.04
+      }
+    },
+    "ExtraGems": {
+      "Name": "extra gem chance",
+      "Description": "Chance to receive one extra gem from gem nodes or random drops; stacks with profession bonuses",
+      "Materials": {
+        "(O)556": 0.025,
+        "(O)578": 0.05
+      }
+    }
+  },
+  "Slingshot": {
+    "ExtraDamage": {
+      "Name": "damage increase",
+      "Description": "Additional damage done to monsters with each hit",
+      "Materials": {
+        "(O)552": 0.035,
+        "(O)562": 0.08
+      }
+    },
+    "BiggerExplosions": {
+      "Name": "bigger explosions",
+      "Description": "Explosive ammo will create bigger explosions, rounded up to the nearest tile",
+      "Materials": {
+        "(O)558": 0.04,
+        "(O)565": 0.08
+      }
+    },
+    "FasterProjectiles": {
+      "Name": "faster projectiles",
+      "Descriptions": "Projectiles travel faster toward targets",
+      "Materials": {
+        "(O)551": 0.025
+      }
+    }
+  },
+  "WateringCan": {
+    "EnergyReduction": {
+      "Name": "energy reduction",
+      "Description": "Reduces the energy consumed per use",
+      "Materials": {
+        "(O)561": 0.05
+      }
+    },
+    "FasterGrowth": {
+      "Name": "crop growth chance",
+      "Description": "Chance for a newly-watered crop or section of crops to immediately gain a full day of growth",
+      "Materials": {
+        "(O)542": 0.005,
+        "(O)577": 0.01
+      }
+    },
+    "WaterReduction": {
+      "Name": "water conservation",
+      "Description": "Less water is lost from the can on each use",
+      "Materials": {
+        "(O)560": 0.08
+      }
+    }
+  }
+}

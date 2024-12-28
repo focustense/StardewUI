@@ -2,6 +2,7 @@
 using StardewModdingAPI.Events;
 using StardewUI.Framework;
 using StardewUITest.Examples;
+using StardewUITest.Examples.Tempering;
 using StardewValley;
 
 namespace StardewUITest;
@@ -16,6 +17,9 @@ internal sealed partial class ModEntry : Mod
     // Initialized in GameLaunched
     private string viewAssetPrefix = null!;
     private IViewEngine viewEngine = null!;
+
+    // Mod data, also initialized in GameLaunched
+    private Dictionary<string, Dictionary<string, EffectData>> temperingData = null!;
 
     // Mod state
     private CropsGridViewModel? cropsGrid;
@@ -49,6 +53,10 @@ internal sealed partial class ModEntry : Mod
         viewEngine.RegisterSprites($"Mods/{ModManifest.UniqueID}/Sprites", "assets/sprites");
         viewEngine.RegisterViews(viewAssetPrefix, "assets/views");
         viewEngine.EnableHotReloadingWithSourceSync();
+
+        temperingData = Helper.ModContent.Load<Dictionary<string, Dictionary<string, EffectData>>>(
+            "assets/data/tempering.json"
+        );
     }
 
     private void GameLoop_OneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
@@ -83,6 +91,12 @@ internal sealed partial class ModEntry : Mod
     private void OpenExample(string assetName, object? context)
     {
         viewEngine.CreateMenuControllerFromAsset(assetName, context).Launch();
+    }
+
+    private void ShowTempering()
+    {
+        var context = new TemperingViewModel(temperingData);
+        OpenExample($"{viewAssetPrefix}/Example-Tempering", context);
     }
 
     private void ShowBestiary()
@@ -128,6 +142,12 @@ internal sealed partial class ModEntry : Mod
                     I18n.Gallery_Example_Bestiary_Description(),
                     "(O)Book_Void",
                     ShowBestiary
+                ),
+                new(
+                    I18n.Gallery_Example_Tempering_Title(),
+                    I18n.Gallery_Example_Tempering_Description(),
+                    "(O)749",
+                    ShowTempering
                 ),
                 new(
                     I18n.Gallery_Example_CropCalendar_Title(),

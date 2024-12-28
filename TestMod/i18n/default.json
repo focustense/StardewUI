@@ -22,5 +22,7 @@
   "Gallery.Example.CropCalendar.Title": "Crop Calendar",
   "Gallery.Example.CropCalendar.Description": "Idea for an interactive crop planner: view seeds, blooms, produce and harvest timing for any growable item.",
   "Gallery.Example.Form.Title": "Settings Form",
-  "Gallery.Example.Form.Description": "Generic Mod Config Menu is great, but what if you're looking to build something a little less generic?"
+  "Gallery.Example.Form.Description": "Generic Mod Config Menu is great, but what if you're looking to build something a little less generic?",
+  "Gallery.Example.Tempering.Title": "Tempering",
+  "Gallery.Example.Tempering.Description": "UI for an imaginary mod that upgrades tools with mineral alloys. Also a demo for transitions and animations."
 }

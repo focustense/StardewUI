@@ -1,0 +1,16 @@
+{
+	"Sprites": {
+		"Octagon": {
+			"SourceRect": "0, 0, 16, 16",
+		},
+		"OctagonFilled": {
+			"SourceRect": "16, 0, 16, 16",
+		},
+        "Circle": {
+			"SourceRect": "32, 0, 16, 16",
+		},
+		"CircleFilled": {
+			"SourceRect": "48, 0, 16, 16",
+		}
+	}
+}
