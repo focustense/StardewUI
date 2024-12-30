@@ -232,6 +232,7 @@ public partial class KeybindListEditor : ComponentView
         rootLane.RightClick += RootLane_RightClick;
         rootLane.PointerEnter += RootLane_PointerEnter;
         rootLane.PointerLeave += RootLane_PointerLeave;
+        UpdateAll();
         return rootLane;
     }
 
