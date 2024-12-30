@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+using StardewUI.Data;
 using StardewUI.Framework.Content;
 using StardewUI.Framework.Dom;
 using StardewUI.Graphics;

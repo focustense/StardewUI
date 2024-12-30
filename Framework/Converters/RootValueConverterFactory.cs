@@ -56,7 +56,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new NamedFontConverter());
         TryRegister<string, NineGridPlacement>(NineGridPlacement.Parse);
         TryRegister(new PointConverter());
-        TryRegister(new RectangleConverter());
+        TryRegister<string, Rectangle>(Parsers.ParseRectangle);
         TryRegister(new TransformConverter());
         TryRegister<string, Transition>(Transition.Parse);
         TryRegister<string, Vector2>(Parsers.ParseVector2);
