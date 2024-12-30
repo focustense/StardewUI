@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using StardewModdingAPI.Utilities;
 using StardewUI.Animation;
 using StardewUI.Data;
 using StardewUI.Layout;
@@ -95,6 +96,14 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister(new ItemSpriteConverter());
         TryRegister(new TextureSpriteConverter());
         TryRegister(new TextureRectSpriteConverter());
+
+        // SMAPI types
+        TryRegister<string, Keybind>(s =>
+            Keybind.TryParse(s, out var keybind, out _)
+                ? keybind
+                : throw new FormatException($"Invalid keybind format: '{s}'.")
+        );
+        TryRegister<string, KeybindList>(KeybindList.Parse);
 
         // Tooltips have a lot of different parameters; these are some common conversions.
         TryRegister<string, TooltipData>(text => new(text));
