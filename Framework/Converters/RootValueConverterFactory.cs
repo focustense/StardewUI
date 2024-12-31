@@ -45,6 +45,9 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister<string, double>(double.Parse);
         TryRegister<string, bool>(bool.Parse);
 
+        // Primitives have many permutations, are registered in their own function.
+        RegisterPrimitives();
+
         // Convenience defaults for non-primitive types that are commonly specified as literals.
         TryRegister(new ColorConverter());
         TryRegister<string, Easing>(Easings.Parse);
@@ -104,6 +107,31 @@ internal class RootValueConverterFactory : ValueConverterFactory
                 : throw new FormatException($"Invalid keybind format: '{s}'.")
         );
         TryRegister<string, KeybindList>(KeybindList.Parse);
+        TryRegister<SButton, Keybind>(button => new(button));
+        TryRegister<SButton, KeybindList>(button => new(button));
+        TryRegister<Keybind, SButton>(ConvertKeybindToButton);
+        TryRegister<KeybindList, Keybind>(list =>
+            list.Keybinds.Length switch
+            {
+                0 => new(SButton.None),
+                1 => list.Keybinds[0],
+                _ => throw new ArgumentException(
+                    $"Cannot convert {nameof(KeybindList)} with {list.Keybinds.Length} buttons to {nameof(Keybind)}.",
+                    nameof(list)
+                ),
+            }
+        );
+        TryRegister<KeybindList, SButton>(list =>
+            list.Keybinds.Length switch
+            {
+                0 => SButton.None,
+                1 => ConvertKeybindToButton(list.Keybinds[0]),
+                _ => throw new ArgumentException(
+                    $"Cannot convert {nameof(KeybindList)} with {list.Keybinds.Length} buttons to {nameof(SButton)}.",
+                    nameof(list)
+                ),
+            }
+        );
 
         // Tooltips have a lot of different parameters; these are some common conversions.
         TryRegister<string, TooltipData>(text => new(text));
@@ -130,6 +158,19 @@ internal class RootValueConverterFactory : ValueConverterFactory
         Register(new NullableConverterFactory(this));
     }
 
+    private static SButton ConvertKeybindToButton(Keybind keybind)
+    {
+        return keybind.Buttons.Length switch
+        {
+            0 => SButton.None,
+            1 => keybind.Buttons[0],
+            _ => throw new ArgumentException(
+                $"Cannot convert {nameof(Keybind)} with {keybind.Buttons.Length} buttons to {nameof(SButton)}.",
+                nameof(keybind)
+            ),
+        };
+    }
+
     // Converters that have lower priority than user-defined conversions; we only use these when there is definitely no
     // better option available.
     private void RegisterFallbackDefaults()
@@ -141,5 +182,137 @@ internal class RootValueConverterFactory : ValueConverterFactory
         // there aren't any other conversion options.
         Register(new DuckTypeEnumConverterFactory());
         Register(new DuckTypeClassConverterFactory(this));
+    }
+
+    private void RegisterPrimitives()
+    {
+        // Numeric conversions. These may be lossy, but the same types of conversions are supported between e.g. Vectors
+        // and Points, so there is no reason not to allow them; in many instances they'd be assignable in code due to
+        // implicit conversions.
+        //
+        // This would be far cleaner in later versions of .NET with generic math support. In .NET 6, we don't have that,
+        // and a reflection/ILgen-based approach would be orders of magnitude slower. Since the number of combinations
+        // is limited, albeit large, it's better to specify them explicitly this way.
+
+        TryRegister<byte, sbyte>(v => (sbyte)v);
+        TryRegister<byte, short>(v => v);
+        TryRegister<byte, ushort>(v => v);
+        TryRegister<byte, int>(v => v);
+        TryRegister<byte, uint>(v => v);
+        TryRegister<byte, long>(v => v);
+        TryRegister<byte, ulong>(v => v);
+        TryRegister<byte, decimal>(v => v);
+        TryRegister<byte, float>(v => v);
+        TryRegister<byte, double>(v => v);
+
+        TryRegister<sbyte, byte>(v => (byte)v);
+        TryRegister<sbyte, short>(v => v);
+        TryRegister<sbyte, ushort>(v => (ushort)v);
+        TryRegister<sbyte, int>(v => v);
+        TryRegister<sbyte, uint>(v => (uint)v);
+        TryRegister<sbyte, long>(v => v);
+        TryRegister<sbyte, ulong>(v => (ulong)v);
+        TryRegister<sbyte, decimal>(v => v);
+        TryRegister<sbyte, float>(v => v);
+        TryRegister<sbyte, double>(v => v);
+
+        TryRegister<short, sbyte>(v => (sbyte)v);
+        TryRegister<short, byte>(v => (byte)v);
+        TryRegister<short, ushort>(v => (ushort)v);
+        TryRegister<short, int>(v => v);
+        TryRegister<short, uint>(v => (uint)v);
+        TryRegister<short, long>(v => v);
+        TryRegister<short, ulong>(v => (ulong)v);
+        TryRegister<short, decimal>(v => v);
+        TryRegister<short, float>(v => v);
+        TryRegister<short, double>(v => v);
+
+        TryRegister<ushort, sbyte>(v => (sbyte)v);
+        TryRegister<ushort, byte>(v => (byte)v);
+        TryRegister<ushort, short>(v => (short)v);
+        TryRegister<ushort, int>(v => v);
+        TryRegister<ushort, uint>(v => v);
+        TryRegister<ushort, long>(v => v);
+        TryRegister<ushort, ulong>(v => v);
+        TryRegister<ushort, decimal>(v => v);
+        TryRegister<ushort, float>(v => v);
+        TryRegister<ushort, double>(v => v);
+
+        TryRegister<int, sbyte>(v => (sbyte)v);
+        TryRegister<int, byte>(v => (byte)v);
+        TryRegister<int, short>(v => (short)v);
+        TryRegister<int, ushort>(v => (ushort)v);
+        TryRegister<int, uint>(v => (uint)v);
+        TryRegister<int, long>(v => v);
+        TryRegister<int, ulong>(v => (ulong)v);
+        TryRegister<int, decimal>(v => v);
+        TryRegister<int, float>(v => v);
+        TryRegister<int, double>(v => v);
+
+        TryRegister<uint, sbyte>(v => (sbyte)v);
+        TryRegister<uint, byte>(v => (byte)v);
+        TryRegister<uint, short>(v => (short)v);
+        TryRegister<uint, ushort>(v => (ushort)v);
+        TryRegister<uint, int>(v => (int)v);
+        TryRegister<uint, long>(v => v);
+        TryRegister<uint, ulong>(v => v);
+        TryRegister<uint, decimal>(v => v);
+        TryRegister<uint, float>(v => v);
+        TryRegister<uint, double>(v => v);
+
+        TryRegister<long, sbyte>(v => (sbyte)v);
+        TryRegister<long, byte>(v => (byte)v);
+        TryRegister<long, short>(v => (short)v);
+        TryRegister<long, ushort>(v => (ushort)v);
+        TryRegister<long, int>(v => (int)v);
+        TryRegister<long, uint>(v => (uint)v);
+        TryRegister<long, ulong>(v => (ulong)v);
+        TryRegister<long, decimal>(v => v);
+        TryRegister<long, float>(v => v);
+        TryRegister<long, double>(v => v);
+
+        TryRegister<ulong, sbyte>(v => (sbyte)v);
+        TryRegister<ulong, byte>(v => (byte)v);
+        TryRegister<ulong, short>(v => (short)v);
+        TryRegister<ulong, ushort>(v => (ushort)v);
+        TryRegister<ulong, int>(v => (int)v);
+        TryRegister<ulong, uint>(v => (uint)v);
+        TryRegister<ulong, long>(v => (long)v);
+        TryRegister<ulong, decimal>(v => v);
+        TryRegister<ulong, float>(v => v);
+        TryRegister<ulong, double>(v => v);
+
+        TryRegister<decimal, sbyte>(v => (sbyte)Math.Round(v));
+        TryRegister<decimal, byte>(v => (byte)Math.Round(v));
+        TryRegister<decimal, short>(v => (short)Math.Round(v));
+        TryRegister<decimal, ushort>(v => (ushort)Math.Round(v));
+        TryRegister<decimal, int>(v => (int)Math.Round(v));
+        TryRegister<decimal, uint>(v => (uint)Math.Round(v));
+        TryRegister<decimal, long>(v => (long)Math.Round(v));
+        TryRegister<decimal, ulong>(v => (ulong)Math.Round(v));
+        TryRegister<decimal, float>(v => (float)v);
+        TryRegister<decimal, double>(v => (double)v);
+
+        TryRegister<float, sbyte>(v => (sbyte)MathF.Round(v));
+        TryRegister<float, byte>(v => (byte)MathF.Round(v));
+        TryRegister<float, short>(v => (short)MathF.Round(v));
+        TryRegister<float, ushort>(v => (ushort)MathF.Round(v));
+        TryRegister<float, int>(v => (int)MathF.Round(v));
+        TryRegister<float, uint>(v => (uint)MathF.Round(v));
+        TryRegister<float, long>(v => (long)MathF.Round(v));
+        TryRegister<float, ulong>(v => (ulong)MathF.Round(v));
+        TryRegister<float, decimal>(v => (decimal)v);
+        TryRegister<float, double>(v => v);
+
+        TryRegister<double, sbyte>(v => (sbyte)Math.Round(v));
+        TryRegister<double, byte>(v => (byte)Math.Round(v));
+        TryRegister<double, short>(v => (short)Math.Round(v));
+        TryRegister<double, ushort>(v => (ushort)Math.Round(v));
+        TryRegister<double, int>(v => (int)Math.Round(v));
+        TryRegister<double, uint>(v => (uint)Math.Round(v));
+        TryRegister<double, long>(v => (long)Math.Round(v));
+        TryRegister<double, ulong>(v => (ulong)Math.Round(v));
+        TryRegister<double, decimal>(v => (decimal)v);
+        TryRegister<double, float>(v => (float)v);
     }
 }
