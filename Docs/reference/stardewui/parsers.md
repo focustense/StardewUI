@@ -35,6 +35,7 @@ public static class Parsers
 
  | Name | Description |
 | --- | --- |
+| [ParseRectangle(string)](#parserectanglestring) | Parses a [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html) value from its comma-separated string representation. | 
 | [ParseVector2(string)](#parsevector2string) | Parses a [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) from a comma-separated value pair. | 
 | [ParseVector2(ReadOnlySpan&lt;Char&gt;)](#parsevector2readonlyspanchar) | Parses a [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) from a comma-separated value pair. | 
 | [TryParseVector2(ReadOnlySpan&lt;Char&gt;, Vector2)](#tryparsevector2readonlyspanchar-vector2) | Attempts to parse a [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html) from a comma-separated value pair. | 
@@ -42,6 +43,31 @@ public static class Parsers
 ## Details
 
 ### Methods
+
+#### ParseRectangle(string)
+
+Parses a [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html) value from its comma-separated string representation.
+
+```cs
+public static Microsoft.Xna.Framework.Rectangle ParseRectangle(string value);
+```
+
+##### Parameters
+
+**`value`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+String representation of a [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html), having 4 comma-separated integer values.
+
+##### Returns
+
+[Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html)
+
+  The parsed [Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html).
+
+##### Remarks
+
+This is equivalent to [Convert](https://learn.microsoft.com/en-us/dotnet/api/system.convert) but does not require an instance.
+
+-----
 
 #### ParseVector2(string)
 

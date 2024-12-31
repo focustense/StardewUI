@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewUI.Data;
@@ -68,6 +69,7 @@ internal class AssetRegistry : ISourceResolver
     };
 
     private readonly IModHelper helper;
+    private readonly List<DirectoryMapping> dataDirectories = [];
     private readonly List<DirectoryMapping> spriteDirectories = [];
     private readonly List<DirectoryMapping> viewDirectories = [];
 
@@ -134,6 +136,16 @@ internal class AssetRegistry : ISourceResolver
         Logger.Log($"[Hot Reload] Syncing changes from {sourceDirectory} to {helper.DirectoryPath}...", LogLevel.Debug);
     }
 
+    /// <inheritdoc cref="IViewEngine.RegisterCustomData(string, string)" />
+    public void RegisterCustomData(string assetPrefix, string modDirectory)
+    {
+        if (!assetPrefix.EndsWith('/'))
+        {
+            assetPrefix += '/';
+        }
+        dataDirectories.Add(new(assetPrefix, PathUtilities.NormalizePath(modDirectory)));
+    }
+
     /// <inheritdoc cref="IViewEngine.RegisterSprites(string, string)" />
     public void RegisterSprites(string assetPrefix, string modDirectory)
     {
@@ -175,13 +187,26 @@ internal class AssetRegistry : ISourceResolver
     private void Content_AssetRequested(object? sender, AssetRequestedEventArgs e)
     {
         var _ =
+            // Views
             (e.DataType == typeof(Document) && TryLoadAsset<object>(viewDirectories, e, "sml"))
+            // Sprites, including the underlying texture, coordinate data, and individual instances
             || (e.DataType == typeof(Texture2D) && TryLoadAsset<Texture2D>(spriteDirectories, e, "png"))
             || (
                 e.DataType == typeof(SpriteSheetData)
                 && TryLoadAsset<SpriteSheetData>(spriteDirectories, e, "json", "@data")
             )
-            || (e.DataType == typeof(Sprite) && TryLoadSprite(e));
+            || (e.DataType == typeof(Sprite) && TryLoadSprite(e))
+            // Custom data types
+            || (
+                e.DataType == typeof(ISpriteMap<SButton>)
+                && TryLoadWrappedAsset(
+                    dataDirectories,
+                    e,
+                    "SpriteMaps",
+                    "buttonspritemap.json",
+                    (ButtonSpriteMapData data) => new CustomButtonSpriteMap(helper.GameContent, data)
+                )
+            );
     }
 
     private void Content_AssetsInvalidated(object? sender, AssetsInvalidatedEventArgs e)
@@ -342,13 +367,18 @@ internal class AssetRegistry : ISourceResolver
         string assetSuffix = ""
     )
     {
-        Logger.Log($"File '{relativePath}' was changed; invalidating asset.", LogLevel.Debug);
+        bool alreadyLogged = false;
         var isMainThread = Game1.IsOnMainThread();
         relativePath = PathUtilities.NormalizePath(Path.ChangeExtension(relativePath, null));
         foreach (var (assetPrefix, modDirectory) in directories)
         {
             if (relativePath.StartsWith(modDirectory))
             {
+                if (!alreadyLogged)
+                {
+                    Logger.Log($"File '{relativePath}' was changed; invalidating asset.", LogLevel.Debug);
+                    alreadyLogged = true;
+                }
                 // Mod directory path won't have the trailing path separator, so we need to add 1 to length.
                 var assetName = assetPrefix + relativePath[(modDirectory.Length + 1)..] + assetSuffix;
                 if (isMainThread)
@@ -390,6 +420,8 @@ internal class AssetRegistry : ISourceResolver
                 SyncFile(viewDirectories, e.FullPath, relativePath);
                 break;
             case ".json":
+                SyncFile(dataDirectories, e.FullPath, relativePath);
+                goto case ".png";
             case ".png":
                 SyncFile(spriteDirectories, e.FullPath, relativePath);
                 break;
@@ -470,6 +502,7 @@ internal class AssetRegistry : ISourceResolver
                 InvalidateFile(viewDirectories, assetName);
                 break;
             case ".json":
+                InvalidateFile(dataDirectories, assetName);
                 InvalidateFile(spriteDirectories, assetName, "@data");
                 break;
             case ".png":
@@ -556,6 +589,46 @@ internal class AssetRegistry : ISourceResolver
                 AssetLoadPriority.Low
             );
             return true;
+        }
+        return false;
+    }
+
+    private bool TryLoadWrappedAsset<TData, TAsset>(
+        IReadOnlyList<DirectoryMapping> directories,
+        AssetRequestedEventArgs e,
+        string typePrefix,
+        string extension,
+        Func<TData, TAsset> wrap,
+        string? suffix = null
+    )
+        where TData : notnull
+        where TAsset : notnull
+    {
+        using var _ = Trace.Begin(this, nameof(TryLoadWrappedAsset));
+        foreach (var (assetPrefix, modDirectory) in directories)
+        {
+            var relativePath = GetRelativeAssetPath(e, assetPrefix + '/' + typePrefix);
+            if (!string.IsNullOrEmpty(relativePath))
+            {
+                if (suffix is not null && relativePath.EndsWith(suffix))
+                {
+                    relativePath = relativePath[..^suffix.Length];
+                }
+                var modPath = Path.Combine(modDirectory, relativePath + '.' + extension);
+                if (!File.Exists(Path.Combine(helper.DirectoryPath, modPath)))
+                {
+                    return false;
+                }
+                e.LoadFrom(
+                    () =>
+                    {
+                        var data = helper.ModContent.Load<TData>(modPath);
+                        return wrap(data);
+                    },
+                    AssetLoadPriority.Low
+                );
+                return true;
+            }
         }
         return false;
     }

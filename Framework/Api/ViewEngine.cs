@@ -92,6 +92,12 @@ public class ViewEngine : IViewEngine
     }
 
     /// <inheritdoc />
+    public void RegisterCustomData(string assetPrefix, string modDirectory)
+    {
+        assetRegistry.RegisterCustomData(assetPrefix, modDirectory);
+    }
+
+    /// <inheritdoc />
     public void RegisterSprites(string assetPrefix, string modDirectory)
     {
         assetRegistry.RegisterSprites(assetPrefix, modDirectory);

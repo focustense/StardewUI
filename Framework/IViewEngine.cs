@@ -124,12 +124,28 @@ public interface IViewEngine
     void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
+    /// Registers a mod directory to be searched for special-purpose mod data, i.e. that is not either views or sprites.
+    /// </summary>
+    /// <remarks>
+    /// Allowed extensions for files in this folder and their corresponding data types are:
+    /// <list type="bullet">
+    /// <item><c>.buttonspritemap.json</c> - <see href="https://focustense.github.io/StardewUI/reference/stardewui/data/buttonspritemapdata/">ButtonSpriteMapData</see></item>
+    /// </list>
+    /// </remarks>
+    /// <param name="assetPrefix">The prefix for all asset names, <b>excluding</b> the category which is deduced from
+    /// the file extension as described in the remarks. For example, given a value of <c>Mods/MyMod</c>, a file named
+    /// <c>foo.buttonspritemap.json</c> would be referenced in views as <c>@Mods/MyMod/ButtonSpriteMaps/Foo</c>.</param>
+    /// <param name="modDirectory">The physical directory where the asset files are located, relative to the mod
+    /// directory. Typically a path such as <c>assets/ui</c> or <c>assets/ui/data</c>.</param>
+    void RegisterCustomData(string assetPrefix, string modDirectory);
+
+    /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
     /// </summary>
     /// <param name="assetPrefix">The prefix for all asset names, e.g. <c>Mods/MyMod/Sprites</c>. This can be any value
     /// but the same prefix must be used in <c>@AssetName</c> view bindings.</param>
     /// <param name="modDirectory">The physical directory where the asset files are located, relative to the mod
-    /// directory. Typically a path such as <c>assets/sprites</c>.</param>
+    /// directory. Typically a path such as <c>assets/sprites</c> or <c>assets/ui/sprites</c>.</param>
     void RegisterSprites(string assetPrefix, string modDirectory);
 
     /// <summary>
@@ -138,7 +154,7 @@ public interface IViewEngine
     /// <param name="assetPrefix">The prefix for all asset names, e.g. <c>Mods/MyMod/Views</c>. This can be any value
     /// but the same prefix must be used in <c>include</c> elements and in API calls to create views.</param>
     /// <param name="modDirectory">The physical directory where the asset files are located, relative to the mod
-    /// directory. Typically a path such as <c>assets/views</c>.</param>
+    /// directory. Typically a path such as <c>assets/views</c> or <c>assets/ui/views</c>.</param>
     public void RegisterViews(string assetPrefix, string modDirectory);
 }
 

@@ -39,6 +39,7 @@ public interface IViewEngine
 | [CreateMenuFromAsset(string, Object)](#createmenufromassetstring-object) | Creates a menu from the StarML stored in a game asset, as provided by a mod via SMAPI or Content Patcher. | 
 | [CreateMenuFromMarkup(string, Object)](#createmenufrommarkupstring-object) | Creates a menu from arbitrary markup. | 
 | [EnableHotReloading(string)](#enablehotreloadingstring) | Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites. | 
+| [RegisterCustomData(string, string)](#registercustomdatastring-string) | Registers a mod directory to be searched for special-purpose mod data, i.e. that is not either views or sprites. | 
 | [RegisterSprites(string, string)](#registerspritesstring-string) | Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets. | 
 | [RegisterViews(string, string)](#registerviewsstring-string) | Registers a mod directory to be searched for view (StarML) assets. Uses the `.sml` extension. | 
 
@@ -231,6 +232,30 @@ If the `sourceDirectory` argument is specified, and points to a directory with t
 
 -----
 
+#### RegisterCustomData(string, string)
+
+Registers a mod directory to be searched for special-purpose mod data, i.e. that is not either views or sprites.
+
+```cs
+void RegisterCustomData(string assetPrefix, string modDirectory);
+```
+
+##### Parameters
+
+**`assetPrefix`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The prefix for all asset names, **excluding** the category which is deduced from the file extension as described in the remarks. For example, given a value of `Mods/MyMod`, a file named `foo.buttonspritemap.json` would be referenced in views as `@Mods/MyMod/ButtonSpriteMaps/Foo`.
+
+**`modDirectory`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The physical directory where the asset files are located, relative to the mod directory. Typically a path such as `assets/ui` or `assets/ui/data`.
+
+##### Remarks
+
+Allowed extensions for files in this folder and their corresponding data types are: 
+
+  - `.buttonspritemap.json` - [ButtonSpriteMapData](https://focustense.github.io/StardewUI/reference/stardewui/data/buttonspritemapdata/)
+
+-----
+
 #### RegisterSprites(string, string)
 
 Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
@@ -245,7 +270,7 @@ void RegisterSprites(string assetPrefix, string modDirectory);
 The prefix for all asset names, e.g. `Mods/MyMod/Sprites`. This can be any value but the same prefix must be used in `@AssetName` view bindings.
 
 **`modDirectory`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
-The physical directory where the asset files are located, relative to the mod directory. Typically a path such as `assets/sprites`.
+The physical directory where the asset files are located, relative to the mod directory. Typically a path such as `assets/sprites` or `assets/ui/sprites`.
 
 -----
 
@@ -263,7 +288,7 @@ void RegisterViews(string assetPrefix, string modDirectory);
 The prefix for all asset names, e.g. `Mods/MyMod/Views`. This can be any value but the same prefix must be used in `include` elements and in API calls to create views.
 
 **`modDirectory`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
-The physical directory where the asset files are located, relative to the mod directory. Typically a path such as `assets/views`.
+The physical directory where the asset files are located, relative to the mod directory. Typically a path such as `assets/views` or `assets/ui/views`.
 
 -----
 
