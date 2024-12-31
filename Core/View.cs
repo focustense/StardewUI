@@ -668,7 +668,7 @@ public abstract class View : IView, IFloatContainer
     public FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(FocusSearch));
-        if (Visibility != Visibility.Visible)
+        if (!PointerEventsEnabled || Visibility != Visibility.Visible)
         {
             return null;
         }
@@ -784,11 +784,13 @@ public abstract class View : IView, IFloatContainer
     public virtual ViewChild? GetDefaultFocusChild()
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(GetDefaultFocusChild));
-        if (Focusable)
+        if (PointerEventsEnabled && Focusable)
         {
             return new(this, Vector2.Zero);
         }
-        return GetChildren().Where(child => child.View.GetDefaultFocusChild() is not null).FirstOrDefault();
+        return GetChildren()
+            .Where(child => child.View.PointerEventsEnabled && child.View.GetDefaultFocusChild() is not null)
+            .FirstOrDefault();
     }
 
     /// <inheritdoc />
