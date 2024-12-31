@@ -95,6 +95,19 @@ public record Transform(Vector2 Scale, float Rotation, Vector2 Translation)
     }
 
     /// <summary>
+    /// Initializes a new <see cref="Transform"/> instance.
+    /// </summary>
+    /// <remarks>
+    /// This overload supports optional parameters, particularly for use in duck typing.
+    /// </remarks>
+    /// <param name="Scale">The scale at which to draw. <see cref="Vector2.One"/> is unity scale (i.e. no
+    /// scaling).</param>
+    /// <param name="Rotation">2D rotation (always along Z axis) to apply, in radians.</param>
+    /// <param name="Translation">Translation offset for drawn content.</param>
+    public Transform(Vector2? Scale = null, float Rotation = 0, Vector2 Translation = default)
+        : this(Scale ?? Vector2.One, Rotation, Translation) { }
+
+    /// <summary>
     /// Checks if a subsequent transform can be merged into this one while preserving the result as a simple local
     /// transform, i.e. not requiring the use of a transformation matrix.
     /// </summary>
