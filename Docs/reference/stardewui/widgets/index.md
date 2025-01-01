@@ -45,6 +45,7 @@ search:
 | [ScrollableView](scrollableview.md) | Provides a content container and accompanying scrollbar. |
 | [Scrollbar](scrollbar.md) | Controls the scrolling of a [ScrollContainer](scrollcontainer.md). |
 | [ScrollContainer](scrollcontainer.md) | Renders inner content clipped to a boundary and with a modifiable scroll offset. |
+| [SegmentedControl](segmentedcontrol.md) | A horizontal list of options that can each be independently clicked and selected. |
 | [SelectionGroup](selectiongroup.md) | Provides a single selection key with change notifications. |
 | [Slider](slider.md) | A horizontal track with draggable thumb (button) for choosing a numeric value in a range. |
 | [Spacer](spacer.md) | An empty view whose sole purpose is to separate other elements. |

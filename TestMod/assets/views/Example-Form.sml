@@ -29,6 +29,20 @@
                           options={:TomatoTypes}
                           selected-option={<>SelectedTomatoType} />
             </form-row>
+            <form-row title={#Example.Form.Difficulty.Title}>
+                <frame background={@Mods/StardewUI/Sprites/MenuSlotInsetUncolored} background-tint={BackgroundTint} padding="4">
+                    <segments highlight={@Mods/StardewUI/Sprites/White}
+                              highlight-tint="#38c"
+                              highlight-transition="150ms EaseOutCubic"
+                              separator={@Mods/StardewUI/Sprites/White}
+                              separator-tint="#333"
+                              separator-width="2">
+                        <label margin="12, 8" text={#Example.Form.Difficulty.Easy} />
+                        <label margin="12, 8" text={#Example.Form.Difficulty.Normal} />
+                        <label margin="12, 8" text={#Example.Form.Difficulty.Hard} />
+                    </segments>
+                </frame>
+            </form-row>
             
             <form-heading text={#Example.Form.UI.Heading} />
             <form-row title={#Example.Form.ColorTheme.Title}>

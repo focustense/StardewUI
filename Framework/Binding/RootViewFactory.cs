@@ -33,6 +33,7 @@ internal class RootViewFactory(IEnumerable<IViewFactory> addonFactories) : IView
             "nine-grid-editor" => new NineGridPlacementEditor(),
             "panel" => new Panel(),
             "scrollable" => new ScrollableView(),
+            "segments" => new SegmentedControl(),
             "slider" => new Slider(),
             "spacer" => new Spacer(),
             "tab" => new Tab(),
