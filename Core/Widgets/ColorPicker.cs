@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using StardewUI.Events;
 using StardewUI.Graphics;
 using StardewUI.Layout;
@@ -133,7 +132,7 @@ public partial class ColorPicker : ComponentView
 
     // Other data
     private Color color;
-    private IReadOnlyList<Color> presets = [];
+    private IReadOnlyList<Color> presets = DefaultPresets;
     private bool textLocked; // See comments in equivalent field in ColorPickerOverlayView
     private Sprite? wheelSprite;
 
@@ -328,7 +327,7 @@ public partial class ColorPicker : ComponentView
         private Image wheelImage = null!;
 
         private Color color = owner.Color;
-        private IReadOnlyList<Color> presets = DefaultPresets;
+        private IReadOnlyList<Color> presets = [];
 
         // Round-trip conversion from RGB > HSV > RGB is lossy and can cause strange effects such as stuck R component
         // when playing with the HSV wheel or slider. To mitigate, we track HSV as a separate field, and update it
