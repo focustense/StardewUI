@@ -173,7 +173,6 @@ public partial class ColorPicker : ComponentView
         textInput.TextChanged += TextInput_TextChanged;
         return new Lane()
         {
-            Padding = new(8),
             VerticalContentAlignment = Alignment.Middle,
             Children =
             [
