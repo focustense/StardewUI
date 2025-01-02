@@ -462,6 +462,14 @@ public partial class ColorPicker : ComponentView
             };
         }
 
+        protected override void OnLayout()
+        {
+            base.OnLayout();
+            UpdateSelectionCirclePosition();
+            UpdateCaretPositions(alphaAdjustFrame, 1 - Color.A / 255f);
+            UpdateCaretPositions(lightnessAdjustFrame, 1 - Hsv.Value);
+        }
+
         private void AlphaAdjustImage_Drag(object? sender, PointerEventArgs e)
         {
             byte alpha = (byte)
