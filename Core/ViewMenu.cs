@@ -105,6 +105,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     // Dispose -> Close (Handler) -> set Game1.activeClickableMenu -> Dispose again
     // As a workaround, we can track when dispose has been requested and suppress duplicates.
     private bool isDisposed;
+    private bool isMouseClickSuppressed; // Stops button-held from leaking into new overlays.
     private bool justPushedOverlay; // Whether the overlay was pushed within the last frame.
     private WeakViewChild[] keyboardCaptureActivationPath = [];
     private Point previousHoverPosition;
@@ -345,6 +346,11 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     /// <param name="y">The mouse's current Y position on screen.</param>
     public override void leftClickHeld(int x, int y)
     {
+        if (isMouseClickSuppressed)
+        {
+            return;
+        }
+
         using var trace = Diagnostics.Trace.Begin(this, nameof(leftClickHeld));
 
         if (Game1.options.gamepadControls || IsInputCaptured())
@@ -578,7 +584,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveLeftClick));
-        if (IsInputCaptured())
+        if (isMouseClickSuppressed || IsInputCaptured())
         {
             return;
         }
@@ -600,7 +606,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveRightClick));
-        if (IsInputCaptured())
+        if (isMouseClickSuppressed || IsInputCaptured())
         {
             return;
         }
@@ -644,10 +650,14 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         {
             return;
         }
-        using var _ = OverlayContext.PushContext(overlayContext);
-        var mousePosition = new Point(x, y);
-        previousDragPosition = mousePosition;
-        OnViewOrOverlay((view, origin) => view.OnDrop(new(mousePosition.ToVector2() - origin)));
+        if (!isMouseClickSuppressed)
+        {
+            using var _ = OverlayContext.PushContext(overlayContext);
+            var mousePosition = new Point(x, y);
+            previousDragPosition = mousePosition;
+            OnViewOrOverlay((view, origin) => view.OnDrop(new(mousePosition.ToVector2() - origin)));
+        }
+        isMouseClickSuppressed = false;
     }
 
     /// <summary>
@@ -1036,6 +1046,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         overlayActivationPaths.AddOrUpdate(overlay, focusableHoverPath.Select(child => child.AsWeak()).ToArray());
         overlay.Close += Overlay_Close;
         justPushedOverlay = true;
+        isMouseClickSuppressed = true;
     }
 
     private void PerformHoverAction(IView rootView, Vector2 viewPosition)
