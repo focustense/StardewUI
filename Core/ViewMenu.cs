@@ -105,7 +105,8 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     // Dispose -> Close (Handler) -> set Game1.activeClickableMenu -> Dispose again
     // As a workaround, we can track when dispose has been requested and suppress duplicates.
     private bool isDisposed;
-    private bool isMouseClickSuppressed; // Stops button-held from leaking into new overlays.
+    private bool isLeftClickSuppressed; // Stops button-held from leaking into new overlays.
+    private bool isRightClickSuppressed;
     private bool justPushedOverlay; // Whether the overlay was pushed within the last frame.
     private WeakViewChild[] keyboardCaptureActivationPath = [];
     private Point previousHoverPosition;
@@ -346,7 +347,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     /// <param name="y">The mouse's current Y position on screen.</param>
     public override void leftClickHeld(int x, int y)
     {
-        if (isMouseClickSuppressed)
+        if (isLeftClickSuppressed)
         {
             return;
         }
@@ -584,7 +585,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveLeftClick));
-        if (isMouseClickSuppressed || IsInputCaptured())
+        if (isLeftClickSuppressed || IsInputCaptured())
         {
             return;
         }
@@ -606,7 +607,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveRightClick));
-        if (isMouseClickSuppressed || IsInputCaptured())
+        if (isRightClickSuppressed || IsInputCaptured())
         {
             return;
         }
@@ -646,18 +647,14 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     public override void releaseLeftClick(int x, int y)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(releaseLeftClick));
-        if (IsInputCaptured())
+        if (isLeftClickSuppressed || IsInputCaptured())
         {
             return;
         }
-        if (!isMouseClickSuppressed)
-        {
-            using var _ = OverlayContext.PushContext(overlayContext);
-            var mousePosition = new Point(x, y);
-            previousDragPosition = mousePosition;
-            OnViewOrOverlay((view, origin) => view.OnDrop(new(mousePosition.ToVector2() - origin)));
-        }
-        isMouseClickSuppressed = false;
+        using var _ = OverlayContext.PushContext(overlayContext);
+        var mousePosition = new Point(x, y);
+        previousDragPosition = mousePosition;
+        OnViewOrOverlay((view, origin) => view.OnDrop(new(mousePosition.ToVector2() - origin)));
     }
 
     /// <summary>
@@ -686,6 +683,15 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         foreach (var overlay in overlayContext.FrontToBack())
         {
             overlay.Update(time.ElapsedGameTime);
+        }
+
+        // This is done in the update loop instead of in releaseLeftClick because we aren't guaranteed to receive that
+        // event in some situations, like when an overlay starts capturing.
+        if (isLeftClickSuppressed || isRightClickSuppressed)
+        {
+            var mouseState = Game1.input.GetMouseState();
+            isLeftClickSuppressed &= mouseState.LeftButton == ButtonState.Pressed;
+            isRightClickSuppressed &= mouseState.RightButton == ButtonState.Pressed;
         }
     }
 
@@ -1046,7 +1052,8 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         overlayActivationPaths.AddOrUpdate(overlay, focusableHoverPath.Select(child => child.AsWeak()).ToArray());
         overlay.Close += Overlay_Close;
         justPushedOverlay = true;
-        isMouseClickSuppressed = true;
+        isLeftClickSuppressed = true;
+        isRightClickSuppressed = true;
     }
 
     private void PerformHoverAction(IView rootView, Vector2 viewPosition)
