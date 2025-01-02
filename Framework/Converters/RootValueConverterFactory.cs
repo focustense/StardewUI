@@ -49,7 +49,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         RegisterPrimitives();
 
         // Convenience defaults for non-primitive types that are commonly specified as literals.
-        TryRegister(new ColorConverter());
+        TryRegister<string, Color>(Parsers.ParseColor);
         TryRegister<string, Easing>(Easings.Parse);
         TryRegister<string, Edges>(Edges.Parse);
         TryRegister<string, FloatingPosition>(FloatingPosition.Parse);

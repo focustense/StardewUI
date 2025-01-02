@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using StardewUI.Framework.Converters;
 
 namespace StardewUI.Framework.Tests.Converters;
 
@@ -17,13 +16,11 @@ public class ColorConverterTests
             { "#12345678", new(0x12, 0x34, 0x56, 0x78) },
         };
 
-    private readonly ColorConverter converter = new();
-
     [Theory]
     [MemberData(nameof(Data))]
     public void ConvertsStringToColor(string value, Color expectedColor)
     {
-        var color = converter.Convert(value);
+        var color = Parsers.ParseColor(value);
 
         Assert.Equal(expectedColor, color);
     }
