@@ -17,6 +17,7 @@ search:
 | [ButtonSpriteMap](buttonspritemap.md) | Base class for a [ISpriteMap&lt;T&gt;](ispritemap-1.md) for controller/keyboard bindings. |
 | [CustomButtonSpriteMap](custombuttonspritemap.md) | Controller/keyboard/mouse sprite map using custom/configured asset data. |
 | [GlobalTransform](globaltransform.md) | Global transform applied to an [ISpriteBatch](ispritebatch.md). |
+| [Hsv](hsv.md) | A color in the HSV space. |
 | [NineSlice](nineslice.md) | Draws sprites according to a [nine-slice scale](https://en.wikipedia.org/wiki/9-slice_scaling). |
 | [PropagatedSpriteBatch](propagatedspritebatch.md) | Sprite batch wrapper with transform propagation. |
 | [RenderTargetPool](rendertargetpool.md) | Pools [RenderTarget2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.RenderTarget2D.html) instances so they can be reused across multiple frames. |

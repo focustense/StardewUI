@@ -23,6 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\ColorCircle240.png" />
+    <None Remove="assets\ColorCircle480.png" />
     <None Remove="assets\KeyboardKeys.png" />
     <None Remove="assets\MouseButtons.png" />
     <None Remove="assets\PromptArrows.png" />
@@ -32,6 +34,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="assets\ColorCircle240.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\ColorCircle480.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\KeyboardKeys.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

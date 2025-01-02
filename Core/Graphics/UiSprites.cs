@@ -392,4 +392,10 @@ public static class UiSprites
     /// A single white pixel.
     /// </summary>
     public static Sprite White => new(Game1.staminaRect);
+
+    /// <summary>
+    /// Nine-slice sprite consisting of 8 white edge pixels and a transparent center. Used for simple borders.
+    /// </summary>
+    public static Sprite WhiteBorder =>
+        new(Game1.mouseCursors, SourceRect: new(379, 357, 3, 3), FixedEdges: new(1), SliceSettings: new(Scale: 4));
 }

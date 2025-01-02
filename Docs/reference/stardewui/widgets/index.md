@@ -17,6 +17,7 @@ search:
 | [Banner](banner.md) | Draws banner-style text with an optional background. |
 | [Button](button.md) | Simple button with optional hover background. |
 | [CheckBox](checkbox.md) | A togglable checkbox. |
+| [ColorPicker](colorpicker.md) | Drop-down style widget that opens a detailed color wheel/slider overlay for choosing a precise color. |
 | [ComponentView](componentview.md) | Base class for custom widgets and "app views" with potentially complex hierarchy using a single root view. |
 | [ComponentView&lt;T&gt;](componentview-1.md) | Base class for custom widgets and "app views" with potentially complex hierarchy using a single root view. |
 | [DecoratorView](decoratorview.md) | A view that owns and delegates to an inner view. |

@@ -1,4 +1,5 @@
-﻿using StardewUI.Framework.Views;
+﻿using StardewUI.Framework.Content;
+using StardewUI.Framework.Views;
 using StardewUI.Widgets;
 using StardewUI.Widgets.Keybinding;
 
@@ -9,7 +10,9 @@ namespace StardewUI.Framework.Binding;
 /// </summary>
 /// <param name="addonFactories">View factories registered by add-ons, in order of priority. All add-on factories are
 /// considered after the standard tags.</param>
-internal class RootViewFactory(IEnumerable<IViewFactory> addonFactories) : IViewFactory
+/// <param name="commonSprites">Non-static built-in sprites provided by the framework.</param>
+internal class RootViewFactory(IEnumerable<IViewFactory> addonFactories, CommonSprites? commonSprites = null)
+    : IViewFactory
 {
     /// <inheritdoc />
     public IView CreateView(string tagName)
@@ -19,6 +22,7 @@ internal class RootViewFactory(IEnumerable<IViewFactory> addonFactories) : IView
             "banner" => new Banner(),
             "button" => new Button(),
             "checkbox" => new CheckBox(),
+            "color-picker" => new ColorPicker() { WheelSprite = commonSprites?.ColorCircle240 },
             "digits" => new TinyNumberLabel(),
             "dropdown" => new DynamicDropDownList(),
             "expander" => new Expander(),

@@ -3,3 +3,4 @@ The assets in this directory are **not** implicitly included in your own mod by 
 Attributions:
 
 - Button prompts: https://thoseawesomeguys.com/prompts/
+- Color circles: https://commons.wikimedia.org/wiki/File:Color_circle_(RGB).png
