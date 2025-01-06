@@ -311,22 +311,25 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         }
         justPushedOverlay = false;
 
-        var tooltip = BuildTooltip(hoverPath);
-        if (tooltip is not null)
+        if (GetChildMenu() is null)
         {
-            string? extraItemToShowIndex = TooltipData.ValidateItemId(tooltip.RequiredItemId);
-            drawToolTip(
-                b,
-                tooltip.Text,
-                tooltip.Title ?? "",
-                tooltip.Item,
-                moneyAmountToShowAtBottom: tooltip.CurrencyAmount ?? -1,
-                currencySymbol: tooltip.CurrencySymbol,
-                extraItemToShowIndex: extraItemToShowIndex,
-                extraItemToShowAmount: tooltip.RequiredItemAmount,
-                craftingIngredients: tooltip.CraftingRecipe,
-                additionalCraftMaterials: tooltip.AdditionalCraftingMaterials
-            );
+            var tooltip = BuildTooltip(hoverPath);
+            if (tooltip is not null)
+            {
+                string? extraItemToShowIndex = TooltipData.ValidateItemId(tooltip.RequiredItemId);
+                drawToolTip(
+                    b,
+                    tooltip.Text,
+                    tooltip.Title ?? "",
+                    tooltip.Item,
+                    moneyAmountToShowAtBottom: tooltip.CurrencyAmount ?? -1,
+                    currencySymbol: tooltip.CurrencySymbol,
+                    extraItemToShowIndex: extraItemToShowIndex,
+                    extraItemToShowAmount: tooltip.RequiredItemAmount,
+                    craftingIngredients: tooltip.CraftingRecipe,
+                    additionalCraftMaterials: tooltip.AdditionalCraftingMaterials
+                );
+            }
         }
 
         Game1.mouseCursorTransparency = 1.0f;
