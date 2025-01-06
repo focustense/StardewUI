@@ -150,6 +150,38 @@ public partial class TextInput : View
         }
     }
 
+    /// <summary>
+    /// Placeholder text to display when the <see cref="Text"/> is empty and input is not captured.
+    /// </summary>
+    public string Placeholder
+    {
+        get => placeholder.Text;
+        set
+        {
+            if (value != placeholder.Text)
+            {
+                placeholder.Text = value;
+                OnPropertyChanged(nameof(Placeholder));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Color of the <see cref="Placeholder"/> text when displayed.
+    /// </summary>
+    public Color PlaceholderColor
+    {
+        get => placeholder.Color;
+        set
+        {
+            if (value != placeholder.Color)
+            {
+                placeholder.Color = value;
+                OnPropertyChanged(nameof(PlaceholderColor));
+            }
+        }
+    }
+
     /// <inheritdoc cref="Frame.ShadowAlpha"/>
     public float ShadowAlpha
     {
@@ -248,6 +280,7 @@ public partial class TextInput : View
     private readonly Animator<Image, Visibility> caretBlinkAnimator;
     private readonly Frame frame;
     private readonly Label label;
+    private readonly Label placeholder;
     private readonly ScrollContainer scrollContainer;
     private readonly TextBoxInterceptor textBoxInterceptor;
     private readonly TextInputSubscriber textInputSubscriber;
@@ -290,11 +323,17 @@ public partial class TextInput : View
             Margin = new(Right: SCROLL_PEEKING_PX),
             MaxLines = 1,
         };
+        placeholder = new()
+        {
+            Name = "TextInputPlaceholder",
+            Layout = LayoutParameters.AutoRow(),
+            MaxLines = 1,
+        };
         textPanel = new Panel()
         {
             Layout = LayoutParameters.Fill(),
             VerticalContentAlignment = Alignment.Middle,
-            Children = [label, caret],
+            Children = [placeholder, label, caret],
         };
         scrollContainer = new()
         {
@@ -319,6 +358,7 @@ public partial class TextInput : View
 
         Font = Game1.smallFont;
         TextColor = Game1.textColor;
+        PlaceholderColor = Color.Gray;
     }
 
     /// <inheritdoc />
@@ -380,6 +420,7 @@ public partial class TextInput : View
             caretBlinkAnimator.Start(Visibility.Visible, Visibility.Hidden, TimeSpan.FromSeconds(1));
             Game1.keyboardDispatcher.Subscriber = textInputSubscriber;
         }
+        UpdatePlaceholderVisibility();
     }
 
     private void HandleSpecialKey(Keys key)
@@ -502,6 +543,7 @@ public partial class TextInput : View
     private void OnTextChanged()
     {
         UpdateRealCaretPosition();
+        UpdatePlaceholderVisibility();
         TextChanged?.Invoke(this, EventArgs.Empty);
         OnPropertyChanged(nameof(Text));
     }
@@ -514,6 +556,7 @@ public partial class TextInput : View
         isTextEntryMenuShown = false;
         caretBlinkAnimator.Stop();
         caret.Visibility = Visibility.Hidden;
+        UpdatePlaceholderVisibility();
     }
 
     private bool SetCaretPosition(int position)
@@ -543,6 +586,17 @@ public partial class TextInput : View
         TextBeforeCursor = text;
         TextAfterCursor = "";
         OnTextChanged();
+    }
+
+    private void UpdatePlaceholderVisibility()
+    {
+        placeholder.Visibility =
+            textBeforeCursor.Length == 0
+            && textAfterCursor.Length == 0
+            && !isTextEntryMenuShown
+            && Game1.keyboardDispatcher.Subscriber != textInputSubscriber
+                ? Visibility.Visible
+                : Visibility.Hidden;
     }
 
     private void UpdateRealCaretPosition()
