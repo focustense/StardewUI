@@ -109,6 +109,7 @@ internal class RootValueConverterFactory : ValueConverterFactory
         TryRegister<string, KeybindList>(KeybindList.Parse);
         TryRegister<SButton, Keybind>(button => new(button));
         TryRegister<SButton, KeybindList>(button => new(button));
+        TryRegister<Keybind, KeybindList>(keybind => new(keybind));
         TryRegister<Keybind, SButton>(ConvertKeybindToButton);
         TryRegister<KeybindList, Keybind>(list =>
             list.Keybinds.Length switch
