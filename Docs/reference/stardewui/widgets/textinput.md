@@ -70,6 +70,8 @@ public class TextInput : StardewUI.View
 | [Opacity](../view.md#opacity) | Opacity (alpha level) of the view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [OuterSize](../view.md#outersize) | The size of the entire area occupied by this view including margins, border and padding.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [Padding](../view.md#padding) | Padding (whitespace inside border) for this view.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
+| [Placeholder](#placeholder) | Placeholder text to display when the [Text](textinput.md#text) is empty and input is not captured. | 
+| [PlaceholderColor](#placeholdercolor) | Color of the [Placeholder](textinput.md#placeholder) text when displayed. | 
 | [PointerEventsEnabled](../view.md#pointereventsenabled) | Whether this view should receive pointer events like [Click](../view.md#click) or [Drag](../view.md#drag).<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [ScrollWithChildren](../view.md#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../view.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it.<br><span class="muted" markdown>(Inherited from [View](../view.md))</span> | 
 | [ShadowAlpha](#shadowalpha) | Alpha value for the shadow. If set to the default of zero, no shadow will be drawn. | 
@@ -265,6 +267,34 @@ public int MaxLength { get; set; }
 ##### Remarks
 
 The default value is `0` which does not impose any limit.
+
+-----
+
+#### Placeholder
+
+Placeholder text to display when the [Text](textinput.md#text) is empty and input is not captured.
+
+```cs
+public string Placeholder { get; set; }
+```
+
+##### Property Value
+
+[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+
+-----
+
+#### PlaceholderColor
+
+Color of the [Placeholder](textinput.md#placeholder) text when displayed.
+
+```cs
+public Microsoft.Xna.Framework.Color PlaceholderColor { get; set; }
+```
+
+##### Property Value
+
+[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)
 
 -----
 
