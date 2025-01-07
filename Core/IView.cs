@@ -22,6 +22,23 @@ public interface IView : IDisposable, INotifyPropertyChanged
     event EventHandler<ButtonEventArgs> ButtonPress;
 
     /// <summary>
+    /// Event raised when a button is being held while the view is in focus, and has been held long enough since the
+    /// initial <see cref="ButtonPress"/> or the previous <c>ButtonRepeat</c> to trigger a repeated press.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Because the game has its own logic to repeat key presses, which would cause <see cref="ButtonPress"/> to fire
+    /// repeatedly, this event generally applies only to the controller; that is, it exists to allow callers to decide
+    /// whether they want the handler to repeat while the button is held or to only fire when first pressed, providing
+    /// slightly more control than keyboard events whose repetition is up to the whims of the vanilla game.
+    /// </para>
+    /// <para>
+    /// Only the views in the current focus path should receive these events.
+    /// </para>
+    /// </remarks>
+    event EventHandler<ButtonEventArgs> ButtonRepeat;
+
+    /// <summary>
     /// Event raised when the view receives a click initiated from any button.
     /// </summary>
     event EventHandler<ClickEventArgs> Click;
@@ -391,6 +408,13 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// </summary>
     /// <param name="e">The event data.</param>
     void OnButtonPress(ButtonEventArgs e);
+
+    /// <summary>
+    /// Called when a button press is first received, and at recurring intervals thereafter, for as long as the button
+    /// is held and this view remains in the focus path.
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    void OnButtonRepeat(ButtonEventArgs e);
 
     /// <summary>
     /// Called when a click is received within this view's bounds.

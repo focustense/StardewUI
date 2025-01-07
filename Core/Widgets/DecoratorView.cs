@@ -250,6 +250,9 @@ public class DecoratorView<T> : IView, IDisposable
     public event EventHandler<ButtonEventArgs>? ButtonPress;
 
     /// <inheritdoc />
+    public event EventHandler<ButtonEventArgs>? ButtonRepeat;
+
+    /// <inheritdoc />
     public event EventHandler<ClickEventArgs>? Click;
 
     /// <inheritdoc />
@@ -446,6 +449,12 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public virtual void OnButtonRepeat(ButtonEventArgs e)
+    {
+        view?.OnButtonRepeat(e);
+    }
+
+    /// <inheritdoc />
     public virtual void OnClick(ClickEventArgs e)
     {
         view?.OnClick(e);
@@ -533,6 +542,7 @@ public class DecoratorView<T> : IView, IDisposable
             return;
         }
         view.ButtonPress += View_ButtonPress;
+        view.ButtonRepeat += View_ButtonRepeat;
         view.Click += View_Click;
         view.Drag += View_Drag;
         view.DragEnd += View_DragEnd;
@@ -553,6 +563,7 @@ public class DecoratorView<T> : IView, IDisposable
             return;
         }
         view.ButtonPress -= View_ButtonPress;
+        view.ButtonRepeat -= View_ButtonRepeat;
         view.Click -= View_Click;
         view.Drag -= View_Drag;
         view.DragEnd -= View_DragEnd;
@@ -582,6 +593,8 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     private void View_ButtonPress(object? _, ButtonEventArgs e) => ButtonPress?.Invoke(this, e);
+
+    private void View_ButtonRepeat(object? _, ButtonEventArgs e) => ButtonRepeat?.Invoke(this, e);
 
     private void View_Click(object? _, ClickEventArgs e) => Click?.Invoke(this, e);
 

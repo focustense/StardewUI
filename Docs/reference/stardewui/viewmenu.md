@@ -101,7 +101,7 @@ public class ViewMenu : StardewValley.Menus.IClickableMenu, System.IDisposable
 | emergencyShutDown() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | exitThisMenu(Boolean) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | exitThisMenuNoSound() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
-| gamePadButtonHeld(Buttons) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [gamePadButtonHeld(Buttons)](#gamepadbuttonheldbuttons) | Invoked on every frame during which a controller button is down, once for each held button.<br><span class="muted" markdown>(Overrides IClickableMenu.gamePadButtonHeld(Buttons))</span> | 
 | gameWindowSizeChanged(Rectangle, Rectangle) | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | GetChildMenu() | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
 | [GetCloseBehavior()](#getclosebehavior) | Gets the current close behavior for the menu. | 
@@ -377,6 +377,21 @@ public override void draw(Microsoft.Xna.Framework.Graphics.SpriteBatch b);
 
 **`b`** &nbsp; [SpriteBatch](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html)  
 The target batch.
+
+-----
+
+#### gamePadButtonHeld(Buttons)
+
+Invoked on every frame during which a controller button is down, once for each held button.
+
+```cs
+public override void gamePadButtonHeld(Microsoft.Xna.Framework.Input.Buttons b);
+```
+
+##### Parameters
+
+**`b`** &nbsp; [Buttons](https://docs.monogame.net/api/Microsoft.Xna.Framework.Input.Buttons.html)  
+The button that is down.
 
 -----
 

@@ -94,6 +94,7 @@ Decorator views, while not abstract, are used as a base type for other composite
 | [IsDirty()](#isdirty) | Checks whether or not the view is dirty - i.e. requires a new layout with a full [Measure(Vector2)](../iview.md#measurevector2). | 
 | [Measure(Vector2)](#measurevector2) | Performs layout on this view, updating its [OuterSize](../iview.md#outersize), [ActualBounds](../iview.md#actualbounds) and [ContentBounds](../iview.md#contentbounds), and arranging any children in their respective positions. | 
 | [OnButtonPress(ButtonEventArgs)](#onbuttonpressbuttoneventargs) | Called when a button press is received while this view is in the focus path. | 
+| [OnButtonRepeat(ButtonEventArgs)](#onbuttonrepeatbuttoneventargs) | Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path. | 
 | [OnClick(ClickEventArgs)](#onclickclickeventargs) | Called when a click is received within this view's bounds. | 
 | [OnDrag(PointerEventArgs)](#ondragpointereventargs) | Called when the view is being dragged (mouse moved while left button held). | 
 | [OnDrop(PointerEventArgs)](#ondroppointereventargs) | Called when the mouse button is released after at least one [OnDrag(PointerEventArgs)](../iview.md#ondragpointereventargs). | 
@@ -111,6 +112,7 @@ Decorator views, while not abstract, are used as a base type for other composite
  | Name | Description |
 | --- | --- |
 | [ButtonPress](#buttonpress) | Event raised when any button on any input device is pressed. | 
+| [ButtonRepeat](#buttonrepeat) | Event raised when a button is being held while the view is in focus, and has been held long enough since the initial [ButtonPress](../iview.md#buttonpress) or the previous `ButtonRepeat` to trigger a repeated press. | 
 | [Click](#click) | Event raised when the view receives a click initiated from any button. | 
 | [Drag](#drag) | Event raised when the view is being dragged using the mouse. | 
 | [DragEnd](#dragend) | Event raised when mouse dragging is stopped, i.e. when the button is released. Always raised after the last [Drag](../iview.md#drag), and only once per drag operation. | 
@@ -724,6 +726,21 @@ The event data.
 
 -----
 
+#### OnButtonRepeat(ButtonEventArgs)
+
+Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path.
+
+```cs
+public virtual void OnButtonRepeat(StardewUI.Events.ButtonEventArgs e);
+```
+
+##### Parameters
+
+**`e`** &nbsp; [ButtonEventArgs](../events/buttoneventargs.md)  
+The event data.
+
+-----
+
 #### OnClick(ClickEventArgs)
 
 Called when a click is received within this view's bounds.
@@ -924,6 +941,26 @@ public event EventHandler<StardewUI.Events.ButtonEventArgs>? ButtonPress;
 ##### Remarks
 
 Only the views in the current focus path should receive these events.
+
+-----
+
+#### ButtonRepeat
+
+Event raised when a button is being held while the view is in focus, and has been held long enough since the initial [ButtonPress](../iview.md#buttonpress) or the previous `ButtonRepeat` to trigger a repeated press.
+
+```cs
+public event EventHandler<StardewUI.Events.ButtonEventArgs>? ButtonRepeat;
+```
+
+##### Event Type
+
+[EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[ButtonEventArgs](../events/buttoneventargs.md)>
+
+##### Remarks
+
+Because the game has its own logic to repeat key presses, which would cause [ButtonPress](../iview.md#buttonpress) to fire repeatedly, this event generally applies only to the controller; that is, it exists to allow callers to decide whether they want the handler to repeat while the button is held or to only fire when first pressed, providing slightly more control than keyboard events whose repetition is up to the whims of the vanilla game. 
+
+ Only the views in the current focus path should receive these events.
 
 -----
 

@@ -31,6 +31,23 @@ public abstract class View : IView, IFloatContainer
     public event EventHandler<ButtonEventArgs>? ButtonPress;
 
     /// <summary>
+    /// Event raised when a button is being held while the view is in focus, and has been held long enough since the
+    /// initial <see cref="ButtonPress"/> or the previous <c>ButtonRepeat</c> to trigger a repeated press.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Because the game has its own logic to repeat key presses, which would cause <see cref="ButtonPress"/> to fire
+    /// repeatedly, this event generally applies only to the controller; that is, it exists to allow callers to decide
+    /// whether they want the handler to repeat while the button is held or to only fire when first pressed, providing
+    /// slightly more control than keyboard events whose repetition is up to the whims of the vanilla game.
+    /// </para>
+    /// <para>
+    /// Only the views in the current focus path should receive these events.
+    /// </para>
+    /// </remarks>
+    public event EventHandler<ButtonEventArgs>? ButtonRepeat;
+
+    /// <summary>
     /// Event raised when the view receives a click.
     /// </summary>
     public event EventHandler<ClickEventArgs>? Click;
@@ -846,6 +863,21 @@ public abstract class View : IView, IFloatContainer
         if (!e.Handled)
         {
             ButtonPress?.Invoke(this, e);
+        }
+    }
+
+    /// <inheritdoc/>
+    public virtual void OnButtonRepeat(ButtonEventArgs e)
+    {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnButtonRepeat));
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
+        DispatchPointerEvent(e, (view, args) => view.OnButtonRepeat(args));
+        if (!e.Handled)
+        {
+            ButtonRepeat?.Invoke(this, e);
         }
     }
 

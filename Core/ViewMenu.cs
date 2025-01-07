@@ -71,6 +71,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         set => gutter = value;
     }
 
+    private static readonly ActionRepeat ButtonRepeat = ActionRepeat.Default;
     private static readonly Edges DefaultGutter = new(100, 50);
 
     // SMAPI intercepts calls to the MouseState, but only syncs it on the update tick, meaning if we call
@@ -80,6 +81,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     // other).
     private static Point? mousePositionOverride;
 
+    private readonly Dictionary<SButton, (long duration, bool isRepeating)> buttonHeldDurations = [];
     private readonly Image closeButton = new();
 
     // For tracking activation paths, we not only want a weak table for the overlay itself (to prevent overlays from
@@ -344,6 +346,43 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     }
 
     /// <summary>
+    /// Invoked on every frame during which a controller button is down, once for each held button.
+    /// </summary>
+    /// <param name="b">The button that is down.</param>
+    public override void gamePadButtonHeld(Buttons b)
+    {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(gamePadButtonHeld));
+
+        if (!CanReceiveButton(b, out var button))
+        {
+            return;
+        }
+
+        var elapsed = Game1.currentGameTime.ElapsedGameTime.Ticks;
+        if (buttonHeldDurations.TryGetValue(button, out var entry))
+        {
+            var nextDuration = entry.duration + elapsed;
+            var maxDuration = (!entry.isRepeating && ButtonRepeat.InitialDelay.HasValue) ? ButtonRepeat.InitialDelay.Value.Ticks : ButtonRepeat.RepeatInterval.Ticks;
+            bool willRepeat = nextDuration >= maxDuration;
+            if (willRepeat)
+            {
+                using var _ = OverlayContext.PushContext(overlayContext);
+                InitiateButtonPress(button, repeat: true);
+            }
+            buttonHeldDurations[button] = (nextDuration % maxDuration, willRepeat || entry.isRepeating);
+        }
+        else
+        {
+            // Because the initial press is already handled in receiveGamePadButton, we don't explicitly dispatch here,
+            // just start tracking the button.
+            //
+            // Also, because gamePadButtonHeld runs after receiveGamePadButton, we start with a duration of 0 rather
+            // than the last frame delta; that is, the current frame doesn't count.
+            buttonHeldDurations.Add(button, (duration: 0, isRepeating: false));
+        }
+    }
+
+    /// <summary>
     /// Invoked on every frame in which a mouse button is down, regardless of the state in the previous frame.
     /// </summary>
     /// <param name="x">The mouse's current X position on screen.</param>
@@ -472,17 +511,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveGamePadButton));
 
-        // We don't actually dispatch the button to any capturing overlay, just prevent it from affecting the menu.
-        //
-        // This is because a capturing overlay doesn't necessarily just need to know about the button "press", it cares
-        // about the entire press, hold and release cycle, and can handle these directly through InputState or SMAPI.
-        if (IsInputCaptured())
-        {
-            return;
-        }
-
-        var button = b.ToSButton();
-        if (UI.InputHelper.IsSuppressed(button))
+        if (!CanReceiveButton(b, out var button))
         {
             return;
         }
@@ -678,6 +707,16 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     public override void update(GameTime time)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(update));
+
+        // We don't get an explicit "release" event for gamepad buttons, so need to check for releases ourselves.
+        foreach (var button in buttonHeldDurations.Keys)
+        {
+            if (!UI.InputHelper.IsDown(button))
+            {
+                buttonHeldDurations.Remove(button);
+            }
+        }
+
         // In real event loops the child menu close detection will have already happened in performHoverAction, making
         // this instance moot, but it is technically possible for a child menu to be opened and closed without the
         // pointer ever having moved.
@@ -775,6 +814,21 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         Closed?.Invoke(this, e);
     }
 
+    private bool CanReceiveButton(Buttons b, out SButton button)
+    {
+        // We don't actually dispatch the button to any capturing overlay, just prevent it from affecting the menu.
+        //
+        // This is because a capturing overlay doesn't necessarily just need to know about the button "press", it cares
+        // about the entire press, hold and release cycle, and can handle these directly through InputState or SMAPI.
+        if (IsInputCaptured())
+        {
+            button = SButton.None;
+            return false;
+        }
+        button = b.ToSButton();
+        return !UI.InputHelper.IsSuppressed(b.ToSButton());
+    }
+
     private static void FinishFocusSearch(IView rootView, Point origin, FocusSearchResult found)
     {
         LogFocusSearchResult(found.Target);
@@ -853,7 +907,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         }
     }
 
-    private void InitiateButtonPress(SButton button)
+    private void InitiateButtonPress(SButton button, bool repeat = false)
     {
         var mousePosition = GetMousePosition();
         OnViewOrOverlay(
@@ -865,7 +919,14 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
                     return;
                 }
                 var args = new ButtonEventArgs(localPosition, button);
-                view.OnButtonPress(args);
+                if (repeat)
+                {
+                    view.OnButtonRepeat(args);
+                }
+                else
+                {
+                    view.OnButtonPress(args);
+                }
             }
         );
         RequestRehover();
