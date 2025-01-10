@@ -38,12 +38,12 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
     /// <summary>
     /// The currently-attached view.
     /// </summary>
-    public TView View => (TView)target!.View;
+    protected TView View => (TView)target!.View;
 
     /// <summary>
     /// State overrides for the <see cref="View"/>.
     /// </summary>
-    public IViewState ViewState => target!.ViewState;
+    protected IViewState ViewState => target!.ViewState;
 
     Type IViewBehavior.DataType => typeof(TData);
 
@@ -86,8 +86,9 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
             );
         }
         var previousView = this.target?.View;
+        var previousViewState = this.target?.ViewState;
         this.target = target;
-        if (target.View == previousView)
+        if (target.View == previousView && target.ViewState == previousViewState)
         {
             return;
         }
@@ -159,15 +160,13 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
         {
             Logger.Log(
                 $"Behavior type {GetType().FullName} cannot accept a data type of {data.GetType().FullName} (requires "
-                    + $"{typeof(TData).FullName} or a subtype). The behavior will be disabled until it receives data with "
-                    + "a supported type.",
+                    + $"{typeof(TData).FullName} or a subtype). The behavior will be disabled until it receives data "
+                    + "with a supported type.",
                 LogLevel.Warn
             );
             Data = default!;
             return;
         }
-        // These null-forgiving assignments are valid because the actual implementations of the properties handle null
-        // values implicitly, and because the framework is required to honor the result CanUpdate.
-        Data = (TData)data!;
+        Data = data is not null ? (TData)data : default!;
     }
 }

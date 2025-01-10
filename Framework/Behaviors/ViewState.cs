@@ -12,6 +12,10 @@ namespace StardewUI.Framework.Behaviors;
 public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefaults, ViewState? previousState = null)
     : IViewState
 {
+    /// <inheritdoc />
+    public event EventHandler<FlagEventArgs>? FlagChanged;
+
+    private readonly Dictionary<string, object> flags = previousState is not null ? new(previousState.flags) : [];
     private readonly Dictionary<string, IPropertyEntry> properties = previousState is not null
         ? previousState.properties.ToDictionary(p => p.Key, p => p.Value.WithDefaults(viewDefaults))
         : new(StringComparer.OrdinalIgnoreCase);
@@ -20,6 +24,12 @@ public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefault
     public T GetDefaultValue<T>(string propertyName)
     {
         return viewDefaults.GetDefaultValue<T>(propertyName);
+    }
+
+    /// <inheritdoc />
+    public T? GetFlag<T>(string name)
+    {
+        return flags.TryGetValue(name, out var value) ? (T)value : default;
     }
 
     /// <inheritdoc />
@@ -42,6 +52,20 @@ public class ViewState(IViewDescriptor viewDescriptor, IViewDefaults viewDefault
     public IPropertyStates<T>? GetProperty<T>(string propertyName)
     {
         return (properties.GetValueOrDefault(propertyName) as PropertyEntry<T>)?.States;
+    }
+
+    /// <inheritdoc />
+    public void SetFlag(string name, object? value)
+    {
+        if (value is null && flags.Remove(name))
+        {
+            FlagChanged?.Invoke(this, new(name));
+        }
+        else if (value is not null && (!flags.TryGetValue(name, out var oldValue) || !oldValue.Equals(value)))
+        {
+            flags[name] = value;
+            FlagChanged?.Invoke(this, new(name));
+        }
     }
 
     /// <inheritdoc />

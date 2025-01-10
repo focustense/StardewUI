@@ -76,6 +76,9 @@
           vertical-content-alignment="middle">
         <button text={#Example.Form.Button.Cancel}
                 hover-background={@Mods/StardewUI/Sprites/ButtonLight}
+                opacity="0.5"
+                +state:enabled={AllowClose}
+                +state:enabled:opacity="1.0"
                 left-click=|Close("false")| />
         <button margin="16, 0, 0, 0"
                 text={#Example.Form.Button.OK}
