@@ -27,7 +27,7 @@ public partial class DropDownList<T> : ComponentView
         get => optionFormat;
         set
         {
-            var newFormat = value ?? defaultOptionFormat;
+            var newFormat = value ?? DefaultOptionFormat;
             if (newFormat != optionFormat)
             {
                 optionFormat = newFormat;
@@ -39,11 +39,37 @@ public partial class DropDownList<T> : ComponentView
     }
 
     /// <summary>
+    /// Maximum number of lines to allow per option in the drop-down list.
+    /// </summary>
+    /// <remarks>
+    /// Setting this allows options in the list to wrap lines instead of being truncated to one line. Applies only to
+    /// the open list, and not the selected item text within the main border, which is always single-line.
+    /// </remarks>
+    public int OptionMaxLines
+    {
+        get => optionMaxLines;
+        set
+        {
+            if (value == optionMaxLines)
+            {
+                return;
+            }
+            optionMaxLines = value;
+            foreach (var optionView in optionsLane.Children.OfType<DropDownOptionView>())
+            {
+                optionView.MaxLines = value;
+            }
+            OnPropertyChanged(nameof(OptionMaxLines));
+        }
+    }
+
+    /// <summary>
     /// Minimum width for the text area of an option.
     /// </summary>
     /// <remarks>
     /// If this is <c>0</c>, or if all options are larger, then the dropdown will expand horizontally.
     /// </remarks>
+    [Obsolete("Use SelectionFrameLayout instead.")]
     public float OptionMinWidth
     {
         get => selectionFrame.Layout.MinWidth ?? 0;
@@ -76,7 +102,7 @@ public partial class DropDownList<T> : ComponentView
                 if (pendingSelectedOption is not null)
                 {
                     SelectedIndex = options.IndexOf((T)pendingSelectedOption);
-                    pendingSelectedOption = default;
+                    pendingSelectedOption = null;
                 }
                 UpdateSelectedOption();
             }
@@ -96,7 +122,7 @@ public partial class DropDownList<T> : ComponentView
             {
                 return;
             }
-            pendingSelectedOption = default;
+            pendingSelectedOption = null;
             selectedIndex = validIndex;
             Select?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged(nameof(SelectedIndex));
@@ -123,7 +149,7 @@ public partial class DropDownList<T> : ComponentView
             {
                 return;
             }
-            pendingSelectedOption = default;
+            pendingSelectedOption = null;
             if (value is null)
             {
                 SelectedIndex = -1;
@@ -131,7 +157,7 @@ public partial class DropDownList<T> : ComponentView
             }
             var valueIndex = options.IndexOf(value);
             SelectedIndex = valueIndex;
-            if (value is not null && SelectedIndex < 0)
+            if (SelectedIndex < 0)
             {
                 pendingSelectedOption = value;
             }
@@ -146,12 +172,34 @@ public partial class DropDownList<T> : ComponentView
         get => selectedOptionLabel.Text;
     }
 
-    private static readonly Func<T, string> defaultOptionFormat = v => v.ToString() ?? "";
+    /// <summary>
+    /// Customizes the layout settings of the selection frame.
+    /// </summary>
+    /// <remarks>
+    /// The selection frame is the frame surrounding the text of the selected item, not including the dropdown button
+    /// (arrow) itself which is fixed size. By default, the selection frame matches the width of the selected item text;
+    /// this can be changed, for example, to stretch to the available layout width, minus the button.
+    /// </remarks>
+    public LayoutParameters SelectionFrameLayout
+    {
+        get => selectionFrame.Layout;
+        set
+        {
+            if (value != selectionFrame.Layout)
+            {
+                selectionFrame.Layout = value;
+                OnPropertyChanged(nameof(SelectionFrameLayout));
+            }
+        }
+    }
+
+    private static readonly Func<T, string> DefaultOptionFormat = v => v.ToString() ?? "";
 
     private readonly DirtyTrackingList<T> options = [];
 
     private IOverlay? overlay;
-    private Func<T, string> optionFormat = defaultOptionFormat;
+    private Func<T, string> optionFormat = DefaultOptionFormat;
+    private int optionMaxLines = 1;
     private int selectedIndex = -1;
 
     // Initialized in CreateView
@@ -186,22 +234,23 @@ public partial class DropDownList<T> : ComponentView
     protected override IView CreateView()
     {
         // Overlay
-        optionsLane = new Lane() { Layout = LayoutParameters.AutoRow(), Orientation = Orientation.Vertical };
+        optionsLane = new() { Layout = LayoutParameters.AutoRow(), Orientation = Orientation.Vertical };
         UpdateOptions();
         overlayView = new(this);
 
         // Always visible
         selectedOptionLabel = Label.Simple("");
-        selectionFrame = new Frame()
+        selectionFrame = new()
         {
             Layout = LayoutParameters.FitContent(),
             Padding = new(8, 4),
             Background = UiSprites.DropDownBackground,
             Content = selectedOptionLabel,
         };
+        var buttonHeight = Game1.smallFont.LineSpacing + selectionFrame.Padding.Vertical;
         var button = new Image()
         {
-            Layout = new() { Width = Length.Content(), Height = Length.Stretch() },
+            Layout = new() { Width = Length.Content(), Height = Length.Px(buttonHeight) },
             Sprite = UiSprites.DropDownButton,
             Focusable = true,
         };
@@ -276,10 +325,6 @@ public partial class DropDownList<T> : ComponentView
 
     private void UpdateOptions()
     {
-        if (optionsLane is null)
-        {
-            return;
-        }
         optionsLane.Children = options
             .Select(
                 (option, i) =>
@@ -287,6 +332,7 @@ public partial class DropDownList<T> : ComponentView
                     var optionView = new DropDownOptionView(option, optionFormat(option))
                     {
                         IsSelected = SelectedIndex == i,
+                        MaxLines = optionMaxLines,
                     };
                     optionView.LeftClick += OptionView_LeftClick;
                     optionView.Select += OptionView_Select;
@@ -298,10 +344,6 @@ public partial class DropDownList<T> : ComponentView
 
     private void UpdateSelectedOption()
     {
-        if (selectedOptionLabel is null)
-        {
-            return;
-        }
         selectedOptionLabel.Text = SelectedOption is not null ? optionFormat(SelectedOption) : "";
         OnPropertyChanged(nameof(SelectedOptionText));
     }
@@ -324,13 +366,19 @@ public partial class DropDownList<T> : ComponentView
             }
         }
 
+        public int MaxLines
+        {
+            get => label.MaxLines;
+            set => label.MaxLines = value;
+        }
+
         public T Value { get; } = value;
 
         private bool isSelected;
+        private readonly Label label = Label.Simple(text);
 
         protected override Frame CreateView()
         {
-            var label = Label.Simple(text);
             var frame = new Frame()
             {
                 Layout = LayoutParameters.AutoRow(),
@@ -362,8 +410,7 @@ public partial class DropDownList<T> : ComponentView
         {
             return owner
                 .optionsLane.GetChildren()
-                .Where(child => child.View is DropDownOptionView optionView && optionView.IsSelected)
-                .FirstOrDefault();
+                .FirstOrDefault(child => child.View is DropDownOptionView { IsSelected: true });
         }
 
         protected override IView CreateView()
