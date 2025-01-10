@@ -4,7 +4,7 @@
   </PropertyGroup>
   <!-- Common -->
   <ItemGroup>
-    <PackageVersion Include="CSharpier.MsBuild" Version="0.30.3" />
+    <PackageVersion Include="CSharpier.MsBuild" Version="0.30.5" />
   </ItemGroup>
   <!-- Mods -->
   <ItemGroup>

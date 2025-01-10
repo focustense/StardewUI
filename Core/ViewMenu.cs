@@ -362,7 +362,10 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         if (buttonHeldDurations.TryGetValue(button, out var entry))
         {
             var nextDuration = entry.duration + elapsed;
-            var maxDuration = (!entry.isRepeating && ButtonRepeat.InitialDelay.HasValue) ? ButtonRepeat.InitialDelay.Value.Ticks : ButtonRepeat.RepeatInterval.Ticks;
+            var maxDuration =
+                (!entry.isRepeating && ButtonRepeat.InitialDelay.HasValue)
+                    ? ButtonRepeat.InitialDelay.Value.Ticks
+                    : ButtonRepeat.RepeatInterval.Ticks;
             bool willRepeat = nextDuration >= maxDuration;
             if (willRepeat)
             {
