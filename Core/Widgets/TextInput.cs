@@ -112,6 +112,31 @@ public partial class TextInput : View
     }
 
     /// <summary>
+    /// Whether the input is enabled.
+    /// </summary>
+    /// <remarks>
+    /// Disabled text inputs have a darkened appearance and do not accept captures or text entry.
+    /// </remarks>
+    public bool Enabled
+    {
+        get => enabled;
+        set
+        {
+            if (value == enabled)
+            {
+                return;
+            }
+            enabled = value;
+            frame.BackgroundTint = value ? Color.White : Color.LightGray;
+            if (!value)
+            {
+                Release();
+            }
+            OnPropertyChanged(nameof(Enabled));
+        }
+    }
+
+    /// <summary>
     /// The font with which to render text. Defaults to <see cref="Game1.smallFont"/>.
     /// </summary>
     public SpriteFont Font
@@ -286,6 +311,7 @@ public partial class TextInput : View
     private readonly TextInputSubscriber textInputSubscriber;
     private readonly Panel textPanel;
 
+    private bool enabled;
     private bool isTextEntryMenuShown;
     private int maxLength;
     private string textAfterCursor = "";
@@ -376,7 +402,7 @@ public partial class TextInput : View
     /// <inheritdoc />
     public override void OnClick(ClickEventArgs e)
     {
-        if (e.IsPrimaryButton())
+        if (Enabled && e.IsPrimaryButton())
         {
             Capture(e.Position);
             e.Handled = true;
