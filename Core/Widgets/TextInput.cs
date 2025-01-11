@@ -311,7 +311,7 @@ public partial class TextInput : View
     private readonly TextInputSubscriber textInputSubscriber;
     private readonly Panel textPanel;
 
-    private bool enabled;
+    private bool enabled = true;
     private bool isTextEntryMenuShown;
     private int maxLength;
     private string textAfterCursor = "";
