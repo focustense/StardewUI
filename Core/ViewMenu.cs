@@ -83,6 +83,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
 
     private readonly Dictionary<SButton, (long duration, bool isRepeating)> buttonHeldDurations = [];
     private readonly Image closeButton = new();
+    private readonly HashSet<SButton> handledPressedButtons = [];
 
     // For tracking activation paths, we not only want a weak table for the overlay itself (to prevent overlays from
     // being leaked) but also for the ViewChild path used to activate it, because these views may go out of scope while
@@ -343,6 +344,18 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         // This "should" be done in Update, not Draw, but the game won't send any updates to the menu while the capture
         // target is active.
         HandleKeyboardCaptureChange();
+
+        // Reset this every frame - it is a per-frame signal for suppressing default behavior.
+        //
+        // Another thing that really should be done in Update, but can't be because the timing is insane, and Update
+        // happens *between* the button press and key press events instead of after (or before) both.
+        foreach (var button in handledPressedButtons)
+        {
+            if (!UI.InputHelper.IsDown(button))
+            {
+                handledPressedButtons.Remove(button);
+            }
+        }
     }
 
     /// <summary>
@@ -604,7 +617,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
             {
                 Close();
             }
-            else
+            else if (handledPressedButtons.Count == 0)
             {
                 base.receiveKeyPress(key);
             }
@@ -929,6 +942,10 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
                 else
                 {
                     view.OnButtonPress(args);
+                }
+                if (args.Handled)
+                {
+                    handledPressedButtons.Add(button);
                 }
             }
         );
