@@ -39,6 +39,30 @@ public partial class KeybindListEditor : ComponentView
     }
 
     /// <summary>
+    /// Solid background color to draw underneath each keybind frame.
+    /// </summary>
+    /// <remarks>
+    /// Applies only to the drawn parts inside borders, not to the empty space between them.
+    /// </remarks>
+    public Color BackgroundColor
+    {
+        get => backgroundColor;
+        set
+        {
+            if (value == backgroundColor)
+            {
+                return;
+            }
+            backgroundColor = value;
+            foreach (var keybindFrame in KeybindFrames)
+            {
+                keybindFrame.BackgroundTint = backgroundColor;
+            }
+            OnPropertyChanged(nameof(BackgroundColor));
+        }
+    }
+
+    /// <summary>
     /// The height for button images/sprites. Images are scaled uniformly, preserving source aspect ratio.
     /// </summary>
     public int ButtonHeight
@@ -210,12 +234,14 @@ public partial class KeybindListEditor : ComponentView
         }
     }
 
-    private IEnumerable<KeybindView> KeybindViews =>
-        rootLane.Children.OfType<Frame>().Select(frame => frame.Content).OfType<KeybindView>();
+    private IEnumerable<Frame> KeybindFrames =>
+        rootLane.Children.OfType<Frame>().Select(frame => frame.Content).OfType<Frame>();
+    private IEnumerable<KeybindView> KeybindViews => KeybindFrames.Select(frame => frame.Content).OfType<KeybindView>();
 
     private readonly Lane rootLane = new();
 
     private string addButtonText = "";
+    private Color backgroundColor = Color.Transparent;
     private int buttonHeight = KeybindView.DEFAULT_BUTTON_HEIGHT;
     private string deleteButtonTooltip = "";
     private KeybindType? editableType;
@@ -305,13 +331,19 @@ public partial class KeybindListEditor : ComponentView
                         Layout = LayoutParameters.FitContent(),
                         Margin = index > 0 ? new Edges(Left: 16) : Edges.NONE,
                         Background = UiSprites.MenuSlotTransparent,
-                        Padding = UiSprites.MenuSlotTransparent.FixedEdges! + new Edges(4),
-                        Content = new KeybindView
+                        Padding = UiSprites.MenuSlotTransparent.FixedEdges ?? Edges.NONE,
+                        Content = new Frame()
                         {
-                            ButtonHeight = buttonHeight,
-                            Font = font,
-                            Keybind = kb,
-                            SpriteMap = spriteMap,
+                            Padding = new(4),
+                            Background = UiSprites.White,
+                            BackgroundTint = Color.Transparent,
+                            Content = new KeybindView
+                            {
+                                ButtonHeight = buttonHeight,
+                                Font = font,
+                                Keybind = kb,
+                                SpriteMap = spriteMap,
+                            },
                         },
                     }
             )
