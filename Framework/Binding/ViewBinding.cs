@@ -37,6 +37,7 @@ internal class ViewBinding : IViewBinding
     private readonly HashSet<string> viewPropertiesChanged = [];
     private readonly WeakReference<IView> viewRef;
 
+    private bool completedFirstUpdate;
     private bool isDisposed;
 
     /// <summary>
@@ -99,12 +100,16 @@ internal class ViewBinding : IViewBinding
         }
         foreach (var binding in attributeBindings)
         {
-            if (binding.Direction.IsOut() && viewPropertiesChanged.Contains(binding.DestinationPropertyName))
+            if (
+                binding.Direction.IsOut()
+                && (!completedFirstUpdate || viewPropertiesChanged.Contains(binding.DestinationPropertyName))
+            )
             {
                 binding.UpdateSource(view);
             }
         }
         viewPropertiesChanged.Clear();
+        completedFirstUpdate = true;
         return anyChanged;
     }
 
