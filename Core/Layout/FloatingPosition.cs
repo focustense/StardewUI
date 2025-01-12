@@ -104,7 +104,7 @@ public class FloatingPosition(Func<Vector2, Vector2, Vector2> offsetSelector)
     /// <param name="view">The floating view to position.</param>
     /// <param name="parentView">The parent relative to which the floating view is being positioned.</param>
     /// <returns>The final position where the <paramref name="view"/> should be drawn.</returns>
-    public Vector2 GetOffset(IView view, View parentView)
+    public Vector2 GetOffset(IView view, IView parentView)
     {
         return GetOffset(view.OuterSize, parentView.OuterSize);
     }

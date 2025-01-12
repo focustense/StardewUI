@@ -767,12 +767,16 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
-    public IEnumerable<ViewChild> GetChildren()
+    public IEnumerable<ViewChild> GetChildren(bool includeFloatingElements = true)
     {
         var offset = GetContentOffset();
-        return GetLocalChildren()
-            .Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset))
-            .Concat(FloatingElements.Select(fe => fe.AsViewChild()));
+        var children = GetLocalChildren()
+            .Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset));
+        if (includeFloatingElements)
+        {
+            children = children.Concat(FloatingElements.Select(fe => fe.AsViewChild()));
+        }
+        return children;
     }
 
     /// <inheritdoc />
@@ -832,6 +836,13 @@ public abstract class View : IView, IFloatContainer
             foreach (var floatingElement in FloatingElements)
             {
                 floatingElement.MeasureAndPosition(this, wasParentDirty: false);
+            }
+            // We don't need to reposition floating views deeper in the hierarchy, since they are positioned relative
+            // to non-floating parents, but we do need to give them a chance to run layout again if they are dirty.
+            // Since our own floating elements were already handled above, this only applies to descendants.
+            foreach (var child in GetLocalChildren())
+            {
+                MeasureDirtyFloatingElements(child.View);
             }
             return false;
         }
@@ -1181,6 +1192,24 @@ public abstract class View : IView, IFloatContainer
     protected void LogFocusSearch(string message)
     {
         Logger.Log($"[{GetType().Name}:{Name}] {message}", LogLevel.Debug);
+    }
+
+    private void MeasureDirtyFloatingElements(IView root)
+    {
+        if (root is IFloatContainer floatContainer)
+        {
+            foreach (var floatingElement in floatContainer.FloatingElements)
+            {
+                if (floatingElement.View.IsDirty())
+                {
+                    floatingElement.MeasureAndPosition(root, wasParentDirty: false);
+                }
+            }
+        }
+        foreach (var child in root.GetChildren(includeFloatingElements: false))
+        {
+            MeasureDirtyFloatingElements(child.View);
+        }
     }
 
     /// <summary>

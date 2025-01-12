@@ -345,7 +345,9 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// <summary>
     /// Gets the current children of this view.
     /// </summary>
-    IEnumerable<ViewChild> GetChildren();
+    /// <param name="includeFloatingElements">Whether to include views that are not direct children, but instead
+    /// members of the floating elements collection of an <see cref="IFloatContainer"/> implementation.</param>
+    IEnumerable<ViewChild> GetChildren(bool includeFloatingElements = true);
 
     /// <summary>
     /// Finds all children at a given position.

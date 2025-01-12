@@ -402,7 +402,7 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
-    public virtual IEnumerable<ViewChild> GetChildren()
+    public virtual IEnumerable<ViewChild> GetChildren(bool includeFloatingElements = true)
     {
         return view is not null ? [new(view, Vector2.Zero)] : [];
     }
