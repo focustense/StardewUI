@@ -183,6 +183,10 @@ internal class RootValueConverterFactory : ValueConverterFactory
         // there aren't any other conversion options.
         Register(new DuckTypeEnumConverterFactory());
         Register(new DuckTypeClassConverterFactory(this));
+
+        // Base type walking is handled last, even after duck typing, since we always want to favor conversion on the
+        // actual type rather than some base type.
+        Register(new BaseTypeConverterFactory(this));
     }
 
     private void RegisterPrimitives()
