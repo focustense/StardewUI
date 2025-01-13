@@ -86,18 +86,28 @@ public class DuckTypeClassConverterFactory(IValueConverterFactory innerFactory) 
         activeRequests.Push(requestKey);
         try
         {
-            var sourceMembers = (
-                from member in typeof(TSource).GetMembers(BindingFlags.Instance | BindingFlags.Public)
-                let valueType = GetMemberValueType(member)
-                where valueType is not null
-                let convertedNames = GetConvertedNames(member, typeof(TDestination))
-                from convertedName in convertedNames
-                select (member, valueType, convertedName)
-            ).ToDictionary(
-                x => x.convertedName,
-                x => new SourceMember(x.member, x.valueType),
-                StringComparer.OrdinalIgnoreCase
-            );
+            var sourceMembers = new Dictionary<string, SourceMember>(StringComparer.OrdinalIgnoreCase);
+            foreach (var member in typeof(TSource).GetMembers(BindingFlags.Instance | BindingFlags.Public))
+            {
+                if (GetMemberValueType(member) is not { } valueType)
+                {
+                    continue;
+                }
+                foreach (var convertedName in GetConvertedNames(member, typeof(TDestination)))
+                {
+                    var sourceMember = new SourceMember(member, valueType);
+                    // In the somewhat rare instance we get a duplicate (Stardew is very inconsistent about name casing
+                    // and there are instances of multiple properties differing only by case), we favor the one whose
+                    // name exactly matches, case-sensitive.
+                    //
+                    // If there are multiple case-sensitive matches, or multiple case-insensitive matches without a
+                    // single case-sensitive match, then the result is ambiguous, but it's slightly better than a throw.
+                    if (!sourceMembers.TryAdd(convertedName, sourceMember) && member.Name == convertedName)
+                    {
+                        sourceMembers[convertedName] = sourceMember;
+                    }
+                }
+            }
             // Always start with the most specific constructor we can. If some arguments don't match/can't be obtained,
             // then we can widen the search.
             var destinationConstructors = typeof(TDestination)
