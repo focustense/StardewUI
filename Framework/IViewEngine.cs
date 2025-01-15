@@ -276,6 +276,16 @@ public interface IMenuController : IDisposable
     Func<Point>? PositionSelector { get; set; }
 
     /// <summary>
+    /// Closes the menu.
+    /// </summary>
+    /// <remarks>
+    /// This method allows programmatic closing of the menu. It performs the same action that would be performed by
+    /// pressing one of the configured menu keys (e.g. ESC), clicking the close button, etc., and follows the same
+    /// rules, i.e. will not allow closing if <see cref="CanClose"/> is <c>false</c>.
+    /// </remarks>
+    void Close();
+
+    /// <summary>
     /// Configures the menu to display a close button on the upper-right side.
     /// </summary>
     /// <remarks>
