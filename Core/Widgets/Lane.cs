@@ -277,6 +277,12 @@ public partial class Lane : View
     }
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return orientation.IsDirty

@@ -771,7 +771,7 @@ public abstract class View : IView, IFloatContainer
     {
         var offset = GetContentOffset();
         var children = GetLocalChildren()
-            .Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset));
+            .Select(viewChild => viewChild with { Position = viewChild.Position + offset });
         if (includeFloatingElements)
         {
             children = children.Concat(FloatingElements.Select(fe => fe.AsViewChild()));
@@ -825,6 +825,22 @@ public abstract class View : IView, IFloatContainer
     public bool IsDirty()
     {
         return layout.IsDirty || margin.IsDirty || padding.IsDirty || IsContentDirty();
+    }
+
+    /// <inheritdoc />
+    public bool IsVisible(Vector2? position = null)
+    {
+        if (Visibility == Visibility.Hidden || Opacity <= 0)
+        {
+            return false;
+        }
+        if (HasOwnContent() && (position is null || ActualBounds.ContainsPoint(position.Value)))
+        {
+            return true;
+        }
+        return position is not null
+            ? GetChildrenAt(position.Value).Any(child => child.IsVisible(position.Value))
+            : GetChildren().Any(child => child.View.IsVisible());
     }
 
     /// <inheritdoc />
@@ -1163,6 +1179,21 @@ public abstract class View : IView, IFloatContainer
     protected virtual IEnumerable<ViewChild> GetLocalChildrenAt(Vector2 contentPosition)
     {
         return GetLocalChildren().Where(child => child.ContainsPoint(contentPosition));
+    }
+
+    /// <summary>
+    /// Checks if this view displays its own content, independent of any floating elements or children.
+    /// </summary>
+    /// <remarks>
+    /// This is used by <see cref="IsVisible"/> to determine whether children need to be searched. If a view provides
+    /// its own content, e.g. a label or image displaying text or a sprite, or a frame displaying a background/border,
+    /// then the entire view's bounds are understood to have visible content. Otherwise, the view is only considered
+    /// visible as a whole if at least one child is visible, and is only visible at any given point if there is an
+    /// intersecting child at that point.
+    /// </remarks>
+    protected virtual bool HasOwnContent()
+    {
+        return true;
     }
 
     /// <summary>

@@ -240,6 +240,12 @@ public partial class Frame : View
     }
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return Background is not null || Border is not null;
+    }
+
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return borderThickness.IsDirty

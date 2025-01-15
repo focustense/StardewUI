@@ -99,6 +99,17 @@ public record ViewChild(IView View, Vector2 Position) : IOffsettable<ViewChild>
     }
 
     /// <summary>
+    /// Checks if the visible area of this child contains a point relative to the view's parent.
+    /// </summary>
+    /// <param name="point">The point to test.</param>
+    /// <returns><c>true</c> if <paramref name="point"/> is within the visible, parent-relative bounds of this child;
+    /// otherwise <c>false</c>.</returns>
+    public bool IsVisible(Vector2 point)
+    {
+        return View.IsVisible(point - Position);
+    }
+
+    /// <summary>
     /// Offsets the position by a given distance.
     /// </summary>
     /// <param name="distance">The offset distance.</param>

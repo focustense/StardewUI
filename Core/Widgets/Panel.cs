@@ -147,6 +147,12 @@ public partial class Panel : View
     }
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return horizontalContentAlignment.IsDirty

@@ -432,6 +432,12 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public virtual bool IsVisible(Vector2? position)
+    {
+        return view?.IsVisible(position) ?? false;
+    }
+
+    /// <inheritdoc />
     public virtual bool Measure(Vector2 availableSize)
     {
         var wasDirty = view?.Measure(availableSize) ?? false;

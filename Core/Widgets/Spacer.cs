@@ -13,6 +13,12 @@ namespace StardewUI.Widgets;
 public partial class Spacer : View
 {
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b) { }
 
     /// <inheritdoc />

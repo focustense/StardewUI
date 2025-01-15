@@ -45,6 +45,15 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     }
 
     /// <summary>
+    /// Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any
+    /// floating elements.
+    /// </summary>
+    /// <remarks>
+    /// This setting is primarily intended for submenus and makes them behave more like overlays.
+    /// </remarks>
+    public bool CloseOnOutsideClick { get; set; }
+
+    /// <summary>
     /// Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
     /// </summary>
     /// <remarks>
@@ -981,11 +990,19 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         }
         var args = new ClickEventArgs(localPosition, button);
         view.OnClick(args);
-        if (!args.Handled && closeButton.Sprite is not null && GetCloseBehavior() != MenuCloseBehavior.Disabled)
+        if (!args.Handled && GetCloseBehavior() != MenuCloseBehavior.Disabled)
         {
-            var closePosition = GetCloseButtonTranslation();
-            var closeBounds = new Bounds(closePosition, closeButton.OuterSize);
-            if (closeBounds.ContainsPoint(localPosition))
+            if (closeButton.Sprite is not null)
+            {
+                var closePosition = GetCloseButtonTranslation();
+                var closeBounds = new Bounds(closePosition, closeButton.OuterSize);
+                if (closeBounds.ContainsPoint(localPosition))
+                {
+                    Close();
+                    return;
+                }
+            }
+            if (CloseOnOutsideClick && overlayContext.Front is null && !View.IsVisible(localPosition))
             {
                 Close();
                 return;

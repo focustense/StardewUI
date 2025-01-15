@@ -394,6 +394,18 @@ public interface IView : IDisposable, INotifyPropertyChanged
     bool IsDirty();
 
     /// <summary>
+    /// Checks if the view is effectively visible, i.e. if it has anything to draw.
+    /// </summary>
+    /// <remarks>
+    /// While <see cref="Visibility"/> acts as a master on/off switch, there may be many other reasons for a view not
+    /// to have any visible content, such as views with zero <see cref="Opacity"/>, layout views with no visible
+    /// children, or labels or images with no current text or sprite.
+    /// </remarks>
+    /// <param name="position">Optional position at which to test for visibility. If not specified, the result indicates
+    /// whether any part of the view is visible.</param>
+    bool IsVisible(Vector2? position = null);
+
+    /// <summary>
     /// Performs layout on this view, updating its <see cref="OuterSize"/>, <see cref="ActualBounds"/> and
     /// <see cref="ContentBounds"/>, and arranging any children in their respective positions.
     /// </summary>

@@ -244,6 +244,15 @@ public interface IMenuController : IDisposable
     Vector2 CloseButtonOffset { get; set; }
 
     /// <summary>
+    /// Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any
+    /// floating elements.
+    /// </summary>
+    /// <remarks>
+    /// This setting is primarily intended for submenus and makes them behave more like overlays.
+    /// </remarks>
+    bool CloseOnOutsideClick { get; set; }
+
+    /// <summary>
     /// How much the menu should dim the entire screen underneath.
     /// </summary>
     /// <remarks>

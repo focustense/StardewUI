@@ -254,6 +254,12 @@ public partial class ScrollContainer : View
     }
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         // Don't check scrollOffset here as it doesn't require new layout.
