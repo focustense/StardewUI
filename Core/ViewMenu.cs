@@ -54,12 +54,26 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     public bool CloseOnOutsideClick { get; set; }
 
     /// <summary>
+    /// Additional cursor to draw below or adjacent to the normal mouse cursor.
+    /// </summary>
+    public Cursor? CursorAttachment { get; set; }
+
+    /// <summary>
     /// Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
     /// </summary>
     /// <remarks>
     /// Underlay is only drawn when game options do not force clear backgrounds.
     /// </remarks>
     public float DimmingAmount { get; set; } = 0.75f;
+
+    /// <summary>
+    /// Whether to display tooltips on mouse hover.
+    /// </summary>
+    /// <remarks>
+    /// Tooltips should normally always be left enabled; one reason to disable them would be if a
+    /// <see cref="CursorAttachment"/> is set that would overlap.
+    /// </remarks>
+    public bool TooltipsEnabled { get; set; } = true;
 
     /// <summary>
     /// The view to display with this menu.
@@ -323,7 +337,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         }
         justPushedOverlay = false;
 
-        if (GetChildMenu() is null)
+        if (TooltipsEnabled && GetChildMenu() is null)
         {
             var tooltip = BuildTooltip(hoverPath);
             if (tooltip is not null)
@@ -347,6 +361,18 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         Game1.mouseCursorTransparency = 1.0f;
         if (!IsInputCaptured())
         {
+            if (CursorAttachment is not null)
+            {
+                var cursorSize = CursorAttachment.Size ?? CursorAttachment.Sprite.Size;
+                var cursorPosition = GetMousePosition() + (CursorAttachment.Offset ?? Cursor.DefaultOffset);
+                var cursorRect = new Rectangle(cursorPosition, cursorSize);
+                b.Draw(
+                    CursorAttachment.Sprite.Texture,
+                    cursorRect,
+                    CursorAttachment.Sprite.SourceRect,
+                    CursorAttachment.Tint ?? Cursor.DefaultTint
+                );
+            }
             drawMouse(b);
         }
 

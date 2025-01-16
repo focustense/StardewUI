@@ -276,6 +276,11 @@ public interface IMenuController : IDisposable
     Func<Point>? PositionSelector { get; set; }
 
     /// <summary>
+    /// Removes any cursor attachment previously set by <see cref="SetCursorAttachment"/>.
+    /// </summary>
+    void ClearCursorAttachment();
+
+    /// <summary>
     /// Closes the menu.
     /// </summary>
     /// <remarks>
@@ -298,6 +303,28 @@ public interface IMenuController : IDisposable
     /// <param name="scale">Scale to apply, if the destination size should be different from the size of the
     /// <paramref name="sourceRect"/>.</param>
     void EnableCloseButton(Texture2D? texture = null, Rectangle? sourceRect = null, float scale = 4f);
+
+    /// <summary>
+    /// Begins displaying a cursor attachment, i.e. a sprite that follows the mouse cursor.
+    /// </summary>
+    /// <remarks>
+    /// The cursor is shown in addition to, not instead of, the normal mouse cursor.
+    /// </remarks>
+    /// <param name="texture">The source image/tile sheet containing the cursor image.</param>
+    /// <param name="sourceRect">The location within the <paramref name="texture"/> where the image is located, or
+    /// <c>null</c> to draw the entire <paramref name="texture"/>.</param>
+    /// <param name="size">Destination size for the cursor sprite, if different from the size of the
+    /// <paramref name="sourceRect"/>.</param>
+    /// <param name="offset">Offset between the actual mouse position and the top-left corner of the drawn
+    /// cursor sprite.</param>
+    /// <param name="tint">Optional tint color to apply to the drawn cursor sprite.</param>
+    void SetCursorAttachment(
+        Texture2D texture,
+        Rectangle? sourceRect = null,
+        Point? size = null,
+        Point? offset = null,
+        Color? tint = null
+    );
 
     /// <summary>
     /// Configures the menu's gutter widths/heights.

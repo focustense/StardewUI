@@ -42,6 +42,13 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     private event Action? ControllerClosed;
 
     /// <inheritdoc />
+    public void ClearCursorAttachment()
+    {
+        CursorAttachment = null;
+        TooltipsEnabled = true;
+    }
+
+    /// <inheritdoc />
     public void EnableCloseButton(Texture2D? texture = null, Rectangle? sourceRect = null, float scale = 4)
     {
         if (texture is null)
@@ -52,6 +59,20 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
         {
             CloseButtonSprite = new(texture, sourceRect, SliceSettings: new(Scale: scale));
         }
+    }
+
+    /// <inheritdoc />
+    public void SetCursorAttachment(
+        Texture2D texture,
+        Rectangle? sourceRect = null,
+        Point? size = null,
+        Point? offset = null,
+        Color? tint = null
+    )
+    {
+        var sprite = new Sprite(texture, sourceRect);
+        CursorAttachment = new(sprite, size, offset, tint);
+        TooltipsEnabled = false;
     }
 
     /// <inheritdoc />
