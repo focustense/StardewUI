@@ -62,6 +62,9 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
         var structuralAttributes = sourceAttributes
             .Values.Where(attr => attr.Type == Grammar.AttributeType.Structural)
             .ToArray();
+        var behaviorAttributes = sourceAttributes
+            .Values.Where(attr => attr.Type == Grammar.AttributeType.Behavior)
+            .ToArray();
         var transformedAttributes = templateNode
             .Attributes.Select(attr =>
                 attr.ValueType == Grammar.AttributeValueType.TemplateBinding
@@ -77,6 +80,10 @@ public class TemplateNodeTransformer(SNode template) : INodeTransformer
             transformedAttributes = transformedAttributes
                 .Concat(sourceAttributes.Values.Where(IsPropagatableStructuralAttribute))
                 .DistinctBy(attr => attr.Name);
+        }
+        if (behaviorAttributes.Length > 0)
+        {
+            transformedAttributes = transformedAttributes.Concat(behaviorAttributes).DistinctBy(attr => attr.Name);
         }
         transformedAttributes = transformedAttributes.ToArray();
         if (structuralAttributes.Length > 0)
