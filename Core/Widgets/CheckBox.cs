@@ -160,6 +160,7 @@ public partial class CheckBox : ComponentView<Lane>
     {
         Game1.playSound("drumkit6");
         IsChecked = !IsChecked;
+        e.Handled = true;
     }
 
     private void UpdateCheckImage()

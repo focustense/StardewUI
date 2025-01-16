@@ -266,6 +266,7 @@ public partial class DropDownList<T> : ComponentView
             return;
         }
         ToggleOverlay();
+        e.Handled = true;
     }
 
     private void OptionView_LeftClick(object? sender, ClickEventArgs e)
@@ -277,6 +278,7 @@ public partial class DropDownList<T> : ComponentView
         Game1.playSound("drumkit6");
         RemoveOverlay();
         SelectedOption = optionView.Value;
+        e.Handled = true;
     }
 
     private void OptionView_Select(object? sender, EventArgs e)

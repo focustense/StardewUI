@@ -239,6 +239,7 @@ public partial class Expander : ComponentView, IFloatContainer
     private void HeaderFrame_LeftClick(object? sender, ClickEventArgs e)
     {
         IsExpanded = !IsExpanded;
+        e.Handled = true;
     }
 
     private void UpdateContent()

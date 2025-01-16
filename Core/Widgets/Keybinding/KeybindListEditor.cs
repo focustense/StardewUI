@@ -292,6 +292,7 @@ public partial class KeybindListEditor : ComponentView
             UI.InputHelper.Suppress(e.Button);
             overlay.StartCapturing();
         }
+        e.Handled = true;
     }
 
     private void RootLane_PointerEnter(object? sender, PointerEventArgs e)
@@ -318,6 +319,7 @@ public partial class KeybindListEditor : ComponentView
         }
         Game1.playSound("drumkit5");
         KeybindList = new();
+        e.Handled = true;
     }
 
     private void UpdateAll()

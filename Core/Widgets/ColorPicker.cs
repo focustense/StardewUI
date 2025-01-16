@@ -190,6 +190,7 @@ public partial class ColorPicker : ComponentView
     private void PreviewImage_LeftClick(object? sender, ClickEventArgs e)
     {
         ShowOverlay();
+        e.Handled = true;
     }
 
     private void TextInput_TextChanged(object? sender, EventArgs e)
@@ -602,6 +603,7 @@ public partial class ColorPicker : ComponentView
             {
                 Game1.playSound("drumkit6");
                 Color = taggedColor;
+                e.Handled = true;
             }
         }
 

@@ -406,12 +406,13 @@ public class SegmentedControl : View
             {
                 contentFrame = new() { Focusable = true, HorizontalContentAlignment = HorizontalContentAlignment };
                 int capturedIndex = i;
-                contentFrame.LeftClick += (_, _) =>
+                contentFrame.LeftClick += (_, e) =>
                 {
                     if (capturedIndex != SelectedIndex)
                     {
                         Game1.playSound(selectionSound);
                         SelectedIndex = capturedIndex;
+                        e.Handled = true;
                     }
                 };
                 lane.Children.Add(contentFrame);

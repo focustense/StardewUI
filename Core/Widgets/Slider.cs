@@ -304,17 +304,20 @@ public partial class Slider : ComponentView
         var targetThumbStart = Math.Clamp(targetDistance, 0, availableWidth);
         var progress = targetThumbStart / availableWidth;
         SetValueFromProgress(progress);
+        e.Handled = true;
     }
 
     private void Thumb_DragEnd(object? sender, PointerEventArgs e)
     {
         initialThumbDragCursorOffset = null;
+        e.Handled = true;
     }
 
     private void Thumb_DragStart(object? sender, PointerEventArgs e)
     {
         var cursorOffset = e.Position.X - thumbImage.Margin.Left;
         initialThumbDragCursorOffset = cursorOffset >= 0 ? cursorOffset : null;
+        e.Handled = true;
     }
 
     private void Thumb_LeftClick(object? sender, ClickEventArgs e)
@@ -336,6 +339,7 @@ public partial class Slider : ComponentView
         var thumbWidth = thumbImage.ContentSize.X;
         var progress = Math.Clamp((e.Position.X - thumbWidth / 2) / (trackWidth - thumbWidth), 0, 1);
         SetValueFromProgress(progress);
+        e.Handled = true;
     }
 
     private bool TryMoveValue(Direction direction)
