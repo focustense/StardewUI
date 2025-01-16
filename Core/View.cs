@@ -920,14 +920,14 @@ public abstract class View : IView, IFloatContainer
         if (!e.Handled)
         {
             Click?.Invoke(this, e);
-            if (e.IsPrimaryButton())
-            {
-                LeftClick?.Invoke(this, e);
-            }
-            else if (e.IsSecondaryButton())
-            {
-                RightClick?.Invoke(this, e);
-            }
+        }
+        if (!e.Handled && e.IsPrimaryButton())
+        {
+            LeftClick?.Invoke(this, e);
+        }
+        else if (!e.Handled && e.IsSecondaryButton())
+        {
+            RightClick?.Invoke(this, e);
         }
     }
 
