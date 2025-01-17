@@ -202,6 +202,13 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public PointerStyle PointerStyle
+    {
+        get => pointerStyle;
+        set => pointerStyle.Set(value);
+    }
+
+    /// <inheritdoc />
     public Orientation? ScrollWithChildren
     {
         get => scrollWithChildren;
@@ -314,6 +321,11 @@ public class DecoratorView<T> : IView, IDisposable
         (x, v) => x.PointerEventsEnabled = v,
         true
     );
+    private readonly DecoratedProperty<PointerStyle> pointerStyle = new(
+        x => x.PointerStyle,
+        (x, v) => x.PointerStyle = v,
+        PointerStyle.Default
+    );
     private readonly DecoratedProperty<Orientation?> scrollWithChildren = new(
         x => x.ScrollWithChildren,
         (x, v) => x.ScrollWithChildren = v,
@@ -346,6 +358,7 @@ public class DecoratorView<T> : IView, IDisposable
         RegisterDecoratedProperty(name);
         RegisterDecoratedProperty(opacity);
         RegisterDecoratedProperty(pointerEventsEnabled);
+        RegisterDecoratedProperty(pointerStyle);
         RegisterDecoratedProperty(scrollWithChildren);
         RegisterDecoratedProperty(tooltip);
         RegisterDecoratedProperty(transform);

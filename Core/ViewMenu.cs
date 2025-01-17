@@ -373,7 +373,8 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
                     CursorAttachment.Tint ?? Cursor.DefaultTint
                 );
             }
-            drawMouse(b);
+            var pointerStyle = hoverPath.Select(x => x.View.PointerStyle).LastOrDefault(PointerStyle.Default);
+            drawMouse(b, cursor: (int)pointerStyle);
         }
 
         // This "should" be done in Update, not Draw, but the game won't send any updates to the menu while the capture
@@ -801,7 +802,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     /// <returns>The tooltip string to display, or <c>null</c> to not show any tooltip.</returns>
     protected virtual TooltipData? BuildTooltip(IEnumerable<ViewChild> path)
     {
-        var tooltipData = hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => tooltip is not null);
+        var tooltipData = path.Select(x => x.View.Tooltip).LastOrDefault(tooltip => tooltip is not null);
         return tooltipData?.ConstrainTextWidth(640);
     }
 

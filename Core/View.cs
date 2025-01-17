@@ -344,6 +344,20 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
+    public PointerStyle PointerStyle
+    {
+        get => pointerStyle;
+        set
+        {
+            if (value != pointerStyle)
+            {
+                pointerStyle = value;
+                OnPropertyChanged(nameof(PointerStyle));
+            }
+        }
+    }
+
+    /// <inheritdoc />
     /// <summary>
     /// If set to an axis, specifies that when any child of the view is scrolled into view (using
     /// <see cref="ScrollIntoView"/>), then this entire view should be scrolled along with it.
@@ -512,6 +526,7 @@ public abstract class View : IView, IFloatContainer
     private RenderTarget2D? opacitySourceTarget;
     private RenderTarget2D? opacityDestinationTarget;
     private bool pointerEventsEnabled = true;
+    private PointerStyle pointerStyle = PointerStyle.Default;
     private Vector2 previousLayoutOffset;
     private WeakViewChild? previousPointerTarget;
     private Orientation? scrollWithChildren;

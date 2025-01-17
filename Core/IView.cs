@@ -209,6 +209,14 @@ public interface IView : IDisposable, INotifyPropertyChanged
     bool PointerEventsEnabled { get; set; }
 
     /// <summary>
+    /// Pointer style to use when this view is hovered.
+    /// </summary>
+    /// <remarks>
+    /// As with <see cref="Tooltip"/>, the lowest-level view takes precedence over any higher-level views.
+    /// </remarks>
+    PointerStyle PointerStyle { get; set; }
+
+    /// <summary>
     /// If set to an axis, specifies that when any child of the view is scrolled into view (using
     /// <see cref="ScrollIntoView"/>), then this entire view should be scrolled along with it.
     /// </summary>
