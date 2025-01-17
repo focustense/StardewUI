@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
-using StardewUI.Graphics;
 
-namespace StardewUI;
+namespace StardewUI.Graphics;
 
 /// <summary>
 /// Defines a cursor that can be drawn instead of or in addition to the regular mouse pointer.
