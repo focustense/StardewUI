@@ -104,8 +104,24 @@ public abstract class View : IView, IFloatContainer
     /// </summary>
     public event EventHandler<WheelEventArgs>? Wheel;
 
+    /// <summary>
+    /// Indicates whether a UI-initiated drawing operation is in progress, from any view.
+    /// </summary>
+    /// <remarks>
+    /// This state is primarily used by Framework patches as a way to limit their effective scope and avoid interfering
+    /// with vanilla or 3P draws.
+    /// </remarks>
+    internal static bool IsDrawing { get; private set; }
+
     /// <inheritdoc/>
     public Bounds ActualBounds => GetActualBounds();
+
+    /// <summary>
+    /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
+    /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
+    /// <see cref="Margin"/>.
+    /// </summary>
+    public Vector2 BorderSize => InnerSize + GetBorderThickness().Total;
 
     /// <inheritdoc />
     public NineGridPlacement? ClipOrigin
@@ -139,22 +155,6 @@ public abstract class View : IView, IFloatContainer
 
     /// <inheritdoc/>
     public Bounds ContentBounds => GetContentBounds();
-
-    /// <summary>
-    /// Indicates whether a UI-initiated drawing operation is in progress, from any view.
-    /// </summary>
-    /// <remarks>
-    /// This state is primarily used by Framework patches as a way to limit their effective scope and avoid interfering
-    /// with vanilla or 3P draws.
-    /// </remarks>
-    internal static bool IsDrawing { get; private set; }
-
-    /// <summary>
-    /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
-    /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
-    /// <see cref="Margin"/>.
-    /// </summary>
-    public Vector2 BorderSize => InnerSize + GetBorderThickness().Total;
 
     /// <summary>
     /// The size of the view's content, which is drawn inside the padding. Subclasses set this in their
@@ -704,14 +704,15 @@ public abstract class View : IView, IFloatContainer
         {
             return null;
         }
+        var floatingOffset = GetFloatingOffset();
         foreach (var floatingElement in FloatingElements)
         {
-            var floatingChild = floatingElement.AsViewChild();
+            var floatingChild = floatingElement.AsViewChild().Offset(floatingOffset);
             if (!floatingChild.ContainsPoint(position))
             {
                 continue;
             }
-            var floatingResult = floatingElement.AsViewChild().FocusSearch(position, direction);
+            var floatingResult = floatingChild.FocusSearch(position, direction);
             if (floatingResult is not null)
             {
                 return floatingResult;
@@ -751,7 +752,7 @@ public abstract class View : IView, IFloatContainer
         // This second iteration is to be able to move the focus INTO a floating element from the main view.
         foreach (var floatingElement in FloatingElements)
         {
-            var floatingResult = floatingElement.AsViewChild().FocusSearch(position, direction);
+            var floatingResult = floatingElement.AsViewChild().Offset(floatingOffset).FocusSearch(position, direction);
             if (floatingResult is not null)
             {
                 return floatingResult;
@@ -805,10 +806,10 @@ public abstract class View : IView, IFloatContainer
         {
             yield return child.Offset(contentOffset);
         }
-        position -= GetFloatingOffset();
+        var floatingOffset = GetFloatingOffset();
         foreach (var floatingElement in FloatingElements)
         {
-            var floatingChild = floatingElement.AsViewChild();
+            var floatingChild = floatingElement.AsViewChild().Offset(floatingOffset);
             if (floatingChild.ContainsPoint(position))
             {
                 yield return floatingChild;
