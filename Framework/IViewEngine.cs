@@ -253,6 +253,11 @@ public interface IMenuController : IDisposable
     bool CloseOnOutsideClick { get; set; }
 
     /// <summary>
+    /// Sound to play when closing the menu.
+    /// </summary>
+    string CloseSound { get; set; }
+
+    /// <summary>
     /// How much the menu should dim the entire screen underneath.
     /// </summary>
     /// <remarks>

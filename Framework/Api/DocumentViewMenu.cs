@@ -34,6 +34,13 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     public Action? CloseAction { get; set; }
 
     /// <inheritdoc />
+    public string CloseSound
+    {
+        get => closeSound;
+        set => closeSound = value;
+    }
+
+    /// <inheritdoc />
     public IClickableMenu Menu => this;
 
     /// <inheritdoc />

@@ -228,11 +228,15 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         {
             return;
         }
+        bool hasCloseSound = !string.IsNullOrEmpty(closeSound);
         if (behavior == MenuCloseBehavior.Custom)
         {
             behaviorBeforeCleanup?.Invoke(this);
             cleanupBeforeExit();
-            Game1.playSound(closeSound);
+            if (hasCloseSound)
+            {
+                Game1.playSound(closeSound);
+            }
             CustomClose();
             if (exitFunction != null)
             {
@@ -243,12 +247,17 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         }
         else if (IsTitleSubmenu())
         {
-            Game1.playSound(closeSound);
+            if (hasCloseSound)
+            {
+                Game1.playSound(closeSound);
+            }
             TitleMenu.subMenu = null;
         }
         else
         {
-            exitThisMenu();
+            exitThisMenu(hasCloseSound);
+            // Calling exitThisMenu may or may not dispose us, depending on whether we are the main menu or a child
+            // menu. Since it's safe to Dispose multiple times, do it an extra time here to ensure proper disposal.
             Dispose();
         }
     }
