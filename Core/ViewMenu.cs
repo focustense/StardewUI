@@ -249,6 +249,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         else
         {
             exitThisMenu();
+            Dispose();
         }
     }
 
@@ -827,6 +828,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         {
             _parentMenu = null;
             parentMenu.SetChildMenu(null);
+            Dispose();
         }
     }
 
