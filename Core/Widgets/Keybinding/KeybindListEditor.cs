@@ -203,7 +203,7 @@ public partial class KeybindListEditor : ComponentView
         get => keybindList;
         set
         {
-            if (value == keybindList)
+            if (value.KeybindEquals(keybindList))
             {
                 return;
             }
