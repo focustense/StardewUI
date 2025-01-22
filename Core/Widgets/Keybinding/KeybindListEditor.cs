@@ -262,6 +262,13 @@ public partial class KeybindListEditor : ComponentView
         return rootLane;
     }
 
+    private Label CreateEmptyLabel()
+    {
+        var label = Label.Simple(EmptyText);
+        label.Margin = new(0, 4);
+        return label;
+    }
+
     private void Overlay_Close(object? sender, EventArgs e)
     {
         if (sender is not KeybindOverlay overlay)
@@ -351,7 +358,7 @@ public partial class KeybindListEditor : ComponentView
             )
             .Cast<IView>()
             .ToList();
-        rootLane.Children = keybindViews.Count > 0 ? keybindViews : [Label.Simple(EmptyText)];
+        rootLane.Children = keybindViews.Count > 0 ? keybindViews : [CreateEmptyLabel()];
     }
 
     private void UpdateEmptyText(Color color)
