@@ -347,7 +347,7 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
         }
         justPushedOverlay = false;
 
-        if (TooltipsEnabled && GetChildMenu() is null)
+        if (TooltipsEnabled && IsTopmost())
         {
             var tooltip = BuildTooltip(hoverPath);
             if (tooltip is not null)
@@ -1078,6 +1078,17 @@ public abstract class ViewMenu : IClickableMenu, IDisposable
     private bool IsTitleSubmenu()
     {
         return Game1.activeClickableMenu is TitleMenu && TitleMenu.subMenu == this;
+    }
+    
+    private bool IsTopmost()
+    {
+        return GetChildMenu() is null && !(
+            // Hack to work around another hack: TitleMenu isn't capable of displaying or forwarding interactions to
+            // children of its subMenu, but it _can_ have an actual ChildMenu, and that ChildMenu essentially works the
+            // same as if it were a child of the subMenu. However, we need to detect this scenario explicitly.
+            Game1.activeClickableMenu is TitleMenu titleMenu
+            && TitleMenu.subMenu == this
+            && titleMenu.GetChildMenu() is not null);
     }
 
     [Conditional("DEBUG_FOCUS_SEARCH")]

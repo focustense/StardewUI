@@ -211,7 +211,8 @@ internal sealed class ModEntry : Mod
         }
 
         if (
-            Game1.activeClickableMenu is TitleMenu
+            Game1.activeClickableMenu is TitleMenu titleMenu
+            && titleMenu.GetChildMenu() is null
             && TitleMenu.subMenu is DocumentViewMenu { CloseAction: not null } viewMenu
         )
         {
