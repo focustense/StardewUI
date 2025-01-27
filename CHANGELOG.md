@@ -6,6 +6,63 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- All views now have a layout-typed [`ClipSize`](https://focustense.github.com/StardewUI/reference/stardewui/iview#clipsize) property for limiting overflow or cropping content, which allows for animated slides and wipes.
+- [Segmented Controls](https://focustense.github.io/StardewUI/library/standard-views/#segments) are an improved alternative to dropdowns when selecting from a very small number of choices.
+- [Color Pickers](https://focustense.github.io/StardewUI/library/standard-views/#segments) provide color selection using either RGBA (sliders) or HSVA (wheel), as well as customizable presets.
+- All views now have a [`ButtonRepeat`](https://focustense.github.com/StardewUI/reference/stardewui/iview#buttonrepeat) event, which has the same signature as `ButtonPress` but fires at a repeating interval while the button is held.
+- Built-in [behavior attributes](https://focustense.github.io/StardewUI/framework/starml/#behavior-attributes) now include `+state:<name>` and `+state:<name>:<arg>` behaviors which create a custom named state bound to a boolean value and any number of properties modified by that state.
+  - This allows for transitions that work like `+hover` and support animated transitions, but are controlled by data; for example, setting a `disabled` state to control both `opacity` and `pointer-events-enabled`, or a `selected` state to control a frame's `background-tint` or a label's `bold` property.
+- `Frame` now supports a `BorderTint` in addition to the already-existing `BackgroundTint`.
+- `Button` now has tint properties for both backgrounds (default and hover).
+- Several built-in conversions between SMAPI's keybind types; all combinations of `string`, `SButton`, `Keybind` and `KeybindList` should be supported.
+- Mods can now register a [Custom Data](https://focustense.github.io/StardewUI/framework/custom-data/) path, which is a new centralized location for certain bespoke asset types that are neither views nor sprites.
+  - The current use case is for custom [sprite maps](https://focustense.github.io/StardewUI/reference/stardewui/data/buttonspritemapdata/), for use in keybind-related widgets instead of the default ("Xelu") sprites. 
+
+### Changed
+
+- Setting `PointerEventsEnabled = false` will also exclude the view from hover events and focus searches, and block children/descendants of the disabled view.
+- `TextInput` includes new properties:
+  - `Placeholder` text which will show when the input is (a) empty and (b) not currently being edited.
+  - `Disabled` property which prevents clicks/capturing and dims the content.
+- `DropDownList` includes new properties:
+  - `MaxLines` allows options in the dropdown menu to span multiple lines if set to a value other than `1` (default)
+  - `SelectionFrameLayout` replaces `OptionMinWidth` and allows dropdowns to be given any layout, e.g. stretched instead of fixed-width.
+- `KeybindListEditor` will display an empty frame when it has no keybinds and no `EmptyText`.
+- `KeybindListEditor` now has a `BackgroundColor` property that can be used e.g. to indicate that it is disabled/read-only.
+- `LayoutParameters` supports transitions as long as each `LengthType` remains the same.
+  - This is primarily intended for `ClipSize`, which only takes effect at draw time, and is not recommended for `Layout`, which forces new layout (i.e. slows performance).
+- `IMenuController` API includes new properties and methods:
+  - `Close()` allows the menu to be closed programmatically.
+  - `CloseOnOutsideClick` causes the menu to be automatically closed when clicking outside its border, i.e. the same way Overlays work.
+  - `CloseSound` customizes what sound will be played when the menu is closed.
+  - `PointerStyle` changes the mouse cursor when hovering inside the view. All vanilla cursors such as the hand, harvest and dialogue cursors are supported.
+  - `SetCursorAttachment(...)` and `ClearCursorAttachment` will add/remove a sprite to be drawn next to the cursor, e.g. to indicate moving an item to/from inventory as is done in the vanilla `InventoryMenu`.
+- When a `ButtonPress` handler returns `false`, it will short-circuit focus searches, i.e. making it possible to trap controller focus within some view.
+- When a `Click` handler returns `false`, it will preempt any `LeftClick` or `RightClick` handlers on the same view.
+- Duck-type conversions will fail gracefully when there are multiple, case-insensitive matches such as both `description` and `Description`.
+  - Ambiguous matches will prefer the case-sensitive match when one exists, otherwise choose an arbitrary match.
+- `ViewMenu` type is no longer generic.
+  - The generic (view type) parameter was removed because nothing important depended on it, and generic types interfere with .NET hot reload. 
+
+### Fixed
+
+- `Transform` and `Transition` types now support duck type conversion.
+- Behaviors now retain view state properties on view recreation, avoiding most cases of "stuck" hover states and other inconsistencies.
+- Transitions should behave correctly with zero state, i.e. when only the underlying property value is changed.
+- `*repeat` nodes will correctly rebuild when bound observable collections are `Clear()`ed.
+- `*repeat` nodes no longer crash when encountering a negative index in the `CollectionChanged` event arguments.
+- Keybind editor now correctly renders empty text when initialized without a keybind.
+- `Keybind` and `KeybindList` properties now use value-equality comparisons, preventing thrashing between a `KeybindListEditor` and its bound `KeybindList` in specific cases.
+- Overlays, such as those used in keybind editors and color pickers, will no longer pick up the mouse button used to open them as a new click.
+- Menus no longer draw tooltips when they have a child menu open.
+- Floating elements whose owners have non-zero margins will now receive correct coordinates for their pointer events.
+- Output bindings such as `{>OuterSize}` force an update on initial bind
+  - This fixes the issue that properties might never receive the correct value if the view never changes or if a new context is bound to an old view.
+- Common UI sprites should stretch correctly with both vanilla rendering and SpriteMaster/Clear Glasses.
+- Notepad++ syntax highlighting no longer highlights elements inside comment tags.
+
 ## [0.5.0] - 2024-12-23
 
 ### Added
@@ -33,7 +90,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Menus with custom close actions should no longer close prematurely when the controller B button is pressed to dismiss an overlay.
 - `Frame` views will use the correct boundaries for focus searches, and will not fail or land the cursor in the wrong place when moving a large distance to/from a much smaller element.
-- `Lane` views now handle inner `ScrollableView`s correctly and will not not break focus searching when scrolling with the right thumbstick.
+- `Lane` views now handle inner `ScrollableView`s correctly and will not break focus searching when scrolling with the right thumbstick.
 - Value-typed `<dropdown>` views can be set back to their default values again.
 - Keybind and nine-grid editors no longer lose their hover states when their overlays are closed.
 - Hot reload will no longer spam reloads and SMAPI console messages when updated via source sync.

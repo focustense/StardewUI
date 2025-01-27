@@ -6,7 +6,7 @@ What makes overlays distinct from overlapping layout views like [panels](standar
 
 While this is achievable to some degree with `IClickableMenu.SetChildMenu` in vanilla Stardew Valley code, UI overlays have a number of advantages:
 
-- They are much more lightweight in terms of both implementation and performance, requiring nothing more than an `IView`, and hooking into the event loop of whichever `ViewMenu<T>` spawned it.
+- They are much more lightweight in terms of both implementation and performance, requiring nothing more than an `IView`, and hooking into the event loop of whichever `ViewMenu` spawned it.
 - Cursor [focus](../framework/focus-and-interaction.md) is automatically moved inside an overlay when it opens, and constrained to that overlay until it is closed.
 - Mouse users can click anywhere outside an active overlay to dismiss it, much like any modern modal dialog. (The menu key, by default <kbd>Esc</kbd> or <kbd>E</kbd>, also still works here.)
 - Menus **remember** the focus at the instant an overlay was opened, and can return the focus back to where it was when the overlay is closed.
