@@ -262,11 +262,33 @@ public partial class KeybindListEditor : ComponentView
         return rootLane;
     }
 
-    private Label CreateEmptyLabel()
+    private IView CreateEmptyLabel()
     {
-        var label = Label.Simple(EmptyText);
+        if (string.IsNullOrEmpty(EmptyText))
+        {
+            return FrameContent(new Spacer() { Layout = LayoutParameters.FixedSize(ButtonHeight, ButtonHeight) });
+        }
+        var label = Label.Simple(EmptyText, Font);
         label.Margin = new(0, 4);
         return label;
+    }
+
+    private static Frame FrameContent(IView content, Edges? edges = null)
+    {
+        return new()
+        {
+            Layout = LayoutParameters.FitContent(),
+            Margin = edges ?? Edges.NONE,
+            Background = UiSprites.MenuSlotTransparent,
+            Padding = UiSprites.MenuSlotTransparent.FixedEdges ?? Edges.NONE,
+            Content = new Frame()
+            {
+                Padding = new(4),
+                Background = UiSprites.White,
+                BackgroundTint = Color.Transparent,
+                Content = content,
+            },
+        };
     }
 
     private void Overlay_Close(object? sender, EventArgs e)
@@ -335,26 +357,16 @@ public partial class KeybindListEditor : ComponentView
             .Keybinds.Where(kb => kb.IsBound)
             .Select(
                 (kb, index) =>
-                    new Frame()
-                    {
-                        Layout = LayoutParameters.FitContent(),
-                        Margin = index > 0 ? new Edges(Left: 16) : Edges.NONE,
-                        Background = UiSprites.MenuSlotTransparent,
-                        Padding = UiSprites.MenuSlotTransparent.FixedEdges ?? Edges.NONE,
-                        Content = new Frame()
+                    FrameContent(
+                        new KeybindView
                         {
-                            Padding = new(4),
-                            Background = UiSprites.White,
-                            BackgroundTint = Color.Transparent,
-                            Content = new KeybindView
-                            {
-                                ButtonHeight = buttonHeight,
-                                Font = font,
-                                Keybind = kb,
-                                SpriteMap = spriteMap,
-                            },
+                            ButtonHeight = buttonHeight,
+                            Font = font,
+                            Keybind = kb,
+                            SpriteMap = spriteMap,
                         },
-                    }
+                        index > 0 ? new Edges(Left: 16) : null
+                    )
             )
             .Cast<IView>()
             .ToList();
