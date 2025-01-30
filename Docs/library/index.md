@@ -15,7 +15,7 @@ Core library features are loosely divided into the same categories as code names
 - [**Layout**](../reference/stardewui/layout/index.md): Essential types and tools for describing layouts: positions, alignments and other dimensions.
 - [**Widgets**](../reference/stardewui/widgets/index.md): All the [standard views](standard-views.md).
 - [**Overlays**](../reference/stardewui/overlays/index.md): System for displaying views as either dismissable overlays, such as [dropdowns](standard-views.md#drop-down-list), or full-screen ("modal dialog") style, such as the [keybinding editor](standard-views.md#keybind-editor).
-- [**Animation**](../reference/stardewui/animation/index.md): Animates properties of views. Includes the common [HoverScale](../reference/stardewui/animation/hoverscale.md) that can be attached to any image to make it zoom on mouseover.
+- [**Animation**](../reference/stardewui/animation/index.md): Tools for animating properties of views. Includes the [Transition](../reference/stardewui/animation/transition.md) and [KeySpline](../reference/stardewui/animation/easing.md) used for framework transitions, and some legacy specialized non-framework utilities such as [HoverScale](../reference/stardewui/animation/hoverscale.md).
 - [**Diagnostics**](../reference/stardewui/diagnostics/index.md): Primarily [performance tracing](../performance.md).
 
 ## Usage
