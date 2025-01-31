@@ -6,9 +6,17 @@
   "Example.Form.UI.Heading": "User Interface",
   "Example.Form.ColorTheme.Title": "Color Theme",
   "Example.Form.Opacity.Title": "Menu Opacity",
+  "Example.Form.TextColor.Title": "Text Color",
   "Example.Form.Keybind.Title": "Hotkeys",
   "Example.Form.Keybind.Add": "Add",
   "Example.Form.Keybind.Empty": "Not set",
+  "Example.Form.Difficulty.Title": "Difficulty",
+  "Example.Form.Difficulty.Easy.Title": "Easy",
+  "Example.Form.Difficulty.Easy.Description": "0.5x purchase price, 2x sell price",
+  "Example.Form.Difficulty.Normal.Title": "Normal",
+  "Example.Form.Difficulty.Normal.Description": "No price modifiers",
+  "Example.Form.Difficulty.Hard.Title": "Hard",
+  "Example.Form.Difficulty.Hard.Description": "2x purchase price, 0.5x sell price",
   "Example.Form.AllowClose.Title": "Allow Closing",
   "Example.Form.Button.Cancel": "Cancel",
   "Example.Form.Button.OK": "OK",
@@ -22,5 +30,7 @@
   "Gallery.Example.CropCalendar.Title": "Crop Calendar",
   "Gallery.Example.CropCalendar.Description": "Idea for an interactive crop planner: view seeds, blooms, produce and harvest timing for any growable item.",
   "Gallery.Example.Form.Title": "Settings Form",
-  "Gallery.Example.Form.Description": "Generic Mod Config Menu is great, but what if you're looking to build something a little less generic?"
+  "Gallery.Example.Form.Description": "Generic Mod Config Menu is great, but what if you're looking to build something a little less generic?",
+  "Gallery.Example.Tempering.Title": "Tempering",
+  "Gallery.Example.Tempering.Description": "UI for an imaginary mod that upgrades tools with mineral alloys. Also a demo for transitions and animations."
 }

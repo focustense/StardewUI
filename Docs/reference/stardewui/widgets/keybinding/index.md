@@ -14,6 +14,7 @@ search:
 
 | Name | Description |
 | --- | --- |
+| [KeybindExtensions](keybindextensions.md) | Extensions for SMAPI's keybind types. |
 | [KeybindListEditor](keybindlisteditor.md) | Editor widget for a [KeybindList](keybindlisteditor.md#keybindlist). |
 | [KeybindOverlay](keybindoverlay.md) | Overlay control for editing a keybinding, or list of bindings. |
 | [KeybindView](keybindview.md) | Display widget for a single [Keybind](keybindview.md#keybind) showing all required keys. |

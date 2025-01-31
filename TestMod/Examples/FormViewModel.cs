@@ -49,6 +49,9 @@ internal partial class FormViewModel : INotifyPropertyChanged
     [Notify]
     private TomatoType selectedTomatoType;
 
+    [Notify]
+    private Color textColor = Game1.textColor;
+
     public FormViewModel()
     {
         selectedTheme = Themes[0];

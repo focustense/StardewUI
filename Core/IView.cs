@@ -22,6 +22,23 @@ public interface IView : IDisposable, INotifyPropertyChanged
     event EventHandler<ButtonEventArgs> ButtonPress;
 
     /// <summary>
+    /// Event raised when a button is being held while the view is in focus, and has been held long enough since the
+    /// initial <see cref="ButtonPress"/> or the previous <c>ButtonRepeat</c> to trigger a repeated press.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Because the game has its own logic to repeat key presses, which would cause <see cref="ButtonPress"/> to fire
+    /// repeatedly, this event generally applies only to the controller; that is, it exists to allow callers to decide
+    /// whether they want the handler to repeat while the button is held or to only fire when first pressed, providing
+    /// slightly more control than keyboard events whose repetition is up to the whims of the vanilla game.
+    /// </para>
+    /// <para>
+    /// Only the views in the current focus path should receive these events.
+    /// </para>
+    /// </remarks>
+    event EventHandler<ButtonEventArgs> ButtonRepeat;
+
+    /// <summary>
     /// Event raised when the view receives a click initiated from any button.
     /// </summary>
     event EventHandler<ClickEventArgs> Click;
@@ -106,6 +123,40 @@ public interface IView : IDisposable, INotifyPropertyChanged
     Bounds ActualBounds { get; }
 
     /// <summary>
+    /// Origin position for the <see cref="ClipSize"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// If clipping is enabled by specifying a <see cref="ClipSize"/>, and the computed size of the clipping rectangle
+    /// is not exactly equal to the view's <see cref="OuterSize"/>, then this determines how it will be aligned relative
+    /// to this view's boundaries.
+    /// </para>
+    /// <para>
+    /// The default origin is the view's top-left corner (0, 0). This property has no effect unless the view's
+    /// <see cref="ClipSize"/> is also defined.
+    /// </para>
+    /// </remarks>
+    NineGridPlacement? ClipOrigin { get; set; }
+
+    /// <summary>
+    /// Size of the clipping rectangle, outside which content will not be displayed.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This is defined as a layout, but unlike the view's <see cref="Layout"/>, it is not computed against the
+    /// available size provided by the parent; instead, its reference size is the view's <see cref="OuterSize"/>.
+    /// </para>
+    /// <para>
+    /// A common scenario is to set this to <see cref="LayoutParameters.Fill"/> in order to prevent drawing outside the
+    /// view's own boundaries, i.e. as an equivalent to CSS <c>overflow: hidden</c>. Note however that clipping occurs
+    /// during the drawing phase, so a smaller clip region does not result in a smaller layout; the view will still have
+    /// the same size it would have had without any clipping, but only part of it will actually get drawn. This can also
+    /// be used intentionally to create some animated visual effects such as slides and wipes.
+    /// </para>
+    /// </remarks>
+    LayoutParameters? ClipSize { get; set; }
+
+    /// <summary>
     /// The true bounds of this view's content; i.e. <see cref="ActualBounds"/> excluding margins.
     /// </summary>
     Bounds ContentBounds { get; }
@@ -156,6 +207,14 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// views but shouldn't block their input, such as local non-modal overlays.
     /// </remarks>
     bool PointerEventsEnabled { get; set; }
+
+    /// <summary>
+    /// Pointer style to use when this view is hovered.
+    /// </summary>
+    /// <remarks>
+    /// As with <see cref="Tooltip"/>, the lowest-level view takes precedence over any higher-level views.
+    /// </remarks>
+    PointerStyle PointerStyle { get; set; }
 
     /// <summary>
     /// If set to an axis, specifies that when any child of the view is scrolled into view (using
@@ -274,8 +333,10 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// <param name="position">The search position, relative to the view's top-left coordinate.</param>
     /// <param name="preferFocusable"><c>true</c> to prioritize a focusable child over a non-focusable child with a higher
     /// z-index in case of overlap; <c>false</c> to always use the topmost child.</param>
+    /// <param name="requirePointerEvents">Whether to exclude views whose <see cref="PointerEventsEnabled"/> is
+    /// currently <c>false</c>.</param>
     /// <returns>The view at <paramref name="position"/>, or <c>null</c> if there is no match.</returns>
-    ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false);
+    ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false, bool requirePointerEvents = false);
 
     /// <summary>
     /// Computes or retrieves the position of a given direct child.
@@ -292,7 +353,9 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// <summary>
     /// Gets the current children of this view.
     /// </summary>
-    IEnumerable<ViewChild> GetChildren();
+    /// <param name="includeFloatingElements">Whether to include views that are not direct children, but instead
+    /// members of the floating elements collection of an <see cref="IFloatContainer"/> implementation.</param>
+    IEnumerable<ViewChild> GetChildren(bool includeFloatingElements = true);
 
     /// <summary>
     /// Finds all children at a given position.
@@ -339,6 +402,18 @@ public interface IView : IDisposable, INotifyPropertyChanged
     bool IsDirty();
 
     /// <summary>
+    /// Checks if the view is effectively visible, i.e. if it has anything to draw.
+    /// </summary>
+    /// <remarks>
+    /// While <see cref="Visibility"/> acts as a master on/off switch, there may be many other reasons for a view not
+    /// to have any visible content, such as views with zero <see cref="Opacity"/>, layout views with no visible
+    /// children, or labels or images with no current text or sprite.
+    /// </remarks>
+    /// <param name="position">Optional position at which to test for visibility. If not specified, the result indicates
+    /// whether any part of the view is visible.</param>
+    bool IsVisible(Vector2? position = null);
+
+    /// <summary>
     /// Performs layout on this view, updating its <see cref="OuterSize"/>, <see cref="ActualBounds"/> and
     /// <see cref="ContentBounds"/>, and arranging any children in their respective positions.
     /// </summary>
@@ -355,6 +430,13 @@ public interface IView : IDisposable, INotifyPropertyChanged
     /// </summary>
     /// <param name="e">The event data.</param>
     void OnButtonPress(ButtonEventArgs e);
+
+    /// <summary>
+    /// Called when a button press is first received, and at recurring intervals thereafter, for as long as the button
+    /// is held and this view remains in the focus path.
+    /// </summary>
+    /// <param name="e">The event data.</param>
+    void OnButtonRepeat(ButtonEventArgs e);
 
     /// <summary>
     /// Called when a click is received within this view's bounds.

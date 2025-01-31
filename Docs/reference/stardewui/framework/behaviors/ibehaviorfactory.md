@@ -32,12 +32,36 @@ public interface IBehaviorFactory
 
  | Name | Description |
 | --- | --- |
+| [CanCreateBehavior(string, string)](#cancreatebehaviorstring-string) | Checks if the factory can create behaviors with a specified name and argument. | 
 | [CreateBehavior(Type, string, string)](#createbehaviortype-string-string) | Creates a new behavior. | 
-| [SupportsName(string)](#supportsnamestring) | Checks if the factory can create behaviors with a specified name. | 
 
 ## Details
 
 ### Methods
+
+#### CanCreateBehavior(string, string)
+
+Checks if the factory can create behaviors with a specified name and argument.
+
+```cs
+bool CanCreateBehavior(string name, string argument);
+```
+
+##### Parameters
+
+**`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The behavior name.
+
+**`argument`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The argument for the behavior, if any. Most implementations can ignore this parameter, but in some cases it is used for disambiguation.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if this factory should handle the specified `name`, when given the specified `argument`, otherwise `false`.
+
+-----
 
 #### CreateBehavior(Type, string, string)
 
@@ -63,27 +87,6 @@ Additional argument provided in the markup, distinct from the behavior's [DataTy
 [IViewBehavior](iviewbehavior.md)
 
   A new behavior of a type corresponding to the `name`.
-
------
-
-#### SupportsName(string)
-
-Checks if the factory can create behaviors with a specified name.
-
-```cs
-bool SupportsName(string name);
-```
-
-##### Parameters
-
-**`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
-The behavior name.
-
-##### Returns
-
-[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
-
-  `true` if this factory should handle the specified `name`, otherwise `false`.
 
 -----
 

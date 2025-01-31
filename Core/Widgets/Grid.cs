@@ -240,6 +240,12 @@ public partial class Grid : View
     }
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return false;
+    }
+
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         return itemLayout.IsDirty

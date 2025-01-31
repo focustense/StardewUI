@@ -22,6 +22,13 @@ public class BehaviorFactory : IBehaviorFactory
     }
 
     /// <inheritdoc />
+    public bool CanCreateBehavior(string name, string argument)
+    {
+        return nameFactories.ContainsKey(name)
+            || delegateFactories.Any(factory => factory.CanCreateBehavior(name, argument));
+    }
+
+    /// <inheritdoc />
     public IViewBehavior CreateBehavior(Type viewType, string name, string argument)
     {
         if (nameFactories.TryGetValue(name, out var factory))
@@ -29,7 +36,7 @@ public class BehaviorFactory : IBehaviorFactory
             return factory(argument);
         }
         return delegateFactories
-                .Where(factory => factory.SupportsName(name))
+                .Where(factory => factory.CanCreateBehavior(name, argument))
                 .Select(factory => factory.CreateBehavior(viewType, name, argument))
                 .FirstOrDefault() ?? throw new ArgumentException($"Unsupported behavior type: {name}", nameof(name));
     }
@@ -57,11 +64,5 @@ public class BehaviorFactory : IBehaviorFactory
     public void Register(string name, Func<string, IViewBehavior> factory)
     {
         nameFactories.Add(name, factory);
-    }
-
-    /// <inheritdoc />
-    public bool SupportsName(string name)
-    {
-        return nameFactories.ContainsKey(name) || delegateFactories.Any(factory => factory.SupportsName(name));
     }
 }

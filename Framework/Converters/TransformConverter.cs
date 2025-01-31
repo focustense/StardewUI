@@ -60,7 +60,7 @@ public class TransformConverter : IValueConverter<string, Transform>
                 case ['S' or 's', 'C' or 'c', 'A' or 'a', 'L' or 'l', 'E' or 'e']:
                     scale = float.TryParse(componentValue, out var uniformScale)
                         ? new(uniformScale, uniformScale)
-                        : Vector2Converter.Parse(componentValue);
+                        : Parsers.ParseVector2(componentValue);
                     break;
                 case ['R' or 'r', 'O' or 'o', 'T' or 't', 'A' or 'a', 'T' or 't', 'E' or 'e']:
                     rotation = MathHelper.ToRadians(float.Parse(componentValue));
@@ -76,7 +76,7 @@ public class TransformConverter : IValueConverter<string, Transform>
                     };
                     break;
                 case ['T' or 't', 'R' or 'r', 'A' or 'a', 'N' or 'n', 'S' or 's', 'L' or 'l', 'A' or 'a', 'T' or 't', 'E' or 'e']:
-                    translation = Vector2Converter.Parse(componentValue);
+                    translation = Parsers.ParseVector2(componentValue);
                     break;
                 default:
                     throw new FormatException($"Unrecognized transform component '{componentName}.");

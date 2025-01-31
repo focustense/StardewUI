@@ -22,8 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="assets\data\tempering.json" />
     <None Remove="assets\sprites\cursors.json" />
     <None Remove="assets\sprites\MenuTiles.json" />
+    <None Remove="assets\sprites\Shapes.json" />
+    <None Remove="assets\sprites\Shapes.png" />
     <None Remove="assets\sprites\status.json" />
     <None Remove="assets\sprites\status.png" />
     <None Remove="assets\views\Example-Bestiary.sml" />
@@ -39,10 +42,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="assets\data\tempering.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\sprites\Cursors.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\sprites\MenuTiles.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\sprites\Shapes.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\sprites\Shapes.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\sprites\Status.json">
@@ -67,6 +79,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\views\Example-Tabs.sml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\views\Example-Tempering.sml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\views\Gallery.sml">

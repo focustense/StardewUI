@@ -21,19 +21,19 @@ public class VisibilityStateBehavior<TValue>(string propertyName) : ViewBehavior
     public override void Update(TimeSpan elapsed) { }
 
     /// <inheritdoc />
-    protected override void OnDispose()
-    {
-        View.PropertyChanged -= View_PropertyChanged;
-    }
-
-    /// <inheritdoc />
-    protected override void OnInitialize()
+    protected override void OnAttached()
     {
         View.PropertyChanged += View_PropertyChanged;
         if (View.Visibility == Visibility.Visible)
         {
-            ViewState.GetOrAddProperty<TValue>(propertyName).Push("visible", Data);
+            ViewState.GetOrAddProperty<TValue>(propertyName).ReplaceOrPush("visible", Data);
         }
+    }
+
+    /// <inheritdoc />
+    protected override void OnDetached(IView view)
+    {
+        view.PropertyChanged -= View_PropertyChanged;
     }
 
     /// <inheritdoc />

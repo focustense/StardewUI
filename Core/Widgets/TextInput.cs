@@ -112,6 +112,31 @@ public partial class TextInput : View
     }
 
     /// <summary>
+    /// Whether the input is enabled.
+    /// </summary>
+    /// <remarks>
+    /// Disabled text inputs have a darkened appearance and do not accept captures or text entry.
+    /// </remarks>
+    public bool Enabled
+    {
+        get => enabled;
+        set
+        {
+            if (value == enabled)
+            {
+                return;
+            }
+            enabled = value;
+            frame.BackgroundTint = value ? Color.White : Color.LightGray;
+            if (!value)
+            {
+                Release();
+            }
+            OnPropertyChanged(nameof(Enabled));
+        }
+    }
+
+    /// <summary>
     /// The font with which to render text. Defaults to <see cref="Game1.smallFont"/>.
     /// </summary>
     public SpriteFont Font
@@ -146,6 +171,38 @@ public partial class TextInput : View
                     Text = Text[..value];
                 }
                 OnPropertyChanged(nameof(MaxLength));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Placeholder text to display when the <see cref="Text"/> is empty and input is not captured.
+    /// </summary>
+    public string Placeholder
+    {
+        get => placeholder.Text;
+        set
+        {
+            if (value != placeholder.Text)
+            {
+                placeholder.Text = value;
+                OnPropertyChanged(nameof(Placeholder));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Color of the <see cref="Placeholder"/> text when displayed.
+    /// </summary>
+    public Color PlaceholderColor
+    {
+        get => placeholder.Color;
+        set
+        {
+            if (value != placeholder.Color)
+            {
+                placeholder.Color = value;
+                OnPropertyChanged(nameof(PlaceholderColor));
             }
         }
     }
@@ -248,11 +305,13 @@ public partial class TextInput : View
     private readonly Animator<Image, Visibility> caretBlinkAnimator;
     private readonly Frame frame;
     private readonly Label label;
+    private readonly Label placeholder;
     private readonly ScrollContainer scrollContainer;
     private readonly TextBoxInterceptor textBoxInterceptor;
     private readonly TextInputSubscriber textInputSubscriber;
     private readonly Panel textPanel;
 
+    private bool enabled = true;
     private bool isTextEntryMenuShown;
     private int maxLength;
     private string textAfterCursor = "";
@@ -290,11 +349,17 @@ public partial class TextInput : View
             Margin = new(Right: SCROLL_PEEKING_PX),
             MaxLines = 1,
         };
+        placeholder = new()
+        {
+            Name = "TextInputPlaceholder",
+            Layout = LayoutParameters.AutoRow(),
+            MaxLines = 1,
+        };
         textPanel = new Panel()
         {
             Layout = LayoutParameters.Fill(),
             VerticalContentAlignment = Alignment.Middle,
-            Children = [label, caret],
+            Children = [placeholder, label, caret],
         };
         scrollContainer = new()
         {
@@ -319,6 +384,7 @@ public partial class TextInput : View
 
         Font = Game1.smallFont;
         TextColor = Game1.textColor;
+        PlaceholderColor = Color.Gray;
     }
 
     /// <inheritdoc />
@@ -336,7 +402,7 @@ public partial class TextInput : View
     /// <inheritdoc />
     public override void OnClick(ClickEventArgs e)
     {
-        if (e.IsPrimaryButton())
+        if (Enabled && e.IsPrimaryButton())
         {
             Capture(e.Position);
             e.Handled = true;
@@ -380,6 +446,7 @@ public partial class TextInput : View
             caretBlinkAnimator.Start(Visibility.Visible, Visibility.Hidden, TimeSpan.FromSeconds(1));
             Game1.keyboardDispatcher.Subscriber = textInputSubscriber;
         }
+        UpdatePlaceholderVisibility();
     }
 
     private void HandleSpecialKey(Keys key)
@@ -502,6 +569,7 @@ public partial class TextInput : View
     private void OnTextChanged()
     {
         UpdateRealCaretPosition();
+        UpdatePlaceholderVisibility();
         TextChanged?.Invoke(this, EventArgs.Empty);
         OnPropertyChanged(nameof(Text));
     }
@@ -514,6 +582,7 @@ public partial class TextInput : View
         isTextEntryMenuShown = false;
         caretBlinkAnimator.Stop();
         caret.Visibility = Visibility.Hidden;
+        UpdatePlaceholderVisibility();
     }
 
     private bool SetCaretPosition(int position)
@@ -543,6 +612,17 @@ public partial class TextInput : View
         TextBeforeCursor = text;
         TextAfterCursor = "";
         OnTextChanged();
+    }
+
+    private void UpdatePlaceholderVisibility()
+    {
+        placeholder.Visibility =
+            textBeforeCursor.Length == 0
+            && textAfterCursor.Length == 0
+            && !isTextEntryMenuShown
+            && Game1.keyboardDispatcher.Subscriber != textInputSubscriber
+                ? Visibility.Visible
+                : Visibility.Hidden;
     }
 
     private void UpdateRealCaretPosition()

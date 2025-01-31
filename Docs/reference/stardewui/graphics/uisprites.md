@@ -88,6 +88,7 @@ public static class UiSprites
 | [TinyTrashCan](#tinytrashcan) | Very small trash can, e.g. to be used in lists/subforms as "remove" button. | 
 | [VerticalScrollThumb](#verticalscrollthumb) | Thumb sprite used for vertical scroll bars. | 
 | [White](#white) | A single white pixel. | 
+| [WhiteBorder](#whiteborder) | Nine-slice sprite consisting of 8 white edge pixels and a transparent center. Used for simple borders. | 
 
 ## Details
 
@@ -839,6 +840,20 @@ A single white pixel.
 
 ```cs
 public static StardewUI.Graphics.Sprite White { get; }
+```
+
+##### Property Value
+
+[Sprite](sprite.md)
+
+-----
+
+#### WhiteBorder
+
+Nine-slice sprite consisting of 8 white edge pixels and a transparent center. Used for simple borders.
+
+```cs
+public static StardewUI.Graphics.Sprite WhiteBorder { get; }
 ```
 
 ##### Property Value

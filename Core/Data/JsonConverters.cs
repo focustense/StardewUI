@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using StardewUI.Framework.Converters;
+﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using StardewUI.Layout;
 
-namespace StardewUI.Framework.Api;
+namespace StardewUI.Data;
 
 /// <summary>
 /// JSON converter for the <see cref="Edges"/> type.
@@ -47,7 +47,7 @@ internal class RectangleJsonConverter : JsonConverter<Rectangle>
         return reader.TokenType switch
         {
             JsonToken.Null => default,
-            JsonToken.String => RectangleConverter.Parse((string)reader.Value!),
+            JsonToken.String => Parsers.ParseRectangle((string)reader.Value!),
             _ => throw new FormatException(
                 $"Can't parse {typeof(Rectangle).Name} from a {reader.TokenType} JSON token."
             ),

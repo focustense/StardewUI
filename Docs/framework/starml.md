@@ -200,6 +200,8 @@ The behavior system is designed to be extensible through add-ons, so unlike [str
 | --- | --- | --- | --- |
 | `hover:<arg>` | Any [regular attribute](#common-attributes) | Same as `<arg>` attribute | Changes the `<arg>` property to a new value when the pointer enters the view, and reverts it when the pointer leaves the view. |
 | `show:<arg>` | Any [regular attribute](#common-attributes) | Same as `<arg>` attribute | Changes the `<arg>` property to a new value when the view becomes visible, including when first created e.g. as the result of an `*if`; reverts it when the view is hidden. |
+| `state:<name>` | `string` | `bool` | Creates a named state whose behaviors are toggled on/off by the bound value. This is intended for use with state triggers (see below). |
+| `state:<name>:<arg>` | `string`, then any [regular attribute](#common-attributes) | Same as `<arg>` attribute | Changes the `<arg>` property to a new value when the state with specified `name` becomes active, and reverts it when the state becomes inactive. Only works when `state:<name>` is defined on the same element. |
 | `transition:<arg>` | Any [regular attribute](#common-attributes) | [Transition](../reference/stardewui/animation/transition.md) | Applies a transition to the `<arg>` property when its value changes, causing it to animate gradually from its current value to the new value instead of changing immediately. |
 
 ///

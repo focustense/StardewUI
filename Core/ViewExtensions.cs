@@ -67,6 +67,9 @@ public static class ViewExtensions
     /// <paramref name="view"/>.</param>
     /// <param name="preferFocusable"><c>true</c> to prioritize a focusable child over a non-focusable child with a higher
     /// z-index in case of overlap; <c>false</c> to always use the topmost child.</param>
+    /// <param name="requirePointerEvents">Whether to exclude views whose <see cref="IView.PointerEventsEnabled"/> is
+    /// currently <c>false</c>. This short-circuits the pathing; if any ancestor of a view has pointer events disabled
+    /// then it cannot be part of the path.</param>
     /// <returns>A sequence of <see cref="ViewChild"/> elements with the <see cref="IView"/> and position (relative to
     /// parent) at each level, starting with the specified <paramref name="view"/> and ending with the lowest-level
     /// <see cref="IView"/> that still overlaps with the specified <paramref name="position"/>.
@@ -74,10 +77,11 @@ public static class ViewExtensions
     public static IEnumerable<ViewChild> GetPathToPosition(
         this IView view,
         Vector2 position,
-        bool preferFocusable = false
+        bool preferFocusable = false,
+        bool requirePointerEvents = true
     )
     {
-        if (!view.ContainsPoint(position))
+        if ((requirePointerEvents && !view.PointerEventsEnabled) || !view.ContainsPoint(position))
         {
             yield break;
         }
@@ -86,7 +90,7 @@ public static class ViewExtensions
         {
             position -= child.Position;
             yield return child;
-            child = child.View.GetChildAt(position, preferFocusable);
+            child = child.View.GetChildAt(position, preferFocusable, requirePointerEvents);
         } while (child is not null);
     }
 
@@ -113,7 +117,7 @@ public static class ViewExtensions
     /// </summary>
     /// <param name="view">The root view.</param>
     /// <param name="path">The path from root down to some descendant, such as the path returned by
-    /// <see cref="GetPathToPosition(IView, Vector2, bool)"/>.</param>
+    /// <see cref="GetPathToPosition(IView, Vector2, bool, bool)"/>.</param>
     /// <returns>A sequence of <see cref="ViewChild"/> elements, starting at the <paramref name="view"/>, where each
     /// child's <see cref="ViewChild.Position"/> is the child's most current location within its parent.</returns>
     public static IEnumerable<ViewChild> ResolveChildPath(this IView view, IEnumerable<IView> path)

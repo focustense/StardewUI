@@ -1,6 +1,6 @@
 ---
 title: MenuActivationMode
-description: Available behaviors for opening a ViewMenu&lt;T&gt;.
+description: Available behaviors for opening a ViewMenu.
 search:
     boost: 0.002
 ---
@@ -20,7 +20,7 @@ Assembly: StardewUI.dll
 
 </div>
 
-Available behaviors for opening a [ViewMenu&lt;T&gt;](viewmenu-1.md).
+Available behaviors for opening a [ViewMenu](viewmenu.md).
 
 ```cs
 public enum MenuActivationMode

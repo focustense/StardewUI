@@ -35,7 +35,7 @@ public interface IValueConverter
 /// </summary>
 /// <typeparam name="TSource">The type of value to be converted.</typeparam>
 /// <typeparam name="TDestination">The converted value type.</typeparam>
-public interface IValueConverter<TSource, TDestination> : IValueConverter
+public interface IValueConverter<in TSource, out TDestination> : IValueConverter
 {
     Type IValueConverter.DestinationType => typeof(TDestination);
 

@@ -14,5 +14,6 @@ search:
 
 | Name | Description |
 | --- | --- |
+| [ButtonSpriteMapData](buttonspritemapdata.md) | JSON configuration data for a [ButtonSpriteMap](../graphics/buttonspritemap.md). |
 | [TooltipData](tooltipdata.md) | Provides data for all known variants of a menu tooltip. |
 

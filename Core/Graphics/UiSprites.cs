@@ -225,13 +225,13 @@ public static class UiSprites
     /// Inset-style background and border, often used to hold an item or represent a slot.
     /// </summary>
     public static Sprite MenuSlotInset =>
-        new(Game1.menuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(4, 9, 8, 4));
+        new(Game1.menuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(4, 10, 12, 4));
 
     /// <summary>
     /// Colorless inset-style background and border, often used to hold an item or represent a slot.
     /// </summary>
     public static Sprite MenuSlotInsetUncolored =>
-        new(Game1.uncoloredMenuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(4, 9, 8, 4));
+        new(Game1.uncoloredMenuTexture, SourceRect: new(0, 320, 60, 60), FixedEdges: new(4, 10, 12, 4));
 
     /// <summary>
     /// Outset-style background and border, often used to hold an item or represent a slot.
@@ -392,4 +392,10 @@ public static class UiSprites
     /// A single white pixel.
     /// </summary>
     public static Sprite White => new(Game1.staminaRect);
+
+    /// <summary>
+    /// Nine-slice sprite consisting of 8 white edge pixels and a transparent center. Used for simple borders.
+    /// </summary>
+    public static Sprite WhiteBorder =>
+        new(Game1.mouseCursors, SourceRect: new(379, 357, 3, 3), FixedEdges: new(1), SliceSettings: new(Scale: 4));
 }

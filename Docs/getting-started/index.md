@@ -4,9 +4,9 @@ If you've made a Stardew mod before, then setting up StardewUI should be a snap;
 
 ## Installing the Framework
 
-StardewUI is prerelease, so it isn't published on Nexus Mods or any other mod site yet.
+Install StardewUI as you would install any other mod. For manual installation:
 
-1. Download the [latest release](https://github.com/focustense/StardewUI/releases). Make sure you download the `StardewUI x.y.z.zip` file, **not** the source code.
+1. Download the latest release on [GitHub](https://github.com/focustense/StardewUI/releases) or [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/28870). When downloading from GitHub, make sure you download the `StardewUI x.y.z.zip` file, **not** the source code.
 2. Open the .zip file and extract the `StardewUI` folder into your `Stardew Valley\Mods` folder.
 
 The framework is now ready to use from your own mods.

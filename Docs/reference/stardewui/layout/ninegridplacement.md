@@ -64,10 +64,12 @@ public record NineGridPlacement : IEquatable<StardewUI.Layout.NineGridPlacement>
 | [EqualsIgnoringOffset(NineGridPlacement)](#equalsignoringoffsetninegridplacement) | Checks if another [NineGridPlacement](ninegridplacement.md) has the same alignments as this one, regardless of offset. | 
 | [GetMargin()](#getmargin) | Calculates what margin should be applied to the content container in order to achieve the [Offset](ninegridplacement.md#offset). | 
 | [GetNeighbors(Boolean)](#getneighborsbool) | Gets the [NineGridPlacement](ninegridplacement.md)s that neighbor the current placement, i.e. are reachable in a single [Snap(Direction, Boolean)](ninegridplacement.md#snapdirection-bool). | 
-| [GetPosition(Vector2)](#getpositionvector2) | Computes the aligned pixel position relative to a bounded size. | 
+| [GetPosition(Vector2, Vector2)](#getpositionvector2-vector2) | Computes the position of some content within its container bounds. | 
 | [IsMiddle()](#ismiddle) | Checks if this placement is aligned to the exact center of the container, not counting [Offset](ninegridplacement.md#offset). | 
 | [Nudge(Direction, Int32)](#nudgedirection-int) | Keeps the same alignments, but pushes the content farther in a specific direction. | 
+| [Parse(string)](#parsestring) | Parses a [NineGridPlacement](ninegridplacement.md) from its string representation. | 
 | [Snap(Direction, Boolean)](#snapdirection-bool) | Snaps to an adjacent grid cell. | 
+| [TryParse(string, NineGridPlacement)](#tryparsestring-ninegridplacement) | Attempts to parse a [NineGridPlacement](ninegridplacement.md) from its string representation. | 
 
 ## Details
 
@@ -196,7 +198,7 @@ The desired vertical alignment.
 
 [NineGridPlacement](ninegridplacement.md)
 
-  A [NineGridPlacement](ninegridplacement.md) whose [HorizontalAlignment](ninegridplacement.md#horizontalalignment) and [VerticalAlignment](ninegridplacement.md#verticalalignment) match the `horizontalAlignment` and `verticalAlignment`, respectively, and whose [GetPosition(Vector2)](ninegridplacement.md#getpositionvector2) will resolve to exactly the specified `position`.
+  A [NineGridPlacement](ninegridplacement.md) whose [HorizontalAlignment](ninegridplacement.md#horizontalalignment) and [VerticalAlignment](ninegridplacement.md#verticalalignment) match the `horizontalAlignment` and `verticalAlignment`, respectively, and whose [GetPosition(Vector2, Vector2)](ninegridplacement.md#getpositionvector2-vector2) will resolve to exactly the specified `position`.
 
 -----
 
@@ -262,24 +264,27 @@ Whether to avoid the exact center, i.e. having both [HorizontalAlignment](ninegr
 
 -----
 
-#### GetPosition(Vector2)
+#### GetPosition(Vector2, Vector2)
 
-Computes the aligned pixel position relative to a bounded size.
+Computes the position of some content within its container bounds.
 
 ```cs
-public Microsoft.Xna.Framework.Vector2 GetPosition(Microsoft.Xna.Framework.Vector2 size);
+public Microsoft.Xna.Framework.Vector2 GetPosition(Microsoft.Xna.Framework.Vector2 contentSize, Microsoft.Xna.Framework.Vector2 containerSize);
 ```
 
 ##### Parameters
 
-**`size`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
-The size of the container.
+**`contentSize`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
+Size of the content to be positioned.
+
+**`containerSize`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
+Size of the container in which the content will be positioned.
 
 ##### Returns
 
 [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
 
-  The aligned position, relative to the container.
+  The aligned content position, relative to the container.
 
 -----
 
@@ -321,6 +326,27 @@ Pixel distance to offset in the specified `direction`.
 
 -----
 
+#### Parse(string)
+
+Parses a [NineGridPlacement](ninegridplacement.md) from its string representation.
+
+```cs
+public static StardewUI.Layout.NineGridPlacement Parse(string value);
+```
+
+##### Parameters
+
+**`value`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The string value to parse.
+
+##### Returns
+
+[NineGridPlacement](ninegridplacement.md)
+
+  The parsed placement.
+
+-----
+
 #### Snap(Direction, bool)
 
 Snaps to an adjacent grid cell.
@@ -346,6 +372,30 @@ Whether to avoid the exact center, i.e. having both [HorizontalAlignment](ninegr
 ##### Remarks
 
 Causes the [Offset](ninegridplacement.md#offset) to be reset for the newly-created placement.
+
+-----
+
+#### TryParse(string, NineGridPlacement)
+
+Attempts to parse a [NineGridPlacement](ninegridplacement.md) from its string representation.
+
+```cs
+public static bool TryParse(string value, out StardewUI.Layout.NineGridPlacement result);
+```
+
+##### Parameters
+
+**`value`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The string value to parse.
+
+**`result`** &nbsp; [NineGridPlacement](ninegridplacement.md)  
+If the method returns `true`, holds the parsed placement; otherwise `null`.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if the `value` was successfully parsed; `false` if the input was not in a valid format.
 
 -----
 

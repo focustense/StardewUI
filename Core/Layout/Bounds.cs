@@ -112,6 +112,18 @@ public record Bounds(Vector2 Position, Vector2 Size) : IOffsettable<Bounds>
     }
 
     /// <summary>
+    /// Converts the bounds to an integer <see cref="Rectangle"/>, truncating any fractional values.
+    /// </summary>
+    /// <remarks>
+    /// Truncating is the same behavior used in <see cref="Vector2.ToPoint"/>, making this consistent with the
+    /// equivalent component-by-component translation to XNA.
+    /// </remarks>
+    public Rectangle Truncate()
+    {
+        return new Rectangle(Position.ToPoint(), Size.ToPoint());
+    }
+
+    /// <summary>
     /// Computes the union of this <see cref="Bounds"/> with another instance.
     /// </summary>
     /// <param name="other">The other bounds to add to the union.</param>

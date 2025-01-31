@@ -61,6 +61,7 @@ public record ViewChild : StardewUI.Layout.IOffsettable<StardewUI.ViewChild>,
 | [GetContentBounds()](#getcontentbounds) | Returns a [Bounds](layout/bounds.md) representing the parent-relative content bounds of this child. | 
 | [GetFloatingBounds()](#getfloatingbounds) | Returns a sequence of [Bounds](layout/bounds.md) representing the parent-relative bounds of this child's own floating elements and those of all its descendants. | 
 | [IsInDirection(Vector2, Direction)](#isindirectionvector2-direction) | Checks if a view can be reached by travelling from a given point in a given direction. | 
+| [IsVisible(Vector2)](#isvisiblevector2) | Checks if the visible area of this child contains a point relative to the view's parent. | 
 | [Offset(Vector2)](#offsetvector2) | Offsets the position by a given distance. | 
 
 ## Details
@@ -279,6 +280,27 @@ The direction from `origin`.
 [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
 
   `true` if the view's boundaries either already contain the `origin` or are in the specified `direction` from the `origin`; otherwise `false`.
+
+-----
+
+#### IsVisible(Vector2)
+
+Checks if the visible area of this child contains a point relative to the view's parent.
+
+```cs
+public bool IsVisible(Microsoft.Xna.Framework.Vector2 point);
+```
+
+##### Parameters
+
+**`point`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
+The point to test.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if `point` is within the visible, parent-relative bounds of this child; otherwise `false`.
 
 -----
 

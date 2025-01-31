@@ -54,6 +54,12 @@ public partial class GhostView : View
     private Color tintColor = Color.White;
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return RealView?.IsVisible() == true;
+    }
+
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         if (RealView is null)

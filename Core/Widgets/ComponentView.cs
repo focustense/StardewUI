@@ -19,7 +19,7 @@ public abstract class ComponentView : ComponentView<IView> { }
 /// children for the purposes of updating the UI, responding to events, etc.
 /// </para>
 /// <para>
-/// Component views can be composed like any other views, or used in a <see cref="ViewMenu{T}"/>.
+/// Component views can be composed like any other views, or used in a <see cref="ViewMenu"/>.
 /// </para>
 /// </remarks>
 /// <typeparam name="T">Type of view used for the root.</typeparam>

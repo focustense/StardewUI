@@ -5,7 +5,7 @@
 /// </summary>
 /// <remarks>
 /// Used on types such as the <see cref="ViewDrawable"/> that require regular updates but are not implicitly update by
-/// any part of the vanilla game logic such as <see cref="ViewMenu{T}"/>. To receive updates, the instance must be
+/// any part of the vanilla game logic such as <see cref="ViewMenu"/>. To receive updates, the instance must be
 /// tracked in a <see cref="ViewEngine"/>.
 /// </remarks>
 internal interface IUpdatable

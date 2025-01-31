@@ -86,6 +86,22 @@ public partial class Frame : View
     }
 
     /// <summary>
+    /// Tint color for the <see cref="Border"/> image.
+    /// </summary>
+    public Color BorderTint
+    {
+        get => borderTint;
+        set
+        {
+            if (value != borderTint)
+            {
+                borderTint = value;
+                OnPropertyChanged(nameof(BorderTint));
+            }
+        }
+    }
+
+    /// <summary>
     /// The inner content view, which will render inside the border and padding.
     /// </summary>
     public IView? Content
@@ -197,6 +213,7 @@ public partial class Frame : View
     private Color backgroundTint = Color.White;
     private Sprite? border;
     private NineSlice? borderSlice;
+    private Color borderTint = Color.White;
     private Vector2 contentPosition;
     private float shadowAlpha;
     private int shadowCount = 1;
@@ -220,6 +237,12 @@ public partial class Frame : View
     protected override IEnumerable<ViewChild> GetLocalChildren()
     {
         return Content is not null ? [new(Content, contentPosition)] : [];
+    }
+
+    /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return Background is not null || Border is not null;
     }
 
     /// <inheritdoc />
@@ -249,7 +272,7 @@ public partial class Frame : View
             }
             backgroundSlice?.Draw(b, BackgroundTint);
         }
-        borderSlice?.Draw(b);
+        borderSlice?.Draw(b, BorderTint);
     }
 
     /// <inheritdoc />

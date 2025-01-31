@@ -90,17 +90,48 @@ public class ViewBehaviors(
         hasTarget = target is not null;
         foreach (var binding in bindings)
         {
-            if (binding.Behavior is null)
+            if (target is null)
             {
-                if (target is null)
+                binding.Detach();
+            }
+            else
+            {
+                if (binding.Behavior is not null)
                 {
-                    binding.Detach();
+                    binding.Behavior.Initialize(target);
                 }
                 else
                 {
                     binding.Behavior = CreateBehavior(target, binding.Attribute);
                 }
-                UpdateDataSource(binding);
+            }
+            UpdateDataSource(binding);
+        }
+    }
+
+    /// <summary>
+    /// Runs on every update tick, before any bindings or views update.
+    /// </summary>
+    /// <param name="elapsed">Time elapsed since last tick.</param>
+    public void PreUpdate(TimeSpan elapsed)
+    {
+        if (!hasTarget)
+        {
+            return;
+        }
+        foreach (var binding in bindings)
+        {
+            if (binding.Behavior is not IViewBehavior behavior)
+            {
+                continue;
+            }
+            if (binding.DataSource?.Update() == true)
+            {
+                behavior.SetData(binding.DataSource.Value);
+            }
+            if (behavior.CanUpdate())
+            {
+                binding.Behavior.PreUpdate(elapsed);
             }
         }
     }

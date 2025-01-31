@@ -45,6 +45,7 @@ public class ViewBehaviors : System.IDisposable
  | Name | Description |
 | --- | --- |
 | [Dispose()](#dispose) |  | 
+| [PreUpdate(TimeSpan)](#preupdatetimespan) | Runs on every update tick, before any bindings or views update. | 
 | [SetContext(BindingContext)](#setcontextbindingcontext) | Updates or removes the binding context for all managed behaviors. | 
 | [SetTarget(BehaviorTarget)](#settargetbehaviortarget) | Updates the attached target (view and state) for all managed behaviors. | 
 | [Update(TimeSpan)](#updatetimespan) | Runs on every update tick. | 
@@ -89,6 +90,21 @@ Scope for resolving externalized attributes, such as translation keys.
 ```cs
 public void Dispose();
 ```
+
+-----
+
+#### PreUpdate(TimeSpan)
+
+Runs on every update tick, before any bindings or views update.
+
+```cs
+public void PreUpdate(System.TimeSpan elapsed);
+```
+
+##### Parameters
+
+**`elapsed`** &nbsp; [TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan)  
+Time elapsed since last tick.
 
 -----
 

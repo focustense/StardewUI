@@ -31,6 +31,23 @@ public abstract class View : IView, IFloatContainer
     public event EventHandler<ButtonEventArgs>? ButtonPress;
 
     /// <summary>
+    /// Event raised when a button is being held while the view is in focus, and has been held long enough since the
+    /// initial <see cref="ButtonPress"/> or the previous <c>ButtonRepeat</c> to trigger a repeated press.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Because the game has its own logic to repeat key presses, which would cause <see cref="ButtonPress"/> to fire
+    /// repeatedly, this event generally applies only to the controller; that is, it exists to allow callers to decide
+    /// whether they want the handler to repeat while the button is held or to only fire when first pressed, providing
+    /// slightly more control than keyboard events whose repetition is up to the whims of the vanilla game.
+    /// </para>
+    /// <para>
+    /// Only the views in the current focus path should receive these events.
+    /// </para>
+    /// </remarks>
+    public event EventHandler<ButtonEventArgs>? ButtonRepeat;
+
+    /// <summary>
     /// Event raised when the view receives a click.
     /// </summary>
     public event EventHandler<ClickEventArgs>? Click;
@@ -87,12 +104,6 @@ public abstract class View : IView, IFloatContainer
     /// </summary>
     public event EventHandler<WheelEventArgs>? Wheel;
 
-    /// <inheritdoc/>
-    public Bounds ActualBounds => GetActualBounds();
-
-    /// <inheritdoc/>
-    public Bounds ContentBounds => GetContentBounds();
-
     /// <summary>
     /// Indicates whether a UI-initiated drawing operation is in progress, from any view.
     /// </summary>
@@ -102,12 +113,48 @@ public abstract class View : IView, IFloatContainer
     /// </remarks>
     internal static bool IsDrawing { get; private set; }
 
+    /// <inheritdoc/>
+    public Bounds ActualBounds => GetActualBounds();
+
     /// <summary>
     /// The layout size (not edge thickness) of the entire drawn area including the border, i.e. the
     /// <see cref="InnerSize"/> plus any borders defined in <see cref="GetBorderThickness"/>. Does not include the
     /// <see cref="Margin"/>.
     /// </summary>
     public Vector2 BorderSize => InnerSize + GetBorderThickness().Total;
+
+    /// <inheritdoc />
+    public NineGridPlacement? ClipOrigin
+    {
+        get => clipOrigin;
+        set
+        {
+            if (value != clipOrigin)
+            {
+                clipOrigin = value;
+                clipBounds = null; // Recalculate on next draw
+                OnPropertyChanged(nameof(ClipOrigin));
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    public LayoutParameters? ClipSize
+    {
+        get => clipSize;
+        set
+        {
+            if (value != clipSize)
+            {
+                clipSize = value;
+                clipBounds = null; // Recalculate on next draw
+                OnPropertyChanged(nameof(ClipSize));
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public Bounds ContentBounds => GetContentBounds();
 
     /// <summary>
     /// The size of the view's content, which is drawn inside the padding. Subclasses set this in their
@@ -297,6 +344,20 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
+    public PointerStyle PointerStyle
+    {
+        get => pointerStyle;
+        set
+        {
+            if (value != pointerStyle)
+            {
+                pointerStyle = value;
+                OnPropertyChanged(nameof(PointerStyle));
+            }
+        }
+    }
+
+    /// <inheritdoc />
     /// <summary>
     /// If set to an axis, specifies that when any child of the view is scrolled into view (using
     /// <see cref="ScrollIntoView"/>), then this entire view should be scrolled along with it.
@@ -449,6 +510,9 @@ public abstract class View : IView, IFloatContainer
     private readonly DirtyTracker<Edges> margin = new(Edges.NONE);
     private readonly DirtyTracker<Edges> padding = new(Edges.NONE);
 
+    private Bounds? clipBounds;
+    private NineGridPlacement? clipOrigin;
+    private LayoutParameters? clipSize;
     private Vector2 contentSize;
     private bool draggable;
     private IView? draggingView;
@@ -462,6 +526,7 @@ public abstract class View : IView, IFloatContainer
     private RenderTarget2D? opacitySourceTarget;
     private RenderTarget2D? opacityDestinationTarget;
     private bool pointerEventsEnabled = true;
+    private PointerStyle pointerStyle = PointerStyle.Default;
     private Vector2 previousLayoutOffset;
     private WeakViewChild? previousPointerTarget;
     private Orientation? scrollWithChildren;
@@ -526,6 +591,12 @@ public abstract class View : IView, IFloatContainer
         }
 
         using var _drawing = new DrawingState();
+
+        if (clipBounds is null && clipSize is not null)
+        {
+            UpdateClipBounds();
+        }
+        using var _clip = clipBounds is not null ? b.Clip(clipBounds.Truncate()) : null;
 
         // Local transforms can be applied before or after creating the render target, it makes no difference. However,
         // doing it before makes it simpler to separate the main content logic from floating element logic.
@@ -629,18 +700,19 @@ public abstract class View : IView, IFloatContainer
     public FocusSearchResult? FocusSearch(Vector2 position, Direction direction)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(FocusSearch));
-        if (Visibility != Visibility.Visible)
+        if (!PointerEventsEnabled || Visibility != Visibility.Visible)
         {
             return null;
         }
+        var floatingOffset = GetFloatingOffset();
         foreach (var floatingElement in FloatingElements)
         {
-            var floatingChild = floatingElement.AsViewChild();
+            var floatingChild = floatingElement.AsViewChild().Offset(floatingOffset);
             if (!floatingChild.ContainsPoint(position))
             {
                 continue;
             }
-            var floatingResult = floatingElement.AsViewChild().FocusSearch(position, direction);
+            var floatingResult = floatingChild.FocusSearch(position, direction);
             if (floatingResult is not null)
             {
                 return floatingResult;
@@ -680,7 +752,7 @@ public abstract class View : IView, IFloatContainer
         // This second iteration is to be able to move the focus INTO a floating element from the main view.
         foreach (var floatingElement in FloatingElements)
         {
-            var floatingResult = floatingElement.AsViewChild().FocusSearch(position, direction);
+            var floatingResult = floatingElement.AsViewChild().Offset(floatingOffset).FocusSearch(position, direction);
             if (floatingResult is not null)
             {
                 return floatingResult;
@@ -691,9 +763,12 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
-    public ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
+    public ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false, bool requirePointerEvents = false)
     {
-        return GetChildrenAt(position).ZOrderDescending(preferFocusable).FirstOrDefault();
+        return GetChildrenAt(position)
+            .Where(child => !requirePointerEvents || child.View.PointerEventsEnabled)
+            .ZOrderDescending(preferFocusable)
+            .FirstOrDefault();
     }
 
     /// <inheritdoc />
@@ -708,12 +783,16 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
-    public IEnumerable<ViewChild> GetChildren()
+    public IEnumerable<ViewChild> GetChildren(bool includeFloatingElements = true)
     {
         var offset = GetContentOffset();
-        return GetLocalChildren()
-            .Select(viewChild => new ViewChild(viewChild.View, viewChild.Position + offset))
-            .Concat(FloatingElements.Select(fe => fe.AsViewChild()));
+        var children = GetLocalChildren()
+            .Select(viewChild => viewChild with { Position = viewChild.Position + offset });
+        if (includeFloatingElements)
+        {
+            children = children.Concat(FloatingElements.Select(fe => fe.AsViewChild()));
+        }
+        return children;
     }
 
     /// <inheritdoc />
@@ -727,10 +806,10 @@ public abstract class View : IView, IFloatContainer
         {
             yield return child.Offset(contentOffset);
         }
-        position -= GetFloatingOffset();
+        var floatingOffset = GetFloatingOffset();
         foreach (var floatingElement in FloatingElements)
         {
-            var floatingChild = floatingElement.AsViewChild();
+            var floatingChild = floatingElement.AsViewChild().Offset(floatingOffset);
             if (floatingChild.ContainsPoint(position))
             {
                 yield return floatingChild;
@@ -742,11 +821,13 @@ public abstract class View : IView, IFloatContainer
     public virtual ViewChild? GetDefaultFocusChild()
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(GetDefaultFocusChild));
-        if (Focusable)
+        if (PointerEventsEnabled && Focusable)
         {
             return new(this, Vector2.Zero);
         }
-        return GetChildren().Where(child => child.View.GetDefaultFocusChild() is not null).FirstOrDefault();
+        return GetChildren()
+            .Where(child => child.View.PointerEventsEnabled && child.View.GetDefaultFocusChild() is not null)
+            .FirstOrDefault();
     }
 
     /// <inheritdoc />
@@ -763,6 +844,22 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc />
+    public bool IsVisible(Vector2? position = null)
+    {
+        if (Visibility == Visibility.Hidden || Opacity <= 0)
+        {
+            return false;
+        }
+        if (HasOwnContent() && (position is null || ActualBounds.ContainsPoint(position.Value)))
+        {
+            return true;
+        }
+        return position is not null
+            ? GetChildrenAt(position.Value).Any(child => child.IsVisible(position.Value))
+            : GetChildren().Any(child => child.View.IsVisible());
+    }
+
+    /// <inheritdoc />
     public bool Measure(Vector2 availableSize)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(Measure));
@@ -771,6 +868,13 @@ public abstract class View : IView, IFloatContainer
             foreach (var floatingElement in FloatingElements)
             {
                 floatingElement.MeasureAndPosition(this, wasParentDirty: false);
+            }
+            // We don't need to reposition floating views deeper in the hierarchy, since they are positioned relative
+            // to non-floating parents, but we do need to give them a chance to run layout again if they are dirty.
+            // Since our own floating elements were already handled above, this only applies to descendants.
+            foreach (var child in GetLocalChildren())
+            {
+                MeasureDirtyFloatingElements(child.View);
             }
             return false;
         }
@@ -786,6 +890,7 @@ public abstract class View : IView, IFloatContainer
         {
             floatingElement.MeasureAndPosition(this, wasParentDirty: true);
         }
+        UpdateClipBounds();
         return true;
     }
 
@@ -805,6 +910,21 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <inheritdoc/>
+    public virtual void OnButtonRepeat(ButtonEventArgs e)
+    {
+        using var _ = Diagnostics.Trace.Begin(this, nameof(OnButtonRepeat));
+        if (Visibility != Visibility.Visible)
+        {
+            return;
+        }
+        DispatchPointerEvent(e, (view, args) => view.OnButtonRepeat(args));
+        if (!e.Handled)
+        {
+            ButtonRepeat?.Invoke(this, e);
+        }
+    }
+
+    /// <inheritdoc/>
     public virtual void OnClick(ClickEventArgs e)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(OnClick));
@@ -816,14 +936,14 @@ public abstract class View : IView, IFloatContainer
         if (!e.Handled)
         {
             Click?.Invoke(this, e);
-            if (e.IsPrimaryButton())
-            {
-                LeftClick?.Invoke(this, e);
-            }
-            else if (e.IsSecondaryButton())
-            {
-                RightClick?.Invoke(this, e);
-            }
+        }
+        if (!e.Handled && e.IsPrimaryButton())
+        {
+            LeftClick?.Invoke(this, e);
+        }
+        else if (!e.Handled && e.IsSecondaryButton())
+        {
+            RightClick?.Invoke(this, e);
         }
     }
 
@@ -907,7 +1027,7 @@ public abstract class View : IView, IFloatContainer
                 ? new(e.PreviousPosition - previousLayoutOffset + LayoutOffset, e.Position)
                 : e;
         previousLayoutOffset = LayoutOffset;
-        var currentTarget = GetChildAt(e.Position);
+        var currentTarget = GetChildAt(e.Position, requirePointerEvents: true);
         ViewChild? previousTarget = null;
         previousPointerTarget?.TryResolve(out previousTarget);
         previousPointerTarget = currentTarget?.AsWeak();
@@ -1078,6 +1198,21 @@ public abstract class View : IView, IFloatContainer
     }
 
     /// <summary>
+    /// Checks if this view displays its own content, independent of any floating elements or children.
+    /// </summary>
+    /// <remarks>
+    /// This is used by <see cref="IsVisible"/> to determine whether children need to be searched. If a view provides
+    /// its own content, e.g. a label or image displaying text or a sprite, or a frame displaying a background/border,
+    /// then the entire view's bounds are understood to have visible content. Otherwise, the view is only considered
+    /// visible as a whole if at least one child is visible, and is only visible at any given point if there is an
+    /// intersecting child at that point.
+    /// </remarks>
+    protected virtual bool HasOwnContent()
+    {
+        return true;
+    }
+
+    /// <summary>
     /// Checks whether or not the internal content/layout has changed.
     /// </summary>
     /// <remarks>
@@ -1104,6 +1239,24 @@ public abstract class View : IView, IFloatContainer
     protected void LogFocusSearch(string message)
     {
         Logger.Log($"[{GetType().Name}:{Name}] {message}", LogLevel.Debug);
+    }
+
+    private void MeasureDirtyFloatingElements(IView root)
+    {
+        if (root is IFloatContainer floatContainer)
+        {
+            foreach (var floatingElement in floatContainer.FloatingElements)
+            {
+                if (floatingElement.View.IsDirty())
+                {
+                    floatingElement.MeasureAndPosition(root, wasParentDirty: false);
+                }
+            }
+        }
+        foreach (var child in root.GetChildren(includeFloatingElements: false))
+        {
+            MeasureDirtyFloatingElements(child.View);
+        }
     }
 
     /// <summary>
@@ -1334,6 +1487,20 @@ public abstract class View : IView, IFloatContainer
         int width = (int)MathF.Ceiling(bounds.Size.X);
         int height = (int)MathF.Ceiling(bounds.Size.Y);
         batch.InitializeRenderTarget(ref target, width, height);
+    }
+
+    private void UpdateClipBounds()
+    {
+        if (this.clipSize is not LayoutParameters clipSize)
+        {
+            clipBounds = null;
+            return;
+        }
+        var actualSize = clipSize.Resolve(OuterSize, () => OuterSize);
+        var clipPosition = this.clipOrigin is { } clipOrigin
+            ? clipOrigin.GetPosition(actualSize, OuterSize)
+            : Vector2.Zero;
+        clipBounds = new(clipPosition, actualSize);
     }
 
     private readonly ref struct DrawingState : IDisposable

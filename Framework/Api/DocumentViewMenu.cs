@@ -9,13 +9,13 @@ using StardewValley.Menus;
 namespace StardewUI.Framework.Api;
 
 /// <summary>
-/// <see cref="ViewMenu{T}"/> implementation based on a StarML <see cref="Document"/>.
+/// <see cref="ViewMenu"/> implementation based on a StarML <see cref="Document"/>.
 /// </summary>
 /// <param name="viewNodeFactory">Factory for creating and binding <see cref="IViewNode"/>s.</param>
 /// <param name="documentSource">Source providing the StarML document describing the view.</param>
 /// <param name="data">Data to be bound to the view.</param>
 internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<Document> documentSource, object? data)
-    : ViewMenu<DocumentView>,
+    : ViewMenu,
         IMenuController
 {
     /// <inheritdoc />
@@ -34,12 +34,26 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
     public Action? CloseAction { get; set; }
 
     /// <inheritdoc />
+    public string CloseSound
+    {
+        get => closeSound;
+        set => closeSound = value;
+    }
+
+    /// <inheritdoc />
     public IClickableMenu Menu => this;
 
     /// <inheritdoc />
     public Func<Point>? PositionSelector { get; set; }
 
     private event Action? ControllerClosed;
+
+    /// <inheritdoc />
+    public void ClearCursorAttachment()
+    {
+        CursorAttachment = null;
+        TooltipsEnabled = true;
+    }
 
     /// <inheritdoc />
     public void EnableCloseButton(Texture2D? texture = null, Rectangle? sourceRect = null, float scale = 4)
@@ -52,6 +66,20 @@ internal class DocumentViewMenu(IViewNodeFactory viewNodeFactory, IValueSource<D
         {
             CloseButtonSprite = new(texture, sourceRect, SliceSettings: new(Scale: scale));
         }
+    }
+
+    /// <inheritdoc />
+    public void SetCursorAttachment(
+        Texture2D texture,
+        Rectangle? sourceRect = null,
+        Point? size = null,
+        Point? offset = null,
+        Color? tint = null
+    )
+    {
+        var sprite = new Sprite(texture, sourceRect);
+        CursorAttachment = new(sprite, size, offset, tint);
+        TooltipsEnabled = false;
     }
 
     /// <inheritdoc />

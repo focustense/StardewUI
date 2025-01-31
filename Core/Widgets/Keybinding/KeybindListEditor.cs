@@ -39,6 +39,30 @@ public partial class KeybindListEditor : ComponentView
     }
 
     /// <summary>
+    /// Solid background color to draw underneath each keybind frame.
+    /// </summary>
+    /// <remarks>
+    /// Applies only to the drawn parts inside borders, not to the empty space between them.
+    /// </remarks>
+    public Color BackgroundColor
+    {
+        get => backgroundColor;
+        set
+        {
+            if (value == backgroundColor)
+            {
+                return;
+            }
+            backgroundColor = value;
+            foreach (var keybindFrame in KeybindFrames)
+            {
+                keybindFrame.BackgroundTint = backgroundColor;
+            }
+            OnPropertyChanged(nameof(BackgroundColor));
+        }
+    }
+
+    /// <summary>
     /// The height for button images/sprites. Images are scaled uniformly, preserving source aspect ratio.
     /// </summary>
     public int ButtonHeight
@@ -179,7 +203,7 @@ public partial class KeybindListEditor : ComponentView
         get => keybindList;
         set
         {
-            if (value == keybindList)
+            if (value.KeybindEquals(keybindList))
             {
                 return;
             }
@@ -210,12 +234,14 @@ public partial class KeybindListEditor : ComponentView
         }
     }
 
-    private IEnumerable<KeybindView> KeybindViews =>
-        rootLane.Children.OfType<Frame>().Select(frame => frame.Content).OfType<KeybindView>();
+    private IEnumerable<Frame> KeybindFrames =>
+        rootLane.Children.OfType<Frame>().Select(frame => frame.Content).OfType<Frame>();
+    private IEnumerable<KeybindView> KeybindViews => KeybindFrames.Select(frame => frame.Content).OfType<KeybindView>();
 
     private readonly Lane rootLane = new();
 
     private string addButtonText = "";
+    private Color backgroundColor = Color.Transparent;
     private int buttonHeight = KeybindView.DEFAULT_BUTTON_HEIGHT;
     private string deleteButtonTooltip = "";
     private KeybindType? editableType;
@@ -232,7 +258,37 @@ public partial class KeybindListEditor : ComponentView
         rootLane.RightClick += RootLane_RightClick;
         rootLane.PointerEnter += RootLane_PointerEnter;
         rootLane.PointerLeave += RootLane_PointerLeave;
+        UpdateAll();
         return rootLane;
+    }
+
+    private IView CreateEmptyLabel()
+    {
+        if (string.IsNullOrEmpty(EmptyText))
+        {
+            return FrameContent(new Spacer() { Layout = LayoutParameters.FixedSize(ButtonHeight, ButtonHeight) });
+        }
+        var label = Label.Simple(EmptyText, Font);
+        label.Margin = new(0, 4);
+        return label;
+    }
+
+    private static Frame FrameContent(IView content, Edges? edges = null)
+    {
+        return new()
+        {
+            Layout = LayoutParameters.FitContent(),
+            Margin = edges ?? Edges.NONE,
+            Background = UiSprites.MenuSlotTransparent,
+            Padding = UiSprites.MenuSlotTransparent.FixedEdges ?? Edges.NONE,
+            Content = new Frame()
+            {
+                Padding = new(4),
+                Background = UiSprites.White,
+                BackgroundTint = Color.Transparent,
+                Content = content,
+            },
+        };
     }
 
     private void Overlay_Close(object? sender, EventArgs e)
@@ -265,6 +321,7 @@ public partial class KeybindListEditor : ComponentView
             UI.InputHelper.Suppress(e.Button);
             overlay.StartCapturing();
         }
+        e.Handled = true;
     }
 
     private void RootLane_PointerEnter(object? sender, PointerEventArgs e)
@@ -291,6 +348,7 @@ public partial class KeybindListEditor : ComponentView
         }
         Game1.playSound("drumkit5");
         KeybindList = new();
+        e.Handled = true;
     }
 
     private void UpdateAll()
@@ -299,24 +357,20 @@ public partial class KeybindListEditor : ComponentView
             .Keybinds.Where(kb => kb.IsBound)
             .Select(
                 (kb, index) =>
-                    new Frame()
-                    {
-                        Layout = LayoutParameters.FitContent(),
-                        Margin = index > 0 ? new Edges(Left: 16) : Edges.NONE,
-                        Background = UiSprites.MenuSlotTransparent,
-                        Padding = UiSprites.MenuSlotTransparent.FixedEdges! + new Edges(4),
-                        Content = new KeybindView
+                    FrameContent(
+                        new KeybindView
                         {
                             ButtonHeight = buttonHeight,
                             Font = font,
                             Keybind = kb,
                             SpriteMap = spriteMap,
                         },
-                    }
+                        index > 0 ? new Edges(Left: 16) : null
+                    )
             )
             .Cast<IView>()
             .ToList();
-        rootLane.Children = keybindViews.Count > 0 ? keybindViews : [Label.Simple(EmptyText)];
+        rootLane.Children = keybindViews.Count > 0 ? keybindViews : [CreateEmptyLabel()];
     }
 
     private void UpdateEmptyText(Color color)

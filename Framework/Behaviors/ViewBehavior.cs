@@ -38,12 +38,12 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
     /// <summary>
     /// The currently-attached view.
     /// </summary>
-    public TView View => (TView)target!.View;
+    protected TView View => (TView)target!.View;
 
     /// <summary>
     /// State overrides for the <see cref="View"/>.
     /// </summary>
-    public IViewState ViewState => target!.ViewState;
+    protected IViewState ViewState => target!.ViewState;
 
     Type IViewBehavior.DataType => typeof(TData);
 
@@ -65,6 +65,10 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
             return;
         }
         isDisposed = true;
+        if (target is not null)
+        {
+            OnDetached(target.View);
+        }
         OnDispose();
         target = null;
         GC.SuppressFinalize(this);
@@ -81,12 +85,55 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
                 nameof(target)
             );
         }
+        var previousView = this.target?.View;
+        var previousViewState = this.target?.ViewState;
         this.target = target;
-        OnInitialize();
+        if (target.View == previousView && target.ViewState == previousViewState)
+        {
+            return;
+        }
+        if (previousView is not null)
+        {
+            OnDetached(previousView);
+        }
+        OnAttached();
     }
 
     /// <inheritdoc />
-    public abstract void Update(TimeSpan elapsed);
+    public virtual void PreUpdate(TimeSpan elapsed) { }
+
+    /// <inheritdoc />
+    public virtual void Update(TimeSpan elapsed) { }
+
+    /// <summary>
+    /// Runs after the behavior is attached to a target.
+    /// </summary>
+    /// <remarks>
+    /// Setup code should go in this method to ensure that the values of <see cref="View"/> and <see cref="ViewState"/>
+    /// are actually assigned. If code runs in the behavior's constructor, these are not guaranteed to be populated.
+    /// </remarks>
+    protected virtual void OnAttached() { }
+
+    /// <summary>
+    /// Runs when the behavior is detached from a target.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Behaviors may receive new views as part of a "rebind", if the old view is destroyed and recreated, for example
+    /// as the result of a conditional binding changing states.
+    /// </para>
+    /// <para>
+    /// <c>OnDetached</c> is always immediately followed by <see cref="OnAttached"/>. A behavior cannot remain in a
+    /// detached state; however, overriding this method gives behaviors the opportunity to clean up state from the old
+    /// view (e.g. remove event handlers) before the new one is attached.
+    /// </para>
+    /// <para>
+    /// Also runs when the behavior is disposed, so detach logic does not need to be duplicated in
+    /// <see cref="OnDispose"/>.
+    /// </para>
+    /// </remarks>
+    /// <param name="view">The view that was previously attached.</param>
+    protected virtual void OnDetached(IView view) { }
 
     /// <summary>
     /// Runs when the behavior is being disposed.
@@ -96,15 +143,6 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
     /// required by the specific feature.
     /// </remarks>
     protected virtual void OnDispose() { }
-
-    /// <summary>
-    /// Runs after the behavior has been initialized.
-    /// </summary>
-    /// <remarks>
-    /// Setup code should go in this method to ensure that the values of <see cref="View"/> and <see cref="ViewState"/>
-    /// are actually assigned. If code runs in the behavior's constructor, these are not guaranteed to be populated.
-    /// </remarks>
-    protected virtual void OnInitialize() { }
 
     /// <summary>
     /// Runs when the <see cref="Data"/> of this behavior is changed.
@@ -122,15 +160,13 @@ public abstract class ViewBehavior<TView, TData> : IViewBehavior
         {
             Logger.Log(
                 $"Behavior type {GetType().FullName} cannot accept a data type of {data.GetType().FullName} (requires "
-                    + $"{typeof(TData).FullName} or a subtype). The behavior will be disabled until it receives data with "
-                    + "a supported type.",
+                    + $"{typeof(TData).FullName} or a subtype). The behavior will be disabled until it receives data "
+                    + "with a supported type.",
                 LogLevel.Warn
             );
             Data = default!;
             return;
         }
-        // These null-forgiving assignments are valid because the actual implementations of the properties handle null
-        // values implicitly, and because the framework is required to honor the result CanUpdate.
-        Data = (TData)data!;
+        Data = data is not null ? (TData)data : default!;
     }
 }

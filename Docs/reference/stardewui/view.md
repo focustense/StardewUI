@@ -51,6 +51,8 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | --- | --- |
 | [ActualBounds](#actualbounds) | The bounds of this view relative to the origin (0, 0). | 
 | [BorderSize](#bordersize) | The layout size (not edge thickness) of the entire drawn area including the border, i.e. the [InnerSize](view.md#innersize) plus any borders defined in [GetBorderThickness()](view.md#getborderthickness). Does not include the [Margin](view.md#margin). | 
+| [ClipOrigin](#cliporigin) | Origin position for the [ClipSize](iview.md#clipsize). | 
+| [ClipSize](#clipsize) | Size of the clipping rectangle, outside which content will not be displayed. | 
 | [ContentBounds](#contentbounds) | The true bounds of this view's content; i.e. [ActualBounds](iview.md#actualbounds) excluding margins. | 
 | [ContentSize](#contentsize) | The size of the view's content, which is drawn inside the padding. Subclasses set this in their [OnMeasure(Vector2)](view.md#onmeasurevector2) method and padding, margins, etc. are handled automatically. | 
 | [Draggable](#draggable) | Whether or not this view should fire drag events such as [DragStart](view.md#dragstart) and [Drag](view.md#drag). | 
@@ -69,6 +71,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [OuterSize](#outersize) | The size of the entire area occupied by this view including margins, border and padding. | 
 | [Padding](#padding) | Padding (whitespace inside border) for this view. | 
 | [PointerEventsEnabled](#pointereventsenabled) | Whether this view should receive pointer events like [Click](view.md#click) or [Drag](view.md#drag). | 
+| [PointerStyle](#pointerstyle) | Pointer style to use when this view is hovered. | 
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](view.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
 | [Tooltip](#tooltip) | Localized tooltip to display on hover, if any. | 
@@ -87,19 +90,22 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [FindFocusableDescendant(Vector2, Direction)](#findfocusabledescendantvector2-direction) | Searches for a focusable child within this view that is reachable in the specified `direction`, and returns a result containing the view and search path if found. | 
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
 | [GetBorderThickness()](#getborderthickness) | Measures the thickness of each edge of the border, if the view has a border. | 
-| [GetChildAt(Vector2, Boolean)](#getchildatvector2-bool) | Finds the child at a given position. | 
+| [GetChildAt(Vector2, Boolean, Boolean)](#getchildatvector2-bool-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
-| [GetChildren()](#getchildren) | Gets the current children of this view. | 
+| [GetChildren(Boolean)](#getchildrenbool) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
 | [GetDefaultFocusChild()](#getdefaultfocuschild) | Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first opened. | 
 | [GetLocalChildren()](#getlocalchildren) | Gets the view's children with positions relative to the content area. | 
 | [GetLocalChildrenAt(Vector2)](#getlocalchildrenatvector2) | Searches for all views at a given position relative to the content area. | 
 | [HasOutOfBoundsContent()](#hasoutofboundscontent) | Checks if the view has content or elements that are all or partially outside the [ActualBounds](iview.md#actualbounds). | 
+| [HasOwnContent()](#hasowncontent) | Checks if this view displays its own content, independent of any floating elements or children. | 
 | [IsContentDirty()](#iscontentdirty) | Checks whether or not the internal content/layout has changed. | 
 | [IsDirty()](#isdirty) | Checks whether or not the view is dirty - i.e. requires a new layout with a full [Measure(Vector2)](iview.md#measurevector2). | 
+| [IsVisible(Vector2?)](#isvisiblevector2) | Checks if the view is effectively visible, i.e. if it has anything to draw. | 
 | [LogFocusSearch(string)](#logfocussearchstring) | Outputs a debug log entry with the current view type, name and specified message. | 
 | [Measure(Vector2)](#measurevector2) | Performs layout on this view, updating its [OuterSize](iview.md#outersize), [ActualBounds](iview.md#actualbounds) and [ContentBounds](iview.md#contentbounds), and arranging any children in their respective positions. | 
 | [OnButtonPress(ButtonEventArgs)](#onbuttonpressbuttoneventargs) | Called when a button press is received while this view is in the focus path. | 
+| [OnButtonRepeat(ButtonEventArgs)](#onbuttonrepeatbuttoneventargs) | Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path. | 
 | [OnClick(ClickEventArgs)](#onclickclickeventargs) | Called when a click is received within this view's bounds. | 
 | [OnDispose()](#ondispose) | Performs additional cleanup when [Dispose()](view.md#dispose) is called. | 
 | [OnDrag(PointerEventArgs)](#ondragpointereventargs) | Called when the view is being dragged (mouse moved while left button held). | 
@@ -121,6 +127,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
  | Name | Description |
 | --- | --- |
 | [ButtonPress](#buttonpress) | Event raised when any button on any input device is pressed. | 
+| [ButtonRepeat](#buttonrepeat) | Event raised when a button is being held while the view is in focus, and has been held long enough since the initial [ButtonPress](view.md#buttonpress) or the previous `ButtonRepeat` to trigger a repeated press. | 
 | [Click](#click) | Event raised when the view receives a click. | 
 | [Drag](#drag) | Event raised when the view is being dragged using the mouse. | 
 | [DragEnd](#dragend) | Event raised when mouse dragging is stopped, i.e. when the button is released. Always raised after the last [Drag](view.md#drag), and only once per drag operation. | 
@@ -184,6 +191,46 @@ public Microsoft.Xna.Framework.Vector2 BorderSize { get; }
 ##### Property Value
 
 [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)
+
+-----
+
+#### ClipOrigin
+
+Origin position for the [ClipSize](iview.md#clipsize).
+
+```cs
+public StardewUI.Layout.NineGridPlacement ClipOrigin { get; set; }
+```
+
+##### Property Value
+
+[NineGridPlacement](layout/ninegridplacement.md)
+
+##### Remarks
+
+If clipping is enabled by specifying a [ClipSize](iview.md#clipsize), and the computed size of the clipping rectangle is not exactly equal to the view's [OuterSize](iview.md#outersize), then this determines how it will be aligned relative to this view's boundaries. 
+
+ The default origin is the view's top-left corner (0, 0). This property has no effect unless the view's [ClipSize](iview.md#clipsize) is also defined.
+
+-----
+
+#### ClipSize
+
+Size of the clipping rectangle, outside which content will not be displayed.
+
+```cs
+public StardewUI.Layout.LayoutParameters? ClipSize { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[LayoutParameters](layout/layoutparameters.md)>
+
+##### Remarks
+
+This is defined as a layout, but unlike the view's [Layout](iview.md#layout), it is not computed against the available size provided by the parent; instead, its reference size is the view's [OuterSize](iview.md#outersize). 
+
+ A common scenario is to set this to [Fill()](layout/layoutparameters.md#fill) in order to prevent drawing outside the view's own boundaries, i.e. as an equivalent to CSS `overflow: hidden`. Note however that clipping occurs during the drawing phase, so a smaller clip region does not result in a smaller layout; the view will still have the same size it would have had without any clipping, but only part of it will actually get drawn. This can also be used intentionally to create some animated visual effects such as slides and wipes.
 
 -----
 
@@ -369,7 +416,7 @@ protected Microsoft.Xna.Framework.Vector2 LayoutOffset { get; }
 
 ##### Remarks
 
-A non-zero offset means that the nominal positions of any view children (e.g. as obtained from [GetChildren()](view.md#getchildren)) are different from their actual drawing positions on screen, for example in the case of a [ScrollContainer](widgets/scrollcontainer.md) that is not at the default scroll position. 
+A non-zero offset means that the nominal positions of any view children (e.g. as obtained from [GetChildren(Boolean)](view.md#getchildrenbool)) are different from their actual drawing positions on screen, for example in the case of a [ScrollContainer](widgets/scrollcontainer.md) that is not at the default scroll position. 
 
  If a view will internally shift content in this way without affecting layout, it should update the [LayoutOffset](view.md#layoutoffset) property to ensure correctness of pointer events and coordinate-related queries such as [GetLocalChildrenAt(Vector2)](view.md#getlocalchildrenatvector2), **instead of** attempting to correct for that offset locally.
 
@@ -464,6 +511,24 @@ public bool PointerEventsEnabled { get; set; }
 ##### Remarks
 
 By default, all views receive pointer events; this may be disabled for views that intentionally overlap other views but shouldn't block their input, such as local non-modal overlays.
+
+-----
+
+#### PointerStyle
+
+Pointer style to use when this view is hovered.
+
+```cs
+public StardewUI.Input.PointerStyle PointerStyle { get; set; }
+```
+
+##### Property Value
+
+[PointerStyle](input/pointerstyle.md)
+
+##### Remarks
+
+As with [Tooltip](iview.md#tooltip), the lowest-level view takes precedence over any higher-level views.
 
 -----
 
@@ -703,12 +768,12 @@ Used only by views that will implement a border via [OnDrawBorder(ISpriteBatch)]
 
 -----
 
-#### GetChildAt(Vector2, bool)
+#### GetChildAt(Vector2, bool, bool)
 
 Finds the child at a given position.
 
 ```cs
-public StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
+public StardewUI.ViewChild GetChildAt(Microsoft.Xna.Framework.Vector2 position, bool preferFocusable, bool requirePointerEvents);
 ```
 
 ##### Parameters
@@ -718,6 +783,9 @@ The search position, relative to the view's top-left coordinate.
 
 **`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
 `true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
+
+**`requirePointerEvents`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to exclude views whose [PointerEventsEnabled](iview.md#pointereventsenabled) is currently `false`.
 
 ##### Returns
 
@@ -756,13 +824,18 @@ Implementation of this may be O(N) and therefore it should not be called every f
 
 -----
 
-#### GetChildren()
+#### GetChildren(bool)
 
 Gets the current children of this view.
 
 ```cs
-public System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetChildren();
+public System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetChildren(bool includeFloatingElements);
 ```
+
+##### Parameters
+
+**`includeFloatingElements`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to include views that are not direct children, but instead members of the floating elements collection of an [IFloatContainer](layout/ifloatcontainer.md) implementation.
 
 ##### Returns
 
@@ -821,7 +894,7 @@ protected virtual System.Collections.Generic.IEnumerable<StardewUI.ViewChild> Ge
 
 ##### Remarks
 
-This has the same signature as [GetChildren()](view.md#getchildren) but assumes that coordinates are in the same space as those used in [OnDrawContent(ISpriteBatch)](view.md#ondrawcontentispritebatch), i.e. not accounting for margin/border/padding. These coordinates are automatically adjusted in the [GetChildren()](view.md#getchildren) to be relative to the entire view. 
+This has the same signature as [GetChildren(Boolean)](view.md#getchildrenbool) but assumes that coordinates are in the same space as those used in [OnDrawContent(ISpriteBatch)](view.md#ondrawcontentispritebatch), i.e. not accounting for margin/border/padding. These coordinates are automatically adjusted in the [GetChildren(Boolean)](view.md#getchildrenbool) to be relative to the entire view. 
 
  The default implementation returns an empty sequence. Composite views must override this method in order for user interactions to behave correctly.
 
@@ -870,6 +943,24 @@ This may be the case for e.g. floating elements, and covers not only the view's 
 
 -----
 
+#### HasOwnContent()
+
+Checks if this view displays its own content, independent of any floating elements or children.
+
+```cs
+protected virtual bool HasOwnContent();
+```
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+This is used by [IsVisible(Vector2?)](view.md#isvisiblevector2) to determine whether children need to be searched. If a view provides its own content, e.g. a label or image displaying text or a sprite, or a frame displaying a background/border, then the entire view's bounds are understood to have visible content. Otherwise, the view is only considered visible as a whole if at least one child is visible, and is only visible at any given point if there is an intersecting child at that point.
+
+-----
+
 #### IsContentDirty()
 
 Checks whether or not the internal content/layout has changed.
@@ -913,6 +1004,29 @@ Typically, a view will be considered dirty if and only if one of the following a
   - The `availableSize` is not the same as the previously-seen value (see remarks in [Measure(Vector2)](iview.md#measurevector2))
 
  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
+
+-----
+
+#### IsVisible(Vector2?)
+
+Checks if the view is effectively visible, i.e. if it has anything to draw.
+
+```cs
+public bool IsVisible(Microsoft.Xna.Framework.Vector2? position);
+```
+
+##### Parameters
+
+**`position`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>  
+Optional position at which to test for visibility. If not specified, the result indicates whether any part of the view is visible.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+While [Visibility](iview.md#visibility) acts as a master on/off switch, there may be many other reasons for a view not to have any visible content, such as views with zero [Opacity](iview.md#opacity), layout views with no visible children, or labels or images with no current text or sprite.
 
 -----
 
@@ -966,6 +1080,21 @@ Called when a button press is received while this view is in the focus path.
 
 ```cs
 public virtual void OnButtonPress(StardewUI.Events.ButtonEventArgs e);
+```
+
+##### Parameters
+
+**`e`** &nbsp; [ButtonEventArgs](events/buttoneventargs.md)  
+The event data.
+
+-----
+
+#### OnButtonRepeat(ButtonEventArgs)
+
+Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path.
+
+```cs
+public virtual void OnButtonRepeat(StardewUI.Events.ButtonEventArgs e);
 ```
 
 ##### Parameters
@@ -1247,6 +1376,26 @@ public event EventHandler<StardewUI.Events.ButtonEventArgs>? ButtonPress;
 ##### Remarks
 
 Only the views in the current focus path should receive these events.
+
+-----
+
+#### ButtonRepeat
+
+Event raised when a button is being held while the view is in focus, and has been held long enough since the initial [ButtonPress](view.md#buttonpress) or the previous `ButtonRepeat` to trigger a repeated press.
+
+```cs
+public event EventHandler<StardewUI.Events.ButtonEventArgs>? ButtonRepeat;
+```
+
+##### Event Type
+
+[EventHandler](https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1)<[ButtonEventArgs](events/buttoneventargs.md)>
+
+##### Remarks
+
+Because the game has its own logic to repeat key presses, which would cause [ButtonPress](view.md#buttonpress) to fire repeatedly, this event generally applies only to the controller; that is, it exists to allow callers to decide whether they want the handler to repeat while the button is held or to only fire when first pressed, providing slightly more control than keyboard events whose repetition is up to the whims of the vanilla game. 
+
+ Only the views in the current focus path should receive these events.
 
 -----
 

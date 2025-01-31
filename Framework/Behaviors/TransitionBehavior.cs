@@ -13,28 +13,34 @@ public class TransitionBehavior<TValue>(string propertyName, Lerp<TValue> lerp) 
 {
     private TimeSpan elapsed;
     private TValue? fromValue;
+    private bool hasTargetValue;
     private bool isTransitionActive;
     private IPropertyDescriptor<TValue> property = null!; // Initialized in OnInitialize
     private TValue? targetValue;
+    private TValue? viewValue;
+
+    /// <inheritdoc />
+    public override void PreUpdate(TimeSpan elapsed)
+    {
+        viewValue = property.GetValue(View);
+    }
 
     /// <inheritdoc />
     public override void Update(TimeSpan elapsed)
     {
-        if (ViewState.GetProperty<TValue>(propertyName) is not { } propertyState)
-        {
-            return;
-        }
+        var propertyState = ViewState.GetOrAddProperty<TValue>(propertyName);
         if (isTransitionActive)
         {
             propertyState.TryRemove("transition", out _);
         }
-        var targetValue = propertyState.TryPeek(out var value)
+        var targetValue = propertyState.TryPeekValue(out var value)
             ? value
             : ViewState.GetDefaultValue<TValue>(property.Name);
-        if (!EqualityComparer<TValue>.Default.Equals(targetValue, this.targetValue))
+        if (!hasTargetValue || !EqualityComparer<TValue>.Default.Equals(targetValue, this.targetValue))
         {
-            fromValue = property.GetValue(View);
+            fromValue = viewValue;
             this.targetValue = targetValue;
+            hasTargetValue = true;
             this.elapsed = TimeSpan.Zero;
             isTransitionActive = true;
         }
@@ -56,10 +62,17 @@ public class TransitionBehavior<TValue>(string propertyName, Lerp<TValue> lerp) 
     }
 
     /// <inheritdoc />
-    protected override void OnInitialize()
+    protected override void OnAttached()
     {
         property =
             (IPropertyDescriptor<TValue>)DescriptorFactory.GetViewDescriptor(View.GetType()).GetProperty(propertyName);
-        targetValue = property.GetValue(View);
+        viewValue = property.GetValue(View);
+    }
+
+    /// <inheritdoc />
+    protected override void OnDetached(IView view)
+    {
+        targetValue = default;
+        hasTargetValue = false;
     }
 }

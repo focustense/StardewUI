@@ -8,6 +8,7 @@ namespace StardewUI.Animation;
 /// <param name="Duration">Duration of the transition.</param>
 /// <param name="Delay">Delay during which to hold the current value before transitioning to the new value.</param>
 /// <param name="Easing">Type of easing or acceleration curve for the transition.</param>
+[DuckType]
 public record Transition(TimeSpan Duration, TimeSpan Delay, Easing Easing)
 {
     /// <summary>

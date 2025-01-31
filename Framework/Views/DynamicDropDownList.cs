@@ -39,7 +39,15 @@ internal class DynamicDropDownList : DecoratorView
         }
     }
 
+    /// <inheritdoc cref="DropDownList{T}.OptionMaxLines" />
+    public int OptionMaxLines
+    {
+        get => adapter.OptionMaxLines;
+        set => adapter.OptionMaxLines = value;
+    }
+
     /// <inheritdoc cref="DropDownList{T}.OptionMinWidth" />
+    [Obsolete("Use SelectionFrameLayout instead.")]
     public float OptionMinWidth
     {
         get => adapter.OptionMinWidth;
@@ -89,6 +97,13 @@ internal class DynamicDropDownList : DecoratorView
                 TrySetSelectedOption(value?.Value);
             }
         }
+    }
+
+    /// <inheritdoc cref="DropDownList{T}.SelectionFrameLayout" />
+    public LayoutParameters SelectionFrameLayout
+    {
+        get => adapter.SelectionFrameLayout;
+        set => adapter.SelectionFrameLayout = value;
     }
 
     private void TrySetSelectedOption(object? value)
@@ -262,9 +277,11 @@ internal class DynamicDropDownList : DecoratorView
         event EventHandler<EventArgs> Select;
 
         Delegate? OptionFormat { get; set; }
+        int OptionMaxLines { get; set; }
         float OptionMinWidth { get; set; }
         IEnumerable Options { get; set; }
         Type OptionType { get; }
+        LayoutParameters SelectionFrameLayout { get; set; }
         int SelectedIndex { get; set; }
         object? SelectedOption { get; set; }
         string SelectedOptionText { get; }
@@ -295,6 +312,13 @@ internal class DynamicDropDownList : DecoratorView
             set => view.OptionFormat = (Func<T, string>?)value;
         }
 
+        public int OptionMaxLines
+        {
+            get => view.OptionMaxLines;
+            set => view.OptionMaxLines = value;
+        }
+
+        [Obsolete("Use SelectionFrameLayout instead.")]
         public float OptionMinWidth
         {
             get => view.OptionMinWidth;
@@ -322,6 +346,12 @@ internal class DynamicDropDownList : DecoratorView
         }
 
         public string SelectedOptionText => view.SelectedOptionText;
+
+        public LayoutParameters SelectionFrameLayout
+        {
+            get => view.SelectionFrameLayout;
+            set => view.SelectionFrameLayout = value;
+        }
 
         public IView View => view;
 

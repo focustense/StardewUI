@@ -37,10 +37,10 @@ public static class ViewExtensions
 | --- | --- |
 | [FocusablePath(IEnumerable&lt;ViewChild&gt;)](#focusablepathienumerableviewchild) | Returns the focusable component of the path to a view, typically a cursor target. | 
 | [GetDefaultFocusPath(IView)](#getdefaultfocuspathiview) | Retrieves a path to the default focus child/descendant of a view. | 
-| [GetPathToPosition(IView, Vector2, Boolean)](#getpathtopositioniview-vector2-bool) | Retrieves a path to the view at a given position. | 
+| [GetPathToPosition(IView, Vector2, Boolean, Boolean)](#getpathtopositioniview-vector2-bool-bool) | Retrieves a path to the view at a given position. | 
 | [GetPathToView(IView, IView)](#getpathtoviewiview-iview) | Retrieves the path to a descendant view. | 
 | [ResolveChildPath(IView, IEnumerable&lt;IView&gt;)](#resolvechildpathiview-ienumerableiview) | Takes an existing view path and resolves it with child coordinates for the view at each level. | 
-| [ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)](#toglobalpositionsienumerableviewchild) | Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool) and transforms each element to have an absolute [Position](viewchild.md#position). | 
+| [ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)](#toglobalpositionsienumerableviewchild) | Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2, Boolean, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool-bool) and transforms each element to have an absolute [Position](viewchild.md#position). | 
 | [ZOrder(IEnumerable&lt;ViewChild&gt;, Boolean)](#zorderienumerableviewchild-bool) | Sorts a sequence of children in ascending z-order. | 
 | [ZOrderDescending(IEnumerable&lt;ViewChild&gt;, Boolean)](#zorderdescendingienumerableviewchild-bool) | Sorts a sequence of children in descending z-order. | 
 
@@ -90,12 +90,12 @@ The view at which to start the search.
 
 -----
 
-#### GetPathToPosition(IView, Vector2, bool)
+#### GetPathToPosition(IView, Vector2, bool, bool)
 
 Retrieves a path to the view at a given position.
 
 ```cs
-public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetPathToPosition(StardewUI.IView view, Microsoft.Xna.Framework.Vector2 position, bool preferFocusable);
+public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetPathToPosition(StardewUI.IView view, Microsoft.Xna.Framework.Vector2 position, bool preferFocusable, bool requirePointerEvents);
 ```
 
 ##### Parameters
@@ -108,6 +108,9 @@ The position to search for, in coordinates relative to the `view`.
 
 **`preferFocusable`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
 `true` to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; `false` to always use the topmost child.
+
+**`requirePointerEvents`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to exclude views whose [PointerEventsEnabled](iview.md#pointereventsenabled) is currently `false`. This short-circuits the pathing; if any ancestor of a view has pointer events disabled then it cannot be part of the path.
 
 ##### Returns
 
@@ -159,7 +162,7 @@ public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> Resolv
 The root view.
 
 **`path`** &nbsp; [IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[IView](iview.md)>  
-The path from root down to some descendant, such as the path returned by [GetPathToPosition(IView, Vector2, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool).
+The path from root down to some descendant, such as the path returned by [GetPathToPosition(IView, Vector2, Boolean, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool-bool).
 
 ##### Returns
 
@@ -171,7 +174,7 @@ The path from root down to some descendant, such as the path returned by [GetPat
 
 #### ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)
 
-Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool) and transforms each element to have an absolute [Position](viewchild.md#position).
+Converts a view path in parent-relative coordinates (e.g. from [GetPathToPosition(IView, Vector2, Boolean, Boolean)](viewextensions.md#getpathtopositioniview-vector2-bool-bool) and transforms each element to have an absolute [Position](viewchild.md#position).
 
 ```cs
 public static System.Collections.Generic.IEnumerable<StardewUI.ViewChild> ToGlobalPositions(System.Collections.Generic.IEnumerable<StardewUI.ViewChild> path);

@@ -430,6 +430,42 @@ Includes a `label-text` property that adds text next to the image; importantly, 
 
     Don't forget to use a [two-way binding](../framework/starml.md#binding-modifiers) or output binding in order to receive the value of `is-checked` in your model; this is much simpler and more efficient than using the `click` event.
 
+### Color Picker &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/colorpicker.md)
+
+Editor widget for entering a color value, with a small initial footprint that can be expanded into a complete dialog.
+
+In its collapsed form, the color is represented as a hex color and the hex value can be edited directly like a regular [text input](#text-input); while editing, the swatch will show the resulting color.
+
+Clicking on the swatch brings up the full color picker which includes both RGBA (horizontal sliders) and HSVA (hue/saturation wheel and value/alpha vertical sliders) editing options, as well as a list of preset swatches which can be customized by the author.
+
+Note that the HSVA section requires mouse input, since the design is inherently incompatible with gamepad controllers. RGBA sliders and preset swatches can be navigated via controller.
+
+=== "Demo"
+
+    ![Color Picker Example](../images/example-colorpicker.webp)
+
+=== "Usage (StarML)"
+
+    ```html
+    <color-picker color={<>BackgroundColor} />
+    ```
+
+=== "Usage (C#)"
+
+    ```cs
+    partial class ThemeViewModel : INotifyPropertyChanged
+    {
+        [Notify] private bool backgroundColor;
+    }
+    
+    void ShowColorPickerExample()
+    {
+        Game1.activeClickableMenu = viewEngine.CreateMenuFromAsset(
+            $"Mods/focustense.StardewUITest/Views/ThemeTestView",
+            new ThemeViewModel());
+    }
+    ```
+
 ### Drop-Down List &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/dropdownlist-1.md)
 
 Provides a drop-down (AKA pull-down) menu to select from a list of options.
@@ -621,6 +657,49 @@ Although it is designed to work with multiple keybindings (SMAPI `KeybindList`),
             new KeybindListTestViewModel());
     }
     ```
+
+### Segments
+
+Displays a set of options, such as the values of an `enum` type, in a segmented UI, similar to iOS [segmented controls](https://developer.apple.com/design/human-interface-guidelines/segmented-controls) or Material Design [segmented buttons](https://m3.material.io/components/segmented-buttons).
+
+Segments are the contemporary equivalent for the classic [radio button](https://en.wikipedia.org/wiki/Radio_button) group. In many cases they can be a better choice than a [dropdown](#drop-down-list) for selecting one out of a few options, as they have several advantages:
+
+- All selectable options are immediately visible;
+- Fewer clicks are needed to navigate/select an option;
+- Tooltips can be shown per option, providing more information on what each option does.
+
+It is best to use segments when the number of options is small, i.e. no more than 3 or 4. Mobile HID guidelines often suggest that each segment be given the same width, which can be done automatically by specifying `balanced="true"` in the attributes; however, this can require significantly more horizontal space, further limiting how many options can fit in a given UI.
+
+Segmented controls can be created with or without separators and transition animations.
+
+=== "Demo"
+
+    ![Segments Example](../images/example-segments.webp)
+
+=== "Usage (StarML)"
+
+    ```html
+    <segments highlight={@Mods/StardewUI/Sprites/White}
+              highlight-tint="#38c"
+              highlight-transition="150ms EaseOutCubic"
+              separator={@Mods/StardewUI/Sprites/White}
+              separator-tint="#333"
+              separator-width="2">
+        <label margin="12, 8"
+               text="Easy"
+               tooltip="0.5x purchase price, 2x sell price" />
+        <label margin="12, 8"
+               text="Normal"
+               tooltip="No price modifiers" />
+        <label margin="12, 8"
+               text="Hard"
+               tooltip="2x purchase price, 0.5x sell price" />
+    </segments>
+    ```
+
+Although segments are classified here as interaction, they are also technically a [layout view](#layouts) in the sense that the actual inner "segments" are simply the view's child nodes. One important implication of this is that, unlike dropdowns, segmented controls do not make many assumptions about data binding, and it is up to the author to figure out the details.
+
+Most mods can use a relatively standard data binding setup for simple use cases such as enums; for a more comprehensive example, refer to [`EnumSegmentsViewModel`](https://github.com/focustense/StardewRadialMenu/blob/dev/RadialMenu/UI/EnumSegmentsViewModel.cs) and the [`enum-segments`](https://github.com/focustense/StardewRadialMenu/blob/5033d13999a632c8cf46c8e24dff700e835ffec9/RadialMenu/assets/ui/views/Controls.sml#L88) template.
 
 ### Slider &nbsp; [:material-book-open-variant:](../reference/stardewui/widgets/slider.md)
 

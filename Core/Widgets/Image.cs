@@ -231,6 +231,12 @@ public partial class Image : View
     }
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return Sprite is not null;
+    }
+
+    /// <inheritdoc />
     protected override bool IsContentDirty()
     {
         // We intentionally don't check scale here, as scale doesn't affect layout size.

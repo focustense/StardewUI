@@ -51,7 +51,7 @@ public class FloatingPosition
 
  | Name | Description |
 | --- | --- |
-| [GetOffset(IView, View)](#getoffsetiview-view) | Calculates the final position of the floating view. | 
+| [GetOffset(IView, IView)](#getoffsetiview-iview) | Calculates the final position of the floating view. | 
 | [GetOffset(Vector2, Vector2)](#getoffsetvector2-vector2) | Calculates the relative origin position of a floating view based on its size and the size of its parent. | 
 | [Parse(string)](#parsestring) | Parses a [FloatingPosition](floatingposition.md) from its string representation. | 
 | [TryParse(string, FloatingPosition)](#tryparsestring-floatingposition) | Attempts to parse a [FloatingPosition](floatingposition.md) from its string representation. | 
@@ -135,12 +135,12 @@ public static readonly StardewUI.Layout.FloatingPosition BelowParent;
 
 ### Methods
 
-#### GetOffset(IView, View)
+#### GetOffset(IView, IView)
 
 Calculates the final position of the floating view.
 
 ```cs
-public Microsoft.Xna.Framework.Vector2 GetOffset(StardewUI.IView view, StardewUI.View parentView);
+public Microsoft.Xna.Framework.Vector2 GetOffset(StardewUI.IView view, StardewUI.IView parentView);
 ```
 
 ##### Parameters
@@ -148,7 +148,7 @@ public Microsoft.Xna.Framework.Vector2 GetOffset(StardewUI.IView view, StardewUI
 **`view`** &nbsp; [IView](../iview.md)  
 The floating view to position.
 
-**`parentView`** &nbsp; [View](../view.md)  
+**`parentView`** &nbsp; [IView](../iview.md)  
 The parent relative to which the floating view is being positioned.
 
 ##### Returns

@@ -46,6 +46,23 @@ public partial class Button : ComponentView<View>
     }
 
     /// <summary>
+    /// Tint color for the <see cref="DefaultBackground"/>.
+    /// </summary>
+    public Color DefaultBackgroundTint
+    {
+        get => defaultBackgroundTint;
+        set
+        {
+            if (value != defaultBackgroundTint)
+            {
+                defaultBackgroundTint = value;
+                UpdateBackgroundImage();
+                OnPropertyChanged(nameof(DefaultBackgroundTint));
+            }
+        }
+    }
+
+    /// <summary>
     /// Font with which to render button text.
     /// </summary>
     /// <remarks>
@@ -85,6 +102,23 @@ public partial class Button : ComponentView<View>
             hoverBackgroundSprite = value;
             UpdateBackgroundImage();
             OnPropertyChanged(nameof(HoverBackground));
+        }
+    }
+
+    /// <summary>
+    /// Tint color for the <see cref="HoverBackground"/>.
+    /// </summary>
+    public Color HoverBackgroundTint
+    {
+        get => hoverBackgroundTint;
+        set
+        {
+            if (value != hoverBackgroundTint)
+            {
+                hoverBackgroundTint = value;
+                UpdateBackgroundImage();
+                OnPropertyChanged(nameof(HoverBackgroundTint));
+            }
         }
     }
 
@@ -143,8 +177,10 @@ public partial class Button : ComponentView<View>
     }
 
     private Sprite? defaultBackgroundSprite;
+    private Color defaultBackgroundTint = Color.White;
     private SpriteFont font = Game1.smallFont;
     private Sprite? hoverBackgroundSprite;
+    private Color hoverBackgroundTint = Color.White;
     private bool lastHoverState;
 
     // Initialized in CreateView
@@ -208,5 +244,6 @@ public partial class Button : ComponentView<View>
         backgroundImage.Sprite = hover.Value
             ? HoverBackground ?? DefaultBackground ?? UiSprites.ButtonDark
             : DefaultBackground ?? UiSprites.ButtonDark;
+        backgroundImage.Tint = hover.Value ? HoverBackgroundTint : DefaultBackgroundTint;
     }
 }

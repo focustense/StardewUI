@@ -23,6 +23,7 @@ Assembly: StardewUI.dll
 Global transform applied to an [ISpriteBatch](ispritebatch.md).
 
 ```cs
+[StardewUI.DuckType]
 public record Transform : IEquatable<StardewUI.Graphics.Transform>
 ```
 
@@ -45,6 +46,7 @@ The order of the different translation parameters reflects the actual order in w
  | Name | Description |
 | --- | --- |
 | [Transform(Vector2, Single, Vector2)](#transformvector2-float-vector2) | Global transform applied to an [ISpriteBatch](ispritebatch.md). | 
+| [Transform(Vector2?, Single, Vector2)](#transformvector2-float-vector2) | Initializes a new [Transform](transform.md) instance. | 
 
 ### Fields
 
@@ -106,6 +108,31 @@ Translation offset for drawn content.
 The order of the different translation parameters reflects the actual order in which the transformations will be applied in a [GlobalTransform](globaltransform.md). Scaling before rotation prevents unexpected skewing, and rotating before translation keeps the coordinate system intact. 
 
  To deliberately apply the individual operations in a different order, use separate [Transform](transform.md) instances applied in sequence, or simply compute the [Matrix](https://docs.monogame.net/api/Microsoft.Xna.Framework.Matrix.html) directly.
+
+-----
+
+#### Transform(Vector2?, float, Vector2)
+
+Initializes a new [Transform](transform.md) instance.
+
+```cs
+public Transform(Microsoft.Xna.Framework.Vector2? Scale, float Rotation, Microsoft.Xna.Framework.Vector2 Translation);
+```
+
+##### Parameters
+
+**`Scale`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>  
+The scale at which to draw. [One](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2) is unity scale (i.e. no scaling).
+
+**`Rotation`** &nbsp; [Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)  
+2D rotation (always along Z axis) to apply, in radians.
+
+**`Translation`** &nbsp; [Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)  
+Translation offset for drawn content.
+
+##### Remarks
+
+This overload supports optional parameters, particularly for use in duck typing.
 
 -----
 

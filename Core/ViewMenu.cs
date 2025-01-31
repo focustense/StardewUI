@@ -21,8 +21,7 @@ namespace StardewUI;
 /// <summary>
 /// Generic menu implementation based on a root <see cref="IView"/>.
 /// </summary>
-public abstract class ViewMenu<T> : IClickableMenu, IDisposable
-    where T : IView
+public abstract class ViewMenu : IClickableMenu, IDisposable
 {
     /// <summary>
     /// Event raised when the menu is closed.
@@ -46,6 +45,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     }
 
     /// <summary>
+    /// Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any
+    /// floating elements.
+    /// </summary>
+    /// <remarks>
+    /// This setting is primarily intended for submenus and makes them behave more like overlays.
+    /// </remarks>
+    public bool CloseOnOutsideClick { get; set; }
+
+    /// <summary>
+    /// Additional cursor to draw below or adjacent to the normal mouse cursor.
+    /// </summary>
+    public Cursor? CursorAttachment { get; set; }
+
+    /// <summary>
     /// Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
     /// </summary>
     /// <remarks>
@@ -54,9 +67,18 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public float DimmingAmount { get; set; } = 0.75f;
 
     /// <summary>
+    /// Whether to display tooltips on mouse hover.
+    /// </summary>
+    /// <remarks>
+    /// Tooltips should normally always be left enabled; one reason to disable them would be if a
+    /// <see cref="CursorAttachment"/> is set that would overlap.
+    /// </remarks>
+    public bool TooltipsEnabled { get; set; } = true;
+
+    /// <summary>
     /// The view to display with this menu.
     /// </summary>
-    public T View => view;
+    public IView View => view;
 
     /// <summary>
     /// Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu
@@ -72,6 +94,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         set => gutter = value;
     }
 
+    private static readonly ActionRepeat ButtonRepeat = ActionRepeat.Default;
     private static readonly Edges DefaultGutter = new(100, 50);
 
     // SMAPI intercepts calls to the MouseState, but only syncs it on the update tick, meaning if we call
@@ -81,7 +104,9 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     // other).
     private static Point? mousePositionOverride;
 
+    private readonly Dictionary<SButton, (long duration, bool isRepeating)> buttonHeldDurations = [];
     private readonly Image closeButton = new();
+    private readonly HashSet<SButton> handledPressedButtons = [];
 
     // For tracking activation paths, we not only want a weak table for the overlay itself (to prevent overlays from
     // being leaked) but also for the ViewChild path used to activate it, because these views may go out of scope while
@@ -90,7 +115,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private readonly OverlayContext overlayContext = new();
     private readonly ConditionalWeakTable<IOverlay, OverlayLayoutData> overlayCache = [];
     private readonly RenderTargetPool renderTargetPool = new(Game1.graphics.GraphicsDevice, slack: 2);
-    private readonly T view;
+    private readonly IView view;
     private readonly bool wasHudDisplayed;
 
     private ViewChild[] focusableHoverPath = [];
@@ -106,6 +131,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     // Dispose -> Close (Handler) -> set Game1.activeClickableMenu -> Dispose again
     // As a workaround, we can track when dispose has been requested and suppress duplicates.
     private bool isDisposed;
+    private bool isLeftClickSuppressed; // Stops button-held from leaking into new overlays.
+    private bool isRightClickSuppressed;
     private bool justPushedOverlay; // Whether the overlay was pushed within the last frame.
     private WeakViewChild[] keyboardCaptureActivationPath = [];
     private Point previousHoverPosition;
@@ -113,7 +140,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private bool wasKeyboardCaptured;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="ViewMenu{T}"/>.
+    /// Initializes a new instance of <see cref="ViewMenu"/>.
     /// </summary>
     /// <param name="gutter">Gutter edges, in which no content should be drawn. Used for overscan, or general
     /// aesthetics.</param>
@@ -149,7 +176,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// require content updates.
     /// </remarks>
     /// <returns>The created view.</returns>
-    protected abstract T CreateView();
+    protected abstract IView CreateView();
 
     /// <summary>
     /// Initiates a focus search in the specified direction.
@@ -201,11 +228,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             return;
         }
+        bool hasCloseSound = !string.IsNullOrEmpty(closeSound);
         if (behavior == MenuCloseBehavior.Custom)
         {
             behaviorBeforeCleanup?.Invoke(this);
             cleanupBeforeExit();
-            Game1.playSound(closeSound);
+            if (hasCloseSound)
+            {
+                Game1.playSound(closeSound);
+            }
             CustomClose();
             if (exitFunction != null)
             {
@@ -216,12 +247,18 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         else if (IsTitleSubmenu())
         {
-            Game1.playSound(closeSound);
+            if (hasCloseSound)
+            {
+                Game1.playSound(closeSound);
+            }
             TitleMenu.subMenu = null;
         }
         else
         {
-            exitThisMenu();
+            exitThisMenu(hasCloseSound);
+            // Calling exitThisMenu may or may not dispose us, depending on whether we are the main menu or a child
+            // menu. Since it's safe to Dispose multiple times, do it an extra time here to ensure proper disposal.
+            Dispose();
         }
     }
 
@@ -310,33 +347,101 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         justPushedOverlay = false;
 
-        var tooltip = BuildTooltip(hoverPath);
-        if (tooltip is not null)
+        if (TooltipsEnabled && IsTopmost())
         {
-            string? extraItemToShowIndex = TooltipData.ValidateItemId(tooltip.RequiredItemId);
-            drawToolTip(
-                b,
-                tooltip.Text,
-                tooltip.Title ?? "",
-                tooltip.Item,
-                moneyAmountToShowAtBottom: tooltip.CurrencyAmount ?? -1,
-                currencySymbol: tooltip.CurrencySymbol,
-                extraItemToShowIndex: extraItemToShowIndex,
-                extraItemToShowAmount: tooltip.RequiredItemAmount,
-                craftingIngredients: tooltip.CraftingRecipe,
-                additionalCraftMaterials: tooltip.AdditionalCraftingMaterials
-            );
+            var tooltip = BuildTooltip(hoverPath);
+            if (tooltip is not null)
+            {
+                string? extraItemToShowIndex = TooltipData.ValidateItemId(tooltip.RequiredItemId);
+                drawToolTip(
+                    b,
+                    tooltip.Text,
+                    tooltip.Title ?? "",
+                    tooltip.Item,
+                    moneyAmountToShowAtBottom: tooltip.CurrencyAmount ?? -1,
+                    currencySymbol: tooltip.CurrencySymbol,
+                    extraItemToShowIndex: extraItemToShowIndex,
+                    extraItemToShowAmount: tooltip.RequiredItemAmount,
+                    craftingIngredients: tooltip.CraftingRecipe,
+                    additionalCraftMaterials: tooltip.AdditionalCraftingMaterials
+                );
+            }
         }
 
         Game1.mouseCursorTransparency = 1.0f;
         if (!IsInputCaptured())
         {
-            drawMouse(b);
+            if (CursorAttachment is not null)
+            {
+                var cursorSize = CursorAttachment.Size ?? CursorAttachment.Sprite.Size;
+                var cursorPosition = GetMousePosition() + (CursorAttachment.Offset ?? Cursor.DefaultOffset);
+                var cursorRect = new Rectangle(cursorPosition, cursorSize);
+                b.Draw(
+                    CursorAttachment.Sprite.Texture,
+                    cursorRect,
+                    CursorAttachment.Sprite.SourceRect,
+                    CursorAttachment.Tint ?? Cursor.DefaultTint
+                );
+            }
+            var pointerStyle = hoverPath.Select(x => x.View.PointerStyle).LastOrDefault(PointerStyle.Default);
+            drawMouse(b, cursor: (int)pointerStyle);
         }
 
         // This "should" be done in Update, not Draw, but the game won't send any updates to the menu while the capture
         // target is active.
         HandleKeyboardCaptureChange();
+
+        // Reset this every frame - it is a per-frame signal for suppressing default behavior.
+        //
+        // Another thing that really should be done in Update, but can't be because the timing is insane, and Update
+        // happens *between* the button press and key press events instead of after (or before) both.
+        foreach (var button in handledPressedButtons)
+        {
+            if (!UI.InputHelper.IsDown(button))
+            {
+                handledPressedButtons.Remove(button);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Invoked on every frame during which a controller button is down, once for each held button.
+    /// </summary>
+    /// <param name="b">The button that is down.</param>
+    public override void gamePadButtonHeld(Buttons b)
+    {
+        using var trace = Diagnostics.Trace.Begin(this, nameof(gamePadButtonHeld));
+
+        if (!CanReceiveButton(b, out var button))
+        {
+            return;
+        }
+
+        var elapsed = Game1.currentGameTime.ElapsedGameTime.Ticks;
+        if (buttonHeldDurations.TryGetValue(button, out var entry))
+        {
+            var nextDuration = entry.duration + elapsed;
+            var maxDuration =
+                (!entry.isRepeating && ButtonRepeat.InitialDelay.HasValue)
+                    ? ButtonRepeat.InitialDelay.Value.Ticks
+                    : ButtonRepeat.RepeatInterval.Ticks;
+            bool willRepeat = nextDuration >= maxDuration;
+            if (willRepeat)
+            {
+                using var _ = OverlayContext.PushContext(overlayContext);
+                InitiateButtonPress(button, repeat: true);
+            }
+            buttonHeldDurations[button] = (nextDuration % maxDuration, willRepeat || entry.isRepeating);
+        }
+        else
+        {
+            // Because the initial press is already handled in receiveGamePadButton, we don't explicitly dispatch here,
+            // just start tracking the button.
+            //
+            // Also, because gamePadButtonHeld runs after receiveGamePadButton, we start with a duration of 0 rather
+            // than the last frame delta; that is, the current frame doesn't count.
+            buttonHeldDurations.Add(button, (duration: 0, isRepeating: false));
+        }
     }
 
     /// <summary>
@@ -346,6 +451,11 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <param name="y">The mouse's current Y position on screen.</param>
     public override void leftClickHeld(int x, int y)
     {
+        if (isLeftClickSuppressed)
+        {
+            return;
+        }
+
         using var trace = Diagnostics.Trace.Begin(this, nameof(leftClickHeld));
 
         if (Game1.options.gamepadControls || IsInputCaptured())
@@ -463,17 +573,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveGamePadButton));
 
-        // We don't actually dispatch the button to any capturing overlay, just prevent it from affecting the menu.
-        //
-        // This is because a capturing overlay doesn't necessarily just need to know about the button "press", it cares
-        // about the entire press, hold and release cycle, and can handle these directly through InputState or SMAPI.
-        if (IsInputCaptured())
-        {
-            return;
-        }
-
-        var button = b.ToSButton();
-        if (UI.InputHelper.IsSuppressed(button))
+        if (!CanReceiveButton(b, out var button))
         {
             return;
         }
@@ -563,7 +663,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
             {
                 Close();
             }
-            else
+            else if (handledPressedButtons.Count == 0)
             {
                 base.receiveKeyPress(key);
             }
@@ -579,7 +679,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void receiveLeftClick(int x, int y, bool playSound = true)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveLeftClick));
-        if (IsInputCaptured())
+        if (isLeftClickSuppressed || IsInputCaptured())
         {
             return;
         }
@@ -601,7 +701,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void receiveRightClick(int x, int y, bool playSound = true)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(receiveRightClick));
-        if (IsInputCaptured())
+        if (isRightClickSuppressed || IsInputCaptured())
         {
             return;
         }
@@ -641,7 +741,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void releaseLeftClick(int x, int y)
     {
         using var trace = Diagnostics.Trace.Begin(this, nameof(releaseLeftClick));
-        if (IsInputCaptured())
+        if (isLeftClickSuppressed || IsInputCaptured())
         {
             return;
         }
@@ -669,6 +769,16 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     public override void update(GameTime time)
     {
         using var _ = Diagnostics.Trace.Begin(this, nameof(update));
+
+        // We don't get an explicit "release" event for gamepad buttons, so need to check for releases ourselves.
+        foreach (var button in buttonHeldDurations.Keys)
+        {
+            if (!UI.InputHelper.IsDown(button))
+            {
+                buttonHeldDurations.Remove(button);
+            }
+        }
+
         // In real event loops the child menu close detection will have already happened in performHoverAction, making
         // this instance moot, but it is technically possible for a child menu to be opened and closed without the
         // pointer ever having moved.
@@ -677,6 +787,15 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         foreach (var overlay in overlayContext.FrontToBack())
         {
             overlay.Update(time.ElapsedGameTime);
+        }
+
+        // This is done in the update loop instead of in releaseLeftClick because we aren't guaranteed to receive that
+        // event in some situations, like when an overlay starts capturing.
+        if (isLeftClickSuppressed || isRightClickSuppressed)
+        {
+            var mouseState = Game1.input.GetMouseState();
+            isLeftClickSuppressed &= mouseState.LeftButton == ButtonState.Pressed;
+            isRightClickSuppressed &= mouseState.RightButton == ButtonState.Pressed;
         }
     }
 
@@ -693,7 +812,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     /// <returns>The tooltip string to display, or <c>null</c> to not show any tooltip.</returns>
     protected virtual TooltipData? BuildTooltip(IEnumerable<ViewChild> path)
     {
-        var tooltipData = hoverPath.Select(x => x.View.Tooltip).LastOrDefault(tooltip => tooltip is not null);
+        var tooltipData = path.Select(x => x.View.Tooltip).LastOrDefault(tooltip => tooltip is not null);
         return tooltipData?.ConstrainTextWidth(640);
     }
 
@@ -718,6 +837,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         {
             _parentMenu = null;
             parentMenu.SetChildMenu(null);
+            Dispose();
         }
     }
 
@@ -755,6 +875,21 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     protected virtual void OnClosed(EventArgs e)
     {
         Closed?.Invoke(this, e);
+    }
+
+    private bool CanReceiveButton(Buttons b, out SButton button)
+    {
+        // We don't actually dispatch the button to any capturing overlay, just prevent it from affecting the menu.
+        //
+        // This is because a capturing overlay doesn't necessarily just need to know about the button "press", it cares
+        // about the entire press, hold and release cycle, and can handle these directly through InputState or SMAPI.
+        if (IsInputCaptured())
+        {
+            button = SButton.None;
+            return false;
+        }
+        button = b.ToSButton();
+        return !UI.InputHelper.IsSuppressed(b.ToSButton());
     }
 
     private static void FinishFocusSearch(IView rootView, Point origin, FocusSearchResult found)
@@ -835,7 +970,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
     }
 
-    private void InitiateButtonPress(SButton button)
+    private void InitiateButtonPress(SButton button, bool repeat = false)
     {
         var mousePosition = GetMousePosition();
         OnViewOrOverlay(
@@ -847,7 +982,18 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
                     return;
                 }
                 var args = new ButtonEventArgs(localPosition, button);
-                view.OnButtonPress(args);
+                if (repeat)
+                {
+                    view.OnButtonRepeat(args);
+                }
+                else
+                {
+                    view.OnButtonPress(args);
+                }
+                if (args.Handled)
+                {
+                    handledPressedButtons.Add(button);
+                }
             }
         );
         RequestRehover();
@@ -882,11 +1028,19 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         }
         var args = new ClickEventArgs(localPosition, button);
         view.OnClick(args);
-        if (!args.Handled && closeButton.Sprite is not null && GetCloseBehavior() != MenuCloseBehavior.Disabled)
+        if (!args.Handled && GetCloseBehavior() != MenuCloseBehavior.Disabled)
         {
-            var closePosition = GetCloseButtonTranslation();
-            var closeBounds = new Bounds(closePosition, closeButton.OuterSize);
-            if (closeBounds.ContainsPoint(localPosition))
+            if (closeButton.Sprite is not null)
+            {
+                var closePosition = GetCloseButtonTranslation();
+                var closeBounds = new Bounds(closePosition, closeButton.OuterSize);
+                if (closeBounds.ContainsPoint(localPosition))
+                {
+                    Close();
+                    return;
+                }
+            }
+            if (CloseOnOutsideClick && overlayContext.Front is null && !View.IsVisible(localPosition))
             {
                 Close();
                 return;
@@ -924,6 +1078,20 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
     private bool IsTitleSubmenu()
     {
         return Game1.activeClickableMenu is TitleMenu && TitleMenu.subMenu == this;
+    }
+
+    private bool IsTopmost()
+    {
+        return GetChildMenu() is null
+            && !(
+                // Hack to work around another hack: TitleMenu isn't capable of displaying or forwarding interactions to
+                // children of its subMenu, but it _can_ have an actual ChildMenu, and that ChildMenu essentially works the
+                // same as if it were a child of the subMenu. However, we need to detect this scenario explicitly.
+                Game1.activeClickableMenu
+                    is TitleMenu titleMenu
+                && TitleMenu.subMenu == this
+                && titleMenu.GetChildMenu() is not null
+            );
     }
 
     [Conditional("DEBUG_FOCUS_SEARCH")]
@@ -1037,6 +1205,8 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         overlayActivationPaths.AddOrUpdate(overlay, focusableHoverPath.Select(child => child.AsWeak()).ToArray());
         overlay.Close += Overlay_Close;
         justPushedOverlay = true;
+        isLeftClickSuppressed = true;
+        isRightClickSuppressed = true;
     }
 
     private void PerformHoverAction(IView rootView, Vector2 viewPosition)
@@ -1115,7 +1285,7 @@ public abstract class ViewMenu<T> : IClickableMenu, IDisposable
         Direction? searchDirection
     )
     {
-        using var _ = Diagnostics.Trace.Begin(nameof(ViewMenu<T>), nameof(Refocus));
+        using var _ = Diagnostics.Trace.Begin(nameof(ViewMenu), nameof(Refocus));
         if (!Game1.options.gamepadControls)
         {
             return;

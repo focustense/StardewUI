@@ -17,6 +17,7 @@ search:
 | [Banner](banner.md) | Draws banner-style text with an optional background. |
 | [Button](button.md) | Simple button with optional hover background. |
 | [CheckBox](checkbox.md) | A togglable checkbox. |
+| [ColorPicker](colorpicker.md) | Drop-down style widget that opens a detailed color wheel/slider overlay for choosing a precise color. |
 | [ComponentView](componentview.md) | Base class for custom widgets and "app views" with potentially complex hierarchy using a single root view. |
 | [ComponentView&lt;T&gt;](componentview-1.md) | Base class for custom widgets and "app views" with potentially complex hierarchy using a single root view. |
 | [DecoratorView](decoratorview.md) | A view that owns and delegates to an inner view. |
@@ -45,6 +46,7 @@ search:
 | [ScrollableView](scrollableview.md) | Provides a content container and accompanying scrollbar. |
 | [Scrollbar](scrollbar.md) | Controls the scrolling of a [ScrollContainer](scrollcontainer.md). |
 | [ScrollContainer](scrollcontainer.md) | Renders inner content clipped to a boundary and with a modifiable scroll offset. |
+| [SegmentedControl](segmentedcontrol.md) | A horizontal list of options that can each be independently clicked and selected. |
 | [SelectionGroup](selectiongroup.md) | Provides a single selection key with change notifications. |
 | [Slider](slider.md) | A horizontal track with draggable thumb (button) for choosing a numeric value in a range. |
 | [Spacer](spacer.md) | An empty view whose sole purpose is to separate other elements. |

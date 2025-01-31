@@ -148,6 +148,20 @@ public class DecoratorView<T> : IView, IDisposable
     public Bounds ActualBounds => view?.ActualBounds ?? Bounds.Empty;
 
     /// <inheritdoc />
+    public NineGridPlacement? ClipOrigin
+    {
+        get => clipOrigin;
+        set => clipOrigin.Set(value);
+    }
+
+    /// <inheritdoc />
+    public LayoutParameters? ClipSize
+    {
+        get => clipSize;
+        set => clipSize.Set(value);
+    }
+
+    /// <inheritdoc />
     public Bounds ContentBounds => view?.ContentBounds ?? Bounds.Empty;
 
     /// <inheritdoc />
@@ -185,6 +199,13 @@ public class DecoratorView<T> : IView, IDisposable
     {
         get => pointerEventsEnabled;
         set => pointerEventsEnabled.Set(value);
+    }
+
+    /// <inheritdoc />
+    public PointerStyle PointerStyle
+    {
+        get => pointerStyle;
+        set => pointerStyle.Set(value);
     }
 
     /// <inheritdoc />
@@ -236,6 +257,9 @@ public class DecoratorView<T> : IView, IDisposable
     public event EventHandler<ButtonEventArgs>? ButtonPress;
 
     /// <inheritdoc />
+    public event EventHandler<ButtonEventArgs>? ButtonRepeat;
+
+    /// <inheritdoc />
     public event EventHandler<ClickEventArgs>? Click;
 
     /// <inheritdoc />
@@ -279,6 +303,16 @@ public class DecoratorView<T> : IView, IDisposable
 
     private readonly List<IDecoratedProperty> decoratedProperties = [];
 
+    private readonly DecoratedProperty<NineGridPlacement?> clipOrigin = new(
+        x => x.ClipOrigin,
+        (x, v) => x.ClipOrigin = v,
+        null
+    );
+    private readonly DecoratedProperty<LayoutParameters?> clipSize = new(
+        x => x.ClipSize,
+        (x, v) => x.ClipSize = v,
+        null
+    );
     private readonly DecoratedProperty<LayoutParameters> layout = new(x => x.Layout, (x, v) => x.Layout = v, new());
     private readonly DecoratedProperty<string> name = new(x => x.Name, (x, v) => x.Name = v, "");
     private readonly DecoratedProperty<float> opacity = new(x => x.Opacity, (x, v) => x.Opacity = v, 1f);
@@ -286,6 +320,11 @@ public class DecoratorView<T> : IView, IDisposable
         x => x.PointerEventsEnabled,
         (x, v) => x.PointerEventsEnabled = v,
         true
+    );
+    private readonly DecoratedProperty<PointerStyle> pointerStyle = new(
+        x => x.PointerStyle,
+        (x, v) => x.PointerStyle = v,
+        PointerStyle.Default
     );
     private readonly DecoratedProperty<Orientation?> scrollWithChildren = new(
         x => x.ScrollWithChildren,
@@ -313,10 +352,13 @@ public class DecoratorView<T> : IView, IDisposable
     /// </summary>
     public DecoratorView()
     {
+        RegisterDecoratedProperty(clipOrigin);
+        RegisterDecoratedProperty(clipSize);
         RegisterDecoratedProperty(layout);
         RegisterDecoratedProperty(name);
         RegisterDecoratedProperty(opacity);
         RegisterDecoratedProperty(pointerEventsEnabled);
+        RegisterDecoratedProperty(pointerStyle);
         RegisterDecoratedProperty(scrollWithChildren);
         RegisterDecoratedProperty(tooltip);
         RegisterDecoratedProperty(transform);
@@ -353,8 +395,16 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
-    public virtual ViewChild? GetChildAt(Vector2 position, bool preferFocusable = false)
+    public virtual ViewChild? GetChildAt(
+        Vector2 position,
+        bool preferFocusable = false,
+        bool requirePointerEvents = false
+    )
     {
+        if (view?.PointerEventsEnabled == false && requirePointerEvents)
+        {
+            return null;
+        }
         return view?.ContainsPoint(position) == true ? new(view, Vector2.Zero) : null;
     }
 
@@ -365,7 +415,7 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
-    public virtual IEnumerable<ViewChild> GetChildren()
+    public virtual IEnumerable<ViewChild> GetChildren(bool includeFloatingElements = true)
     {
         return view is not null ? [new(view, Vector2.Zero)] : [];
     }
@@ -395,6 +445,12 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     /// <inheritdoc />
+    public virtual bool IsVisible(Vector2? position)
+    {
+        return view?.IsVisible(position) ?? false;
+    }
+
+    /// <inheritdoc />
     public virtual bool Measure(Vector2 availableSize)
     {
         var wasDirty = view?.Measure(availableSize) ?? false;
@@ -409,6 +465,12 @@ public class DecoratorView<T> : IView, IDisposable
     public virtual void OnButtonPress(ButtonEventArgs e)
     {
         view?.OnButtonPress(e);
+    }
+
+    /// <inheritdoc />
+    public virtual void OnButtonRepeat(ButtonEventArgs e)
+    {
+        view?.OnButtonRepeat(e);
     }
 
     /// <inheritdoc />
@@ -499,6 +561,7 @@ public class DecoratorView<T> : IView, IDisposable
             return;
         }
         view.ButtonPress += View_ButtonPress;
+        view.ButtonRepeat += View_ButtonRepeat;
         view.Click += View_Click;
         view.Drag += View_Drag;
         view.DragEnd += View_DragEnd;
@@ -519,6 +582,7 @@ public class DecoratorView<T> : IView, IDisposable
             return;
         }
         view.ButtonPress -= View_ButtonPress;
+        view.ButtonRepeat -= View_ButtonRepeat;
         view.Click -= View_Click;
         view.Drag -= View_Drag;
         view.DragEnd -= View_DragEnd;
@@ -548,6 +612,8 @@ public class DecoratorView<T> : IView, IDisposable
     }
 
     private void View_ButtonPress(object? _, ButtonEventArgs e) => ButtonPress?.Invoke(this, e);
+
+    private void View_ButtonRepeat(object? _, ButtonEventArgs e) => ButtonRepeat?.Invoke(this, e);
 
     private void View_Click(object? _, ClickEventArgs e) => Click?.Invoke(this, e);
 

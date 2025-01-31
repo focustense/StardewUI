@@ -59,9 +59,11 @@ Value type for the transitioned property.
 | [CanUpdate()](viewbehavior-2.md#canupdate) | Checks whether the behavior is allowed to [Update(TimeSpan)](iviewbehavior.md#updatetimespan).<br><span class="muted" markdown>(Inherited from [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md))</span> | 
 | [Dispose()](viewbehavior-2.md#dispose) | <span class="muted" markdown>(Inherited from [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md))</span> | 
 | [Initialize(BehaviorTarget)](viewbehavior-2.md#initializebehaviortarget) | Initializes the target (view, state overrides, etc.) for the behavior.<br><span class="muted" markdown>(Inherited from [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md))</span> | 
+| [OnAttached()](#onattached) | Runs after the behavior is attached to a target.<br><span class="muted" markdown>(Overrides [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md).[OnAttached()](viewbehavior-2.md#onattached))</span> | 
+| [OnDetached(IView)](#ondetachediview) | Runs when the behavior is detached from a target.<br><span class="muted" markdown>(Overrides [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md).[OnDetached(IView)](viewbehavior-2.md#ondetachediview))</span> | 
 | [OnDispose()](viewbehavior-2.md#ondispose) | Runs when the behavior is being disposed.<br><span class="muted" markdown>(Inherited from [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md))</span> | 
-| [OnInitialize()](#oninitialize) | Runs after the behavior has been initialized.<br><span class="muted" markdown>(Overrides [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md).[OnInitialize()](viewbehavior-2.md#oninitialize))</span> | 
 | [OnNewData(TData)](viewbehavior-2.md#onnewdatatdata) | <span class="muted" markdown>(Inherited from [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md))</span> | 
+| [PreUpdate(TimeSpan)](#preupdatetimespan) | Runs on every update tick, before any bindings or views update.<br><span class="muted" markdown>(Overrides [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md).[PreUpdate(TimeSpan)](viewbehavior-2.md#preupdatetimespan))</span> | 
 | [Update(TimeSpan)](#updatetimespan) | Runs on every update tick.<br><span class="muted" markdown>(Overrides [ViewBehavior&lt;TView, TData&gt;](viewbehavior-2.md).[Update(TimeSpan)](viewbehavior-2.md#updatetimespan))</span> | 
 
 ## Details
@@ -88,17 +90,58 @@ Interpolation function for the transitioned property type.
 
 ### Methods
 
-#### OnInitialize()
+#### OnAttached()
 
-Runs after the behavior has been initialized.
+Runs after the behavior is attached to a target.
 
 ```cs
-protected override void OnInitialize();
+protected override void OnAttached();
 ```
 
 ##### Remarks
 
 Setup code should go in this method to ensure that the values of [View](viewbehavior-2.md#view) and [ViewState](viewbehavior-2.md#viewstate) are actually assigned. If code runs in the behavior's constructor, these are not guaranteed to be populated.
+
+-----
+
+#### OnDetached(IView)
+
+Runs when the behavior is detached from a target.
+
+```cs
+protected override void OnDetached(StardewUI.IView view);
+```
+
+##### Parameters
+
+**`view`** &nbsp; [IView](../../iview.md)  
+The view that was previously attached.
+
+##### Remarks
+
+Behaviors may receive new views as part of a "rebind", if the old view is destroyed and recreated, for example as the result of a conditional binding changing states. 
+
+`OnDetached` is always immediately followed by [OnAttached()](viewbehavior-2.md#onattached). A behavior cannot remain in a detached state; however, overriding this method gives behaviors the opportunity to clean up state from the old view (e.g. remove event handlers) before the new one is attached. 
+
+ Also runs when the behavior is disposed, so detach logic does not need to be duplicated in [OnDispose()](viewbehavior-2.md#ondispose).
+
+-----
+
+#### PreUpdate(TimeSpan)
+
+Runs on every update tick, before any bindings or views update.
+
+```cs
+public override void PreUpdate(System.TimeSpan elapsed);
+```
+
+##### Parameters
+
+**`elapsed`** &nbsp; [TimeSpan](https://learn.microsoft.com/en-us/dotnet/api/system.timespan)
+
+##### Remarks
+
+Typically used to read information about the underlying view as it existed at the beginning of the frame, e.g. to handle a transition.
 
 -----
 

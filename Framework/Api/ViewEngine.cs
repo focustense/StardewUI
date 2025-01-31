@@ -92,6 +92,25 @@ public class ViewEngine : IViewEngine
     }
 
     /// <inheritdoc />
+    public void PreloadAssets()
+    {
+        Task.Run(assetRegistry.PreloadAsync)
+            .ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    Logger.Log($"An unexpected error occurred during asset preloading: {t.Exception}", LogLevel.Error);
+                }
+            });
+    }
+
+    /// <inheritdoc />
+    public void RegisterCustomData(string assetPrefix, string modDirectory)
+    {
+        assetRegistry.RegisterCustomData(assetPrefix, modDirectory);
+    }
+
+    /// <inheritdoc />
     public void RegisterSprites(string assetPrefix, string modDirectory)
     {
         assetRegistry.RegisterSprites(assetPrefix, modDirectory);

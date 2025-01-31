@@ -45,10 +45,10 @@ public class BehaviorFactory : StardewUI.Framework.Behaviors.IBehaviorFactory
  | Name | Description |
 | --- | --- |
 | [Add(IBehaviorFactory)](#addibehaviorfactory) | Adds a new delegate factory which this factory will be allowed to use as a fallback for any behavior names not handled directly. | 
+| [CanCreateBehavior(string, string)](#cancreatebehaviorstring-string) | Checks if the factory can create behaviors with a specified name and argument. | 
 | [CreateBehavior(Type, string, string)](#createbehaviortype-string-string) | Creates a new behavior. | 
 | [Register&lt;TBehavior&gt;(string)](#registertbehaviorstring) | Registers a behavior for a given name using the behavior's default parameterless constructor. | 
 | [Register(string, Func&lt;string, IViewBehavior&gt;)](#registerstring-funcstring-iviewbehavior) | Registers a behavior for a given name using a delegate function. | 
-| [SupportsName(string)](#supportsnamestring) | Checks if the factory can create behaviors with a specified name. | 
 
 ## Details
 
@@ -78,6 +78,30 @@ public void Add(StardewUI.Framework.Behaviors.IBehaviorFactory factory);
 
 **`factory`** &nbsp; [IBehaviorFactory](ibehaviorfactory.md)  
 The delegate factory.
+
+-----
+
+#### CanCreateBehavior(string, string)
+
+Checks if the factory can create behaviors with a specified name and argument.
+
+```cs
+public bool CanCreateBehavior(string name, string argument);
+```
+
+##### Parameters
+
+**`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The behavior name.
+
+**`argument`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
+The argument for the behavior, if any. Most implementations can ignore this parameter, but in some cases it is used for disambiguation.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+  `true` if this factory should handle the specified `name`, when given the specified `argument`, otherwise `false`.
 
 -----
 
@@ -142,27 +166,6 @@ The markup name used to create this type of behavior.
 
 **`factory`** &nbsp; [Func](https://learn.microsoft.com/en-us/dotnet/api/system.func-2)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [IViewBehavior](iviewbehavior.md)>  
 Delegate function that accepts the construction argument (if any) and creates the corresponding behavior.
-
------
-
-#### SupportsName(string)
-
-Checks if the factory can create behaviors with a specified name.
-
-```cs
-public bool SupportsName(string name);
-```
-
-##### Parameters
-
-**`name`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
-The behavior name.
-
-##### Returns
-
-[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
-
-  `true` if this factory should handle the specified `name`, otherwise `false`.
 
 -----
 

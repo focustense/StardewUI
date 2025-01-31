@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewUI.Framework.Api;
 using StardewUI.Framework.Behaviors;
@@ -18,6 +19,7 @@ internal sealed class ModEntry : Mod
 {
     // Initialized in Entry
     private AssetCache assetCache = null!;
+    private CommonSprites commonSprites = null!;
     private ModConfig config = null!;
     private RootResolutionScopeFactory resolutionScopeFactory = null!;
     private SpriteMaps spriteMaps = null!;
@@ -42,6 +44,7 @@ internal sealed class ModEntry : Mod
             );
         }
 
+        commonSprites = new(helper);
         spriteMaps = new(helper);
 
         helper.Events.Content.AssetRequested += Content_AssetRequested;
@@ -71,8 +74,23 @@ internal sealed class ModEntry : Mod
     {
         if (e.NameWithoutLocale.StartsWith(UiSpriteProvider.AssetNamePrefix))
         {
-            // Built-in UI sprites point to Game1-instanced textures, so they should not and cannot be localized.
-            e.LoadFrom(() => UiSpriteProvider.GetSprite(e.NameWithoutLocale.Name), AssetLoadPriority.Exclusive);
+            var unprefixedName = e.NameWithoutLocale.Name[UiSpriteProvider.AssetNamePrefix.Length..];
+            // Currently there are only a few special assets like this that are specific to StardewUI and aren't part
+            // of the base game assets. If there end up being a lot more, this should be changed to either a hash lookup
+            // or explicit file-presence check.
+            switch (unprefixedName.ToLowerInvariant())
+            {
+                case "colorcircle240":
+                    e.LoadFrom(() => commonSprites.ColorCircle240, AssetLoadPriority.Exclusive);
+                    break;
+                case "colorcircle480":
+                    e.LoadFrom(() => commonSprites.ColorCircle480, AssetLoadPriority.Exclusive);
+                    break;
+                default:
+                    // Built-in UI sprites point to Game1-instanced textures, so they should not and cannot be localized.
+                    e.LoadFrom(() => UiSpriteProvider.GetSprite(e.NameWithoutLocale.Name), AssetLoadPriority.Exclusive);
+                    break;
+            }
         }
         else if (e.DataType == typeof(Sprite) && e.NameWithoutLocale.StartsWith(ItemSpriteProvider.AssetNamePrefix))
         {
@@ -125,7 +143,7 @@ internal sealed class ModEntry : Mod
             .Select(addon => addon.ViewFactory)
             .Where(factory => factory is not null)
             .Cast<IViewFactory>();
-        var rootViewFactory = new RootViewFactory(addonViewFactories);
+        var rootViewFactory = new RootViewFactory(addonViewFactories, commonSprites);
         assetCache = new AssetCache(Helper.GameContent, Helper.Events.Content);
         var valueSourceFactory = new ValueSourceFactory(assetCache);
         var addonValueConverterFactories = loadOrder
@@ -193,7 +211,8 @@ internal sealed class ModEntry : Mod
         }
 
         if (
-            Game1.activeClickableMenu is TitleMenu
+            Game1.activeClickableMenu is TitleMenu titleMenu
+            && titleMenu.GetChildMenu() is null
             && TitleMenu.subMenu is DocumentViewMenu { CloseAction: not null } viewMenu
         )
         {

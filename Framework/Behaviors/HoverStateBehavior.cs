@@ -16,17 +16,17 @@ public class HoverStateBehavior<TValue>(string propertyName) : ViewBehavior<IVie
     public override void Update(TimeSpan elapsed) { }
 
     /// <inheritdoc />
-    protected override void OnDispose()
-    {
-        View.PointerEnter -= View_PointerEnter;
-        View.PointerLeave -= View_PointerLeave;
-    }
-
-    /// <inheritdoc />
-    protected override void OnInitialize()
+    protected override void OnAttached()
     {
         View.PointerEnter += View_PointerEnter;
         View.PointerLeave += View_PointerLeave;
+    }
+
+    /// <inheritdoc />
+    protected override void OnDetached(IView view)
+    {
+        view.PointerEnter -= View_PointerEnter;
+        view.PointerLeave -= View_PointerLeave;
     }
 
     /// <inheritdoc />

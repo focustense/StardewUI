@@ -170,7 +170,14 @@ public class RepeaterNode(
             // is faster than inserting items one by one (and repeatedly shifting any subsequent items) into the middle.
             newChildren.Add(newChild);
         }
-        children.InsertRange(fromIndex, newChildren);
+        if (fromIndex >= 0)
+        {
+            children.InsertRange(fromIndex, newChildren);
+        }
+        else
+        {
+            children.AddRange(newChildren);
+        }
     }
 
     private void MoveChildNodes(int fromIndex, int toIndex, int count)
@@ -380,6 +387,7 @@ public class RepeaterNode(
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 pendingEvents.Clear();
+                pendingEvents.Add(resetEvent);
             }
             else if (pendingEvents.Count == 0 || pendingEvents[0].Action != NotifyCollectionChangedAction.Reset)
             {

@@ -64,7 +64,7 @@ Floating elements do not participate in the normal layout ([Measure(Vector2)](..
 | [Equals(FloatingElement)](#equalsfloatingelement) |  | 
 | [Equals(Object)](#equalsobject) | <span class="muted" markdown>(Overrides [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object).`Equals(Object)`)</span> | 
 | [GetHashCode()](#gethashcode) | <span class="muted" markdown>(Overrides [Object](https://learn.microsoft.com/en-us/dotnet/api/system.object).`GetHashCode()`)</span> | 
-| [MeasureAndPosition(View, Boolean)](#measureandpositionview-bool) | Measures the view's content and repositions the entire floating element if necessary. | 
+| [MeasureAndPosition(IView, Boolean)](#measureandpositioniview-bool) | Measures the view's content and repositions the entire floating element if necessary. | 
 
 ## Details
 
@@ -213,17 +213,17 @@ public override int GetHashCode();
 
 -----
 
-#### MeasureAndPosition(View, bool)
+#### MeasureAndPosition(IView, bool)
 
 Measures the view's content and repositions the entire floating element if necessary.
 
 ```cs
-public void MeasureAndPosition(StardewUI.View parentView, bool wasParentDirty);
+public void MeasureAndPosition(StardewUI.IView parentView, bool wasParentDirty);
 ```
 
 ##### Parameters
 
-**`parentView`** &nbsp; [View](../view.md)  
+**`parentView`** &nbsp; [IView](../iview.md)  
 The view whose [FloatingElements](../view.md#floatingelements) this element belongs to. Required for repositioning when the layout has changed.
 
 **`wasParentDirty`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  

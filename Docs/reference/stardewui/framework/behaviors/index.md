@@ -16,6 +16,9 @@ search:
 | --- | --- |
 | [BehaviorFactory](behaviorfactory.md) | A behavior factory based on per-name delegates. Can be used as a base class for other factories. |
 | [BehaviorTarget](behaviortarget.md) | Encapsulates the target of an [IViewBehavior](iviewbehavior.md). |
+| [ConditionalFlagBehavior](conditionalflagbehavior.md) | Updates a view state flag with a boolean value corresponding to the behavior's data. |
+| [FlagEventArgs](flageventargs.md) | Arguments for events relating to a flag included in an [IViewState](iviewstate.md). |
+| [FlagStateBehavior&lt;TValue&gt;](flagstatebehavior-1.md) | Behavior that applies a property override when a named view state flag is detected. |
 | [HoverStateBehavior&lt;TValue&gt;](hoverstatebehavior-1.md) | Behavior that applies a property override when a view enters a hover state. |
 | [PropertyStateList&lt;T&gt;](propertystatelist-1.md) | Simple list-based implementation of [IPropertyStates&lt;T&gt;](ipropertystates-1.md) optimized for low override counts, typically fewer than 5 and never more than 10-20. |
 | [StateBehaviorFactory](statebehaviorfactory.md) | Factory for creating behaviors that apply single-property overrides on state transitions, such as `hover:transform`. |

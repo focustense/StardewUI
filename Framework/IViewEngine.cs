@@ -124,12 +124,43 @@ public interface IViewEngine
     void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
+    /// Begins preloading assets found in this mod's registered asset directories.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Preloading is performed in the background, and can typically help reduce first-time latency for showing menus or
+    /// drawables, without any noticeable lag in game startup.
+    /// </para>
+    /// <para>
+    /// Must be called after asset registration (<see cref="RegisterViews"/>, <see cref="RegisterSprites"/> and so on)
+    /// in order to be effective, and must not be called more than once per mod otherwise errors or crashes may occur.
+    /// </para>
+    /// </remarks>
+    void PreloadAssets();
+
+    /// <summary>
+    /// Registers a mod directory to be searched for special-purpose mod data, i.e. that is not either views or sprites.
+    /// </summary>
+    /// <remarks>
+    /// Allowed extensions for files in this folder and their corresponding data types are:
+    /// <list type="bullet">
+    /// <item><c>.buttonspritemap.json</c> - <see href="https://focustense.github.io/StardewUI/reference/stardewui/data/buttonspritemapdata/">ButtonSpriteMapData</see></item>
+    /// </list>
+    /// </remarks>
+    /// <param name="assetPrefix">The prefix for all asset names, <b>excluding</b> the category which is deduced from
+    /// the file extension as described in the remarks. For example, given a value of <c>Mods/MyMod</c>, a file named
+    /// <c>foo.buttonspritemap.json</c> would be referenced in views as <c>@Mods/MyMod/ButtonSpriteMaps/Foo</c>.</param>
+    /// <param name="modDirectory">The physical directory where the asset files are located, relative to the mod
+    /// directory. Typically a path such as <c>assets/ui</c> or <c>assets/ui/data</c>.</param>
+    void RegisterCustomData(string assetPrefix, string modDirectory);
+
+    /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
     /// </summary>
     /// <param name="assetPrefix">The prefix for all asset names, e.g. <c>Mods/MyMod/Sprites</c>. This can be any value
     /// but the same prefix must be used in <c>@AssetName</c> view bindings.</param>
     /// <param name="modDirectory">The physical directory where the asset files are located, relative to the mod
-    /// directory. Typically a path such as <c>assets/sprites</c>.</param>
+    /// directory. Typically a path such as <c>assets/sprites</c> or <c>assets/ui/sprites</c>.</param>
     void RegisterSprites(string assetPrefix, string modDirectory);
 
     /// <summary>
@@ -138,7 +169,7 @@ public interface IViewEngine
     /// <param name="assetPrefix">The prefix for all asset names, e.g. <c>Mods/MyMod/Views</c>. This can be any value
     /// but the same prefix must be used in <c>include</c> elements and in API calls to create views.</param>
     /// <param name="modDirectory">The physical directory where the asset files are located, relative to the mod
-    /// directory. Typically a path such as <c>assets/views</c>.</param>
+    /// directory. Typically a path such as <c>assets/views</c> or <c>assets/ui/views</c>.</param>
     public void RegisterViews(string assetPrefix, string modDirectory);
 }
 
@@ -228,6 +259,20 @@ public interface IMenuController : IDisposable
     Vector2 CloseButtonOffset { get; set; }
 
     /// <summary>
+    /// Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any
+    /// floating elements.
+    /// </summary>
+    /// <remarks>
+    /// This setting is primarily intended for submenus and makes them behave more like overlays.
+    /// </remarks>
+    bool CloseOnOutsideClick { get; set; }
+
+    /// <summary>
+    /// Sound to play when closing the menu.
+    /// </summary>
+    string CloseSound { get; set; }
+
+    /// <summary>
     /// How much the menu should dim the entire screen underneath.
     /// </summary>
     /// <remarks>
@@ -251,6 +296,21 @@ public interface IMenuController : IDisposable
     Func<Point>? PositionSelector { get; set; }
 
     /// <summary>
+    /// Removes any cursor attachment previously set by <see cref="SetCursorAttachment"/>.
+    /// </summary>
+    void ClearCursorAttachment();
+
+    /// <summary>
+    /// Closes the menu.
+    /// </summary>
+    /// <remarks>
+    /// This method allows programmatic closing of the menu. It performs the same action that would be performed by
+    /// pressing one of the configured menu keys (e.g. ESC), clicking the close button, etc., and follows the same
+    /// rules, i.e. will not allow closing if <see cref="CanClose"/> is <c>false</c>.
+    /// </remarks>
+    void Close();
+
+    /// <summary>
     /// Configures the menu to display a close button on the upper-right side.
     /// </summary>
     /// <remarks>
@@ -263,6 +323,28 @@ public interface IMenuController : IDisposable
     /// <param name="scale">Scale to apply, if the destination size should be different from the size of the
     /// <paramref name="sourceRect"/>.</param>
     void EnableCloseButton(Texture2D? texture = null, Rectangle? sourceRect = null, float scale = 4f);
+
+    /// <summary>
+    /// Begins displaying a cursor attachment, i.e. a sprite that follows the mouse cursor.
+    /// </summary>
+    /// <remarks>
+    /// The cursor is shown in addition to, not instead of, the normal mouse cursor.
+    /// </remarks>
+    /// <param name="texture">The source image/tile sheet containing the cursor image.</param>
+    /// <param name="sourceRect">The location within the <paramref name="texture"/> where the image is located, or
+    /// <c>null</c> to draw the entire <paramref name="texture"/>.</param>
+    /// <param name="size">Destination size for the cursor sprite, if different from the size of the
+    /// <paramref name="sourceRect"/>.</param>
+    /// <param name="offset">Offset between the actual mouse position and the top-left corner of the drawn
+    /// cursor sprite.</param>
+    /// <param name="tint">Optional tint color to apply to the drawn cursor sprite.</param>
+    void SetCursorAttachment(
+        Texture2D texture,
+        Rectangle? sourceRect = null,
+        Point? size = null,
+        Point? offset = null,
+        Color? tint = null
+    );
 
     /// <summary>
     /// Configures the menu's gutter widths/heights.

@@ -89,6 +89,20 @@ public partial class CheckBox : ComponentView<Lane>
         }
     }
 
+    /// <inheritdoc cref="View.Margin"/>
+    public Edges Margin
+    {
+        get => View.Margin;
+        set
+        {
+            if (value != View.Margin)
+            {
+                View.Margin = value;
+                OnPropertyChanged(nameof(Margin));
+            }
+        }
+    }
+
     /// <inheritdoc />
     public override float Opacity
     {
@@ -146,6 +160,7 @@ public partial class CheckBox : ComponentView<Lane>
     {
         Game1.playSound("drumkit6");
         IsChecked = !IsChecked;
+        e.Handled = true;
     }
 
     private void UpdateCheckImage()

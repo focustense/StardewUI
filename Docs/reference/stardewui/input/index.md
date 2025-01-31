@@ -30,4 +30,5 @@ search:
 | Name | Description |
 | --- | --- |
 | [ButtonAction](buttonaction.md) | The actions that a given button can trigger in a UI context. For details see [ButtonResolver](buttonresolver.md). |
+| [PointerStyle](pointerstyle.md) | The vanilla pointer styles that can be drawn as a mouse cursor. |
 

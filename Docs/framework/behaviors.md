@@ -20,15 +20,16 @@ Most behaviors inherit from [ViewBehavior](../reference/stardewui/framework/beha
 
 Behavior events happen in a specific and predictable order which is important for event-based behaviors:
 
-1. [`OnInitialize`](../reference/stardewui/framework/behaviors/viewbehavior-2.md#oninitialize) runs after the behavior has received its View and Data. This is the best time to add event handlers.
+1. [`OnAttached`](../reference/stardewui/framework/behaviors/viewbehavior-2.md#onattached) runs after the behavior has received its View and Data. This is the best time to add event handlers.
 2. [`OnNewData`](../reference/stardewui/framework/behaviors/viewbehavior-2.md#onnewdatatdata) runs whenever the `Data` changes. On frames where this occurs, it will always occur before the `Update`. The most common reason to implement `OnNewData` is to replace any item in the [view state](#view-state) associated with this behavior.
 3. [`Update`](../reference/stardewui/framework/behaviors/viewbehavior-2.md#updatetimespan) runs on every game update tick after initialization, and as long as the Data is valid (not null, and convertible to the required type). If the behavior has some ongoing function—such as animation—this is where it should run.
-4. [`OnDispose`](../reference/stardewui/framework/behaviors/viewbehavior-2.md#ondispose) runs when the behavior is no longer valid, i.e. when the View has been removed or the entire menu/HUD closed. This is the best time to remove any event handlers.
+4. [`OnDetached`](../reference/stardewui/framework/behaviors/viewbehavior-2.md#ondetachediview) runs either immediately before `OnDispose` (below) or when the associated view or binding context has changed and requires a new target. In the latter case, it will always be followed by another `OnAttached` for the new target.
+5. [`OnDispose`](../reference/stardewui/framework/behaviors/viewbehavior-2.md#ondispose) runs when the behavior is no longer valid, i.e. when the View has been removed or the entire menu/HUD closed. This is the best time to remove any event handlers.
 
 !!! warning
 
-    Behaviors must not try to access any state in the constructor; the `Data`, `View` and `ViewState` properties are not guaranted to have values until `OnInitialize`.
-
+    Behaviors must not try to access any state in the constructor; the `Data`, `View` and `ViewState` properties are not guaranted to have values until `OnAttach`.
+    
     Accessing `Data` outside of the `Update` method is allowed, but not recommended; the value _may_ be `null` if `TData` is a reference type, even if non-nullable reference types are enabled and the type system implies it cannot be `null`.
 
 ## Arguments

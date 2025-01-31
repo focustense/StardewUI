@@ -294,6 +294,12 @@ public partial class Label : View
     private Vector2 shadowOffset = new(-2, 2);
 
     /// <inheritdoc />
+    protected override bool HasOwnContent()
+    {
+        return !string.IsNullOrWhiteSpace(Text);
+    }
+
+    /// <inheritdoc />
     protected override void OnDrawContent(ISpriteBatch b)
     {
         if (ShadowAlpha > 0 && ShadowLayers > 0)

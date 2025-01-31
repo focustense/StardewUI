@@ -40,7 +40,39 @@ public interface IPropertyStates<T> : IEnumerable<KeyValuePair<string, T>>
     /// </remarks>
     /// <param name="stateName">The name of the state on the stack.</param>
     /// <param name="value">The new value to associate with the specified <paramref name="stateName"/>.</param>
-    void Replace(string stateName, T value);
+    bool Replace(string stateName, T value);
+
+    /// <summary>
+    /// Replaces any existing value associated with a specified state, or pushes a new state to the top of the stack if
+    /// a previous state does not already exist.
+    /// </summary>
+    /// <param name="stateName">The name of the new state.</param>
+    /// <param name="value">The property value to associate with the specified <paramref name="stateName"/>.</param>
+    void ReplaceOrPush(string stateName, T value)
+    {
+        if (!Replace(stateName, value))
+        {
+            Push(stateName, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets the state name and value with highest priority, i.e. on top of the stack.
+    /// </summary>
+    /// <param name="result">The state name and value of the active override, or the default for
+    /// <typeparamref name="T"/> if the function returned <c>false</c>.</param>
+    /// <returns><c>true</c> if there was at least one active override for this property; <c>false</c> if the stack is
+    /// currently empty.</returns>
+    bool TryPeek([MaybeNullWhen(false)] out (string stateName, T value) result);
+
+    /// <summary>
+    /// Gets the value with highest priority, i.e. on top of the stack.
+    /// </summary>
+    /// <param name="value">The value of the active override, or the default for <typeparamref name="T"/> if the
+    /// function returned <c>false</c>.</param>
+    /// <returns><c>true</c> if there was at least one active override for this property; <c>false</c> if the stack is
+    /// currently empty.</returns>
+    bool TryPeekValue([MaybeNullWhen(false)] out T value);
 
     /// <summary>
     /// Removes a specified state override, if one exists.
@@ -51,13 +83,4 @@ public interface IPropertyStates<T> : IEnumerable<KeyValuePair<string, T>>
     /// <returns><c>true</c> if an override for the specified <paramref name="stateName"/> was removed from the stack;
     /// <c>false</c> if no such state was on the stack.</returns>
     bool TryRemove(string stateName, [MaybeNullWhen(false)] out T value);
-
-    /// <summary>
-    /// Gets the value with highest priority, i.e. on top of the stack.
-    /// </summary>
-    /// <param name="value">The value of the active override, or the default for <typeparamref name="T"/> if the
-    /// function returned <c>false</c>.</param>
-    /// <returns><c>true</c> if there was at least one active override for this property; <c>false</c> if the stack is
-    /// currently empty.</returns>
-    bool TryPeek([MaybeNullWhen(false)] out T value);
 }
