@@ -25,7 +25,7 @@
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close"></Keywords>
             <Keywords name="Keywords1">*context *if *!if *switch *case *!case *float *outlet *repeat</Keywords>
-            <Keywords name="Keywords2">banner button checkbox color-picker digits dropdown expander frame grid image include keybind keybind-editor label lane marquee nine-grid-editor outlet panel scrollable slider spacer tab template textinput</Keywords>
+            <Keywords name="Keywords2">banner button checkbox color-picker digits dropdown expander frame grid image include keybind keybind-editor label lane marquee nine-grid-editor outlet panel scrollable segments slider spacer tab template textinput</Keywords>
             <Keywords name="Keywords3"></Keywords>
             <Keywords name="Keywords4"></Keywords>
             <Keywords name="Keywords5"></Keywords>
