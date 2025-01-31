@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.6.0] - 2025-01-31
+
 ### Added
 
 - All views now have a layout-typed [`ClipSize`](https://focustense.github.com/StardewUI/reference/stardewui/iview#clipsize) property for limiting overflow or cropping content, which allows for animated slides and wipes.
@@ -238,7 +240,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Initial documentation site based on material-mkdocs; many pages are stubs.
 - Syntax highlighting for Visual Studio, VSCode and Notepad++.
 
-[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/focustense/StardewUI/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/focustense/StardewUI/compare/v0.4.2...v0.5.0
 [0.4.2]: https://github.com/focustense/StardewUI/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/focustense/StardewUI/compare/v0.4.0...v0.4.1
