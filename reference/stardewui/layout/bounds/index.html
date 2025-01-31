@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -988,6 +994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tags/" class="md-nav__link">
         
   
@@ -1134,6 +1161,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1210,6 +1258,8 @@
       
         
           
+        
+      
         
       
         
@@ -1512,6 +1562,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1561,6 +1617,8 @@
       
         
           
+        
+      
         
       
         
@@ -1684,7 +1742,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_23" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_25" checked>
         
           
           
@@ -1700,14 +1758,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_23" id="__nav_5_1_23_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_25" id="__nav_5_1_25_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_23_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_23">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_25_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_25">
             <span class="md-nav__icon md-icon"></span>
             Layout
           </label>
@@ -2064,6 +2122,15 @@
   <a href="#offsetvector2" class="md-nav__link">
     <span class="md-ellipsis">
       Offset(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#truncate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Truncate()
     </span>
   </a>
   
@@ -2635,6 +2702,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -2699,6 +2770,8 @@
       
         
           
+        
+      
         
       
         
@@ -3035,6 +3108,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#truncate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Truncate()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#unionbounds" class="md-nav__link">
     <span class="md-ellipsis">
       Union(Bounds)
@@ -3192,6 +3274,10 @@ Assembly: StardewUI.dll  </p>
 <td>Offsets a <a href="./">Bounds</a> by a given distance.</td>
 </tr>
 <tr>
+<td><a href="#truncate">Truncate()</a></td>
+<td>Converts the bounds to an integer <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a>, truncating any fractional values.</td>
+</tr>
+<tr>
 <td><a href="#unionbounds">Union(Bounds)</a></td>
 <td>Computes the union of this <a href="./">Bounds</a> with another instance.</td>
 </tr>
@@ -3329,14 +3415,23 @@ The offset distance.</p>
 <p><a href="./">Bounds</a></p>
 <p>A new <a href="./">Bounds</a> with the same size as this instance and a <a href="./#position">Position</a> offset by the specified <code>distance</code>.</p>
 <hr />
+<h4 id="truncate">Truncate()<a class="headerlink" href="#truncate" title="Permanent link"></a></h4>
+<p>Converts the bounds to an integer <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a>, truncating any fractional values.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Rectangle</span><span class="w"> </span><span class="n">Truncate</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
+<p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a></p>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
+<p>Truncating is the same behavior used in <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2">ToPoint()</a>, making this consistent with the equivalent component-by-component translation to XNA.</p>
+<hr />
 <h4 id="unionbounds">Union(Bounds)<a class="headerlink" href="#unionbounds" title="Permanent link"></a></h4>
 <p>Computes the union of this <a href="./">Bounds</a> with another instance.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">Union</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">Union</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Bounds</span><span class="w"> </span><span class="n">other</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>other</code></strong> &nbsp; <a href="./">Bounds</a><br />
 The other bounds to add to the union.</p>
-<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
+<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
 <p><a href="./">Bounds</a></p>
 <p>A new <a href="./">Bounds</a> whose set is the union of this instance and <code>other</code>; i.e. is exactly large enough to contain both bounds.</p>
 <hr />

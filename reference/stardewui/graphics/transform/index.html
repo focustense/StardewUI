@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -988,6 +994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tags/" class="md-nav__link">
         
   
@@ -1134,6 +1161,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1210,6 +1258,8 @@
       
         
           
+        
+      
         
       
         
@@ -1514,6 +1564,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1528,7 +1584,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_21" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_23" checked>
         
           
           
@@ -1544,14 +1600,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_21" id="__nav_5_1_21_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_23" id="__nav_5_1_23_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_21_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_21">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_23_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_23">
             <span class="md-nav__icon md-icon"></span>
             Graphics
           </label>
@@ -1587,11 +1643,74 @@
   
   
     <li class="md-nav__item">
+      <a href="../cursor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cursor
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../custombuttonspritemap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CustomButtonSpriteMap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../globaltransform/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     GlobalTransform
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hsv/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Hsv
   </span>
   
 
@@ -2003,6 +2122,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#transformvector2-float-vector2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transform(Vector2?, float, Vector2)
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2337,6 +2465,8 @@
       
         
       
+        
+      
     
     
       
@@ -2620,6 +2750,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -2684,6 +2818,8 @@
       
         
           
+        
+      
         
       
         
@@ -2852,6 +2988,15 @@
   <a href="#transformvector2-float-vector2" class="md-nav__link">
     <span class="md-ellipsis">
       Transform(Vector2, float, Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transformvector2-float-vector2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transform(Vector2?, float, Vector2)
     </span>
   </a>
   
@@ -3092,7 +3237,8 @@
 Assembly: StardewUI.dll  </p>
 </div>
 <p>Global transform applied to an <a href="../ispritebatch/">ISpriteBatch</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="n">Transform</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IEquatable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="o">&gt;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="na">[StardewUI.DuckType]</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">public</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="n">Transform</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">IEquatable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="o">&gt;</span>
 </span></code></pre></div>
 <p><strong>Inheritance</strong><br />
 <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ Transform</p>
@@ -3114,6 +3260,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="#transformvector2-float-vector2">Transform(Vector2, Single, Vector2)</a></td>
 <td>Global transform applied to an <a href="../ispritebatch/">ISpriteBatch</a>.</td>
+</tr>
+<tr>
+<td><a href="#transformvector2-float-vector2">Transform(Vector2?, Single, Vector2)</a></td>
+<td>Initializes a new <a href="./">Transform</a> instance.</td>
 </tr>
 </tbody>
 </table>
@@ -3235,77 +3385,91 @@ Translation offset for drawn content.</p>
 <p>The order of the different translation parameters reflects the actual order in which the transformations will be applied in a <a href="../globaltransform/">GlobalTransform</a>. Scaling before rotation prevents unexpected skewing, and rotating before translation keeps the coordinate system intact. </p>
 <p>To deliberately apply the individual operations in a different order, use separate <a href="./">Transform</a> instances applied in sequence, or simply compute the <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Matrix.html">Matrix</a> directly.</p>
 <hr />
+<h4 id="transformvector2-float-vector2_1">Transform(Vector2?, float, Vector2)<a class="headerlink" href="#transformvector2-float-vector2_1" title="Permanent link"></a></h4>
+<p>Initializes a new <a href="./">Transform</a> instance.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">Transform</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="o">?</span><span class="w"> </span><span class="n">Scale</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Rotation</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">Translation</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>Scale</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1">Nullable</a>&lt;<a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a>&gt;<br />
+The scale at which to draw. <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2">One</a> is unity scale (i.e. no scaling).</p>
+<p><strong><code>Rotation</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
+2D rotation (always along Z axis) to apply, in radians.</p>
+<p><strong><code>Translation</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+Translation offset for drawn content.</p>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
+<p>This overload supports optional parameters, particularly for use in duck typing.</p>
+<hr />
 <h3 id="fields_1">Fields<a class="headerlink" href="#fields_1" title="Permanent link"></a></h3>
 <h4 id="default">Default<a class="headerlink" href="#default" title="Permanent link"></a></h4>
 <p>Default instance with no transformations applied.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">Default</span><span class="p">;</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">Default</span><span class="p">;</span>
 </span></code></pre></div>
 <h5 id="field-value">Field Value<a class="headerlink" href="#field-value" title="Permanent link"></a></h5>
 <p><a href="./">Transform</a></p>
 <hr />
 <h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
 <h4 id="equalitycontract">EqualityContract<a class="headerlink" href="#equalitycontract" title="Permanent link"></a></h4>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">EqualityContract</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">EqualityContract</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
 <h4 id="hasnonuniformscale">HasNonUniformScale<a class="headerlink" href="#hasnonuniformscale" title="Permanent link"></a></h4>
 <p>Whether the current instance has a non-uniform <a href="./#scale">Scale</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasNonUniformScale</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasNonUniformScale</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
-<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
 <p>Non-uniform scale sometimes needs to be treated differently from uniform scale because the former is not commutative with rotation.</p>
 <hr />
 <h4 id="hasrotation">HasRotation<a class="headerlink" href="#hasrotation" title="Permanent link"></a></h4>
 <p>Whether the current instance has a non-zero <a href="./#rotation">Rotation</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasRotation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasRotation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
 <h4 id="hasscale">HasScale<a class="headerlink" href="#hasscale" title="Permanent link"></a></h4>
 <p>Whether the current instance has non-unity <a href="./#scale">Scale</a>, regardless of uniformity.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasScale</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasScale</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
 <h4 id="hastranslation">HasTranslation<a class="headerlink" href="#hastranslation" title="Permanent link"></a></h4>
 <p>Whether the current instance has a non-zero <a href="./#translation">Translation</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasTranslation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">HasTranslation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
 <h4 id="isoriginrelative">IsOriginRelative<a class="headerlink" href="#isoriginrelative" title="Permanent link"></a></h4>
 <p>Whether the current transform is affected by transform origin.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsOriginRelative</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">IsOriginRelative</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
-<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
 <p>Some types of transformations, specifically translation, have outcomes independent of the transformation origin and should therefore not attempt to use it or pass it on to global transforms.</p>
 <hr />
 <h4 id="rotation">Rotation<a class="headerlink" href="#rotation" title="Permanent link"></a></h4>
 <p>2D rotation (always along Z axis) to apply, in radians.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Rotation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">Rotation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
 <hr />
 <h4 id="scale">Scale<a class="headerlink" href="#scale" title="Permanent link"></a></h4>
 <p>The scale at which to draw. <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html#Microsoft_Xna_Framework_Vector2">One</a> is unity scale (i.e. no scaling).</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">Scale</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">Scale</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_7">Property Value<a class="headerlink" href="#property-value_7" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
 <hr />
 <h4 id="translation">Translation<a class="headerlink" href="#translation" title="Permanent link"></a></h4>
 <p>Translation offset for drawn content.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">Translation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">Translation</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value_8">Property Value<a class="headerlink" href="#property-value_8" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
@@ -3313,15 +3477,15 @@ Translation offset for drawn content.</p>
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="canmergelocallytransform">CanMergeLocally(Transform)<a class="headerlink" href="#canmergelocallytransform" title="Permanent link"></a></h4>
 <p>Checks if a subsequent transform can be merged into this one while preserving the result as a simple local transform, i.e. not requiring the use of a transformation matrix.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CanMergeLocally</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CanMergeLocally</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>next</code></strong> &nbsp; <a href="./">Transform</a><br />
 The local transformation to apply after the current instance.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the cumulative sequence of transformations can continue to be represented as a simple local <a href="./">Transform</a>; <code>false</code> if the combination requires converting <a href="./#tomatrix">ToMatrix()</a> and subsequent inclusion into a new <a href="../globaltransform/">GlobalTransform</a>.</p>
-<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
+<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
 <p>Local transforms can be merged if they are either: </p>
 <ul>
 <li>Mathematically commutative with the existing properties, such as uniform scaling, or additional translation on a local transform that is <em>only</em> translation; or </li>
@@ -3330,9 +3494,9 @@ The local transformation to apply after the current instance.</p>
 <hr />
 <h4 id="canmergelocallyvector2-float-vector2">CanMergeLocally(Vector2, float, Vector2)<a class="headerlink" href="#canmergelocallyvector2-float-vector2" title="Permanent link"></a></h4>
 <p>Checks if a subsequent transform, represented by its individual components, can be merged into this one while preserving the result as a simple local transform, i.e. not requiring the use of a transformation matrix.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CanMergeLocally</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">rotation</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">translation</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">CanMergeLocally</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">scale</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">rotation</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">translation</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>scale</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The <a href="./#scale">Scale</a> component of the next transform.</p>
 <p><strong><code>rotation</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
@@ -3344,9 +3508,9 @@ The <a href="./#translation">Translation</a> component of the next transform.</p
 <hr />
 <h4 id="fromrotationfloat">FromRotation(float)<a class="headerlink" href="#fromrotationfloat" title="Permanent link"></a></h4>
 <p>Creates a new <a href="./">Transform</a> that applies a specific 2D rotation.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">FromRotation</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">FromRotation</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">angle</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>angle</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a><br />
 The rotation angle, in radians.</p>
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
@@ -3355,9 +3519,9 @@ The rotation angle, in radians.</p>
 <hr />
 <h4 id="fromscalevector2">FromScale(Vector2)<a class="headerlink" href="#fromscalevector2" title="Permanent link"></a></h4>
 <p>Creates a <a href="./">Transform</a> using a specified scale.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">FromScale</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">scale</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">FromScale</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">scale</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>scale</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The scale to apply.</p>
 <h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
@@ -3366,9 +3530,9 @@ The scale to apply.</p>
 <hr />
 <h4 id="fromtranslationvector2">FromTranslation(Vector2)<a class="headerlink" href="#fromtranslationvector2" title="Permanent link"></a></h4>
 <p>Creates a <a href="./">Transform</a> using a specified translation offset.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">FromTranslation</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">translation</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Transform</span><span class="w"> </span><span class="n">FromTranslation</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">translation</span><span class="p">);</span>
 </span></code></pre></div>
-<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
 <p><strong><code>translation</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The translation offset.</p>
 <h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
@@ -3377,19 +3541,19 @@ The translation offset.</p>
 <hr />
 <h4 id="isrectangular">IsRectangular()<a class="headerlink" href="#isrectangular" title="Permanent link"></a></h4>
 <p>Checks if this transform represents a single rectangular area of the parent, i.e. not rotated or skewed.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsRectangular</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsRectangular</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
 <h4 id="tomatrix">ToMatrix()<a class="headerlink" href="#tomatrix" title="Permanent link"></a></h4>
 <p>Creates a transformation matrix from the properties of this transform.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Matrix</span><span class="w"> </span><span class="n">ToMatrix</span><span class="p">();</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Matrix</span><span class="w"> </span><span class="n">ToMatrix</span><span class="p">();</span>
 </span></code></pre></div>
 <h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Matrix.html">Matrix</a></p>
 <p>A transformation matrix equivalent to this transform.</p>
-<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
+<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
 <p>The created matrix, when used with <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html#Microsoft_Xna_Framework_Graphics_SpriteBatch">Begin(SpriteSortMode, BlendState, SamplerState, DepthStencilState, RasterizerState, Effect, Matrix?)</a>, will have the same effect as if the current <a href="./#scale">Scale</a>, <a href="./#rotation">Rotation</a> and <a href="./#translation">Translation</a> were to be provided directly as arguments to the sprite or text drawing method(s).</p>
 <hr />
 </div>

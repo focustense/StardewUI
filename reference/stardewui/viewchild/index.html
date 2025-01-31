@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -972,6 +978,27 @@
   
   <span class="md-ellipsis">
     MenuCloseBehavior
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
   </span>
   
 
@@ -1327,6 +1354,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#isvisiblevector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsVisible(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#offsetvector2" class="md-nav__link">
     <span class="md-ellipsis">
       Offset(Vector2)
@@ -1387,6 +1423,27 @@
   
   <span class="md-ellipsis">
     ViewMenu&lt;T&gt;
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
   </span>
   
 
@@ -1478,6 +1535,8 @@
       
         
           
+        
+      
         
       
         
@@ -1780,6 +1839,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1829,6 +1894,8 @@
       
         
           
+        
+      
         
       
         
@@ -2126,6 +2193,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -2190,6 +2261,8 @@
       
         
           
+        
+      
         
       
         
@@ -2475,6 +2548,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#isvisiblevector2" class="md-nav__link">
+    <span class="md-ellipsis">
+      IsVisible(Vector2)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#offsetvector2" class="md-nav__link">
     <span class="md-ellipsis">
       Offset(Vector2)
@@ -2608,6 +2690,10 @@ Assembly: StardewUI.dll  </p>
 <td>Checks if a view can be reached by travelling from a given point in a given direction.</td>
 </tr>
 <tr>
+<td><a href="#isvisiblevector2">IsVisible(Vector2)</a></td>
+<td>Checks if the visible area of this child contains a point relative to the view's parent.</td>
+</tr>
+<tr>
 <td><a href="#offsetvector2">Offset(Vector2)</a></td>
 <td>Offsets the position by a given distance.</td>
 </tr>
@@ -2725,14 +2811,25 @@ The direction from <code>origin</code>.</p>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <p><code>true</code> if the view's boundaries either already contain the <code>origin</code> or are in the specified <code>direction</code> from the <code>origin</code>; otherwise <code>false</code>.</p>
 <hr />
-<h4 id="offsetvector2">Offset(Vector2)<a class="headerlink" href="#offsetvector2" title="Permanent link"></a></h4>
-<p>Offsets the position by a given distance.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">Offset</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+<h4 id="isvisiblevector2">IsVisible(Vector2)<a class="headerlink" href="#isvisiblevector2" title="Permanent link"></a></h4>
+<p>Checks if the visible area of this child contains a point relative to the view's parent.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">IsVisible</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">point</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
+<p><strong><code>point</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+The point to test.</p>
+<h5 id="returns_8">Returns<a class="headerlink" href="#returns_8" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p><code>true</code> if <code>point</code> is within the visible, parent-relative bounds of this child; otherwise <code>false</code>.</p>
+<hr />
+<h4 id="offsetvector2">Offset(Vector2)<a class="headerlink" href="#offsetvector2" title="Permanent link"></a></h4>
+<p>Offsets the position by a given distance.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="w"> </span><span class="n">Offset</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">distance</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>distance</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
 The offset distance.</p>
-<h5 id="returns_8">Returns<a class="headerlink" href="#returns_8" title="Permanent link"></a></h5>
+<h5 id="returns_9">Returns<a class="headerlink" href="#returns_9" title="Permanent link"></a></h5>
 <p><a href="./">ViewChild</a></p>
 <p>A copy of the current <a href="./">ViewChild</a> having the same <a href="./#view">View</a> and a <a href="./#position">Position</a> offset by <code>distance</code>.</p>
 <hr />

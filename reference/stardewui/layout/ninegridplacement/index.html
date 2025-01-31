@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -988,6 +994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tags/" class="md-nav__link">
         
   
@@ -1134,6 +1161,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1210,6 +1258,8 @@
       
         
           
+        
+      
         
       
         
@@ -1512,6 +1562,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1561,6 +1617,8 @@
       
         
           
+        
+      
         
       
         
@@ -1684,7 +1742,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_23" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_25" checked>
         
           
           
@@ -1700,14 +1758,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_23" id="__nav_5_1_23_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_25" id="__nav_5_1_25_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_23_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_23">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_25_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_25">
             <span class="md-nav__icon md-icon"></span>
             Layout
           </label>
@@ -2298,9 +2356,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#getpositionvector2" class="md-nav__link">
+  <a href="#getpositionvector2-vector2" class="md-nav__link">
     <span class="md-ellipsis">
-      GetPosition(Vector2)
+      GetPosition(Vector2, Vector2)
     </span>
   </a>
   
@@ -2325,9 +2383,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parsestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#snapdirection-bool" class="md-nav__link">
     <span class="md-ellipsis">
       Snap(Direction, bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tryparsestring-ninegridplacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      TryParse(string, NineGridPlacement)
     </span>
   </a>
   
@@ -2617,6 +2693,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -2681,6 +2761,8 @@
       
         
           
+        
+      
         
       
         
@@ -2972,9 +3054,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#getpositionvector2" class="md-nav__link">
+  <a href="#getpositionvector2-vector2" class="md-nav__link">
     <span class="md-ellipsis">
-      GetPosition(Vector2)
+      GetPosition(Vector2, Vector2)
     </span>
   </a>
   
@@ -2999,9 +3081,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#parsestring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parse(string)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#snapdirection-bool" class="md-nav__link">
     <span class="md-ellipsis">
       Snap(Direction, bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tryparsestring-ninegridplacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      TryParse(string, NineGridPlacement)
     </span>
   </a>
   
@@ -3135,8 +3235,8 @@ Assembly: StardewUI.dll  </p>
 <td>Gets the <a href="./">NineGridPlacement</a>s that neighbor the current placement, i.e. are reachable in a single <a href="./#snapdirection-bool">Snap(Direction, Boolean)</a>.</td>
 </tr>
 <tr>
-<td><a href="#getpositionvector2">GetPosition(Vector2)</a></td>
-<td>Computes the aligned pixel position relative to a bounded size.</td>
+<td><a href="#getpositionvector2-vector2">GetPosition(Vector2, Vector2)</a></td>
+<td>Computes the position of some content within its container bounds.</td>
 </tr>
 <tr>
 <td><a href="#ismiddle">IsMiddle()</a></td>
@@ -3147,8 +3247,16 @@ Assembly: StardewUI.dll  </p>
 <td>Keeps the same alignments, but pushes the content farther in a specific direction.</td>
 </tr>
 <tr>
+<td><a href="#parsestring">Parse(string)</a></td>
+<td>Parses a <a href="./">NineGridPlacement</a> from its string representation.</td>
+</tr>
+<tr>
 <td><a href="#snapdirection-bool">Snap(Direction, Boolean)</a></td>
 <td>Snaps to an adjacent grid cell.</td>
+</tr>
+<tr>
+<td><a href="#tryparsestring-ninegridplacement">TryParse(string, NineGridPlacement)</a></td>
+<td>Attempts to parse a <a href="./">NineGridPlacement</a> from its string representation.</td>
 </tr>
 </tbody>
 </table>
@@ -3218,7 +3326,7 @@ The desired horizontal alignment.</p>
 The desired vertical alignment.</p>
 <h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
 <p><a href="./">NineGridPlacement</a></p>
-<p>A <a href="./">NineGridPlacement</a> whose <a href="./#horizontalalignment">HorizontalAlignment</a> and <a href="./#verticalalignment">VerticalAlignment</a> match the <code>horizontalAlignment</code> and <code>verticalAlignment</code>, respectively, and whose <a href="./#getpositionvector2">GetPosition(Vector2)</a> will resolve to exactly the specified <code>position</code>.</p>
+<p>A <a href="./">NineGridPlacement</a> whose <a href="./#horizontalalignment">HorizontalAlignment</a> and <a href="./#verticalalignment">VerticalAlignment</a> match the <code>horizontalAlignment</code> and <code>verticalAlignment</code>, respectively, and whose <a href="./#getpositionvector2-vector2">GetPosition(Vector2, Vector2)</a> will resolve to exactly the specified <code>position</code>.</p>
 <hr />
 <h4 id="equalsignoringoffsetninegridplacement">EqualsIgnoringOffset(NineGridPlacement)<a class="headerlink" href="#equalsignoringoffsetninegridplacement" title="Permanent link"></a></h4>
 <p>Checks if another <a href="./">NineGridPlacement</a> has the same alignments as this one, regardless of offset.</p>
@@ -3252,16 +3360,18 @@ Whether to avoid the exact center, i.e. having both <a href="./#horizontalalignm
 <h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../ninegridplacement.neighbor/">Neighbor</a>&gt;</p>
 <hr />
-<h4 id="getpositionvector2">GetPosition(Vector2)<a class="headerlink" href="#getpositionvector2" title="Permanent link"></a></h4>
-<p>Computes the aligned pixel position relative to a bounded size.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">GetPosition</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">size</span><span class="p">);</span>
+<h4 id="getpositionvector2-vector2">GetPosition(Vector2, Vector2)<a class="headerlink" href="#getpositionvector2-vector2" title="Permanent link"></a></h4>
+<p>Computes the position of some content within its container bounds.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">GetPosition</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">contentSize</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">containerSize</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
-<p><strong><code>size</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
-The size of the container.</p>
+<p><strong><code>contentSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+Size of the content to be positioned.</p>
+<p><strong><code>containerSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a><br />
+Size of the container in which the content will be positioned.</p>
 <h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
-<p>The aligned position, relative to the container.</p>
+<p>The aligned content position, relative to the container.</p>
 <hr />
 <h4 id="ismiddle">IsMiddle()<a class="headerlink" href="#ismiddle" title="Permanent link"></a></h4>
 <p>Checks if this placement is aligned to the exact center of the container, not counting <a href="./#offset">Offset</a>.</p>
@@ -3283,20 +3393,44 @@ Pixel distance to offset in the specified <code>direction</code>.</p>
 <p><a href="./">NineGridPlacement</a></p>
 <p>A new <a href="./">NineGridPlacement</a> whose alignments are the same as the current instance and whose <a href="./#offset">Offset</a> represents a move from the current offset in the specified <code>direction</code> with the specified <code>distance</code>.</p>
 <hr />
-<h4 id="snapdirection-bool">Snap(Direction, bool)<a class="headerlink" href="#snapdirection-bool" title="Permanent link"></a></h4>
-<p>Snaps to an adjacent grid cell.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">NineGridPlacement</span><span class="w"> </span><span class="n">Snap</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">avoidMiddle</span><span class="p">);</span>
+<h4 id="parsestring">Parse(string)<a class="headerlink" href="#parsestring" title="Permanent link"></a></h4>
+<p>Parses a <a href="./">NineGridPlacement</a> from its string representation.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">NineGridPlacement</span><span class="w"> </span><span class="n">Parse</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
+<p><strong><code>value</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The string value to parse.</p>
+<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
+<p><a href="./">NineGridPlacement</a></p>
+<p>The parsed placement.</p>
+<hr />
+<h4 id="snapdirection-bool">Snap(Direction, bool)<a class="headerlink" href="#snapdirection-bool" title="Permanent link"></a></h4>
+<p>Snaps to an adjacent grid cell.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">NineGridPlacement</span><span class="w"> </span><span class="n">Snap</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Direction</span><span class="w"> </span><span class="n">direction</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">avoidMiddle</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_7">Parameters<a class="headerlink" href="#parameters_7" title="Permanent link"></a></h5>
 <p><strong><code>direction</code></strong> &nbsp; <a href="../../direction/">Direction</a><br />
 Direction in which to move.</p>
 <p><strong><code>avoidMiddle</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 Whether to avoid the exact center, i.e. having both <a href="./#horizontalalignment">HorizontalAlignment</a> and <a href="./#verticalalignment">VerticalAlignment</a> be <a href="../alignment/#middle">Middle</a>. This is often used for positioning HUD elements which typically are not useful to show in the middle of the screen, and the positioning UI may want to use that space for button prompts instead.</p>
-<h5 id="returns_7">Returns<a class="headerlink" href="#returns_7" title="Permanent link"></a></h5>
+<h5 id="returns_8">Returns<a class="headerlink" href="#returns_8" title="Permanent link"></a></h5>
 <p><a href="./">NineGridPlacement</a></p>
 <p>A new <a href="./">NineGridPlacement</a> representing the adjacent cell in the specified <code>direction</code>, or <code>null</code> if there is no adjacent cell (e.g. trying to snap <a href="../../direction/#west">West</a> from a placement that is already at the horizontal <a href="../alignment/#start">Start</a>).</p>
 <h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
 <p>Causes the <a href="./#offset">Offset</a> to be reset for the newly-created placement.</p>
+<hr />
+<h4 id="tryparsestring-ninegridplacement">TryParse(string, NineGridPlacement)<a class="headerlink" href="#tryparsestring-ninegridplacement" title="Permanent link"></a></h4>
+<p>Attempts to parse a <a href="./">NineGridPlacement</a> from its string representation.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">TryParse</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="k">value</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">NineGridPlacement</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_8">Parameters<a class="headerlink" href="#parameters_8" title="Permanent link"></a></h5>
+<p><strong><code>value</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
+The string value to parse.</p>
+<p><strong><code>result</code></strong> &nbsp; <a href="./">NineGridPlacement</a><br />
+If the method returns <code>true</code>, holds the parsed placement; otherwise <code>null</code>.</p>
+<h5 id="returns_9">Returns<a class="headerlink" href="#returns_9" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p><code>true</code> if the <code>value</code> was successfully parsed; <code>false</code> if the input was not in a valid format.</p>
 <hr />
 </div>
 

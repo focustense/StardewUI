@@ -569,6 +569,8 @@
       
         
       
+        
+      
     
     
       
@@ -966,6 +968,8 @@
       
         
       
+        
+      
     
     
       
@@ -1088,7 +1092,7 @@
 <p>What makes overlays distinct from overlapping layout views like <a href="../standard-views/#panel">panels</a> is that overlays "break out" of the layout of their parent <a href="../../reference/stardewui/viewmenu-1/">ViewMenu</a> and any views inside it. They can choose to display adjacent to some other view, such as the item list in an open <a href="../standard-views/#drop-down-list">drop-down list</a>, or act like a full-screen submenu, such as the overlay used for <a href="../standard-views/#keybind-editor">key bindings</a>.</p>
 <p>While this is achievable to some degree with <code>IClickableMenu.SetChildMenu</code> in vanilla Stardew Valley code, UI overlays have a number of advantages:</p>
 <ul>
-<li>They are much more lightweight in terms of both implementation and performance, requiring nothing more than an <code>IView</code>, and hooking into the event loop of whichever <code>ViewMenu&lt;T&gt;</code> spawned it.</li>
+<li>They are much more lightweight in terms of both implementation and performance, requiring nothing more than an <code>IView</code>, and hooking into the event loop of whichever <code>ViewMenu</code> spawned it.</li>
 <li>Cursor <a href="../../framework/focus-and-interaction/">focus</a> is automatically moved inside an overlay when it opens, and constrained to that overlay until it is closed.</li>
 <li>Mouse users can click anywhere outside an active overlay to dismiss it, much like any modern modal dialog. (The menu key, by default <kbd>Esc</kbd> or <kbd>E</kbd>, also still works here.)</li>
 <li>Menus <strong>remember</strong> the focus at the instant an overlay was opened, and can return the focus back to where it was when the overlay is closed.</li>

@@ -571,6 +571,8 @@
       
         
       
+        
+      
     
     
       
@@ -879,6 +881,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../custom-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom Data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../extensions/" class="md-nav__link">
         
   
@@ -1059,6 +1082,8 @@
       
         
       
+        
+      
     
     
       
@@ -1200,14 +1225,15 @@
 <h2 id="lifecycle">Lifecycle<a class="headerlink" href="#lifecycle" title="Permanent link"></a></h2>
 <p>Behavior events happen in a specific and predictable order which is important for event-based behaviors:</p>
 <ol>
-<li><a href="../../reference/stardewui/framework/behaviors/viewbehavior-2/#oninitialize"><code>OnInitialize</code></a> runs after the behavior has received its View and Data. This is the best time to add event handlers.</li>
+<li><a href="../../reference/stardewui/framework/behaviors/viewbehavior-2/#onattached"><code>OnAttached</code></a> runs after the behavior has received its View and Data. This is the best time to add event handlers.</li>
 <li><a href="../../reference/stardewui/framework/behaviors/viewbehavior-2/#onnewdatatdata"><code>OnNewData</code></a> runs whenever the <code>Data</code> changes. On frames where this occurs, it will always occur before the <code>Update</code>. The most common reason to implement <code>OnNewData</code> is to replace any item in the <a href="#view-state">view state</a> associated with this behavior.</li>
 <li><a href="../../reference/stardewui/framework/behaviors/viewbehavior-2/#updatetimespan"><code>Update</code></a> runs on every game update tick after initialization, and as long as the Data is valid (not null, and convertible to the required type). If the behavior has some ongoing function—such as animation—this is where it should run.</li>
+<li><a href="../../reference/stardewui/framework/behaviors/viewbehavior-2/#ondetachediview"><code>OnDetached</code></a> runs either immediately before <code>OnDispose</code> (below) or when the associated view or binding context has changed and requires a new target. In the latter case, it will always be followed by another <code>OnAttached</code> for the new target.</li>
 <li><a href="../../reference/stardewui/framework/behaviors/viewbehavior-2/#ondispose"><code>OnDispose</code></a> runs when the behavior is no longer valid, i.e. when the View has been removed or the entire menu/HUD closed. This is the best time to remove any event handlers.</li>
 </ol>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>Behaviors must not try to access any state in the constructor; the <code>Data</code>, <code>View</code> and <code>ViewState</code> properties are not guaranted to have values until <code>OnInitialize</code>.</p>
+<p>Behaviors must not try to access any state in the constructor; the <code>Data</code>, <code>View</code> and <code>ViewState</code> properties are not guaranted to have values until <code>OnAttach</code>.</p>
 <p>Accessing <code>Data</code> outside of the <code>Update</code> method is allowed, but not recommended; the value <em>may</em> be <code>null</code> if <code>TData</code> is a reference type, even if non-nullable reference types are enabled and the type system implies it cannot be <code>null</code>.</p>
 </div>
 <h2 id="arguments">Arguments<a class="headerlink" href="#arguments" title="Permanent link"></a></h2>

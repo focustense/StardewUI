@@ -571,6 +571,8 @@
       
         
       
+        
+      
     
     
       
@@ -1020,6 +1022,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../custom-data/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Custom Data
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../extensions/" class="md-nav__link">
         
   
@@ -1188,6 +1211,8 @@
       
         
           
+        
+      
         
       
         
@@ -1893,6 +1918,18 @@
 <td>Any <a href="#common-attributes">regular attribute</a></td>
 <td>Same as <code>&lt;arg&gt;</code> attribute</td>
 <td>Changes the <code>&lt;arg&gt;</code> property to a new value when the view becomes visible, including when first created e.g. as the result of an <code>*if</code>; reverts it when the view is hidden.</td>
+</tr>
+<tr>
+<td><code>state:&lt;name&gt;</code></td>
+<td><code>string</code></td>
+<td><code>bool</code></td>
+<td>Creates a named state whose behaviors are toggled on/off by the bound value. This is intended for use with state triggers (see below).</td>
+</tr>
+<tr>
+<td><code>state:&lt;name&gt;:&lt;arg&gt;</code></td>
+<td><code>string</code>, then any <a href="#common-attributes">regular attribute</a></td>
+<td>Same as <code>&lt;arg&gt;</code> attribute</td>
+<td>Changes the <code>&lt;arg&gt;</code> property to a new value when the state with specified <code>name</code> becomes active, and reverts it when the state becomes inactive. Only works when <code>state:&lt;name&gt;</code> is defined on the same element.</td>
 </tr>
 <tr>
 <td><code>transition:&lt;arg&gt;</code></td>

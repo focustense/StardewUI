@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://focustense.github.io/StardewUI/reference/stardewui/widgets/componentview-1/">
       
       
-        <link rel="prev" href="../checkbox/">
+        <link rel="prev" href="../colorpicker/">
       
       
         <link rel="next" href="../componentview/">
@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -988,6 +994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tags/" class="md-nav__link">
         
   
@@ -1134,6 +1161,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1210,6 +1258,8 @@
       
         
           
+        
+      
         
       
         
@@ -1512,6 +1562,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1561,6 +1617,8 @@
       
         
           
+        
+      
         
       
         
@@ -1860,6 +1918,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1874,7 +1936,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_25" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_27" checked>
         
           
           
@@ -1890,14 +1952,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_25" id="__nav_5_1_25_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_27" id="__nav_5_1_27_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_25_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_25">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_27_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_27">
             <span class="md-nav__icon md-icon"></span>
             Widgets
           </label>
@@ -1959,6 +2021,27 @@
   
   <span class="md-ellipsis">
     CheckBox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../colorpicker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ColorPicker
   </span>
   
 
@@ -2795,6 +2878,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../segmentedcontrol/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SegmentedControl
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../selectiongroup/" class="md-nav__link">
         
   
@@ -2956,6 +3060,8 @@
       
         
       
+        
+      
     
     
       
@@ -3028,6 +3134,8 @@
       
         
           
+        
+      
         
       
         
@@ -3311,7 +3419,7 @@ Type of view used for the root.</p>
 <h2 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h2>
 <p>This implements all the boilerplate of an <a href="../../iview/">IView</a> without having to actually implement a totally custom <a href="./#view">View</a>; instead, it delegates all functionality to the inner (root) <a href="../../iview/">IView</a>. </p>
 <p>The typical use case is for what is often called "Components", "Layouts", "User Controls", etc., in which a class defines both the view hierarchy and an API for interacting with the view and underlying data at the same time. The top-level layout is created in <a href="./#createview">CreateView()</a>, and child views can be added on creation or at any later time. More importantly, since the subclass decides what children to create, it can also store references to those children for the purposes of updating the UI, responding to events, etc. </p>
-<p>Component views can be composed like any other views, or used in a <a href="../../viewmenu-1/">ViewMenu&lt;T&gt;</a>.</p>
+<p>Component views can be composed like any other views, or used in a <a href="../../viewmenu/">ViewMenu</a>.</p>
 <h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
 <h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
 <table>
@@ -3340,6 +3448,14 @@ Type of view used for the root.</p>
 <tr>
 <td><a href="../decoratorview-1/#actualbounds">ActualBounds</a></td>
 <td>The bounds of this view relative to the origin (0, 0).<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../decoratorview-1/#cliporigin">ClipOrigin</a></td>
+<td>Origin position for the <a href="../../iview/#clipsize">ClipSize</a>.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../decoratorview-1/#clipsize">ClipSize</a></td>
+<td>Size of the clipping rectangle, outside which content will not be displayed.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../decoratorview-1/#contentbounds">ContentBounds</a></td>
@@ -3372,6 +3488,10 @@ Type of view used for the root.</p>
 <tr>
 <td><a href="../decoratorview-1/#pointereventsenabled">PointerEventsEnabled</a></td>
 <td>Whether this view should receive pointer events like <a href="../../iview/#click">Click</a> or <a href="../../iview/#drag">Drag</a>.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../decoratorview-1/#pointerstyle">PointerStyle</a></td>
+<td>Pointer style to use when this view is hovered.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../decoratorview-1/#scrollwithchildren">ScrollWithChildren</a></td>
@@ -3437,7 +3557,7 @@ Type of view used for the root.</p>
 <td>Finds the next focusable component in a given direction that does <em>not</em> overlap with a current position.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
-<td><a href="../decoratorview-1/#getchildatvector2-bool">GetChildAt(Vector2, Boolean)</a></td>
+<td><a href="../decoratorview-1/#getchildatvector2-bool-bool">GetChildAt(Vector2, Boolean, Boolean)</a></td>
 <td>Finds the child at a given position.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
@@ -3445,7 +3565,7 @@ Type of view used for the root.</p>
 <td>Computes or retrieves the position of a given direct child.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
-<td><a href="../decoratorview-1/#getchildren">GetChildren()</a></td>
+<td><a href="../decoratorview-1/#getchildrenbool">GetChildren(Boolean)</a></td>
 <td>Gets the current children of this view.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
@@ -3465,12 +3585,20 @@ Type of view used for the root.</p>
 <td>Checks whether or not the view is dirty - i.e. requires a new layout with a full <a href="../../iview/#measurevector2">Measure(Vector2)</a>.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
+<td><a href="../decoratorview-1/#isvisiblevector2">IsVisible(Vector2?)</a></td>
+<td>Checks if the view is effectively visible, i.e. if it has anything to draw.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
+</tr>
+<tr>
 <td><a href="../decoratorview-1/#measurevector2">Measure(Vector2)</a></td>
 <td>Performs layout on this view, updating its <a href="../../iview/#outersize">OuterSize</a>, <a href="../../iview/#actualbounds">ActualBounds</a> and <a href="../../iview/#contentbounds">ContentBounds</a>, and arranging any children in their respective positions.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../decoratorview-1/#onbuttonpressbuttoneventargs">OnButtonPress(ButtonEventArgs)</a></td>
 <td>Called when a button press is received while this view is in the focus path.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../decoratorview-1/#onbuttonrepeatbuttoneventargs">OnButtonRepeat(ButtonEventArgs)</a></td>
+<td>Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../decoratorview-1/#onclickclickeventargs">OnClick(ClickEventArgs)</a></td>
@@ -3530,6 +3658,10 @@ Type of view used for the root.</p>
 <tr>
 <td><a href="../decoratorview-1/#buttonpress">ButtonPress</a></td>
 <td>Event raised when any button on any input device is pressed.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../decoratorview-1/#buttonrepeat">ButtonRepeat</a></td>
+<td>Event raised when a button is being held while the view is in focus, and has been held long enough since the initial <a href="../../iview/#buttonpress">ButtonPress</a> or the previous <code>ButtonRepeat</code> to trigger a repeated press.<br><span class="muted" markdown>(Inherited from <a href="../decoratorview-1/">DecoratorView&lt;T&gt;</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../decoratorview-1/#click">Click</a></td>
@@ -3633,7 +3765,7 @@ Type of view used for the root.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../checkbox/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CheckBox">
+          <a href="../colorpicker/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ColorPicker">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3643,7 +3775,7 @@ Type of view used for the root.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                CheckBox
+                ColorPicker
               </div>
             </div>
           </a>

@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -988,6 +994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tags/" class="md-nav__link">
         
   
@@ -1134,6 +1161,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1210,6 +1258,8 @@
       
         
           
+        
+      
         
       
         
@@ -1512,6 +1562,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1561,6 +1617,8 @@
       
         
           
+        
+      
         
       
         
@@ -1860,6 +1918,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1874,7 +1936,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_25" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_27" checked>
         
           
           
@@ -1890,14 +1952,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_25" id="__nav_5_1_25_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_27" id="__nav_5_1_27_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_25_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_25">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_27_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_27">
             <span class="md-nav__icon md-icon"></span>
             Widgets
           </label>
@@ -2254,6 +2316,27 @@
   
   <span class="md-ellipsis">
     CheckBox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../colorpicker/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ColorPicker
   </span>
   
 
@@ -2879,6 +2962,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../segmentedcontrol/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SegmentedControl
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../selectiongroup/" class="md-nav__link">
         
   
@@ -3040,6 +3144,8 @@
       
         
       
+        
+      
     
     
       
@@ -3112,6 +3218,8 @@
       
         
           
+        
+      
         
       
         
@@ -3518,6 +3626,14 @@ Assembly: StardewUI.dll  </p>
 <td>The layout size (not edge thickness) of the entire drawn area including the border, i.e. the <a href="../../view/#innersize">InnerSize</a> plus any borders defined in <a href="../../view/#getborderthickness">GetBorderThickness()</a>. Does not include the <a href="../../view/#margin">Margin</a>.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
+<td><a href="../../view/#cliporigin">ClipOrigin</a></td>
+<td>Origin position for the <a href="../../iview/#clipsize">ClipSize</a>.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#clipsize">ClipSize</a></td>
+<td>Size of the clipping rectangle, outside which content will not be displayed.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
 <td><a href="../../view/#contentbounds">ContentBounds</a></td>
 <td>The true bounds of this view's content; i.e. <a href="../../iview/#actualbounds">ActualBounds</a> excluding margins.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
@@ -3588,6 +3704,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="../../view/#pointereventsenabled">PointerEventsEnabled</a></td>
 <td>Whether this view should receive pointer events like <a href="../../view/#click">Click</a> or <a href="../../view/#drag">Drag</a>.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#pointerstyle">PointerStyle</a></td>
+<td>Pointer style to use when this view is hovered.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#scrollwithchildren">ScrollWithChildren</a></td>
@@ -3673,7 +3793,7 @@ Assembly: StardewUI.dll  </p>
 <td>Measures the thickness of each edge of the border, if the view has a border.<br><span class="muted" markdown>(Overrides <a href="../../view/">View</a>.<a href="../../view/#getborderthickness">GetBorderThickness()</a>)</span></td>
 </tr>
 <tr>
-<td><a href="../../view/#getchildatvector2-bool">GetChildAt(Vector2, Boolean)</a></td>
+<td><a href="../../view/#getchildatvector2-bool-bool">GetChildAt(Vector2, Boolean, Boolean)</a></td>
 <td>Finds the child at a given position.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
@@ -3681,7 +3801,7 @@ Assembly: StardewUI.dll  </p>
 <td>Computes or retrieves the position of a given direct child.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
-<td><a href="../../view/#getchildren">GetChildren()</a></td>
+<td><a href="../../view/#getchildrenbool">GetChildren(Boolean)</a></td>
 <td>Gets the current children of this view.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
@@ -3705,12 +3825,20 @@ Assembly: StardewUI.dll  </p>
 <td>Checks if the view has content or elements that are all or partially outside the <a href="../../iview/#actualbounds">ActualBounds</a>.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
+<td><a href="../../view/#hasowncontent">HasOwnContent()</a></td>
+<td>Checks if this view displays its own content, independent of any floating elements or children.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
 <td><a href="#iscontentdirty">IsContentDirty()</a></td>
 <td>Checks whether or not the internal content/layout has changed.<br><span class="muted" markdown>(Overrides <a href="../../view/">View</a>.<a href="../../view/#iscontentdirty">IsContentDirty()</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#isdirty">IsDirty()</a></td>
 <td>Checks whether or not the view is dirty - i.e. requires a new layout with a full <a href="../../iview/#measurevector2">Measure(Vector2)</a>.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#isvisiblevector2">IsVisible(Vector2?)</a></td>
+<td>Checks if the view is effectively visible, i.e. if it has anything to draw.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#logfocussearchstring">LogFocusSearch(string)</a></td>
@@ -3723,6 +3851,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="../../view/#onbuttonpressbuttoneventargs">OnButtonPress(ButtonEventArgs)</a></td>
 <td>Called when a button press is received while this view is in the focus path.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#onbuttonrepeatbuttoneventargs">OnButtonRepeat(ButtonEventArgs)</a></td>
+<td>Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#onclickclickeventargs">OnClick(ClickEventArgs)</a></td>
@@ -3798,6 +3930,10 @@ Assembly: StardewUI.dll  </p>
 <tr>
 <td><a href="../../view/#buttonpress">ButtonPress</a></td>
 <td>Event raised when any button on any input device is pressed.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
+</tr>
+<tr>
+<td><a href="../../view/#buttonrepeat">ButtonRepeat</a></td>
+<td>Event raised when a button is being held while the view is in focus, and has been held long enough since the initial <a href="../../view/#buttonpress">ButtonPress</a> or the previous <code>ButtonRepeat</code> to trigger a repeated press.<br><span class="muted" markdown>(Inherited from <a href="../../view/">View</a>)</span></td>
 </tr>
 <tr>
 <td><a href="../../view/#click">Click</a></td>

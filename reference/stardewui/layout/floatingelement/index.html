@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -988,6 +994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tags/" class="md-nav__link">
         
   
@@ -1134,6 +1161,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1210,6 +1258,8 @@
       
         
           
+        
+      
         
       
         
@@ -1512,6 +1562,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1561,6 +1617,8 @@
       
         
           
+        
+      
         
       
         
@@ -1684,7 +1742,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_23" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_25" checked>
         
           
           
@@ -1700,14 +1758,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_23" id="__nav_5_1_23_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_25" id="__nav_5_1_25_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_23_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_23">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_25_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_25">
             <span class="md-nav__icon md-icon"></span>
             Layout
           </label>
@@ -2076,9 +2134,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#measureandpositionview-bool" class="md-nav__link">
+  <a href="#measureandpositioniview-bool" class="md-nav__link">
     <span class="md-ellipsis">
-      MeasureAndPosition(View, bool)
+      MeasureAndPosition(IView, bool)
     </span>
   </a>
   
@@ -2557,6 +2615,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -2621,6 +2683,8 @@
       
         
           
+        
+      
         
       
         
@@ -2879,9 +2943,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#measureandpositionview-bool" class="md-nav__link">
+  <a href="#measureandpositioniview-bool" class="md-nav__link">
     <span class="md-ellipsis">
-      MeasureAndPosition(View, bool)
+      MeasureAndPosition(IView, bool)
     </span>
   </a>
   
@@ -2999,7 +3063,7 @@ Assembly: StardewUI.dll  </p>
 <td><span class="muted" markdown>(Overrides <a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a>.<code>GetHashCode()</code>)</span></td>
 </tr>
 <tr>
-<td><a href="#measureandpositionview-bool">MeasureAndPosition(View, Boolean)</a></td>
+<td><a href="#measureandpositioniview-bool">MeasureAndPosition(IView, Boolean)</a></td>
 <td>Measures the view's content and repositions the entire floating element if necessary.</td>
 </tr>
 </tbody>
@@ -3076,12 +3140,12 @@ Sprite batch to hold the drawing output.</p>
 <h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a></p>
 <hr />
-<h4 id="measureandpositionview-bool">MeasureAndPosition(View, bool)<a class="headerlink" href="#measureandpositionview-bool" title="Permanent link"></a></h4>
+<h4 id="measureandpositioniview-bool">MeasureAndPosition(IView, bool)<a class="headerlink" href="#measureandpositioniview-bool" title="Permanent link"></a></h4>
 <p>Measures the view's content and repositions the entire floating element if necessary.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">MeasureAndPosition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">View</span><span class="w"> </span><span class="n">parentView</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">wasParentDirty</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">MeasureAndPosition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">parentView</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">wasParentDirty</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
-<p><strong><code>parentView</code></strong> &nbsp; <a href="../../view/">View</a><br />
+<p><strong><code>parentView</code></strong> &nbsp; <a href="../../iview/">IView</a><br />
 The view whose <a href="../../view/#floatingelements">FloatingElements</a> this element belongs to. Required for repositioning when the layout has changed.</p>
 <p><strong><code>wasParentDirty</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 Whether this measurement is being done because the parent's layout already changed and therefore a reposition is always required (<code>true</code>), or whether to reposition only if the floating element's internal layout has changed (<code>false</code>).</p>

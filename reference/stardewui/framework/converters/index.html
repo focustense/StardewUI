@@ -571,6 +571,8 @@
       
         
       
+        
+      
     
     
       
@@ -734,6 +736,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -986,6 +992,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../tags/" class="md-nav__link">
         
   
@@ -1132,6 +1159,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1208,6 +1256,8 @@
       
         
           
+        
+      
         
       
         
@@ -1437,7 +1487,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_20" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_22" checked>
         
           
           
@@ -1453,14 +1503,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5_1_20" id="__nav_5_1_20_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_5_1_22" id="__nav_5_1_22_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_20_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_20">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_22_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_22">
             <span class="md-nav__icon md-icon"></span>
             Framework
           </label>
@@ -1802,6 +1852,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -2085,6 +2141,8 @@
       
         
       
+        
+      
     
     
       
@@ -2099,7 +2157,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_20_16" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_22_16" checked>
         
           
           
@@ -2115,14 +2173,14 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_5_1_20_16" id="__nav_5_1_20_16_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_5_1_22_16" id="__nav_5_1_22_16_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_20_16_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_5_1_20_16">
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_5_1_22_16_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1_22_16">
             <span class="md-nav__icon md-icon"></span>
             Converters
           </label>
@@ -2142,6 +2200,27 @@
   
   <span class="md-ellipsis">
     AnyCastConverterFactory
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="basetypeconverterfactory/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BaseTypeConverterFactory
   </span>
   
 
@@ -2878,6 +2957,8 @@
       
         
       
+        
+      
     
     
       
@@ -3127,6 +3208,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -3176,6 +3263,8 @@
       
         
           
+        
+      
         
       
         
@@ -3473,6 +3562,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -3537,6 +3630,8 @@
       
         
           
+        
+      
         
       
         
@@ -3665,12 +3760,12 @@
 <td>Factory supporting conversions to and from <a href="../ianycast/">IAnyCast</a>.</td>
 </tr>
 <tr>
-<td><a href="castingvalueconverterfactory/">CastingValueConverterFactory</a></td>
-<td>Factory that automatically implements casting conversions, where the source type can be assigned directly to the destination type.</td>
+<td><a href="basetypeconverterfactory/">BaseTypeConverterFactory</a></td>
+<td>Allows implicit conversion from a type's ancestor to the destination type, if the source type does not have its own explicitly-defined conversion but a base type does.</td>
 </tr>
 <tr>
-<td><a href="colorconverter/">ColorConverter</a></td>
-<td>String converter for the XNA <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html">Color</a> type.</td>
+<td><a href="castingvalueconverterfactory/">CastingValueConverterFactory</a></td>
+<td>Factory that automatically implements casting conversions, where the source type can be assigned directly to the destination type.</td>
 </tr>
 <tr>
 <td><a href="ducktypeclassconverterfactory/">DuckTypeClassConverterFactory</a></td>
@@ -3709,10 +3804,6 @@
 <td>String converter for the XNA <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a> type.</td>
 </tr>
 <tr>
-<td><a href="rectangleconverter/">RectangleConverter</a></td>
-<td>String converter for the XNA <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html">Rectangle</a> type.</td>
-</tr>
-<tr>
 <td><a href="stringconverterfactory/">StringConverterFactory</a></td>
 <td>Provides conversions from any type to <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a>.</td>
 </tr>
@@ -3735,10 +3826,6 @@
 <tr>
 <td><a href="valueconverterfactory/">ValueConverterFactory</a></td>
 <td>Standard implementation of <a href="ivalueconverterfactory/">IValueConverterFactory</a> that allows registering new converters.</td>
-</tr>
-<tr>
-<td><a href="vector2converter/">Vector2Converter</a></td>
-<td>String converter for the XNA <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a> type.</td>
 </tr>
 </tbody>
 </table>

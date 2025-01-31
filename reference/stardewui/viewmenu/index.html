@@ -1,0 +1,3905 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Generic menu implementation based on a root IView.">
+      
+      
+      
+        <link rel="canonical" href="https://focustense.github.io/StardewUI/reference/stardewui/viewmenu/">
+      
+      
+        <link rel="prev" href="../viewmenu-1/">
+      
+      
+        <link rel="next" href="../animation/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+    
+    
+      
+        <title>ViewMenu - StardewUI Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/github-permalink-style.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/neoteroi-mkdocs.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/styles.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="ViewMenu - StardewUI Documentation" >
+      
+        <meta  property="og:description"  content="Generic menu implementation based on a root IView." >
+      
+        <meta  property="og:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/viewmenu.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://focustense.github.io/StardewUI/reference/stardewui/viewmenu/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="ViewMenu - StardewUI Documentation" >
+      
+        <meta  name="twitter:description"  content="Generic menu implementation based on a root IView." >
+      
+        <meta  name="twitter:image"  content="https://focustense.github.io/StardewUI/assets/images/social/reference/stardewui/viewmenu.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#class-viewmenu" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="StardewUI Documentation" class="md-header__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
+      
+  <img src="../../../images/logo-alt.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            StardewUI Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ViewMenu
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="orange"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/focustense/StardewUI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    focustense/StardewUI
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../.." class="md-tabs__link">
+          
+  
+    
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/" class="md-tabs__link">
+          
+  
+    
+  
+  Getting started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../framework/" class="md-tabs__link">
+          
+  
+    
+  
+  Framework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../library/" class="md-tabs__link">
+          
+  
+    
+  
+  Library
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+    
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../examples/" class="md-tabs__link">
+          
+  
+    
+  
+  Examples
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="StardewUI Documentation" class="md-nav__button md-logo" aria-label="StardewUI Documentation" data-md-component="logo">
+      
+  <img src="../../../images/logo-alt.png" alt="logo">
+
+    </a>
+    StardewUI Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/focustense/StardewUI" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    focustense/StardewUI
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../.." class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../getting-started/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Getting started
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../framework/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Framework
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../library/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Library
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Reference
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    StardewUI
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_1" id="__nav_5_1_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            StardewUI
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../direction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Direction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../directionextensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DirectionExtensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../duckpropertyattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckPropertyAttribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ducktypeattribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DuckTypeAttribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    IView
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../menuactivationmode/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuActivationMode
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../menuclosebehavior/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    MenuCloseBehavior
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tags/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tags
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    UI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uiviewport/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    UiViewport
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../view/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    View
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viewchild/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewChild
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viewextensions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewExtensions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../viewmenu-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu&lt;T&gt;
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Members
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Members">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructors_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#viewmenuedges-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      ViewMenu(Edges, bool)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#closebuttonoffset" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloseButtonOffset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closebuttonsprite" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloseButtonSprite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closeonoutsideclick" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloseOnOutsideClick
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cursorattachment" class="md-nav__link">
+    <span class="md-ellipsis">
+      CursorAttachment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dimmingamount" class="md-nav__link">
+    <span class="md-ellipsis">
+      DimmingAmount
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gutter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gutter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tooltipsenabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      TooltipsEnabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view" class="md-nav__link">
+    <span class="md-ellipsis">
+      View
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applymovementkeyint" class="md-nav__link">
+    <span class="md-ellipsis">
+      applyMovementKey(int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aregamepadcontrolsimplemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      areGamePadControlsImplemented()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildtooltipienumerableviewchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      BuildTooltip(IEnumerable&lt;ViewChild&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#close" class="md-nav__link">
+    <span class="md-ellipsis">
+      Close()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createview" class="md-nav__link">
+    <span class="md-ellipsis">
+      CreateView()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      CustomClose()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dispose()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawspritebatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      draw(SpriteBatch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gamepadbuttonheldbuttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      gamePadButtonHeld(Buttons)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getclosebehavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetCloseBehavior()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getoriginpositionpoint-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetOriginPosition(Point, Point)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leftclickheldint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      leftClickHeld(int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onclosedeventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnClosed(EventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openmenuactivationmode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open(MenuActivationMode)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performhoveractionint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      performHoverAction(int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populateclickablecomponentlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      populateClickableComponentList()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#readytoclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      readyToClose()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receivegamepadbuttonbuttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveGamePadButton(Buttons)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receivekeypresskeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveKeyPress(Keys)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiveleftclickint-int-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveLeftClick(int, int, bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiverightclickint-int-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveRightClick(int, int, bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receivescrollwheelactionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveScrollWheelAction(int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#releaseleftclickint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      releaseLeftClick(int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shoulddrawclosebutton" class="md-nav__link">
+    <span class="md-ellipsis">
+      shouldDrawCloseButton()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updategametime" class="md-nav__link">
+    <span class="md-ellipsis">
+      update(GameTime)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#closed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../animation/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Animation
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../data/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Data
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../diagnostics/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Diagnostics
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../events/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../framework/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Framework
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../graphics/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Graphics
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../input/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Input
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../layout/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Layout
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../overlays/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Overlays
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../widgets/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Widgets
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+    <a href="../../../examples/" class="md-nav__link">
+      
+  
+  <span class="md-ellipsis">
+    Examples
+  </span>
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Members
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Members">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fields
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Details
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Details">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructors_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constructors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Constructors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#viewmenuedges-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      ViewMenu(Edges, bool)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Properties
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#closebuttonoffset" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloseButtonOffset
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closebuttonsprite" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloseButtonSprite
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closeonoutsideclick" class="md-nav__link">
+    <span class="md-ellipsis">
+      CloseOnOutsideClick
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cursorattachment" class="md-nav__link">
+    <span class="md-ellipsis">
+      CursorAttachment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dimmingamount" class="md-nav__link">
+    <span class="md-ellipsis">
+      DimmingAmount
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gutter" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gutter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tooltipsenabled" class="md-nav__link">
+    <span class="md-ellipsis">
+      TooltipsEnabled
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view" class="md-nav__link">
+    <span class="md-ellipsis">
+      View
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Methods
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#applymovementkeyint" class="md-nav__link">
+    <span class="md-ellipsis">
+      applyMovementKey(int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aregamepadcontrolsimplemented" class="md-nav__link">
+    <span class="md-ellipsis">
+      areGamePadControlsImplemented()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buildtooltipienumerableviewchild" class="md-nav__link">
+    <span class="md-ellipsis">
+      BuildTooltip(IEnumerable&lt;ViewChild&gt;)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#close" class="md-nav__link">
+    <span class="md-ellipsis">
+      Close()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createview" class="md-nav__link">
+    <span class="md-ellipsis">
+      CreateView()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      CustomClose()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dispose" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dispose()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drawspritebatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      draw(SpriteBatch)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gamepadbuttonheldbuttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      gamePadButtonHeld(Buttons)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getclosebehavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetCloseBehavior()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getoriginpositionpoint-point" class="md-nav__link">
+    <span class="md-ellipsis">
+      GetOriginPosition(Point, Point)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leftclickheldint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      leftClickHeld(int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onclosedeventargs" class="md-nav__link">
+    <span class="md-ellipsis">
+      OnClosed(EventArgs)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openmenuactivationmode" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open(MenuActivationMode)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performhoveractionint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      performHoverAction(int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#populateclickablecomponentlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      populateClickableComponentList()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#readytoclose" class="md-nav__link">
+    <span class="md-ellipsis">
+      readyToClose()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receivegamepadbuttonbuttons" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveGamePadButton(Buttons)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receivekeypresskeys" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveKeyPress(Keys)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiveleftclickint-int-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveLeftClick(int, int, bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiverightclickint-int-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveRightClick(int, int, bool)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receivescrollwheelactionint" class="md-nav__link">
+    <span class="md-ellipsis">
+      receiveScrollWheelAction(int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#releaseleftclickint-int" class="md-nav__link">
+    <span class="md-ellipsis">
+      releaseLeftClick(int, int)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shoulddrawclosebutton" class="md-nav__link">
+    <span class="md-ellipsis">
+      shouldDrawCloseButton()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updategametime" class="md-nav__link">
+    <span class="md-ellipsis">
+      update(GameTime)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Events
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#closed" class="md-nav__link">
+    <span class="md-ellipsis">
+      Closed
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<p><link rel="stylesheet" href="/StardewUI/stylesheets/reference.css" /></p>
+<div class="api-reference">
+<h1 id="class-viewmenu">Class ViewMenu<a class="headerlink" href="#class-viewmenu" title="Permanent link"></a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link"></a></h2>
+<div class="api-definition">
+<p>Namespace: <a href="../">StardewUI</a><br />
+Assembly: StardewUI.dll  </p>
+</div>
+<p>Generic menu implementation based on a root <a href="../iview/">IView</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">public</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">ViewMenu</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">StardewValley</span><span class="p">.</span><span class="n">Menus</span><span class="p">.</span><span class="n">IClickableMenu</span><span class="p">,</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">IDisposable</span>
+</span></code></pre></div>
+<p><strong>Inheritance</strong><br />
+<a href="https://learn.microsoft.com/en-us/dotnet/api/system.object">Object</a> ⇦ IClickableMenu ⇦ ViewMenu</p>
+<p><strong>Implements</strong><br />
+<a href="https://learn.microsoft.com/en-us/dotnet/api/system.idisposable">IDisposable</a></p>
+<h2 id="members">Members<a class="headerlink" href="#members" title="Permanent link"></a></h2>
+<h3 id="constructors">Constructors<a class="headerlink" href="#constructors" title="Permanent link"></a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#viewmenuedges-bool">ViewMenu(Edges, Boolean)</a></td>
+<td>Initializes a new instance of <a href="./">ViewMenu</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link"></a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_childMenu</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>_dependencies</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>_parentMenu</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>allClickableComponents</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>behaviorBeforeCleanup</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>closeSound</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>currentlySnappedComponent</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>destroy</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>exitFunction</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>height</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>upperRightCloseButton</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>width</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>xPositionOnScreen</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>yPositionOnScreen</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link"></a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#closebuttonoffset">CloseButtonOffset</a></td>
+<td>Offset from the menu view's top-right edge to draw the close button, if a <a href="./#closebuttonsprite">CloseButtonSprite</a> is also specified.</td>
+</tr>
+<tr>
+<td><a href="#closebuttonsprite">CloseButtonSprite</a></td>
+<td>The sprite to draw for the close button shown on the upper right. If no value is specified, then no close button will be drawn. The default behavior is to not show any close button.</td>
+</tr>
+<tr>
+<td><a href="#closeonoutsideclick">CloseOnOutsideClick</a></td>
+<td>Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any floating elements.</td>
+</tr>
+<tr>
+<td><a href="#cursorattachment">CursorAttachment</a></td>
+<td>Additional cursor to draw below or adjacent to the normal mouse cursor.</td>
+</tr>
+<tr>
+<td><a href="#dimmingamount">DimmingAmount</a></td>
+<td>Amount of dimming between 0 and 1; i.e. opacity of the background underlay.</td>
+</tr>
+<tr>
+<td><a href="#gutter">Gutter</a></td>
+<td>Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu may be drawn.</td>
+</tr>
+<tr>
+<td>Position</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#tooltipsenabled">TooltipsEnabled</a></td>
+<td>Whether to display tooltips on mouse hover.</td>
+</tr>
+<tr>
+<td><a href="#view">View</a></td>
+<td>The view to display with this menu.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link"></a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_ShouldAutoSnapPrioritizeAlignedElements()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>actionOnRegionChange(Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>AddDependency()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#applymovementkeyint">applyMovementKey(Int32)</a></td>
+<td>Initiates a focus search in the specified direction.<br><span class="muted" markdown>(Overrides IClickableMenu.applyMovementKey(Int32))</span></td>
+</tr>
+<tr>
+<td>applyMovementKey(Keys)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#aregamepadcontrolsimplemented">areGamePadControlsImplemented()</a></td>
+<td>Returns whether or not the menu wants <strong>exclusive</strong> gamepad controls.<br><span class="muted" markdown>(Overrides IClickableMenu.areGamePadControlsImplemented())</span></td>
+</tr>
+<tr>
+<td>automaticSnapBehavior(Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#buildtooltipienumerableviewchild">BuildTooltip(IEnumerable&lt;ViewChild&gt;)</a></td>
+<td>Builds/formats a tooltip given the sequence of views from root to the lowest-level hovered child.</td>
+</tr>
+<tr>
+<td>cleanupBeforeExit()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>clickAway()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#close">Close()</a></td>
+<td>Closes this menu, either by removing it from the parent if it is a child menu, or removing it as the game's active menu if it is standalone.</td>
+</tr>
+<tr>
+<td><a href="#createview">CreateView()</a></td>
+<td>Creates the view.</td>
+</tr>
+<tr>
+<td><a href="#customclose">CustomClose()</a></td>
+<td>When overridden in a derived class, provides an alternative method to close the menu instead of the default logic in exitThisMenu(Boolean).</td>
+</tr>
+<tr>
+<td>customSnapBehavior(Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#dispose">Dispose()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#drawspritebatch">draw(SpriteBatch)</a></td>
+<td>Draws the current menu content.<br><span class="muted" markdown>(Overrides IClickableMenu.draw(SpriteBatch))</span></td>
+</tr>
+<tr>
+<td>draw(SpriteBatch, Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>drawBackground(SpriteBatch)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>drawBorderLabel(SpriteBatch, string, SpriteFont, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>drawHorizontalPartition(SpriteBatch, Int32, Boolean, Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>drawMouse(SpriteBatch, Boolean, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>drawVerticalIntersectingPartition(SpriteBatch, Int32, Int32, Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>drawVerticalPartition(SpriteBatch, Int32, Boolean, Int32, Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>drawVerticalUpperIntersectingPartition(SpriteBatch, Int32, Int32, Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>emergencyShutDown()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>exitThisMenu(Boolean)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>exitThisMenuNoSound()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#gamepadbuttonheldbuttons">gamePadButtonHeld(Buttons)</a></td>
+<td>Invoked on every frame during which a controller button is down, once for each held button.<br><span class="muted" markdown>(Overrides IClickableMenu.gamePadButtonHeld(Buttons))</span></td>
+</tr>
+<tr>
+<td>gameWindowSizeChanged(Rectangle, Rectangle)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>GetChildMenu()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#getclosebehavior">GetCloseBehavior()</a></td>
+<td>Gets the current close behavior for the menu.</td>
+</tr>
+<tr>
+<td>getComponentWithID(Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>getCurrentlySnappedComponent()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#getoriginpositionpoint-point">GetOriginPosition(Point, Point)</a></td>
+<td>Computes the origin (top left) position of the menu for a given viewport and offset.</td>
+</tr>
+<tr>
+<td>GetParentMenu()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>HasDependencies()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>initialize(Int32, Int32, Int32, Int32, Boolean)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>initializeUpperRightCloseButton()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>IsActive()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>IsAutomaticSnapValid(Int32, ClickableComponent, ClickableComponent)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>isWithinBounds(Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#leftclickheldint-int">leftClickHeld(Int32, Int32)</a></td>
+<td>Invoked on every frame in which a mouse button is down, regardless of the state in the previous frame.<br><span class="muted" markdown>(Overrides IClickableMenu.leftClickHeld(Int32, Int32))</span></td>
+</tr>
+<tr>
+<td>moveCursorInDirection(Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>noSnappedComponentFound(Int32, Int32, Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#onclosedeventargs">OnClosed(EventArgs)</a></td>
+<td>Invokes the <a href="./#closed">Closed</a> event handler.</td>
+</tr>
+<tr>
+<td><a href="#openmenuactivationmode">Open(MenuActivationMode)</a></td>
+<td>Opens this menu, i.e. makes it active if it is not already active.</td>
+</tr>
+<tr>
+<td>overrideSnappyMenuCursorMovementBan()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#performhoveractionint-int">performHoverAction(Int32, Int32)</a></td>
+<td>Invoked on every frame with the mouse's current coordinates.<br><span class="muted" markdown>(Overrides IClickableMenu.performHoverAction(Int32, Int32))</span></td>
+</tr>
+<tr>
+<td><a href="#populateclickablecomponentlist">populateClickableComponentList()</a></td>
+<td><span class="muted" markdown>(Overrides IClickableMenu.populateClickableComponentList())</span></td>
+</tr>
+<tr>
+<td><a href="#readytoclose">readyToClose()</a></td>
+<td>Checks if the menu is allowed to be closed by the game's default input handling.<br><span class="muted" markdown>(Overrides IClickableMenu.readyToClose())</span></td>
+</tr>
+<tr>
+<td><a href="#receivegamepadbuttonbuttons">receiveGamePadButton(Buttons)</a></td>
+<td>Invoked whenever a controller button is newly pressed.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveGamePadButton(Buttons))</span></td>
+</tr>
+<tr>
+<td><a href="#receivekeypresskeys">receiveKeyPress(Keys)</a></td>
+<td>Invoked whenever a keyboard key is newly pressed.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveKeyPress(Keys))</span></td>
+</tr>
+<tr>
+<td><a href="#receiveleftclickint-int-bool">receiveLeftClick(Int32, Int32, Boolean)</a></td>
+<td>Invoked whenever the left mouse button is newly pressed.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveLeftClick(Int32, Int32, Boolean))</span></td>
+</tr>
+<tr>
+<td><a href="#receiverightclickint-int-bool">receiveRightClick(Int32, Int32, Boolean)</a></td>
+<td>Invoked whenever the right mouse button is newly pressed.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveRightClick(Int32, Int32, Boolean))</span></td>
+</tr>
+<tr>
+<td><a href="#receivescrollwheelactionint">receiveScrollWheelAction(Int32)</a></td>
+<td>Invoked whenever the mouse wheel is used. Only works with vertical scrolls.<br><span class="muted" markdown>(Overrides IClickableMenu.receiveScrollWheelAction(Int32))</span></td>
+</tr>
+<tr>
+<td><a href="#releaseleftclickint-int">releaseLeftClick(Int32, Int32)</a></td>
+<td>Invoked whenever the left mouse button is just released, after being pressed/held on the last frame.<br><span class="muted" markdown>(Overrides IClickableMenu.releaseLeftClick(Int32, Int32))</span></td>
+</tr>
+<tr>
+<td>RemoveDependency()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>SetChildMenu(IClickableMenu)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>setCurrentlySnappedComponentTo(Int32)</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>setUpForGamePadMode()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>shouldClampGamePadCursor()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#shoulddrawclosebutton">shouldDrawCloseButton()</a></td>
+<td>Returns whether or not to draw a button on the upper right that closes the menu when clicked.<br><span class="muted" markdown>(Overrides IClickableMenu.shouldDrawCloseButton())</span></td>
+</tr>
+<tr>
+<td>showWithoutTransparencyIfOptionIsSet()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>snapCursorToCurrentSnappedComponent()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td>snapToDefaultClickableComponent()</td>
+<td><span class="muted" markdown>(Inherited from IClickableMenu)</span></td>
+</tr>
+<tr>
+<td><a href="#updategametime">update(GameTime)</a></td>
+<td>Runs on every update tick.<br><span class="muted" markdown>(Overrides IClickableMenu.update(GameTime))</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="events">Events<a class="headerlink" href="#events" title="Permanent link"></a></h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#closed">Closed</a></td>
+<td>Event raised when the menu is closed.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
+<h3 id="constructors_1">Constructors<a class="headerlink" href="#constructors_1" title="Permanent link"></a></h3>
+<h4 id="viewmenuedges-bool">ViewMenu(Edges, bool)<a class="headerlink" href="#viewmenuedges-bool" title="Permanent link"></a></h4>
+<p>Initializes a new instance of <a href="./">ViewMenu</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">public</span><span class="w"> </span><span class="nf">ViewMenu</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Edges</span><span class="w"> </span><span class="n">gutter</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">forceDefaultFocus</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
+<p><strong><code>gutter</code></strong> &nbsp; <a href="../layout/edges/">Edges</a><br />
+Gutter edges, in which no content should be drawn. Used for overscan, or general aesthetics.</p>
+<p><strong><code>forceDefaultFocus</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
+Whether to always focus (snap the cursor to) the default element, even if the menu was triggered by keyboard/mouse.</p>
+<hr />
+<h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
+<h4 id="closebuttonoffset">CloseButtonOffset<a class="headerlink" href="#closebuttonoffset" title="Permanent link"></a></h4>
+<p>Offset from the menu view's top-right edge to draw the close button, if a <a href="./#closebuttonsprite">CloseButtonSprite</a> is also specified.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">public</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">CloseButtonOffset</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
+<p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html">Vector2</a></p>
+<hr />
+<h4 id="closebuttonsprite">CloseButtonSprite<a class="headerlink" href="#closebuttonsprite" title="Permanent link"></a></h4>
+<p>The sprite to draw for the close button shown on the upper right. If no value is specified, then no close button will be drawn. The default behavior is to not show any close button.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Sprite</span><span class="w"> </span><span class="n">CloseButtonSprite</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
+<p><a href="../graphics/sprite/">Sprite</a></p>
+<hr />
+<h4 id="closeonoutsideclick">CloseOnOutsideClick<a class="headerlink" href="#closeonoutsideclick" title="Permanent link"></a></h4>
+<p>Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any floating elements.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">CloseOnOutsideClick</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks">Remarks<a class="headerlink" href="#remarks" title="Permanent link"></a></h5>
+<p>This setting is primarily intended for submenus and makes them behave more like overlays.</p>
+<hr />
+<h4 id="cursorattachment">CursorAttachment<a class="headerlink" href="#cursorattachment" title="Permanent link"></a></h4>
+<p>Additional cursor to draw below or adjacent to the normal mouse cursor.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Cursor</span><span class="w"> </span><span class="n">CursorAttachment</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_3">Property Value<a class="headerlink" href="#property-value_3" title="Permanent link"></a></h5>
+<p><a href="../graphics/cursor/">Cursor</a></p>
+<hr />
+<h4 id="dimmingamount">DimmingAmount<a class="headerlink" href="#dimmingamount" title="Permanent link"></a></h4>
+<p>Amount of dimming between 0 and 1; i.e. opacity of the background underlay.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">DimmingAmount</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_4">Property Value<a class="headerlink" href="#property-value_4" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.single">Single</a></p>
+<h5 id="remarks_1">Remarks<a class="headerlink" href="#remarks_1" title="Permanent link"></a></h5>
+<p>Underlay is only drawn when game options do not force clear backgrounds.</p>
+<hr />
+<h4 id="gutter">Gutter<a class="headerlink" href="#gutter" title="Permanent link"></a></h4>
+<p>Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu may be drawn.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">protected</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Layout</span><span class="p">.</span><span class="n">Edges</span><span class="w"> </span><span class="n">Gutter</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_5">Property Value<a class="headerlink" href="#property-value_5" title="Permanent link"></a></h5>
+<p><a href="../layout/edges/">Edges</a></p>
+<h5 id="remarks_2">Remarks<a class="headerlink" href="#remarks_2" title="Permanent link"></a></h5>
+<p>Gutters effectively shrink the viewport for both measurement (size calculation) and layout (centering) by clipping the screen edges.</p>
+<hr />
+<h4 id="tooltipsenabled">TooltipsEnabled<a class="headerlink" href="#tooltipsenabled" title="Permanent link"></a></h4>
+<p>Whether to display tooltips on mouse hover.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">public</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">TooltipsEnabled</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="k">set</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_6">Property Value<a class="headerlink" href="#property-value_6" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_3">Remarks<a class="headerlink" href="#remarks_3" title="Permanent link"></a></h5>
+<p>Tooltips should normally always be left enabled; one reason to disable them would be if a <a href="./#cursorattachment">CursorAttachment</a> is set that would overlap.</p>
+<hr />
+<h4 id="view">View<a class="headerlink" href="#view" title="Permanent link"></a></h4>
+<p>The view to display with this menu.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">public</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_7">Property Value<a class="headerlink" href="#property-value_7" title="Permanent link"></a></h5>
+<p><a href="../iview/">IView</a></p>
+<hr />
+<h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
+<h4 id="applymovementkeyint">applyMovementKey(int)<a class="headerlink" href="#applymovementkeyint" title="Permanent link"></a></h4>
+<p>Initiates a focus search in the specified direction.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">applyMovementKey</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">directionValue</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
+<p><strong><code>directionValue</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+An integer value corresponding to the direction; one of 0 (up), 1 (right), 2 (down) or 3 (left).</p>
+<hr />
+<h4 id="aregamepadcontrolsimplemented">areGamePadControlsImplemented()<a class="headerlink" href="#aregamepadcontrolsimplemented" title="Permanent link"></a></h4>
+<p>Returns whether or not the menu wants <strong>exclusive</strong> gamepad controls.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">areGamePadControlsImplemented</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<p>Always <code>false</code>.</p>
+<h5 id="remarks_4">Remarks<a class="headerlink" href="#remarks_4" title="Permanent link"></a></h5>
+<p>This implementation always returns <code>false</code>. Contrary to what the name in Stardew's code implies, this setting is not required for <a href="./#receivegamepadbuttonbuttons">receiveGamePadButton(Buttons)</a> to work; instead, when enabled, it suppresses the game's default mapping of button presses to clicks, and would therefore require reimplementing key-repeat and other basic behaviors. There is no reason to enable it here.</p>
+<hr />
+<h4 id="buildtooltipienumerableviewchild">BuildTooltip(IEnumerable&lt;ViewChild&gt;)<a class="headerlink" href="#buildtooltipienumerableviewchild" title="Permanent link"></a></h4>
+<p>Builds/formats a tooltip given the sequence of views from root to the lowest-level hovered child.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Data</span><span class="p">.</span><span class="n">TooltipData</span><span class="w"> </span><span class="n">BuildTooltip</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
+<p><strong><code>path</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;<br />
+Sequence of all elements, and their relative positions, that the mouse coordinates are currently within.</p>
+<h5 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link"></a></h5>
+<p><a href="../data/tooltipdata/">TooltipData</a></p>
+<p>The tooltip string to display, or <code>null</code> to not show any tooltip.</p>
+<h5 id="remarks_5">Remarks<a class="headerlink" href="#remarks_5" title="Permanent link"></a></h5>
+<p>The default implementation reads the value of the <em>last</em> (lowest-level) view with a non-null <a href="../iview/#tooltip">Tooltip</a>, and breaks <a href="../data/tooltipdata/#text">Text</a> and <a href="../data/tooltipdata/#title">Title</a> lines longer than 640px, which is the default vanilla tooltip width.</p>
+<hr />
+<h4 id="close">Close()<a class="headerlink" href="#close" title="Permanent link"></a></h4>
+<p>Closes this menu, either by removing it from the parent if it is a child menu, or removing it as the game's active menu if it is standalone.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Close</span><span class="p">();</span>
+</span></code></pre></div>
+<hr />
+<h4 id="createview">CreateView()<a class="headerlink" href="#createview" title="Permanent link"></a></h4>
+<p>Creates the view.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">CreateView</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
+<p><a href="../iview/">IView</a></p>
+<p>The created view.</p>
+<h5 id="remarks_6">Remarks<a class="headerlink" href="#remarks_6" title="Permanent link"></a></h5>
+<p>Subclasses will generally create an entire tree in this method and store references to any views that might require content updates.</p>
+<hr />
+<h4 id="customclose">CustomClose()<a class="headerlink" href="#customclose" title="Permanent link"></a></h4>
+<p>When overridden in a derived class, provides an alternative method to close the menu instead of the default logic in exitThisMenu(Boolean).</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">CustomClose</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="remarks_7">Remarks<a class="headerlink" href="#remarks_7" title="Permanent link"></a></h5>
+<p>The method will only be called when the menu is closed (either programmatically or via the UI) while <a href="./#getclosebehavior">GetCloseBehavior()</a> is returning <a href="../menuclosebehavior/#custom">Custom</a>.</p>
+<hr />
+<h4 id="dispose">Dispose()<a class="headerlink" href="#dispose" title="Permanent link"></a></h4>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Dispose</span><span class="p">();</span>
+</span></code></pre></div>
+<hr />
+<h4 id="drawspritebatch">draw(SpriteBatch)<a class="headerlink" href="#drawspritebatch" title="Permanent link"></a></h4>
+<p>Draws the current menu content.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">SpriteBatch</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
+<p><strong><code>b</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.SpriteBatch.html">SpriteBatch</a><br />
+The target batch.</p>
+<hr />
+<h4 id="gamepadbuttonheldbuttons">gamePadButtonHeld(Buttons)<a class="headerlink" href="#gamepadbuttonheldbuttons" title="Permanent link"></a></h4>
+<p>Invoked on every frame during which a controller button is down, once for each held button.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">gamePadButtonHeld</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">Buttons</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
+<p><strong><code>b</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Input.Buttons.html">Buttons</a><br />
+The button that is down.</p>
+<hr />
+<h4 id="getclosebehavior">GetCloseBehavior()<a class="headerlink" href="#getclosebehavior" title="Permanent link"></a></h4>
+<p>Gets the current close behavior for the menu.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">MenuCloseBehavior</span><span class="w"> </span><span class="n">GetCloseBehavior</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link"></a></h5>
+<p><a href="../menuclosebehavior/">MenuCloseBehavior</a></p>
+<h5 id="remarks_8">Remarks<a class="headerlink" href="#remarks_8" title="Permanent link"></a></h5>
+<p>The default implementation always returns <a href="../menuclosebehavior/#default">Default</a>. Subclasses may override this in order to use <a href="./#customclose">CustomClose()</a>, or disable closure entirely.</p>
+<hr />
+<h4 id="getoriginpositionpoint-point">GetOriginPosition(Point, Point)<a class="headerlink" href="#getoriginpositionpoint-point" title="Permanent link"></a></h4>
+<p>Computes the origin (top left) position of the menu for a given viewport and offset.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">GetOriginPosition</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">viewportSize</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Point</span><span class="w"> </span><span class="n">gutterOffset</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
+<p><strong><code>viewportSize</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a><br />
+The available size of the viewport in which the menu is to be displayed.</p>
+<p><strong><code>gutterOffset</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a><br />
+The offset implied by any asymmetrical <a href="./#gutter">Gutter</a> setting; for example, a gutter whose <a href="../layout/edges/#left">Left</a> edge is <code>100</code> px and whose <a href="../layout/edges/#right">Right</a> edge is only <code>50</code> px would have an X offset of <code>25</code> px (half the difference, because centered).</p>
+<h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
+<p><a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html">Point</a></p>
+<p>The origin (top left) position for the menu's root view.</p>
+<hr />
+<h4 id="leftclickheldint-int">leftClickHeld(int, int)<a class="headerlink" href="#leftclickheldint-int" title="Permanent link"></a></h4>
+<p>Invoked on every frame in which a mouse button is down, regardless of the state in the previous frame.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">leftClickHeld</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_6">Parameters<a class="headerlink" href="#parameters_6" title="Permanent link"></a></h5>
+<p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current X position on screen.</p>
+<p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current Y position on screen.</p>
+<hr />
+<h4 id="onclosedeventargs">OnClosed(EventArgs)<a class="headerlink" href="#onclosedeventargs" title="Permanent link"></a></h4>
+<p>Invokes the <a href="./#closed">Closed</a> event handler.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">protected</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">OnClosed</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">EventArgs</span><span class="w"> </span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_7">Parameters<a class="headerlink" href="#parameters_7" title="Permanent link"></a></h5>
+<p><strong><code>e</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventargs">EventArgs</a><br />
+The event arguments.</p>
+<hr />
+<h4 id="openmenuactivationmode">Open(MenuActivationMode)<a class="headerlink" href="#openmenuactivationmode" title="Permanent link"></a></h4>
+<p>Opens this menu, i.e. makes it active if it is not already active.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">public</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">Open</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">MenuActivationMode</span><span class="w"> </span><span class="n">activationMode</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_8">Parameters<a class="headerlink" href="#parameters_8" title="Permanent link"></a></h5>
+<p><strong><code>activationMode</code></strong> &nbsp; <a href="../menuactivationmode/">MenuActivationMode</a><br />
+The activation behavior which determines which (if any) other active menu this one can replace. Ignored when the game's title menu is open.</p>
+<hr />
+<h4 id="performhoveractionint-int">performHoverAction(int, int)<a class="headerlink" href="#performhoveractionint-int" title="Permanent link"></a></h4>
+<p>Invoked on every frame with the mouse's current coordinates.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">performHoverAction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_9">Parameters<a class="headerlink" href="#parameters_9" title="Permanent link"></a></h5>
+<p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current X position on screen.</p>
+<p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current Y position on screen.</p>
+<h5 id="remarks_9">Remarks<a class="headerlink" href="#remarks_9" title="Permanent link"></a></h5>
+<p>Essentially the same as <a href="./#updategametime">update(GameTime)</a> but slightly more convenient for mouse hover/movement effects because of the arguments provided.</p>
+<hr />
+<h4 id="populateclickablecomponentlist">populateClickableComponentList()<a class="headerlink" href="#populateclickablecomponentlist" title="Permanent link"></a></h4>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">populateClickableComponentList</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="remarks_10">Remarks<a class="headerlink" href="#remarks_10" title="Permanent link"></a></h5>
+<p>Always a no-op for menus in StardewUI.</p>
+<hr />
+<h4 id="readytoclose">readyToClose()<a class="headerlink" href="#readytoclose" title="Permanent link"></a></h4>
+<p>Checks if the menu is allowed to be closed by the game's default input handling.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">readyToClose</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_5">Returns<a class="headerlink" href="#returns_5" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<hr />
+<h4 id="receivegamepadbuttonbuttons">receiveGamePadButton(Buttons)<a class="headerlink" href="#receivegamepadbuttonbuttons" title="Permanent link"></a></h4>
+<p>Invoked whenever a controller button is newly pressed.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">receiveGamePadButton</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">Buttons</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_10">Parameters<a class="headerlink" href="#parameters_10" title="Permanent link"></a></h5>
+<p><strong><code>b</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Input.Buttons.html">Buttons</a><br />
+The button that was pressed.</p>
+<hr />
+<h4 id="receivekeypresskeys">receiveKeyPress(Keys)<a class="headerlink" href="#receivekeypresskeys" title="Permanent link"></a></h4>
+<p>Invoked whenever a keyboard key is newly pressed.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">receiveKeyPress</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Input</span><span class="p">.</span><span class="n">Keys</span><span class="w"> </span><span class="n">key</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_11">Parameters<a class="headerlink" href="#parameters_11" title="Permanent link"></a></h5>
+<p><strong><code>key</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.Input.Keys.html">Keys</a><br />
+The key that was pressed.</p>
+<hr />
+<h4 id="receiveleftclickint-int-bool">receiveLeftClick(int, int, bool)<a class="headerlink" href="#receiveleftclickint-int-bool" title="Permanent link"></a></h4>
+<p>Invoked whenever the left mouse button is newly pressed.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">receiveLeftClick</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">playSound</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_12">Parameters<a class="headerlink" href="#parameters_12" title="Permanent link"></a></h5>
+<p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current X position on screen.</p>
+<p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current Y position on screen.</p>
+<p><strong><code>playSound</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
+Currently not used.</p>
+<hr />
+<h4 id="receiverightclickint-int-bool">receiveRightClick(int, int, bool)<a class="headerlink" href="#receiverightclickint-int-bool" title="Permanent link"></a></h4>
+<p>Invoked whenever the right mouse button is newly pressed.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">receiveRightClick</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">playSound</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_13">Parameters<a class="headerlink" href="#parameters_13" title="Permanent link"></a></h5>
+<p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current X position on screen.</p>
+<p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current Y position on screen.</p>
+<p><strong><code>playSound</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
+Currently not used.</p>
+<hr />
+<h4 id="receivescrollwheelactionint">receiveScrollWheelAction(int)<a class="headerlink" href="#receivescrollwheelactionint" title="Permanent link"></a></h4>
+<p>Invoked whenever the mouse wheel is used. Only works with vertical scrolls.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">receiveScrollWheelAction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="k">value</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_14">Parameters<a class="headerlink" href="#parameters_14" title="Permanent link"></a></h5>
+<p><strong><code>value</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+A value indicating the desired vertical scroll direction; negative values indicate "down" and positive values indicate "up".</p>
+<hr />
+<h4 id="releaseleftclickint-int">releaseLeftClick(int, int)<a class="headerlink" href="#releaseleftclickint-int" title="Permanent link"></a></h4>
+<p>Invoked whenever the left mouse button is just released, after being pressed/held on the last frame.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">releaseLeftClick</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_15">Parameters<a class="headerlink" href="#parameters_15" title="Permanent link"></a></h5>
+<p><strong><code>x</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current X position on screen.</p>
+<p><strong><code>y</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.int32">Int32</a><br />
+The mouse's current Y position on screen.</p>
+<hr />
+<h4 id="shoulddrawclosebutton">shouldDrawCloseButton()<a class="headerlink" href="#shoulddrawclosebutton" title="Permanent link"></a></h4>
+<p>Returns whether or not to draw a button on the upper right that closes the menu when clicked.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="nf">shouldDrawCloseButton</span><span class="p">();</span>
+</span></code></pre></div>
+<h5 id="returns_6">Returns<a class="headerlink" href="#returns_6" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
+<h5 id="remarks_11">Remarks<a class="headerlink" href="#remarks_11" title="Permanent link"></a></h5>
+<p>Regardless of this value, a close button will never be drawn unless <a href="./#closebuttonsprite">CloseButtonSprite</a> is set.</p>
+<hr />
+<h4 id="updategametime">update(GameTime)<a class="headerlink" href="#updategametime" title="Permanent link"></a></h4>
+<p>Runs on every update tick.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">public</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="k">void</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">GameTime</span><span class="w"> </span><span class="n">time</span><span class="p">);</span>
+</span></code></pre></div>
+<h5 id="parameters_16">Parameters<a class="headerlink" href="#parameters_16" title="Permanent link"></a></h5>
+<p><strong><code>time</code></strong> &nbsp; <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.GameTime.html">GameTime</a><br />
+The current <a href="https://docs.monogame.net/api/Microsoft.Xna.Framework.GameTime.html">GameTime</a> including the time elapsed since last update tick.</p>
+<hr />
+<h3 id="events_1">Events<a class="headerlink" href="#events_1" title="Permanent link"></a></h3>
+<h4 id="closed">Closed<a class="headerlink" href="#closed" title="Permanent link"></a></h4>
+<p>Event raised when the menu is closed.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="k">public</span><span class="w"> </span><span class="k">event</span><span class="w"> </span><span class="n">EventHandler</span><span class="o">&lt;</span><span class="n">System</span><span class="p">.</span><span class="n">EventArgs</span><span class="o">&gt;?</span><span class="w"> </span><span class="n">Closed</span><span class="p">;</span>
+</span></code></pre></div>
+<h5 id="event-type">Event Type<a class="headerlink" href="#event-type" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventhandler-1">EventHandler</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.eventargs">EventArgs</a>&gt;</p>
+<hr />
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../viewmenu-1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: ViewMenu&amp;lt;T&amp;gt;">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                ViewMenu&lt;T&gt;
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../animation/" class="md-footer__link md-footer__link--next" aria-label="Next: StardewUI.Animation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                StardewUI.Animation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/focustense" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://next.nexusmods.com/profile/focustense/mods?gameId=1303" target="_blank" rel="noopener" title="next.nexusmods.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.376 0c-.993 0-2.18.686-2.907 1.182-1.676-.36-4.036-.545-6.787.635-1.365-.513-2.425-.562-3.32-.488a2.16 2.16 0 0 0-1.27.429c-.33.22-2.788 2.69-3.069 4.652C-.15 7.508.68 8.932 1.218 9.718c-.44 1.76-.2 4.572.517 6.188-.353 1.041-.713 2.089-.664 3.205.01.584.061 1.188.398 1.684C1.72 21.19 4.528 24 6.545 24c.957 0 1.93-.428 3.07-1.24 2.16.383 4.402.348 6.448-.532 2.573 1.001 4.224.625 4.84.162.587-.457 2.826-2.915 3.07-4.622.1-.672-.023-1.638-1.226-3.397a11 11 0 0 0-.501-6.455c.396-1.069.673-2.188.59-3.337-.015-.68-.221-1.167-.487-1.507-.209-.335-2.415-2.39-4.028-2.91A3.1 3.1 0 0 0 17.376 0m-.03 2.082c.65.015 2.155 1.093 3.01 1.906l.355.34c-.959-.163-2.125.428-3.26 1.55a10.3 10.3 0 0 0-1.358 1.595c-.28.384-.517.768-.753 1.285l1.18.635-3.895 1.477-1.122-4.18 1.033.547c1.358-3.102 2.524-3.973 3.232-4.416h.015a5.1 5.1 0 0 1 1.49-.724zM12 3.065a9 9 0 0 1 2.22.279 8 8 0 0 0-.42.488 8.4 8.4 0 0 0-1.8-.196 8.34 8.34 0 0 0-5.897 2.432 8 8 0 0 1-.37-.433A8.9 8.9 0 0 1 12 3.065m-7.076.305c.71-.002 1.309.127 2.2.466a9.5 9.5 0 0 0-1.713 1.337c-.327-.542-.624-1.156-.488-1.803m-.606.042c-.162.96.428 2.126 1.55 3.264.457.487 1.003.945 1.594 1.358.383.281.767.517 1.283.754l.62-1.182 1.49 3.914-4.176 1.122.546-1.033c-3.099-1.36-3.969-2.526-4.412-3.235v-.015a5.1 5.1 0 0 1-.723-1.491l-.015-.074c.015-.65 1.092-2.156 1.904-3.013Zm16.035 1.483a1.3 1.3 0 0 1 .26.015l.14.023a5 5 0 0 1-.13 1.137v.015q-.152.574-.377 1.148a9.5 9.5 0 0 0-1.346-1.776c.547-.357 1.051-.546 1.453-.562M18.43 5.8a8.9 8.9 0 0 1 2.506 6.2 9 9 0 0 1-.27 2.183 8 8 0 0 0-.488-.425A8.4 8.4 0 0 0 20.364 12 8.33 8.33 0 0 0 18 6.173a8 8 0 0 1 .429-.373M3.315 9.905q.235.222.488.425A8.4 8.4 0 0 0 3.636 12c0 2.248.887 4.286 2.327 5.788a8 8 0 0 1-.426.376A8.9 8.9 0 0 1 3.065 12a9 9 0 0 1 .25-2.095m13.988 1.541-.546 1.034c3.098 1.359 3.969 2.526 4.412 3.235v.014c.34.488.575.99.723 1.492l.014.074c-.014.65-1.092 2.156-1.903 3.013l-.34.354c.163-.96-.427-2.127-1.549-3.264a10.3 10.3 0 0 0-1.594-1.359 7 7 0 0 0-1.283-.753l-.605 1.152-1.505-3.87zm-6.006 1.684 1.121 4.18-1.033-.547c-1.357 3.102-2.523 3.973-3.231 4.416h-.015c-.487.34-.989.576-1.49.724l-.074.015c-.65-.015-2.154-1.093-3.01-1.906l-.354-.34c.959.163 2.124-.428 3.26-1.55.488-.458.945-1.004 1.358-1.595.28-.384.517-.768.753-1.285l-1.166-.635ZM3.72 16.663A9.5 9.5 0 0 0 5.086 18.5c-.697.47-1.33.665-1.777.59l-.138-.024c0-.367.038-.748.128-1.137v-.015c.11-.417.254-.835.42-1.252m14.131 1.314q.194.21.372.43A8.9 8.9 0 0 1 12 20.936a9 9 0 0 1-2.282-.296 8 8 0 0 0 .417-.487 8.34 8.34 0 0 0 7.716-2.175m.696.889c.43.666.607 1.267.534 1.698l-.023.138a5 5 0 0 1-1.136-.128h-.014a11 11 0 0 1-1.114-.366 9.5 9.5 0 0 0 1.753-1.342"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.tooltips", "navigation.footer", "navigation.indexes", "navigation.path", "navigation.prune", "navigation.sections", "navigation.tabs"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>

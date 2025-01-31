@@ -573,6 +573,8 @@
       
         
       
+        
+      
     
     
       
@@ -736,6 +738,10 @@
       
         
           
+        
+      
+        
+      
         
       
         
@@ -988,6 +994,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../parsers/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parsers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../tags/" class="md-nav__link">
         
   
@@ -1210,9 +1237,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#getpathtopositioniview-vector2-bool" class="md-nav__link">
+  <a href="#getpathtopositioniview-vector2-bool-bool" class="md-nav__link">
     <span class="md-ellipsis">
-      GetPathToPosition(IView, Vector2, bool)
+      GetPathToPosition(IView, Vector2, bool, bool)
     </span>
   </a>
   
@@ -1309,6 +1336,27 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../viewmenu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ViewMenu
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
     
     
       
@@ -1385,6 +1433,8 @@
       
         
           
+        
+      
         
       
         
@@ -1687,6 +1737,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1736,6 +1792,8 @@
       
         
           
+        
+      
         
       
         
@@ -2033,6 +2091,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -2097,6 +2159,8 @@
       
         
           
+        
+      
         
       
         
@@ -2244,9 +2308,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#getpathtopositioniview-vector2-bool" class="md-nav__link">
+  <a href="#getpathtopositioniview-vector2-bool-bool" class="md-nav__link">
     <span class="md-ellipsis">
-      GetPathToPosition(IView, Vector2, bool)
+      GetPathToPosition(IView, Vector2, bool, bool)
     </span>
   </a>
   
@@ -2357,7 +2421,7 @@ Assembly: StardewUI.dll  </p>
 <td>Retrieves a path to the default focus child/descendant of a view.</td>
 </tr>
 <tr>
-<td><a href="#getpathtopositioniview-vector2-bool">GetPathToPosition(IView, Vector2, Boolean)</a></td>
+<td><a href="#getpathtopositioniview-vector2-bool-bool">GetPathToPosition(IView, Vector2, Boolean, Boolean)</a></td>
 <td>Retrieves a path to the view at a given position.</td>
 </tr>
 <tr>
@@ -2370,7 +2434,7 @@ Assembly: StardewUI.dll  </p>
 </tr>
 <tr>
 <td><a href="#toglobalpositionsienumerableviewchild">ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)</a></td>
-<td>Converts a view path in parent-relative coordinates (e.g. from <a href="./#getpathtopositioniview-vector2-bool">GetPathToPosition(IView, Vector2, Boolean)</a> and transforms each element to have an absolute <a href="../viewchild/#position">Position</a>.</td>
+<td>Converts a view path in parent-relative coordinates (e.g. from <a href="./#getpathtopositioniview-vector2-bool-bool">GetPathToPosition(IView, Vector2, Boolean, Boolean)</a> and transforms each element to have an absolute <a href="../viewchild/#position">Position</a>.</td>
 </tr>
 <tr>
 <td><a href="#zorderienumerableviewchild-bool">ZOrder(IEnumerable&lt;ViewChild&gt;, Boolean)</a></td>
@@ -2406,9 +2470,9 @@ The view at which to start the search.</p>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
 <p>A sequence of <a href="../viewchild/">ViewChild</a> elements with the <a href="../iview/">IView</a> and position (relative to parent) at each level, starting with the specified <code>view</code> and ending with the lowest-level <a href="../iview/">IView</a> in the default focus path. If no focusable descendant is found, returns an empty sequence.</p>
 <hr />
-<h4 id="getpathtopositioniview-vector2-bool">GetPathToPosition(IView, Vector2, bool)<a class="headerlink" href="#getpathtopositioniview-vector2-bool" title="Permanent link"></a></h4>
+<h4 id="getpathtopositioniview-vector2-bool-bool">GetPathToPosition(IView, Vector2, bool, bool)<a class="headerlink" href="#getpathtopositioniview-vector2-bool-bool" title="Permanent link"></a></h4>
 <p>Retrieves a path to the view at a given position.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetPathToPosition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">view</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">preferFocusable</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">GetPathToPosition</span><span class="p">(</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">IView</span><span class="w"> </span><span class="n">view</span><span class="p">,</span><span class="w"> </span><span class="n">Microsoft</span><span class="p">.</span><span class="n">Xna</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Vector2</span><span class="w"> </span><span class="n">position</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">preferFocusable</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">requirePointerEvents</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>view</code></strong> &nbsp; <a href="../iview/">IView</a><br />
@@ -2417,6 +2481,8 @@ The view at which to start the search.</p>
 The position to search for, in coordinates relative to the <code>view</code>.</p>
 <p><strong><code>preferFocusable</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
 <code>true</code> to prioritize a focusable child over a non-focusable child with a higher z-index in case of overlap; <code>false</code> to always use the topmost child.</p>
+<p><strong><code>requirePointerEvents</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a><br />
+Whether to exclude views whose <a href="../iview/#pointereventsenabled">PointerEventsEnabled</a> is currently <code>false</code>. This short-circuits the pathing; if any ancestor of a view has pointer events disabled then it cannot be part of the path.</p>
 <h5 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
 <p>A sequence of <a href="../viewchild/">ViewChild</a> elements with the <a href="../iview/">IView</a> and position (relative to parent) at each level, starting with the specified <code>view</code> and ending with the lowest-level <a href="../iview/">IView</a> that still overlaps with the specified <code>position</code>. If no match is found, returns an empty sequence.</p>
@@ -2444,13 +2510,13 @@ The descendant view to search for.</p>
 <p><strong><code>view</code></strong> &nbsp; <a href="../iview/">IView</a><br />
 The root view.</p>
 <p><strong><code>path</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../iview/">IView</a>&gt;<br />
-The path from root down to some descendant, such as the path returned by <a href="./#getpathtopositioniview-vector2-bool">GetPathToPosition(IView, Vector2, Boolean)</a>.</p>
+The path from root down to some descendant, such as the path returned by <a href="./#getpathtopositioniview-vector2-bool-bool">GetPathToPosition(IView, Vector2, Boolean, Boolean)</a>.</p>
 <h5 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="../viewchild/">ViewChild</a>&gt;</p>
 <p>A sequence of <a href="../viewchild/">ViewChild</a> elements, starting at the <code>view</code>, where each child's <a href="../viewchild/#position">Position</a> is the child's most current location within its parent.</p>
 <hr />
 <h4 id="toglobalpositionsienumerableviewchild">ToGlobalPositions(IEnumerable&lt;ViewChild&gt;)<a class="headerlink" href="#toglobalpositionsienumerableviewchild" title="Permanent link"></a></h4>
-<p>Converts a view path in parent-relative coordinates (e.g. from <a href="./#getpathtopositioniview-vector2-bool">GetPathToPosition(IView, Vector2, Boolean)</a> and transforms each element to have an absolute <a href="../viewchild/#position">Position</a>.</p>
+<p>Converts a view path in parent-relative coordinates (e.g. from <a href="./#getpathtopositioniview-vector2-bool-bool">GetPathToPosition(IView, Vector2, Boolean, Boolean)</a> and transforms each element to have an absolute <a href="../viewchild/#position">Position</a>.</p>
 <div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">public</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ToGlobalPositions</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="n">StardewUI</span><span class="p">.</span><span class="n">ViewChild</span><span class="o">&gt;</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
