@@ -71,6 +71,7 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [OuterSize](#outersize) | The size of the entire area occupied by this view including margins, border and padding. | 
 | [Padding](#padding) | Padding (whitespace inside border) for this view. | 
 | [PointerEventsEnabled](#pointereventsenabled) | Whether this view should receive pointer events like [Click](view.md#click) or [Drag](view.md#drag). | 
+| [PointerStyle](#pointerstyle) | Pointer style to use when this view is hovered. | 
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](view.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
 | [Tooltip](#tooltip) | Localized tooltip to display on hover, if any. | 
@@ -91,14 +92,16 @@ Use of this class isn't required, but provides some useful behaviors so that vie
 | [GetBorderThickness()](#getborderthickness) | Measures the thickness of each edge of the border, if the view has a border. | 
 | [GetChildAt(Vector2, Boolean, Boolean)](#getchildatvector2-bool-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
-| [GetChildren()](#getchildren) | Gets the current children of this view. | 
+| [GetChildren(Boolean)](#getchildrenbool) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
 | [GetDefaultFocusChild()](#getdefaultfocuschild) | Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first opened. | 
 | [GetLocalChildren()](#getlocalchildren) | Gets the view's children with positions relative to the content area. | 
 | [GetLocalChildrenAt(Vector2)](#getlocalchildrenatvector2) | Searches for all views at a given position relative to the content area. | 
 | [HasOutOfBoundsContent()](#hasoutofboundscontent) | Checks if the view has content or elements that are all or partially outside the [ActualBounds](iview.md#actualbounds). | 
+| [HasOwnContent()](#hasowncontent) | Checks if this view displays its own content, independent of any floating elements or children. | 
 | [IsContentDirty()](#iscontentdirty) | Checks whether or not the internal content/layout has changed. | 
 | [IsDirty()](#isdirty) | Checks whether or not the view is dirty - i.e. requires a new layout with a full [Measure(Vector2)](iview.md#measurevector2). | 
+| [IsVisible(Vector2?)](#isvisiblevector2) | Checks if the view is effectively visible, i.e. if it has anything to draw. | 
 | [LogFocusSearch(string)](#logfocussearchstring) | Outputs a debug log entry with the current view type, name and specified message. | 
 | [Measure(Vector2)](#measurevector2) | Performs layout on this view, updating its [OuterSize](iview.md#outersize), [ActualBounds](iview.md#actualbounds) and [ContentBounds](iview.md#contentbounds), and arranging any children in their respective positions. | 
 | [OnButtonPress(ButtonEventArgs)](#onbuttonpressbuttoneventargs) | Called when a button press is received while this view is in the focus path. | 
@@ -413,7 +416,7 @@ protected Microsoft.Xna.Framework.Vector2 LayoutOffset { get; }
 
 ##### Remarks
 
-A non-zero offset means that the nominal positions of any view children (e.g. as obtained from [GetChildren()](view.md#getchildren)) are different from their actual drawing positions on screen, for example in the case of a [ScrollContainer](widgets/scrollcontainer.md) that is not at the default scroll position. 
+A non-zero offset means that the nominal positions of any view children (e.g. as obtained from [GetChildren(Boolean)](view.md#getchildrenbool)) are different from their actual drawing positions on screen, for example in the case of a [ScrollContainer](widgets/scrollcontainer.md) that is not at the default scroll position. 
 
  If a view will internally shift content in this way without affecting layout, it should update the [LayoutOffset](view.md#layoutoffset) property to ensure correctness of pointer events and coordinate-related queries such as [GetLocalChildrenAt(Vector2)](view.md#getlocalchildrenatvector2), **instead of** attempting to correct for that offset locally.
 
@@ -508,6 +511,24 @@ public bool PointerEventsEnabled { get; set; }
 ##### Remarks
 
 By default, all views receive pointer events; this may be disabled for views that intentionally overlap other views but shouldn't block their input, such as local non-modal overlays.
+
+-----
+
+#### PointerStyle
+
+Pointer style to use when this view is hovered.
+
+```cs
+public StardewUI.Input.PointerStyle PointerStyle { get; set; }
+```
+
+##### Property Value
+
+[PointerStyle](input/pointerstyle.md)
+
+##### Remarks
+
+As with [Tooltip](iview.md#tooltip), the lowest-level view takes precedence over any higher-level views.
 
 -----
 
@@ -803,13 +824,18 @@ Implementation of this may be O(N) and therefore it should not be called every f
 
 -----
 
-#### GetChildren()
+#### GetChildren(bool)
 
 Gets the current children of this view.
 
 ```cs
-public System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetChildren();
+public System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetChildren(bool includeFloatingElements);
 ```
+
+##### Parameters
+
+**`includeFloatingElements`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to include views that are not direct children, but instead members of the floating elements collection of an [IFloatContainer](layout/ifloatcontainer.md) implementation.
 
 ##### Returns
 
@@ -868,7 +894,7 @@ protected virtual System.Collections.Generic.IEnumerable<StardewUI.ViewChild> Ge
 
 ##### Remarks
 
-This has the same signature as [GetChildren()](view.md#getchildren) but assumes that coordinates are in the same space as those used in [OnDrawContent(ISpriteBatch)](view.md#ondrawcontentispritebatch), i.e. not accounting for margin/border/padding. These coordinates are automatically adjusted in the [GetChildren()](view.md#getchildren) to be relative to the entire view. 
+This has the same signature as [GetChildren(Boolean)](view.md#getchildrenbool) but assumes that coordinates are in the same space as those used in [OnDrawContent(ISpriteBatch)](view.md#ondrawcontentispritebatch), i.e. not accounting for margin/border/padding. These coordinates are automatically adjusted in the [GetChildren(Boolean)](view.md#getchildrenbool) to be relative to the entire view. 
 
  The default implementation returns an empty sequence. Composite views must override this method in order for user interactions to behave correctly.
 
@@ -917,6 +943,24 @@ This may be the case for e.g. floating elements, and covers not only the view's 
 
 -----
 
+#### HasOwnContent()
+
+Checks if this view displays its own content, independent of any floating elements or children.
+
+```cs
+protected virtual bool HasOwnContent();
+```
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+This is used by [IsVisible(Vector2?)](view.md#isvisiblevector2) to determine whether children need to be searched. If a view provides its own content, e.g. a label or image displaying text or a sprite, or a frame displaying a background/border, then the entire view's bounds are understood to have visible content. Otherwise, the view is only considered visible as a whole if at least one child is visible, and is only visible at any given point if there is an intersecting child at that point.
+
+-----
+
 #### IsContentDirty()
 
 Checks whether or not the internal content/layout has changed.
@@ -960,6 +1004,29 @@ Typically, a view will be considered dirty if and only if one of the following a
   - The `availableSize` is not the same as the previously-seen value (see remarks in [Measure(Vector2)](iview.md#measurevector2))
 
  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
+
+-----
+
+#### IsVisible(Vector2?)
+
+Checks if the view is effectively visible, i.e. if it has anything to draw.
+
+```cs
+public bool IsVisible(Microsoft.Xna.Framework.Vector2? position);
+```
+
+##### Parameters
+
+**`position`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>  
+Optional position at which to test for visibility. If not specified, the result indicates whether any part of the view is visible.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+While [Visibility](iview.md#visibility) acts as a master on/off switch, there may be many other reasons for a view not to have any visible content, such as views with zero [Opacity](iview.md#opacity), layout views with no visible children, or labels or images with no current text or sprite.
 
 -----
 

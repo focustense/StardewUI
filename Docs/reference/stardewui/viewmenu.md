@@ -65,9 +65,12 @@ public class ViewMenu : StardewValley.Menus.IClickableMenu, System.IDisposable
 | --- | --- |
 | [CloseButtonOffset](#closebuttonoffset) | Offset from the menu view's top-right edge to draw the close button, if a [CloseButtonSprite](viewmenu.md#closebuttonsprite) is also specified. | 
 | [CloseButtonSprite](#closebuttonsprite) | The sprite to draw for the close button shown on the upper right. If no value is specified, then no close button will be drawn. The default behavior is to not show any close button. | 
+| [CloseOnOutsideClick](#closeonoutsideclick) | Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any floating elements. | 
+| [CursorAttachment](#cursorattachment) | Additional cursor to draw below or adjacent to the normal mouse cursor. | 
 | [DimmingAmount](#dimmingamount) | Amount of dimming between 0 and 1; i.e. opacity of the background underlay. | 
 | [Gutter](#gutter) | Gets or sets the menu's gutter edges, which constrain the portion of the viewport in which any part of the menu may be drawn. | 
 | Position | <span class="muted" markdown>(Inherited from IClickableMenu)</span> | 
+| [TooltipsEnabled](#tooltipsenabled) | Whether to display tooltips on mouse hover. | 
 | [View](#view) | The view to display with this menu. | 
 
 ### Methods
@@ -199,6 +202,38 @@ public StardewUI.Graphics.Sprite CloseButtonSprite { get; set; }
 
 -----
 
+#### CloseOnOutsideClick
+
+Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any floating elements.
+
+```cs
+public bool CloseOnOutsideClick { get; set; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+This setting is primarily intended for submenus and makes them behave more like overlays.
+
+-----
+
+#### CursorAttachment
+
+Additional cursor to draw below or adjacent to the normal mouse cursor.
+
+```cs
+public StardewUI.Graphics.Cursor CursorAttachment { get; set; }
+```
+
+##### Property Value
+
+[Cursor](graphics/cursor.md)
+
+-----
+
 #### DimmingAmount
 
 Amount of dimming between 0 and 1; i.e. opacity of the background underlay.
@@ -232,6 +267,24 @@ protected StardewUI.Layout.Edges Gutter { get; set; }
 ##### Remarks
 
 Gutters effectively shrink the viewport for both measurement (size calculation) and layout (centering) by clipping the screen edges.
+
+-----
+
+#### TooltipsEnabled
+
+Whether to display tooltips on mouse hover.
+
+```cs
+public bool TooltipsEnabled { get; set; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+Tooltips should normally always be left enabled; one reason to disable them would be if a [CursorAttachment](viewmenu.md#cursorattachment) is set that would overlap.
 
 -----
 

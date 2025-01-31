@@ -111,7 +111,7 @@ public TData Data { get; set; }
 The currently-attached view.
 
 ```cs
-public TView View { get; }
+protected TView View { get; }
 ```
 
 ##### Property Value
@@ -125,7 +125,7 @@ public TView View { get; }
 State overrides for the [View](viewbehavior-2.md#view).
 
 ```cs
-public StardewUI.Framework.Behaviors.IViewState ViewState { get; }
+protected StardewUI.Framework.Behaviors.IViewState ViewState { get; }
 ```
 
 ##### Property Value

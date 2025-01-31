@@ -15,6 +15,7 @@ search:
 | Name | Description |
 | --- | --- |
 | [ButtonSpriteMap](buttonspritemap.md) | Base class for a [ISpriteMap&lt;T&gt;](ispritemap-1.md) for controller/keyboard bindings. |
+| [Cursor](cursor.md) | Defines a cursor that can be drawn instead of or in addition to the regular mouse pointer. |
 | [CustomButtonSpriteMap](custombuttonspritemap.md) | Controller/keyboard/mouse sprite map using custom/configured asset data. |
 | [GlobalTransform](globaltransform.md) | Global transform applied to an [ISpriteBatch](ispritebatch.md). |
 | [Hsv](hsv.md) | A color in the HSV space. |

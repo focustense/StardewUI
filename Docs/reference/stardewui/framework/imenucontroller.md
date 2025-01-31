@@ -38,6 +38,8 @@ public interface IMenuController : System.IDisposable
 | [CanClose](#canclose) | Gets or sets a function that returns whether or not the menu can be closed. | 
 | [CloseAction](#closeaction) | Gets or sets an action that **replaces** the default menu-close behavior. | 
 | [CloseButtonOffset](#closebuttonoffset) | Offset from the menu view's top-right edge to draw the close button. | 
+| [CloseOnOutsideClick](#closeonoutsideclick) | Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any floating elements. | 
+| [CloseSound](#closesound) | Sound to play when closing the menu. | 
 | [DimmingAmount](#dimmingamount) | How much the menu should dim the entire screen underneath. | 
 | [Menu](#menu) | Gets the menu, which can be opened using activeClickableMenu, or as a child menu. | 
 | [PositionSelector](#positionselector) | Gets or sets a function that returns the top-left position of the menu. | 
@@ -46,7 +48,10 @@ public interface IMenuController : System.IDisposable
 
  | Name | Description |
 | --- | --- |
+| [ClearCursorAttachment()](#clearcursorattachment) | Removes any cursor attachment previously set by [SetCursorAttachment(Texture2D, Rectangle?, Point?, Point?, Color?)](imenucontroller.md#setcursorattachmenttexture2d-rectangle-point-point-color). | 
+| [Close()](#close) | Closes the menu. | 
 | [EnableCloseButton(Texture2D, Rectangle?, Single)](#enableclosebuttontexture2d-rectangle-float) | Configures the menu to display a close button on the upper-right side. | 
+| [SetCursorAttachment(Texture2D, Rectangle?, Point?, Point?, Color?)](#setcursorattachmenttexture2d-rectangle-point-point-color) | Begins displaying a cursor attachment, i.e. a sprite that follows the mouse cursor. | 
 | [SetGutters(Int32, Int32, Int32, Int32)](#setguttersint-int-int-int) | Configures the menu's gutter widths/heights. | 
 
 ### Events
@@ -114,6 +119,38 @@ Only applies when [EnableCloseButton(Texture2D, Rectangle?, Single)](imenucontro
 
 -----
 
+#### CloseOnOutsideClick
+
+Whether to automatically close the menu when a mouse click is detected outside the bounds of the menu and any floating elements.
+
+```cs
+bool CloseOnOutsideClick { get; set; }
+```
+
+##### Property Value
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+This setting is primarily intended for submenus and makes them behave more like overlays.
+
+-----
+
+#### CloseSound
+
+Sound to play when closing the menu.
+
+```cs
+string CloseSound { get; set; }
+```
+
+##### Property Value
+
+[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)
+
+-----
+
 #### DimmingAmount
 
 How much the menu should dim the entire screen underneath.
@@ -166,6 +203,30 @@ Setting any non-null value will disable the auto-centering functionality, and is
 
 ### Methods
 
+#### ClearCursorAttachment()
+
+Removes any cursor attachment previously set by [SetCursorAttachment(Texture2D, Rectangle?, Point?, Point?, Color?)](imenucontroller.md#setcursorattachmenttexture2d-rectangle-point-point-color).
+
+```cs
+void ClearCursorAttachment();
+```
+
+-----
+
+#### Close()
+
+Closes the menu.
+
+```cs
+void Close();
+```
+
+##### Remarks
+
+This method allows programmatic closing of the menu. It performs the same action that would be performed by pressing one of the configured menu keys (e.g. ESC), clicking the close button, etc., and follows the same rules, i.e. will not allow closing if [CanClose](imenucontroller.md#canclose) is `false`.
+
+-----
+
 #### EnableCloseButton(Texture2D, Rectangle?, float)
 
 Configures the menu to display a close button on the upper-right side.
@@ -188,6 +249,37 @@ Scale to apply, if the destination size should be different from the size of the
 ##### Remarks
 
 If no `texture` is specified, then all other parameters are ignored and the default close button sprite is drawn. Otherwise, a custom sprite will be drawn using the specified parameters.
+
+-----
+
+#### SetCursorAttachment(Texture2D, Rectangle?, Point?, Point?, Color?)
+
+Begins displaying a cursor attachment, i.e. a sprite that follows the mouse cursor.
+
+```cs
+void SetCursorAttachment(Microsoft.Xna.Framework.Graphics.Texture2D texture, Microsoft.Xna.Framework.Rectangle? sourceRect, Microsoft.Xna.Framework.Point? size, Microsoft.Xna.Framework.Point? offset, Microsoft.Xna.Framework.Color? tint);
+```
+
+##### Parameters
+
+**`texture`** &nbsp; [Texture2D](https://docs.monogame.net/api/Microsoft.Xna.Framework.Graphics.Texture2D.html)  
+The source image/tile sheet containing the cursor image.
+
+**`sourceRect`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Rectangle](https://docs.monogame.net/api/Microsoft.Xna.Framework.Rectangle.html)>  
+The location within the `texture` where the image is located, or `null` to draw the entire `texture`.
+
+**`size`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)>  
+Destination size for the cursor sprite, if different from the size of the `sourceRect`.
+
+**`offset`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Point](https://docs.monogame.net/api/Microsoft.Xna.Framework.Point.html)>  
+Offset between the actual mouse position and the top-left corner of the drawn cursor sprite.
+
+**`tint`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)>  
+Optional tint color to apply to the drawn cursor sprite.
+
+##### Remarks
+
+The cursor is shown in addition to, not instead of, the normal mouse cursor.
 
 -----
 

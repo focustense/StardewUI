@@ -48,6 +48,7 @@ Displays all the configured keybinds in one row, and ([EditableType](keybindlist
 | --- | --- |
 | [ActualBounds](../decoratorview-1.md#actualbounds) | The bounds of this view relative to the origin (0, 0).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [AddButtonText](#addbuttontext) | The [AddButtonText](keybindoverlay.md#addbuttontext) to display for adding new bindings. | 
+| [BackgroundColor](#backgroundcolor) | Solid background color to draw underneath each keybind frame. | 
 | [ButtonHeight](#buttonheight) | The height for button images/sprites. Images are scaled uniformly, preserving source aspect ratio. | 
 | [ClipOrigin](../decoratorview-1.md#cliporigin) | Origin position for the [ClipSize](../../iview.md#clipsize).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [ClipSize](../decoratorview-1.md#clipsize) | Size of the clipping rectangle, outside which content will not be displayed.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
@@ -66,6 +67,7 @@ Displays all the configured keybinds in one row, and ([EditableType](keybindlist
 | [Opacity](../decoratorview-1.md#opacity) | Opacity (alpha level) of the view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [OuterSize](../decoratorview-1.md#outersize) | The true computed layout size resulting from a single [Measure(Vector2)](../../iview.md#measurevector2) pass.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [PointerEventsEnabled](../decoratorview-1.md#pointereventsenabled) | Whether this view should receive pointer events like [Click](../../iview.md#click) or [Drag](../../iview.md#drag).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
+| [PointerStyle](../decoratorview-1.md#pointerstyle) | Pointer style to use when this view is hovered.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [ScrollWithChildren](../decoratorview-1.md#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](../../iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [SpriteMap](#spritemap) | Map of bindable buttons to sprite representations. | 
 | [Tags](../decoratorview-1.md#tags) | The user-defined tags for this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
@@ -87,11 +89,12 @@ Displays all the configured keybinds in one row, and ([EditableType](keybindlist
 | [FocusSearch(Vector2, Direction)](../decoratorview-1.md#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [GetChildAt(Vector2, Boolean, Boolean)](../decoratorview-1.md#getchildatvector2-bool-bool) | Finds the child at a given position.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [GetChildPosition(IView)](../decoratorview-1.md#getchildpositioniview) | Computes or retrieves the position of a given direct child.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
-| [GetChildren()](../decoratorview-1.md#getchildren) | Gets the current children of this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
+| [GetChildren(Boolean)](../decoratorview-1.md#getchildrenbool) | Gets the current children of this view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [GetChildrenAt(Vector2)](../decoratorview-1.md#getchildrenatvector2) | Finds all children at a given position.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [GetDefaultFocusChild()](../decoratorview-1.md#getdefaultfocuschild) | Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first opened.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [HasOutOfBoundsContent()](../decoratorview-1.md#hasoutofboundscontent) | Checks if the view has content or elements that are all or partially outside the [ActualBounds](../../iview.md#actualbounds).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [IsDirty()](../decoratorview-1.md#isdirty) | Checks whether or not the view is dirty - i.e. requires a new layout with a full [Measure(Vector2)](../../iview.md#measurevector2).<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
+| [IsVisible(Vector2?)](../decoratorview-1.md#isvisiblevector2) | Checks if the view is effectively visible, i.e. if it has anything to draw.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [Measure(Vector2)](../decoratorview-1.md#measurevector2) | Performs layout on this view, updating its [OuterSize](../../iview.md#outersize), [ActualBounds](../../iview.md#actualbounds) and [ContentBounds](../../iview.md#contentbounds), and arranging any children in their respective positions.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [OnButtonPress(ButtonEventArgs)](../decoratorview-1.md#onbuttonpressbuttoneventargs) | Called when a button press is received while this view is in the focus path.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
 | [OnButtonRepeat(ButtonEventArgs)](../decoratorview-1.md#onbuttonrepeatbuttoneventargs) | Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](../decoratorview-1.md))</span> | 
@@ -156,6 +159,24 @@ public string AddButtonText { get; set; }
 ##### Remarks
 
 Changing this while the overlay is already displayed will not update the overlay.
+
+-----
+
+#### BackgroundColor
+
+Solid background color to draw underneath each keybind frame.
+
+```cs
+public Microsoft.Xna.Framework.Color BackgroundColor { get; set; }
+```
+
+##### Property Value
+
+[Color](https://docs.monogame.net/api/Microsoft.Xna.Framework.Color.html)
+
+##### Remarks
+
+Applies only to the drawn parts inside borders, not to the empty space between them.
 
 -----
 

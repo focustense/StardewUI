@@ -15,6 +15,7 @@ search:
 | Name | Description |
 | --- | --- |
 | [AnyCastConverterFactory](anycastconverterfactory.md) | Factory supporting conversions to and from [IAnyCast](../ianycast.md). |
+| [BaseTypeConverterFactory](basetypeconverterfactory.md) | Allows implicit conversion from a type's ancestor to the destination type, if the source type does not have its own explicitly-defined conversion but a base type does. |
 | [CastingValueConverterFactory](castingvalueconverterfactory.md) | Factory that automatically implements casting conversions, where the source type can be assigned directly to the destination type. |
 | [DuckTypeClassConverterFactory](ducktypeclassconverterfactory.md) | Factory that creates duck-typing converters for `class` and `struct` types. |
 | [DuckTypeEnumConverterFactory](ducktypeenumconverterfactory.md) | Factory that automatically implements duck-typing conversions between enum types that share the same names. |

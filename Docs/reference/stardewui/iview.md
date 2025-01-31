@@ -47,6 +47,7 @@ public interface IView : System.IDisposable,
 | [Opacity](#opacity) | Opacity (alpha level) of the view. | 
 | [OuterSize](#outersize) | The true computed layout size resulting from a single [Measure(Vector2)](iview.md#measurevector2) pass. | 
 | [PointerEventsEnabled](#pointereventsenabled) | Whether this view should receive pointer events like [Click](iview.md#click) or [Drag](iview.md#drag). | 
+| [PointerStyle](#pointerstyle) | Pointer style to use when this view is hovered. | 
 | [ScrollWithChildren](#scrollwithchildren) | If set to an axis, specifies that when any child of the view is scrolled into view (using [ScrollIntoView(IEnumerable&lt;ViewChild&gt;, Vector2)](iview.md#scrollintoviewienumerableviewchild-vector2)), then this entire view should be scrolled along with it. | 
 | [Tags](#tags) | The user-defined tags for this view. | 
 | [Tooltip](#tooltip) | Tooltip data to display on hover, if any. | 
@@ -64,11 +65,12 @@ public interface IView : System.IDisposable,
 | [FocusSearch(Vector2, Direction)](#focussearchvector2-direction) | Finds the next focusable component in a given direction that does _not_ overlap with a current position. | 
 | [GetChildAt(Vector2, Boolean, Boolean)](#getchildatvector2-bool-bool) | Finds the child at a given position. | 
 | [GetChildPosition(IView)](#getchildpositioniview) | Computes or retrieves the position of a given direct child. | 
-| [GetChildren()](#getchildren) | Gets the current children of this view. | 
+| [GetChildren(Boolean)](#getchildrenbool) | Gets the current children of this view. | 
 | [GetChildrenAt(Vector2)](#getchildrenatvector2) | Finds all children at a given position. | 
 | [GetDefaultFocusChild()](#getdefaultfocuschild) | Gets the direct child that should contain cursor focus when a menu or overlay containing this view is first opened. | 
 | [HasOutOfBoundsContent()](#hasoutofboundscontent) | Checks if the view has content or elements that are all or partially outside the [ActualBounds](iview.md#actualbounds). | 
 | [IsDirty()](#isdirty) | Checks whether or not the view is dirty - i.e. requires a new layout with a full [Measure(Vector2)](iview.md#measurevector2). | 
+| [IsVisible(Vector2?)](#isvisiblevector2) | Checks if the view is effectively visible, i.e. if it has anything to draw. | 
 | [Measure(Vector2)](#measurevector2) | Performs layout on this view, updating its [OuterSize](iview.md#outersize), [ActualBounds](iview.md#actualbounds) and [ContentBounds](iview.md#contentbounds), and arranging any children in their respective positions. | 
 | [OnButtonPress(ButtonEventArgs)](#onbuttonpressbuttoneventargs) | Called when a button press is received while this view is in the focus path. | 
 | [OnButtonRepeat(ButtonEventArgs)](#onbuttonrepeatbuttoneventargs) | Called when a button press is first received, and at recurring intervals thereafter, for as long as the button is held and this view remains in the focus path. | 
@@ -282,6 +284,24 @@ bool PointerEventsEnabled { get; set; }
 ##### Remarks
 
 By default, all views receive pointer events; this may be disabled for views that intentionally overlap other views but shouldn't block their input, such as local non-modal overlays.
+
+-----
+
+#### PointerStyle
+
+Pointer style to use when this view is hovered.
+
+```cs
+StardewUI.Input.PointerStyle PointerStyle { get; set; }
+```
+
+##### Property Value
+
+[PointerStyle](input/pointerstyle.md)
+
+##### Remarks
+
+As with [Tooltip](iview.md#tooltip), the lowest-level view takes precedence over any higher-level views.
 
 -----
 
@@ -527,13 +547,18 @@ Implementation of this may be O(N) and therefore it should not be called every f
 
 -----
 
-#### GetChildren()
+#### GetChildren(bool)
 
 Gets the current children of this view.
 
 ```cs
-System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetChildren();
+System.Collections.Generic.IEnumerable<StardewUI.ViewChild> GetChildren(bool includeFloatingElements);
 ```
+
+##### Parameters
+
+**`includeFloatingElements`** &nbsp; [Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)  
+Whether to include views that are not direct children, but instead members of the floating elements collection of an [IFloatContainer](layout/ifloatcontainer.md) implementation.
 
 ##### Returns
 
@@ -619,6 +644,29 @@ Typically, a view will be considered dirty if and only if one of the following a
   - The `availableSize` is not the same as the previously-seen value (see remarks in [Measure(Vector2)](iview.md#measurevector2))
 
  A correct implementation is important for performance, as full layout can be very expensive to run on every frame.
+
+-----
+
+#### IsVisible(Vector2?)
+
+Checks if the view is effectively visible, i.e. if it has anything to draw.
+
+```cs
+bool IsVisible(Microsoft.Xna.Framework.Vector2? position);
+```
+
+##### Parameters
+
+**`position`** &nbsp; [Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Vector2](https://docs.monogame.net/api/Microsoft.Xna.Framework.Vector2.html)>  
+Optional position at which to test for visibility. If not specified, the result indicates whether any part of the view is visible.
+
+##### Returns
+
+[Boolean](https://learn.microsoft.com/en-us/dotnet/api/system.boolean)
+
+##### Remarks
+
+While [Visibility](iview.md#visibility) acts as a master on/off switch, there may be many other reasons for a view not to have any visible content, such as views with zero [Opacity](iview.md#opacity), layout views with no visible children, or labels or images with no current text or sprite.
 
 -----
 
