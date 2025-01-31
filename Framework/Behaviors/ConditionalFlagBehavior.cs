@@ -9,7 +9,8 @@ namespace StardewUI.Framework.Behaviors;
 /// property changes to be associated with the state. In other words, part one of the two-part process used to create
 /// conditional attributes.
 /// </remarks>
-/// <param name="flagName">Name of the flag to set when <see cref="Data"/> is <c>true</c>.</param>
+/// <param name="flagName">Name of the flag to set when <see cref="ViewBehavior{TView, TData}.Data"/> is
+/// <c>true</c>.</param>
 public class ConditionalFlagBehavior(string flagName) : ViewBehavior<IView, bool>
 {
     /// <inheritdoc />

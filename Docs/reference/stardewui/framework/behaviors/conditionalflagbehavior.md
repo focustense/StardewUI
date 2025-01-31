@@ -79,7 +79,7 @@ public ConditionalFlagBehavior(string flagName);
 ##### Parameters
 
 **`flagName`** &nbsp; [string](https://learn.microsoft.com/en-us/dotnet/api/system.string)  
-Name of the flag to set when [StardewUI.Data](../../Data/index.md) is `true`.
+Name of the flag to set when [Data](viewbehavior-2.md#data) is `true`.
 
 ##### Remarks
 
