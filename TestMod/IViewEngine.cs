@@ -124,6 +124,21 @@ public interface IViewEngine
     void EnableHotReloading(string? sourceDirectory = null);
 
     /// <summary>
+    /// Begins preloading assets found in this mod's registered asset directories.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Preloading is performed in the background, and can typically help reduce first-time latency for showing menus or
+    /// drawables, without any noticeable lag in game startup.
+    /// </para>
+    /// <para>
+    /// Must be called after asset registration (<see cref="RegisterViews"/>, <see cref="RegisterSprites"/> and so on)
+    /// in order to be effective, and must not be called more than once per mod otherwise errors or crashes may occur.
+    /// </para>
+    /// </remarks>
+    void PreloadAssets();
+
+    /// <summary>
     /// Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets.
     /// </summary>
     /// <param name="assetPrefix">The prefix for all asset names, e.g. <c>Mods/MyMod/Sprites</c>. This can be any value

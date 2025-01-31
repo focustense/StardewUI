@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
+using SkiaSharp;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewUI.Data;
@@ -15,12 +15,10 @@ namespace StardewUI.Framework.Api;
 /// Helper for registering UI assets and collections of assets.
 /// </summary>
 /// <remarks>
-/// Methods here are generally wrapped by the <see cref="IViewEngine"/>.
+/// Asset registries are instanced per mod, via the the <see cref="ViewEngine"/> which is also instanced.
 /// </remarks>
 internal class AssetRegistry : ISourceResolver
 {
-    record DirectoryMapping(string AssetPrefix, string ModDirectory);
-
     // Sprites maintain a reference to their Texture2D, so they should never be kept alive in their record form.
     // Instead, we can cache everything else about them (just their "data") and recreate them for any given Texture2D,
     // which is essentially how helpers like UiSprites behave.
@@ -69,6 +67,7 @@ internal class AssetRegistry : ISourceResolver
     };
 
     private readonly IModHelper helper;
+    private readonly AssetPreloader preloader;
     private readonly List<DirectoryMapping> dataDirectories = [];
     private readonly List<DirectoryMapping> spriteDirectories = [];
     private readonly List<DirectoryMapping> viewDirectories = [];
@@ -94,9 +93,15 @@ internal class AssetRegistry : ISourceResolver
     private FileSystemWatcher? hotReloadWatcher;
     private FileSystemWatcher? sourceSyncWatcher;
 
+    public Task PreloadAsync()
+    {
+        return preloader.Preload(viewDirectories, spriteDirectories);
+    }
+
     public AssetRegistry(IModHelper helper)
     {
         this.helper = helper;
+        preloader = new(helper.DirectoryPath);
 
         fileRetryTimer = new(FileRetryTimerCallback);
 
@@ -188,12 +193,15 @@ internal class AssetRegistry : ISourceResolver
     {
         var _ =
             // Views
-            (e.DataType == typeof(Document) && TryLoadAsset<object>(viewDirectories, e, "sml"))
+            (e.DataType == typeof(Document) && TryLoadAsset(viewDirectories, preloader.GetAndRemoveView, e, "sml"))
             // Sprites, including the underlying texture, coordinate data, and individual instances
-            || (e.DataType == typeof(Texture2D) && TryLoadAsset<Texture2D>(spriteDirectories, e, "png"))
+            || (
+                e.DataType == typeof(Texture2D)
+                && TryLoadAsset(spriteDirectories, preloader.GetAndRemoveTexture, e, "png")
+            )
             || (
                 e.DataType == typeof(SpriteSheetData)
-                && TryLoadAsset<SpriteSheetData>(spriteDirectories, e, "json", "@data")
+                && TryLoadAsset(spriteDirectories, preloader.GetAndRemoveSpriteSheetData, e, "json", "@data")
             )
             || (e.DataType == typeof(Sprite) && TryLoadSprite(e))
             // Custom data types
@@ -214,6 +222,7 @@ internal class AssetRegistry : ISourceResolver
         var isMainThread = Game1.IsOnMainThread();
         foreach (var assetName in e.Names)
         {
+            preloader.Evict(assetName.BaseName);
             var key = assetName.Name;
             if (key.EndsWith("@data"))
             {
@@ -514,13 +523,20 @@ internal class AssetRegistry : ISourceResolver
 
     private bool TryLoadAsset<T>(
         IReadOnlyList<DirectoryMapping> directories,
+        Func<string, T?>? getCached,
         AssetRequestedEventArgs e,
         string extension,
         string? suffix = null
     )
-        where T : notnull
+        where T : class
     {
         using var _ = Trace.Begin(nameof(AssetRegistry), nameof(TryLoadAsset));
+        if (getCached?.Invoke(e.Name.BaseName) is { } cached)
+        {
+            e.LoadFrom(() => cached, AssetLoadPriority.Low);
+            Logger.Log($"Using preloaded <{typeof(T).Name}> asset for '{e.Name}'", LogLevel.Debug);
+            return true;
+        }
         foreach (var (assetPrefix, modDirectory) in directories)
         {
             var relativePath = GetRelativeAssetPath(e, assetPrefix);

@@ -18,6 +18,7 @@ search:
 | [ContextRedirect](contextredirect.md).[Distance](contextredirect.distance.md) | Redirects to an ancestor context by walking up a specified number of levels. |
 | [ContextRedirect](contextredirect.md).[Type](contextredirect.type.md) | Redirects to the nearest ancestor matching a specified type. |
 | [Document](document.md) | A standalone StarML document. |
+| [DocumentLoader](documentloader.md) | Utility for loading [Document](document.md)s from memory or files. |
 | [SArgument](sargument.md) | Record implementation of an [IArgument](iargument.md). |
 | [SAttribute](sattribute.md) | Record implementation of a StarML [IAttribute](iattribute.md). |
 | [SElement](selement.md) | Record implementation of a StarML [IElement](ielement.md). |

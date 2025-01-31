@@ -53,6 +53,7 @@ internal sealed partial class ModEntry : Mod
         viewEngine.RegisterSprites($"Mods/{ModManifest.UniqueID}/Sprites", "assets/sprites");
         viewEngine.RegisterViews(viewAssetPrefix, "assets/views");
         viewEngine.EnableHotReloadingWithSourceSync();
+        viewEngine.PreloadAssets();
 
         temperingData = Helper.ModContent.Load<Dictionary<string, Dictionary<string, EffectData>>>(
             "assets/data/tempering.json"

@@ -67,6 +67,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SkiaSharp" HintPath="$(GamePath)\SkiaSharp.dll" Private="false" />
+  </ItemGroup>
+
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" />

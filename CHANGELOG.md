@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - `CloseSound` customizes what sound will be played when the menu is closed.
   - `PointerStyle` changes the mouse cursor when hovering inside the view. All vanilla cursors such as the hand, harvest and dialogue cursors are supported.
   - `SetCursorAttachment(...)` and `ClearCursorAttachment` will add/remove a sprite to be drawn next to the cursor, e.g. to indicate moving an item to/from inventory as is done in the vanilla `InventoryMenu`.
+- `IViewEngine` API now includes a `Preload()` method that will start preloading all mod assets in the background, which can help reduce latency when showing complex menus or drawables for the first time.
 - When a `ButtonPress` handler returns `false`, it will short-circuit focus searches, i.e. making it possible to trap controller focus within some view.
 - When a `Click` handler returns `false`, it will preempt any `LeftClick` or `RightClick` handlers on the same view.
 - Duck-type conversions will fail gracefully when there are multiple, case-insensitive matches such as both `description` and `Description`.
