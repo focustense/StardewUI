@@ -10,7 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - All views now have a layout-typed [`ClipSize`](https://focustense.github.com/StardewUI/reference/stardewui/iview#clipsize) property for limiting overflow or cropping content, which allows for animated slides and wipes.
 - [Segmented Controls](https://focustense.github.io/StardewUI/library/standard-views/#segments) are an improved alternative to dropdowns when selecting from a very small number of choices.
-- [Color Pickers](https://focustense.github.io/StardewUI/library/standard-views/#segments) provide color selection using either RGBA (sliders) or HSVA (wheel), as well as customizable presets.
+- [Color Pickers](https://focustense.github.io/StardewUI/library/standard-views/#color-picker) provide color selection using either RGBA (sliders) or HSVA (wheel), as well as customizable presets.
 - All views now have a [`ButtonRepeat`](https://focustense.github.com/StardewUI/reference/stardewui/iview#buttonrepeat) event, which has the same signature as `ButtonPress` but fires at a repeating interval while the button is held.
 - Built-in [behavior attributes](https://focustense.github.io/StardewUI/framework/starml/#behavior-attributes) now include `+state:<name>` and `+state:<name>:<arg>` behaviors which create a custom named state bound to a boolean value and any number of properties modified by that state.
   - This allows for transitions that work like `+hover` and support animated transitions, but are controlled by data; for example, setting a `disabled` state to control both `opacity` and `pointer-events-enabled`, or a `selected` state to control a frame's `background-tint` or a label's `bold` property.
