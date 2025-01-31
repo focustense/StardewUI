@@ -20,10 +20,10 @@ The most current source for any example can usually be found in the `dev` branch
 
     [![Bestiary](../images/example-bestiary.png)](bestiary.md)
 
--   [**Train Shop (Carousel)**](carousel.md)  
+-   [**Tool Tempering**](carousel.md)  
     _@focustense_
 
-    [![Train Shop (Carousel)](../images/example-carousel.png)](carousel.md)
+    [![Tool Tempering](../images/example-tempering.png)](tempering.md)
 
 -   [**Crop Calendar**](crop-calendar.md)  
     _@mushymato_
@@ -34,5 +34,10 @@ The most current source for any example can usually be found in the `dev` branch
     _@focustense_
 
     [![Settings Form](../images/example-form.png)](settings-form.md)
+
+-   [**Train Shop (Carousel)**](carousel.md)  
+    _@focustense_
+
+    [![Train Shop (Carousel)](../images/example-carousel.png)](carousel.md)
 
 </div>
