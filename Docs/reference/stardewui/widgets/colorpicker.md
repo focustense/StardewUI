@@ -23,6 +23,7 @@ Assembly: StardewUI.dll
 Drop-down style widget that opens a detailed color wheel/slider overlay for choosing a precise color.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class ColorPicker : StardewUI.Widgets.ComponentView
 ```
 
