@@ -17,7 +17,7 @@ namespace StardewUI.Widgets;
 /// </remarks>
 /// <seealso href="https://developer.apple.com/design/human-interface-guidelines/segmented-controls"/>
 /// <seealso href="https://m3.material.io/components/segmented-buttons/overview"/>
-public class SegmentedControl : View
+public partial class SegmentedControl : View
 {
     /// <summary>
     /// Whether to balance the segments so that each has the same width.

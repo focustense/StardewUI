@@ -12,6 +12,11 @@ namespace StardewUI.Framework.Descriptors;
 public interface IObjectDescriptor
 {
     /// <summary>
+    /// Enumerates the names of all members of the object type.
+    /// </summary>
+    IEnumerable<string> MemberNames { get; }
+
+    /// <summary>
     /// Whether or not objects of this type can notify about data changes; that is, if the type implements
     /// <see cref="System.ComponentModel.INotifyPropertyChanged"/>.
     /// </summary>

@@ -58,6 +58,40 @@ internal static class DescriptorCodeGenerator
         sb.AppendLine(1, $"internal class {data.Self.DescriptorDefinitionName} : {descriptorInterface}");
         WriteConstraints(sb, data.Self);
         sb.AppendLine(1, "{");
+        sb.AppendLine(2, "public IEnumerable<string> MemberNames");
+        sb.AppendLine(2, "{");
+        sb.AppendLine(3, "get");
+        sb.AppendLine(3, "{");
+        foreach (var property in data.Self.Properties)
+        {
+            sb.AppendLine(4, $"yield return \"{property.Name}\";");
+        }
+        foreach (var method in data.Self.Methods)
+        {
+            sb.AppendLine(4, $"yield return \"{method.Name}\";");
+        }
+        foreach (var evt in data.Self.Events)
+        {
+            sb.AppendLine(4, $"yield return \"{evt.Name}\";");
+        }
+        foreach (var ancestor in data.Ancestors)
+        {
+            foreach (var property in ancestor.Properties)
+            {
+                sb.AppendLine(4, $"yield return \"{property.Name}\";");
+            }
+            foreach (var method in ancestor.Methods)
+            {
+                sb.AppendLine(4, $"yield return \"{method.Name}\";");
+            }
+            foreach (var evt in ancestor.Events)
+            {
+                sb.AppendLine(4, $"yield return \"{evt.Name}\";");
+            }
+        }
+        sb.AppendLine(3, "}");
+        sb.AppendLine(2, "}");
+        sb.AppendLine();
         sb.AppendLine(2, $"public Type TargetType => typeof({data.Self.FullName});");
         sb.AppendLine();
         sb.AppendLine(2, "public bool SupportsChangeNotifications => true;");

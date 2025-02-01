@@ -22,6 +22,10 @@ public static class ReflectionPropertyDescriptor
     public static IPropertyDescriptor FromPropertyInfo(PropertyInfo propertyInfo)
     {
         using var _ = Trace.Begin(nameof(ReflectionPropertyDescriptor), nameof(FromPropertyInfo));
+        using var _name = Trace.Begin(
+            nameof(ReflectionPropertyDescriptor),
+            $"{propertyInfo.DeclaringType?.FullName}.{propertyInfo.Name}"
+        );
         return cache.GetOrAdd(
             propertyInfo,
             static propertyInfo =>
