@@ -35,16 +35,11 @@ public class ReflectionObjectDescriptor :
 
 ## Members
 
-### Constructors
-
- | Name | Description |
-| --- | --- |
-| [ReflectionObjectDescriptor(Type, IReadOnlyList&lt;Type&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IMemberDescriptor&gt;&gt;)](#reflectionobjectdescriptortype-ireadonlylisttype-ireadonlydictionarystring-lazyimemberdescriptor) | Initializes a new [ReflectionObjectDescriptor](reflectionobjectdescriptor.md) with the given target type and members. | 
-
 ### Properties
 
  | Name | Description |
 | --- | --- |
+| [MemberNames](#membernames) | Enumerates the names of all members of the object type. | 
 | [SupportsChangeNotifications](#supportschangenotifications) | Whether or not objects of this type can notify about data changes; that is, if the type implements [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged). | 
 | [TargetType](#targettype) | The type being described, which owns or inherits each of the available members. | 
 
@@ -58,30 +53,21 @@ public class ReflectionObjectDescriptor :
 
 ## Details
 
-### Constructors
+### Properties
 
-#### ReflectionObjectDescriptor(Type, IReadOnlyList&lt;Type&gt;, IReadOnlyDictionary&lt;string, Lazy&lt;IMemberDescriptor&gt;&gt;)
+#### MemberNames
 
-Initializes a new [ReflectionObjectDescriptor](reflectionobjectdescriptor.md) with the given target type and members.
+Enumerates the names of all members of the object type.
 
 ```cs
-protected ReflectionObjectDescriptor(System.Type type, System.Collections.Generic.IReadOnlyList<System.Type> interfaces, System.Collections.Generic.IReadOnlyDictionary<string, Lazy<StardewUI.Framework.Descriptors.IMemberDescriptor>> membersByName);
+public System.Collections.Generic.IEnumerable<string> MemberNames { get; }
 ```
 
-##### Parameters
+##### Property Value
 
-**`type`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
-The [TargetType](reflectionobjectdescriptor.md#targettype).
-
-**`interfaces`** &nbsp; [IReadOnlyList](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)<[Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)>  
-All interfaces implemented by the [TargetType](reflectionobjectdescriptor.md#targettype).
-
-**`membersByName`** &nbsp; [IReadOnlyDictionary](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlydictionary-2)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string), [Lazy](https://learn.microsoft.com/en-us/dotnet/api/system.lazy-1)<[IMemberDescriptor](imemberdescriptor.md)>>  
-Dictionary of member names to the corresponding member descriptors.
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)>
 
 -----
-
-### Properties
 
 #### SupportsChangeNotifications
 

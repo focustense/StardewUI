@@ -23,6 +23,7 @@ Assembly: StardewUI.dll
 A horizontal list of options that can each be independently clicked and selected.
 
 ```cs
+[StardewUI.GenerateDescriptor]
 public class SegmentedControl : StardewUI.View
 ```
 
