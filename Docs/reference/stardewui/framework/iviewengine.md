@@ -40,6 +40,7 @@ public interface IViewEngine
 | [CreateMenuFromMarkup(string, Object)](#createmenufrommarkupstring-object) | Creates a menu from arbitrary markup. | 
 | [EnableHotReloading(string)](#enablehotreloadingstring) | Starts monitoring this mod's directory for changes to assets managed by any of the `Register` methods, e.g. views and sprites. | 
 | [PreloadAssets()](#preloadassets) | Begins preloading assets found in this mod's registered asset directories. | 
+| [PreloadModels(Type)](#preloadmodelstype) | Declares that the specified context types will be used as either direct arguments or subproperties in one or more subsequent `CreateMenu` or `CreateDrawable` APIs, and instructs the framework to begin inspecting those types and optimizing for later use. | 
 | [RegisterCustomData(string, string)](#registercustomdatastring-string) | Registers a mod directory to be searched for special-purpose mod data, i.e. that is not either views or sprites. | 
 | [RegisterSprites(string, string)](#registerspritesstring-string) | Registers a mod directory to be searched for sprite (and corresponding texture/sprite sheet data) assets. | 
 | [RegisterViews(string, string)](#registerviewsstring-string) | Registers a mod directory to be searched for view (StarML) assets. Uses the `.sml` extension. | 
@@ -246,6 +247,25 @@ void PreloadAssets();
 Preloading is performed in the background, and can typically help reduce first-time latency for showing menus or drawables, without any noticeable lag in game startup. 
 
  Must be called after asset registration ([RegisterViews(string, string)](iviewengine.md#registerviewsstring-string), [RegisterSprites(string, string)](iviewengine.md#registerspritesstring-string) and so on) in order to be effective, and must not be called more than once per mod otherwise errors or crashes may occur.
+
+-----
+
+#### PreloadModels(Type)
+
+Declares that the specified context types will be used as either direct arguments or subproperties in one or more subsequent `CreateMenu` or `CreateDrawable` APIs, and instructs the framework to begin inspecting those types and optimizing for later use.
+
+```cs
+void PreloadModels(System.Type types);
+```
+
+##### Parameters
+
+**`types`** &nbsp; [Type](https://learn.microsoft.com/en-us/dotnet/api/system.type)  
+The types that the mod expects to use as context.
+
+##### Remarks
+
+Data binding to mod-defined types uses reflection, which can become expensive when loading a very complex menu and/or binding to a very complex model for the first time. Preloading can perform this work in the background instead of causing latency when opening the menu.
 
 -----
 

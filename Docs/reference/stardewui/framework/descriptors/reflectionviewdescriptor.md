@@ -40,6 +40,7 @@ public class ReflectionViewDescriptor :
 
  | Name | Description |
 | --- | --- |
+| [MemberNames](#membernames) | Enumerates the names of all members of the object type. | 
 | [SupportsChangeNotifications](#supportschangenotifications) | Whether or not objects of this type can notify about data changes; that is, if the type implements [INotifyPropertyChanged](https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged). | 
 | [TargetType](#targettype) | The type being described, which owns or inherits each of the available members. | 
 
@@ -55,6 +56,20 @@ public class ReflectionViewDescriptor :
 ## Details
 
 ### Properties
+
+#### MemberNames
+
+Enumerates the names of all members of the object type.
+
+```cs
+public System.Collections.Generic.IEnumerable<string> MemberNames { get; }
+```
+
+##### Property Value
+
+[IEnumerable](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)<[string](https://learn.microsoft.com/en-us/dotnet/api/system.string)>
+
+-----
 
 #### SupportsChangeNotifications
 
