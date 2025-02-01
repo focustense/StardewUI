@@ -20,7 +20,7 @@ The most current source for any example can usually be found in the `dev` branch
 
     [![Bestiary](../images/example-bestiary.png)](bestiary.md)
 
--   [**Tool Tempering**](carousel.md)  
+-   [**Tool Tempering**](tempering.md)  
     _@focustense_
 
     [![Tool Tempering](../images/example-tempering.png)](tempering.md)
