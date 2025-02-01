@@ -19,6 +19,9 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     internal static Func<bool> EnableParallelCreation { get; set; } = () => false;
 
     /// <inheritdoc />
+    public IEnumerable<string> MemberNames => membersByName.Keys;
+
+    /// <inheritdoc />
     public bool SupportsChangeNotifications { get; }
 
     /// <inheritdoc />
@@ -26,7 +29,7 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
 
     private static readonly ConcurrentDictionary<Type, ReflectionObjectDescriptor> cache = [];
 
-    private readonly IReadOnlyDictionary<string, Lazy<IMemberDescriptor>> membersByName;
+    private readonly IReadOnlyDictionary<string, MemberEntry> membersByName;
     private readonly Lazy<IPropertyDescriptor> thisDescriptor;
 
     /// <summary>
@@ -108,10 +111,10 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// <param name="type">The <see cref="TargetType"/>.</param>
     /// <param name="interfaces">All interfaces implemented by the <see cref="TargetType"/>.</param>
     /// <param name="membersByName">Dictionary of member names to the corresponding member descriptors.</param>
-    protected ReflectionObjectDescriptor(
+    private ReflectionObjectDescriptor(
         Type type,
         IReadOnlyList<Type> interfaces,
-        IReadOnlyDictionary<string, Lazy<IMemberDescriptor>> membersByName
+        IReadOnlyDictionary<string, MemberEntry> membersByName
     )
     {
         TargetType = type;
@@ -123,13 +126,13 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
     /// <inheritdoc />
     public bool TryGetEvent(string name, [MaybeNullWhen(false)] out IEventDescriptor @event)
     {
-        return TryGetMember(name, out @event);
+        return TryGetMember(name, MemberTypes.Event, out @event);
     }
 
     /// <inheritdoc />
     public bool TryGetMethod(string name, [MaybeNullWhen(false)] out IMethodDescriptor method)
     {
-        return TryGetMember(name, out method);
+        return TryGetMember(name, MemberTypes.Method, out method);
     }
 
     /// <inheritdoc />
@@ -140,14 +143,16 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
             property = thisDescriptor.Value;
             return true;
         }
-        return TryGetMember(name, out property);
+        return TryGetMember(name, MemberTypes.Field | MemberTypes.Property, out property);
     }
 
-    private bool TryGetMember<T>(string name, [MaybeNullWhen(false)] out T member)
+    private bool TryGetMember<T>(string name, MemberTypes memberTypes, [MaybeNullWhen(false)] out T member)
         where T : IMemberDescriptor
     {
         member =
-            membersByName.TryGetValue(name, out var lazyMember) && lazyMember.Value is T typedMember
+            membersByName.TryGetValue(name, out var entry)
+            && (entry.MemberType & memberTypes) != 0
+            && entry.Descriptor.Value is T typedMember
                 ? typedMember
                 : default;
         return member is not null;
@@ -156,9 +161,9 @@ public class ReflectionObjectDescriptor : IObjectDescriptor
 
 file static class MemberListExtensions
 {
-    public static IReadOnlyDictionary<string, Lazy<TDescriptor>> ToLazyDictionary<T, TDescriptor>(
+    public static IReadOnlyDictionary<string, MemberEntry> ToLazyDictionary<T>(
         this IEnumerable<T> source,
-        Func<T, TDescriptor> descriptorSelector,
+        Func<T, IMemberDescriptor> descriptorSelector,
         bool lazy
     )
         where T : MemberInfo
@@ -167,15 +172,18 @@ file static class MemberListExtensions
             .Select(x =>
                 (
                     key: x.Name,
-                    descriptor: lazy ? new Lazy<TDescriptor>(() => descriptorSelector(x)) : new(descriptorSelector(x))
+                    type: x.MemberType,
+                    descriptor: lazy
+                        ? new Lazy<IMemberDescriptor>(() => descriptorSelector(x))
+                        : new(descriptorSelector(x))
                 )
             )
-            .ToDictionary(x => x.key, x => x.descriptor);
+            .ToDictionary(x => x.key, x => new MemberEntry(x.type, x.descriptor));
     }
 
-    public static IReadOnlyDictionary<string, Lazy<TDescriptor>> ToLazyDictionary<T, TDescriptor>(
+    public static IReadOnlyDictionary<string, MemberEntry> ToLazyDictionary<T>(
         this ParallelQuery<T> source,
-        Func<T, TDescriptor> descriptorSelector,
+        Func<T, IMemberDescriptor> descriptorSelector,
         bool lazy
     )
         where T : MemberInfo
@@ -184,12 +192,17 @@ file static class MemberListExtensions
             .Select(x =>
                 (
                     key: x.Name,
-                    descriptor: lazy ? new Lazy<TDescriptor>(() => descriptorSelector(x)) : new(descriptorSelector(x))
+                    type: x.MemberType,
+                    descriptor: lazy
+                        ? new Lazy<IMemberDescriptor>(() => descriptorSelector(x))
+                        : new(descriptorSelector(x))
                 )
             )
-            .ToDictionary(x => x.key, x => x.descriptor);
+            .ToDictionary(x => x.key, x => new MemberEntry(x.type, x.descriptor));
     }
 }
+
+internal record MemberEntry(MemberTypes MemberType, Lazy<IMemberDescriptor> Descriptor);
 
 file class MemberNameComparer : IEqualityComparer<MemberInfo>
 {

@@ -11,6 +11,9 @@ namespace StardewUI.Framework.Descriptors;
 public class ReflectionViewDescriptor : IViewDescriptor
 {
     /// <inheritdoc />
+    public IEnumerable<string> MemberNames => innerDescriptor.MemberNames;
+
+    /// <inheritdoc />
     public bool SupportsChangeNotifications => innerDescriptor.SupportsChangeNotifications;
 
     /// <inheritdoc />
