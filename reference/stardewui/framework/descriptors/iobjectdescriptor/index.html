@@ -2568,6 +2568,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#membernames" class="md-nav__link">
+    <span class="md-ellipsis">
+      MemberNames
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#supportschangenotifications" class="md-nav__link">
     <span class="md-ellipsis">
       SupportsChangeNotifications
@@ -4031,6 +4040,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#membernames" class="md-nav__link">
+    <span class="md-ellipsis">
+      MemberNames
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#supportschangenotifications" class="md-nav__link">
     <span class="md-ellipsis">
       SupportsChangeNotifications
@@ -4169,6 +4187,10 @@ Assembly: StardewUI.dll  </p>
 </thead>
 <tbody>
 <tr>
+<td><a href="#membernames">MemberNames</a></td>
+<td>Enumerates the names of all members of the object type.</td>
+</tr>
+<tr>
 <td><a href="#supportschangenotifications">SupportsChangeNotifications</a></td>
 <td>Whether or not objects of this type can notify about data changes; that is, if the type implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>.</td>
 </tr>
@@ -4215,24 +4237,31 @@ Assembly: StardewUI.dll  </p>
 </table>
 <h2 id="details">Details<a class="headerlink" href="#details" title="Permanent link"></a></h2>
 <h3 id="properties_1">Properties<a class="headerlink" href="#properties_1" title="Permanent link"></a></h3>
-<h4 id="supportschangenotifications">SupportsChangeNotifications<a class="headerlink" href="#supportschangenotifications" title="Permanent link"></a></h4>
-<p>Whether or not objects of this type can notify about data changes; that is, if the type implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">SupportsChangeNotifications</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<h4 id="membernames">MemberNames<a class="headerlink" href="#membernames" title="Permanent link"></a></h4>
+<p>Enumerates the names of all members of the object type.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Collections</span><span class="p">.</span><span class="n">Generic</span><span class="p">.</span><span class="n">IEnumerable</span><span class="o">&lt;</span><span class="kt">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">MemberNames</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
 <h5 id="property-value">Property Value<a class="headerlink" href="#property-value" title="Permanent link"></a></h5>
+<p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a>&gt;</p>
+<hr />
+<h4 id="supportschangenotifications">SupportsChangeNotifications<a class="headerlink" href="#supportschangenotifications" title="Permanent link"></a></h4>
+<p>Whether or not objects of this type can notify about data changes; that is, if the type implements <a href="https://learn.microsoft.com/en-us/dotnet/api/system.componentmodel.inotifypropertychanged">INotifyPropertyChanged</a>.</p>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">SupportsChangeNotifications</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.boolean">Boolean</a></p>
 <hr />
 <h4 id="targettype">TargetType<a class="headerlink" href="#targettype" title="Permanent link"></a></h4>
 <p>The type being described, which owns or inherits each of the available members.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">TargetType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">System</span><span class="p">.</span><span class="n">Type</span><span class="w"> </span><span class="n">TargetType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">get</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
 </span></code></pre></div>
-<h5 id="property-value_1">Property Value<a class="headerlink" href="#property-value_1" title="Permanent link"></a></h5>
+<h5 id="property-value_2">Property Value<a class="headerlink" href="#property-value_2" title="Permanent link"></a></h5>
 <p><a href="https://learn.microsoft.com/en-us/dotnet/api/system.type">Type</a></p>
 <hr />
 <h3 id="methods_1">Methods<a class="headerlink" href="#methods_1" title="Permanent link"></a></h3>
 <h4 id="geteventstring">GetEvent(string)<a class="headerlink" href="#geteventstring" title="Permanent link"></a></h4>
 <p>Retrieves a named event on the <a href="./#targettype">TargetType</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IEventDescriptor</span><span class="w"> </span><span class="n">GetEvent</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IEventDescriptor</span><span class="w"> </span><span class="n">GetEvent</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
@@ -4243,7 +4272,7 @@ The event name.</p>
 <hr />
 <h4 id="getmethodstring">GetMethod(string)<a class="headerlink" href="#getmethodstring" title="Permanent link"></a></h4>
 <p>Retrieves a named method of the <a href="./#targettype">TargetType</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IMethodDescriptor</span><span class="w"> </span><span class="n">GetMethod</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IMethodDescriptor</span><span class="w"> </span><span class="n">GetMethod</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
@@ -4256,7 +4285,7 @@ The method name.</p>
 <hr />
 <h4 id="getpropertystring">GetProperty(string)<a class="headerlink" href="#getpropertystring" title="Permanent link"></a></h4>
 <p>Retrieves a named property of the <a href="./#targettype">TargetType</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">GetProperty</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">GetProperty</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
@@ -4267,7 +4296,7 @@ The property name.</p>
 <hr />
 <h4 id="trygeteventstring-ieventdescriptor">TryGetEvent(string, IEventDescriptor)<a class="headerlink" href="#trygeteventstring-ieventdescriptor" title="Permanent link"></a></h4>
 <p>Attempts to retrieve a named event on the <a href="./#targettype">TargetType</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetEvent</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IEventDescriptor</span><span class="w"> </span><span class="k">event</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetEvent</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IEventDescriptor</span><span class="w"> </span><span class="k">event</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
@@ -4280,7 +4309,7 @@ When this method returns, holds a reference to the <a href="../ieventdescriptor/
 <hr />
 <h4 id="trygetmethodstring-imethoddescriptor">TryGetMethod(string, IMethodDescriptor)<a class="headerlink" href="#trygetmethodstring-imethoddescriptor" title="Permanent link"></a></h4>
 <p>Attempts to retrieve a named method of the <a href="./#targettype">TargetType</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetMethod</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IMethodDescriptor</span><span class="w"> </span><span class="n">method</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetMethod</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IMethodDescriptor</span><span class="w"> </span><span class="n">method</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
@@ -4295,7 +4324,7 @@ When this method returns, holds a reference to the <a href="../imethoddescriptor
 <hr />
 <h4 id="trygetpropertystring-ipropertydescriptor">TryGetProperty(string, IPropertyDescriptor)<a class="headerlink" href="#trygetpropertystring-ipropertydescriptor" title="Permanent link"></a></h4>
 <p>Attempts to retrieve a named property of the <a href="./#targettype">TargetType</a>.</p>
-<div class="language-cs highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetProperty</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">property</span><span class="p">);</span>
+<div class="language-cs highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">TryGetProperty</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">out</span><span class="w"> </span><span class="n">StardewUI</span><span class="p">.</span><span class="n">Framework</span><span class="p">.</span><span class="n">Descriptors</span><span class="p">.</span><span class="n">IPropertyDescriptor</span><span class="w"> </span><span class="n">property</span><span class="p">);</span>
 </span></code></pre></div>
 <h5 id="parameters_5">Parameters<a class="headerlink" href="#parameters_5" title="Permanent link"></a></h5>
 <p><strong><code>name</code></strong> &nbsp; <a href="https://learn.microsoft.com/en-us/dotnet/api/system.string">string</a><br />
