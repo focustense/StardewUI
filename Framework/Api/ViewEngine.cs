@@ -1,6 +1,8 @@
-﻿using StardewModdingAPI.Events;
+﻿using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI.Events;
 using StardewUI.Framework.Binding;
 using StardewUI.Framework.Content;
+using StardewUI.Framework.Descriptors;
 using StardewUI.Framework.Dom;
 using StardewUI.Framework.Sources;
 using StardewValley.Menus;
@@ -105,6 +107,71 @@ public class ViewEngine : IViewEngine
     }
 
     /// <inheritdoc />
+    public void PreloadModels(params Type[] types)
+    {
+        if (types.Length == 0)
+        {
+            return;
+        }
+        Task.Run(() =>
+        {
+            var visitedTypes = new HashSet<Type>();
+            var remainingTypes = new Stack<Type>(types);
+            while (remainingTypes.TryPop(out var type))
+            {
+                if (!IsPreloadableType(type) || visitedTypes.Contains(type))
+                {
+                    continue;
+                }
+                visitedTypes.Add(type);
+                // For our purposes, system types are only considered valid in terms of their ability to hold generic
+                // arguments, e.g. those in System.Collections.Generic. If we encounter these, skip the self-descriptor
+                // and go directly to generics/arrays.
+                if (!type.IsArray && type.Namespace?.StartsWith("System") != true)
+                {
+                    IObjectDescriptor descriptor;
+                    try
+                    {
+                        descriptor = DescriptorFactory.GetObjectDescriptor(type, lazy: true);
+                        Logger.Log($"Preloaded descriptor for {type.FullName}", LogLevel.Trace);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log($"Error creating descriptor for type {type.FullName}: {ex}", LogLevel.Error);
+                        continue;
+                    }
+                    try
+                    {
+                        foreach (var memberName in descriptor.MemberNames)
+                        {
+                            if (!descriptor.TryGetProperty(memberName, out var property))
+                            {
+                                continue;
+                            }
+                            remainingTypes.Push(property.ValueType);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log($"Error enumerating properties of type {type.FullName}: {ex}", LogLevel.Error);
+                    }
+                }
+                if (type.IsGenericType)
+                {
+                    foreach (var genericArg in type.GetGenericArguments())
+                    {
+                        remainingTypes.Push(genericArg);
+                    }
+                }
+                if (type.GetElementType() is { } elementType)
+                {
+                    remainingTypes.Push(elementType);
+                }
+            }
+        });
+    }
+
+    /// <inheritdoc />
     public void RegisterCustomData(string assetPrefix, string modDirectory)
     {
         assetRegistry.RegisterCustomData(assetPrefix, modDirectory);
@@ -133,5 +200,21 @@ public class ViewEngine : IViewEngine
             }
             return true;
         });
+    }
+
+    private static bool IsPreloadableType(Type type)
+    {
+        return !type.IsPrimitive
+            && type != typeof(object)
+            && type != typeof(string)
+            // Types like Point, Rectangle, etc. are relatively harmless, but we really want to avoid traversing types
+            // like Texture2D, GraphicsDevice and so on.
+            && type.Namespace?.StartsWith("Microsoft.Xna.Framework") != true
+            // Netcode types should never directly appear in a view model, but can be referenced by other more benign
+            // types like Item/Object.
+            && type.Namespace?.StartsWith("Netcode") != true
+            // View models may have a legitimate reason to include IClickableMenu and related types, but not for data
+            // binding purposes.
+            && type.Namespace?.StartsWith("StardewValley.Menus") != true;
     }
 }

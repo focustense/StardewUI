@@ -8,6 +8,7 @@ namespace StardewUI.Widgets
     [GenerateDescriptor] partial class Banner { }
     [GenerateDescriptor] partial class Button { }
     [GenerateDescriptor] partial class CheckBox { }
+    [GenerateDescriptor] partial class ColorPicker { }
     // TODO: Drop-down lists aren't supported because they are generic.
     //
     // This can still probably be optimized somewhat by just storing a map of the type definition to descriptor
@@ -28,6 +29,7 @@ namespace StardewUI.Widgets
     [GenerateDescriptor] partial class ScrollableView { }
     [GenerateDescriptor] partial class Scrollbar { }
     [GenerateDescriptor] partial class ScrollContainer { }
+    [GenerateDescriptor] partial class SegmentedControl { }
     [GenerateDescriptor] partial class Slider { }
     [GenerateDescriptor] partial class Spacer { }
     [GenerateDescriptor] partial class Tab { }
