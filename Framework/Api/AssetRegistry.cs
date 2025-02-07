@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework.Graphics;
-using SkiaSharp;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewUI.Data;
@@ -195,10 +194,7 @@ internal class AssetRegistry : ISourceResolver
             // Views
             (e.DataType == typeof(Document) && TryLoadAsset(viewDirectories, preloader.GetAndRemoveView, e, "sml"))
             // Sprites, including the underlying texture, coordinate data, and individual instances
-            || (
-                e.DataType == typeof(Texture2D)
-                && TryLoadAsset(spriteDirectories, preloader.GetAndRemoveTexture, e, "png")
-            )
+            || (e.DataType == typeof(Texture2D) && TryLoadAsset(spriteDirectories, TryGetCachedTexture, e, "png"))
             || (
                 e.DataType == typeof(SpriteSheetData)
                 && TryLoadAsset(spriteDirectories, preloader.GetAndRemoveSpriteSheetData, e, "json", "@data")
@@ -222,7 +218,7 @@ internal class AssetRegistry : ISourceResolver
         var isMainThread = Game1.IsOnMainThread();
         foreach (var assetName in e.Names)
         {
-            preloader.Evict(assetName.BaseName);
+            preloader.Evict(assetName.Name);
             var key = assetName.Name;
             if (key.EndsWith("@data"))
             {
@@ -485,6 +481,16 @@ internal class AssetRegistry : ISourceResolver
         }
     }
 
+    private Texture2D? TryGetCachedTexture(string assetName)
+    {
+        var texture = preloader.GetAndRemoveTexture(assetName);
+        if (texture is not null)
+        {
+            textureCache[assetName] = new(texture);
+        }
+        return texture;
+    }
+
     private bool TryInvalidateFile(string physicalPath, string assetName)
     {
         // Tweak: Don't invalidate the asset until we know we can read from it, otherwise we can get an access exception
@@ -531,7 +537,7 @@ internal class AssetRegistry : ISourceResolver
         where T : class
     {
         using var _ = Trace.Begin(nameof(AssetRegistry), nameof(TryLoadAsset));
-        if (getCached?.Invoke(e.Name.BaseName) is { } cached)
+        if (getCached?.Invoke(e.Name.Name) is { } cached)
         {
             e.LoadFrom(() => cached, AssetLoadPriority.Low);
             Logger.Log($"Using preloaded <{typeof(T).Name}> asset for '{e.Name}'", LogLevel.Debug);
