@@ -16,7 +16,7 @@ public class NineSlice(Sprite sprite)
     public Sprite Sprite { get; init; } = sprite;
 
     private readonly Rectangle[,] sourceGrid = GetGrid(
-        sprite.SourceRect ?? sprite.Texture.Bounds,
+        sprite.SourceRect ?? sprite.Texture?.Bounds ?? Rectangle.Empty,
         sprite.FixedEdges ?? Edges.NONE,
         sprite.SliceSettings
     );
@@ -35,6 +35,16 @@ public class NineSlice(Sprite sprite)
         if (destinationGrid is null)
         {
             // Layout has not been performed.
+            return;
+        }
+        if (Sprite.Texture?.IsDisposed != false)
+        {
+            // Texture should not be null or disposed under normal compile-time guarantees, but we may be subject to
+            // misbehaving runtime clients that dispose textures early or supply a null texture, e.g. through a duck
+            // type conversion that's improperly null-checked.
+            //
+            // This is not a normal situation so log an error when it happens.
+            Logger.LogOnce($"Skipped drawing invalid texture {Sprite.Texture?.Name ?? "(null)"}.", LogLevel.Warn);
             return;
         }
         var rotationAngle = rotation?.Angle() ?? 0;
