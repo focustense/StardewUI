@@ -79,6 +79,7 @@ public partial class KeybindListEditor : ComponentView
             {
                 keybindView.ButtonHeight = value;
             }
+            emptySpacer.Layout = LayoutParameters.FixedSize(value, value);
             OnPropertyChanged(nameof(ButtonHeight));
         }
     }
@@ -245,6 +246,7 @@ public partial class KeybindListEditor : ComponentView
     private int buttonHeight = KeybindView.DEFAULT_BUTTON_HEIGHT;
     private string deleteButtonTooltip = "";
     private KeybindType? editableType;
+    private Spacer emptySpacer = new();
     private string emptyText = "";
     private Color emptyTextColor = Game1.textColor;
     private SpriteFont font = Game1.smallFont;
@@ -254,6 +256,7 @@ public partial class KeybindListEditor : ComponentView
     /// <inheritdoc />
     protected override IView CreateView()
     {
+        emptySpacer.Layout = LayoutParameters.FixedSize(ButtonHeight, ButtonHeight);
         rootLane.LeftClick += RootLane_LeftClick;
         rootLane.RightClick += RootLane_RightClick;
         rootLane.PointerEnter += RootLane_PointerEnter;
@@ -266,7 +269,7 @@ public partial class KeybindListEditor : ComponentView
     {
         if (string.IsNullOrEmpty(EmptyText))
         {
-            return FrameContent(new Spacer() { Layout = LayoutParameters.FixedSize(ButtonHeight, ButtonHeight) });
+            return FrameContent(emptySpacer);
         }
         var label = Label.Simple(EmptyText, Font);
         label.Margin = new(0, 4);
