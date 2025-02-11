@@ -301,7 +301,7 @@ public partial class ScrollContainer : View
 
         var contentSize = Layout.Resolve(availableSize, () => ContentViewSize);
         var maxContentLength = Orientation.Get(containerLimits);
-        if (!float.IsPositiveInfinity(maxContentLength))
+        if (!float.IsPositiveInfinity(maxContentLength) && maxContentLength < Orientation.Get(contentSize))
         {
             Orientation.Set(ref contentSize, maxContentLength);
         }
