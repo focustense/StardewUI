@@ -319,6 +319,13 @@ public partial class Grid : View
                     childPositions[i] = new(childPositions[i].View, childPositions[i].Position + positionOffset);
                 }
                 PrimaryOrientation.Set(ref position, 0);
+                // If we are here because it's the last iteration, and not because of an actual wrap, then skip setting
+                // up a final row. This isn't just for efficiency, it's to avoid messing up focus searches by having
+                // them think there are more rows (i.e. secondaryStartPositions) than there are.
+                if (childIdx == Children.Count - 1)
+                {
+                    break;
+                }
                 secondaryOrientation.Update(ref position, v => v + maxSecondary + secondarySpacing);
                 if (laneStartIndex > 0)
                 {
