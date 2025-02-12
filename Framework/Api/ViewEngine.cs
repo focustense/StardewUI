@@ -113,7 +113,7 @@ public class ViewEngine : IViewEngine
         {
             return;
         }
-        Task.Run(() =>
+        var preloadTask = Task.Run(() =>
         {
             var visitedTypes = new HashSet<Type>();
             var remainingTypes = new Stack<Type>(types);
@@ -167,6 +167,13 @@ public class ViewEngine : IViewEngine
                 {
                     remainingTypes.Push(elementType);
                 }
+            }
+        });
+        preloadTask.ContinueWith(t =>
+        {
+            if (t.IsFaulted)
+            {
+                Logger.Log($"An unexpected error occurred during model preloading: {t.Exception}", LogLevel.Error);
             }
         });
     }
