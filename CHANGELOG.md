@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.6.1] - 2025-02-12
+
+### Changed
+
+- Drop-down lists with many items are now scrollable, either with a fixed maximum height or implicitly at the bottom of the viewport.
+- Most image components include some additional safety checks for invalid sprites, i.e. those whose `Texture2D` is either `null` due to inconsistent type checking, or Disposed due to incorrect lifetime management.
+
+### Fixed
+
+- Focus search lands on correct target when navigating up from below a grid to the last row of that grid.
+- `CustomButtonSpriteMap` provides the actual mouse button sprites instead of error sprites.
+- Preloaded assets are now cached by localized name instead of base name, resolving the failure to load nested assets (sprite textures) from SMAPI when the game is configured to a non-English language.
+- Keybind editors configured to only accept a single-button will actually accept only a single button, instead of displaying only one button in the UI but potentially storing a button combination.
+
 ## [0.6.0] - 2025-01-31
 
 ### Added
@@ -241,7 +255,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Initial documentation site based on material-mkdocs; many pages are stubs.
 - Syntax highlighting for Visual Studio, VSCode and Notepad++.
 
-[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/focustense/StardewUI/compare/v0.6.1...HEAD
+[0.6.1]: https://github.com/focustense/StardewUI/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/focustense/StardewUI/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/focustense/StardewUI/compare/v0.4.2...v0.5.0
 [0.4.2]: https://github.com/focustense/StardewUI/compare/v0.4.1...v0.4.2

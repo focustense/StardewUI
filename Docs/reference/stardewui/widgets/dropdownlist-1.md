@@ -54,6 +54,7 @@ The type of list item that can be chosen.
 | [FloatingBounds](decoratorview-1.md#floatingbounds) | Contains the bounds of all floating elements in this view tree, including the current view and all descendants.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [IsFocusable](decoratorview-1.md#isfocusable) | Whether or not the view can receive controller focus, i.e. the stick/d-pad controlled cursor can move to this view. Not generally applicable for mouse controls.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Layout](decoratorview-1.md#layout) | The current layout parameters, which determine how [Measure(Vector2)](../iview.md#measurevector2) will behave.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
+| [MaxListHeight](#maxlistheight) | Maximum height of the expanded list. | 
 | [Name](decoratorview-1.md#name) | Simple name for this view, used in log/debug output; does not affect behavior.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [Opacity](decoratorview-1.md#opacity) | Opacity (alpha level) of the view.<br><span class="muted" markdown>(Inherited from [DecoratorView&lt;T&gt;](decoratorview-1.md))</span> | 
 | [OptionFormat](#optionformat) | Specifies how to format the [SelectedOption](dropdownlist-1.md#selectedoption) in the label text. | 
@@ -142,6 +143,26 @@ public DropDownList<T>();
 -----
 
 ### Properties
+
+#### MaxListHeight
+
+Maximum height of the expanded list.
+
+```cs
+public float? MaxListHeight { get; set; }
+```
+
+##### Property Value
+
+[Nullable](https://learn.microsoft.com/en-us/dotnet/api/system.nullable-1)<[Single](https://learn.microsoft.com/en-us/dotnet/api/system.single)>
+
+##### Remarks
+
+By default, the item list can expand all the way to the bottom of the viewport, and will scroll if it exceeds the full height; this can end up being very tall and difficult to navigate on large screens. Setting this to a smaller value will limit the height. 
+
+ This affects only the list of items in the expanded state; it is different from the [MaxHeight](../layout/layoutparameters.md#maxheight) of the [DropDownList&lt;T&gt;](dropdownlist-1.md)'s own [Layout](../iview.md#layout).
+
+-----
 
 #### OptionFormat
 

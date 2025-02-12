@@ -247,8 +247,6 @@ public partial class BindingTests
         var child1 = new SElement(
             "image",
             [
-                // TODO: How can we handle complex attributes like the Layout in particular?
-                //new SAttribute("width", AttributeValueType.Literal, "400"),
                 new SAttribute("scale", "3.0"),
                 new SAttribute("sprite", "TestSprite", ValueType: AttributeValueType.AssetBinding),
             ],

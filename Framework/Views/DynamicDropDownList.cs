@@ -23,6 +23,13 @@ internal class DynamicDropDownList : DecoratorView
     /// <inheritdoc cref="DropDownList{T}.Select" />
     public event EventHandler<EventArgs>? Select;
 
+    /// <inheritdoc cref="DropDownList{T}.MaxListHeight" />
+    public float? MaxListHeight
+    {
+        get => adapter.MaxListHeight;
+        set => adapter.MaxListHeight = value;
+    }
+
     /// <inheritdoc cref="DropDownList{T}.OptionFormat" />
     public Delegate? OptionFormat
     {
@@ -212,7 +219,9 @@ internal class DynamicDropDownList : DecoratorView
         {
             return;
         }
-        float optionMinWidth = adapter.OptionMinWidth;
+        var maxListHeight = adapter.MaxListHeight;
+        var optionMaxLines = adapter.OptionMaxLines;
+        var optionMinWidth = adapter.OptionMinWidth;
         if (!adapterFactoryCache.TryGetValue(elementType, out var factory))
         {
             factory = createDropDownAdapterMethodDefinition
@@ -221,10 +230,12 @@ internal class DynamicDropDownList : DecoratorView
             adapterFactoryCache.Add(elementType, factory);
         }
         var newAdapter = factory();
+        newAdapter.MaxListHeight = maxListHeight;
         if (newAdapter.IsValidFormat(OptionFormat))
         {
             newAdapter.OptionFormat = OptionFormat;
         }
+        newAdapter.OptionMaxLines = optionMaxLines;
         newAdapter.OptionMinWidth = optionMinWidth;
         SetInitialAdapterIndex(newAdapter);
         SetAdapter(newAdapter);
@@ -276,6 +287,7 @@ internal class DynamicDropDownList : DecoratorView
         event PropertyChangedEventHandler PropertyChanged;
         event EventHandler<EventArgs> Select;
 
+        float? MaxListHeight { get; set; }
         Delegate? OptionFormat { get; set; }
         int OptionMaxLines { get; set; }
         float OptionMinWidth { get; set; }
@@ -304,6 +316,12 @@ internal class DynamicDropDownList : DecoratorView
         {
             add => view.Select += value;
             remove => view.Select -= value;
+        }
+
+        public float? MaxListHeight
+        {
+            get => view.MaxListHeight;
+            set => view.MaxListHeight = value;
         }
 
         public Delegate? OptionFormat

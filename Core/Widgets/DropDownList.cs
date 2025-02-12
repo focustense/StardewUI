@@ -20,6 +20,34 @@ public partial class DropDownList<T> : ComponentView
     public event EventHandler<EventArgs>? Select;
 
     /// <summary>
+    /// Maximum height of the expanded list.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// By default, the item list can expand all the way to the bottom of the viewport, and will scroll if it exceeds
+    /// the full height; this can end up being very tall and difficult to navigate on large screens. Setting this to a
+    /// smaller value will limit the height.
+    /// </para>
+    /// <para>
+    /// This affects only the list of items in the expanded state; it is different from the
+    /// <see cref="LayoutParameters.MaxHeight"/> of the <see cref="DropDownList{T}"/>'s own <see cref="IView.Layout"/>.
+    /// </para>
+    /// </remarks>
+    public float? MaxListHeight
+    {
+        get => overlayMaxHeight;
+        set
+        {
+            if (value != overlayMaxHeight)
+            {
+                overlayMaxHeight = value;
+                UpdateOverlayViewLayout();
+                OnPropertyChanged(nameof(MaxListHeight));
+            }
+        }
+    }
+
+    /// <summary>
     /// Specifies how to format the <see cref="SelectedOption"/> in the label text.
     /// </summary>
     public Func<T, string>? OptionFormat
@@ -200,6 +228,7 @@ public partial class DropDownList<T> : ComponentView
     private IOverlay? overlay;
     private Func<T, string> optionFormat = DefaultOptionFormat;
     private int optionMaxLines = 1;
+    private float? overlayMaxHeight;
     private int selectedIndex = -1;
 
     // Initialized in CreateView
@@ -220,12 +249,7 @@ public partial class DropDownList<T> : ComponentView
         var wasDirty = base.Measure(availableSize);
         if (wasDirty)
         {
-            overlayView.Layout = new LayoutParameters()
-            {
-                // Subtract padding from width.
-                Width = Length.Px(selectionFrame.OuterSize.X - 4),
-                Height = Length.Content(),
-            };
+            UpdateOverlayViewLayout();
         }
         return wasDirty;
     }
@@ -344,6 +368,22 @@ public partial class DropDownList<T> : ComponentView
             .ToList();
     }
 
+    private void UpdateOverlayViewLayout()
+    {
+        overlayView.Layout = new()
+        {
+            // Subtract padding from width.
+            Width = Length.Px(selectionFrame.OuterSize.X - 4),
+            Height = Length.Content(),
+        };
+        overlayView.ScrollableLayout = new()
+        {
+            Width = Length.Stretch(),
+            Height = Length.Content(),
+            MaxHeight = overlayMaxHeight,
+        };
+    }
+
     private void UpdateSelectedOption()
     {
         selectedOptionLabel.Text = SelectedOption is not null ? optionFormat(SelectedOption) : "";
@@ -408,6 +448,19 @@ public partial class DropDownList<T> : ComponentView
 
     class DropDownOverlayView(DropDownList<T> owner) : ComponentView
     {
+        public LayoutParameters ScrollableLayout
+        {
+            get => scrollableView.Layout;
+            set => scrollableView.Layout = value;
+        }
+
+        private readonly ScrollableView scrollableView = new()
+        {
+            Peeking = 32,
+            ScrollbarMargin = new(Left: 4, Bottom: -8),
+            Content = owner.optionsLane,
+        };
+
         public override ViewChild? GetDefaultFocusChild()
         {
             return owner
@@ -422,7 +475,7 @@ public partial class DropDownList<T> : ComponentView
                 Layout = LayoutParameters.AutoRow(),
                 Background = UiSprites.DropDownBackground,
                 Padding = new(4),
-                Content = owner.optionsLane,
+                Content = scrollableView,
             };
         }
     }

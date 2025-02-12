@@ -50,7 +50,14 @@ public class CustomButtonSpriteMap(IGameContentHelper content, ButtonSpriteMapDa
     {
         if (!cache.TryGetValue(button, out var sprite))
         {
-            sprite = data.Buttons.TryGetValue(button, out var assetName) ? content.Load<Sprite>(assetName) : null;
+            var assetName = button switch
+            {
+                SButton.MouseLeft => data.MouseLeft,
+                SButton.MouseMiddle => data.MouseMiddle,
+                SButton.MouseRight => data.MouseRight,
+                _ => data.Buttons.GetValueOrDefault(button),
+            };
+            sprite = !string.IsNullOrEmpty(assetName) ? content.Load<Sprite>(assetName) : null;
             cache.Add(button, sprite);
         }
         return sprite;

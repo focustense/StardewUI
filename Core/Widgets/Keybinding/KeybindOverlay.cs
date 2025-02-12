@@ -199,12 +199,11 @@ public class KeybindOverlay(ISpriteMap<SButton>? spriteMap) : FullScreenOverlay
         }
         if (anyChanged)
         {
-            currentKeybindView.Keybind =
-                KeybindType == KeybindType.SingleButton ? new(capturedButtons.First()) : new([.. capturedButtons]);
+            currentKeybindView.Keybind = GetCapturedKeybind();
         }
         if (capturedButtons.Count > 0 && !anyPressed)
         {
-            var capturedKeybind = new Keybind([.. capturedButtons]);
+            var capturedKeybind = GetCapturedKeybind();
             if (capturedKeybind.IsBound)
             {
                 KeybindList =
@@ -339,6 +338,11 @@ public class KeybindOverlay(ISpriteMap<SButton>? spriteMap) : FullScreenOverlay
         Game1.playSound("trashcan");
         var keybind = view.Tags.Get<Keybind>();
         KeybindList = new(KeybindList.Keybinds.Where(kb => kb != keybind).ToArray());
+    }
+
+    private Keybind GetCapturedKeybind()
+    {
+        return KeybindType == KeybindType.SingleButton ? new(capturedButtons.First()) : new([.. capturedButtons]);
     }
 
     private static IEnumerable<SButton> GetPressedButtons()
