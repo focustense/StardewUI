@@ -69,22 +69,6 @@ public partial class Banner : View
     }
 
     /// <summary>
-    /// The text color.
-    /// </summary>
-    public Color? Color
-    {
-        get => color;
-        set
-        {
-            if (value != color)
-            {
-                color = value;
-                OnPropertyChanged(nameof(Color));
-            }
-        }
-    }
-
-    /// <summary>
     /// Alpha value for the text shadow, per layer in <see cref="ShadowLayers"/>.
     /// </summary>
     /// <remarks>
@@ -102,7 +86,6 @@ public partial class Banner : View
             }
         }
     }
-
 
     /// <summary>
     /// Base color for the text shadow, before applying <see cref="TextShadowAlpha"/>.
@@ -169,7 +152,6 @@ public partial class Banner : View
 
     private Sprite? background;
     private NineSlice? backgroundSlice;
-    private Color? color;
     private float textShadowAlpha;
     private Color textShadowColor = Game1.textShadowDarkerColor;
     private ShadowLayers textShadowLayers = ShadowLayers.All;
@@ -226,7 +208,7 @@ public partial class Banner : View
                         );
                     }
                 }
-                SpriteText.drawStringHorizontallyCenteredAt(wb, Text, (int)(origin.X + centerX), (int)origin.Y, color: Color);
+                SpriteText.drawStringHorizontallyCenteredAt(wb, Text, (int)(origin.X + centerX), (int)origin.Y);
             }
         );
     }
