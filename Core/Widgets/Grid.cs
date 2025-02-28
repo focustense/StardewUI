@@ -161,8 +161,40 @@ public partial class Grid : View
         }
     }
 
-    private record CellPosition(int Column, int Row);
+    /// <summary>
+    /// Horizontal divider border sprite, e.g. <see cref="UiSprites.ThinHorizontalDivider"/>
+    /// </summary>
+    public Sprite? HorizontalDivider
+    {
+        get => horizontalDivider;
+        set
+        {
+            if (value != horizontalDivider)
+            {
+                horizontalDivider = value;
+                OnPropertyChanged(nameof(horizontalDivider));
+            }
+        }
+    }
 
+
+    /// <summary>
+    /// Horizontal divider border sprite, e.g. <see cref="UiSprites.ThinVerticalDivider"/>
+    /// </summary>
+    public Sprite? VerticalDivider
+    {
+        get => verticalDivider;
+        set
+        {
+            if (value != verticalDivider)
+            {
+                verticalDivider = value;
+                OnPropertyChanged(nameof(verticalDivider));
+            }
+        }
+    }
+
+    private record CellPosition(int Column, int Row);
     private readonly DirtyTrackingList<IView> children = [];
     private readonly List<ViewChild> childPositions = [];
     private readonly DirtyTracker<GridItemLayout> itemLayout = new(new GridItemLayout.Count(5));
@@ -173,6 +205,10 @@ public partial class Grid : View
     private Alignment gridAlignment = Alignment.Start;
     private Alignment horizontalItemAlignment = Alignment.Start;
     private Alignment verticalItemAlignment = Alignment.Start;
+    private Sprite? horizontalDivider;
+    private NineSlice? horizontalDivSlice;
+    private Sprite? verticalDivider;
+    private NineSlice? verticalDivSlice;
 
     // For grid-level alignment.
     private float primaryLength;
@@ -253,6 +289,47 @@ public partial class Grid : View
             || primaryOrientation.IsDirty
             || children.IsDirty
             || children.Any(child => child.IsDirty());
+    }
+
+    /// <inheritdoc />
+    protected override void OnDrawBorder(ISpriteBatch b)
+    {
+        var origin = Vector2.Zero;
+        PrimaryOrientation.Set(ref origin, GridAlignment.Align(primaryLength, ContentSize.X));
+        b.Translate(origin);
+        Vector2 prevPos = Vector2.Zero;
+        if (PrimaryOrientation == Orientation.Horizontal)
+        {
+            var zorder = childPositions.ZOrder();
+            // perpendicular divider
+            if (verticalDivSlice != null)
+            {
+                foreach (var (child, position) in zorder.Skip(1))
+                {
+                    if (position.Y != prevPos.Y)
+                        break;
+                    using var _ = b.SaveTransform();
+                    b.Translate(position);
+                    verticalDivSlice.Draw(b);
+                    prevPos = position;
+                }
+            }
+            // parallel divider
+            if (horizontalDivSlice != null)
+            {
+                foreach (var (child, position) in zorder)
+                {
+                    if (position.X < prevPos.X)
+                    {
+                        using var _ = b.SaveTransform();
+                        b.Translate(position);
+                        horizontalDivSlice.Draw(b);
+                    }
+                    prevPos = position;
+                }
+            }
+        }
+        // TODO: PrimaryOrientation == Orientation.Vertical
     }
 
     /// <inheritdoc />
@@ -352,6 +429,26 @@ public partial class Grid : View
         secondaryOrientation.Set(ref accumulatedSize, secondaryUsed);
         primaryLength = (itemLength + primarySpacing) * (countBeforeWrap - 1) + itemLength;
         ContentSize = Layout.Resolve(availableSize, () => accumulatedSize);
+
+        // dividers
+        if (horizontalDivSlice?.Sprite != HorizontalDivider)
+        {
+            horizontalDivSlice = HorizontalDivider is not null ? new(HorizontalDivider) : null;
+        }
+        if (horizontalDivSlice != null && HorizontalDivider != null)
+        {
+            horizontalDivSlice.Layout(new(0, -HorizontalDivider.Size.Y / 2, (int)ContentSize.X, HorizontalDivider.Size.Y));
+        }
+
+        if (verticalDivSlice?.Sprite != VerticalDivider)
+        {
+            verticalDivSlice = VerticalDivider is not null ? new(VerticalDivider) : null;
+        }
+        if (verticalDivSlice != null && VerticalDivider != null)
+        {
+            verticalDivSlice.Layout(new(-VerticalDivider.Size.X / 2, 0, VerticalDivider.Size.X, (int)ContentSize.Y));
+        }
+
     }
 
     /// <inheritdoc />
