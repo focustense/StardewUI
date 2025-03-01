@@ -294,42 +294,37 @@ public partial class Grid : View
     /// <inheritdoc />
     protected override void OnDrawBorder(ISpriteBatch b)
     {
-        var origin = Vector2.Zero;
-        PrimaryOrientation.Set(ref origin, GridAlignment.Align(primaryLength, ContentSize.X));
-        b.Translate(origin);
-        Vector2 prevPos = Vector2.Zero;
+        NineSlice? orthogonalDivSlice;
+        NineSlice? parallelDivSlice;
         if (PrimaryOrientation == Orientation.Horizontal)
         {
-            var zorder = childPositions.ZOrder();
-            // perpendicular divider
-            if (verticalDivSlice != null)
+            orthogonalDivSlice = verticalDivSlice;
+            parallelDivSlice = horizontalDivSlice;
+        }
+        else
+        {
+            orthogonalDivSlice = horizontalDivSlice;
+            parallelDivSlice = verticalDivSlice;
+        }
+        if (orthogonalDivSlice != null)
+        {
+            int divCount = Math.Min(countBeforeWrap, childPositions.Count);
+            for (int i = 1; i < divCount; i++)
             {
-                foreach (var (child, position) in zorder.Skip(1))
-                {
-                    if (position.Y != prevPos.Y)
-                        break;
-                    using var _ = b.SaveTransform();
-                    b.Translate(position);
-                    verticalDivSlice.Draw(b);
-                    prevPos = position;
-                }
-            }
-            // parallel divider
-            if (horizontalDivSlice != null)
-            {
-                foreach (var (child, position) in zorder)
-                {
-                    if (position.X < prevPos.X)
-                    {
-                        using var _ = b.SaveTransform();
-                        b.Translate(position);
-                        horizontalDivSlice.Draw(b);
-                    }
-                    prevPos = position;
-                }
+                using var _ = b.SaveTransform();
+                b.Translate(childPositions[i].Position);
+                orthogonalDivSlice.Draw(b);
             }
         }
-        // TODO: PrimaryOrientation == Orientation.Vertical
+        if (parallelDivSlice != null)
+        {
+            for (int i = countBeforeWrap; i < childPositions.Count; i += countBeforeWrap)
+            {
+                using var _ = b.SaveTransform();
+                b.Translate(childPositions[i].Position);
+                parallelDivSlice.Draw(b);
+            }
+        }
     }
 
     /// <inheritdoc />
